@@ -1,0 +1,6 @@
+Django==1.3
+ipdb
+ipython
+wsgiref
+south
+django-rosetta

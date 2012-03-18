@@ -1,0 +1,5 @@
+env/*
+*.pyc
+*.sqlite
+custom_settings.py
+*.kdev4*

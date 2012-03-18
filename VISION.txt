@@ -1,0 +1,36 @@
+= Vision =
+
+With votering you can create your own vote rings and easily incoporate them into
+any webpage.
+
+== Technical ==
+
+Use django social as much as possible. Allow auth via other apps.
+
+=== Entities ===
+
+* User
+ * Use random username and never show it because it might be too short and unrelated
+ to the user auth string, for example an url in openid etc.
+ * add dynamic fields via json info field
+ * Login via linked in, password, google, facebook..
+
+=== Models ===
+
+* User (extends django.contrib.auth.models)
+ * info (JSONField, for dynamic extensions)
+
+* Team
+ * name (string)
+ * description (text)
+ * members (relation with User)
+ * admins (relation with User)
+ * permissions (enum like flags)
+
+* VoteRing
+ * admins (list of users, relation with User)
+ * admin_team (relation with Team)
+ 
+== Views ==
+* Main page
+  * Shows a list of public views
