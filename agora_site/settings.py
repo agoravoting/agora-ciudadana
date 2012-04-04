@@ -72,6 +72,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.transaction.TransactionMiddleware',
+    'reversion.middleware.RevisionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
@@ -83,9 +85,10 @@ TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
     "django.contrib.messages.context_processors.messages",
     'misc.context_processor.base',
     'misc.context_processor.settings.SITE_NAME',
+    'misc.context_processor.settings.MEDIA_URL',
 )
 
-ROOT_URLCONF = 'agora_ciudadana.urls'
+ROOT_URLCONF = 'agora_site.urls'
 
 import os
 ROOT_PATH = os.path.dirname(__file__)
@@ -101,11 +104,32 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'reversion',
+    'south',
+    'guardian',
+    'rosetta',
+    'agora_site.agora_core',
+)
+
+# Modify the defaults to use BCrypt by default, because it's more secure, better
+# for long term password storage
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.SHA1PasswordHasher',
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+    'django.contrib.auth.hashers.CryptPasswordHasher',
 )
 
 # Project settings
 
 SITE_NAME = 'Agora Ciudadana'
+
+AUTH_PROFILE_MODULE = 'agora_site.agora_core.models.Profile'
+
+ANONYMOUS_USER_ID = 1
+
 
 try:
     # custom settings is the file where you should set your modifications of the

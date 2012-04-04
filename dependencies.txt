@@ -4,3 +4,6 @@ ipython
 wsgiref
 south
 django-rosetta
+py-bcrypt
+django-guardian
+django-reversion
