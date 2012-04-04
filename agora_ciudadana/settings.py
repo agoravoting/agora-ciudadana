@@ -85,7 +85,7 @@ TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
     'misc.context_processor.settings.SITE_NAME',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'agora_ciudadana.urls'
 
 import os
 ROOT_PATH = os.path.dirname(__file__)

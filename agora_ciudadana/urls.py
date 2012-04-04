@@ -9,7 +9,7 @@ urlpatterns = patterns('',
     (r'media/(?P<path>.*)$', 'django.views.static.serve', {'document_root' : settings.ROOT_PATH + '/media'}),
 
     # just for testing
-    (r'templates/(?P<path>.*)$', 'views.serve_templates', {'document_root' : settings.ROOT_PATH + '/templates'}),
+    (r'templates/(?P<path>.*)$', 'agora_ciudadana.views.serve_templates', {'document_root' : settings.ROOT_PATH + '/templates'}),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
