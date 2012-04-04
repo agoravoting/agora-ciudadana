@@ -1,36 +1,41 @@
-= Vision =
+= Activity =
 
-With votering you can create your own vote rings and easily incoporate them into
-any webpage.
+These are the different things that should be registered as activity:
 
-== Technical ==
+* Agora X was created by User Y
+* Agora X was closed by User Y
+* Agora X biography was modified by User Y
+* Agora X settings were modified by User Y
 
-Use django social as much as possible. Allow auth via other apps.
+* User X joined Agora Y
+* User X leaved Agora Y
 
-=== Entities ===
+* Election Y in Agora Z created by User X
+* Election Y in Agora Z modified by User X
+* Election Y in Agora Z was confirmed by User X
+* Election X in Agora Y finished, winning option was Z with ZZ % of votes
 
-* User
- * Use random username and never show it because it might be too short and unrelated
- to the user auth string, for example an url in openid etc.
- * add dynamic fields via json info field
- * Login via linked in, password, google, facebook..
+* User X voted in election Y in Agora Z
+* User X updated his vote in election Y in Agora Z
+* User X delegated in User Y in Agora Z
+* User X removed his delegation in User Y in Agora Z
 
-=== Models ===
+* User X commented on Agora Y
+* User X commented on Voting Y from Agora Z
+* User X commented on User Y
+* User X updated his biography
 
-* User (extends django.contrib.auth.models)
- * info (JSONField, for dynamic extensions)
+Filtering can be done from relevant log items. Relevant log items are:
 
-* Team
- * name (string)
- * description (text)
- * members (relation with User)
- * admins (relation with User)
- * permissions (enum like flags)
+For personal timeline:
+ * Users in which the user delegates
+ * Users which the user follows
+ * updates in an agora the user is a member/admin of
+ * updates in an election where the user votes
 
-* VoteRing
- * admins (list of users, relation with User)
- * admin_team (relation with Team)
- 
-== Views ==
-* Main page
-  * Shows a list of public views
+For an agora timeline:
+ * updates related to the agora
+
+For an election timeline:
+ * updates related to the election
+ * delegations in the agora related to the election
