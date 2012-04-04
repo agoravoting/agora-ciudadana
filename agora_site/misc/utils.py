@@ -22,10 +22,10 @@ class JSONField(models.TextField):
     # Used so to_python() is called
     __metaclass__ = models.SubfieldBase
 
-    def __init__(self, json_type=None, deserialization_params=None, **kwargs):
+    def __init__(self, name=None, json_type=None, deserialization_params=None, **kwargs):
         self.json_type = json_type
         self.deserialization_params = deserialization_params
-        super(JSONField, self).__init__(**kwargs)
+        super(JSONField, self).__init__(name, **kwargs)
 
     def to_python(self, value):
         """Convert our string value to JSON after we load it from the DB"""
