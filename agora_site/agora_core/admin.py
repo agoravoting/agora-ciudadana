@@ -20,14 +20,16 @@ from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin
 from agora_site.agora_core.models import Profile, Agora, Election, CastVote
+from reversion.admin import VersionAdmin
 
 admin.site.unregister(User)
 
 class ProfileInline(admin.StackedInline):
     model = Profile
 
-class ProfileAdmin(UserAdmin):
+class ProfileAdmin(VersionAdmin):
     inlines = [ProfileInline]
+    model = User
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
@@ -38,8 +40,8 @@ class ProfileAdmin(UserAdmin):
 
 admin.site.register(User, ProfileAdmin)
 
-admin.site.register(Agora)
+admin.site.register(Agora, VersionAdmin)
 
-admin.site.register(Election)
+admin.site.register(Election, VersionAdmin)
 
-admin.site.register(CastVote)
+admin.site.register(CastVote, VersionAdmin)

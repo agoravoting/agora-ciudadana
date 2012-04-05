@@ -15,17 +15,10 @@ class Migration(SchemaMigration):
             ('short_description', self.gf('django.db.models.fields.CharField')(max_length=140)),
             ('biography', self.gf('django.db.models.fields.TextField')()),
             ('user_type', self.gf('django.db.models.fields.CharField')(default='PASSWORD', max_length=50)),
+            ('last_activity_read_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('extra', self.gf('agora_site.misc.utils.JSONField')(null=True)),
         ))
         db.send_create_signal('agora_core', ['Profile'])
-
-        # Adding M2M table for field followers on 'Profile'
-        db.create_table('agora_core_profile_followers', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('from_profile', models.ForeignKey(orm['agora_core.profile'], null=False)),
-            ('to_profile', models.ForeignKey(orm['agora_core.profile'], null=False))
-        ))
-        db.create_unique('agora_core_profile_followers', ['from_profile_id', 'to_profile_id'])
 
         # Adding model 'Agora'
         db.create_table('agora_core_agora', (
@@ -63,14 +56,6 @@ class Migration(SchemaMigration):
         ))
         db.create_unique('agora_core_agora_admins', ['agora_id', 'user_id'])
 
-        # Adding M2M table for field followers on 'Agora'
-        db.create_table('agora_core_agora_followers', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('agora', models.ForeignKey(orm['agora_core.agora'], null=False)),
-            ('user', models.ForeignKey(orm['auth.user'], null=False))
-        ))
-        db.create_unique('agora_core_agora_followers', ['agora_id', 'user_id'])
-
         # Adding model 'Election'
         db.create_table('agora_core_election', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -102,14 +87,6 @@ class Migration(SchemaMigration):
             ('extra_data', self.gf('agora_site.misc.utils.JSONField')(null=True)),
         ))
         db.send_create_signal('agora_core', ['Election'])
-
-        # Adding M2M table for field followers on 'Election'
-        db.create_table('agora_core_election_followers', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('election', models.ForeignKey(orm['agora_core.election'], null=False)),
-            ('user', models.ForeignKey(orm['auth.user'], null=False))
-        ))
-        db.create_unique('agora_core_election_followers', ['election_id', 'user_id'])
 
         # Adding M2M table for field electorate on 'Election'
         db.create_table('agora_core_election_electorate', (
@@ -144,9 +121,6 @@ class Migration(SchemaMigration):
         # Deleting model 'Profile'
         db.delete_table('agora_core_profile')
 
-        # Removing M2M table for field followers on 'Profile'
-        db.delete_table('agora_core_profile_followers')
-
         # Deleting model 'Agora'
         db.delete_table('agora_core_agora')
 
@@ -156,14 +130,8 @@ class Migration(SchemaMigration):
         # Removing M2M table for field admins on 'Agora'
         db.delete_table('agora_core_agora_admins')
 
-        # Removing M2M table for field followers on 'Agora'
-        db.delete_table('agora_core_agora_followers')
-
         # Deleting model 'Election'
         db.delete_table('agora_core_election')
-
-        # Removing M2M table for field followers on 'Election'
-        db.delete_table('agora_core_election_followers')
 
         # Removing M2M table for field electorate on 'Election'
         db.delete_table('agora_core_election_electorate')
@@ -173,6 +141,20 @@ class Migration(SchemaMigration):
 
 
     models = {
+        'actstream.action': {
+            'Meta': {'ordering': "('-timestamp',)", 'object_name': 'Action'},
+            'action_object_content_type': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'action_object'", 'null': 'True', 'to': "orm['contenttypes.ContentType']"}),
+            'action_object_object_id': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'actor_content_type': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'actor'", 'to': "orm['contenttypes.ContentType']"}),
+            'actor_object_id': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'public': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'target_content_type': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'target'", 'null': 'True', 'to': "orm['contenttypes.ContentType']"}),
+            'target_object_id': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'timestamp': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'verb': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+        },
         'agora_core.agora': {
             'Meta': {'object_name': 'Agora'},
             'admins': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'adminstrated_agoras'", 'symmetrical': 'False', 'to': "orm['auth.User']"}),
@@ -184,7 +166,6 @@ class Migration(SchemaMigration):
             'election_type': ('django.db.models.fields.CharField', [], {'default': "'ONCE_CHOICE'", 'max_length': '50'}),
             'eligibility': ('agora_site.misc.utils.JSONField', [], {'null': 'True'}),
             'extra_data': ('agora_site.misc.utils.JSONField', [], {'null': 'True'}),
-            'followers': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'followed_agoras'", 'symmetrical': 'False', 'to': "orm['auth.User']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'image_url': ('django.db.models.fields.URLField', [], {'default': "''", 'max_length': '200', 'blank': 'True'}),
             'is_vote_secret': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
@@ -220,7 +201,6 @@ class Migration(SchemaMigration):
             'electorate': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'elections'", 'symmetrical': 'False', 'to': "orm['auth.User']"}),
             'eligibility': ('agora_site.misc.utils.JSONField', [], {'null': 'True'}),
             'extra_data': ('agora_site.misc.utils.JSONField', [], {'null': 'True'}),
-            'followers': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'followed_elections'", 'symmetrical': 'False', 'to': "orm['auth.User']"}),
             'frozen_at_date': ('django.db.models.fields.DateTimeField', [], {'default': 'None', 'null': 'True'}),
             'hash': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -241,8 +221,8 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Profile'},
             'biography': ('django.db.models.fields.TextField', [], {}),
             'extra': ('agora_site.misc.utils.JSONField', [], {'null': 'True'}),
-            'followers': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'followers_rel_+'", 'to': "orm['agora_core.Profile']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'last_activity_read_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'short_description': ('django.db.models.fields.CharField', [], {'max_length': '140'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['auth.User']", 'unique': 'True'}),
             'user_type': ('django.db.models.fields.CharField', [], {'default': "'PASSWORD'", 'max_length': '50'})
@@ -262,7 +242,7 @@ class Migration(SchemaMigration):
         },
         'auth.user': {
             'Meta': {'object_name': 'User'},
-            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 4, 4, 23, 52, 48, 983915)'}),
+            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 4, 5, 16, 40, 44, 310482)'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
@@ -270,7 +250,7 @@ class Migration(SchemaMigration):
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 4, 4, 23, 52, 48, 983824)'}),
+            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 4, 5, 16, 40, 44, 310405)'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
             'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),

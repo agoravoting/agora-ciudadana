@@ -2,28 +2,29 @@
 
 These are the different things that should be registered as activity:
 
-* Agora X was created by User Y
-* Agora X was closed by User Y
-* Agora X biography was modified by User Y
-* Agora X settings were modified by User Y
 
-* User X joined Agora Y
-* User X leaved Agora Y
+* Agora X was created by User Y: actor=userY, verb="created", object=agoraX
+* Agora X was closed by User Y: actor=user, verb="closed", object=agoraX
+* Agora X biography was modified by User Y: actor=userY, verb="modified biography", object=agoraX
+* Agora X settings were modified by User Y: actor=userY, verb="modified settings", object=agoraX
 
-* Election Y in Agora Z created by User X
-* Election Y in Agora Z modified by User X
-* Election Y in Agora Z was confirmed by User X
-* Election X in Agora Y finished, winning option was Z with ZZ % of votes
+* User X joined Agora Y: actor=userX, verb="joined", object=agoraY
+* User X leaved Agora Y: actor=userX, verb="leaved", object=agoraY
 
-* User X voted in election Y in Agora Z
-* User X updated his vote in election Y in Agora Z
-* User X delegated in User Y in Agora Z
-* User X removed his delegation in User Y in Agora Z
+* Election Y in Agora Z created by User X: actor=userX, verb="created", object=electionY, target=agoraZ
+* Election Y in Agora Z modified by User X: actor=userX, verb="modifed", object=electionY, target=agoraZ
+* Election Y in Agora Z was confirmed by User X: actor=userX, verb="confirmed", object=electionY, target=agoraZ
+* Election X in Agora Y finished, winning option was Z with ZZ % of votes: actor=adminsX, verb="published results", object=electionY, target=agoraZ
 
-* User X commented on Agora Y
-* User X commented on Voting Y from Agora Z
-* User X commented on User Y
-* User X updated his biography
+* User X voted in election Y in Agora Z: actor=userX, verb="voted", object=electionY, target=agoraZ
+* User X updated his vote in election Y in Agora Z: actor=userX, verb="changed his vote", object=electionY, target=agoraZ
+* User X delegated in User Y in Agora Z: actor=userX, verb="delegated", object=userY, target=agoraZ
+* User X removed his delegation in User Y in Agora Z: actor=userX, verb="removed delegation", object=userY, target=agoraZ
+
+* User X commented on Agora Y: actor=userX, verb="commented", object=agoraY
+* User X commented on Voting Y from Agora Z: actor=userX, verb="commented", object=votingY, target=agoraZ
+* User X commented on User Y: actor=userX, verb="commented", object=userY
+* User X updated his biography: actor=userX, verb="updated his biography"
 
 Filtering can be done from relevant log items. Relevant log items are:
 
@@ -39,3 +40,4 @@ For an agora timeline:
 For an election timeline:
  * updates related to the election
  * delegations in the agora related to the election
+

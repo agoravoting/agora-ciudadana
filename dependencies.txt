@@ -7,3 +7,4 @@ django-rosetta
 py-bcrypt
 django-guardian
 django-reversion
+django-activity-stream

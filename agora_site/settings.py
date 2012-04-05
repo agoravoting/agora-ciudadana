@@ -104,12 +104,26 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'django.contrib.comments',
     'reversion',
     'south',
     'guardian',
     'rosetta',
+    'actstream',
     'agora_site.agora_core',
 )
+
+# A list the models that you want to enable actions for. Models must be in the
+# format app_label.model_name . In the background, django-activity-stream sets
+# up GenericRelations to handle stream generation.
+# More info: http://justquick.github.com/django-activity-stream/configuration.html
+
+ACTSTREAM_ACTION_MODELS = [
+    'auth.User',
+    'agora_core.Agora',
+    'agora_core.Election',
+    'agora_core.CastVote',
+]
 
 # Modify the defaults to use BCrypt by default, because it's more secure, better
 # for long term password storage

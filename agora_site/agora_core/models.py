@@ -1,4 +1,4 @@
-# Copyright (C) 2010 Eduardo Robles Elvira <edulix AT wadobo DOT com>
+# Copyright (C) 2012 Eduardo Robles Elvira <edulix AT wadobo DOT com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -17,6 +17,12 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from agora_site.misc.utils import JSONField
+from reversion.models import Revision
+
+import reversion
+from actstream.models import Follow
+if reversion.is_registered(Follow):
+    reversion.unregister(Follow)
 
 class Profile(models.Model):
     '''
@@ -41,8 +47,10 @@ class Profile(models.Model):
 
     user_type = models.CharField(max_length=50, choices=USER_TYPES, default=USER_TYPES[0][0])
 
-    followers = models.ManyToManyField('self', related_name='followed_users',
-        verbose_name=_('Followers'))
+    # This marks the date of the last activity item known to be read by the user
+    # so that later on we can for example send to the user update email only
+    # showing activity from this date on
+    last_activity_read_date = models.DateTimeField(_(u'Last Activity Read Date'), auto_now_add=True, editable=True)
 
     # Stores extra data
     # it will something like:
@@ -117,9 +125,6 @@ class Agora(models.Model):
     admins = models.ManyToManyField(User, related_name='adminstrated_agoras',
         verbose_name=_('Administrators'))
 
-    followers = models.ManyToManyField(User, related_name='followed_agoras',
-        verbose_name=_('Followers'))
-
     # Stores extra data
     # it will something like:
     #{
@@ -147,9 +152,6 @@ class Election(models.Model):
 
     creator = models.ForeignKey(User, related_name='created_elections',
         verbose_name=_('Creator'), blank=False)
-
-    followers = models.ManyToManyField(User, related_name='followed_elections',
-        verbose_name=_('Followers'))
 
     # We might need to freeze the list of voters so that if someone signs in,
     # he cannot vote.
