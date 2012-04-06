@@ -15,17 +15,12 @@
 
 from django.conf.urls.defaults import *
 from django.conf import settings
-
-# Uncomment the next two lines to enable the admin:
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'media/(?P<path>.*)$', 'django.views.static.serve', {'document_root' : settings.ROOT_PATH + '/media'}),
-
-    # just for testing
-    (r'templates/(?P<path>.*)$', 'agora_site.views.serve_templates', {'document_root' : settings.ROOT_PATH + '/templates'}),
-
     # Uncomment the admin/doc line below to enable admin documentation:
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
@@ -36,3 +31,6 @@ urlpatterns = patterns('',
 
     (r'^', include('agora_site.agora_core.urls')),
 )
+
+if settings.DEBUG == True:
+    urlpatterns += staticfiles_urlpatterns()

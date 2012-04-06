@@ -52,10 +52,6 @@ USE_L10N = True
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 #MEDIA_URL = '/media/'
 
-#STATIC_ROOT = ''
-
-STATIC_URL = '/site_media/static/'
-
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '_ntqq^5)ii^vd2o6cghis-@h8dy*4)-#()8q=yw*$!#^(8+(fd'
 
@@ -95,6 +91,21 @@ TEMPLATE_DIRS = (
     os.path.join(ROOT_PATH, 'templates'),
 )
 
+
+#STATIC_ROOT = ''
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(ROOT_PATH, 'static'),
+)
+
+# The list of finder backends that know how to find static files in various
+# locations.
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+)
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -105,6 +116,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.comments',
+    'django.contrib.staticfiles',
     'reversion',
     'south',
     'guardian',
