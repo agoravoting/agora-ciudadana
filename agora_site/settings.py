@@ -141,7 +141,7 @@ ACTSTREAM_ACTION_MODELS = [
 # Modify the defaults to use BCrypt by default, because it's more secure, better
 # for long term password storage
 PASSWORD_HASHERS = (
-    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    # 'django.contrib.auth.hashers.BCryptPasswordHasher',
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
     'django.contrib.auth.hashers.SHA1PasswordHasher',

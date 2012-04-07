@@ -33,7 +33,7 @@ following within the directory containing the env/ subdirectory:
 
 After that, we need to configure the database (we use sqlite by default):
 
-    $ ./manage.py syncdb --noinput --migrate
+    $ ./manage.py syncdb --migrate
 
 Then create the admin user in the database: # TODO, initial-data.json not
 available yet
