@@ -80,6 +80,7 @@ TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
     "django.contrib.messages.context_processors.messages",
     'agora_site.misc.context_processor.base',
     'agora_site.misc.context_processor.settings.SITE_NAME',
+    'agora_site.misc.context_processor.settings.DEBUG',
     'agora_site.misc.context_processor.settings.MEDIA_URL',
 )
 
