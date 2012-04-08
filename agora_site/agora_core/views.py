@@ -20,11 +20,12 @@ from django.views.generic import ListView
 from django import http
 from django.utils import simplejson as json
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
 from django.utils.translation import ugettext as _
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
 from django.contrib import messages
+
+from agora_site.agora_core.forms import AuthForm, RegisterForm
 
 class AuthView(TemplateView):
     '''
@@ -37,8 +38,8 @@ class AuthView(TemplateView):
         context = self.get_context_data()
 
         if self.request.POST.get('type', '') == 'login':
-            context['login_form'] = form = AuthenticationForm(data=self.request.POST)
-            context['register_form'] = UserCreationForm()
+            context['login_form'] = form = AuthForm(data=self.request.POST)
+            context['register_form'] = RegisterForm()
             context['action'] = 'login'
 
             if form.is_valid():
@@ -46,8 +47,8 @@ class AuthView(TemplateView):
                 login(self.request, user)
                 return redirect('/')
         else:
-            context['register_form'] = form = UserCreationForm(self.request.POST)
-            context['login_form'] = AuthenticationForm()
+            context['register_form'] = form = RegisterForm(self.request.POST)
+            context['login_form'] = AuthForm()
             context['action'] = 'register'
 
             if form.is_valid():
@@ -62,8 +63,8 @@ class AuthView(TemplateView):
 
     def get(self, request, action=None):
         context = self.get_context_data()
-        context['login_form'] = AuthenticationForm()
-        context['register_form'] = UserCreationForm()
+        context['login_form'] = AuthForm()
+        context['register_form'] = RegisterForm()
         context['action'] = action
 
         return super(AuthView, self).render_to_response(context)

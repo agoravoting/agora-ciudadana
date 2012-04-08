@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load crispy_forms_tags %}
 
 {% block title %}{% trans 'Log in' %}{% endblock %}
 
@@ -23,25 +24,13 @@
     <div class="span3 {% ifequal action 'login' %}auth-highlight{% endifequal %}">
         <h3>{% trans "Log in" %}</h3>
         <p>{% trans "Please log in to continue." %}</p>
-        <form id="login-form" method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="type" value="login"/>
-        {{ login_form.as_p }}
-
-        <input name="submit" type="submit" class="btn btn-success btn-large" value="{% trans 'Log in' %}"/>
-        </form>
+        {% crispy login_form %}
     </div>
 
     <div class="span3 {% ifequal action 'register' %}auth-highlight{% endifequal %}">
         <h3>{% blocktrans %}New to {{ SITE_NAME }}?{% endblocktrans %}</h3>
         <p>{% blocktrans %}An account in {{ SITE_NAME }} is required to continue.{% endblocktrans %}</p>
-        <form id="register-form" method="POST">
-        {% csrf_token %}
-        {{ register_form.as_p }}
-        <input type="hidden" name="type" value="register"/>
-
-        <input name="submit" type="submit" class="btn btn-success btn-large" value="{% trans 'Sign up' %}"/>
-        </form>
+        {% crispy register_form %}
     </div>
 
 

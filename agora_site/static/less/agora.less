@@ -6,6 +6,11 @@ body {
     padding-top: 40px;
 }
 
+// Hide asterisk in forms for now
+.asteriskField {
+    display: none;
+}
+
 @header-items-left-margin: 10px;
 
 #headerbar .btn, #headerbar .user-link {
@@ -133,5 +138,12 @@ body {
         margin-left: 20px;
         margin-right: 20px;
         padding: 20px;
+
+        .form-actions {
+            background: none;
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
     }
 }

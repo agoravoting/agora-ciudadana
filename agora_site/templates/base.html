@@ -34,8 +34,8 @@
                     {% csrf_token %}
                     <input type="text" class="input-medium search-query"  value="" placeholder="{% trans "Search" %}" name="q" />
                 {% if not user or not user.is_authenticated %}
-                    <a class="user-link link-green" href="{ % url user-login %}">{% trans "Enter" %}</a>
-                    <a class="user-link" href="{ % url user-register %}">{% trans "Register" %}</a>
+                    <a class="user-link link-green" href="{% url user-login %}">{% trans "Enter" %}</a>
+                    <a class="user-link" href="{% url user-register %}">{% trans "Register" %}</a>
                 {% else %}
                     <div class="btn-group">
                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -43,7 +43,8 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <a href="{ % url user-preferences %}">{% trans "Preferences" %}</a>
+                            <li><a href="{% url user-logout %}">{% trans "Log out" %}</a></li>
+                            <li><a href="{ % url user-preferences %}">{% trans "Preferences" %}</a></li>
                         </ul>
                     </div>
                 {% endif %}

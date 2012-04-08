@@ -126,6 +126,7 @@ INSTALLED_APPS = (
     'rosetta',
     'actstream',
     'social_auth',
+    'crispy_forms',
     'agora_site.agora_core',
 )
 
@@ -189,6 +190,10 @@ TWITTER_CONSUMER_SECRET      = ''
 LOGIN_URL          = '/login'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_ERROR_URL    = '/login'
+
+# Django crispy forms settings
+
+CRISPY_FAIL_SILENTLY = not DEBUG
 
 # Project settings
 
