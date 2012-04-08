@@ -11,19 +11,23 @@
         {% csrf_token %}
         <input type="hidden" name="type" value="login"/>
         {{ login_form.as_table }}
-        
+
         <input name="submit" type="submit" value="{% trans 'Log in' %}"/>
         </form>
     </div>
-    
-    <div class="span6">
+
+    <div class="span4">
         <form id="register-form" method="POST">
         {% csrf_token %}
         {{ register_form.as_table }}
         <input type="hidden" name="type" value="register"/>
-        
+
         <input name="submit" type="submit" value="{% trans 'Register' %}"/>
         </form>
+    </div>
+
+
+    <div class="span4">
     </div>
 </div>
 

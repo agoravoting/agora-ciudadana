@@ -95,9 +95,24 @@
         </div>
     </div>
     <div id="content-wrapper">
-        <div id="container">
-            <div id="flash-messages">
-            </div>
+        <div class="container">
+            {% if messages %}
+                <ul id="flash-messages">
+                    {% for message in messages %}
+                        <div class="alert {{ message.tags }}">
+                            <a class="close" data-dismiss="alert">×</a>
+                            <strong>
+                            {% if message.tags == 'alert-info' %}{% trans "Heads Up!" %}
+                            {% elif message.tags == 'alert-success' %}{% trans "Well done!" %}
+                            {% elif message.tags == 'alert-warning' %}{% trans "Be aware!" %}
+                            {% elif message.tags == 'alert-error' %}{% trans "Oh snap!" %}
+                            {% endif %}
+                            </strong>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </ul>
+            {% endif %}
             {% block content %}
             {% endblock %}
         </div>

@@ -149,6 +149,16 @@ PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.CryptPasswordHasher',
 )
 
+from django.contrib.messages import constants as message_constants
+# This sets the mapping of message level to message tag, which is typically rendered as a CSS class in HTML
+MESSAGE_TAGS = {
+    message_constants.DEBUG: 'alert-info',
+    message_constants.INFO: 'alert-info',
+    message_constants.SUCCESS: 'alert-success',
+    message_constants.WARNING: 'alert-warning',
+    message_constants.ERROR: 'alert-error',
+}
+
 # Project settings
 
 SITE_NAME = 'Agora Ciudadana'

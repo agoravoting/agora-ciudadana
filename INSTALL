@@ -40,10 +40,6 @@ available yet
 
     $ ./manage.py loaddata initial-data.json
 
-Agora relies in django-reversion for storing historical data. To make it work,
-you first need to create the initialize it:
-
-    $ ./manage.py createinitialrevisions
 
 That's it! Start the webserver with:
 

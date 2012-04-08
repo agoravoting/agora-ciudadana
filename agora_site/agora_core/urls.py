@@ -14,14 +14,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.conf.urls.defaults import *
-from django.contrib.auth.views import login,logout
-from agora_site.agora_core.views import TestView,Entry
+from agora_site.agora_core.views import TestView, AuthView
 
 
 urlpatterns = patterns('',
     (r'^test_view', TestView.as_view()),
-    (r'^login', login, {'template_name': 'agora-core/login.html'}),
-    (r'^logout', logout, {'next_page': '/'} ),
-    (r'^entry', Entry.as_view()),
-    
+    (r'^auth', AuthView.as_view()),
 )
