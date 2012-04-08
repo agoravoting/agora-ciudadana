@@ -8,3 +8,4 @@ django-rosetta
 django-guardian
 django-reversion
 django-activity-stream
+django-social-auth

@@ -29,7 +29,9 @@ urlpatterns = patterns('',
 
     (r'^comments/', include('django.contrib.comments.urls')),
 
-    (r'^', include('agora_site.agora_core.urls')),
+    (r'', include('social_auth.urls')),
+
+    (r'', include('agora_site.agora_core.urls')),
 )
 
 if settings.DEBUG == True:

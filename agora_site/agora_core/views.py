@@ -21,19 +21,10 @@ from django import http
 from django.utils import simplejson as json
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
+from django.utils.translation import ugettext as _
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
 from django.contrib import messages
-
-class TestView(TemplateView):
-    template_name = 'base.html'
-
-    def render_to_response(self, context):
-        return super(TestView, self).render_to_response(context)
-
-    #@method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(TestView, self).dispatch(*args, **kwargs)
 
 class AuthView(TemplateView):
     '''
@@ -42,12 +33,13 @@ class AuthView(TemplateView):
     '''
     template_name = 'agora-core/auth.html'
 
-    def post(self, request):
+    def post(self, request, action=None):
         context = self.get_context_data()
 
         if self.request.POST.get('type', '') == 'login':
-            context['login_form'] = form = AuthenticationForm(self.request, data=self.request.POST)
+            context['login_form'] = form = AuthenticationForm(data=self.request.POST)
             context['register_form'] = UserCreationForm()
+            context['action'] = 'login'
 
             if form.is_valid():
                 user = form.user_cache
@@ -56,15 +48,26 @@ class AuthView(TemplateView):
         else:
             context['register_form'] = form = UserCreationForm(self.request.POST)
             context['login_form'] = AuthenticationForm()
+            context['action'] = 'register'
+
             if form.is_valid():
                 new_user = form.save()
-                messages.add_message(request, messages.SUCCESS, _('Welcome to %s!') % settings.SITE_NAME)
+                messages.add_message(self.request, messages.SUCCESS,
+                    _('Welcome to %s! We sent you an email, please check it.')\
+                        % settings.SITE_NAME)
+                login(self.request, new_user)
+                return redirect('/')
 
         return super(AuthView, self).render_to_response(context)
 
-    def get(self, request):
+    def get(self, request, action=None):
         context = self.get_context_data()
         context['login_form'] = AuthenticationForm()
         context['register_form'] = UserCreationForm()
+        context['action'] = action
 
         return super(AuthView, self).render_to_response(context)
+
+    #@method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AuthView, self).dispatch(*args, **kwargs)

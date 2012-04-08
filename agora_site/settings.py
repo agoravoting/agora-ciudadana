@@ -72,12 +72,14 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.static",
     "django.contrib.messages.context_processors.messages",
+    'social_auth.context_processors.social_auth_by_name_backends',
     'agora_site.misc.context_processor.base',
     'agora_site.misc.context_processor.settings.SITE_NAME',
     'agora_site.misc.context_processor.settings.DEBUG',
@@ -123,6 +125,7 @@ INSTALLED_APPS = (
     'guardian',
     'rosetta',
     'actstream',
+    'social_auth',
     'agora_site.agora_core',
 )
 
@@ -141,7 +144,7 @@ ACTSTREAM_ACTION_MODELS = [
 # Modify the defaults to use BCrypt by default, because it's more secure, better
 # for long term password storage
 PASSWORD_HASHERS = (
-    # 'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
     'django.contrib.auth.hashers.SHA1PasswordHasher',
@@ -158,6 +161,34 @@ MESSAGE_TAGS = {
     message_constants.WARNING: 'alert-warning',
     message_constants.ERROR: 'alert-error',
 }
+
+# Settings for django-social auth
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.twitter.TwitterBackend',
+    #'social_auth.backends.facebook.FacebookBackend',
+    #'social_auth.backends.google.GoogleOAuthBackend',
+    #'social_auth.backends.google.GoogleOAuth2Backend',
+    #'social_auth.backends.google.GoogleBackend',
+    #'social_auth.backends.yahoo.YahooBackend',
+    #'social_auth.backends.browserid.BrowserIDBackend',
+    #'social_auth.backends.contrib.linkedin.LinkedinBackend',
+    #'social_auth.backends.contrib.livejournal.LiveJournalBackend',
+    #'social_auth.backends.contrib.orkut.OrkutBackend',
+    #'social_auth.backends.contrib.foursquare.FoursquareBackend',
+    #'social_auth.backends.contrib.github.GithubBackend',
+    #'social_auth.backends.contrib.dropbox.DropboxBackend',
+    #'social_auth.backends.contrib.flickr.FlickrBackend',
+    #'social_auth.backends.contrib.instagram.InstagramBackend',
+    #'social_auth.backends.OpenIDBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+TWITTER_CONSUMER_KEY         = ''
+TWITTER_CONSUMER_SECRET      = ''
+
+LOGIN_URL          = '/login'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_ERROR_URL    = '/login'
 
 # Project settings
 

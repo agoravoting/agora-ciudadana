@@ -1,5 +1,7 @@
 @import "../bootstrap/less/bootstrap.less";
 
+// base.html
+
 body {
     padding-top: 40px;
 }
@@ -94,6 +96,42 @@ body {
         list-style: none;
         margin: 0;
     }
+
+    h3 {
+        text-transform:uppercase;
+    }
 }
 
+// agora_core/auth.html
 
+.auth-board {
+
+    .span3 {
+        &.auth-highlight {
+            background-color: white;
+
+            p { color: @grayLight; }
+        }
+
+        p { color: @gray; }
+
+        &.use-account {
+            p, strong, small { color: @gray; }
+
+            p, strong {
+                display: block;
+                clear: both;
+            }
+
+            img {
+                padding: 15px;
+            }
+        }
+
+        width: 240px;
+        margin-top: 40px;
+        margin-left: 20px;
+        margin-right: 20px;
+        padding: 20px;
+    }
+}

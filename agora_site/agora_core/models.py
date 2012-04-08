@@ -34,18 +34,11 @@ class Profile(models.Model):
     See https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-AUTH_PROFILE_MODULE
     for more details.
     '''
-    USER_TYPES = (
-        ('PASSWORD', _('Password login')),
-        ('TWITTER', _('Twitter login')),
-    )
-
     user = models.OneToOneField(User)
 
     short_description = models.CharField(_('Short Description'), max_length=140)
 
     biography = models.TextField(_('Biography'))
-
-    user_type = models.CharField(max_length=50, choices=USER_TYPES, default=USER_TYPES[0][0])
 
     # This marks the date of the last activity item known to be read by the user
     # so that later on we can for example send to the user update email only
