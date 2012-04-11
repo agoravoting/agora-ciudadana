@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+{% ifequal action 'login' %}
+    {% trans 'Log in'%}
+{% else %}
+    {% trans 'Register' %}
+{% endifequal %}
+{% endblock %}
+
+
+{% block running-board-wrapper-class %}auth-board{% endblock %}
+{% block running-board  %}
+
+{% block script-block %}
+<script type="text/javascript">
+     $(document).ready(function() {
+        $(".span3").bind("click", function(e) {
+            $(".auth-highlight").removeClass("auth-highlight");
+            $(this).addClass("auth-highlight");
+            console.log("ergerg");
+        });
+    });
+</script>
+{% endblock %}
+
+<div class="row">
+    <div class="span3 {% ifequal action 'login' %}auth-highlight{% endifequal %}">
+        <h3>{% trans "Log in" %}</h3>
+        <p>{% trans "Please log in to continue." %}</p>
+        {% crispy login_form %}
+    </div>
+
+    <div class="span3 {% ifequal action 'register' %}auth-highlight{% endifequal %}">
+        <h3>{% blocktrans %}New to {{ SITE_NAME }}?{% endblocktrans %}</h3>
+        <p>{% blocktrans %}An account in {{ SITE_NAME }} is required to continue.{% endblocktrans %}</p>
+        {% crispy register_form %}
+    </div>
+
+
+    <div class="span3 use-account">
+        <h3>{% trans "Use your account in.." %}</h3>
+        <p>{% trans "You can log in using your account in Twitter." %}</p>
+        <div>
+        <a href="{% url socialauth_begin 'twitter' %}">
+            <img src="{{ STATIC_URL }}img/sign-in-with-twitter-l.png" />
+        </a>
+        </div>
+        <strong>{% trans "Privacy" %}</strong>
+        <small>{% trans "We won't give any private data to Twitter and we will not use your profile to post anything without your permission." %}</small>
+        </a>
+    </div>
+</div>
+
+{% endblock %}

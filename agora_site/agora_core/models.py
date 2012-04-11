@@ -13,18 +13,16 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from agora_site.misc.utils import JSONField
-from reversion.models import Revision
+from django.conf import settings
 
-import reversion
-from actstream.models import Follow
-if reversion.is_registered(Follow):
-    reversion.unregister(Follow)
+from userena.models import UserenaLanguageBaseProfile
 
-class Profile(models.Model):
+class Profile(UserenaLanguageBaseProfile):
     '''
     Profile used together with django User class, and accessible via
     user.get_profile(), because  in settings we have configured:
@@ -44,6 +42,16 @@ class Profile(models.Model):
     # so that later on we can for example send to the user update email only
     # showing activity from this date on
     last_activity_read_date = models.DateTimeField(_(u'Last Activity Read Date'), auto_now_add=True, editable=True)
+
+    # Saving the user language allows sending emails to him in his desired
+    # language (among other things)
+    lang_code = models.CharField(_("Language Code"), max_length=10, default='')
+
+    photo = models.ImageField(_("Avatar"), blank=True, null=True,
+                              upload_to=os.path.join(settings.STATIC_DOC_ROOT, "photos"))
+
+    email_updates = models.BooleanField(_("Receive email updates"),
+        default=True)
 
     # Stores extra data
     # it will something like:

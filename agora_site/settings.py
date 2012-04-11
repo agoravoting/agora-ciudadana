@@ -94,8 +94,8 @@ TEMPLATE_DIRS = (
     os.path.join(ROOT_PATH, 'templates'),
 )
 
-
-#STATIC_ROOT = ''
+# Path for static docs (css, images, etc)
+STATIC_DOC_ROOT = os.path.join(ROOT_PATH, 'site_media')
 
 STATIC_URL = '/static/'
 
@@ -123,11 +123,14 @@ INSTALLED_APPS = (
     'reversion',
     'south',
     'guardian',
+    'easy_thumbnails',
+    'userena',
     'rosetta',
     'actstream',
     'social_auth',
     'crispy_forms',
     'agora_site.agora_core',
+    'agora_site.accounts',
 )
 
 # A list the models that you want to enable actions for. Models must be in the
@@ -181,27 +184,50 @@ AUTHENTICATION_BACKENDS = (
     #'social_auth.backends.contrib.flickr.FlickrBackend',
     #'social_auth.backends.contrib.instagram.InstagramBackend',
     #'social_auth.backends.OpenIDBackend',
+    'userena.backends.UserenaAuthenticationBackend',
+    'guardian.backends.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
 TWITTER_CONSUMER_KEY         = ''
 TWITTER_CONSUMER_SECRET      = ''
 
-LOGIN_URL          = '/login'
-LOGIN_REDIRECT_URL = '/'
-LOGIN_ERROR_URL    = '/login'
+LOGIN_REDIRECT_URL = '/accounts/%(username)s/'
+LOGIN_URL = '/accounts/signin/'
+LOGOUT_URL = '/accounts/signout/'
+#LOGIN_ERROR_URL    = '/accounts/signin/'
 
 # Django crispy forms settings
 
 CRISPY_FAIL_SILENTLY = not DEBUG
 
+# userena settings
+
+# For debugging, use the dummy backend, else comment this and django will use
+# the smtp as by default
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+USERENA_SIGNIN_REDIRECT_URL = '/'
+
+USERENA_REDIRECT_ON_SIGNOUT = '/'
+
+USERENA_ACTIVATION_REQUIRED = True
+
+USERENA_FORBIDDEN_USERNAMES = (
+    'signup', 'signout', 'signin', 'activate', 'me', 'password', 'admin',
+    'agora', 'staff', 'agoraciudadana', 'agoravoting'
+)
+
+USERENA_WITHOUT_USERNAMES = True
+
+# required by  django-guardian to be set
+ANONYMOUS_USER_ID = -1
+
 # Project settings
 
 SITE_NAME = 'Agora Ciudadana'
 
-AUTH_PROFILE_MODULE = 'agora_site.agora_core.models.Profile'
-
-ANONYMOUS_USER_ID = 1
+AUTH_PROFILE_MODULE = 'agora_core.Profile'
 
 
 try:

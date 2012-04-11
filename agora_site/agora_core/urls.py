@@ -17,9 +17,9 @@ from django.conf.urls.defaults import *
 from django.contrib.auth.views import logout
 from agora_site.agora_core.views import AuthView
 
-
 urlpatterns = patterns('',
-    url(r'^logout', logout, {'next_page': '/'}, name="user-logout"),
-    url(r'^login', AuthView.as_view(), {'action': 'login'}, name="user-login"),
-    url(r'^register', AuthView.as_view(), {'action': 'register'}, name="user-register"),
+    #url(r'^user/logout$', logout, {'next_page': '/'}, name="user-logout"),
+    #url(r'^user/login$', AuthView.as_view(), {'action': 'login'}, name="user-login"),
+    #url(r'^$', AuthView.as_view(), {'action': 'login'}, name="user-login"),
+    #url(r'^user/register$', AuthView.as_view(), {'action': 'register'}, name="user-register"),
 )

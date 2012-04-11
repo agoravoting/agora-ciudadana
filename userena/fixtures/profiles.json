@@ -1,0 +1,23 @@
+[{"pk": 1,
+  "model": "profiles.profile",
+  "fields": {"gender": 1,
+             "website": "",
+             "user": 1,
+             "mugshot": "",
+             "location": "Amsterdam",
+             "privacy": "open",
+             "language": "nl"
+    }
+  },
+  {
+  "pk": 2,
+  "model": "profiles.profile",
+  "fields": {"gender": 2,
+             "website": "",
+             "user": 2,
+             "mugshot": "",
+             "location": "New York",
+             "privacy": "open",
+             "language": "en"
+  }
+}]

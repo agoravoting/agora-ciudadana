@@ -16,6 +16,7 @@
 from django.conf.urls.defaults import *
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic.simple import redirect_to
 from django.contrib import admin
 
 admin.autodiscover()
@@ -27,11 +28,15 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
 
+    (r'^accounts/', include('agora_site.accounts.urls')),
+
     (r'^comments/', include('django.contrib.comments.urls')),
 
     (r'', include('social_auth.urls')),
 
     (r'', include('agora_site.agora_core.urls')),
+
+    (r'^$', redirect_to, {'url': '/accounts/signin/'}),
 )
 
 if settings.DEBUG == True:

@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load string_tags %}
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,16 +35,16 @@
                     {% csrf_token %}
                     <input type="text" class="input-medium search-query"  value="" placeholder="{% trans "Search" %}" name="q" />
                 {% if not user or not user.is_authenticated %}
-                    <a class="user-link link-green" href="{% url user-login %}">{% trans "Enter" %}</a>
-                    <a class="user-link" href="{% url user-register %}">{% trans "Register" %}</a>
+                    <a class="user-link link-green" href="{% url userena_signin %}">{% trans "Enter" %}</a>
+                    <a class="user-link" href="{% url userena_signup %}">{% trans "Register" %}</a>
                 {% else %}
                     <div class="btn-group">
                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                            {{ user.username }}
+                            {{ user.first_name|truncate_words:1 }}
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{% url user-logout %}">{% trans "Log out" %}</a></li>
+                            <li><a href="{% url userena_signout %}">{% trans "Log out" %}</a></li>
                             <li><a href="{ % url user-preferences %}">{% trans "Preferences" %}</a></li>
                         </ul>
                     </div>
@@ -53,6 +54,25 @@
         </div> 
     </div>
     <div class="container">
+        <div class="row">
+            {% if messages %}
+                <ul id="flash-messages">
+                    {% for message in messages %}
+                        <div class="alert {{ message.tags }}">
+                            <a class="close" data-dismiss="alert">×</a>
+                            <strong>
+                            {% if message.tags == 'alert-info' %}{% trans "Heads Up!" %}
+                            {% elif message.tags == 'alert-success' %}{% trans "Well done!" %}
+                            {% elif message.tags == 'alert-warning' %}{% trans "Be aware!" %}
+                            {% elif message.tags == 'alert-error' %}{% trans "Oh snap!" %}
+                            {% endif %}
+                            </strong>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
         <div class="rows" id="sections-wrapper">
             <div class="span10">
                 <ul class="nav nav-pills">
@@ -99,23 +119,6 @@
     </div>
     <div id="content-wrapper">
         <div class="container">
-            {% if messages %}
-                <ul id="flash-messages">
-                    {% for message in messages %}
-                        <div class="alert {{ message.tags }}">
-                            <a class="close" data-dismiss="alert">×</a>
-                            <strong>
-                            {% if message.tags == 'alert-info' %}{% trans "Heads Up!" %}
-                            {% elif message.tags == 'alert-success' %}{% trans "Well done!" %}
-                            {% elif message.tags == 'alert-warning' %}{% trans "Be aware!" %}
-                            {% elif message.tags == 'alert-error' %}{% trans "Oh snap!" %}
-                            {% endif %}
-                            </strong>
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                </ul>
-            {% endif %}
             {% block content %}
             {% endblock %}
         </div>
