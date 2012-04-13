@@ -192,10 +192,10 @@ AUTHENTICATION_BACKENDS = (
 TWITTER_CONSUMER_KEY         = ''
 TWITTER_CONSUMER_SECRET      = ''
 
-LOGIN_REDIRECT_URL = '/accounts/%(username)s/'
+LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/accounts/signin/'
 LOGOUT_URL = '/accounts/signout/'
-#LOGIN_ERROR_URL    = '/accounts/signin/'
+LOGIN_ERROR_URL    = '/accounts/signin/'
 
 # Django crispy forms settings
 
