@@ -67,7 +67,7 @@
                             {% elif message.tags == 'alert-error' %}{% trans "Oh snap!" %}
                             {% endif %}
                             </strong>
-                            {{ message }}
+                            {{ message|safe }}
                         </div>
                     {% endfor %}
                 </ul>
