@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.conf.urls.defaults import *
+from django.core.urlresolvers import reverse_lazy
 from django.views.generic.simple import direct_to_template
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
@@ -57,6 +58,7 @@ urlpatterns = patterns('',
        {'template_name': 'accounts/auth_basic_form.html',
         'email_template_name': 'accounts/emails/password_reset_message.txt',
         'password_reset_form': AccountPasswordResetForm,
+        'post_reset_redirect': reverse_lazy('userena_password_reset_done'),
         'extra_context': {'title': _('Reset password')},
         }, 
        name='userena_password_reset'),

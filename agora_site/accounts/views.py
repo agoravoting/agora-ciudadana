@@ -26,8 +26,6 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
 from django.contrib import messages
 
-from agora_site.agora_core.forms import AuthForm, RegisterForm
-
 class SignUpCompleteView(TemplateView):
     def get(self, request, username):
         messages.add_message(request, messages.SUCCESS, _('Registration ' +

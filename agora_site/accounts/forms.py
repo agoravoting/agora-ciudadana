@@ -47,6 +47,8 @@ class AcccountAuthForm(userena_forms.AuthenticationForm):
         self.helper.form_id = 'login-form'
         self.helper.form_action = 'userena_signin'
         self.helper.help_text_inline = True
+        self.fields['password'].help_text=_("<a href=\"%(url)s\">Forgot your "
+            + "password?</a>") % dict(url=reverse('userena_password_reset'))
 
         self.helper.add_input(Submit('submit', _('Log in'), css_class='btn btn-success btn-large'))
         self.helper.add_input(Hidden('type', 'login'))
@@ -60,8 +62,8 @@ class AccountChangeEmailForm(userena_forms.ChangeEmailForm):
         super(AccountChangeEmailForm, self).__init__(*args, **kwargs)
 
 class AccountPasswordResetForm(auth_forms.PasswordResetForm):
-    def __init__(self, user, *args, **kwargs):
-        super(AccountResetPasswordForm, self).__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super(AccountPasswordResetForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(Fieldset(_('Reset Password'), 'email'))
         self.helper.add_input(Submit('submit', _('Reset password'), css_class='btn btn-success btn-large'))
