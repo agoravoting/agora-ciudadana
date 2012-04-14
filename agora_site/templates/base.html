@@ -123,62 +123,64 @@
             {% endblock %}
         </div>
     </div>
-    <div class="container-fluid" id="footer-wrapper">
+    <div class="container-fluid {% block footer-wrapper-class %}{% endblock %}" id="footer-wrapper">
         <div class="container">
         <div class="row-fluid">
-            <div class="span4" id="footer-discover">
-                <h3>{% trans "Discover" %}</h3>
-                <ul>
-                    <li>
-                        <a href="{ % url about %}">{% trans "About" %}</a>
-                    </li>
-                    <li>
-                        <a href="{ % url libre-software %}">{% trans "Libre Software" %}</a>
-                    </li>
-                    <li>
-                        <a href="{ % url blog %}">{% trans "Blog" %}</a>
-                    </li>
-                    <li>
-                        <a href="{ % url status %}">{% trans "Status" %}</a>
-                    </li>
-                </ul>
-            </div>
+            {% block footer %}
+                <div class="span4" id="footer-discover">
+                    <h3>{% trans "Discover" %}</h3>
+                    <ul>
+                        <li>
+                            <a href="{ % url about %}">{% trans "About" %}</a>
+                        </li>
+                        <li>
+                            <a href="{ % url libre-software %}">{% trans "Libre Software" %}</a>
+                        </li>
+                        <li>
+                            <a href="{ % url blog %}">{% trans "Blog" %}</a>
+                        </li>
+                        <li>
+                            <a href="{ % url status %}">{% trans "Status" %}</a>
+                        </li>
+                    </ul>
+                </div>
 
-            <div class="span4" id="footer-serious-stuff">
-                <h3>{% trans "Serious Stuff" %}</h3>
-                <ul>
-                    <li id="footer-terms-of-service">
-                        <a href="{ % url terms-of-service %}">{% trans "Terms of Service" %}</a>
-                    </li>
-                    <li id="footer-privacy-policy">
-                        <a href="{ % url privacy-policy %}">{% trans "Privacy Policy" %}</a>
-                    </li>
-                    <li id="footer-security">
-                        <a href="{ % url security %}">{% trans "Security" %}</a>
-                    </li>
-                    <li>
-                        <a href="{ % url contact %}">{% trans "Contact Us" %}</a>
-                    </li>
-                </ul>
-            </div>
+                <div class="span4" id="footer-serious-stuff">
+                    <h3>{% trans "Serious Stuff" %}</h3>
+                    <ul>
+                        <li id="footer-terms-of-service">
+                            <a href="{ % url terms-of-service %}">{% trans "Terms of Service" %}</a>
+                        </li>
+                        <li id="footer-privacy-policy">
+                            <a href="{ % url privacy-policy %}">{% trans "Privacy Policy" %}</a>
+                        </li>
+                        <li id="footer-security">
+                            <a href="{ % url security %}">{% trans "Security" %}</a>
+                        </li>
+                        <li>
+                            <a href="{ % url contact %}">{% trans "Contact Us" %}</a>
+                        </li>
+                    </ul>
+                </div>
 
-            <div class="span4" id="footer-be-social">
-                <h3>{% trans "Be Social" %}</h3>
-                <ul>
-                    <li>
-                        <a href="{ % url twitter %}">{% trans "Follow on Twitter" %}</a>
-                    </li>
-                    <li>
-                        <a href="{ % url facebook %}">{% trans "Like in Facebook" %}</a>
-                    </li>
-                    <li>
-                        <a href="{ % url identica %}">{% trans "Follow in Indenti.ca" %}</a>
-                    </li>
-                    <li>
-                        <a href="{ % url google-plus %}">{% trans "+1 in Google Plus" %}</a>
-                    </li>
-                </ul>
-            </div>
+                <div class="span4" id="footer-be-social">
+                    <h3>{% trans "Be Social" %}</h3>
+                    <ul>
+                        <li>
+                            <a href="{ % url twitter %}">{% trans "Follow on Twitter" %}</a>
+                        </li>
+                        <li>
+                            <a href="{ % url facebook %}">{% trans "Like in Facebook" %}</a>
+                        </li>
+                        <li>
+                            <a href="{ % url identica %}">{% trans "Follow in Indenti.ca" %}</a>
+                        </li>
+                        <li>
+                            <a href="{ % url google-plus %}">{% trans "+1 in Google Plus" %}</a>
+                        </li>
+                    </ul>
+                </div>
+            {% endblock %}
         </div>
     </div>
 </body>

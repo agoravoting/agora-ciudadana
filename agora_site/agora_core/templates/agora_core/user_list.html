@@ -1,0 +1,36 @@
+{% extends 'agora_core/object_list.html' %}
+{% load i18n %}
+{% block title %}{% trans "User list" %}{% endblock %}
+{% block subtitle %}{% trans "User list" %}{% endblock %}
+
+
+{% block object-block %}
+
+    <!-- {% cycle "left" "right" as row %} -->
+    {% ifequal row "left" %}
+        <div class="user_list_item row-fluid row-{% if forloop.first %}first{% endif %}">
+    {% endifequal %}
+
+    <div class="span6 span6-{{ row }}">
+        <a href="{ % user-view object.username %}">
+            <div class="row-fluid">
+                <div class="span4">
+                    <img src="{{ object.get_profile.get_mugshot_url }}" alt="{% trans "User mugshot" %}" />
+                </div>
+                <div class="span8">
+                    <strong>{{ object.username }}</strong>
+                    <p>{{ object.first_name }}</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    {% ifequal row "right" %}
+        </div>
+    {% endifequal %}
+
+{% endblock %}
+
+{% ifequal row "left" %}
+    </div>
+{% endifequal %}

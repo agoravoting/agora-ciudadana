@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load endless %}
+
+{% block script-block %}
+    <script src="{{ STATIC_URL }}js/endless_pagination/endless.js" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ STATIC_URL }}js/endless_pagination/endless_on_scroll.js" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/javascript" charset="utf-8">
+        var endless_on_scroll_margin = 300;
+    </script>
+{% endblock %}
+
+{% block running-board-wrapper-class %}auth-board{% endblock %}
+{% block running-board  %}
+
+<h1>{% block subtitle %}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+{% paginate object_list %}
+{% for object in object_list %}
+    {% block object-block %}{% endblock %}
+{% endfor %}
+{% show_more %}
+
+{% endblock %}
+
+{% block footer-wrapper-class %}endless{% endblock %}
+{% block footer %} {% endblock %}

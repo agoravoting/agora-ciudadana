@@ -13,16 +13,16 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from django.conf.urls.defaults import *
-from endless_pagination.views import AjaxListView
+from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User
-from django.utils.translation import ugettext_lazy  as _
 
-urlpatterns = patterns('',
-    url(r'^user/list$', AjaxListView.as_view(
-        queryset=User.objects.all(),
-        template_name='agora_core/user_list.html',
-        page_template='agora_core/user_list_page.html'),
-        name="object_list"
-    ),
-)
+import random
+
+
+class Command(BaseCommand):
+    args = '<n>'
+    help = 'Remove all users'
+
+    def handle(self, *args, **options):
+        for i in User.objects.all():
+            i.delete()

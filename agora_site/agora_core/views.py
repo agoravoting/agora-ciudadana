@@ -12,3 +12,25 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+from django.conf.urls import patterns, url, include
+from django.conf import settings
+from django.views.generic import TemplateView, ListView, CreateView
+from django.core.urlresolvers import reverse
+from django import http
+from django.utils import simplejson as json
+from django.contrib.auth.models import User
+from django.utils.translation import ugettext as _
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect
+from django.contrib import messages
+
+class AgoraCreateView(CreateView):
+    template_name = 'agora_core/base_top_form.html'
+    success_url = '' #reverse('agora-view')
+
+class ExtraContextMetaMixin(object):
+
+    def as_view(self, *args, **kwargs):
+        context = super(ExtraContextMetaMixin, self).as_views(*args, **kwargs)
+        return context

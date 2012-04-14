@@ -78,6 +78,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.static",
+    'django.core.context_processors.request',
     "django.contrib.messages.context_processors.messages",
     'social_auth.context_processors.social_auth_by_name_backends',
     'agora_site.misc.context_processor.base',
@@ -131,6 +132,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'agora_site.agora_core',
     'agora_site.accounts',
+    'endless_pagination',
 )
 
 # A list the models that you want to enable actions for. Models must be in the
@@ -165,6 +167,10 @@ MESSAGE_TAGS = {
     message_constants.WARNING: 'alert-warning',
     message_constants.ERROR: 'alert-error',
 }
+
+# Settings for endless pagination
+
+ENDLESS_PAGINATION_PER_PAGE = 20
 
 # Settings for django-social auth
 AUTHENTICATION_BACKENDS = (
@@ -217,6 +223,8 @@ USERENA_FORBIDDEN_USERNAMES = (
     'signup', 'signout', 'signin', 'activate', 'me', 'password', 'admin',
     'agora', 'staff', 'agoraciudadana', 'agoravoting'
 )
+
+USERENA_MUGSHOT_SIZE = 50
 
 USERENA_WITHOUT_USERNAMES = True
 

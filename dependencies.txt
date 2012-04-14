@@ -12,3 +12,5 @@ django-social-auth
 django-crispy-forms
 easy_thumbnails
 pil
+django-haystack
+django-endless-pagination

@@ -47,9 +47,6 @@ class Profile(UserenaLanguageBaseProfile):
     # language (among other things)
     lang_code = models.CharField(_("Language Code"), max_length=10, default='')
 
-    photo = models.ImageField(_("Avatar"), blank=True, null=True,
-                              upload_to=os.path.join(settings.STATIC_DOC_ROOT, "photos"))
-
     email_updates = models.BooleanField(_("Receive email updates"),
         default=True)
 
@@ -62,6 +59,17 @@ class Profile(UserenaLanguageBaseProfile):
         #]
     #}
     extra = JSONField(_('Extra'), null=True)
+
+from django.db.models.signals import post_save
+
+# definition of UserProfile from above
+# ...
+
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+post_save.connect(create_user_profile, sender=User)
 
 class Agora(models.Model):
     '''

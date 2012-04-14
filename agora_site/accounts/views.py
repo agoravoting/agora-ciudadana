@@ -46,3 +46,4 @@ class PasswordResetCompleteView(TemplateView):
             + 'been reset, you can now <a href="%(url)s">login</a> with your '
             + 'new password') % dict(url=reverse('userena_signin')))
         return redirect('/')
+
