@@ -14,3 +14,4 @@ easy_thumbnails
 pil
 django-haystack
 django-endless-pagination
+debug_toolbar

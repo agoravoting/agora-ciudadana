@@ -20,81 +20,83 @@
     <title>{{ SITE_NAME }} - {% block title %}{% endblock %}</title>
 </head>
 <body>
-    <div class="container">
-        <div class="row" id="headerbar">
-            <div class="span8">
-                <a class="brand" href="{ % url home %}">
-                    <img alt="{{ SITE_NAME }}" src="{{ STATIC_URL }}img/agoralogo.png" />
-                </a>
-                <a class="btn btn-success" href="{ % url voting-vote %}">{% trans "Vote" %}</a>
-                <a class="btn btn-primary" href="{ % url voting-new %}">{% trans "Create Voting" %}</a>
-                <a class="btn btn-primary" href="{ % url agora-new %}">{% trans "Create Agora" %}</a>
-            </div>
-            <div class="span4">
-                <form id="search-form" class="form-search form-inline btn-toolbar" action="{ % url search-form %}">
-                    {% csrf_token %}
-                    <input type="text" class="input-medium search-query"  value="" placeholder="{% trans "Search" %}" name="q" />
-                {% if not user or not user.is_authenticated %}
-                    <a class="user-link link-green" href="{% url userena_signin %}">{% trans "Enter" %}</a>
-                    <a class="user-link" href="{% url userena_signup %}">{% trans "Register" %}</a>
-                {% else %}
-                    <div class="btn-group">
-                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                            {{ user.first_name|truncate_words:1 }}
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{% url userena_signout %}">{% trans "Log out" %}</a></li>
-                            <li><a href="{ % url user-preferences %}">{% trans "Preferences" %}</a></li>
-                        </ul>
-                    </div>
-                {% endif %}
-                </form>
-            </div>
-        </div> 
-    </div>
-    <div class="container">
-        <div class="row">
-            {% if messages %}
-                <ul id="flash-messages">
-                    {% for message in messages %}
-                        <div class="alert {{ message.tags }}">
-                            <a class="close" data-dismiss="alert">×</a>
-                            <strong>
-                            {% if message.tags == 'alert-info' %}{% trans "Heads Up!" %}
-                            {% elif message.tags == 'alert-success' %}{% trans "Well done!" %}
-                            {% elif message.tags == 'alert-warning' %}{% trans "Be aware!" %}
-                            {% elif message.tags == 'alert-error' %}{% trans "Oh snap!" %}
-                            {% endif %}
-                            </strong>
-                            {{ message|safe }}
+    <div class="container-fluid top-bar">
+        <div class="container">
+            <div class="row" id="headerbar">
+                <div class="span8">
+                    <a class="brand" href="{ % url home %}">
+                        <img alt="{{ SITE_NAME }}" src="{{ STATIC_URL }}img/agoralogo.png" />
+                    </a>
+                    <a class="btn btn-success" href="{ % url voting-vote %}">{% trans "Vote" %}</a>
+                    <a class="btn btn-primary" href="{ % url voting-new %}">{% trans "Create Voting" %}</a>
+                    <a class="btn btn-primary" href="{% url agora-new %}">{% trans "Create Agora" %}</a>
+                </div>
+                <div class="span4">
+                    <form id="search-form" class="form-search form-inline btn-toolbar" action="{ % url search-form %}">
+                        {% csrf_token %}
+                        <input type="text" class="input-medium search-query"  value="" placeholder="{% trans "Search" %}" name="q" />
+                    {% if not user or not user.is_authenticated %}
+                        <a class="user-link link-green" href="{% url userena_signin %}">{% trans "Enter" %}</a>
+                        <a class="user-link" href="{% url userena_signup %}">{% trans "Register" %}</a>
+                    {% else %}
+                        <div class="btn-group">
+                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                {{ user.first_name|truncate_words:1 }}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url userena_signout %}">{% trans "Log out" %}</a></li>
+                                <li><a href="{ % url user-preferences %}">{% trans "Preferences" %}</a></li>
+                            </ul>
                         </div>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-        <div class="rows" id="sections-wrapper">
-            <div class="span10">
-                <ul class="nav nav-pills">
-                    <li>
-                        <a href="{ % url agora-list %}">{% trans "Agoras" %}</a>
-                    </li>
-                    <li>
-                        <a href="{ % url votings-list %}">{% trans "Votings" %}</a>
-                    </li>
-                    <li>
-                        <a href="{ % url delegates-list %}">{% trans "Delegates" %}</a>
-                    </li>
-                </ul>
+                    {% endif %}
+                    </form>
+                </div>
             </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                {% if messages %}
+                    <ul id="flash-messages">
+                        {% for message in messages %}
+                            <div class="alert {{ message.tags }}">
+                                <a class="close" data-dismiss="alert">×</a>
+                                <strong>
+                                {% if message.tags == 'alert-info' %}{% trans "Heads Up!" %}
+                                {% elif message.tags == 'alert-success' %}{% trans "Well done!" %}
+                                {% elif message.tags == 'alert-warning' %}{% trans "Be aware!" %}
+                                {% elif message.tags == 'alert-error' %}{% trans "Oh snap!" %}
+                                {% endif %}
+                                </strong>
+                                {{ message|safe }}
+                            </div>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div class="rows" id="sections-wrapper">
+                <div class="span10">
+                    <ul class="nav nav-pills">
+                        <li>
+                            <a href="{ % url agora-list %}">{% trans "Agoras" %}</a>
+                        </li>
+                        <li>
+                            <a href="{ % url votings-list %}">{% trans "Votings" %}</a>
+                        </li>
+                        <li>
+                            <a href="{ % url delegates-list %}">{% trans "Delegates" %}</a>
+                        </li>
+                    </ul>
+                </div>
 
-            <div class="span1">
-                <!-- TODO put a dropdown here with the different available languages -->
-                <ul class="nav nav-pills">
-                    <li>
-                        <a href="#">{% trans "Spanish" %}</a>
-                    </li>
-                </ul>
+                <div class="span1">
+                    <!-- TODO put a dropdown here with the different available languages -->
+                    <ul class="nav nav-pills">
+                        <li>
+                            <a href="#">{% trans "Spanish" %}</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -123,10 +125,10 @@
             {% endblock %}
         </div>
     </div>
+    {% block footer %}
     <div class="container-fluid {% block footer-wrapper-class %}{% endblock %}" id="footer-wrapper">
         <div class="container">
         <div class="row-fluid">
-            {% block footer %}
                 <div class="span4" id="footer-discover">
                     <h3>{% trans "Discover" %}</h3>
                     <ul>
@@ -180,8 +182,11 @@
                         </li>
                     </ul>
                 </div>
-            {% endblock %}
+            </div>
         </div>
     </div>
+
+    <div class="container-fluid footer-end"></div>
+    {% endblock %}
 </body>
 </html>

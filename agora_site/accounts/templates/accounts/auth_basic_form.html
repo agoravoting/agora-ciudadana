@@ -4,16 +4,16 @@
 
 
 {% block title %}{{ title }}{% endblock %}
-{% block running-board-wrapper-class %}auth-board{% endblock %}
+{% block footer-wrapper-class %}short{% endblock %}
+{% block running-board-wrapper-class %}{% endblock %}
 {% block running-board  %}
 
-<div class="row">
-    <div class="span3">
-    </div>
-    <div class="span3 auth-highlight">
+<div class="row top-form">
+    <div class="span7 form-data">
     {% crispy form %}
     </div>
-    <div class="span3">
+    <div class="span3 form-info">
+        {{form_info|safe}}
     </div>
 </div>
 {% endblock %}

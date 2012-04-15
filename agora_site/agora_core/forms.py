@@ -13,3 +13,25 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
+
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Hidden, Layout, Fieldset
+from agora_site.agora_core.models import Agora
+
+from django import forms as django_forms
+
+class CreateAgoraForm(django_forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(CreateAgoraForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(Fieldset(_('Create Agora'), 'pretty_name', 'short_description'))
+        self.helper.add_input(Submit('submit', _('Create Agora'), css_class='btn btn-success btn-large'))
+
+    def save(self, *args, **kwargs):
+        agora = super(CreateAgoraForm, self).save(*args, **kwargs)
+
+    class Meta:
+        model = Agora
+        fields = ('pretty_name', 'short_description')

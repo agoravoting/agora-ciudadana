@@ -15,14 +15,25 @@
 
 from django.conf.urls.defaults import *
 from endless_pagination.views import AjaxListView
+from django.contrib.auth.decorators import login_required
+from django.views.generic import CreateView
 from django.contrib.auth.models import User
+
+from agora_site.agora_core.forms import CreateAgoraForm
 from django.utils.translation import ugettext_lazy  as _
 
 urlpatterns = patterns('',
+    url(r'^agora/new$', login_required(
+        CreateView.as_view(
+            template_name='agora_core/create_agora_form.html',
+            form_class=CreateAgoraForm,
+            success_url = '')), #reverse('agora-view')
+        name='agora-new'
+    ),
     url(r'^user/list$', AjaxListView.as_view(
         queryset=User.objects.all(),
         template_name='agora_core/user_list.html',
         page_template='agora_core/user_list_page.html'),
-        name="object_list"
+        name="user-list"
     ),
 )

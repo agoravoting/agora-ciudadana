@@ -59,8 +59,13 @@ urlpatterns = patterns('',
         'email_template_name': 'accounts/emails/password_reset_message.txt',
         'password_reset_form': AccountPasswordResetForm,
         'post_reset_redirect': reverse_lazy('userena_password_reset_done'),
-        'extra_context': {'title': _('Reset password')},
-        }, 
+        'extra_context': {
+                'title': _('Reset password'),
+                'form_info': _('<h2>How it works?</h2>'
+                    '<p>You\'ve proved your identity by clicking the link we sent '
+                    'you by email. Now enter your new password and try not to '
+                    'forget it this time.</p>')},
+        },
        name='userena_password_reset'),
     url(r'^password/reset/done/$',
        accounts_views.PasswordResetDoneView.as_view(),

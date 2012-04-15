@@ -91,7 +91,7 @@ class Agora(models.Model):
         verbose_name=_('Creator'), null=False)
 
     # Link to the special election where votes are casted
-    delegation_election = models.ForeignKey(User, related_name='delegation_agora',
+    delegation_election = models.ForeignKey('Election', related_name='delegation_agora',
         verbose_name=_('Delegation Election'), null=False)
 
     created_at_date = models.DateTimeField(_(u'Created at date'),
@@ -103,6 +103,12 @@ class Agora(models.Model):
     name = models.CharField(_('name'), max_length=70, blank=False, unique=True)
 
     pretty_name = models.CharField(_('Pretty Name'), max_length=140, blank=False, unique=True)
+
+    def create_name(self):
+        '''
+        Using the pretty name, creates an unique name
+        '''
+        
 
     short_description = models.CharField(_('Short Description'), max_length=140)
 

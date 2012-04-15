@@ -2,6 +2,8 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 
+{% block footer-wrapper-class %}short{% endblock %}
+
 {% block title %}
 {% ifequal action 'login' %}
     {% trans 'Log in'%}
@@ -9,7 +11,6 @@
     {% trans 'Register' %}
 {% endifequal %}
 {% endblock %}
-
 
 {% block running-board-wrapper-class %}auth-board{% endblock %}
 {% block running-board  %}
@@ -20,7 +21,6 @@
         $(".span3").bind("click", function(e) {
             $(".auth-highlight").removeClass("auth-highlight");
             $(this).addClass("auth-highlight");
-            console.log("ergerg");
         });
     });
 </script>
