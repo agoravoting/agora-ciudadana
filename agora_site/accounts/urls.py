@@ -16,6 +16,7 @@
 from django.conf.urls.defaults import *
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic.simple import direct_to_template
+from django.views.generic.base import TemplateView
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 
@@ -28,6 +29,12 @@ from agora_site.accounts.forms import (AccountSignupForm, AcccountAuthForm,
 from agora_site.accounts import views as accounts_views
 
 urlpatterns = patterns('',
+    # User-View TODO
+    url(r'^(?P<username>[\.\w]+)/view/$',
+       TemplateView.as_view(template_name='base.html'),
+       name='user-view'),
+
+
     # Signup, signin and signout
     url(r'^signup/$',
         userena_views.signup,
