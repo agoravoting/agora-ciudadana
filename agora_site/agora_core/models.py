@@ -19,6 +19,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from agora_site.misc.utils import JSONField
 from django.conf import settings
+import re
 
 from userena.models import UserenaLanguageBaseProfile
 
@@ -92,7 +93,7 @@ class Agora(models.Model):
 
     # Link to the special election where votes are casted
     delegation_election = models.ForeignKey('Election', related_name='delegation_agora',
-        verbose_name=_('Delegation Election'), null=False)
+        verbose_name=_('Delegation Election'), null=True)
 
     created_at_date = models.DateTimeField(_(u'Created at date'),
         auto_now=True, auto_now_add=True)
@@ -108,7 +109,13 @@ class Agora(models.Model):
         '''
         Using the pretty name, creates an unique name
         '''
-        
+        name = base_name = re.sub("[^a-zA-Z]+", "-", self.pretty_name)
+        i = 2
+        while Agora.objects.filter(name=name).count() > 0:
+            name = base_name + str(i)
+            i += 1
+        self.name = name
+        return self.name
 
     short_description = models.CharField(_('Short Description'), max_length=140)
 
@@ -150,6 +157,16 @@ class Agora(models.Model):
     #}
     extra_data = JSONField(_('Extra Data'), null=True)
 
+    def active_delegates(self):
+        '''
+        Returns the QuerySet with the active delegates
+        '''
+        # TODO, returning only the members is not accurate, because non-members
+        # can also be a delegate. It should be more like "anyone who is a member
+        # OR has ever voted even not being a member", and it should be sorted
+        # by last vote
+        return self.members
+
 class Election(models.Model):
     '''
     Represents an election.
@@ -164,6 +181,10 @@ class Election(models.Model):
 
     # a tiny version of the hash to enable short URLs
     tiny_hash = models.CharField(max_length=50, null=True, unique=True)
+
+    # an election is always related to an agora, except if it's a delegated election
+    agora = models.ForeignKey('Agora', related_name='elections',
+        verbose_name=_('Agora'), null=True)
 
     creator = models.ForeignKey(User, related_name='created_elections',
         verbose_name=_('Creator'), blank=False)
@@ -211,13 +232,13 @@ class Election(models.Model):
             #{'id': '2', 'description': 'Abstention', 'votes': 5.0},
         #]
     #}
-    result = JSONField(_('Direct Votes Result'))
+    result = JSONField(_('Direct Votes Result'), null=True)
 
     delegated_votes_result = JSONField(_('Delegates Result'), null=True)
 
     # List of votes linked to the delegation voting of the related agora
     delegated_votes = models.ForeignKey('CastVote',
-        related_name='related_elections', verbose_name=_('Delegated Votes'))
+        related_name='related_elections', verbose_name=_('Delegated Votes'), null=True)
 
     name = models.CharField(_('Name'), max_length=140)
 
@@ -237,7 +258,7 @@ class Election(models.Model):
     #}
     # NOTE that on a voting of type SIMPLE_DELEGATION, the choices list is
     # unused, because it's dynamic (changes)
-    choices = JSONField(_('Choices'))
+    choices = JSONField(_('Choices'), null=True)
 
     is_vote_secret = models.BooleanField(_('Is Vote Secret'), default=False)
 

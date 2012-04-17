@@ -18,19 +18,34 @@ from django.core.urlresolvers import reverse
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Hidden, Layout, Fieldset
-from agora_site.agora_core.models import Agora
+from agora_site.agora_core.models import Agora, Election
 
 from django import forms as django_forms
 
 class CreateAgoraForm(django_forms.ModelForm):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, request, *args, **kwargs):
         super(CreateAgoraForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.request = request
         self.helper.layout = Layout(Fieldset(_('Create Agora'), 'pretty_name', 'short_description'))
         self.helper.add_input(Submit('submit', _('Create Agora'), css_class='btn btn-success btn-large'))
 
     def save(self, *args, **kwargs):
-        agora = super(CreateAgoraForm, self).save(*args, **kwargs)
+        agora = super(CreateAgoraForm, self).save(commit=False)
+        agora.create_name()
+        agora.creator = self.request.user
+
+        agora.delegation_election = election = Election()
+        election.creator = self.request.user
+        election.name = "delegation"
+        election.description = election.short_description = "voting used for delegation"
+        election.election_type = Agora.ELECTION_TYPES[1][0] # simple delegation
+        election.save()
+        agora.save()
+        agora.members.add(self.request.user)
+        agora.admins.add(self.request.user)
+        agora.save()
+        return agora
 
     class Meta:
         model = Agora

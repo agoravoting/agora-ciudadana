@@ -21,6 +21,7 @@
 
 {% paginate object_list %}
 {% for object in object_list %}
+    <!-- {% cycle "left" "right" as row %} -->
     {% block object-block %}{% endblock %}
 {% endfor %}
 {% show_more %}

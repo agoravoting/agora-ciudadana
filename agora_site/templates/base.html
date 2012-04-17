@@ -100,22 +100,25 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid {% block running-board-wrapper-class %}hero-unit{% endblock %}" id="running-board-wrapper">
-        <div class="container">
-            <div class="row">
-                {% block running-board  %}
-                    <div class="span7">
-                        {% trans "<p>A new way of</p><h1>Taking group decissions</h1>" %}
-                        <a class="btn btn-success" href="{ % url participate %}">{% trans "Participate" %}</a>
-                        <a class="btn btn-primary" href="{ % url explore %}">{% trans "Explore" %}</a>
-                    </div>
-                    <div class="span5">
-                        <blockquote>&ldquo;
-                        {% trans "An indispensable tool to lead an organization in a democratic manner. Its delegation system reflects trust relationships" %}&rdquo;
-                        </blockquote>
-                        <p>{% trans "Eduardo Robles Elvira, Cofounder of Wadobo" %}</p>
-                    </div>
-                {% endblock %}
+
+    <div class="background-wrapper">
+        <div class="container-fluid {% block running-board-wrapper-class %}hero-unit{% endblock %}" id="running-board-wrapper">
+            <div class="container">
+                <div class="row">
+                    {% block running-board  %}
+                        <div class="span7">
+                            {% trans "<p>A new way of</p><h1>Taking group decissions</h1>" %}
+                            <a class="btn btn-success" href="{ % url participate %}">{% trans "Participate" %}</a>
+                            <a class="btn btn-primary" href="{ % url explore %}">{% trans "Explore" %}</a>
+                        </div>
+                        <div class="span5">
+                            <blockquote>&ldquo;
+                            {% trans "An indispensable tool to lead an organization in a democratic manner. Its delegation system reflects trust relationships" %}&rdquo;
+                            </blockquote>
+                            <p>{% trans "Eduardo Robles Elvira, Cofounder of Wadobo" %}</p>
+                        </div>
+                    {% endblock %}
+                </div>
             </div>
         </div>
     </div>

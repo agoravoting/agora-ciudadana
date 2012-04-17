@@ -10,6 +10,22 @@ from django.db.models import signals
 from django.conf import settings
 from django.utils import simplejson as json
 from django.core.serializers.json import DjangoJSONEncoder
+from django.views.generic import CreateView
+
+class FormRequestMixin(object):
+    '''
+    Adds self.request to the form constructor arguments
+    '''
+    def get_form_kwargs(self):
+        """
+        Returns the keyword arguments for instanciating the form.
+        """
+        kwargs = super(FormRequestMixin, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
+class RequestCreateView(FormRequestMixin, CreateView):
+    pass
 
 class JSONField(models.TextField):
     """

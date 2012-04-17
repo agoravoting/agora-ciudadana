@@ -223,12 +223,14 @@ USERENA_ACTIVATION_REQUIRED = True
 
 USERENA_FORBIDDEN_USERNAMES = (
     'signup', 'signout', 'signin', 'activate', 'me', 'password', 'admin',
-    'agora', 'staff', 'agoraciudadana', 'agoravoting'
+    'agora', 'staff', 'agoraciudadana', 'agoravoting', 'root', 'administrator',
+    'adminstrador', 'hostmaster', 'info', 'ssladmin', 'sysadmin', 'webmaster',
+    'no-reply', 'mail', 'email'
 )
 
 USERENA_MUGSHOT_SIZE = 50
 
-USERENA_WITHOUT_USERNAMES = True
+USERENA_WITHOUT_USERNAMES = False
 
 # required by  django-guardian to be set
 ANONYMOUS_USER_ID = -1

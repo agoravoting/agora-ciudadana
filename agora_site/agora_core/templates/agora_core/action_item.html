@@ -1,0 +1,7 @@
+{% load i18n %}
+<li>
+    {% if action.verb == 'created' and action.action_object and action.action_object_content_type.name == 'agora' %}
+        <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{% trans "User mugshot" %}" />
+        <p>{% blocktrans with username=action.actor.username agoraname=action.action_object.name timesince=action.timesince %}{{ username }} created {{ agoraname }} {{ timesince }} ago.{% endblocktrans %}</p>
+    {% endif %}
+</li>
