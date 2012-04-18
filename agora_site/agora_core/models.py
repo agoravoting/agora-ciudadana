@@ -15,6 +15,7 @@
 
 import os
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from agora_site.misc.utils import JSONField
@@ -91,6 +92,11 @@ class Agora(models.Model):
     creator = models.ForeignKey(User, related_name='created_agoras',
         verbose_name=_('Creator'), null=False)
 
+    # TODO: Add this field when we add support for owner transference and start
+    # using it
+    #owner = models.ForeignKey(User, related_name='owned_agoras',
+        #verbose_name=_('Owner'), null=False)
+
     # Link to the special election where votes are casted
     delegation_election = models.ForeignKey('Election', related_name='delegation_agora',
         verbose_name=_('Delegation Election'), null=True)
@@ -101,17 +107,17 @@ class Agora(models.Model):
     archived_at_date = models.DateTimeField(_(u'Archived at Date'), auto_now_add=False, default=None, null=True)
 
     # Used for urls, can be autocalculated by default
-    name = models.CharField(_('name'), max_length=70, blank=False, unique=True)
+    name = models.CharField(_('name'), max_length=70, blank=False)
 
-    pretty_name = models.CharField(_('Pretty Name'), max_length=140, blank=False, unique=True)
+    pretty_name = models.CharField(_('Pretty Name'), max_length=140, blank=False)
 
-    def create_name(self):
+    def create_name(self, creator):
         '''
-        Using the pretty name, creates an unique name
+        Using the pretty name, creates an unique name for a given creator
         '''
         name = base_name = re.sub("[^a-zA-Z]+", "-", self.pretty_name)
         i = 2
-        while Agora.objects.filter(name=name).count() > 0:
+        while Agora.objects.filter(creator=creator, name=name).count() > 0:
             name = base_name + str(i)
             i += 1
         self.name = name
@@ -122,6 +128,15 @@ class Agora(models.Model):
     biography = models.TextField(_('Biography'), default='', blank=True)
 
     image_url = models.URLField(_('Image Url'), default='', blank=True)
+
+    def get_mugshot_url(self):
+        '''
+        Either returns image_url or a default image
+        '''
+        if self.image_url:
+            return self.image_url
+        else:
+            return settings.STATIC_URL + 'img/agora_default_logo.png'
 
     # Stablishes a default option for elections
     is_vote_secret = models.BooleanField(_('Is Vote Secret'), default=False)
@@ -156,6 +171,12 @@ class Agora(models.Model):
         #]
     #}
     extra_data = JSONField(_('Extra Data'), null=True)
+
+    class Meta:
+        '''
+        name of the agora is unique for a given creator
+        '''
+        unique_together = (('name', 'creator'),)
 
     def active_delegates(self):
         '''

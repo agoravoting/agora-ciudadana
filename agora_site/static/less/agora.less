@@ -10,6 +10,7 @@ body {
 
 .container-fluid.top-bar {
     padding-top: 40px;
+    padding-left: 0;
     background-color: #fff;
 }
 
@@ -52,6 +53,10 @@ body {
 #sections-wrapper {
     .nav {
         margin-bottom: 0;
+    }
+
+    .span10 {
+        margin-left: -10px;
     }
 }
 
@@ -286,5 +291,75 @@ body {
 
             p { color: @black; font-size: 14px; }
         }
+    }
+}
+
+// agora_view.html
+.background-wrapper-no-bottom-shadow {
+    padding-bottom: 0px;
+}
+
+.agora-running-board {
+    .row {
+        margin-top: 10px;
+        padding-left: 10px;
+    }
+
+    img.agora-logo {
+        clear: none;
+        display: block;
+        float: left;
+        margin-top: 6px;
+        margin-right: 20px;
+    }
+
+    h1 {
+        clear: right;
+        display: block;
+        float: left;
+        font-size: 35px;
+    }
+
+    p {
+        display: block;
+        float: left;
+        clear: both;
+        margin-top: 2px;
+        color: @gray;
+    }
+
+    .nav-tabs {
+        display: block;
+        float: left;
+        clear: both;
+        margin-top: 2px;
+        margin-bottom: -20px;
+        border: none;
+    }
+}
+
+.activity-action {
+    a.mugshot {
+        margin-right: 10px;
+    }
+
+    time {
+        color: @grayLight;
+    }
+
+    a.mugshot, .action-body, .action-detail, .detail-body {
+        display: block;
+        float: left;
+        clear: none;
+    }
+
+    .action-detail {
+        margin-top: 5px;
+
+        strong {
+            font-size: 15px;
+        }
+
+        a.mugshot { margin-top: 5px; }
     }
 }

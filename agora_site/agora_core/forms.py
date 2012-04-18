@@ -15,6 +15,7 @@
 
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Hidden, Layout, Fieldset
@@ -32,7 +33,7 @@ class CreateAgoraForm(django_forms.ModelForm):
 
     def save(self, *args, **kwargs):
         agora = super(CreateAgoraForm, self).save(commit=False)
-        agora.create_name()
+        agora.create_name(self.request.user)
         agora.creator = self.request.user
 
         agora.delegation_election = election = Election()

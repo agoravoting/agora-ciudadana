@@ -225,7 +225,7 @@ USERENA_FORBIDDEN_USERNAMES = (
     'signup', 'signout', 'signin', 'activate', 'me', 'password', 'admin',
     'agora', 'staff', 'agoraciudadana', 'agoravoting', 'root', 'administrator',
     'adminstrador', 'hostmaster', 'info', 'ssladmin', 'sysadmin', 'webmaster',
-    'no-reply', 'mail', 'email', 'accounts', 'misc'
+    'no-reply', 'mail', 'email', 'accounts', 'misc', 'api'
 )
 
 USERENA_MUGSHOT_SIZE = 50

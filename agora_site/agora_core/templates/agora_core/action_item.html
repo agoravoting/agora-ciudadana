@@ -2,19 +2,27 @@
 <div class="activity-action">
     {% if action.verb == 'created' and action.action_object and action.action_object_content_type.name == 'agora' %}
         {% url user-view action.actor.username as user_view_url%}
-        <a href="{{ user_view_url }}">
+        <a href="{{ user_view_url }}" class="mugshot">
             <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
         </a>
         <div class="action-body">
-            {% url agora-view action.actor.username action.action_object.name as agora_view_url %}
-            {% with isotime=action.timestamp|date:"c" %}
-                {% blocktrans with username=action.actor.username agoraname=action.action_object.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">created</strong> an agora at <a href="{{ agora_view_url }}">{{ username }}/{{ agoraname }}</a>{% endblocktrans %}
-                <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
-            {% endwith %}
-        </div>
-        <div class="action-detail">
-            <strong class="action-title"><a href="{{ agora_view_url }}">{{ action.action_object.pretty_name }}</a></strong>
-            <p>{{ action.action_object.short_description }}</p>
+            <div class="action-title">
+                {% url agora-view action.actor.username action.action_object.name as agora_view_url %}
+                {% with isotime=action.timestamp|date:"c" %}
+                    {% blocktrans with username=action.actor.username agoraname=action.action_object.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">created</strong> an agora at <a href="{{ agora_view_url }}">{{ username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+                {% endwith %}
+            </div>
+
+            <div class="action-detail">
+                <a href="{{ user_view_url }}" class="mugshot">
+                    <img src="{{ action.action_object.get_mugshot_url }}" alt="{{ action.actor.username }}/{{ action.action_object.name }}" />
+                </a>
+                <div class="detail-body">
+                    <strong class="action-title"><a href="{{ agora_view_url }}">{{ action.actor.username }}/{{ action.action_object.name }}</a></strong>
+                    <p>{{ action.action_object.short_description }}</p>
+                </div>
+            </div>
         </div>
     {% endif %}
 </div>

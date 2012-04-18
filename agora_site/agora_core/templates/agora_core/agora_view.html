@@ -14,18 +14,16 @@
 {% block title %}{{ agora.creator.username }}/{{ agora.name }}{% endblock %}
 
 {% block running-board-wrapper-class %}agora-running-board{% endblock %}
+{% block background-wrapper-class %}background-wrapper-no-bottom-shadow{% endblock %}
 
 {% block running-board  %}
 
-    {% ifnotequal agora.image_url "" %}
-        <img src="{{ agora.image_url }}" alt=""{% blocktrans with name=agora.name %}{{ name }} logo{% endblocktrans %}" />
-    {% endifnotequal %}
-    <ul class="breadcrumb breadcrumb-title">
-        <li>
-            <a href="{ % url user-view agora.creator.username %}">{{ agora.creator.username }}</a> <span class="divider">/</span>
-        </li>
-         <li class="active">{{ agora.name }}</li>
-    </ul>
+    <img class="agora-logo" src="{{ agora.get_mugshot_url }}" alt="{% blocktrans with name=agora.name %}{{ name }} logo{% endblocktrans %}" />
+    <h1>
+        <a href="{ % url user-view agora.creator.username %}">{{ agora.creator.username }}</a>
+        <span class="divider">/</span>
+         {{ agora.name }}
+    </h1>
     <p>{{ agora.short_description }}</p>
 
     <ul class="nav nav-tabs">
@@ -34,16 +32,16 @@
         </li>
         <li><a href="{ % url agora-bio agora.name %}">{% trans "Biography" %}</a></li>
         <li>
-            <a href="{ % url agora-votings agora.name %}">{% trans "Votings" %}</a>
-            <span class="badge badge-info">{{ agora.elections.count }}</span>
+            <a href="{ % url agora-votings agora.name %}">{% trans "Votings" %}
+            <span class="badge badge-info">{{ agora.elections.count }}</span></a>
         </li>
         <li>
-            <a href="{ % url agora-delegates agora.name %}">{% trans "Delegates" %}</a>
-            <span class="badge badge-info">{{ agora.active_delegates.count }}</span>
+            <a href="{ % url agora-delegates agora.name %}">{% trans "Delegates" %}
+            <span class="badge badge-info">{{ agora.active_delegates.count }}</span></a>
         </li>
         <li>
-            <a href="{ % url agora-members agora.name %}">{% trans "Members" %}</a>
-            <span class="badge badge-info">{{ agora.members.count }}</span>
+            <a href="{ % url agora-members agora.name %}">{% trans "Members" %}
+            <span class="badge badge-info">{{ agora.members.count }}</span></a>
         </li>
         {% if user in agora.admins %}
             <li><a href="{ % url agora-admin agora.name %}">{% trans "Administer" %}</a></li>
