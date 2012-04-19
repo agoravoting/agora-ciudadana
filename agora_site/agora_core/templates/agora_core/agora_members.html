@@ -1,0 +1,22 @@
+{% extends 'agora_core/agora_view.html' %}
+{% load i18n %}
+{% load endless %}
+{% load agora_utils %}
+
+{% block title %}{{ agora.creator.username }}/{{ agora.name }} / {% trans "Members" %}{% endblock %}
+
+{% block agora-navigation %}{% activetab "agora-nav" "members" %}{{ block.super }}{% endblock %}
+
+{% block agora_content %}
+    {% paginate object_list %}
+    {% for object in object_list %}
+        <!-- {% cycle "left" "right" as row %} -->
+        {% include "agora_core/user_item.html" %}
+        {% if forloop.last and row == "left" %}
+                <div class="span6 span6-right">
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    {% show_more %}
+{% endblock %}

@@ -29,6 +29,7 @@ from django import http
 
 from actstream.models import model_stream
 from actstream.signals import action
+from endless_pagination.views import AjaxListView
 
 from agora_site.agora_core.models import Agora, Election, Profile
 from agora_site.agora_core.forms import CreateAgoraForm
@@ -38,14 +39,49 @@ class AgoraView(TemplateView):
     '''
     Shows an agora main page
     '''
-    template_name = 'agora_core/agora_view.html'
+    template_name = 'agora_core/agora_activity.html'
 
     def get_context_data(self, username, agoraname, **kwargs):
         context = super(AgoraView, self).get_context_data(**kwargs)
-
         context['agora'] = agora = get_object_or_404(Agora, name=agoraname,
             creator__username=username)
         context['activity'] = model_stream(agora)
+        return context
+
+class AgoraBiographyView(TemplateView):
+    '''
+    Shows the biography of an agora
+    '''
+    template_name = 'agora_core/agora_bio.html'
+
+    def get_context_data(self, username, agoraname, **kwargs):
+        context = super(AgoraBiographyView, self).get_context_data(**kwargs)
+        context['agora'] = agora = get_object_or_404(Agora, name=agoraname,
+            creator__username=username)
+        return context
+
+class AgoraMembersView(AjaxListView):
+    '''
+    Shows the biography of an agora
+    '''
+    template_name = 'agora_core/agora_members.html'
+    page_template='agora_core/user_list_page.html'
+
+    def get_queryset(self):
+        username = self.kwargs["username"]
+        agoraname = self.kwargs["agoraname"]
+
+        self.agora = get_object_or_404(Agora, name=agoraname,
+            creator__username=username)
+        return self.agora.members.all()
+
+    def get(self, request, *args, **kwargs):
+        self.kwargs = kwargs
+        return super(AgoraMembersView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(AgoraMembersView, self).get_context_data(**kwargs)
+        context['agora'] = self.agora
 
         return context
 

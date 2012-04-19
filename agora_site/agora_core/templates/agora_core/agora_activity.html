@@ -1,0 +1,7 @@
+{% extends 'agora_core/agora_view.html' %}
+{% load i18n %}
+{% load agora_utils %}
+
+{% block title %}{{ agora.creator.username }}/{{ agora.name }} / {% trans "Activity" %}{% endblock %}
+
+{% block agora-navigation %}{% activetab "agora-nav" "activity" %}{{ block.super }}{% endblock %}

@@ -13,18 +13,18 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from django.conf.urls import patterns, url, include
+from django import http
 from django.conf import settings
+from django.conf.urls import patterns, url, include
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.utils import simplejson as json
+from django.utils.translation import ugettext as _
+from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from django.views.generic import ListView
-from django.core.urlresolvers import reverse
-from django import http
-from django.utils import simplejson as json
-from django.contrib.auth.models import User
-from django.utils.translation import ugettext as _
-from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect
-from django.contrib import messages
 
 class SignUpCompleteView(TemplateView):
     def get(self, request, username):

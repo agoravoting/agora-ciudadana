@@ -5,11 +5,11 @@
 
 
 {% block object-block %}
-
     {% include "agora_core/user_item.html" %}
 
+    {% if forloop.last and row == "left" %}
+            <div class="span6 span6-right">
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
-
-{% ifequal row "left" %}
-    </div>
-{% endifequal %}
