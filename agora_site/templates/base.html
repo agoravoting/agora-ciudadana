@@ -34,8 +34,8 @@
                     <a class="brand" href="{ % url home %}">
                         <img alt="{{ SITE_NAME }}" src="{{ STATIC_URL }}img/agoralogo.png" />
                     </a>
-                    <a class="btn btn-success" href="{ % url voting-vote %}">{% trans "Vote" %}</a>
-                    <a class="btn btn-primary" href="{ % url voting-new %}">{% trans "Create Voting" %}</a>
+                    <a class="btn btn-success" href="{ % url election-vote %}">{% trans "Vote" %}</a>
+                    <a class="btn btn-primary" href="{ % url election-new %}">{% trans "Create election" %}</a>
                     <a class="btn btn-primary" href="{% url agora-new %}">{% trans "Create Agora" %}</a>
                 </div>
                 <div class="span4">
@@ -88,7 +88,7 @@
                             <a href="{ % url agora-list %}">{% trans "Agoras" %}</a>
                         </li>
                         <li>
-                            <a href="{ % url votings-list %}">{% trans "Votings" %}</a>
+                            <a href="{ % url election-list %}">{% trans "Elections" %}</a>
                         </li>
                         <li>
                             <a href="{ % url delegates-list %}">{% trans "Delegates" %}</a>
