@@ -14,15 +14,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from django.db import models
+import re
+import datetime
+
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.db import models
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
-from agora_site.misc.utils import JSONField
-from django.conf import settings
-import re
 
 from userena.models import UserenaLanguageBaseProfile
+from agora_site.misc.utils import JSONField
 
 class Profile(UserenaLanguageBaseProfile):
     '''
@@ -35,6 +37,15 @@ class Profile(UserenaLanguageBaseProfile):
     for more details.
     '''
     user = models.OneToOneField(User)
+
+    def get_fullname(self):
+        '''
+        Returns the full user name
+        '''
+        if self.user.last_name:
+            return self.user.first_name + ' ' + self.user.last_name
+        else:
+            return self.user.first_name
 
     short_description = models.CharField(_('Short Description'), max_length=140)
 
@@ -137,6 +148,53 @@ class Agora(models.Model):
             return self.image_url
         else:
             return settings.STATIC_URL + 'img/agora_default_logo.png'
+
+    def get_open_elections(self):
+        '''
+        Returns the list of current and future elections that will or are
+        taking place.
+        '''
+        return self.elections.filter(
+            voting_extended_until_date__gt=datetime.datetime.now()).order_by(
+                'voting_extended_until_date', 'voting_starts_at_date')
+
+    def get_tallied_elections(self):
+        '''
+        Returns the list of past elections with a given result
+        '''
+        return self.elections.filter(
+            result_tallied_at_date__lt=datetime.datetime.now()).order_by(
+                '-voting_extended_until_date')
+
+    def grouped_by_date_open_elections(self):
+        '''
+        Same list of elections as in get_open_elections, but grouped by
+        relevant dates, in a list of pairs like:
+
+            dict(date1=(election1, election2, ...), date2=(election3, election4, ...))
+        '''
+
+        elections = self.get_open_elections()
+
+        grouping = dict()
+        last_date = None
+
+        for election in elections:
+            end_date = election.voting_extended_until_date.date()
+            start_date = election.voting_starts_at_date.date()
+
+            if start_date not in grouping:
+                grouping[start_date] = (election,)
+            elif election not in grouping[start_date]:
+                grouping[start_date] += (election,)
+
+            if start_date != end_date:
+                if end_date not in grouping:
+                    grouping[end_date] = (election,)
+                elif election not in grouping[end_date]:
+                    grouping[end_date] += (election,)
+
+        return grouping
 
     # Stablishes a default option for elections
     is_vote_secret = models.BooleanField(_('Is Vote Secret'), default=False)
@@ -243,18 +301,21 @@ class Election(models.Model):
 
     result_tallied_at_date = models.DateTimeField(_(u'Result Tallied at Date'), auto_now_add=False, default=None, null=True)
 
-    # contains the actual vote in JSON format
+    # contains the actual result in JSON format
     # something like:
     #{
         #'type': '2012/04/ElectionResult',
         #'data': [
-            #{'id': '0', 'description': 'Yes', 'votes': 75.12},
-            #{'id': '1', 'description': 'No', 'votes': 10.78},
-            #{'id': '2', 'description': 'Abstention', 'votes': 5.0},
+            #{'id': '0', 'description': 'Yes', 'votes': 7512, 'percent': 75.12},
+            #{'id': '1', 'description': 'No', 'votes': 1078, 'percent': 10.78},
+            #{'id': '2', 'description': 'Abstention', 'votes': 50, 'percent': 5.0},
         #]
     #}
     result = JSONField(_('Direct Votes Result'), null=True)
 
+    # This will be stored not in the delegation election, but in the
+    # normal election which will store both the result and the delegated votes
+    # result
     delegated_votes_result = JSONField(_('Delegates Result'), null=True)
 
     # List of votes linked to the delegation voting of the related agora
@@ -301,6 +362,22 @@ class Election(models.Model):
         #]
     #}
     extra_data = JSONField(_('Extra Data'), null=True)
+
+    def get_winning_option(self):
+        '''
+        Returns data of the winning option or throw an exception
+        '''
+        if not self.result:
+            raise Exception('Election not tallied yet')
+        elif self.result['type'] != '2012/04/ElectionResult':
+            raise Exception('Unknown election result type: %s' % self.result['type'])
+
+        winner = dict(id=-1,  description='', votes=0.0, percent=0.0)
+        for item in self.result['data']:
+            if item['votes'] > winner['votes']:
+                winner = item
+
+        return winner
 
 class CastVote(models.Model):
     '''

@@ -3,7 +3,7 @@
 // base.html
 
 @footer-background-color: #ECECEC;
-
+@green-background-color: #D4F8D9;
 body {
     background-color: @footer-background-color;
 }
@@ -25,6 +25,10 @@ body {
 }
 
 @header-items-left-margin: 10px;
+
+#headerbar form#search-form {
+    float: right;
+}
 
 #headerbar .btn, #headerbar .user-link {
     margin-left: @header-items-left-margin;
@@ -361,5 +365,91 @@ body {
         }
 
         a.mugshot { margin-top: 5px; }
+    }
+}
+
+.agora-right-side {
+    margin-left: 0;
+    width: 320px;
+}
+
+.row-fluid.agora-calendar {
+    background-color: @green-background-color;
+
+    .agora-dates {
+        display: block;
+        margin-top: 5px;
+
+        ul {
+            display: block;
+            padding: 10px;
+            background-color: white;
+            margin: 1px;
+            list-style: none;
+        }
+    }
+
+}
+
+.row-fluid.agora-last-votings {
+    background-color: @footer-background-color;
+    margin-top: 20px;
+
+    .last-voting-items {
+        display: block;
+        margin-top: 5px;
+
+        ul {
+            display: block;
+            list-style: none;
+            background-color: white;
+            margin: 1px;
+
+            li {
+                padding: 10px;
+                display: block;
+
+                &.empty {
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
+
+.row-fluid.right-widget {
+    border-radius: 10px;
+    padding-top: 12px;
+    padding-bottom: 13px;
+
+    .right-widget-header {
+        margin-left: 20px;
+        min-height: 30px;
+
+        h4 {
+            padding-top: 5px;
+            font-size: 17px;
+            color: @gray;
+            display: block;
+            float: left;
+
+            span { color: @green; }
+        }
+
+        a.btn {
+            display: block;
+            float: right;
+            margin-top: -3px;
+            margin-right: 10px;
+            clear: right;
+        }
+
+        input.search-query {
+            margin-top: 6px;
+            width: 272px;
+            border: 0;
+            border-radius: 14px 0 0 14px;
+            box-shadow: none;
+        }
     }
 }
