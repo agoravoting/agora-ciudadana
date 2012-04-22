@@ -49,5 +49,30 @@
                 </div>
             </div>
         </div>
+    {% elif action.verb == 'proposed' and action.action_object and action.action_object_content_type.name == 'election' %}
+        {% url user-view action.actor.username as user_view_url%}
+        <a href="{{ user_view_url }}" class="mugshot">
+            <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
+        </a>
+        <div class="action-body">
+            <div class="action-title">
+                {% url agora-view action.action_object.agora.creator.username action.action_object.agora.name as agora_view_url %}
+                {% url election-view action.action_object.agora.creator.username action.action_object.agora.name action.action_object.name as election_view_url %}
+                {% with isotime=action.timestamp|date:"c" %}
+                    {% blocktrans with username=action.actor.username agoraname=action.action_object.agora.name electionname=action.action_object.pretty_name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">proposed</strong> election <a href="{{ election_view_url }}">{{ electionname }}</a> at <a href="{{ agora_view_url }}">{{ username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+                {% endwith %}
+            </div>
+
+            <div class="action-detail">
+                <a href="{{ election_view_url }}" class="mugshot">
+                    <img src="{{ STATIC_URL }}img/election_new_form_info.png" alt="{{ action.action_object.pretty_name }}" />
+                </a>
+                <div class="detail-body">
+                    <strong class="action-title"><a href="{{ election_view_url }}">{{ action.action_object.pretty_name }}</a></strong>
+                    <p>{{ action.action_object.short_description }}</p>
+                </div>
+            </div>
+        </div>
     {% endif %}
 </div>
