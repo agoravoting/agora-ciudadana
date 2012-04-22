@@ -13,15 +13,18 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from django.utils.translation import ugettext_lazy as _
+import uuid
+
+from django import forms as django_forms
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Hidden, Layout, Fieldset
+
 from agora_site.agora_core.models import Agora, Election
 
-from django import forms as django_forms
 
 class CreateAgoraForm(django_forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
@@ -51,3 +54,66 @@ class CreateAgoraForm(django_forms.ModelForm):
     class Meta:
         model = Agora
         fields = ('pretty_name', 'short_description')
+
+class CreateElectionForm(django_forms.ModelForm):
+    question = django_forms.CharField(_("Question"), required=True)
+    answers = django_forms.CharField(_("Answers"), required=True,
+        help_text=_("each choice on separate lines"), widget=django_forms.Textarea)
+
+    def __init__(self, request, agora, *args, **kwargs):
+        super(CreateElectionForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.request = request
+        self.agora = agora
+        self.helper.layout = Layout(Fieldset(_('Create election'),
+            'pretty_name', 'description', 'question', 'answers'))
+        self.helper.add_input(Submit('submit', _('Create Election'),
+            css_class='btn btn-success btn-large'))
+
+    def save(self, *args, **kwargs):
+        election = super(CreateElectionForm, self).save(commit=False)
+        election.agora = self.agora
+        election.create_name()
+        election.uuid = uuid.uuid4()
+        election.creator = self.request.user
+        election.short_description = election.description[:140]
+        election.url = self.request.build_absolute_uri(reverse('election-view',
+            kwargs=dict(username=election.agora.creator.username, agoraname=election.agora.name,
+                electionname=election.name)))
+        election.election_type = Agora.ELECTION_TYPES[0][0] # ONE CHOICE
+        election.is_vote_secret = False
+
+        # Anyone can create a voting for a given agora, but if you're not the
+        # admin, it must be approved
+        if election.agora.creator in election.agora.admins.all():
+            election.is_approved = True
+        else:
+            election.is_approved = False
+            #TODO send notification to admins if agora is configured to do so
+
+        # Questions/answers have a special formatting
+        answers = []
+        for answer_value in self.cleaned_data["answers"].splitlines():
+            answers += {
+                "a": "ballot/answer",
+                "value": answer_value.strip(),
+                "url": "",
+                "details": "",
+            }
+
+        election.questions = [{
+                "a": "ballot/question",
+                "answers": answers,
+                "max": 1, "min": 0,
+                "question": self.cleaned_data["question"],
+                "randomize_answer_order": True,
+                "tally_type": "simple"
+            },]
+        election.save()
+
+        return election
+
+    class Meta:
+        model = Election
+        fields = ('pretty_name', 'description')

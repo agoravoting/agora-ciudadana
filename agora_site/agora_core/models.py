@@ -16,11 +16,13 @@
 import os
 import re
 import datetime
+import uuid
 
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Q
+from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
 
 from userena.models import UserenaLanguageBaseProfile
@@ -64,13 +66,6 @@ class Profile(UserenaLanguageBaseProfile):
         default=True)
 
     # Stores extra data
-    # it will something like:
-    #{
-        #'type': '2012/04/ProfileExtraData',
-        #'data': [
-            #{'key': 'Foo', 'value': 'Bar'},
-        #]
-    #}
     extra = JSONField(_('Extra'), null=True)
 
 from django.db.models.signals import post_save
@@ -108,6 +103,8 @@ class Agora(models.Model):
     #owner = models.ForeignKey(User, related_name='owned_agoras',
         #verbose_name=_('Owner'), null=False)
 
+    # TODO: add a field for banning users
+
     # Link to the special election where votes are casted
     delegation_election = models.ForeignKey('Election', related_name='delegation_agora',
         verbose_name=_('Delegation Election'), null=True)
@@ -126,7 +123,7 @@ class Agora(models.Model):
         '''
         Using the pretty name, creates an unique name for a given creator
         '''
-        name = base_name = re.sub("[^a-zA-Z]+", "-", self.pretty_name)
+        name = base_name = slugify(self.pretty_name[:65])
         i = 2
         while Agora.objects.filter(creator=creator, name=name).count() > 0:
             name = base_name + str(i)
@@ -155,8 +152,11 @@ class Agora(models.Model):
         taking place.
         '''
         return self.elections.filter(
-            voting_extended_until_date__gt=datetime.datetime.now()).order_by(
-                'voting_extended_until_date', 'voting_starts_at_date')
+            Q(voting_extended_until_date__gt=datetime.datetime.now()) |
+                Q(voting_extended_until_date=None,
+                    voting_starts_at_date__lt=datetime.datetime.now()),
+            Q(is_approved=True)).order_by('voting_extended_until_date',
+                'voting_starts_at_date')
 
     def get_tallied_elections(self):
         '''
@@ -188,7 +188,7 @@ class Agora(models.Model):
             elif election not in grouping[start_date]:
                 grouping[start_date] += (election,)
 
-            if start_date != end_date:
+            if end_date and start_date != end_date:
                 if end_date not in grouping:
                     grouping[end_date] = (election,)
                 elif election not in grouping[end_date]:
@@ -221,13 +221,6 @@ class Agora(models.Model):
         verbose_name=_('Administrators'))
 
     # Stores extra data
-    # it will something like:
-    #{
-        #'type': '2012/04/AgoraExtraData',
-        #'data': [
-            #{'key': 'Foo', 'value': 'Bar'},
-        #]
-    #}
     extra_data = JSONField(_('Extra Data'), null=True)
 
     class Meta:
@@ -246,6 +239,20 @@ class Agora(models.Model):
         # by last vote
         return self.members
 
+
+    def approved_elections(self):
+        '''
+        Returns the QuerySet with the approved elections
+        '''
+        return self.elections.filter(is_approved=True)
+
+
+    def requested_elections(self):
+        '''
+        Returns the QuerySet with the not approved election
+        '''
+        return self.elections.filter(is_approved=False)
+
 class Election(models.Model):
     '''
     Represents an election.
@@ -255,11 +262,18 @@ class Election(models.Model):
     of recurrent/linked elections, i.e. the one with no parent election.
     '''
 
-    # cache the hash of the election
-    hash = models.CharField(max_length=100, unique=True)
+    # Prohibited because the urls would be a mess
+    PROHIBITED_ELECTION_NAMES = ('new', 'delete', 'remove', 'election', 'admin', 'view', 'edit')
 
-    # a tiny version of the hash to enable short URLs
+    # cache the hash of the election. It will be null until frozen
+    hash = models.CharField(max_length=100, unique=True, null=True)
+
+    # a tiny version of the hash
     tiny_hash = models.CharField(max_length=50, null=True, unique=True)
+
+    uuid = models.CharField(max_length=50, unique=True)
+
+    url = models.CharField(max_length=300, unique=True)
 
     # an election is always related to an agora, except if it's a delegated election
     agora = models.ForeignKey('Agora', related_name='elections',
@@ -271,7 +285,8 @@ class Election(models.Model):
     # We might need to freeze the list of voters so that if someone signs in,
     # he cannot vote.
     # NOTE that on a voting of type SIMPLE_DELEGATION, the list is unused,
-    # because it's dynamic (changes)
+    # because it's dynamic (changes).
+    # Usually the electorate is set when election is frozen
     electorate = models.ManyToManyField(User, related_name='elections',
         verbose_name=_('Electorate'))
 
@@ -280,6 +295,10 @@ class Election(models.Model):
 
     created_at_date = models.DateTimeField(_(u'Created at date'),
         auto_now=True, auto_now_add=True)
+
+    is_vote_secret = models.BooleanField(_('Is Vote Secret'), default=False)
+
+    is_approved = models.BooleanField(_('Is Approved'), default=False)
 
     last_modified_at_date = models.DateTimeField(_(u'Last Modified at Date'), auto_now_add=True, editable=True)
 
@@ -304,11 +323,15 @@ class Election(models.Model):
     # contains the actual result in JSON format
     # something like:
     #{
-        #'type': '2012/04/ElectionResult',
-        #'data': [
-            #{'id': '0', 'description': 'Yes', 'votes': 7512, 'percent': 75.12},
-            #{'id': '1', 'description': 'No', 'votes': 1078, 'percent': 10.78},
-            #{'id': '2', 'description': 'Abstention', 'votes': 50, 'percent': 5.0},
+        #"a": "result",
+        #"counts": [
+            #[
+                #<QUESTION_1_CANDIDATE_1_COUNT>, <QUESTION_1_CANDIDATE_2_COUNT>,
+                #<QUESTION_1_CANDIDATE_3_COUNT>
+            #],
+            #[
+                #<QUESTION_2_CANDIDATE_1_COUNT>, <QUESTION_2_CANDIDATE_2_COUNT>
+            #]
         #]
     #}
     result = JSONField(_('Direct Votes Result'), null=True)
@@ -322,27 +345,53 @@ class Election(models.Model):
     delegated_votes = models.ForeignKey('CastVote',
         related_name='related_elections', verbose_name=_('Delegated Votes'), null=True)
 
-    name = models.CharField(_('Name'), max_length=140)
+    pretty_name = models.CharField(_('Pretty Name'), max_length=140)
 
-    short_description = models.CharField(_('Short Description'), max_length=140)
+    name = models.CharField(_('name'), max_length=70)
 
-    description = models.TextField(_('Description'))
+    def create_name(self):
+        '''
+        Using the pretty name, creates an unique name for a given creator
+        '''
+        name = base_name = slugify(self.pretty_name[:65])
+        i = 2
+        while Election.objects.filter(agora=self.agora, name=name).count() > 0 or\
+            name in Election.PROHIBITED_ELECTION_NAMES:
+            name = base_name + str(i)
+            i += 1
+        self.name = name
+        return self.name
+
+    short_description = models.CharField(_('Short Description'), max_length=140,
+        help_text=_('Short description of the election (required)'), null=False)
+
+    description = models.TextField(_('Description'), help_text=_('Longer description of the election'))
 
     # This is a JSONField similar to what is used in helios. For now,
     # it will something like:
-    #{
-        #'type': '2012/04/PlainTextChoices',
-        #'data': [
-            #{'id': '0', 'description': 'Yes'},
-            #{'id': '1', 'description': 'No'},
-            #{'id': '1', 'description': 'Abstention'}
-        #]
-    #}
+    #[
+        #{
+            #"a": "ballot/question",
+            #"answers": [
+                #{
+                    #"a": "ballot/answer",
+                    #"value": "Alice",
+                    #"url": "<http://alice.com>", # UNUSED ATM
+                    #"details": "Alice is a wonderful person who..." # UNUSED ATM
+                #},
+                #...
+            #],
+            #"max": 1, "min": 0,
+            #"question": "Who Should be President?",
+            #"randomize_answer_order": false, # true by default
+            #"short_name": "President", # UNSED ATM
+            #"tally_type": "simple" 
+        #},
+        #...
+    #]
     # NOTE that on a voting of type SIMPLE_DELEGATION, the choices list is
     # unused, because it's dynamic (changes)
-    choices = JSONField(_('Choices'), null=True)
-
-    is_vote_secret = models.BooleanField(_('Is Vote Secret'), default=False)
+    questions = JSONField(_('Questions'), null=True)
 
     #use_voter_aliases = models.BooleanField(_('Use Voter Aliases'), default=False)
 
@@ -362,6 +411,10 @@ class Election(models.Model):
         #]
     #}
     extra_data = JSONField(_('Extra Data'), null=True)
+
+    def init_basic_election():
+        '''
+        '''
 
     def get_winning_option(self):
         '''
@@ -401,19 +454,38 @@ class CastVote(models.Model):
     # contains the actual vote in JSON format
     # something like:
     #{
-        #'type': '2012/04/PlainTextCastVote',
-        #'data': [
-            #{'id': '0', 'description': 'Yes'}
-        #]
+        #"a": "vote",
+        #"answers": [
+            #{
+                #"a": "plaintext-answer",
+                #"choices": ["Alice", "Bob", ...],
+            #},
+            #...
+        #],
+
+        #"election_hash": {"a": "hash/sha256/value", "value": "Nz1fWLvVLH3eY3Ox7u5hxfLZPdw"},
+        #"election_uuid": "1882f79c-65e5-11de-8c90-001b63948875"}
     #}
     # Or in case of a delegation:
     #{
-        #'type': '2012/04/PlainTextCastDelegatedVote',
-        #'data': [
-            #{'id': '13', # id of the User in which the voter delegates
-            #'name': 'Eduardo Robles Elvira', # data of the User in which the voter delegates
-            #'image_url': 'xx' # data of the User in which the voter delegates}
-        #]
+        #"a": "delegated-vote",
+        #"answers": [
+            #{
+                #"a": "plaintext-delegate",
+                #"choices": [
+                    #{
+                        #'user_id': 13, # id of the User in which the voter delegates
+                        #'user_name': 'Eduardo Robles Elvira', # data of the User in which the voter delegates
+                        #'user_image_url': 'xx' # data of the User in which the voter delegates
+                    #},
+                    #...
+                #],
+            #},
+            #...
+        #],
+
+        #"election_hash": {"a": "hash/sha256/value", "value": "Nz1fWLvVLH3eY3Ox7u5hxfLZPdw"},
+        #"election_uuid": "1882f79c-65e5-11de-8c90-001b63948875"}
     #}
     data = JSONField(_('Data'))
 

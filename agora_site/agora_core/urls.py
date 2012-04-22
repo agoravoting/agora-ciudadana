@@ -22,7 +22,7 @@ from django.utils.translation import ugettext_lazy  as _
 from endless_pagination.views import AjaxListView
 
 from agora_site.agora_core.views import (AgoraView, CreateAgoraView,
-    AgoraBiographyView, AgoraMembersView)
+    AgoraBiographyView, AgoraMembersView, CreateElectionView, ElectionView)
 from agora_site.misc.utils import RequestCreateView
 
 urlpatterns = patterns('',
@@ -40,6 +40,12 @@ urlpatterns = patterns('',
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/members$',
         AgoraMembersView.as_view(), name='agora-members'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/new',
+        CreateElectionView.as_view(), name='election-new'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/view$',
+        ElectionView.as_view(), name='election-view'),
 
     url(r'^userlist$', AjaxListView.as_view(
         queryset=User.objects.all(),

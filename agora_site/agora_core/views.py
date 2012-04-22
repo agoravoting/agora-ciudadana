@@ -32,7 +32,7 @@ from actstream.signals import action
 from endless_pagination.views import AjaxListView
 
 from agora_site.agora_core.models import Agora, Election, Profile
-from agora_site.agora_core.forms import CreateAgoraForm
+from agora_site.agora_core.forms import CreateAgoraForm, CreateElectionForm
 from agora_site.misc.utils import RequestCreateView
 
 class AgoraView(TemplateView):
@@ -110,6 +110,82 @@ class CreateAgoraView(RequestCreateView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(CreateAgoraView, self).dispatch(*args, **kwargs)
+
+
+class CreateElectionView(RequestCreateView):
+    '''
+    Creates a new agora
+    '''
+    template_name = 'agora_core/create_election_form.html'
+    form_class = CreateElectionForm
+
+    def get_form_kwargs(self):
+        form_kwargs = super(CreateElectionView, self).get_form_kwargs()
+        username = self.kwargs["username"]
+        agoraname = self.kwargs["agoraname"]
+        form_kwargs["agora"] = self.agora = get_object_or_404(Agora, name=agoraname,
+            creator__username=username)
+        return form_kwargs
+
+    def get_success_url(self):
+        '''
+        After creating the election, show it
+        '''
+        election = self.object
+
+        extra_data = dict(electionname=election.pretty_name,
+            username=election.agora.creator.username,
+            agoraname=election.agora.name,
+            election_url=election.url,
+            agora_url=reverse('agora-view', kwargs=dict(
+                username=election.agora.creator.username,
+                agoraname=election.agora.name))
+        )
+
+        if election.is_approved:
+            messages.add_message(self.request, messages.SUCCESS, _('Creation of '
+                'Election <a href="%(election_url)s">%(electionname)s</a> in '
+                '<a href="%(agora_url)s">%(username)s/%(agoraname)s</a> '
+                'successful!') % extra_data)
+
+            action.send(self.request.user, verb='created', action_object=election,
+                target=election.agora)
+        else:
+            messages.add_message(self.request, messages.SUCCESS, _('Creation of '
+                'Election <a href="%(election_url)s">%(electionname)s</a> in '
+                '<a href="%(agora_url)s">%(username)s/%(agoraname)s</a> '
+                'successful! Now it <strong>awaits the agora administrators '
+                'approval</strong>.') % extra_data)
+
+            action.send(self.request.user, verb='proposed', action_object=election,
+                target=election.agora)
+            # TODO: send notification to agora admins
+
+        action.send(self.request.user, verb='created', action_object=election,
+            target=election.agora)
+
+        return reverse('election-view',
+            kwargs=dict(username=election.agora.creator.username,
+                agoraname=election.agora.name, electionname=election.name))
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(CreateElectionView, self).dispatch(*args, **kwargs)
+
+class ElectionView(TemplateView):
+    '''
+    Shows an election main page
+    '''
+    template_name = 'agora_core/election_activity.html'
+
+    def get_context_data(self, username, agoraname, electionname, **kwargs):
+        context = super(ElectionView, self).get_context_data(**kwargs)
+        context['election'] = election = get_object_or_404(Election,
+            name=electionname, agora__name=agoraname,
+            agora__creator__username=username)
+        context['activity'] = model_stream(election)
+        return context
+
 
 class ExtraContextMetaMixin(object):
 

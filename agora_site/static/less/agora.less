@@ -34,6 +34,13 @@ body {
     margin-left: @header-items-left-margin;
 }
 
+#headerbar .btn-wrapper {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    clear: none;
+}
+
 .link-green {
     color: @green !important;
 
@@ -344,12 +351,33 @@ body {
 }
 
 .activity-action {
+    border-top: 1px solid @grayLighter;
+    margin-top: 5px;
+    padding-top: 15px;
+    display: block;
+    float: left;
+    clear: both;
+
+    &.activity-action-first {
+        border-top: 0;
+        margin-top: 0;
+        padding-top: 0;
+    }
+
     a.mugshot {
         margin-right: 10px;
     }
 
     time {
         color: @grayLight;
+    }
+
+    .action-body {
+        max-width: 550px;
+    }
+
+    .detail-body {
+        max-width: 470px;
     }
 
     a.mugshot, .action-body, .action-detail, .detail-body {

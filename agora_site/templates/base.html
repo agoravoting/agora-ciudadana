@@ -35,7 +35,22 @@
                         <img alt="{{ SITE_NAME }}" src="{{ STATIC_URL }}img/agoralogo.png" />
                     </a>
                     <a class="btn btn-success" href="{ % url election-vote %}">{% trans "Vote" %}</a>
-                    <a class="btn btn-primary" href="{ % url election-new %}">{% trans "Create election" %}</a>
+                    <div class="btn-wrapper">
+                        <div class="btn-group">
+                            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                            {% trans "Create election" %}
+                            <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for agora in user.agoras.all %}
+                                    <li><a href="{% url election-new agora.creator.username agora.name %}">{{ agora.creator.username }}/{{ agora.name }}</a></li>
+                                {% empty %}
+                                    <li><a href="{ % url agora-explore %}">Join an Agora</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
                     <a class="btn btn-primary" href="{% url agora-new %}">{% trans "Create Agora" %}</a>
                 </div>
                 <div class="span4">

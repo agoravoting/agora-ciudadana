@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}{% trans "Create Election" %}{% endblock %}
+{% block footer-wrapper-class %}short{% endblock %}
+{% block running-board-wrapper-class %}{% endblock %}
+
+{% block running-board  %}
+
+<div class="row top-form">
+    <div class="span7 form-data">
+    {% crispy form %}
+    </div>
+
+
+    <div class="span3 form-info" id="agora_new_form_info">
+        <img src="{{ STATIC_URL }}img/election_new_form_info.png" alt="{% trans "Create an Election" %}" />
+        <h1>1</h1>
+        <h2>{% trans "Create an Election" %}</h2>
+        <p>
+        {% if user in agora.admins.all %}
+            {% trans "Create an election inside an agora to decide on some matter." %}
+        {% else %}
+            {% trans "Request to the admins of the agora having a vote to decide on some matter." %}
+        {% endif %}
+        </p>
+    </div>
+</div>
+{% endblock %}
