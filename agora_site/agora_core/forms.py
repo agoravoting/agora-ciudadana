@@ -58,7 +58,7 @@ class CreateAgoraForm(django_forms.ModelForm):
 class CreateElectionForm(django_forms.ModelForm):
     question = django_forms.CharField(_("Question"), required=True)
     answers = django_forms.CharField(_("Answers"), required=True,
-        help_text=_("each choice on separate lines"), widget=django_forms.Textarea)
+        help_text=_("Each choice on separate lines"), widget=django_forms.Textarea)
 
     def __init__(self, request, agora, *args, **kwargs):
         super(CreateElectionForm, self).__init__(*args, **kwargs)

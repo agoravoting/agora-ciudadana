@@ -365,7 +365,7 @@ class Election(models.Model):
     short_description = models.CharField(_('Short Description'), max_length=140,
         help_text=_('Short description of the election (required)'), null=False)
 
-    description = models.TextField(_('Description'), help_text=_('Longer description of the election'))
+    description = models.TextField(_('Description'), help_text=_('Long description of the election'))
 
     # This is a JSONField similar to what is used in helios. For now,
     # it will something like:

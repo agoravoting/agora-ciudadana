@@ -168,6 +168,15 @@ class CreateElectionView(RequestCreateView):
             kwargs=dict(username=election.agora.creator.username,
                 agoraname=election.agora.name, electionname=election.name))
 
+    def get_context_data(self, **kwargs):
+        context = super(CreateElectionView, self).get_context_data(**kwargs)
+
+        username = self.kwargs["username"]
+        agoraname = self.kwargs["agoraname"]
+        context['agora'] = get_object_or_404(Agora, name=agoraname,
+            creator__username=username)
+        return context
+
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(CreateElectionView, self).dispatch(*args, **kwargs)
