@@ -370,19 +370,6 @@ class Election(models.Model):
 
     name = models.CharField(_('name'), max_length=70)
 
-    def create_name(self):
-        '''
-        Using the pretty name, creates an unique name for a given creator
-        '''
-        name = base_name = slugify(self.pretty_name[:65])
-        i = 2
-        while Election.objects.filter(agora=self.agora, name=name).count() > 0 or\
-            name in Election.PROHIBITED_ELECTION_NAMES:
-            name = base_name + str(i)
-            i += 1
-        self.name = name
-        return self.name
-
     short_description = models.CharField(_('Short Description'), max_length=140,
         help_text=_('Short description of the election (required)'), null=False)
 
@@ -433,10 +420,6 @@ class Election(models.Model):
     #}
     extra_data = JSONField(_('Extra Data'), null=True)
 
-    def init_basic_election():
-        '''
-        '''
-
     def get_winning_option(self):
         '''
         Returns data of the winning option or throw an exception
@@ -452,6 +435,102 @@ class Election(models.Model):
                 winner = item
 
         return winner
+
+    def create_name(self):
+        '''
+        Using the pretty name, creates an unique name for a given creator
+        '''
+        name = base_name = slugify(self.pretty_name[:65])
+        i = 2
+        while Election.objects.filter(agora=self.agora, name=name).count() > 0 or\
+            name in Election.PROHIBITED_ELECTION_NAMES:
+            name = base_name + str(i)
+            i += 1
+        self.name = name
+        return self.name
+
+    def get_mugshot_url(self):
+        '''
+        Returns a default image representing the election for now
+        '''
+        return settings.STATIC_URL + 'img/election_new_form_info.png'
+
+    def has_perms(self, permission_name, user):
+        '''
+        Return whether a given user has a given permission name, depending on
+        also in the state of the election.
+        '''
+        isadminorcreator = (self.creator == user or\
+            self.agora.admins.filter(id=self.creator.id).exists())
+        isarchived = self.archived_at_date != None
+
+        if permission_name == 'edit_details':
+            return self.voting_starts_at_date == None and isadminorcreator and not isarchived
+        elif permission_name == 'begin_election':
+            return self.voting_starts_at_date == None and isadminorcreator and not isarchived
+        elif permission_name == 'end_election':
+            return self.voting_starts_at_date  != None and\
+                self.voting_starts_at_date < datetime.datetime.now() and\
+                self.voting_ends_at_date == None and isadminorcreator and\
+                not isarchived
+        elif permission_name == 'archive_election':
+            return isadminorcreator
+
+    def get_perms(self, user):
+        '''
+        Returns a list of permissions for a given user calling to self.has_perms()
+        '''
+        return [perm for perm in ('edit_details', 'begin_election', 'end_election', 'archive_election') if self.has_perms(perm, user)]
+
+    def ballot_is_open(self):
+        '''
+        Returns if the ballot is open, i.e. if one can vote. 
+        TODO: In the future allow delegates to vote when election is frozen and
+        voting hasn't started yet, so that others can delegate in them in
+        advance. For now, any voter is a delegate.
+        '''
+        now = datetime.datetime.now()
+        return self.voting_starts_at_date < now and (self.voting_extended_until_date == None or
+            self.voting_extended_until_date > now)
+
+    def has_user_voted(self, user):
+        '''
+        Return true if the user has voted
+        '''
+        return CastVote.objects.filter(election=self, voter=user).count() > 0
+
+    def get_direct_votes(self):
+        '''
+        Return the list of direct votes. This is needed because a voter can vote
+        twice, so we cannot directly just return self.cast_votes (it can
+        contain duplicates)
+        '''
+        # TODO not return self.cast_votes :-P
+        return self.cast_votes
+
+    def get_delegated_votes(self):
+        '''
+        Return the list of delegated votes, similar to get_direct_votes
+        '''
+        # TODO
+        return self.cast_votes
+
+    def get_all_votes(self):
+        '''
+        Similar to get_direct_votes, but adding delegated votes into the mix
+        '''
+        # TODO make a custom query for this
+        return self.get_direct_votes().all() + self.get_delegated_votes().all()
+
+    def count_all_votes(self):
+        # TODO: exclude votes from people who cannot vote
+        return self.get_direct_votes().count() + self.get_delegated_votes().count()
+
+    def percentage_of_participation(self):
+        return (self.count_all_votes() * 100.0) / self.agora.members.count()
+
+    def get_brief_description(self):
+        desc = _('This voting allows delegation from any party and vote is not secret.')
 
 class CastVote(models.Model):
     '''

@@ -29,7 +29,7 @@ from agora_site.misc.utils import RequestCreateView
 urlpatterns = patterns('',
     url(r'^$', HomeView.as_view(), name='home'),
 
-    url(r'^misc/set-language/$', SetLanguageView.as_view(), name="set-language"),
+    url(r'^misc/set-language/(?P<language>[\-\w]+)$', SetLanguageView.as_view(), name="set-language"),
 
     url(r'^agora/new$', CreateAgoraView.as_view(), name='agora-new'),
 
