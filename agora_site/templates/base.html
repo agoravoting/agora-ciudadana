@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load string_tags %}
+{% load agora_utils %}
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,6 +15,12 @@
     jQuery(document).ready(function() {
         jQuery("time.timeago").timeago();
         jQuery.timeago.settings.allowFuture = true;
+        $("a.languages-dropdown-menu-a").bind('click', function() {
+            var lang_code = $(this).attr('title');
+            $("#select-language-input").attr('value', lang_code);
+            console.log("lang-input is " + $("#select-language-input").attr('value'));
+            $("#change-language-form").submit();
+        })
     });
     </script>
     {% if not DEBUG %}
@@ -31,10 +38,26 @@
         <div class="container">
             <div class="row" id="headerbar">
                 <div class="span8">
-                    <a class="brand" href="{ % url home %}">
+                    <a class="brand" href="{% url home %}">
                         <img alt="{{ SITE_NAME }}" src="{{ STATIC_URL }}img/agoralogo.png" />
                     </a>
-                    <a class="btn btn-success" href="{ % url election-vote %}">{% trans "Vote" %}</a>
+                    <div class="btn-wrapper">
+                        <div class="btn-group">
+                            <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#">
+                            {% trans "Vote" %}
+                            <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for election in user.profile.get_open_elections.all %}
+                                    <li><a href="{% url election-view election.agora.creator.username election.agora.name election.name %}">{{ election.pretty_name }}</a></li>
+                                    {% if forloop.last %}
+                                        <li class="divider"></li>
+                                    {% endif %}
+                                {% endfor %}
+                                <li><a href="{ % url election-list %}">Find an election to vote</a></li>
+                            </ul>
+                        </div>
+                    </div>
                     <div class="btn-wrapper">
                         <div class="btn-group">
                             <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
@@ -44,9 +67,11 @@
                             <ul class="dropdown-menu">
                                 {% for agora in user.agoras.all %}
                                     <li><a href="{% url election-new agora.creator.username agora.name %}">{{ agora.creator.username }}/{{ agora.name }}</a></li>
-                                {% empty %}
-                                    <li><a href="{ % url agora-explore %}">Join an Agora</a></li>
+                                    {% if forloop.last %}
+                                        <li class="divider"></li>
+                                    {% endif %}
                                 {% endfor %}
+                                <li><a href="{ % url agora-list %}">Find an agora to create an election</a></li>
                             </ul>
                         </div>
                     </div>
@@ -99,23 +124,76 @@
             <div class="rows" id="sections-wrapper">
                 <div class="span10">
                     <ul class="nav nav-pills">
-                        <li>
-                            <a href="{ % url agora-list %}">{% trans "Agoras" %}</a>
-                        </li>
-                        <li>
-                            <a href="{ % url election-list %}">{% trans "Elections" %}</a>
-                        </li>
+                        {% if user and user.agoras.count > 0 %}
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    {% trans "Agoras" %}
+                                    <b class="caret"></b>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                    {% for agora in user.agoras.all %}
+                                        <li><a href="{% url agora-view agora.creator.username agora.name %}">{{ agora.creator.username }}/{{ agora.name }}</a></li>
+                                    {% endfor %}
+                                    <li class="divider"></li>
+                                    <li><a href="{ % url agora-list %}">{% trans "Explore other agoras" %}</a></li>
+                                    </ul>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{ % url agora-list %}">{% trans "Agoras" %}</a>
+                            </li>
+                        {% endif %}
+                        {% if user.profile.get_open_elections.count > 0 or user.profile.get_requested_elections.count > 0 %}
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    {% trans "Elections" %}
+                                    <b class="caret"></b>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        {% if user.profile.get_requested_elections.count > 0 %}
+                                            {% for election in user.profile.get_requested_elections.all %}
+                                                <li><a href="{% url election-view election.agora.creator.username election.agora.name election.name %}">{{ election.pretty_name }}</a></li>
+                                            {% endfor %}
+                                            {% if user.profile.get_open_elections.count > 0 %}
+                                                <li class="divider"></li>
+                                            {% endif %}
+                                        {% endif %}
+                                        {% for election in user.profile.get_open_elections.all %}
+                                            <li><a href="{% url election-view election.agora.creator.username election.agora.name election.name %}">{{ election.pretty_name }}</a></li>
+                                        {% endfor %}
+                                        <li class="divider"></li>
+                                        <li><a href="{ % url election-list %}">{% trans "Explore other elections" %}</a></li>
+                                    </ul>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{ % url election-list %}">{% trans "Elections" %}</a>
+                            </li>
+                        {% endif %}
                         <li>
                             <a href="{ % url delegates-list %}">{% trans "Delegates" %}</a>
                         </li>
                     </ul>
                 </div>
 
-                <div class="span1">
-                    <!-- TODO put a dropdown here with the different available languages -->
+                <div class="span2">
+                    <form style="display: none;" action="{% url set-language %}" method="POST" id="change-language-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="language" id="select-language-input" value="{{ LANGUAGE_CODE }}" />
+                    </form>
                     <ul class="nav nav-pills">
-                        <li>
-                            <a href="#">{% trans "Spanish" %}</a>
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                {{ LANGUAGES|getdoublelistitem:LANGUAGE_CODE }}
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for key, value in LANGUAGES %}
+                                    <li><a href="#" class="languages-dropdown-menu-a" title="{{ key }}">{{ value }}</a></li>
+                                {% endfor %}
+                            </ul>
                         </li>
                     </ul>
                 </div>

@@ -3,6 +3,18 @@ from django.utils.translation import pgettext as _
 
 register = template.Library()
 
+
+@register.filter
+def getdoublelistitem(item_list, string):
+    '''
+    Returns an item by key in a double list of type:
+    ( (key, value), (key, value), ...)
+    '''
+    for key, value in item_list:
+        if key == string:
+            return value
+    return ''
+
 @register.filter
 def getitem(item, string):
     '''

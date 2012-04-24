@@ -27,6 +27,60 @@
     </h1>
     <p>{{ agora.short_description }}</p>
 
+    <div class="upper-right-corner">
+        {% if user == agora.creator %}
+            <div class="btn-group">
+                <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
+                    <i class="icon-user"></i> {% trans "You are the owner" %}
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="{ % agora-transfer-ownership agora.creator.username agora.name %}">
+                            <i class="icon-random"></i>
+                            {% trans "Transfer ownership" %}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        {% elif user in agora.admins.all %}
+            <div class="btn-group">
+                <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
+                    <i class="icon-user"></i> {% trans "You are an admin" %}
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="{ % leave-agora-admin agora.creator.username agora.name %}">
+                            <i class="icon-trash"></i>
+                            {% trans "Remove my admin membership" %}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        {% elif user in agora.members.all %}
+            <div class="btn-group">
+                <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
+                    <i class="icon-user"></i> {% trans "You are a member" %}
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="{ % leave-agora agora.creator.username agora.name %}">
+                            <i class="icon-trash"></i>
+                            {% trans "Remove my membership" %}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        {% else %}
+            <a class="btn btn-success" href="{ % join-agora agora.creator.username agora.name %}">
+                <i class="icon-heart icon-white"></i>
+                {% trans "Join this agora now" %}
+            </a>
+        {% endif %}
+    </div>
+
     <ul class="nav nav-tabs">
         {% block agora-navigation %}
         <li {% ifactivetab "agora-nav" "activity" %}class="active"{% endifactivetab %}>
@@ -35,12 +89,12 @@
         <li {% ifactivetab "agora-nav" "biography" %}class="active"{% endifactivetab %}>
             <a href="{% url agora-bio agora.creator.username agora.name %}">{% trans "Biography" %}</a>
         </li>
-        <li {% ifactivetab "agora-nav" "elections" %}class="active"{% endifactivetab %}>
-            <a href="{ % url agora-approved-elections agora.name %}">{% trans "Elections" %}
+        <li {% ifactivetab "agora-nav" "approved_elections" %}class="active"{% endifactivetab %}>
+            <a href="{ % url agora-approved-elections agora.creator.username agora.name %}">{% trans "Elections" %}
             <span class="badge badge-info">{{ agora.approved_elections.count }}</span></a>
         </li>
-        <li {% ifactivetab "agora-nav" "elections" %}class="active"{% endifactivetab %}>
-            <a href="{ % url agora-requested-elections agora.name %}">{% trans "Election requests" %}
+        <li {% ifactivetab "agora-nav" "requested_elections" %}class="active"{% endifactivetab %}>
+            <a href="{ % url agora-requested-elections agora.creator.username  agora.name %}">{% trans "Election requests" %}
             <span class="badge badge-info">{{ agora.requested_elections.count }}</span></a>
         </li>
         <li {% ifactivetab "agora-nav" "delegates" %}class="active"{% endifactivetab %}>

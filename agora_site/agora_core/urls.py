@@ -21,11 +21,16 @@ from django.utils.translation import ugettext_lazy  as _
 
 from endless_pagination.views import AjaxListView
 
-from agora_site.agora_core.views import (AgoraView, CreateAgoraView,
-    AgoraBiographyView, AgoraMembersView, CreateElectionView, ElectionView)
+from agora_site.agora_core.views import (HomeView, AgoraView, CreateAgoraView,
+    AgoraBiographyView, AgoraMembersView, CreateElectionView, ElectionView,
+    SetLanguageView)
 from agora_site.misc.utils import RequestCreateView
 
 urlpatterns = patterns('',
+    url(r'^$', HomeView.as_view(), name='home'),
+
+    url(r'^misc/set-language/$', SetLanguageView.as_view(), name="set-language"),
+
     url(r'^agora/new$', CreateAgoraView.as_view(), name='agora-new'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)$',

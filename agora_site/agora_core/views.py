@@ -25,6 +25,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView, ListView, CreateView
+from django.views.i18n import set_language as django_set_language
 from django import http
 
 from actstream.models import model_stream
@@ -34,6 +35,32 @@ from endless_pagination.views import AjaxListView
 from agora_site.agora_core.models import Agora, Election, Profile
 from agora_site.agora_core.forms import CreateAgoraForm, CreateElectionForm
 from agora_site.misc.utils import RequestCreateView
+
+
+class SetLanguageView(TemplateView):
+    """
+    Extends django's set_language view to save the user's language in his
+    profile
+    """
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            request.user.lang_code = request.POST.get('language', None)
+            request.user.save()
+
+        return django_set_language(self.request)
+
+class HomeView(TemplateView):
+    '''
+    Shows an agora main page
+    '''
+    template_name = 'agora_core/home_activity.html'
+
+    def get_context_data(self, username, agoraname, **kwargs):
+        context = super(HomeView, self).get_context_data(**kwargs)
+        #context['activity'] = model_stream(agora)
+        return context
+
 
 class AgoraView(TemplateView):
     '''

@@ -35,8 +35,6 @@ urlpatterns = patterns('',
     (r'', include('social_auth.urls')),
 
     (r'', include('agora_site.agora_core.urls')),
-
-    (r'^$', redirect_to, {'url': '/accounts/signin/'}),
 )
 
 if settings.DEBUG == True:

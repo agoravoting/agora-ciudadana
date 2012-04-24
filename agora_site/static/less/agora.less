@@ -69,6 +69,15 @@ body {
     .span10 {
         margin-left: -10px;
     }
+
+    .span2 {
+        padding-left: 10px;
+        li {
+            float: right;
+
+            .dropdown-menu li { float: none; }
+        }
+    }
 }
 
 .box-shadow(@style, @c) when (iscolor(@c)) {
@@ -195,6 +204,10 @@ body {
 
         input, textarea, select, .uneditable-input {
             width: 98.5%;
+        }
+
+        textarea {
+            height: 100px;
         }
 
         legend {
@@ -347,6 +360,10 @@ body {
         margin-top: 2px;
         margin-bottom: -20px;
         border: none;
+    }
+
+    .upper-right-corner {
+        float: right;
     }
 }
 

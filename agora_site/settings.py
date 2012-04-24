@@ -1,4 +1,4 @@
-# Django settings for votering project.
+from django.utils.translation import ugettext_lazy as _
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -31,7 +31,13 @@ TIME_ZONE = 'Europe/Madrid'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
+
+LANGUAGES = (
+    ('es', _('Spanish')),
+    ('en', _('English')),
+    ('gl', _('Gallego')),
+)
 
 SITE_ID = 1
 
