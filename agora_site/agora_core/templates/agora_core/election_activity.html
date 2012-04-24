@@ -5,4 +5,4 @@
 
 {% block title %}{% trans "Activity" %} - {{ election.pretty_name }} - {{ election.agora.creator.username }}/{{ election.agora.name }}{% endblock %}
 
-{% block agora-navigation %}{% activetab "election-nav" "activity" %}{{ block.super }}{% endblock %}
+{% block election-navigation %}{% activetab "election-nav" "activity" %}{{ block.super }}{% endblock %}
