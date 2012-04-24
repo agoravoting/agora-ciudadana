@@ -40,12 +40,13 @@ class CreateAgoraForm(django_forms.ModelForm):
         agora.creator = self.request.user
 
         agora.delegation_election = election = Election()
+        agora.save()
+        election.agora = agora
         election.creator = self.request.user
         election.name = "delegation"
         election.description = election.short_description = "voting used for delegation"
         election.election_type = Agora.ELECTION_TYPES[1][0] # simple delegation
         election.save()
-        agora.save()
         agora.members.add(self.request.user)
         agora.admins.add(self.request.user)
         agora.save()
