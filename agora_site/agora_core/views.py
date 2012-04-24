@@ -59,7 +59,7 @@ class HomeView(TemplateView):
     '''
     template_name = 'agora_core/home_activity.html'
 
-    def get_context_data(self, username, agoraname, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
         #context['activity'] = model_stream(agora)
         return context
