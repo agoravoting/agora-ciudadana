@@ -116,6 +116,7 @@ STATICFILES_DIRS = (
 # locations.
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 )
 
 INSTALLED_APPS = (
