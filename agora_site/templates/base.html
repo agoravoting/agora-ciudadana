@@ -15,11 +15,11 @@
     jQuery(document).ready(function() {
         jQuery("time.timeago").timeago();
         jQuery.timeago.settings.allowFuture = true;
-        $("a.languages-dropdown-menu-a").bind('click', function() {
-            var lang_code = $(this).attr('title');
-            $("#select-language-input").attr('value', lang_code);
-            console.log("lang-input is " + $("#select-language-input").attr('value'));
-            $("#change-language-form").submit();
+        $("a.action-form-link").click(function(event) {
+            event.preventDefault();
+            var url = $(this).attr('href');
+            $("#post-action-form").attr('action', url);
+            $("#post-action-form").submit();
         })
     });
     </script>
@@ -34,6 +34,10 @@
     <title>{% block title %}{% endblock %} / {{ SITE_NAME }}</title>
 </head>
 <body>
+    <!-- used to execute actions via a secure form -->
+    <form style="display: none;" action="" method="POST" id="post-action-form">
+        {% csrf_token %}
+    </form>
     <div class="container-fluid top-bar">
         <div class="container">
             <div class="row" id="headerbar">
@@ -177,10 +181,6 @@
                 </div>
 
                 <div class="span2">
-                    <form style="display: none;" action="{% url set-language %}" method="POST" id="change-language-form">
-                        {% csrf_token %}
-                        <input type="hidden" name="language" id="select-language-input" value="{{ LANGUAGE_CODE }}" />
-                    </form>
                     <ul class="nav nav-pills">
                         {% get_current_language as LANGUAGE_CODE %}
                         {% get_available_languages as LANGUAGES %}
@@ -191,7 +191,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 {% for key, value in LANGUAGES %}
-                                    <li><a href="#" class="languages-dropdown-menu-a" title="{{ key }}">{{ value }}</a></li>
+                                    <li><a href="{% url set-language key %}" class="action-form-link">{{ value }}</a></li>
                                 {% endfor %}
                             </ul>
                         </li>

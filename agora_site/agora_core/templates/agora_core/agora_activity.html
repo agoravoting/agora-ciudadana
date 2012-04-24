@@ -2,6 +2,6 @@
 {% load i18n %}
 {% load agora_utils %}
 
-{% block title %}{{ agora.creator.username }}/{{ agora.name }} / {% trans "Activity" %}{% endblock %}
+{% block title %}{% trans "Activity" %} - {{ agora.creator.username }}/{{ agora.name }}{% endblock %}
 
 {% block agora-navigation %}{% activetab "agora-nav" "activity" %}{{ block.super }}{% endblock %}

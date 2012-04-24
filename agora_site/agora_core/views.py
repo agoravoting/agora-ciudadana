@@ -40,12 +40,15 @@ from agora_site.misc.utils import RequestCreateView
 class SetLanguageView(TemplateView):
     """
     Extends django's set_language view to save the user's language in his
-    profile
+    profile and do it in post (to prevent CSRF)
     """
+    def get(self, request, language, *args, **kwargs):
+        # Nice try :-P but that can only be done via POST
+        return redirect('/')
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, language, *args, **kwargs):
         if request.user.is_authenticated():
-            request.user.lang_code = request.POST.get('language', None)
+            request.user.lang_code = language
             request.user.save()
 
         return django_set_language(self.request)

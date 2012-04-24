@@ -4,6 +4,8 @@
 
 @footer-background-color: #ECECEC;
 @green-background-color: #D4F8D9;
+@green-text-color: #00AA00;
+
 body {
     background-color: @footer-background-color;
 }
@@ -338,14 +340,20 @@ body {
         margin-right: 20px;
     }
 
+    .item-detail {
+        display: inline-block;
+        float: left;
+        max-width: 730px;
+    }
+
     h1 {
-        clear: right;
+        clear: both;
         display: block;
         float: left;
         font-size: 35px;
     }
 
-    p {
+    p, strong {
         display: block;
         float: left;
         clear: both;
@@ -364,6 +372,7 @@ body {
 
     .upper-right-corner {
         float: right;
+        display: inline-block;
     }
 }
 
@@ -444,7 +453,7 @@ body {
 
 .row-fluid.agora-last-votings {
     background-color: @footer-background-color;
-    margin-top: 20px;
+    margin-top: 10px;
 
     .last-voting-items {
         display: block;
@@ -464,6 +473,18 @@ body {
                     text-align: center;
                 }
             }
+        }
+    }
+}
+
+.row-fluid.social-icons {
+    margin-top: 10px;
+    text-align: center;
+    a {
+        padding: 10px;
+
+        &:hover {
+            text-decoration: none;
         }
     }
 }
@@ -501,6 +522,49 @@ body {
             border: 0;
             border-radius: 14px 0 0 14px;
             box-shadow: none;
+        }
+    }
+}
+
+// election_base.html
+
+
+.election-content-row {
+    display: table;
+
+    .content {
+        display: table-cell;
+        width: 630px;
+    }
+
+    .sidebar {
+        display: table-cell;
+        width: 320px;
+        vertical-align: top;
+        border-radius: 14px 14px 0 0;
+        background-color: @footer-background-color;
+        margin-bottom: -30px;
+    }
+
+    .election-widget {
+        padding: 20px;
+        padding-top: 20px;
+        height: 100%;
+
+        strong.counter {
+            font-weight: bold;
+            color: #464748;
+            font-size: 15px;
+            display: block;
+            clear: both;
+
+            span {
+                line-height: 50px;
+                color: @green-text-color;
+                font-size: 40px;
+                display: block;
+                clear: both;
+            }
         }
     }
 }

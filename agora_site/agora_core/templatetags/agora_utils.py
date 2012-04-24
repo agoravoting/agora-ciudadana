@@ -1,8 +1,33 @@
 from django import template
 from django.utils.translation import pgettext as _
-
+from django.template.base import token_kwargs
 register = template.Library()
 
+@register.filter
+def get_perms(election, user):
+    return election.get_perms(user)
+
+@register.tag
+def functioncall():
+    """
+    Calls to an object's function 
+
+    For example::
+        {% functioncall object "function_name" arg1 arg2 %}
+
+        or
+
+        {% functioncall object "function_name" name1=value1 name2=value2  %}
+
+    You can also get the returning value of the function call::
+        {% functioncall object "function_name" arg1 arg2 as variable_name %}
+    """
+
+    # TODO see django/template/defaulttags.py
+    #from django.template.base import token_kwargs
+    #def url(parser, token):
+    #class URLNode(Node):
+    return ''
 
 @register.filter
 def getdoublelistitem(item_list, string):

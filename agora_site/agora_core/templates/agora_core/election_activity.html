@@ -1,1 +1,8 @@
-{% extends 'base.html' %}
+{% extends 'agora_core/election_base.html' %}
+
+{% load i18n %}
+{% load agora_utils %}
+
+{% block title %}{% trans "Activity" %} - {{ election.pretty_name }} - {{ election.agora.creator.username }}/{{ election.agora.name }}{% endblock %}
+
+{% block agora-navigation %}{% activetab "election-nav" "activity" %}{{ block.super }}{% endblock %}

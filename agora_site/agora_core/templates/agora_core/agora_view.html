@@ -20,12 +20,13 @@
 {% block running-board  %}
 
     <img class="agora-logo" src="{{ agora.get_mugshot_url }}" alt="{% blocktrans with name=agora.name %}{{ name }} logo{% endblocktrans %}" />
-    <h1>
-        <a href="{ % url user-view agora.creator.username %}">{{ agora.creator.username }}</a>
-        <span class="divider">/</span>
-         {{ agora.name }}
-    </h1>
-    <p>{{ agora.short_description }}</p>
+    <div class="item-detail">
+        <h1>
+            <a href="{ % url user-view agora.creator.username %}">{{ agora.creator.username }}</a>
+            / {{ agora.name }}
+        </h1>
+        <p>{{ agora.short_description }}</p>
+    </div>
 
     <div class="upper-right-corner">
         {% if user == agora.creator %}
@@ -36,7 +37,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="{ % agora-transfer-ownership agora.creator.username agora.name %}">
+                        <a href="{ % agora-transfer-ownership agora.creator.username agora.name %}" class="action-form-link">
                             <i class="icon-random"></i>
                             {% trans "Transfer ownership" %}
                         </a>
@@ -51,7 +52,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="{ % leave-agora-admin agora.creator.username agora.name %}">
+                        <a href="{ % leave-agora-admin agora.creator.username agora.name %}" class="action-form-link">
                             <i class="icon-trash"></i>
                             {% trans "Remove my admin membership" %}
                         </a>
@@ -66,7 +67,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="{ % leave-agora agora.creator.username agora.name %}">
+                        <a href="{ % leave-agora agora.creator.username agora.name %}" class="action-form-link">
                             <i class="icon-trash"></i>
                             {% trans "Remove my membership" %}
                         </a>
@@ -74,7 +75,7 @@
                 </ul>
             </div>
         {% else %}
-            <a class="btn btn-success" href="{ % join-agora agora.creator.username agora.name %}">
+            <a class="btn btn-success" href="{ % join-agora agora.creator.username agora.name %}" class="action-form-link">
                 <i class="icon-heart icon-white"></i>
                 {% trans "Join this agora now" %}
             </a>
@@ -167,6 +168,24 @@
                             </li>
                         {% endfor %}
                     </ul>
+                </div>
+            </div>
+
+            <div class="row-fluid social-icons">
+
+                <div class="span12">
+                    <a href="{ % share-agora-on-twitter agora.creator.username agora.name %}">
+                        <img src="{{ STATIC_URL }}img/twitter-small-logo.png" alt="{% trans "Share on Twitter" %}" />
+                    </a>
+                    <a href="{ % share-agora-on-facebook agora.creator.username agora.name %}">
+                        <img src="{{ STATIC_URL }}img/facebook-small-logo.png" alt="{% trans "Share on Facebook" %}" />
+                    </a>
+                    <a href="{ % share-agora-on-identica agora.creator.username agora.name %}">
+                        <img src="{{ STATIC_URL }}img/identica-small-logo.png" alt="{% trans "Share on Identica" %}" />
+                    </a>
+                    <a href="{ % share-agora-on-googleplus agora.creator.username agora.name %}">
+                        <img src="{{ STATIC_URL }}img/googleplus-small-logo.png" alt="{% trans "Share on Google Plus" %}" />
+                    </a>
                 </div>
             </div>
 
