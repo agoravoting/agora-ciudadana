@@ -490,7 +490,7 @@ class Election(models.Model):
         advance. For now, any voter is a delegate.
         '''
         now = datetime.datetime.now()
-        return self.voting_starts_at_date < now and (self.voting_extended_until_date == None or
+        return self.voting_starts_at_date != None and self.voting_starts_at_date < now and (self.voting_extended_until_date == None or
             self.voting_extended_until_date > now)
 
     def has_user_voted(self, user):
@@ -530,7 +530,41 @@ class Election(models.Model):
         return (self.count_all_votes() * 100.0) / self.agora.members.count()
 
     def get_brief_description(self):
-        desc = _('This voting allows delegation from any party and vote is not secret.')
+        desc = _('This voting allows delegation from any party and vote is not secret. ')
+        desc = desc.__unicode__()
+        now = datetime.datetime.now()
+        if self.ballot_is_open():
+            tmp = _("Voting started at %(start_date)s. " %\
+                dict(start_date=self.voting_starts_at_date))
+            desc += tmp.__unicode__()
+        elif self.voting_starts_at_date and self.voting_starts_at_date > now and\
+            not self.voting_extended_until_date:
+            tmp = _("Voting will start at %(start_date)s. " %\
+                dict(start_date=self.voting_starts_at_date))
+            desc += tmp.__unicode__()
+        elif self.voting_starts_at_date and self.voting_starts_at_date > now and\
+            self.voting_extended_until_date:
+            tmp = _("Voting will start at %(start_date)s and finish at " +
+                "%(end_date)s. " % dict(start_date=self.voting_starts_at_date,
+                    end_date=self.voting_extended_until_date))
+            desc += tmp.__unicode__()
+        elif self.voting_starts_at_date and self.voting_starts_at_date < now and\
+            self.voting_extended_until_date:
+            tmp = _("Voting started at %(start_date)s and will finish at " +
+                "%(end_date)s. " % dict(start_date=self.voting_starts_at_date,
+                    end_date=self.voting_extended_until_date))
+            desc += tmp.__unicode__()
+        elif self.result_tallied_at_date:
+            tmp = _("Voting started at %(start_date)s and finished at " +
+                "%(end_date)s. Results available since %(tally_date)s" %\
+                    dict(start_date=self.voting_starts_at_date,
+                        end_date=self.voting_extended_until_date,
+                        tally_date=self.result_tallied_at_date))
+            desc += tmp.__unicode__()
+        elif not self.voting_starts_at_date:
+            tmp = _("Start date for voting is not set yet. ")
+            desc += tmp.__unicode__()
+        return desc
 
 class CastVote(models.Model):
     '''

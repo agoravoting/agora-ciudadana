@@ -91,7 +91,6 @@ body {
   .box-shadow(@style, rgba(0, 0, 0, @alpha));
 }
 
-
 #running-board-wrapper {
     background-color: #D0DFF2;
     min-height: 50px;
@@ -554,7 +553,7 @@ body {
         strong.counter {
             font-weight: bold;
             color: #464748;
-            font-size: 15px;
+            font-size: 17px;
             display: block;
             clear: both;
 
@@ -566,5 +565,21 @@ body {
                 clear: both;
             }
         }
+
+        .highlight-sidebar {
+            background-color: #666;
+            display: block;
+            width: 101%;
+            padding: 9px;
+            color: @white;
+            margin-top: 10px;
+            margin-left: -30px;
+        }
+    }
+}
+
+#vote-modal-dialog {
+    .modal-body {
+        max-height: 400px;
     }
 }
