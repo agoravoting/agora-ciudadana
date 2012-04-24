@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.comments',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'reversion',
     'south',
     'guardian',
@@ -248,6 +249,7 @@ SITE_NAME = 'Agora Ciudadana'
 
 AUTH_PROFILE_MODULE = 'agora_core.Profile'
 
+INTERNAL_IPS = ('127.0.0.1',)
 
 try:
     # custom settings is the file where you should set your modifications of the
