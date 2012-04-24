@@ -191,9 +191,6 @@ class CreateElectionView(RequestCreateView):
                 target=election.agora)
             # TODO: send notification to agora admins
 
-        action.send(self.request.user, verb='created', action_object=election,
-            target=election.agora)
-
         return reverse('election-view',
             kwargs=dict(username=election.agora.creator.username,
                 agoraname=election.agora.name, electionname=election.name))
