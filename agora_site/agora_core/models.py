@@ -355,11 +355,41 @@ class Election(models.Model):
             #]
         #]
     #}
-    result = JSONField(_('Direct Votes Result'), null=True)
+    result = JSONField(_('Direct Votes Result'), null=True) 
 
     # This will be stored not in the delegation election, but in the
     # normal election which will store both the result and the delegated votes
-    # result
+    # result. 
+    # 
+    # Note that "election_counts" is the count of the number of votes received
+    # indirectly via delegation for each answer for each question of the election,
+    # meanwhile "delegation_counts" is the count of how many delegated votes did
+    # each delegate who received votes received.
+    # 
+    # Format:
+    #{
+        #"a": "result",
+        #"election_counts": [
+            #[
+                #<QUESTION_1_CANDIDATE_1_COUNT>, <QUESTION_1_CANDIDATE_2_COUNT>,
+                #<QUESTION_1_CANDIDATE_3_COUNT>
+            #],
+            #[
+                #<QUESTION_2_CANDIDATE_1_COUNT>, <QUESTION_2_CANDIDATE_2_COUNT>
+            #]
+        #],
+        # "delegation_counts": [
+            #{
+                #'delegate_username': '<DELEGATE_1_USERNAME>',
+                #'count': <DELEGATE_1_COUNT>,
+            #},
+            #{
+                #'delegate_username': '<DELEGATE_1_USERNAME>',
+                #'count': <DELEGATE_1_COUNT>,
+            #}
+        # ]
+        #
+    #}
     delegated_votes_result = JSONField(_('Delegates Result'), null=True)
 
     # List of votes linked to the delegation voting of the related agora
@@ -527,9 +557,16 @@ class Election(models.Model):
         return self.get_direct_votes().count() + self.get_delegated_votes().count()
 
     def percentage_of_participation(self):
+        '''
+        Returns the percentage (0 to 100%) of people that have voted with
+        respect to the electorate
+        '''
         return (self.count_all_votes() * 100.0) / self.agora.members.count()
 
     def get_brief_description(self):
+        '''
+        Returns a brief description of the election
+        '''
         desc = _('This voting allows delegation from any party and vote is not secret. ')
         desc = desc.__unicode__()
         now = datetime.datetime.now()
@@ -565,6 +602,49 @@ class Election(models.Model):
             tmp = _("Start date for voting is not set yet. ")
             desc += tmp.__unicode__()
         return desc
+
+    def get_results_pretty(self):
+        '''
+        Returns a mix of self.questions and self.result +
+        self.delegated_votes_result. Format:
+
+        #[
+            #{
+                #"a": "ballot/question",
+                #"answers": [
+                    #{
+                        #"a": "ballot/answer",
+                        #"value": "Alice",
+                        #"total_count": 33,
+                        #"by_direct_vote_count": 25,
+                        #"by_delegation_count": 8,
+                        #"url": "<http://alice.com>", # UNUSED ATM
+                        #"details": "Alice is a wonderful person who..." # UNUSED ATM
+                    #},
+                    #...
+                #],
+                #"max": 1, "min": 0,
+                #"question": "Who Should be President?",
+                #"randomize_answer_order": false, # true by default
+                #"short_name": "President", # UNSED ATM
+                #"tally_type": "simple"
+            #},
+            #...
+        #]
+        '''
+        results_pretty = self.questions
+        i = 0
+        for question in results_pretty:
+            j = 0
+            for answer in question['answers']:
+                by_direct_vote_count = self.result["counts"][i][j]
+                by_delegation_count = self.delegated_votes_result['election_counts'][i][j]
+                answer['total_count'] = by_direct_vote_count + by_delegation_count
+                answer['by_direct_vote_count'] = by_direct_vote_count
+                answer['by_delegation_count'] = by_delegation_count
+                j += 1
+            i += 1
+        return results_pretty
 
 class CastVote(models.Model):
     '''
@@ -609,6 +689,7 @@ class CastVote(models.Model):
                 #"choices": [
                     #{
                         #'user_id': 13, # id of the User in which the voter delegates
+                        #'username': 'edulix',
                         #'user_name': 'Eduardo Robles Elvira', # data of the User in which the voter delegates
                         #'user_image_url': 'xx' # data of the User in which the voter delegates
                     #},

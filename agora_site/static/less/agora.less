@@ -5,6 +5,7 @@
 @footer-background-color: #ECECEC;
 @green-background-color: #D4F8D9;
 @green-text-color: #00AA00;
+@sidebar-grey-text-color: #464748;
 
 body {
     background-color: @footer-background-color;
@@ -552,7 +553,7 @@ body {
 
         strong.counter {
             font-weight: bold;
-            color: #464748;
+            color: @sidebar-grey-text-color;
             font-size: 17px;
             display: block;
             clear: both;
@@ -575,7 +576,41 @@ body {
             margin-top: 10px;
             margin-left: -30px;
         }
+
+        .sidebar-body {
+            width: 280px;
+            margin-top: 10px;
+
+            h3 {
+                text-transform: uppercase;
+                line-height: 20px;
+                color: @sidebar-grey-text-color;
+
+                a {
+                    text-transform: none;
+                    font-size: 12px;
+                }
+            }
+
+            .election-results, .election-question {
+                padding-top: 10px;
+            }
+
+            .election-question {
+                li {
+                    color: @green-text-color;
+                    font-weight: bold;
+                    font-size: 14px;
+                }
+            }
+        }
     }
+}
+
+.election-description {
+    padding-bottom: 10px;
+    border-bottom: 1px solid @grayLighter;
+    margin-bottom: 10px;
 }
 
 #vote-modal-dialog {

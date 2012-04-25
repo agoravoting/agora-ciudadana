@@ -96,12 +96,13 @@ class CreateElectionForm(django_forms.ModelForm):
         # Questions/answers have a special formatting
         answers = []
         for answer_value in self.cleaned_data["answers"].splitlines():
-            answers += {
-                "a": "ballot/answer",
-                "value": answer_value.strip(),
-                "url": "",
-                "details": "",
-            }
+            if line.strip():
+                answers += [{
+                    "a": "ballot/answer",
+                    "value": answer_value.strip(),
+                    "url": "",
+                    "details": "",
+                }]
 
         election.questions = [{
                 "a": "ballot/question",

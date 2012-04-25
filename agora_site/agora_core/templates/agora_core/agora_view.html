@@ -207,7 +207,7 @@
 
                                     <div class="progress progress-success">
                                         <div class="bar" style="width: {{ elections.get_winning_option|getitem:'percent' }}%;">
-                                            {{ elections.get_winning_option|getitem:'percent' }}%
+                                            {{ elections.get_winning_option|getitem:'percent'|floatformat }}%
                                         </div>
                                     </div>
                                 </a>
