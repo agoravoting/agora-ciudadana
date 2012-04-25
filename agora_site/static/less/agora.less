@@ -577,13 +577,32 @@ body {
             margin-left: -30px;
         }
 
+
+        .row-fluid.social-icons {
+            margin-left: -20px;
+            border-top: 1px solid @white;
+            padding-top: 20px;
+        }
+
         .sidebar-body {
             width: 280px;
             margin-top: 10px;
 
+            .button-vote {
+                text-align: center;
+                a.btn.btn-success {
+                    padding: 15px;
+                    margin: 10px;
+                    min-width: 200px;
+                    margin-bottom: 20px;
+                    font-size: 24px;
+                }
+            }
+
             h3 {
                 text-transform: uppercase;
-                line-height: 20px;
+                line-height: 25px;
+                padding-top: 10px;
                 color: @sidebar-grey-text-color;
 
                 a {
@@ -598,6 +617,7 @@ body {
 
             .election-question {
                 li {
+                    line-height: 25px;
                     color: @green-text-color;
                     font-weight: bold;
                     font-size: 14px;

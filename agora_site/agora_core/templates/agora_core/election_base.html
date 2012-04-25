@@ -3,6 +3,7 @@
 {% load endless %}
 {% load agora_utils %}
 {% load comments %}
+{% load markup %}
 
 {% block script-block %}
     <script src="{{ STATIC_URL }}js/endless_pagination/endless.js" type="text/javascript" charset="utf-8"></script>
@@ -49,7 +50,7 @@
                     {% with permissions=election|get_perms:user%}
                     {% if "edit_details" in permissions %}
                         <li>
-                            <a class="action-form-link" href="{ % election-edit election.agora.creator.username election.agora.name election.name %}">
+                            <a class="action-form-link" href="{ % url election-edit election.agora.creator.username election.agora.name election.name %}">
                                 <i class="icon-edit"></i>
                                 {% trans "Edit Election details" %}
                             </a>
@@ -57,7 +58,7 @@
                     {% endif %}
                     {% if "begin_election" in permissions %}
                         <li>
-                            <a class="action-form-link" href="{ % election-action-start election.agora.creator.username election.agora.name election.name %}">
+                            <a class="action-form-link" href="{% url election-action-start election.agora.creator.username election.agora.name election.name %}">
                                 <i class="icon-play"></i>
                                 {% trans "Freeze election and start voting period" %}
                             </a>
@@ -65,7 +66,7 @@
                     {% endif %}
                     {% if "end_election" in permissions %}
                         <li>
-                            <a class="action-form-link" href="{ % election-action-end election.agora.creator.username election.agora.name election.name %}">
+                            <a class="action-form-link" href="{ % url election-action-end election.agora.creator.username election.agora.name election.name %}">
                                 <i class="icon-stop"></i>
                                 {% trans "Stop voting period and publish results" %}
                             </a>
@@ -73,7 +74,7 @@
                     {% endif %}
                     {% if "archive_election" in permissions %}
                         <li>
-                            <a class="action-form-link" href="{ % election-action-archive election.agora.creator.username election.agora.name election.name %}">
+                            <a class="action-form-link" href="{ % url election-action-archive election.agora.creator.username election.agora.name election.name %}">
                                 <i class="icon-folder-open"></i>
                                 {% trans "Dismiss and archive election" %}
                             </a>
@@ -100,7 +101,7 @@
     <ul class="nav nav-tabs">
         {% block election-navigation %}
         <li {% ifactivetab "election-nav" "activity" %}class="active"{% endifactivetab %}>
-            <a href="{%url election-view election.agora.creator.username election.agora.name election.name %}">{% trans "Activity" %}</a>
+            <a href="{% url election-view election.agora.creator.username election.agora.name election.name %}">{% trans "Activity" %}</a>
         </li>
         <li {% ifactivetab "election-nav" "votes" %}class="active"{% endifactivetab %}>
             <a href="{ % url election-votes election.agora.creator.username election.agora.name election.name %}">{% trans "Votes" %}
@@ -124,7 +125,7 @@
             <div class="content">
                 {% if election.description != election.short_description or true %}
                     <div class="election-description">
-                        {{ election.description|safe }}
+                        {{ election.description|textile }}
                     </div>
                 {% endif %}
                 {% block election_content %}
@@ -147,12 +148,14 @@
                     <div class="highlight-sidebar">
                         <span class="highlight-top-left"></span>
                         <span class="highlight-top-right"></span>
-                        {{ election.get_brief_description }}
+                        {{ election.get_brief_description|safe }}
                     </div>
                     <div class="sidebar-body">
                         {% if election.ballot_is_open %}
-                            <a class="btn btn-success" data-toggle="modal" href="#vote-modal-dialog" >{% trans "Vote" %}</a>
-                            <div class="modal" id="vote-modal-dialog" class="fade">
+                            <div class="button-vote">
+                                <a class="btn btn-success" data-toggle="modal" href="#vote-modal-dialog" >{% trans "Vote" %}</a>
+                            </div>
+                            <div class="modal fade hide" id="vote-modal-dialog">
                                 <div class="modal-header">
                                     <a class="close" data-dismiss="modal">×</a>
                                     <h3>{% blocktrans with election_name=election.pretty_name %}Vote in {{ election_name }}{% endblocktrans %}</h3>
@@ -201,6 +204,23 @@
                                 </div>
                             {% endfor %}
                         {% endif %}
+                    </div>
+
+                    <div class="row-fluid social-icons">
+                        <div class="span12">
+                            <a href="{ % share-agora-on-twitter agora.creator.username agora.name %}">
+                                <img src="{{ STATIC_URL }}img/twitter-small-logo.png" alt="{% trans "Share on Twitter" %}" />
+                            </a>
+                            <a href="{ % share-agora-on-facebook agora.creator.username agora.name %}">
+                                <img src="{{ STATIC_URL }}img/facebook-small-logo.png" alt="{% trans "Share on Facebook" %}" />
+                            </a>
+                            <a href="{ % share-agora-on-identica agora.creator.username agora.name %}">
+                                <img src="{{ STATIC_URL }}img/identica-small-logo.png" alt="{% trans "Share on Identica" %}" />
+                            </a>
+                            <a href="{ % share-agora-on-googleplus agora.creator.username agora.name %}">
+                                <img src="{{ STATIC_URL }}img/googleplus-small-logo.png" alt="{% trans "Share on Google Plus" %}" />
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

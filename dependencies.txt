@@ -15,3 +15,4 @@ pil
 django-haystack
 django-endless-pagination
 django-debug-toolbar
+textile

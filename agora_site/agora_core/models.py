@@ -570,33 +570,38 @@ class Election(models.Model):
         desc = _('This voting allows delegation from any party and vote is not secret. ')
         desc = desc.__unicode__()
         now = datetime.datetime.now()
+
+        def timesince(dati):
+            return '<time class="timeago" title="%(isotime)s" ' +\
+                'datetime="%(isotime)s"></time>' % dict(isotime=dati.isoformat())
+
         if self.ballot_is_open():
-            tmp = _("Voting started at %(start_date)s. " %\
-                dict(start_date=self.voting_starts_at_date))
+            tmp = _("Voting started %(start_date)s. " %\
+                dict(start_date=timesince(self.voting_starts_at_date)))
             desc += tmp.__unicode__()
         elif self.voting_starts_at_date and self.voting_starts_at_date > now and\
             not self.voting_extended_until_date:
-            tmp = _("Voting will start at %(start_date)s. " %\
-                dict(start_date=self.voting_starts_at_date))
+            tmp = _("Voting will start %(start_date)s. " %\
+                dict(start_date=timesince(self.voting_starts_at_date)))
             desc += tmp.__unicode__()
         elif self.voting_starts_at_date and self.voting_starts_at_date > now and\
             self.voting_extended_until_date:
-            tmp = _("Voting will start at %(start_date)s and finish at " +
-                "%(end_date)s. " % dict(start_date=self.voting_starts_at_date,
-                    end_date=self.voting_extended_until_date))
+            tmp = _("Voting will start  %(start_date)s and finish " +
+                "%(end_date)s. " % dict(start_date=timesince(self.voting_starts_at_date),
+                    end_date=timesince(self.voting_extended_until_date)))
             desc += tmp.__unicode__()
         elif self.voting_starts_at_date and self.voting_starts_at_date < now and\
             self.voting_extended_until_date:
-            tmp = _("Voting started at %(start_date)s and will finish at " +
-                "%(end_date)s. " % dict(start_date=self.voting_starts_at_date,
-                    end_date=self.voting_extended_until_date))
+            tmp = _("Voting started %(start_date)s and will finish " +
+                "%(end_date)s. " % dict(start_date=timesince(self.voting_starts_at_date),
+                    end_date=timesince(self.voting_extended_until_date)))
             desc += tmp.__unicode__()
         elif self.result_tallied_at_date:
-            tmp = _("Voting started at %(start_date)s and finished at " +
+            tmp = _("Voting started %(start_date)s and finished " +
                 "%(end_date)s. Results available since %(tally_date)s" %\
-                    dict(start_date=self.voting_starts_at_date,
-                        end_date=self.voting_extended_until_date,
-                        tally_date=self.result_tallied_at_date))
+                    dict(start_date=timesince(self.voting_starts_at_date),
+                        end_date=timesince(self.voting_extended_until_date),
+                        tally_date=timesince(self.result_tallied_at_date)))
             desc += tmp.__unicode__()
         elif not self.voting_starts_at_date:
             tmp = _("Start date for voting is not set yet. ")

@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import datetime
+
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -36,15 +38,34 @@ from agora_site.agora_core.models import Agora, Election, Profile
 from agora_site.agora_core.forms import CreateAgoraForm, CreateElectionForm
 from agora_site.misc.utils import RequestCreateView
 
+class FormActionView(TemplateView):
+    '''
+    This is a TemplateView which doesn't allow get, only post calls (with
+    CSRF) for security reasons.
+    '''
 
-class SetLanguageView(TemplateView):
+    def go_next(self, request):
+        '''
+        Returns a redirect to the page that was being shown
+        '''
+        next = request.REQUEST.get('next', None)
+        if not next:
+            next = request.META.get('HTTP_REFERER', None)
+        if not next:
+            next = '/'
+        return http.HttpResponseRedirect(next)
+
+    def get(self, request, language, *args, **kwargs):
+        # Nice try :-P but that can only be done via POST
+        messages.add_message(self.request, messages.ERROR, _('You tried to '
+            'execute an action improperly.'))
+        return redirect('/')
+
+class SetLanguageView(FormActionView):
     """
     Extends django's set_language view to save the user's language in his
     profile and do it in post (to prevent CSRF)
     """
-    def get(self, request, language, *args, **kwargs):
-        # Nice try :-P but that can only be done via POST
-        return redirect('/')
 
     def post(self, request, language, *args, **kwargs):
         if request.user.is_authenticated():
@@ -222,6 +243,22 @@ class ElectionView(TemplateView):
         context['activity'] = model_stream(election)
         return context
 
+class StartElectionView(FormActionView):
+    def post(self, request, username, agoraname, electionname, *args, **kwargs):
+        election = get_object_or_404(Election,
+            name=electionname, agora__name=agoraname,
+            agora__creator__username=username)
+
+        if not election.has_perms('begin_election', request.user):
+            messages.add_message(self.request, messages.ERROR, _('You don\'t '
+                'have permission to begin the election.'))
+            return self.go_next(request)
+
+        election.voting_starts_at_date = datetime.datetime.now()
+        election.save()
+        # TODO: send an email to everyone interested
+
+        return self.go_next(request)
 
 class ExtraContextMetaMixin(object):
 

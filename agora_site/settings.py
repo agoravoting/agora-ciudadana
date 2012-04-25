@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.comments',
     'django.contrib.staticfiles',
+    'django.contrib.markup',
     'debug_toolbar',
     'reversion',
     'south',
