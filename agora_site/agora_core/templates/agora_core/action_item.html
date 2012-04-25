@@ -41,7 +41,7 @@
 
             <div class="action-detail">
                 <a href="{{ election_view_url }}" class="mugshot">
-                    <img src="{{ election.get_mugshot_url }}" alt="{{ action.action_object.pretty_name }}" />
+                    <img src="{{ action.action_object.get_mugshot_url }}" alt="{{ action.action_object.pretty_name }}" />
                 </a>
                 <div class="detail-body">
                     <strong class="action-title"><a href="{{ election_view_url }}">{{ action.action_object.pretty_name }}</a></strong>
@@ -66,7 +66,7 @@
 
             <div class="action-detail">
                 <a href="{{ election_view_url }}" class="mugshot">
-                    <img src="{{ election.get_mugshot_url }}" alt="{{ action.action_object.pretty_name }}" />
+                    <img src="{{ action.action_object.get_mugshot_url }}" alt="{{ action.action_object.pretty_name }}" />
                 </a>
                 <div class="detail-body">
                     <strong class="action-title"><a href="{{ election_view_url }}">{{ action.action_object.pretty_name }}</a></strong>
