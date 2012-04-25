@@ -158,10 +158,11 @@
                             <div class="modal fade hide" id="vote-modal-dialog">
                                 <div class="modal-header">
                                     <a class="close" data-dismiss="modal">×</a>
-                                    <h3>{% blocktrans with election_name=election.pretty_name %}Vote in {{ election_name }}{% endblocktrans %}</h3>
+                                    <h3>{{ election.pretty_name }}</h3>
                                     <p>{% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}
                                         Voting created by <a href="{ % url user-view election.agora.creator.username %}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
                                     {% endblocktrans %}</p>
+                                    <em>{{ election.short_description }}</em>
                                 </div>
                                 <div class="modal-body">
                                 <!-- TODO show voting modal dialog -->

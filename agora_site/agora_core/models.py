@@ -201,7 +201,10 @@ class Agora(models.Model):
         last_date = None
 
         for election in elections:
-            end_date = election.voting_extended_until_date.date()
+            end_date = None
+            if election.voting_extended_until_date:
+                end_date = election.voting_extended_until_date.date()
+
             start_date = election.voting_starts_at_date.date()
 
             if start_date not in grouping:
