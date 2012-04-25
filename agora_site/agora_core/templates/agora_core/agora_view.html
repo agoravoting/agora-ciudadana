@@ -151,11 +151,11 @@
                                         {% if forloop.counter < 5 %}
                                             <li>
                                                 <a href="{% url election-view agora.creator.username agora.name election.name %}">
-                                                    <i class="icon-envelope"></i>
+                                                    <img src="{{ STATIC_URL }}img/small-icon-envelope.png" />
                                                     {{ election.pretty_name|truncatechars:40 }}
                                                 </a>
                                                 {# TODO: create templatefilter to check if user voted in an election #}
-                                                <i class="icon-ok"></i>
+                                                <img src="{{ STATIC_URL }}img/small-icon-ok.png" />
                                             </li>
                                         {% elif forloop.counter == 5 %}
                                             <li>
