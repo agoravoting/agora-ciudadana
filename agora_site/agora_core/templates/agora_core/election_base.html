@@ -114,7 +114,7 @@
             <span class="badge badge-info">{{ comment_count }}</span></a>
         </li>
         <li {% ifactivetab "election-nav" "delegates" %}class="active"{% endifactivetab %}>
-            <a href="{ % url election-delegates election.agora.creator.username election.agora.name election.name %}">{% trans "Delegates" %}
+            <a href="{% url election-delegates election.agora.creator.username election.agora.name election.name %}">{% trans "Delegates" %}
             <span class="badge badge-info">{{ election.get_votes_from_delegates.count }}</span></a>
         </li>
         {% endblock %}
@@ -124,12 +124,13 @@
 {% block content %}
         <div class="row election-content-row">
             <div class="content">
-                {% if election.description != election.short_description or true %}
-                    <div class="election-description">
-                        {{ election.description|textile }}
-                    </div>
-                {% endif %}
                 {% block election_content %}
+                    {% if election.description != election.short_description or true %}
+                        <div class="election-description">
+                            {{ election.description|textile }}
+                        </div>
+                    {% endif %}
+
                     {% paginate activity %}
                     {% for action in activity %}
                         {% include "agora_core/action_item.html" %}

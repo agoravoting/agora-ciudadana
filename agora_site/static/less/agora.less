@@ -703,3 +703,76 @@ body {
         }
     }
 }
+
+// vote_from_delegate_item.html
+
+.vote_from_delegate_list_item.row-fluid {
+    width: 520px;
+    margin-left: 0;
+    padding-left: 0;
+
+    &.row-first .span6 {
+        border-top: 1px solid @grayLighter;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+
+    .span6 {
+        border-bottom: 1px solid @grayLighter;
+        border-left: 1px solid @grayLighter;
+
+        &.span6-right {
+            border-right: 1px solid @grayLighter;
+            min-height: 233px;
+        }
+
+        &:hover {
+            background-color: @grayLighter;
+            color: @linkColor;
+        }
+
+        margin-left: 0;
+        padding-left: 0;
+
+        @paddingUserList: 17px;
+        div.row-fluid.user {
+            line-height: 25px;
+
+            img { padding: @paddingUserList; }
+            strong { display: block; margin-top: @paddingUserList; }
+
+            p { color: @black; font-size: 14px; }
+        }
+
+        div.row-fluid.vote {
+            padding: @paddingUserList;
+            padding-top: 0;
+
+            h4 {
+                color: @grayLight;
+            }
+
+            div {
+                margin-top: 7px;
+                font-size: 15px;
+                color: @sidebar-grey-text-color;
+                font-weight: bold;
+                em {
+                    font-style: normal;
+                    text-transform:uppercase;
+                    color: @green-text-color;
+                }
+            }
+
+            p {
+                display: block;
+                margin-top: 10px;
+                height: 70px;
+                clear: left;
+                color: @sidebar-grey-text-color;
+            }
+        }
+    }
+}

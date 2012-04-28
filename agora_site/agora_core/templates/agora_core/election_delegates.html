@@ -1,17 +1,17 @@
-{% extends 'agora_core/agora_view.html' %}
+{% extends 'agora_core/election_base.html' %}
 {% load i18n %}
 {% load endless %}
 {% load agora_utils %}
 
-{% block title %}{% trans "Members" %} - {{ agora.creator.username }}/{{ agora.name }}{% endblock %}
+{% block title %}{% trans "Delegates" %} - {{ agora.creator.username }}/{{ agora.name }}{% endblock %}
 
-{% block agora-navigation %}{% activetab "agora-nav" "members" %}{{ block.super }}{% endblock %}
+{% block election-navigation %}{% activetab "election-nav" "delegates" %}{{ block.super }}{% endblock %}
 
-{% block agora_content %}
+{% block election_content %}
     {% paginate object_list %}
     {% for object in object_list %}
         <!-- {% cycle "left" "right" as row %} -->
-        {% include "agora_core/user_item.html" %}
+        {% include "agora_core/vote_from_delegate_item.html" %}
         {% if forloop.last and row == "left" %}
                 <div class="span6 span6-right">
                 </div>

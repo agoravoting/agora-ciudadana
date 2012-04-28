@@ -137,6 +137,32 @@ class AgoraMembersView(AjaxListView):
 
         return context
 
+class ElectionDelegatesView(AjaxListView):
+    '''
+    Shows the biography of an agora
+    '''
+    template_name = 'agora_core/election_delegates.html'
+    page_template='agora_core/delegate_list_page.html'
+
+    def get_queryset(self):
+        username = self.kwargs["username"]
+        agoraname = self.kwargs["agoraname"]
+        electionname = self.kwargs["electionname"]
+        self.election = get_object_or_404(Election,
+            name=electionname, agora__name=agoraname,
+            agora__creator__username=username)
+        return self.election.get_votes_from_delegates().all()
+
+    def get(self, request, *args, **kwargs):
+        self.kwargs = kwargs
+        return super(ElectionDelegatesView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(ElectionDelegatesView, self).get_context_data(**kwargs)
+        context['election'] = self.election
+        context['vote_form'] = VoteForm(self.request.POST, self.election)
+        return context
+
 class CreateAgoraView(RequestCreateView):
     '''
     Creates a new agora
