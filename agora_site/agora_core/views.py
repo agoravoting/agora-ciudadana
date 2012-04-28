@@ -26,7 +26,7 @@ from django.utils import simplejson as json
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.shortcuts import redirect, get_object_or_404
-from django.views.generic import TemplateView, ListView, CreateView
+from django.views.generic import TemplateView, ListView, CreateView, FormView
 from django.views.i18n import set_language as django_set_language
 from django import http
 
@@ -35,7 +35,8 @@ from actstream.signals import action
 from endless_pagination.views import AjaxListView
 
 from agora_site.agora_core.models import Agora, Election, Profile
-from agora_site.agora_core.forms import CreateAgoraForm, CreateElectionForm
+from agora_site.agora_core.forms import (CreateAgoraForm, CreateElectionForm,
+    VoteForm)
 from agora_site.misc.utils import RequestCreateView
 
 class FormActionView(TemplateView):
@@ -240,6 +241,7 @@ class ElectionView(TemplateView):
         context['election'] = election = get_object_or_404(Election,
             name=electionname, agora__name=agoraname,
             agora__creator__username=username)
+        context['vote_form'] = VoteForm(self.request.POST, election)
         context['activity'] = model_stream(election)
         return context
 
@@ -255,13 +257,70 @@ class StartElectionView(FormActionView):
             return self.go_next(request)
 
         election.voting_starts_at_date = datetime.datetime.now()
+        election.create_hash()
         election.save()
         # TODO: send an email to everyone interested
 
         return self.go_next(request)
 
-class ExtraContextMetaMixin(object):
+class StopElectionView(FormActionView):
+    def post(self, request, username, agoraname, electionname, *args, **kwargs):
+        election = get_object_or_404(Election,
+            name=electionname, agora__name=agoraname,
+            agora__creator__username=username)
 
-    def as_view(self, *args, **kwargs):
-        context = super(ExtraContextMetaMixin, self).as_views(*args, **kwargs)
+        if not election.has_perms('stop_election', request.user):
+            messages.add_message(self.request, messages.ERROR, _('You don\'t '
+                'have permission to stop the election.'))
+            return self.go_next(request)
+
+        election.voting_starts_at_date = datetime.datetime.now()
+        election.save()
+        # TODO: send an email to everyone interested
+
+        return self.go_next(request)
+
+class VoteView(CreateView):
+    '''
+    Creates a new agora
+    '''
+    template_name = 'agora_core/vote_form.html'
+    form_class = VoteForm
+
+    def get_form_kwargs(self):
+        form_kwargs = super(VoteView, self).get_form_kwargs()
+        username = self.kwargs["username"]
+        agoraname = self.kwargs["agoraname"]
+        electionname = self.kwargs["electionname"]
+        form_kwargs["request"] = self.request
+        form_kwargs["election"] = self.election = get_object_or_404(Election,
+            name=electionname, agora__name=agoraname,
+            agora__creator__username=username)
+        return form_kwargs
+
+    def get_success_url(self):
+        '''
+        After creating the agora, show it
+        '''
+        messages.add_message(self.request, messages.SUCCESS, _('Your vote was '
+            'correctly casted! Now you could share this election in Facebook, '
+            'Google Plus, Twitter, etc.'))
+
+        # NOTE: The form is in charge in this case of creating the related action
+
+        # TODO: send mail too
+
+        return reverse('election-view',
+            kwargs=dict(username=self.election.agora.creator.username,
+                agoraname=self.election.agora.name, electionname=self.election.name))
+
+    def get_context_data(self, username, agoraname, electionname, **kwargs):
+        context = super(ElectionView, self).get_context_data(**kwargs)
+        form.is_valid()
+        context['vote_form'] = self.form
+        context['activity'] = model_stream(form.election)
         return context
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(VoteView, self).dispatch(*args, **kwargs)

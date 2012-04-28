@@ -23,7 +23,7 @@ from endless_pagination.views import AjaxListView
 
 from agora_site.agora_core.views import (HomeView, AgoraView, CreateAgoraView,
     AgoraBiographyView, AgoraMembersView, SetLanguageView, CreateElectionView,
-    ElectionView, StartElectionView)
+    ElectionView, StartElectionView, StopElectionView, VoteView)
 from agora_site.misc.utils import RequestCreateView
 
 urlpatterns = patterns('',
@@ -39,9 +39,8 @@ urlpatterns = patterns('',
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/biography$',
         AgoraBiographyView.as_view(), name='agora-bio'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/biography/edit$',
-        # TODO: create this view!
-        AgoraBiographyView.as_view(), name='agora-bio-edit'),
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/admin$',
+        AgoraBiographyView.as_view(), name='agora-admin'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/members$',
         AgoraMembersView.as_view(), name='agora-members'),
@@ -54,6 +53,12 @@ urlpatterns = patterns('',
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/start$',
         StartElectionView.as_view(), name='election-action-start'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/stop$',
+        StopElectionView.as_view(), name='election-action-stop'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/vote$',
+        VoteView.as_view(), name='election-vote'),
 
     url(r'^userlist$', AjaxListView.as_view(
         queryset=User.objects.all(),

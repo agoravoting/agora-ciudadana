@@ -1,4 +1,6 @@
 {% load i18n %}
+{% load agora_utils %}
+
 <div class="activity-action {% if forloop and forloop.first %}activity-action-first{% endif %}">
     {% if action.verb == 'created' and action.action_object and action.action_object_content_type.name == 'agora' %}
         {% url user-view action.actor.username as user_view_url%}
@@ -64,6 +66,47 @@
                 {% endwith %}
             </div>
 
+            <div class="action-detail">
+                <a href="{{ election_view_url }}" class="mugshot">
+                    <img src="{{ action.action_object.get_mugshot_url }}" alt="{{ action.action_object.pretty_name }}" />
+                </a>
+                <div class="detail-body">
+                    <strong class="action-title"><a href="{{ election_view_url }}">{{ action.action_object.pretty_name }}</a></strong>
+                    <p>{{ action.action_object.short_description }}</p>
+                </div>
+            </div>
+        </div>
+    {% elif action.verb == 'voted' and action.action_object and action.action_object_content_type.name == 'election' %}
+        {% url user-view action.actor.username as user_view_url%}
+        <a href="{{ user_view_url }}" class="mugshot">
+            <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
+        </a>
+        <div class="action-body">
+            {% with isotime=action.timestamp|date:"c" vote=action|getvote %}
+                <div class="action-title">
+                    {% url agora-view action.action_object.agora.creator.username action.action_object.agora.name as agora_view_url %}
+                    {% url election-view action.action_object.agora.creator.username action.action_object.agora.name action.action_object.name as election_view_url %}
+
+                    {% if vote.is_changed_vote %}
+                        {% blocktrans with username=action.actor.username agoraname=action.action_object.agora.name electionname=action.action_object.pretty_name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">changed his vote</strong> on election <a href="{{ election_view_url }}">{{ electionname }}</a> at <a href="{{ agora_view_url }}">{{ username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    {% else %}
+                        {% blocktrans with username=action.actor.username agoraname=action.action_object.agora.name electionname=action.action_object.pretty_name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">voted</strong> on election <a href="{{ election_view_url }}">{{ electionname }}</a> at <a href="{{ agora_view_url }}">{{ username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    {% endif %}
+                    <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+                </div>
+                {% if vote.is_public and vote.is_direct %}
+                    <div class="action-detail">
+                        <div class="detail-body">
+                            <strong class="action-title">{{ vote.get_first_pretty_answer|getitem:'question' }}</strong>
+                            <p><a href="{ % url election-delegate action.action_object.agora.creator.username action.action_object.agora.name action.action_object.name %}">{%blocktrans with username=vote.voter.username %}{{ username }} answered:{% endblocktrans %} {{ vote.get_first_pretty_answer|getitem:'answer' }}</a></p>
+                            {% if vote.reason %}
+                                <em>{% trans "Why?" %}</em>
+                                <blockquote>{{ vote.reason }}</blockquote>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endwith %}
             <div class="action-detail">
                 <a href="{{ election_view_url }}" class="mugshot">
                     <img src="{{ action.action_object.get_mugshot_url }}" alt="{{ action.action_object.pretty_name }}" />

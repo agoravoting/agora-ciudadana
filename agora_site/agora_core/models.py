@@ -17,6 +17,8 @@ import os
 import re
 import datetime
 import uuid
+import hashlib
+import simplejson
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -26,6 +28,7 @@ from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
 
 from userena.models import UserenaLanguageBaseProfile
+
 from agora_site.misc.utils import JSONField
 
 class Profile(UserenaLanguageBaseProfile):
@@ -273,9 +276,9 @@ class Agora(models.Model):
 
     def requested_elections(self):
         '''
-        Returns the QuerySet with the not approved election
+        Returns a QuerySet with the not approved elections
         '''
-        return self.elections.filter(is_approved=False)
+        return self.elections.filter(is_approved=False, agora=None)
 
 class Election(models.Model):
     '''
@@ -291,6 +294,35 @@ class Election(models.Model):
 
     # cache the hash of the election. It will be null until frozen
     hash = models.CharField(max_length=100, unique=True, null=True)
+
+    def get_serializable_data(self):
+        data = {
+            'creator_username': self.creator.username,
+            'agora_name': self.agora.name,
+            'url': self.url,
+            'uuid': self.uuid,
+            'is_vote_secret': self.is_vote_secret,
+            'created_at_date': self.created_at_date.isoformat(),
+            'questions': self.questions,
+            'election_type': self.election_type,
+            'name': self.name,
+            'pretty_name': self.pretty_name,
+            'description': self.description,
+            'short_description': self.short_description,
+            'eligibility': self.eligibility
+        }
+
+        if self.voting_starts_at_date:
+            data['start_date'] = self.voting_starts_at_date.isoformat()
+
+        return data
+
+    def get_serialized(self):
+        return simplejson.dumps(self.get_serializable_data())
+
+    def create_hash(self):
+        self.hash = hashlib.sha256(self.get_serialized()).hexdigest()
+        return self.hash
 
     # a tiny version of the hash
     tiny_hash = models.CharField(max_length=50, null=True, unique=True)
@@ -317,8 +349,7 @@ class Election(models.Model):
     parent_election = models.ForeignKey('self', related_name='children_elections',
         verbose_name=_('Parent Election'), default=None, null=True)
 
-    created_at_date = models.DateTimeField(_(u'Created at date'),
-        auto_now=True, auto_now_add=True)
+    created_at_date = models.DateTimeField(_(u'Created at date'))
 
     is_vote_secret = models.BooleanField(_('Is Vote Secret'), default=False)
 
@@ -394,10 +425,6 @@ class Election(models.Model):
         #
     #}
     delegated_votes_result = JSONField(_('Delegates Result'), null=True)
-
-    # List of votes linked to the delegation voting of the related agora
-    delegated_votes = models.ForeignKey('CastVote',
-        related_name='related_elections', verbose_name=_('Delegated Votes'), null=True)
 
     pretty_name = models.CharField(_('Pretty Name'), max_length=140)
 
@@ -530,41 +557,38 @@ class Election(models.Model):
         '''
         Return true if the user has voted
         '''
-        return CastVote.objects.filter(election=self, voter=user).count() > 0
+        return self.cast_votes.filter(is_counted=True, is_direct=True,
+            voter=user).count() > 0
 
     def get_direct_votes(self):
         '''
-        Return the list of direct votes. This is needed because a voter can vote
-        twice, so we cannot directly just return self.cast_votes (it can
-        contain duplicates)
+        Return the list of direct votes
         '''
-        # TODO not return self.cast_votes :-P
-        return self.cast_votes
+        return self.cast_votes.filter(is_counted=True, is_direct=True)
 
-    def get_delegated_votes(self):
+    def get_votes_from_delegates(self):
         '''
-        Return the list of delegated votes, similar to get_direct_votes
+        Return the list of votes from delegates.
         '''
-        # TODO
-        return self.cast_votes
+        # NOTE: in the future, in an election where encryption is enabled, we
+        # will only count here votes from delegates which will be those where
+        # is_counted = False, but for now, this means all votes basically:
+        # everyone acts as a delegate.
+        return self.cast_votes.filter(is_public=True, is_direct=True,
+            invalidated_at_date=None)
 
     def get_all_votes(self):
         '''
-        Similar to get_direct_votes, but adding delegated votes into the mix
+        Counts both direct and delegated votes
         '''
-        # TODO make a custom query for this
-        return self.get_direct_votes().all() + self.get_delegated_votes().all()
-
-    def count_all_votes(self):
-        # TODO: exclude votes from people who cannot vote
-        return self.get_direct_votes().count() + self.get_delegated_votes().count()
+        return self.cast_votes.filter(is_counted=True, invalidated_at_date=None)
 
     def percentage_of_participation(self):
         '''
         Returns the percentage (0 to 100%) of people that have voted with
         respect to the electorate
         '''
-        return (self.count_all_votes() * 100.0) / self.agora.members.count()
+        return (self.get_all_votes().count() * 100.0) / self.agora.members.count()
 
     def get_brief_description(self):
         '''
@@ -667,11 +691,41 @@ class CastVote(models.Model):
     election = models.ForeignKey(Election, related_name='cast_votes',
         verbose_name=_('Election'))
 
+    # This field is false for votes from delegates who are not member of the
+    # agora. It's also false if the voter after emitting this vote, he emitted
+    # another one. At that point, vote is invalidated.
+    is_counted = models.BooleanField(_('Is vote counted'))
+
+    is_direct = models.BooleanField(_('Is a direct vote'))
+
+    # If it's public, you will be able to delegated on it
+    is_public = models.BooleanField(_('Is a public vote'))
+
     # cache the hash of the vote
     hash = models.CharField(max_length=100, unique=True)
 
     # a tiny version of the hash to enable short URLs
     tiny_hash = models.CharField(max_length=50, null=True, unique=True)
+
+    # only for delegates
+    reason = models.TextField(_('Why'),
+        help_text=_('Explain why you voted this way if you want'), null=True)
+
+    action_id = models.IntegerField(unique=True, null=True)
+
+    def get_serializable_data(self):
+        return {
+            'voter_username': self.voter.username,
+            'data': self.data,
+            'casted_at_date': self.casted_at_date.isoformat()
+        }
+
+    def get_serialized(self):
+        return simplejson.dumps(self.get_serializable_data())
+
+    def create_hash(self):
+        self.hash = hashlib.sha256(self.get_serialized()).hexdigest()
+        return self.hash
 
     # contains the actual vote in JSON format
     # something like:
@@ -714,7 +768,15 @@ class CastVote(models.Model):
 
     invalidated_at_date = models.DateTimeField(null=True)
 
-    casted_at_date = models.DateTimeField(auto_now=True, auto_now_add=True)
+    casted_at_date = models.DateTimeField()
+
+    def is_changed_vote(self):
+        '''
+        Returns true if before this vote was emitted by the user in this election,
+        he emitted a previous one
+        '''
+        return CastVote.objects.filter(election=self.election, voter=self.voter,
+            casted_at_date__lt=self.casted_at_date).count() > 0
 
     class Meta:
         '''
@@ -724,3 +786,12 @@ class CastVote(models.Model):
         taking the last available vote at the time as the reference vote.
         '''
         unique_together = (('election', 'voter', 'casted_at_date'),)
+
+    def get_first_pretty_answer(self):
+        if self.data['a'] != 'vote' or\
+            self.data['answers'][0]['a'] != 'plaintext-answer':
+            return []
+
+        question_title = self.election.questions[0]['question']
+        return dict(question=question_title,
+            answer=self.data['answers'][0]['choices'][0])

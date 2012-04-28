@@ -1,3 +1,6 @@
+
+from agora_site.agora_core.models import CastVote
+
 from django import template
 from django.utils.translation import pgettext as _
 from django.template.base import token_kwargs
@@ -46,6 +49,17 @@ def getitem(item, string):
     Returns an item by key in a dictionary
     '''
     return item.get(string,'')
+
+@register.filter
+def getindex(item, index):
+    '''
+    Returns an item by an index in a list or tuple
+    '''
+    return item[index]
+
+@register.filter
+def getvote(action):
+    return CastVote.objects.get(action_id=action.id)
 
 @register.filter
 def pretty_date(date):
