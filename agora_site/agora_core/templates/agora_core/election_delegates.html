@@ -3,7 +3,7 @@
 {% load endless %}
 {% load agora_utils %}
 
-{% block title %}{% trans "Delegates" %} - {{ agora.creator.username }}/{{ agora.name }}{% endblock %}
+{% block title %}{% trans "Delegates" %} - {{ election.pretty_name }} - {{ election.agora.creator.username }}/{{ election.agora.name }}{% endblock %}
 
 {% block election-navigation %}{% activetab "election-nav" "delegates" %}{{ block.super }}{% endblock %}
 

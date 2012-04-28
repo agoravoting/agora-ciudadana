@@ -23,8 +23,8 @@ from endless_pagination.views import AjaxListView
 
 from agora_site.agora_core.views import (HomeView, AgoraView, CreateAgoraView,
     AgoraBiographyView, AgoraMembersView, SetLanguageView, CreateElectionView,
-    ElectionView, ElectionDelegatesView, StartElectionView, StopElectionView,
-    VoteView)
+    ElectionView, ElectionDelegatesView, ElectionVotesView, StartElectionView,
+    StopElectionView, VoteView)
 from agora_site.misc.utils import RequestCreateView
 
 urlpatterns = patterns('',
@@ -52,8 +52,11 @@ urlpatterns = patterns('',
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)$',
         ElectionView.as_view(), name='election-view'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/delegates/?$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/delegates$',
         ElectionDelegatesView.as_view(), name='election-delegates'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/votes$',
+        ElectionVotesView.as_view(), name='election-votes'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/start$',
         StartElectionView.as_view(), name='election-action-start'),
