@@ -19,17 +19,19 @@
     <div class="row-fluid delegates">
         {% trans "Delegates to:" %}
     </div>
-    <a href="{ % url user-view object.voter.username %}">
+    {% with delegate=object.get_delegate %}
+    <a href="{ % url user-view delegate.username %}">
         <div class="row-fluid user delegated">
             <div class="span4">
-                <img src="{{ object.voter.get_profile.get_mugshot_url }}" alt="{% trans "User mugshot" %}" />
+                <img src="{{ delegate.get_profile.get_mugshot_url }}" alt="{% trans "User mugshot" %}" />
             </div>
             <div class="span8">
-                <strong>{{ object.voter.username|truncatechars:36 }}</strong>
-                <p>{{ object.voter.first_name|truncatechars:36 }}</p>
+                <strong>{{ delegate.username|truncatechars:36 }}</strong>
+                <p>{{ delegate.first_name|truncatechars:36 }}</p>
             </div>
         </div>
     </a>
+    {% endwith %}
 </div>
 
 {% ifequal row "right" %}
