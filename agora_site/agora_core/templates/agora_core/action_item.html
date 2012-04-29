@@ -36,7 +36,7 @@
                 {% url agora-view action.action_object.agora.creator.username action.action_object.agora.name as agora_view_url %}
                 {% url election-view action.action_object.agora.creator.username action.action_object.agora.name action.action_object.name as election_view_url %}
                 {% with isotime=action.timestamp|date:"c" %}
-                    {% blocktrans with username=action.actor.username agoraname=action.action_object.agora.name electionname=action.action_object.pretty_name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">created</strong> election <a href="{{ election_view_url }}">{{ electionname }}</a> at <a href="{{ agora_view_url }}">{{ username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    {% blocktrans with username=action.actor.username agora_creator_username=action.action_object.agora.creator.username agoraname=action.action_object.agora.name electionname=action.action_object.pretty_name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">created</strong> election <a href="{{ election_view_url }}">{{ electionname }}</a> at <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>{% endblocktrans %}
                     <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
                 {% endwith %}
             </div>
@@ -61,7 +61,7 @@
                 {% url agora-view action.action_object.agora.creator.username action.action_object.agora.name as agora_view_url %}
                 {% url election-view action.action_object.agora.creator.username action.action_object.agora.name action.action_object.name as election_view_url %}
                 {% with isotime=action.timestamp|date:"c" %}
-                    {% blocktrans with username=action.actor.username agoraname=action.action_object.agora.name electionname=action.action_object.pretty_name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">proposed</strong> election <a href="{{ election_view_url }}">{{ electionname }}</a> at <a href="{{ agora_view_url }}">{{ username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    {% blocktrans with username=action.actor.username agora_creator_username=action.action_object.agora.creator.username agoraname=action.action_object.agora.name electionname=action.action_object.pretty_name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">proposed</strong> election <a href="{{ election_view_url }}">{{ electionname }}</a> at <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>{% endblocktrans %}
                     <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
                 {% endwith %}
             </div>
@@ -88,9 +88,9 @@
                     {% url election-view action.action_object.agora.creator.username action.action_object.agora.name action.action_object.name as election_view_url %}
 
                     {% if vote.is_changed_vote %}
-                        {% blocktrans with username=action.actor.username agoraname=action.action_object.agora.name electionname=action.action_object.pretty_name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">changed his vote</strong> on election <a href="{{ election_view_url }}">{{ electionname }}</a> at <a href="{{ agora_view_url }}">{{ username }}/{{ agoraname }}</a>{% endblocktrans %}
+                        {% blocktrans with username=action.actor.username agora_creator_username=action.action_object.agora.creator.username agoraname=action.action_object.agora.name electionname=action.action_object.pretty_name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">changed his vote</strong> on election <a href="{{ election_view_url }}">{{ electionname }}</a> at <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>{% endblocktrans %}
                     {% else %}
-                        {% blocktrans with username=action.actor.username agoraname=action.action_object.agora.name electionname=action.action_object.pretty_name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">voted</strong> on election <a href="{{ election_view_url }}">{{ electionname }}</a> at <a href="{{ agora_view_url }}">{{ username }}/{{ agoraname }}</a>{% endblocktrans %}
+                        {% blocktrans with username=action.actor.username agora_creator_username=action.action_object.agora.creator.username agoraname=action.action_object.agora.name electionname=action.action_object.pretty_name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">voted</strong> on election <a href="{{ election_view_url }}">{{ electionname }}</a> at <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>{% endblocktrans %}
                     {% endif %}
                     <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
                 </div>
@@ -135,7 +135,7 @@
             {% with isotime=action.timestamp|date:"c" vote=action.action_object delegate=action.action_object.get_delegate %}
                 {% url user-view delegate.username as delegate_view_url %}
                 <div class="action-title">
-                    {% blocktrans with username=action.actor.username agoraname=action.target.name delegate_username=delegate.username %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">delegated</strong> to <a href="{{ delegate_view_url }}">{{ delegate_username }}</a> at <a href="{{ agora_view_url }}">{{ username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    {% blocktrans with username=action.actor.username agora_creator_username=action.target.creator.username agoraname=action.target.name delegate_username=delegate.username %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">delegated</strong> to <a href="{{ delegate_view_url }}">{{ delegate_username }}</a> at <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>{% endblocktrans %}
                     <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
                 </div>
                 <div class="action-detail">

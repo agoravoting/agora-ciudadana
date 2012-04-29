@@ -145,7 +145,7 @@
                 <div class="row-fluid right-widget election-widget">
                     <strong class="counter">
                         <span>{{ election.get_all_votes.count }}</span>
-                        {% blocktrans with participation=election.percentage_of_participation %}
+                        {% blocktrans with participation=election.percentage_of_participation|floatformat:"-2" %}
                             VOTES ({{ participation }}% of the electorate)
                         {% endblocktrans %}
                     </strong>
@@ -203,7 +203,7 @@
                                     <ul>
                                         {% for answer in question|getitem:'answers' %}
                                             <li>
-                                                {{ answer|getitem:'value' }} <em>({% blocktrans with count=answer|getitem:'total_count' %}{{ count }} votes{% endblocktrans %})</em>
+                                                {{ answer|getitem:'value' }} <em>({% blocktrans with count=answer|getitem:'total_count'|floatformat:"-2" %}{{ count }} votes{% endblocktrans %})</em>
                                                 <div class="progress progress-success">
                                                     <div class="bar" style="width: {{ answer|getitem:'total_count' }}%">
                                                     {{ answer|getitem:'total_count'|floatformat }}%

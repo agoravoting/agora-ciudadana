@@ -23,7 +23,7 @@ from userena import forms as userena_forms
 from django.contrib.auth import forms as auth_forms
 from django import forms as django_forms
 
-class AccountSignupForm(userena_forms.SignupFormOnlyEmail):
+class AccountSignupForm(userena_forms.SignupForm):
     def __init__(self, *args, **kwargs):
         super(AccountSignupForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
