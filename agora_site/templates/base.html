@@ -18,9 +18,11 @@
         $("a.action-form-link").click(function(event) {
             event.preventDefault();
             var url = $(this).attr('href');
+
+            console.log('yeahhhhhhhh url=' + url);
             $("#post-action-form").attr('action', url);
             $("#post-action-form").submit();
-        })
+        });
     });
     </script>
     {% if not DEBUG %}

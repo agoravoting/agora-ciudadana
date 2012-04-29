@@ -58,13 +58,13 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="{ % url agora-admin agora.creator.username agora.name %}">
+                        <a href="{ % url agora-action-edit agora.creator.username agora.name %}">
                             <i class="icon-edit"></i>
                             {% trans "Edit agora details" %}
                         </a>
                     </li>
                     <li>
-                        <a href="{ % leave-agora-admin agora.creator.username agora.name %}" class="action-form-link">
+                        <a href="{% url agora-action-leave-admin agora.creator.username agora.name %}" class="action-form-link">
                             <i class="icon-trash"></i>
                             {% trans "Remove my admin membership" %}
                         </a>
@@ -79,7 +79,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="{ % leave-agora agora.creator.username agora.name %}" class="action-form-link">
+                        <a href="{% url agora-action-leave agora.creator.username agora.name %}" class="action-form-link">
                             <i class="icon-trash"></i>
                             {% trans "Remove my membership" %}
                         </a>
@@ -87,7 +87,7 @@
                 </ul>
             </div>
         {% else %}
-            <a class="btn btn-success" href="{ % join-agora agora.creator.username agora.name %}" class="action-form-link">
+            <a class="btn btn-success action-form-link" href="{% url agora-action-join agora.creator.username agora.name %}">
                 <i class="icon-heart icon-white"></i>
                 {% trans "Join this agora now" %}
             </a>

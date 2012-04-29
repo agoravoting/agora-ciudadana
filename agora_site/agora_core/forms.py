@@ -29,7 +29,6 @@ from actstream.signals import action as actstream_action
 
 from agora_site.agora_core.models import Agora, Election, CastVote
 
-
 class CreateAgoraForm(django_forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super(CreateAgoraForm, self).__init__(*args, **kwargs)
@@ -187,7 +186,6 @@ class VoteForm(django_forms.ModelForm):
             old_vote.invalidated_at_date = datetime.datetime.now()
             old_vote.is_counted = False
             old_vote.save()
-
         vote = super(VoteForm, self).save(commit=False)
 
         data = {
@@ -213,6 +211,14 @@ class VoteForm(django_forms.ModelForm):
         vote.data = data
         vote.casted_at_date = datetime.datetime.now()
         vote.create_hash()
+
+
+        if self.request.user not in self.election.agora.members.all():
+            if self.election.agora.has_perms('join', self.request.user):
+                # Join agora if possible
+                from agora_site.agora_core.views import AgoraActionJoinView
+                AgoraActionJoinView().post(self.request,
+                    self.election.agora.creator.username, self.election.agora.name)
 
         actstream_action.send(self.request.user, verb='voted', action_object=self.election,
             target=self.election.agora)

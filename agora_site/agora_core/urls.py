@@ -25,7 +25,8 @@ from agora_site.agora_core.views import (HomeView, AgoraView, CreateAgoraView,
     AgoraBiographyView, AgoraMembersView, SetLanguageView, CreateElectionView,
     ElectionView, ElectionDelegatesView, ElectionChooseDelegateView,
     ElectionVotesView, StartElectionView, StopElectionView, VoteView,
-    AgoraActionChooseDelegateView)
+    AgoraActionChooseDelegateView, AgoraActionJoinView, AgoraActionLeaveView,
+    AgoraActionRemoveAdminMembershipView)
 from agora_site.misc.utils import RequestCreateView
 
 urlpatterns = patterns('',
@@ -49,6 +50,16 @@ urlpatterns = patterns('',
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/delegate/(?P<delegate_username>[\.\w]+)$',
         AgoraActionChooseDelegateView.as_view(), name='agora-action-choose-delegate'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/join$',
+        AgoraActionJoinView.as_view(), name='agora-action-join'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/leave$',
+        AgoraActionLeaveView.as_view(), name='agora-action-leave'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/leave-admin$',
+        AgoraActionRemoveAdminMembershipView.as_view(),
+        name='agora-action-leave-admin'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/new',
         CreateElectionView.as_view(), name='election-new'),

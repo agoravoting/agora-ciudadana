@@ -251,7 +251,7 @@ class Agora(models.Model):
     members = models.ManyToManyField(User, related_name='agoras',
         verbose_name=_('Members'))
 
-    admins = models.ManyToManyField(User, related_name='adminstrated_agoras',
+    admins = models.ManyToManyField(User, related_name='administrated_agoras',
         verbose_name=_('Administrators'))
 
     # Stores extra data
@@ -286,6 +286,17 @@ class Agora(models.Model):
         Returns a QuerySet with the not approved elections
         '''
         return self.elections.filter(is_approved=False, agora=None)
+
+    def has_perms(self, permission_name, user):
+        '''
+        Return whether a given user has a given permission name, depending on
+        also in the state of the election.
+        '''
+
+        if permission_name == 'join':
+            return self.membership_policy == Agora.MEMBERSHIP_TYPE[0][0]
+        elif permission_name == 'leave':
+            return self.creator != user
 
 class Election(models.Model):
     '''
@@ -551,7 +562,8 @@ class Election(models.Model):
         '''
         Returns a list of permissions for a given user calling to self.has_perms()
         '''
-        return [perm for perm in ('edit_details', 'begin_election', 'end_election', 'archive_election') if self.has_perms(perm, user)]
+        return [perm for perm in ('edit_details', 'begin_election',
+            'end_election', 'archive_election') if self.has_perms(perm, user)]
 
     def ballot_is_open(self):
         '''

@@ -56,7 +56,7 @@ class FormActionView(TemplateView):
             next = '/'
         return http.HttpResponseRedirect(next)
 
-    def get(self, request, language, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         # Nice try :-P but that can only be done via POST
         messages.add_message(self.request, messages.ERROR, _('You tried to '
             'execute an action improperly.'))
@@ -390,9 +390,6 @@ class VoteView(CreateView):
         return form_kwargs
 
     def get_success_url(self):
-        '''
-        After creating the agora, show it
-        '''
         messages.add_message(self.request, messages.SUCCESS, _('Your vote was '
             'correctly casted! Now you could share this election in Facebook, '
             'Google Plus, Twitter, etc.'))
@@ -426,6 +423,15 @@ class AgoraActionChooseDelegateView(FormActionView):
             messages.add_message(self.request, messages.ERROR, _('Sorry, but '
                 'you cannot delegate to yourself ;-).'))
             return self.go_next(request)
+
+        if self.request.user not in agora.members.all():
+            if not agora.has_perms('join', self.request.user):
+                messages.add_message(self.request, messages.ERROR, _('Sorry, '
+                    'but you cannot delegate if you\'re not a member of the '
+                    'agora first.'))
+                return self.go_next(request)
+            # Join agora if possible
+            AgoraActionJoinView.post(request, username, agoraname)
 
         # invalidate older votes from the same voter to the same election
         old_votes = agora.delegation_election.cast_votes.filter(
@@ -482,3 +488,99 @@ class AgoraActionChooseDelegateView(FormActionView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(AgoraActionChooseDelegateView, self).dispatch(*args, **kwargs)
+
+class AgoraActionJoinView(FormActionView):
+    def post(self, request, username, agoraname, *args, **kwargs):
+        agora = get_object_or_404(Agora,
+            name=agoraname, creator__username=username)
+
+        if not agora.has_perms('join', request.user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you '
+                'don\'t have permission to join this agora.'))
+            return self.go_next(request)
+
+        if request.user in agora.members.all():
+            messages.add_message(request, messages.ERROR, _('Guess what, you '
+                'are already a member of %(agora)s!' %\
+                    dict(agora=username+'/'+agoraname)))
+            return self.go_next(request)
+
+        agora.members.add(request.user)
+        agora.save()
+
+        action.send(request.user, verb='joined', action_object=agora)
+
+        # TODO: send an email to the user
+        messages.add_message(request, messages.SUCCESS, _('You joined '
+            '%(agora)s. Now you could take a look at what elections are '
+            'available at this agora') % dict(
+                agora=agora.creator.username+'/'+agora.name))
+
+        return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AgoraActionJoinView, self).dispatch(*args, **kwargs)
+
+
+class AgoraActionLeaveView(FormActionView):
+    def post(self, request, username, agoraname, *args, **kwargs):
+        agora = get_object_or_404(Agora,
+            name=agoraname, creator__username=username)
+
+        if not agora.has_perms('leave', request.user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you '
+                'don\'t have permission to leave this agora.'))
+            return self.go_next(request)
+
+        if request.user not in agora.members.all():
+            messages.add_message(request, messages.ERROR, _('Guess what, you '
+                'are already not a member of %(agora)s!' %\
+                    dict(agora=username+'/'+agoraname)))
+            return self.go_next(request)
+
+        agora.members.remove(request.user)
+        agora.save()
+
+        action.send(request.user, verb='left', action_object=agora)
+
+        # TODO: send an email to the user
+        messages.add_message(request, messages.SUCCESS, _('You left '
+            '%(agora)s.') % dict(agora=agora.creator.username+'/'+agora.name))
+
+        return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AgoraActionLeaveView, self).dispatch(*args, **kwargs)
+
+class AgoraActionRemoveAdminMembershipView(FormActionView):
+    def post(self, request, username, agoraname, *args, **kwargs):
+        agora = get_object_or_404(Agora,
+            name=agoraname, creator__username=username)
+
+        if not agora.has_perms('leave', request.user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you '
+                'don\'t have permission to leave this agora.'))
+            return self.go_next(request)
+
+        if request.user not in agora.admins.all():
+            messages.add_message(request, messages.ERROR, _('Guess what, you '
+                'are already not an admin member of %(agora)s!' %\
+                    dict(agora=username+'/'+agoraname)))
+            return self.go_next(request)
+
+        agora.admins.remove(request.user)
+        agora.save()
+
+        action.send(request.user, verb='removed admin membership', action_object=agora)
+
+        # TODO: send an email to the user
+        messages.add_message(request, messages.SUCCESS, _('You removed your '
+            'admin membership at %(agora)s.') % dict(agora=agora.creator.username+'/'+agora.name))
+
+        return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AgoraActionRemoveAdminMembershipView, self).dispatch(*args, **kwargs)
