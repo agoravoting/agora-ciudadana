@@ -23,8 +23,9 @@ from endless_pagination.views import AjaxListView
 
 from agora_site.agora_core.views import (HomeView, AgoraView, CreateAgoraView,
     AgoraBiographyView, AgoraMembersView, SetLanguageView, CreateElectionView,
-    ElectionView, ElectionDelegatesView, ElectionVotesView, StartElectionView,
-    StopElectionView, VoteView)
+    ElectionView, ElectionDelegatesView, ElectionChooseDelegateView,
+    ElectionVotesView, StartElectionView, StopElectionView, VoteView,
+    AgoraActionChooseDelegateView)
 from agora_site.misc.utils import RequestCreateView
 
 urlpatterns = patterns('',
@@ -46,6 +47,9 @@ urlpatterns = patterns('',
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/members$',
         AgoraMembersView.as_view(), name='agora-members'),
 
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/delegate/(?P<delegate_username>[\.\w]+)$',
+        AgoraActionChooseDelegateView.as_view(), name='agora-action-choose-delegate'),
+
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/new',
         CreateElectionView.as_view(), name='election-new'),
 
@@ -54,6 +58,9 @@ urlpatterns = patterns('',
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/delegates$',
         ElectionDelegatesView.as_view(), name='election-delegates'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/delegate/(?P<delegate_username>[\.\w]+)$',
+        ElectionChooseDelegateView.as_view(), name='election-delegate'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/votes$',
         ElectionVotesView.as_view(), name='election-votes'),

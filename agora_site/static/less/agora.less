@@ -716,10 +716,76 @@ body {
     }
 }
 
+// election_choose_delegate.html
+
+.delegate-modal-dialog {
+    width: 700px !important;
+
+    .modal-body > h4 {
+        font-size: 35px;
+        line-height: 40px;
+        font-weight: normal;
+    }
+
+    #div_id_reason input{ width: 70% !important; }
+
+    [id *= "div_id_question"] label.control-label {
+        display: none;
+    }
+
+    .delegate-form {
+        padding-bottom: 15px;
+    }
+
+    .info-form .btn.close {
+        float: left;
+        font-weight: normal;
+        opacity: 1;
+    }
+
+    @paddingUserList: 17px;
+
+    div.row-fluid.user {
+        padding: @paddingUserList;
+        .span10 strong {
+            padding-top: 0px !important;
+            display: block;
+            padding-bottom: 10px !important;
+        }
+
+        .span10 p { padding-bottom: 0 !important; }
+    }
+
+    div.row-fluid.vote {
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+        padding: @paddingUserList;
+        width: 90%;
+
+        div {
+            font-size: 15px;
+            color: @sidebar-grey-text-color;
+            font-weight: bold;
+            em {
+                font-style: normal;
+                text-transform:uppercase;
+                color: @green-text-color;
+            }
+        }
+
+        p {
+            display: block;
+            margin-top: 12px;
+            clear: left;
+            color: @sidebar-grey-text-color;
+        }
+    }
+}
+
 // vote_from_delegate_item.html
 
-.vote_from_delegate_list_item.row-fluid {
-    width: 520px;
+.votes_list_item.row-fluid {
+    width: 600px;
     margin-left: 0;
     padding-left: 0;
 
@@ -758,16 +824,24 @@ body {
             p { color: @black; font-size: 14px; }
         }
 
+        div.row-fluid.delegates {
+            padding-left: @paddingUserList;
+        }
+
+        div.row-fluid.user.delegated {
+            background-color: @grayLighter;
+        }
+
         div.row-fluid.vote {
             padding: @paddingUserList;
             padding-top: 0;
+            width: 260px;
 
             h4 {
                 color: @grayLight;
             }
 
             div {
-                margin-top: 7px;
                 font-size: 15px;
                 color: @sidebar-grey-text-color;
                 font-weight: bold;
@@ -780,7 +854,7 @@ body {
 
             p {
                 display: block;
-                margin-top: 10px;
+                margin-top: 12px;
                 height: 70px;
                 clear: left;
                 color: @sidebar-grey-text-color;

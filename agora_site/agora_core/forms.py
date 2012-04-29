@@ -42,8 +42,10 @@ class CreateAgoraForm(django_forms.ModelForm):
         agora = super(CreateAgoraForm, self).save(commit=False)
         agora.create_name(self.request.user)
         agora.creator = self.request.user
+        agora.url = self.request.build_absolute_uri(reverse('agora-view',
+            kwargs=dict(username=agora.creator.username, agoraname=agora.name)))
 
-        agora.delegation_election = election = Election()
+        election = Election()
         agora.save()
         election.agora = agora
         election.creator = self.request.user
@@ -54,6 +56,7 @@ class CreateAgoraForm(django_forms.ModelForm):
         election.created_at_date = datetime.datetime.now()
         election.create_hash()
         election.save()
+        agora.delegation_election = election
         agora.members.add(self.request.user)
         agora.admins.add(self.request.user)
         agora.save()
@@ -165,10 +168,6 @@ class VoteForm(django_forms.ModelForm):
                 widget=django_forms.RadioSelect(attrs={'class': 'question'})))
             i += 1
 
-        self.fields['reason'] = django_forms.CharField(_('Reason'),
-            required=False, widget=django_forms.TextInput(attrs={'placeholder':
-                _('Explain your public position on the vote if you want')}))
-
         self.helper.add_input(Submit('submit', _('Vote'),
             css_class='btn btn-success btn-large'))
 
@@ -228,3 +227,11 @@ class VoteForm(django_forms.ModelForm):
     class Meta:
         model = CastVote
         fields = ('reason',)
+        widgets = {
+            'reason': django_forms.TextInput(
+                attrs={
+                    'placeholder': _('Explain your public position on '
+                    'the vote if you want'),
+                    'maxlength': 140
+                })
+        }

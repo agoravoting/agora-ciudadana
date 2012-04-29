@@ -24,6 +24,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Q
+from django.shortcuts import redirect, get_object_or_404
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
 
@@ -91,6 +92,12 @@ class Profile(UserenaLanguageBaseProfile):
             Q(agora__in=self.user.adminstrated_agoras.all()) | Q(creator=self.user),
             Q(is_approved=False) | Q(result_tallied_at_date=None)
         ).order_by('voting_extended_until_date', 'voting_starts_at_date')
+
+    def count_direct_votes(self):
+        '''
+        Returns the list of valid direct votes by this user
+        '''
+        return CastVote.objects.filter(voter=self.user, is_direct=True, is_counted=True).count()
 
 from django.db.models.signals import post_save
 
@@ -461,6 +468,10 @@ class Election(models.Model):
     # unused, because it's dynamic (changes)
     questions = JSONField(_('Questions'), null=True)
 
+
+    delegated_votes = models.ManyToManyField(User, related_name='delegated_votes',
+        verbose_name=_('Delegated votes'))
+
     #use_voter_aliases = models.BooleanField(_('Use Voter Aliases'), default=False)
 
     election_type = models.CharField(max_length=50, choices=Agora.ELECTION_TYPES,
@@ -581,7 +592,34 @@ class Election(models.Model):
         '''
         Counts both direct and delegated votes
         '''
-        return self.cast_votes.filter(is_counted=True, invalidated_at_date=None)
+
+        if self.ballot_is_open():
+            q=self.cast_votes.filter(is_counted=True, invalidated_at_date=None).values('voter__id').query
+
+            # if ballot is open, we have yet not collected the final list of
+            # delegated votes so we get it in real time from
+            # agora.delegation_election
+            return CastVote.objects.filter(
+                # direct votes from people who can vote:
+                Q(election=self, is_counted=True, is_direct=True,
+                    invalidated_at_date=None)
+                # indirect votes from people who have an active delegation in
+                # this agora:
+                | Q(election=self.agora.delegation_election, is_direct=False,
+                    is_counted=True, invalidated_at_date=None)
+            # This is to avoid duplicates. If you voted directly, that's what
+            # counts:
+            ).exclude(is_direct=False, voter__id__in=q).order_by('-casted_at_date')
+        else:
+            # if ballot is closed, then the delegated votes are already in 
+            # self.delegated_votes
+            return CastVote.objects.filter(
+                # direct votes from people who can vote
+                Q(election=self, is_counted=True, is_direct=True,
+                    invalidated_at_date=None)
+                # delegated votes from people who delegated for this election
+                | Q(id__in=self.delegated_votes.values('id').query))
+            return self.cast_votes.filter(is_counted=True, invalidated_at_date=None)
 
     def percentage_of_participation(self):
         '''
@@ -698,7 +736,7 @@ class CastVote(models.Model):
 
     is_direct = models.BooleanField(_('Is a direct vote'))
 
-    # If it's public, you will be able to delegated on it
+    # If it's public, you will be able to delegate on it
     is_public = models.BooleanField(_('Is a public vote'))
 
     # cache the hash of the vote
@@ -708,8 +746,7 @@ class CastVote(models.Model):
     tiny_hash = models.CharField(max_length=50, null=True, unique=True)
 
     # only for delegates
-    reason = models.TextField(_('Why'),
-        help_text=_('Explain why you voted this way if you want'), null=True)
+    reason = models.TextField(_('Why'), null=True)
 
     action_id = models.IntegerField(unique=True, null=True)
 
@@ -752,7 +789,7 @@ class CastVote(models.Model):
                     #{
                         #'user_id': 13, # id of the User in which the voter delegates
                         #'username': 'edulix',
-                        #'user_name': 'Eduardo Robles Elvira', # data of the User in which the voter delegates
+                        #'first_name': 'Eduardo Robles Elvira', # data of the User in which the voter delegates
                         #'user_image_url': 'xx' # data of the User in which the voter delegates
                     #},
                     #...
@@ -787,11 +824,40 @@ class CastVote(models.Model):
         '''
         unique_together = (('election', 'voter', 'casted_at_date'),)
 
-    def get_first_pretty_answer(self):
-        if self.data['a'] != 'vote' or\
-            self.data['answers'][0]['a'] != 'plaintext-answer':
-            return []
+    def get_delegation_agora(self):
+        return self.delegation_agora[0]
 
-        question_title = self.election.questions[0]['question']
-        return dict(question=question_title,
-            answer=self.data['answers'][0]['choices'][0])
+    def is_plaintext(self):
+        if self.data['a'] == 'vote':
+            return self.data['answers'][0]['a'] == 'plaintext-answer'
+        elif self.data['a'] == 'delegated-vote':
+            return True
+        else:
+            return True
+
+    def get_delegate(self):
+        if self.data['a'] != 'delegated-vote' or not self.is_plaintext():
+            raise Exception('This kind of vote does not have delegate user')
+        else:
+            return get_object_or_404(User,
+                username=self.data['answers'][0]['choices'][0]['username'])
+
+    def get_first_pretty_answer(self):
+        if self.data['a'] == 'vote':
+            if self.data['answers'][0]['a'] != 'plaintext-answer':
+                raise Exception('Invalid direct vote')
+
+            question_title = self.election.questions[0]['question']
+            return dict(question=question_title,
+                answer=self.data['answers'][0]['choices'][0])
+
+        elif self.data['a'] == 'delegated-vote':
+            if self.data['answers'][0]['a'] != 'plaintext-delegate':
+                raise Exception('Invalid delegated vote')
+
+            return dict(
+                username=self.data['answers'][0]['choices'][0]['username'],
+                first_name=self.data['answers'][0]['choices'][0]['first_name']
+            )
+        else:
+            raise Exception('Invalid vote')

@@ -1,0 +1,60 @@
+{% extends 'agora_core/election_delegates.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load agora_utils %}
+
+{% block vote-block %}
+    <div class="button-vote">
+        <a class="btn btn-success" data-toggle="modal" href="#vote-modal-dialog" >{% trans "Delegate" %}</a>
+    </div>
+    <div class="modal hidden delegate-modal-dialog" id="vote-modal-dialog">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">×</a>
+            <h3>{{ election.pretty_name }}</h3>
+            <p>{% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}
+                Election created by <a href="{ % url user-view election.agora.creator.username %}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
+            {% endblocktrans %}</p>
+            <em>{{ election.short_description|truncatechars:139 }}</em>
+        </div>
+        <div class="modal-body">
+            <h4>{{ vote.get_first_pretty_answer|getitem:'question'|truncatechars:49 }}</h4>
+            <div class="row-fluid">
+                <div class="span8 delegate-form">
+                    <div class="row-fluid user">
+                        <div class="span2">
+                            <img src="{{ delegate.get_profile.get_mugshot_url }}" alt="{% trans "User mugshot" %}" />
+                        </div>
+                        <div class="span10">
+                            <strong>{{ delegate.username|truncatechars:36 }}</strong>
+                            <p>{{ delegate.first_name|truncatechars:36 }}</p>
+                        </div>
+                    </div>
+                    <div class="row-fluid vote">
+                        <div>{% trans "Answers:" %} <em>{{ vote.get_first_pretty_answer|getitem:'answer'|truncatechars:24 }}</em></div>
+                        <p>
+                        {% if vote.reason %}
+                            {{ vote.reason }}
+                        {% else %}
+                            {{ delegate.get_profile.short_description }}
+                        {% endif %}
+                        </p>
+                        <a href="{% url agora-action-choose-delegate election.agora.creator.username election.agora.name delegate.username %}?next={% url election-view election.agora.creator.username election.agora.name election.name %}" class="btn btn-success btn-large action-form-link">
+                        {% blocktrans with username=delegate.username %}Delegate to {{ username }}{% endblocktrans %}</a>
+                    </div>
+                </div>
+                <div class="span4 info-form">
+                    <div>
+                        <strong>{% trans "Who represents you?" %}</strong>
+                        <p>{% trans "If you don't know what to vote or you'd rather not have to be aware of all the elections of this Agora, you can delegate your vote to someone you trust." %}</p>
+                        <a class="close btn btn-primary" data-dismiss="modal">{% trans "View other delegates..." %}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            $('#vote-modal-dialog').modal('show');
+        });
+    </script>
+{% endblock %}

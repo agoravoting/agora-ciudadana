@@ -4,8 +4,8 @@
     <div class="votes_list_item row-fluid row-{% if forloop.first %}first{% endif %}">
 {% endifequal %}
 
-<div class="span6 span6-{{ row }}">
-    <a href="{% url election-delegate object.election.agora.creator.username object.election.agora.name object.election.name object.voter.username %}">
+<div class="span6 span6-{{ row }} ">
+    <a href="{ % url user-view object.voter.username %}">
         <div class="row-fluid user">
             <div class="span4">
                 <img src="{{ object.voter.get_profile.get_mugshot_url }}" alt="{% trans "User mugshot" %}" />
@@ -15,16 +15,19 @@
                 <p>{{ object.voter.first_name|truncatechars:36 }}</p>
             </div>
         </div>
-        <div class="row-fluid vote">
-            <h4>{{ object.get_first_pretty_answer|getitem:'question'|truncatechars:49 }}</h4>
-            <div>{% trans "Answers:" %} <em>{{ object.get_first_pretty_answer|getitem:'answer'|truncatechars:24 }}</em></div>
-            <p>
-            {% if object.reason %}
-                {{ object.reason }}
-            {% else %}
-                {{ object.voter.get_profile.short_description }}
-            {% endif %}
-            </p>
+    </a>
+    <div class="row-fluid delegates">
+        {% trans "Delegates to:" %}
+    </div>
+    <a href="{ % url user-view object.voter.username %}">
+        <div class="row-fluid user delegated">
+            <div class="span4">
+                <img src="{{ object.voter.get_profile.get_mugshot_url }}" alt="{% trans "User mugshot" %}" />
+            </div>
+            <div class="span8">
+                <strong>{{ object.voter.username|truncatechars:36 }}</strong>
+                <p>{{ object.voter.first_name|truncatechars:36 }}</p>
+            </div>
         </div>
     </a>
 </div>

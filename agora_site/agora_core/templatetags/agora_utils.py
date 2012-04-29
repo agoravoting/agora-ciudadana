@@ -7,6 +7,10 @@ from django.template.base import token_kwargs
 register = template.Library()
 
 @register.filter
+def debug_object(obj):
+    import ipdb; ipdb.set_trace()
+
+@register.filter
 def get_perms(election, user):
     return election.get_perms(user)
 

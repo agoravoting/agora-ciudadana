@@ -155,42 +155,44 @@
                         {{ election.get_brief_description|safe }}
                     </div>
                     <div class="sidebar-body">
-                        {% if election.ballot_is_open %}
-                            {% if not user or not user.is_authenticated %}
-                                <div class="button-vote">
-                                    <a class="btn btn-success" href="{% url userena_signin %}">{% trans "Vote" %}</a>
-                                </div>
-                            {% else %}
-                                <div class="button-vote">
-                                    <a class="btn btn-success" data-toggle="modal" href="#vote-modal-dialog" >{% trans "Vote" %}</a>
-                                </div>
-                                <div class="modal fade {% block voting-form-class %}hide{% endblock %}" id="vote-modal-dialog">
-                                    <div class="modal-header">
-                                        <a class="close" data-dismiss="modal">×</a>
-                                        <h3>{{ election.pretty_name }}</h3>
-                                        <p>{% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}
-                                            Election created by <a href="{ % url user-view election.agora.creator.username %}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
-                                        {% endblocktrans %}</p>
-                                        <em>{{ election.short_description|truncatechars:139 }}</em>
+                        {% block vote-block %}
+                            {% if election.ballot_is_open %}
+                                {% if not user or not user.is_authenticated %}
+                                    <div class="button-vote">
+                                        <a class="btn btn-success" href="{% url userena_signin %}">{% trans "Vote" %}</a>
                                     </div>
-                                    <div class="modal-body">
-                                        <div class="row-fluid">
-                                            <div class="span8">
-                                                {% crispy vote_form %}
-                                            </div>
-                                            <div class="span4">
-                                                <div>
-                                                    <strong>{% trans "Who represents you?" %}</strong>
-                                                    <p>{% trans "If you don't know what to vote or you'd rather not have to be aware of all the elections of this Agora, you can delegate your vote to someone you trust." %}</p>
-                                                    <a href="{ % url election-delegates election.agora.creator.username election.agora.name election.name %}"
-                                                        class="btn btn-primary btn-large">{% trans "Delegate" %}</a>
+                                {% else %}
+                                    <div class="button-vote">
+                                        <a class="btn btn-success" data-toggle="modal" href="#vote-modal-dialog" >{% trans "Vote" %}</a>
+                                    </div>
+                                    <div class="modal fade {% block voting-form-class %}hide{% endblock %}" id="vote-modal-dialog">
+                                        <div class="modal-header">
+                                            <a class="close" data-dismiss="modal">×</a>
+                                            <h3>{{ election.pretty_name }}</h3>
+                                            <p>{% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}
+                                                Election created by <a href="{ % url user-view election.agora.creator.username %}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
+                                            {% endblocktrans %}</p>
+                                            <em>{{ election.short_description|truncatechars:139 }}</em>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row-fluid">
+                                                <div class="span8">
+                                                    {% crispy vote_form %}
+                                                </div>
+                                                <div class="span4">
+                                                    <div>
+                                                        <strong>{% trans "Who represents you?" %}</strong>
+                                                        <p>{% trans "If you don't know what to vote or you'd rather not have to be aware of all the elections of this Agora, you can delegate your vote to someone you trust." %}</p>
+                                                        <a href="{ % url election-delegates election.agora.creator.username election.agora.name election.name %}"
+                                                            class="btn btn-primary btn-large">{% trans "Delegate" %}</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
+                        {% endblock %}
                         {% if election.result_tallied_at_date %}
                             <h3>{% trans "Results" %}
                             <a href="{ % url election-results election.agora.creator.username election.agora.name election.name %}">View details</a>

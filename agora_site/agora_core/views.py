@@ -30,11 +30,11 @@ from django.views.generic import TemplateView, ListView, CreateView, FormView
 from django.views.i18n import set_language as django_set_language
 from django import http
 
-from actstream.models import model_stream
+from actstream.models import model_stream, Action
 from actstream.signals import action
 from endless_pagination.views import AjaxListView
 
-from agora_site.agora_core.models import Agora, Election, Profile
+from agora_site.agora_core.models import Agora, Election, Profile, CastVote
 from agora_site.agora_core.forms import (CreateAgoraForm, CreateElectionForm,
     VoteForm)
 from agora_site.misc.utils import RequestCreateView
@@ -162,6 +162,51 @@ class ElectionDelegatesView(AjaxListView):
         context['election'] = self.election
         context['vote_form'] = VoteForm(self.request.POST, self.election)
         return context
+
+class ElectionChooseDelegateView(AjaxListView):
+    '''
+    Shows the biography of an agora
+    '''
+    template_name = 'agora_core/election_choose_delegate.html'
+    page_template = 'agora_core/delegate_list_page.html'
+
+    def get_queryset(self):
+        return self.election.get_votes_from_delegates().all()
+
+    def get(self, request, *args, **kwargs):
+        return super(ElectionChooseDelegateView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(ElectionChooseDelegateView, self).get_context_data(**kwargs)
+        context['election'] = self.election
+        context['delegate'] = self.delegate
+        context['vote'] = self.vote
+        context['vote_form'] = VoteForm(self.request.POST, self.election)
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        self.kwargs = kwargs
+        username = self.kwargs["username"]
+        agoraname = self.kwargs["agoraname"]
+        electionname = self.kwargs["electionname"]
+        delegate_username = self.kwargs["delegate_username"]
+        self.election = get_object_or_404(Election,
+            name=electionname, agora__name=agoraname,
+            agora__creator__username=username)
+
+        # TODO: if election is closed, show the delegate view for the agora
+        # instead. Also, you cannot delegate to yourself
+        #if not self.election.ballot_is_open()\
+            #or delegation_username == self.request.username:
+            #return reverse('agora-delegate', username, agoraname, delegate_username)
+
+        self.delegate = get_object_or_404(User, username=delegate_username)
+        self.vote = get_object_or_404(CastVote, is_counted=True,
+            election=self.election, invalidated_at_date=None,
+            voter=self.delegate)
+
+        return super(ElectionChooseDelegateView, self).dispatch(*args, **kwargs)
 
 class  ElectionVotesView(ElectionDelegatesView):
     template_name = 'agora_core/election_votes.html'
@@ -301,6 +346,10 @@ class StartElectionView(FormActionView):
 
         return self.go_next(request)
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(StartElectionView, self).dispatch(*args, **kwargs)
+
 class StopElectionView(FormActionView):
     def post(self, request, username, agoraname, electionname, *args, **kwargs):
         election = get_object_or_404(Election,
@@ -317,6 +366,10 @@ class StopElectionView(FormActionView):
         # TODO: send an email to everyone interested
 
         return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(StopElectionView, self).dispatch(*args, **kwargs)
 
 class VoteView(CreateView):
     '''
@@ -362,3 +415,70 @@ class VoteView(CreateView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(VoteView, self).dispatch(*args, **kwargs)
+
+class AgoraActionChooseDelegateView(FormActionView):
+    def post(self, request, username, agoraname, delegate_username, *args, **kwargs):
+        agora = get_object_or_404(Agora,
+            name=agoraname, creator__username=username)
+        delegate = get_object_or_404(User, username=delegate_username)
+
+        if delegate_username == self.request.user.username:
+            messages.add_message(self.request, messages.ERROR, _('Sorry, but '
+                'you cannot delegate to yourself ;-).'))
+            return self.go_next(request)
+
+        # invalidate older votes from the same voter to the same election
+        old_votes = agora.delegation_election.cast_votes.filter(
+            is_direct=False, invalidated_at_date=None)
+        for old_vote in old_votes:
+            old_vote.invalidated_at_date = datetime.datetime.now()
+            old_vote.save()
+
+        vote = CastVote()
+
+        vote.data = {
+            "a": "delegated-vote",
+            "answers": [
+                {
+                    "a": "plaintext-delegate",
+                    "choices": [
+                        {
+                            'user_id': delegate.id, # id of the User in which the voter delegates
+                            'username': delegate.username,
+                            'user_name': delegate.first_name, # data of the User in which the voter delegates
+                        }
+                    ]
+                }
+            ],
+            "election_hash": {"a": "hash/sha256/value", "value": agora.delegation_election.hash},
+            "election_uuid": agora.delegation_election.uuid
+        }
+
+        vote.voter = self.request.user
+        vote.election = agora.delegation_election
+        vote.is_counted = self.request.user in agora.members.all()
+        vote.is_direct = False
+        vote.is_public = True
+        vote.casted_at_date = datetime.datetime.now()
+        vote.create_hash()
+        vote.save()
+
+        action.send(self.request.user, verb='delegated', action_object=vote,
+            target=agora)
+
+        vote.action_id = Action.objects.filter(actor_object_id=self.request.user.id,
+            verb='delegated', action_object_object_id=vote.id,
+            target_object_id=agora.id).order_by('-timestamp').all()[0].id
+
+        # TODO: send an email to the user
+        messages.add_message(self.request, messages.SUCCESS, _('You delegated '
+            'your vote in %(agora)s to %(username)s! Now you could share this '
+            'in Facebook, Google Plus, Twitter, etc.') % dict(
+                agora=agora.creator.username+'/'+agora.name,
+                username=delegate.username))
+
+        return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AgoraActionChooseDelegateView, self).dispatch(*args, **kwargs)
