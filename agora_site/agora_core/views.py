@@ -30,7 +30,7 @@ from django.views.generic import TemplateView, ListView, CreateView, FormView
 from django.views.i18n import set_language as django_set_language
 from django import http
 
-from actstream.models import model_stream, Action
+from actstream.models import object_stream, Action
 from actstream.signals import action
 from endless_pagination.views import AjaxListView
 
@@ -83,7 +83,7 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        #context['activity'] = model_stream(agora)
+        #context['activity'] = object_stream(agora)
         return context
 
 
@@ -97,7 +97,7 @@ class AgoraView(TemplateView):
         context = super(AgoraView, self).get_context_data(**kwargs)
         context['agora'] = agora = get_object_or_404(Agora, name=agoraname,
             creator__username=username)
-        context['activity'] = model_stream(agora)
+        context['activity'] = object_stream(agora)
         return context
 
 class AgoraBiographyView(TemplateView):
@@ -325,7 +325,7 @@ class ElectionView(TemplateView):
             name=electionname, agora__name=agoraname,
             agora__creator__username=username)
         context['vote_form'] = VoteForm(self.request.POST, election)
-        context['activity'] = model_stream(election)
+        context['activity'] = object_stream(election)
         return context
 
 class StartElectionView(FormActionView):
@@ -407,7 +407,7 @@ class VoteView(CreateView):
         form = kwargs['form']
         context['vote_form'] = form
         context['election'] = form.election
-        context['activity'] = model_stream(form.election)
+        context['activity'] = object_stream(form.election)
         return context
 
     @method_decorator(login_required)

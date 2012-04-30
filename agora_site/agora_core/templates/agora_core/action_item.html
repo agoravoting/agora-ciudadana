@@ -107,8 +107,10 @@
                             {% if vote.reason %}
                                 <em>{% trans "Why?" %}</em>
                                 <blockquote>{{ vote.reason }}</blockquote>
+                            {% elif vote.voter.get_profile.short_description %}
+                                <em>{% trans "Bio:" %}</em><blockquote>{{ vote.voter.get_profile.short_description }}</blockquote>
                             {% else %}
-                                <em>{% trans "Bio:" %}</em><blockquote>{{ vote.voter.short_description }}</blockquote>
+                                <em>{% trans "Bio:" %}</em><blockquote>{% blocktrans with num_agoras=delegate.agoras.count num_votes=delegate.get_profile.count_direct_votes %}Is a member of {{num_agoras}} agoras and has emitted {{num_votes}} direct votes.{% endblocktrans %}</blockquote>
                             {% endif %}
                         </div>
                     </div>

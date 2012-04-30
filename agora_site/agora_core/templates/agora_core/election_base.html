@@ -183,7 +183,7 @@
                                                     <div>
                                                         <strong>{% trans "Who represents you?" %}</strong>
                                                         <p>{% trans "If you don't know what to vote or you'd rather not have to be aware of all the elections of this Agora, you can delegate your vote to someone you trust." %}</p>
-                                                        <a href="{ % url election-delegates election.agora.creator.username election.agora.name election.name %}"
+                                                        <a href="{% url election-delegates election.agora.creator.username election.agora.name election.name %}"
                                                             class="btn btn-primary btn-large">{% trans "Delegate" %}</a>
                                                     </div>
                                                 </div>
@@ -191,6 +191,15 @@
                                         </div>
                                     </div>
                                 {% endif %}
+                            {% else %}
+                                {% with permissions=election|get_perms:user%}
+                                    {% if "begin_election" in permissions %}
+                                        <div class="button-vote">
+                                            <a class="btn btn-success action-form-link"
+                                            href="{% url election-action-start election.agora.creator.username election.agora.name election.name %}">{% trans "Freeze election and start voting period" %}</a>
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
                             {% endif %}
                         {% endblock %}
                         {% if election.result_tallied_at_date %}

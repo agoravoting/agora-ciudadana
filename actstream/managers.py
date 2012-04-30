@@ -58,6 +58,20 @@ class ActionManager(GFKManager):
         )
 
     @stream
+    def object_actions(self, object, **kwargs):
+        '''
+        Stream most rect actions where object is the action_object, the target
+        or even the actor.
+        '''
+        ctype = ContentType.objects.get_for_model(object)
+        return self.public(
+            (Q(target_content_type=ctype, target_object_id = object.id) |
+            Q(action_object_content_type=ctype, action_object_object_id=object.id) |
+            Q(actor_content_type=ctype, actor_object_id=object.id)),
+            **kwargs
+        )
+
+    @stream
     def user(self, object, **kwargs):
         """
         Stream of most recent actions by objects that the passed User object is
