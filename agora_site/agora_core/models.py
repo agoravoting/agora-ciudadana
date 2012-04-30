@@ -758,7 +758,7 @@ class CastVote(models.Model):
     tiny_hash = models.CharField(max_length=50, null=True, unique=True)
 
     # only for delegates
-    reason = models.TextField(_('Why'), null=True)
+    reason = models.TextField(_('Why'), null=True, blank=True)
 
     action_id = models.IntegerField(unique=True, null=True)
 

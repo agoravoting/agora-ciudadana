@@ -402,10 +402,11 @@ class VoteView(CreateView):
             kwargs=dict(username=self.election.agora.creator.username,
                 agoraname=self.election.agora.name, electionname=self.election.name))
 
-    def get_context_data(self, username, agoraname, electionname, **kwargs):
-        context = super(ElectionView, self).get_context_data(**kwargs)
-        form.is_valid()
-        context['vote_form'] = self.form
+    def get_context_data(self, **kwargs):
+        context = super(VoteView, self).get_context_data(**kwargs)
+        form = kwargs['form']
+        context['vote_form'] = form
+        context['election'] = form.election
         context['activity'] = model_stream(form.election)
         return context
 
@@ -431,7 +432,7 @@ class AgoraActionChooseDelegateView(FormActionView):
                     'agora first.'))
                 return self.go_next(request)
             # Join agora if possible
-            AgoraActionJoinView.post(request, username, agoraname)
+            AgoraActionJoinView().post(request, username, agoraname)
 
         # invalidate older votes from the same voter to the same election
         old_votes = agora.delegation_election.cast_votes.filter(

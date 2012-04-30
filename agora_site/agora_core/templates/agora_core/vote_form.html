@@ -1,3 +1,14 @@
 {% extends 'agora_core/election_activity.html' %}
 
 {% block voting-form-class %}{% endblock %}
+
+{% block script-block %}
+    {% if not vote_form.is_valid %}
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
+                $('#vote-modal-dialog').modal('show');
+            });
+        </script>
+    {% endif %}
+    {{ block.super }}
+{% endblock %}

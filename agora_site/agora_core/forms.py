@@ -181,7 +181,7 @@ class VoteForm(django_forms.ModelForm):
     def save(self, *args, **kwargs):
         # invalidate older votes from the same voter to the same election
         old_votes = self.election.cast_votes.filter(is_public=True,
-            is_direct=True, invalidated_at_date=None)
+            is_direct=True, invalidated_at_date=None, voter=self.request.user)
         for old_vote in old_votes:
             old_vote.invalidated_at_date = datetime.datetime.now()
             old_vote.is_counted = False
