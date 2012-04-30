@@ -202,6 +202,13 @@ class VoteForm(django_forms.ModelForm):
             }]
             i += 1
 
+        if self.request.user not in self.election.agora.members.all():
+            if self.election.agora.has_perms('join', self.request.user):
+                # Join agora if possible
+                from agora_site.agora_core.views import AgoraActionJoinView
+                AgoraActionJoinView().post(self.request,
+                    self.election.agora.creator.username, self.election.agora.name)
+
         vote.voter = self.request.user
         vote.election = self.election
         vote.is_counted = self.request.user in self.election.agora.members.all()
@@ -211,14 +218,6 @@ class VoteForm(django_forms.ModelForm):
         vote.data = data
         vote.casted_at_date = datetime.datetime.now()
         vote.create_hash()
-
-
-        if self.request.user not in self.election.agora.members.all():
-            if self.election.agora.has_perms('join', self.request.user):
-                # Join agora if possible
-                from agora_site.agora_core.views import AgoraActionJoinView
-                AgoraActionJoinView().post(self.request,
-                    self.election.agora.creator.username, self.election.agora.name)
 
         actstream_action.send(self.request.user, verb='voted', action_object=self.election,
             target=self.election.agora)
