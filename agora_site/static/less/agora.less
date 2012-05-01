@@ -299,17 +299,17 @@ body {
             border-right: 1px solid @grayLighter;
             min-height: 84px;
         }
+        a:hover {
+            background-color: @grayLighter;
+            color: @linkColor;
+            text-decoration: none;
+        }
 
         margin-left: 0;
         padding-left: 0;
 
         @paddingUserList: 17px;
         div.row-fluid {
-            &:hover {
-                background-color: @grayLighter;
-                color: @linkColor;
-                text-decoration: none;
-            }
 
             line-height: 25px;
 
@@ -793,8 +793,11 @@ body {
         border-top: 1px solid @grayLighter;
     }
 
-    a:hover {
+    a {
         text-decoration: none;
+        &:hover div.user {
+            background-color: @grayLighter;
+        }
     }
 
     .span6 {
@@ -804,11 +807,6 @@ body {
 
         &.span6-right {
             border-right: 1px solid @grayLighter;
-        }
-
-        &:hover {
-            background-color: @grayLighter;
-            color: @linkColor;
         }
 
         margin-left: 0;

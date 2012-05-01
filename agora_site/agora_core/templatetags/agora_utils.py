@@ -7,8 +7,23 @@ from django.template.base import token_kwargs
 register = template.Library()
 
 @register.filter
-def debug_object(obj):
+def debug_object(obj, obj2=None):
     import ipdb; ipdb.set_trace()
+
+@register.filter
+def vote_for_election(user, election):
+    '''
+    Returns the vote of the requested user in the requested election if any
+    '''
+    return user.cast_votes.get(is_direct=True, is_counted=True,
+        election=election, is_public=True)
+
+@register.filter
+def last_election_voted(user, agora):
+    '''
+    Returns the last vote from the user in the given agora if any
+    '''
+    return user.cast_votes.filter(is_counted=True, election__agora=agora).order_by('-casted_at_date')[0]
 
 @register.filter
 def get_perms(election, user):
