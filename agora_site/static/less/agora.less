@@ -889,4 +889,30 @@ body {
             height: auto;
         }
     }
+
+    #activity_items {
+        height: 400px;
+        overflow: hidden;
+        width: 100%;
+        clear: both;
+    }
+
+    #activity_fadeout {
+        width: 100%;
+        clear: both;
+        margin-top: -30px;
+        height: 30px;
+        float: left;
+        background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,0.99) 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,0.99))); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.99) 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.99) 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.99) 100%); /* IE10+ */
+        background: linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.99) 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#fcffffff',GradientType=0 ); /* IE6-9 */
+    }
+
+    #activity_item_list {
+        display: none;
+    }
 }

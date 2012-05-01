@@ -83,7 +83,7 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        context['activity'] = Action.objects.public()[:2]
+        context['activity'] = Action.objects.public()[:10]
         return context
 
 

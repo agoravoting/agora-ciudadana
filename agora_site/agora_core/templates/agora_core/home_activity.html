@@ -7,15 +7,65 @@
 
 {% block content %}
         <div class="row election-content-row">
-            <div class="content">
+            <div id="activity_item_list">
                 {% for action in activity %}
                     {% include "agora_core/action_item.html" %}
                 {% endfor %}
+            </div>
+            <div class="content">
+                <div id="activity_items">
+                <!-- here will appear the activity items stream -->
+                </div>
+                <div id="activity_fadeout">
+                </div>
             </div>
             <div class="sidebar">
                 <div class="row-fluid">
                     <img id="home_worldmap" src="{{STATIC_URL }}img/home_worldmap.png" />
                 </div>
             </div>
+            <script type="text/javascript">
+                jQuery(document).ready(function() {
+                    var currentSlide = 0; // keeps track of current slide
+                    var slides = $('#activity_item_list > div'); // this is the original list of slides
+                    var slideShowElement = '#activity_items'; // this is where the infinite news scroll will be shown
+                    var interval = setInterval(nextSlide, DELAY_SPEED); // used for setInerval
+                    var FADE_SPEED = 700;  // specifies how long it takes to transition
+                    var DELAY_SPEED = 4000; // specifies how much time between new items appear
+
+                    // init
+                    slides.each(function() {
+                        $(this).appendTo($(slideShowElement));
+                    });
+
+                    // Goes to the next slide
+                    function nextSlide () {
+                        //if the current slide is at the end, loop to the first slide.
+                        if (currentSlide >= slides.length -1) {
+                            currentSlide = 0;
+                        } else {
+                            currentSlide++;
+                        }
+
+                        // Add a new slide
+
+                        $(slideShowElement + ' > div').first().removeClass('activity-action-first');
+
+                        var newElement = $(slides[currentSlide]).clone().addClass('activity-action-first').hide();
+
+                        newElement.prependTo($(slideShowElement));
+//                         newElement.slideDown(FADE_SPEED);
+                        newElement.fadeIn(FADE_SPEED);
+                        $(slideShowElement + ' > div').last().remove();
+
+                        //if the auto slide advance is set, stop it, then start again.
+                        if (interval != null) {
+                            clearInterval(interval);
+                        }
+                        //Goes to next slide every couple of seconds.
+                        interval = setInterval(nextSlide, DELAY_SPEED);
+                    }
+                });
+            </script>
         </div>
 {% endblock %}
