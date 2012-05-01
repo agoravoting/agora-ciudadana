@@ -22,8 +22,10 @@
         <p>
         {% if object.reason %}
             {{ object.reason }}
-        {% else %}
+        {% elif object.voter.get_profile.short_description %}
             {{ object.voter.get_profile.short_description }}
+        {% else %}
+        <strong>{% trans "Bio:" %}</strong> {% blocktrans with username=object.voter.username num_agoras=object.voter.agoras.count num_votes=object.voter.get_profile.count_direct_votes %}{{username}} is a member of {{num_agoras}} agoras and has emitted {{num_votes}} direct votes.{% endblocktrans %}
         {% endif %}
         </p>
     </div>
