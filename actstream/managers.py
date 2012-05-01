@@ -60,7 +60,7 @@ class ActionManager(GFKManager):
     @stream
     def object_actions(self, object, **kwargs):
         '''
-        Stream most rect actions where object is the action_object, the target
+        Stream most recent actions where object is the action_object, the target
         or even the actor.
         '''
         ctype = ContentType.objects.get_for_model(object)
@@ -70,6 +70,41 @@ class ActionManager(GFKManager):
             Q(actor_content_type=ctype, actor_object_id=object.id)),
             **kwargs
         )
+
+    def election_actions(self, election, **kwargs):
+        '''
+        Stream most recent actions related to an election, which includes those
+        related to the agora in which the election takes place where people
+        delegated
+        '''
+        etype = ContentType.objects.get_for_model(election)
+        atype = ContentType.objects.get_for_model(election.agora)
+
+        if election.voting_starts_at_date and election.voting_extended_until_date:
+            return self.public(
+                (Q(target_content_type=etype, target_object_id = election.id) |
+                Q(action_object_content_type=etype, action_object_object_id=election.id) |
+                Q(actor_content_type=etype, actor_object_id=election.id) |
+                Q(target_content_type=atype, verb='delegated',
+                    target_object_id=election.agora.id,
+                    timestamp__lt=election.voting_extended_until_date,
+                    timestamp__gt=election.voting_starts_at_date)),
+                **kwargs)
+        elif election.voting_starts_at_date:
+            return self.public(
+                (Q(target_content_type=etype, target_object_id = election.id) |
+                Q(action_object_content_type=etype, action_object_object_id=election.id) |
+                Q(actor_content_type=etype, actor_object_id=election.id) |
+                Q(target_content_type=atype, verb='delegated',
+                    target_object_id=election.agora.id,
+                    timestamp__gt=election.voting_starts_at_date)),
+                **kwargs)
+        else:
+            return self.public(
+                (Q(target_content_type=etype, target_object_id = election.id) |
+                Q(action_object_content_type=etype, action_object_object_id=election.id) |
+                Q(actor_content_type=etype, actor_object_id=election.id)),
+                **kwargs)
 
     @stream
     def user(self, object, **kwargs):

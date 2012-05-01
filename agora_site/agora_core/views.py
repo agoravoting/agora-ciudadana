@@ -30,7 +30,7 @@ from django.views.generic import TemplateView, ListView, CreateView, FormView
 from django.views.i18n import set_language as django_set_language
 from django import http
 
-from actstream.models import model_stream, Action
+from actstream.models import model_stream, election_stream, Action
 from actstream.signals import action
 from endless_pagination.views import AjaxListView
 
@@ -325,7 +325,7 @@ class ElectionView(TemplateView):
             name=electionname, agora__name=agoraname,
             agora__creator__username=username)
         context['vote_form'] = VoteForm(self.request.POST, election)
-        context['activity'] = model_stream(election)
+        context['activity'] = election_stream(election)
         return context
 
 class StartElectionView(FormActionView):

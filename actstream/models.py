@@ -148,6 +148,7 @@ target_stream = Action.objects.target
 user_stream = Action.objects.user
 model_stream = Action.objects.model_actions
 object_stream = Action.objects.object_actions
+election_stream = Action.objects.election_actions
 
 
 def setup_generic_relations():
