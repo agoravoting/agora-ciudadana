@@ -30,7 +30,6 @@
                     var slides = $('#activity_item_list > div'); // this is the original list of slides
                     var slideShowElement = '#activity_items'; // this is where the infinite news scroll will be shown
                     var interval = setInterval(nextSlide, DELAY_SPEED); // used for setInerval
-                    var FADE_SPEED = 700;  // specifies how long it takes to transition
                     var DELAY_SPEED = 4000; // specifies how much time between new items appear
 
                     // init
@@ -54,8 +53,7 @@
                         var newElement = $(slides[currentSlide]).clone().addClass('activity-action-first').hide();
 
                         newElement.prependTo($(slideShowElement));
-//                         newElement.slideDown(FADE_SPEED);
-                        newElement.fadeIn(FADE_SPEED);
+                        newElement.animate({"height": "toggle", "opacity": "toggle"}, "slow");
                         $(slideShowElement + ' > div').last().remove();
 
                         //if the auto slide advance is set, stop it, then start again.
