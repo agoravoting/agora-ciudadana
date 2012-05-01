@@ -18,8 +18,6 @@
         $("a.action-form-link").click(function(event) {
             event.preventDefault();
             var url = $(this).attr('href');
-
-            console.log('yeahhhhhhhh url=' + url);
             $("#post-action-form").attr('action', url);
             $("#post-action-form").submit();
         });
@@ -210,8 +208,11 @@
                     {% block running-board  %}
                         <div class="span7">
                             {% trans "<p>A new way of</p><h1>Taking group decissions</h1>" %}
-                            <a class="btn btn-success" href="{ % url participate %}">{% trans "Participate" %}</a>
-                            <a class="btn btn-primary" href="{ % url explore %}">{% trans "Explore" %}</a>
+                            <div id="agora_house">
+                                <img src="{{ STATIC_URL }}img/agora_house.png" />
+                                <a class="btn btn-success" href="{ % url participate %}">{% trans "Participate" %}</a>
+                                <a class="btn btn-primary" href="{ % url explore %}">{% trans "Explore" %}</a>
+                            </div>
                         </div>
                         <div class="span5">
                             <blockquote>&ldquo;
@@ -224,7 +225,7 @@
             </div>
         </div>
     </div>
-    <div id="content-wrapper">
+    <div id="content-wrapper" class="{% block content-wrapper-class %}{% endblock %}">
         <div class="container">
             {% block content %}
             {% endblock %}
