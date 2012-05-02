@@ -21,7 +21,9 @@
             </div>
             <div class="sidebar">
                 <div class="row-fluid">
-                    <img id="home_worldmap" src="{{STATIC_URL }}img/home_worldmap.png" />
+                    <canvas id="home_worldmap_canvas">
+                        <img id="home_worldmap" src="{{STATIC_URL }}img/home_worldmap_mercator.png" />
+                    </canvas>
                 </div>
             </div>
             <script type="text/javascript">
@@ -63,6 +65,36 @@
                         //Goes to next slide every couple of seconds.
                         interval = setInterval(nextSlide, DELAY_SPEED);
                     }
+
+                    var canvasSelector = '#home_worldmap_canvas';
+
+                    // X and Y boundaries
+                    var westLong = -172;
+                    var eastLong = 179.578857;
+                    var northLat = 100;
+                    var southLat = -55.801281;
+
+
+                    var img = new Image();
+                    img.src = "{{STATIC_URL }}img/home_worldmap_mercator.png";
+                    img.onload = function() {
+                        var ctx = document.getElementById('home_worldmap_canvas').getContext('2d'); 
+                        ctx.drawImage(img, 0, 0, 321, 166);
+                        drawPoint(40.413496,-3.739014);
+                        drawPoint(7.885147, 81.020506);
+                        drawPoint(-42.163403,146.674803);
+                    }
+
+                    function drawPoint(latitude, longitude)
+                    {
+                        var x = $(canvasSelector).width() * ((westLong - longitude) / (westLong - eastLong));
+                        var y = $(canvasSelector).height() * ((northLat - latitude) / (northLat - southLat));
+                        var ctx = document.getElementById('home_worldmap_canvas').getContext('2d'); 
+                        console.log("x = " + x + ", y = " + y);
+                        ctx.fillStyle = "red";
+                        ctx.fillRect(x, y, 2, 2);
+                    }
+
                 });
             </script>
         </div>
