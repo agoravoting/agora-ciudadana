@@ -86,6 +86,8 @@ class Action(models.Model):
 
     public = models.BooleanField(default=True)
 
+    #geolocation = models.CharField(max_length=255, null=True, blank=True)
+
     objects = actstream_settings.MANAGER_MODULE()
 
     class Meta:

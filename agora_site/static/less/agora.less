@@ -885,8 +885,20 @@ body {
     .sidebar {
         background-color: @white;
         #home_worldmap_canvas {
-            width: 321px;
-            height: 166px;
+            width: 320px;
+            height: 180px;
+            svg {
+                display: block;
+                float: left;
+                width: 100%;
+                height: 100%;
+
+                path {
+                    fill: #ccc;
+                    stroke: @white;
+                    stroke-width: 0.1px;
+                }
+            }
         }
     }
 

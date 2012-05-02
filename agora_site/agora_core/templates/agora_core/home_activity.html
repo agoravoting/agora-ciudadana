@@ -21,11 +21,11 @@
             </div>
             <div class="sidebar">
                 <div class="row-fluid">
-                    <canvas id="home_worldmap_canvas">
-                        <img id="home_worldmap" src="{{STATIC_URL }}img/home_worldmap_mercator.png" />
-                    </canvas>
+                    <div id="home_worldmap_canvas">
+                    </div>
                 </div>
             </div>
+            <script src="{{ STATIC_URL }}js/d3.v2.min.js" type="text/javascript"></script>
             <script type="text/javascript">
                 jQuery(document).ready(function() {
                     var currentSlide = 0; // keeps track of current slide
@@ -66,34 +66,29 @@
                         interval = setInterval(nextSlide, DELAY_SPEED);
                     }
 
-                    var canvasSelector = '#home_worldmap_canvas';
 
-                    // X and Y boundaries
-                    var westLong = -172;
-                    var eastLong = 179.578857;
-                    var northLat = 100;
-                    var southLat = -55.801281;
+                    // Our projection.
+                    var xy = d3.geo.mercator();
+                    var path = d3.geo.path().projection(xy);
 
+                    var states = d3.select("#home_worldmap_canvas").append("svg").append("g").attr("id", "states");
+                    d3.json("{{ STATIC_URL }}js/world-countries.json",
+                        function(collection) {
+                            console.debug("caling to refresh");
 
-                    var img = new Image();
-                    img.src = "{{STATIC_URL }}img/home_worldmap_mercator.png";
-                    img.onload = function() {
-                        var ctx = document.getElementById('home_worldmap_canvas').getContext('2d'); 
-                        ctx.drawImage(img, 0, 0, 321, 166);
-                        drawPoint(40.413496,-3.739014);
-                        drawPoint(7.885147, 81.020506);
-                        drawPoint(-42.163403,146.674803);
-                    }
+                            xy.scale(320);
+                            var translate = xy.translate();
+                            translate[0] = 160;
+                            translate[1] = 110;
+                            xy.translate(translate);
 
-                    function drawPoint(latitude, longitude)
-                    {
-                        var x = $(canvasSelector).width() * ((westLong - longitude) / (westLong - eastLong));
-                        var y = $(canvasSelector).height() * ((northLat - latitude) / (northLat - southLat));
-                        var ctx = document.getElementById('home_worldmap_canvas').getContext('2d'); 
-                        console.log("x = " + x + ", y = " + y);
-                        ctx.fillStyle = "red";
-                        ctx.fillRect(x, y, 2, 2);
-                    }
+                            states
+                                .selectAll("path")
+                                .data(collection.features)
+                                .enter().append("path")
+                                .attr("d", path);
+                        }
+                    );
 
                 });
             </script>
