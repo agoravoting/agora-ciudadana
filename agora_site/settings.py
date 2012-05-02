@@ -103,6 +103,9 @@ TEMPLATE_DIRS = (
     os.path.join(ROOT_PATH, 'templates'),
 )
 
+# IP database geolocalization:
+# You can download it from http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+# and uncompress it with gunzip GeoLiteCity.dat.gz
 GEOIP_DB_PATH = os.path.join(ROOT_PATH, 'media', 'data', 'GeoLiteCity.dat')
 
 # Path for static docs (css, images, etc)
