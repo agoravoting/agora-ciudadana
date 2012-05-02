@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load agora_utils %}
 
-<div class="activity-action {% if forloop and forloop.first %}activity-action-first{% endif %}">
+<div class="activity-action {% if forloop and forloop.first %}activity-action-first{% endif %}" geodata="{{ action.geolocation }}">
     {% if action.verb == 'created' and action.action_object and action.action_object_content_type.name == 'agora' %}
         {% url user-view action.actor.username as user_view_url%}
         <a href="{{ user_view_url }}" class="mugshot">

@@ -103,6 +103,8 @@ TEMPLATE_DIRS = (
     os.path.join(ROOT_PATH, 'templates'),
 )
 
+GEOIP_DB_PATH = os.path.join(ROOT_PATH, 'media', 'data', 'GeoLiteCity.dat')
+
 # Path for static docs (css, images, etc)
 STATIC_DOC_ROOT = os.path.join(ROOT_PATH, 'site_media')
 

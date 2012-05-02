@@ -86,7 +86,8 @@ class Action(models.Model):
 
     public = models.BooleanField(default=True)
 
-    #geolocation = models.CharField(max_length=255, null=True, blank=True)
+    geolocation = models.CharField(max_length=255, null=True, blank=True)
+    ipaddr = models.CharField(max_length=20, null=True, blank=True)
 
     objects = actstream_settings.MANAGER_MODULE()
 

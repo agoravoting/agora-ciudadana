@@ -34,6 +34,10 @@
                     var interval = setInterval(nextSlide, DELAY_SPEED); // used for setInerval
                     var DELAY_SPEED = 4000; // specifies how much time between new items appear
 
+                    // Our projection.
+                    var xy = d3.geo.mercator();
+                    var path = d3.geo.path().projection(xy);
+
                     // init
                     slides.each(function() {
                         $(this).appendTo($(slideShowElement));
@@ -58,6 +62,8 @@
                         newElement.animate({"height": "toggle", "opacity": "toggle"}, "slow");
                         $(slideShowElement + ' > div').last().remove();
 
+                        geolocateElement(newElement);
+
                         //if the auto slide advance is set, stop it, then start again.
                         if (interval != null) {
                             clearInterval(interval);
@@ -66,15 +72,9 @@
                         interval = setInterval(nextSlide, DELAY_SPEED);
                     }
 
-
-                    // Our projection.
-                    var xy = d3.geo.mercator();
-                    var path = d3.geo.path().projection(xy);
-
                     var states = d3.select("#home_worldmap_canvas").append("svg").append("g").attr("id", "states");
                     d3.json("{{ STATIC_URL }}js/world-countries.json",
                         function(collection) {
-                            console.debug("caling to refresh");
 
                             xy.scale(320);
                             var translate = xy.translate();
@@ -87,8 +87,55 @@
                                 .data(collection.features)
                                 .enter().append("path")
                                 .attr("d", path);
+
+                            slides.each(function() {
+                                geolocateElement($(this));
+                            });
                         }
                     );
+
+                    function geolocateElement(element)
+                    {
+                        var geodata = element.attr("geodata");
+
+                        if (geodata.length > 0) {
+                            geodata = geodata.substr(1, geodata.length - 2);
+                            geodata = geodata.split(",");
+                            // Make appear a point in the map
+                            var pos = [parseFloat(geodata[1]), parseFloat(geodata[0])];
+                            geolocate(pos);
+                        }
+                    }
+
+                    function geolocate(pos)
+                    {
+                        pos = xy(pos);
+
+                        d3.select("#home_worldmap_canvas svg")
+                            .append("svg:circle")
+                            .style("fill-opacity", "0.1")
+                            .style("fill", "red")
+                            .attr("r", 10)
+                            .attr("cx", pos[0])
+                            .attr("cy", pos[1])
+                            .transition()
+                            .delay(0)
+                            .duration(1000)
+                            .attr("r", 1.5)
+                            .style("fill-opacity", "1")
+                            .each("end", animateSecondStep);
+                    }
+
+                    function animateSecondStep()
+                    {
+                        d3.select(this)
+                        .transition()
+                            .duration(35000)
+                            .style("fill-opacity", "0")
+                            .each("end", function() {
+                                d3.select(this).remove();
+                            });
+                    };
 
                 });
             </script>

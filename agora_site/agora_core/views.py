@@ -37,7 +37,7 @@ from endless_pagination.views import AjaxListView
 from agora_site.agora_core.models import Agora, Election, Profile, CastVote
 from agora_site.agora_core.forms import (CreateAgoraForm, CreateElectionForm,
     VoteForm)
-from agora_site.misc.utils import RequestCreateView
+from agora_site.misc.utils import RequestCreateView, geolocate_ip
 
 class FormActionView(TemplateView):
     '''
@@ -237,7 +237,9 @@ class CreateAgoraView(RequestCreateView):
             'Agora %(agoraname)s successful! Now start to configure and use '
             'it.') % dict(agoraname=agora.name))
 
-        action.send(self.request.user, verb='created', action_object=agora)
+        action.send(self.request.user, verb='created', action_object=agora,
+            ipaddr=self.request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
 
         return reverse('agora-view',
             kwargs=dict(username=agora.creator.username, agoraname=agora.name))
@@ -284,7 +286,8 @@ class CreateElectionView(RequestCreateView):
                 'successful!') % extra_data)
 
             action.send(self.request.user, verb='created', action_object=election,
-                target=election.agora)
+                target=election.agora, ipaddr=self.request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
         else:
             messages.add_message(self.request, messages.SUCCESS, _('Creation of '
                 'Election <a href="%(election_url)s">%(electionname)s</a> in '
@@ -293,7 +296,8 @@ class CreateElectionView(RequestCreateView):
                 'approval</strong>.') % extra_data)
 
             action.send(self.request.user, verb='proposed', action_object=election,
-                target=election.agora)
+                target=election.agora, ipaddr=self.request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
             # TODO: send notification to agora admins
 
         return reverse('election-view',
@@ -471,7 +475,8 @@ class AgoraActionChooseDelegateView(FormActionView):
         vote.save()
 
         action.send(self.request.user, verb='delegated', action_object=vote,
-            target=agora)
+            target=agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=geolocate_ip(request.META.get('REMOTE_ADDR')))
 
         vote.action_id = Action.objects.filter(actor_object_id=self.request.user.id,
             verb='delegated', action_object_object_id=vote.id,
@@ -509,7 +514,9 @@ class AgoraActionJoinView(FormActionView):
         agora.members.add(request.user)
         agora.save()
 
-        action.send(request.user, verb='joined', action_object=agora)
+        action.send(request.user, verb='joined', action_object=agora,
+            ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=geolocate_ip(request.META.get('REMOTE_ADDR')))
 
         # TODO: send an email to the user
         messages.add_message(request, messages.SUCCESS, _('You joined '
@@ -543,7 +550,9 @@ class AgoraActionLeaveView(FormActionView):
         agora.members.remove(request.user)
         agora.save()
 
-        action.send(request.user, verb='left', action_object=agora)
+        action.send(request.user, verb='left', action_object=agora,
+            ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=geolocate_ip(request.META.get('REMOTE_ADDR')))
 
         # TODO: send an email to the user
         messages.add_message(request, messages.SUCCESS, _('You left '
@@ -574,7 +583,9 @@ class AgoraActionRemoveAdminMembershipView(FormActionView):
         agora.admins.remove(request.user)
         agora.save()
 
-        action.send(request.user, verb='removed admin membership', action_object=agora)
+        action.send(request.user, verb='removed admin membership',
+            action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=geolocate_ip(request.META.get('REMOTE_ADDR')))
 
         # TODO: send an email to the user
         messages.add_message(request, messages.SUCCESS, _('You removed your '

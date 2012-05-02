@@ -49,6 +49,8 @@ class CreateAgoraForm(django_forms.ModelForm):
         election.agora = agora
         election.creator = self.request.user
         election.name = "delegation"
+        # Delegation elections do not actually need an url
+        election.url = "http://example.com/delegation/has/no/url/" + str(uuid.uuid4())
         election.description = election.short_description = "voting used for delegation"
         election.election_type = Agora.ELECTION_TYPES[1][0] # simple delegation
         election.uuid = str(uuid.uuid4())

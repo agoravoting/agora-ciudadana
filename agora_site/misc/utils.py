@@ -4,13 +4,15 @@ taken from
 http://www.djangosnippets.org/snippets/377/
 """
 
-import datetime
 from django.db import models
 from django.db.models import signals
 from django.conf import settings
 from django.utils import simplejson as json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.views.generic import CreateView
+
+import datetime
+import pygeoip
 
 class FormRequestMixin(object):
     '''
@@ -96,3 +98,19 @@ class JSONField(models.TextField):
 ##
 from south.modelsinspector import add_introspection_rules
 add_introspection_rules([], ["^agora_site\.misc\.utils\.JSONField"])
+
+GEOIP = None
+
+def geolocate_ip(ip_addr):
+    '''
+    Given an ip address, geolocates it, returning a tuple(latitude, longitude)
+    '''
+    global GEOIP
+
+    try:
+        if not GEOIP:
+            GEOIP = pygeoip.GeoIP(settings.GEOIP_DB_PATH)
+        data = GEOIP.record_by_addr(ip_addr)
+        return [data["latitude"], data["longitude"]]
+    except Exception, e:
+        return [0, 0]
