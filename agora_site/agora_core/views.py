@@ -15,17 +15,20 @@
 
 import datetime
 
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib import messages
+from django.contrib.sites.models import Site
 from django.conf.urls import patterns, url, include
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.core.mail import EmailMultiAlternatives, EmailMessage, send_mail, send_mass_mail
 from django.utils import simplejson as json
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.shortcuts import redirect, get_object_or_404
+from django.template.loader import render_to_string
 from django.views.generic import TemplateView, ListView, CreateView, FormView
 from django.views.i18n import set_language as django_set_language
 from django import http
@@ -38,7 +41,7 @@ from endless_pagination.views import AjaxListView
 from agora_site.agora_core.models import Agora, Election, Profile, CastVote
 from agora_site.agora_core.forms import (CreateAgoraForm, CreateElectionForm,
     VoteForm)
-from agora_site.misc.utils import RequestCreateView, geolocate_ip
+from agora_site.misc.utils import RequestCreateView, geolocate_ip, get_protocol
 
 class FormActionView(TemplateView):
     '''
@@ -95,7 +98,7 @@ class HomeView(TemplateView):
 
     #def get_context_data(self, **kwargs):
         #context = super(HomeView, self).get_context_data(**kwargs)
-        #if self.request.user.is_authenticated() and not self.request.user.is_anonymous():
+         #if self.request.user.is_authenticated() and not self.request.user.is_anonymous():
             #context['activity'] = user_stream(request.user)
         #else:
             #context['activity'] = Action.objects.public()[:10]
@@ -314,7 +317,27 @@ class CreateElectionView(RequestCreateView):
             action.send(self.request.user, verb='proposed', action_object=election,
                 target=election.agora, ipaddr=self.request.META.get('REMOTE_ADDR'),
             geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
-            # TODO: send notification to agora admins
+
+        context= dict(election=election,
+            cancel_emails_url='/user/cancel_email_notifications',
+            action_user_url='/%s' % election.creator.username,
+            site=Site.objects.get_current(),
+            protocol=get_protocol(self.request)
+        )
+
+        for admin in election.agora.admins.all():
+            context['to'] = admin
+
+            email = EmailMultiAlternatives(
+                subject=_('Election created'),
+                body=render_to_string('agora_core/emails/election_created.txt',
+                    context),
+                to=[admin.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/election_created.html',
+                    context), "text/html")
+            email.send()
 
         follow(self.request.user, election, actor_only=False)
 

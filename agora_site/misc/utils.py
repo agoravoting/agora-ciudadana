@@ -4,11 +4,12 @@ taken from
 http://www.djangosnippets.org/snippets/377/
 """
 
+from django.conf import settings
+from django.core import mail as django_mail
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.db.models import signals
-from django.conf import settings
 from django.utils import simplejson as json
-from django.core.serializers.json import DjangoJSONEncoder
 from django.views.generic import CreateView
 
 import datetime
@@ -114,3 +115,12 @@ def geolocate_ip(ip_addr):
         return [data["latitude"], data["longitude"]]
     except Exception, e:
         return [0, 0]
+
+def get_protocol(request):
+    '''
+    Given the request object, returns either 'https' or 'http' appropiately
+    '''
+    if request.is_secure():
+        return 'https'
+    else:
+        return 'http'

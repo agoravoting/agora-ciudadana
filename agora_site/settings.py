@@ -229,6 +229,8 @@ CRISPY_FAIL_SILENTLY = not DEBUG
 # the smtp as by default
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+DEFAULT_FROM_EMAIL = 'noreply@localhost'
+
 USERENA_SIGNIN_REDIRECT_URL = '/'
 
 USERENA_REDIRECT_ON_SIGNOUT = '/'
