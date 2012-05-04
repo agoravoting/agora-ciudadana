@@ -26,6 +26,56 @@
                 </div>
             </div>
         </div>
+    {% elif action.verb == 'started following' and action.target and action.target_content_type.name == 'agora' %}
+        {% url user-view action.actor.username as user_view_url%}
+        <a href="{{ user_view_url }}" class="mugshot">
+            <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
+        </a>
+        <div class="action-body">
+            <div class="action-title">
+                {% url agora-view action.actor.username action.target.name as agora_view_url %}
+                {% with isotime=action.timestamp|date:"c" %}
+                    {% blocktrans with username=action.actor.username agoraname=action.target.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">started
+                    following</strong> agora <a href="{{ agora_view_url }}">{{ username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+                {% endwith %}
+            </div>
+
+            <div class="action-detail">
+                <a href="{{ agora_view_url }}" class="mugshot">
+                    <img src="{{ action.target.get_mugshot_url }}" alt="{{ action.actor.username }}/{{ action.target.name }}" />
+                </a>
+                <div class="detail-body">
+                    <strong class="action-title"><a href="{{ agora_view_url }}">{{ action.actor.username }}/{{ action.target.name }}</a></strong>
+                    <p>{{ action.target.short_description }}</p>
+                </div>
+            </div>
+        </div>
+    {% elif action.verb == 'stopped following' and action.target and action.target_content_type.name == 'agora' %}
+        {% url user-view action.actor.username as user_view_url%}
+        <a href="{{ user_view_url }}" class="mugshot">
+            <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
+        </a>
+        <div class="action-body">
+            <div class="action-title">
+                {% url agora-view action.actor.username action.target.name as agora_view_url %}
+                {% with isotime=action.timestamp|date:"c" %}
+                    {% blocktrans with username=action.actor.username agoraname=action.target.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">stopped
+                    following</strong> agora <a href="{{ agora_view_url }}">{{ username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+                {% endwith %}
+            </div>
+
+            <div class="action-detail">
+                <a href="{{ agora_view_url }}" class="mugshot">
+                    <img src="{{ action.target.get_mugshot_url }}" alt="{{ action.actor.username }}/{{ action.target.name }}" />
+                </a>
+                <div class="detail-body">
+                    <strong class="action-title"><a href="{{ agora_view_url }}">{{ action.actor.username }}/{{ action.target.name }}</a></strong>
+                    <p>{{ action.target.short_description }}</p>
+                </div>
+            </div>
+        </div>
     {% elif action.verb == 'created' and action.action_object and action.action_object_content_type.name == 'election' %}
         {% url user-view action.actor.username as user_view_url%}
         <a href="{{ user_view_url }}" class="mugshot">
@@ -48,6 +98,56 @@
                 <div class="detail-body">
                     <strong class="action-title"><a href="{{ election_view_url }}">{{ action.action_object.pretty_name }}</a></strong>
                     <p>{{ action.action_object.short_description }}</p>
+                </div>
+            </div>
+        </div>
+    {% elif action.verb == 'started following' and action.target and action.target_content_type.name == 'election' %}
+        {% url user-view action.actor.username as user_view_url%}
+        <a href="{{ user_view_url }}" class="mugshot">
+            <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
+        </a>
+        <div class="action-body">
+            <div class="action-title">
+                {% url agora-view action.target.agora.creator.username action.target.agora.name as agora_view_url %}
+                {% url election-view action.target.agora.creator.username action.target.agora.name action.target.name as election_view_url %}
+                {% with isotime=action.timestamp|date:"c" %}
+                    {% blocktrans with username=action.actor.username agora_creator_username=action.target.agora.creator.username agoraname=action.target.agora.name electionname=action.target.pretty_name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">started following</strong> election <a href="{{ election_view_url }}">{{ electionname }}</a> at <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+                {% endwith %}
+            </div>
+
+            <div class="action-detail">
+                <a href="{{ election_view_url }}" class="mugshot">
+                    <img src="{{ action.target.get_mugshot_url }}" alt="{{ action.target.pretty_name }}" />
+                </a>
+                <div class="detail-body">
+                    <strong class="action-title"><a href="{{ election_view_url }}">{{ action.target.pretty_name }}</a></strong>
+                    <p>{{ action.target.short_description }}</p>
+                </div>
+            </div>
+        </div>
+    {% elif action.verb == 'stopped following' and action.target and action.target_content_type.name == 'election' %}
+        {% url user-view action.actor.username as user_view_url%}
+        <a href="{{ user_view_url }}" class="mugshot">
+            <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
+        </a>
+        <div class="action-body">
+            <div class="action-title">
+                {% url agora-view action.target.agora.creator.username action.target.agora.name as agora_view_url %}
+                {% url election-view action.target.agora.creator.username action.target.agora.name action.target.name as election_view_url %}
+                {% with isotime=action.timestamp|date:"c" %}
+                    {% blocktrans with username=action.actor.username agora_creator_username=action.target.agora.creator.username agoraname=action.target.agora.name electionname=action.target.pretty_name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">stopped following</strong> election <a href="{{ election_view_url }}">{{ electionname }}</a> at <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+                {% endwith %}
+            </div>
+
+            <div class="action-detail">
+                <a href="{{ election_view_url }}" class="mugshot">
+                    <img src="{{ action.target.get_mugshot_url }}" alt="{{ action.target.pretty_name }}" />
+                </a>
+                <div class="detail-body">
+                    <strong class="action-title"><a href="{{ election_view_url }}">{{ action.target.pretty_name }}</a></strong>
+                    <p>{{ action.target.short_description }}</p>
                 </div>
             </div>
         </div>
@@ -127,7 +227,6 @@
             </div>
         </div>
     {% elif action.verb == 'delegated' and action.target and action.target_content_type.name == 'agora' and action.action_object and action.action_object_content_type.name == 'cast vote' and action.action_object.is_plaintext %}
-        {# action|debug_object #}
         {% url user-view action.actor.username as user_view_url %}
         {% url agora-view action.target.creator.username action.target.name as agora_view_url %}
         <a href="{{ user_view_url }}" class="mugshot">
@@ -156,6 +255,61 @@
                     </div>
                 </div>
             {% endwith %}
+        </div>
+    {% elif action.verb == 'started following' and action.target and action.target_content_type.name == 'user' %}
+        {% url user-view action.actor.username as user_view_url %}
+        {% url user-view action.target.username as followed_user_view_url %}
+        <a href="{{ user_view_url }}" class="mugshot">
+            <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
+        </a>
+        <div class="action-body">
+            <div class="action-title">
+                {% blocktrans with username=action.actor.username followed_username=action.target.username isotime=action.timestamp|date:"c" %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">started following</strong> to <a href="{{ followed_user_view_url }}">{{ followed_username }}</a>{% endblocktrans %}
+                <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+            </div>
+            <div class="action-detail">
+                <a href="{{ followed_user_view_url }}" class="mugshot">
+                    <img src="{{ action.target.get_profile.get_mugshot_url }}" alt="{{ action.target.username }}" />
+                </a>
+                <div class="detail-body">
+                    <strong class="action-title"><a href="{{ followed_user_view_url }}">{{ action.target.username }}</a></strong>
+                    <p>
+                    {% if action.target.get_profile.short_description %}
+                        {{ action.target.get_profile.short_description }}
+                    {% else %}
+                        {% blocktrans with num_agoras=action.target.agoras.count num_votes=action.target.get_profile.count_direct_votes %}Is a member of {{num_agoras}} agoras and has emitted {{num_votes}} direct votes.{% endblocktrans %}
+                    {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% elif action.verb == 'stopped following' and action.target and action.target_content_type.name == 'user' %}
+        {% url user-view action.actor.username as user_view_url %}
+        {% url user-view action.target.username as followed_user_view_url %}
+        <a href="{{ user_view_url }}" class="mugshot">
+            <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
+        </a>
+        <div class="action-body">
+            <div class="action-title">
+                {% blocktrans with username=action.actor.username followed_username=action.target.username isotime=action.timestamp|date:"c" %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a>
+                <strong class="verb">stopped following</strong> to <a href="{{ followed_user_view_url }}">{{ followed_username }}</a>{% endblocktrans %}
+                <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+            </div>
+            <div class="action-detail">
+                <a href="{{ followed_user_view_url }}" class="mugshot">
+                    <img src="{{ action.target.get_profile.get_mugshot_url }}" alt="{{ action.target.username }}" />
+                </a>
+                <div class="detail-body">
+                    <strong class="action-title"><a href="{{ followed_user_view_url }}">{{ action.target.username }}</a></strong>
+                    <p>
+                    {% if action.target.get_profile.short_description %}
+                        {{ action.target.get_profile.short_description }}
+                    {% else %}
+                        {% blocktrans with num_agoras=action.target.agoras.count num_votes=action.target.get_profile.count_direct_votes %}Is a member of {{num_agoras}} agoras and has emitted {{num_votes}} direct votes.{% endblocktrans %}
+                    {% endif %}
+                    </p>
+                </div>
+            </div>
         </div>
     {% elif action.verb == 'joined' and action.action_object and action.action_object_content_type.name == 'agora' %}
         {% url user-view action.actor.username as user_view_url%}

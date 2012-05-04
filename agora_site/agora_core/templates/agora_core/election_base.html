@@ -127,8 +127,8 @@
         <div class="row election-content-row">
             <div class="content">
                 {% block election_content %}
-                    {% if election.description != election.short_description or true %}
-                        <div class="election-description">
+                    {% if election.description != election.short_description %}
+                        <div class="main-description">
                             {{ election.description|textile }}
                         </div>
                     {% endif %}

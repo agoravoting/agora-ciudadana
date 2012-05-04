@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load endless %}
 {% load agora_utils %}
+{% load markup %}
 
 {% block script-block %}
     <script src="{{ STATIC_URL }}js/endless_pagination/endless.js" type="text/javascript" charset="utf-8"></script>
@@ -125,6 +126,11 @@
 {% block content %}
     <div class="row">
         <div class="span8 agora-left-side">
+            {% if agora.biograpy|length > 0 and agora.biography != agora.short_description and agora.biography %}
+                <div class="main-description">
+                    {{ election.biograpy|textile|truncatewords_html:130 }}
+                </div>
+            {% endif %}
             {% block agora_content %}
                 {% paginate activity %}
                 {% for action in activity %}

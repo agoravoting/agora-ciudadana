@@ -31,6 +31,7 @@ from django.views.i18n import set_language as django_set_language
 from django import http
 
 from actstream.models import model_stream, election_stream, Action
+from actstream.actions import follow, unfollow, is_following
 from actstream.signals import action
 from endless_pagination.views import AjaxListView
 
@@ -86,6 +87,19 @@ class HomeView(TemplateView):
         context['activity'] = Action.objects.public()[:10]
         return context
 
+#class HomeView(TemplateView):
+    #'''
+    #Shows an agora main page
+    #'''
+    #template_name = 'agora_core/home_activity.html'
+
+    #def get_context_data(self, **kwargs):
+        #context = super(HomeView, self).get_context_data(**kwargs)
+        #if self.request.user.is_authenticated() and not self.request.user.is_anonymous():
+            #context['activity'] = user_stream(request.user)
+        #else:
+            #context['activity'] = Action.objects.public()[:10]
+        #return context
 
 class AgoraView(TemplateView):
     '''
@@ -241,6 +255,8 @@ class CreateAgoraView(RequestCreateView):
             ipaddr=self.request.META.get('REMOTE_ADDR'),
             geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
 
+        follow(self.request.user, agora, actor_only=False)
+
         return reverse('agora-view',
             kwargs=dict(username=agora.creator.username, agoraname=agora.name))
 
@@ -300,6 +316,8 @@ class CreateElectionView(RequestCreateView):
             geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
             # TODO: send notification to agora admins
 
+        follow(self.request.user, election, actor_only=False)
+
         return reverse('election-view',
             kwargs=dict(username=election.agora.creator.username,
                 agoraname=election.agora.name, electionname=election.name))
@@ -347,6 +365,9 @@ class StartElectionView(FormActionView):
         election.create_hash()
         election.save()
         # TODO: send an email to everyone interested
+
+        if not is_following(self.request.user, election):
+            follow(self.request.user, election, actor_only=False)
 
         return self.go_next(request)
 
@@ -401,6 +422,9 @@ class VoteView(CreateView):
         # NOTE: The form is in charge in this case of creating the related action
 
         # TODO: send mail too
+
+        if not is_following(self.request.user, self.election):
+            follow(self.request.user, self.election, actor_only=False)
 
         return reverse('election-view',
             kwargs=dict(username=self.election.agora.creator.username,
@@ -489,6 +513,9 @@ class AgoraActionChooseDelegateView(FormActionView):
                 agora=agora.creator.username+'/'+agora.name,
                 username=delegate.username))
 
+        if not is_following(self.request.user, delegate):
+            follow(self.request.user, delegate, actor_only=False)
+
         return self.go_next(request)
 
     @method_decorator(login_required)
@@ -524,6 +551,9 @@ class AgoraActionJoinView(FormActionView):
             'available at this agora') % dict(
                 agora=agora.creator.username+'/'+agora.name))
 
+        if not is_following(self.request.user, agora):
+            follow(self.request.user, agora, actor_only=False)
+
         return self.go_next(request)
 
     @method_decorator(login_required)
@@ -557,6 +587,9 @@ class AgoraActionLeaveView(FormActionView):
         # TODO: send an email to the user
         messages.add_message(request, messages.SUCCESS, _('You left '
             '%(agora)s.') % dict(agora=agora.creator.username+'/'+agora.name))
+
+        if is_following(self.request.user, agora):
+            unfollow(self.request.user, agora)
 
         return self.go_next(request)
 
