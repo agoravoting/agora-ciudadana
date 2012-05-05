@@ -132,8 +132,8 @@
                 </div>
             {% endif %}
             {% block agora_content %}
-                {% paginate activity %}
-                {% for action in activity %}
+                {% paginate object_list %}
+                {% for action in object_list %}
                     {% include "agora_core/action_item.html" %}
                 {% endfor %}
                 {% show_more %}

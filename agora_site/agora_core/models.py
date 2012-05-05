@@ -22,6 +22,7 @@ import simplejson
 
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
@@ -98,6 +99,34 @@ class Profile(UserenaLanguageBaseProfile):
         Returns the list of valid direct votes by this user
         '''
         return CastVote.objects.filter(voter=self.user, is_direct=True, is_counted=True).count()
+
+    def has_delegated_in_agora(self, agora):
+        '''
+        Returns whether this user has currently delegated his vote in a given
+        agora.
+        '''
+        return bool(CastVote.objects.filter(voter=self.user, is_direct=False,
+            election=agora.delegation_election, is_counted=True).count())
+
+    def get_delegation_in_agora(self, agora):
+        '''
+        Returns this user current vote regarding his delegation (if any)
+        '''
+        try:
+            return CastVote.objects.filter(voter=self.user, is_direct=False,
+                election=agora.delegation_election, is_counted=True).order_by('-casted_at_date')[0]
+        except Exception, e:
+            return None
+
+    def get_vote_in_election(self, election):
+        '''
+        Returns the vote of this user in the given agora if any
+        '''
+        try:
+            return CastVote.objects.filter(voter=self.user, election=election,
+                is_counted=True).order_by('-casted_at_date')[0]
+        except Exception, e:
+            return None
 
 from django.db.models.signals import post_save
 
@@ -267,12 +296,20 @@ class Agora(models.Model):
         '''
         Returns the QuerySet with the active delegates
         '''
-        # TODO, returning only the members is not accurate, because non-members
-        # can also be a delegate. It should be more like "anyone who is a member
-        # OR has ever voted even not being a member", and it should be sorted
-        # by last vote
-        return self.members
+        return User.objects.filter(
+            id__in=CastVote.objects.filter(is_counted=True, is_direct=True,
+                invalidated_at_date=None, election__agora__id=self.id).values('id').query)
 
+    def active_nonmembers_delegates(self):
+        '''
+        Same as active_delegates but all of those who are not currently a member
+        of the agora.
+        '''
+        return User.objects.filter(
+            id__in=CastVote.objects.filter(is_counted=True, is_direct=True,
+                invalidated_at_date=None, election__agora__id=self.id)
+            )\
+            .exclude(id__in=self.members.values('id').query)
 
     def approved_elections(self):
         '''
@@ -854,6 +891,26 @@ class CastVote(models.Model):
             return get_object_or_404(User,
                 username=self.data['answers'][0]['choices'][0]['username'])
 
+    def get_chained_first_pretty_answer(self):
+        if self.data['a'] == 'vote':
+            if self.data['answers'][0]['a'] != 'plaintext-answer':
+                raise Exception('Invalid direct vote')
+
+            question_title = self.election.questions[0]['question']
+            return dict(question=question_title,
+                answer=self.data['answers'][0]['choices'][0])
+        elif self.data['a'] == 'delegated-vote':
+            if self.data['answers'][0]['a'] != 'plaintext-delegate':
+                raise Exception('Invalid delegated vote')
+
+            delegate = self.get_delegate()
+            delegate_vote = delegate.get_vote_in_election(self.election)
+            if delegate_vote:
+                return delegate_vote.get_chained_first_pretty_answer()
+            else:
+                return None
+        else:
+            raise Exception('Invalid vote')
     def get_first_pretty_answer(self):
         if self.data['a'] == 'vote':
             if self.data['answers'][0]['a'] != 'plaintext-answer':

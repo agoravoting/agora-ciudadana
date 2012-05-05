@@ -19,7 +19,6 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.sites.models import Site
 from django.conf.urls import patterns, url, include
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -33,15 +32,16 @@ from django.views.generic import TemplateView, ListView, CreateView, FormView
 from django.views.i18n import set_language as django_set_language
 from django import http
 
-from actstream.models import model_stream, election_stream, Action
 from actstream.actions import follow, unfollow, is_following
+from actstream.models import model_stream, election_stream, Action
 from actstream.signals import action
 from endless_pagination.views import AjaxListView
 
 from agora_site.agora_core.models import Agora, Election, Profile, CastVote
 from agora_site.agora_core.forms import (CreateAgoraForm, CreateElectionForm,
     VoteForm)
-from agora_site.misc.utils import RequestCreateView, geolocate_ip, get_protocol
+from agora_site.misc.utils import (RequestCreateView, geolocate_ip,
+    get_protocol, get_base_email_context, send_mass_html_mail)
 
 class FormActionView(TemplateView):
     '''
@@ -104,17 +104,28 @@ class HomeView(TemplateView):
             #context['activity'] = Action.objects.public()[:10]
         #return context
 
-class AgoraView(TemplateView):
+class AgoraView(AjaxListView):
     '''
     Shows an agora main page
     '''
     template_name = 'agora_core/agora_activity.html'
+    page_template = 'agora_core/agora_activity_page.html'
 
-    def get_context_data(self, username, agoraname, **kwargs):
-        context = super(AgoraView, self).get_context_data(**kwargs)
-        context['agora'] = agora = get_object_or_404(Agora, name=agoraname,
+    def get_queryset(self):
+        username = self.kwargs["username"]
+        agoraname = self.kwargs["agoraname"]
+
+        self.agora = get_object_or_404(Agora, name=agoraname,
             creator__username=username)
-        context['activity'] = model_stream(agora)
+        return model_stream(self.agora)
+
+    def get(self, request, *args, **kwargs):
+        self.kwargs = kwargs
+        return super(AgoraView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(AgoraView, self).get_context_data(**kwargs)
+        context['agora'] = self.agora
         return context
 
 class AgoraBiographyView(TemplateView):
@@ -134,7 +145,7 @@ class AgoraMembersView(AjaxListView):
     Shows the biography of an agora
     '''
     template_name = 'agora_core/agora_members.html'
-    page_template='agora_core/user_list_page.html'
+    page_template = 'agora_core/user_list_page.html'
 
     def get_queryset(self):
         username = self.kwargs["username"]
@@ -318,18 +329,16 @@ class CreateElectionView(RequestCreateView):
                 target=election.agora, ipaddr=self.request.META.get('REMOTE_ADDR'),
             geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
 
-        context= dict(election=election,
-            cancel_emails_url='/user/cancel_email_notifications',
+        context = get_base_email_context(self.request).update(dict(
+            election=election,
             action_user_url='/%s' % election.creator.username,
-            site=Site.objects.get_current(),
-            protocol=get_protocol(self.request)
-        )
+        ))
 
         for admin in election.agora.admins.all():
             context['to'] = admin
 
             email = EmailMultiAlternatives(
-                subject=_('Election created'),
+                subject=_('Election %s created') % election.pretty_name,
                 body=render_to_string('agora_core/emails/election_created.txt',
                     context),
                 to=[admin.email])
@@ -387,7 +396,46 @@ class StartElectionView(FormActionView):
         election.voting_starts_at_date = datetime.datetime.now()
         election.create_hash()
         election.save()
-        # TODO: send an email to everyone interested
+
+        context = get_base_email_context(self.request).update(dict(
+            election=election,
+            election_url=reverse('election-view',
+                kwargs=dict(username=election.agora.creator.username,
+                    agoraname=election.agora.name, electionname=election.name)),
+            agora_url=reverse('agora-view',
+                kwargs=dict(username=election.agora.creator.username,
+                    agoraname=election.agora.name)),
+        ))
+
+        # List of emails to send. tuples are of format:
+        # 
+        # (subject, text, html, from_email, recipient)
+        datatuples = []
+
+        # NOTE: for now, electorate is dynamic and just taken from the election's
+        # agora members' list
+        for voter in election.agora.members.all():
+            datatuples.append((
+                _('Vote in election %s') % election.pretty_name,
+                render_to_string('agora_core/emails/election_started.txt',
+                    context),
+                render_to_string('agora_core/emails/election_started.html',
+                    context),
+                None,
+                [voter.email]))
+
+        # Also notify third party delegates
+        for voter in election.agora.active_nonmembers_delegates():
+            datatuples.append((
+                _('Vote in election %s') % election.pretty_name,
+                render_to_string('agora_core/emails/election_started.txt',
+                    context),
+                render_to_string('agora_core/emails/election_started.html',
+                    context),
+                None,
+                [voter.email]))
+
+        send_mass_html_mail(datatuples)
 
         if not is_following(self.request.user, election):
             follow(self.request.user, election, actor_only=False)
@@ -444,7 +492,30 @@ class VoteView(CreateView):
 
         # NOTE: The form is in charge in this case of creating the related action
 
-        # TODO: send mail too
+        context = get_base_email_context(self.request).update(dict(
+            election=self.election,
+            election_url=reverse('election-view',
+                kwargs=dict(username=self.election.agora.creator.username,
+                    agoraname=self.election.agora.name, electionname=self.election.name)),
+            agora_url=reverse('agora-view',
+                kwargs=dict(username=self.election.agora.creator.username,
+                    agoraname=self.election.agora.name)),
+        ))
+
+        email = EmailMultiAlternatives(
+            subject=_('Vote casted for election %s') % self.election.pretty_name,
+            body=render_to_string('agora_core/emails/vote_casted.txt',
+                context),
+            to=[self.request.user.email])
+
+        email.attach_alternative(
+            render_to_string('agora_core/emails/vote_casted.html',
+                context), "text/html")
+        email.send()
+
+
+        send_mass_html_mail(datatuples)
+
 
         if not is_following(self.request.user, self.election):
             follow(self.request.user, self.election, actor_only=False)

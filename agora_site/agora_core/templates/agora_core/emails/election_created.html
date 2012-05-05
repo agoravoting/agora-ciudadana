@@ -22,6 +22,6 @@
 {% endif %}
 <p>--<br/>
 {% blocktrans with to_username=to.username site_name=site.name site_domain=site.domain %}
-This message was sent to {{ to_username }}. If you want to stop receiving these message from {{ site_name }}, please <a href="{{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}">click here</a></p>
-{% endblocktrans %}
+This message was sent to {{ to_username }}. If you want to stop receiving these message from {{ site_name }}, please <a href="{{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}">click here</a>
+{% endblocktrans %}</p>
 {% endautoescape %}

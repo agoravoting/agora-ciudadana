@@ -29,6 +29,23 @@ def last_election_voted(user, agora):
 def get_perms(election, user):
     return election.get_perms(user)
 
+@register.filter
+def has_delegated_in_agora(user, agora):
+    return user.has_delegated_in_agora(agora)
+
+@register.filter
+def get_delegation_in_agora(user, agora):
+    return user.get_delegation_in_agora(agora)
+
+@register.filter
+def get_delegate_in_agora(user, agora):
+    return user.get_delegation_in_agora(agora).get_delegate()
+
+@register.filter
+def get_vote_in_election(user, election):
+    return user.get_vote_in_election(election)
+
+
 @register.tag
 def functioncall():
     """
