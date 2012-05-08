@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load endless %}
+{% load agora_utils %}
+
+{% block running-board-wrapper-class %}home-loggedin{% endblock %}
+
+{% block running-board  %}
+    <div class="span3">
+        <div>
+            <a href="{% url agora-new %}" title="Create a new agora">
+                <img src="{{ STATIC_URL }}img/home_step1.png" id="home_step1_img" />
+                <h2>1</h2>
+                <h3>{% trans "Create a new agora" %}</h3>
+                <p>{% trans "Create the place where the votings of your group will be held." %}</p>
+            </a>
+        </div>
+    </div>
+    <div class="span3">
+        <div>
+        <a href="" title="Create a new election">
+            <img src="{{ STATIC_URL }}img/home_step2.png" id="home_step2_img" />
+            <h2>2</h2>
+            <h3>{% trans "Create a new election" %}</h3>
+            <p>{% trans "Create or propose in an agora a question to put it to the vote." %}</p>
+        </a>
+        </div>
+    </div>
+    <div class="span3">
+        <div>
+            <a href="" title="Delegate and vote">
+                <img src="{{ STATIC_URL }}img/home_step3.png" id="home_step3_img" />
+                <h2>3</h2>
+                <h3>{% trans "Delegate and vote" %}</h3>
+                <p>{% trans "You can vote on each question brought up in the agora, or delegate." %}</p>
+            </a>
+        </div>
+    </div>
+    <div class="span3">
+        <div class="last">
+            <a href="" title="Be social">
+                <img src="{{ STATIC_URL }}img/home_step4.png" id="home_step4_img" />
+                <h2>4</h2>
+                <h3>{% trans "Be social" %}</h3>
+                <p>{% trans "Follow a friend. Create a delegate. Comment. Participate." %}</p>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content-wrapper-class %}home{% endblock %}
+
+{% block content %}
+{% endblock %}

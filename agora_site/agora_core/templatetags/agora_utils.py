@@ -102,6 +102,37 @@ def pretty_date(date):
     return date.strftime(_('Internationalized format for a date, see python '
         'documentation for strftime for more details.', '%B %d'))
 
+@register.filter
+def elections_grouped_by_date(elections):
+    '''
+    Returns the list of elections given, but grouped by relevant dates, in a
+    list of pairs like:
+
+        dict(date1=(election1, election2, ...), date2=(election3, election4, ...))
+    '''
+    grouping = dict()
+    last_date = None
+
+    for election in elections:
+        end_date = None
+        if election.voting_extended_until_date:
+            end_date = election.voting_extended_until_date.date()
+
+        start_date = election.voting_starts_at_date.date()
+
+        if start_date not in grouping:
+            grouping[start_date] = (election,)
+        elif election not in grouping[start_date]:
+            grouping[start_date] += (election,)
+
+        if end_date and start_date != end_date:
+            if end_date not in grouping:
+                grouping[end_date] = (election,)
+            elif election not in grouping[end_date]:
+                grouping[end_date] += (election,)
+
+    return grouping
+
 ACTIVE_TAB_NAME = 'ACTIVETABS'
 DEFAULT_NAMESPACE = 'default'
 

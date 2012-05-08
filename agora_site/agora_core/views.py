@@ -33,7 +33,7 @@ from django.views.i18n import set_language as django_set_language
 from django import http
 
 from actstream.actions import follow, unfollow, is_following
-from actstream.models import model_stream, election_stream, Action
+from actstream.models import model_stream, election_stream, Action, user_stream
 from actstream.signals import action
 from endless_pagination.views import AjaxListView
 
@@ -79,30 +79,30 @@ class SetLanguageView(FormActionView):
 
         return django_set_language(self.request)
 
-class HomeView(TemplateView):
+class HomeView(AjaxListView):
     '''
-    Shows an agora main page
+    Shows main page. It's different for non-logged in users and logged in users:
+    for the former, we show a carousel of news nicely geolocated in a map; for
+    the later, we show the user's activity stream along with the calendar of
+    relevant elections and the like at the sidebar.
     '''
     template_name = 'agora_core/home_activity.html'
+    template_name_logged_in = 'agora_core/home_loggedin_activity.html'
+    page_template = 'agora_core/agora_activity_page.html'
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated() and not self.request.user.is_anonymous():
+            # change template
+            self.template_name = self.template_name_logged_in
+            return user_stream(self.request.user)
+        else:
+            return Action.objects.public()[:10]
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        context['activity'] = Action.objects.public()[:10]
+        if self.request.user.is_authenticated() and not self.request.user.is_anonymous():
+            pass
         return context
-
-#class HomeView(TemplateView):
-    #'''
-    #Shows an agora main page
-    #'''
-    #template_name = 'agora_core/home_activity.html'
-
-    #def get_context_data(self, **kwargs):
-        #context = super(HomeView, self).get_context_data(**kwargs)
-         #if self.request.user.is_authenticated() and not self.request.user.is_anonymous():
-            #context['activity'] = user_stream(request.user)
-        #else:
-            #context['activity'] = Action.objects.public()[:10]
-        #return context
 
 class AgoraView(AjaxListView):
     '''

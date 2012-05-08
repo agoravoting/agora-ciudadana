@@ -8,7 +8,7 @@
 {% block content %}
         <div class="row election-content-row">
             <div id="activity_item_list">
-                {% for action in activity %}
+                {% for action in object_list %}
                     {% include "agora_core/action_item.html" %}
                 {% endfor %}
             </div>

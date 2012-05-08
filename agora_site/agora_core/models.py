@@ -226,39 +226,6 @@ class Agora(models.Model):
             result_tallied_at_date__lt=datetime.datetime.now()).order_by(
                 '-voting_extended_until_date')
 
-    def grouped_by_date_open_elections(self):
-        '''
-        Same list of elections as in get_open_elections, but grouped by
-        relevant dates, in a list of pairs like:
-
-            dict(date1=(election1, election2, ...), date2=(election3, election4, ...))
-        '''
-
-        elections = self.get_open_elections()
-
-        grouping = dict()
-        last_date = None
-
-        for election in elections:
-            end_date = None
-            if election.voting_extended_until_date:
-                end_date = election.voting_extended_until_date.date()
-
-            start_date = election.voting_starts_at_date.date()
-
-            if start_date not in grouping:
-                grouping[start_date] = (election,)
-            elif election not in grouping[start_date]:
-                grouping[start_date] += (election,)
-
-            if end_date and start_date != end_date:
-                if end_date not in grouping:
-                    grouping[end_date] = (election,)
-                elif election not in grouping[end_date]:
-                    grouping[end_date] += (election,)
-
-        return grouping
-
     # Stablishes a default option for elections
     is_vote_secret = models.BooleanField(_('Is Vote Secret'), default=False)
 

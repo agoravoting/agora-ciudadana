@@ -149,37 +149,39 @@
                 </div>
                 <div class="row-fluid agora-dates">
                     <ul>
-                        {% for elections_date, elections in agora.grouped_by_date_open_elections.items %}
-                            <li>
-                                <time datetime="{{ elections_date.isoformat }}">{{ elections_date|pretty_date }}</time>
-                                <ul>
-                                    {% for election in elections %}
-                                        {% if forloop.counter < 5 %}
-                                            <li>
-                                                <a href="{% url election-view agora.creator.username agora.name election.name %}">
-                                                    <img src="{{ STATIC_URL }}img/small-icon-envelope.png" />
-                                                    {{ election.pretty_name|truncatechars:40 }}
-                                                </a>
-                                                {# TODO: create templatefilter to check if user voted in an election #}
-                                                <img src="{{ STATIC_URL }}img/small-icon-ok.png" />
-                                            </li>
-                                        {% elif forloop.counter == 5 %}
-                                            <li>
-                                                <a class="remaining" href="{ % url agora-elections-view agora.creator.username agora.name elections_date "open" %}">
-                                                {% blocktrans with remaining=forloop.revcounter0 %}
-                                                    ... and {{ remaning }} more elections
-                                                {% endblocktrans %}
-                                                </a>
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                        {% empty %}
-                            <li class="empty">
-                                {% trans "No elections yet, perhaps you want to create one?" %}
-                            </li>
-                        {% endfor %}
+                        {% with election_groups=agora.get_open_elections|elections_grouped_by_date %}
+                            {% for elections_date, elections in election_groups.items %}
+                                <li>
+                                    <time datetime="{{ elections_date.isoformat }}">{{ elections_date|pretty_date }}</time>
+                                    <ul>
+                                        {% for election in elections %}
+                                            {% if forloop.counter < 5 %}
+                                                <li>
+                                                    <a href="{% url election-view agora.creator.username agora.name election.name %}">
+                                                        <img src="{{ STATIC_URL }}img/small-icon-envelope.png" />
+                                                        {{ election.pretty_name|truncatechars:40 }}
+                                                    </a>
+                                                    {# TODO: create templatefilter to check if user voted in an election #}
+                                                    <img src="{{ STATIC_URL }}img/small-icon-ok.png" />
+                                                </li>
+                                            {% elif forloop.counter == 5 %}
+                                                <li>
+                                                    <a class="remaining" href="{ % url agora-elections-view agora.creator.username agora.name elections_date "open" %}">
+                                                    {% blocktrans with remaining=forloop.revcounter0 %}
+                                                        ... and {{ remaning }} more elections
+                                                    {% endblocktrans %}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% empty %}
+                                <li class="empty">
+                                    {% trans "No elections yet, perhaps you want to create one?" %}
+                                </li>
+                            {% endfor %}
+                        {% endwith %}
                     </ul>
                 </div>
             </div>
