@@ -329,7 +329,9 @@ class CreateElectionView(RequestCreateView):
                 target=election.agora, ipaddr=self.request.META.get('REMOTE_ADDR'),
             geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
 
-        context = get_base_email_context(self.request).update(dict(
+        context = get_base_email_context(self.request)
+
+        context.update(dict(
             election=election,
             action_user_url='/%s' % election.creator.username,
         ))
@@ -397,7 +399,9 @@ class StartElectionView(FormActionView):
         election.create_hash()
         election.save()
 
-        context = get_base_email_context(self.request).update(dict(
+        context = get_base_email_context(self.request)
+
+        context.update(dict(
             election=election,
             election_url=reverse('election-view',
                 kwargs=dict(username=election.agora.creator.username,
@@ -492,7 +496,10 @@ class VoteView(CreateView):
 
         # NOTE: The form is in charge in this case of creating the related action
 
-        context = get_base_email_context(self.request).update(dict(
+        context = get_base_email_context(self.request)
+
+        context.update(dict(
+            to=self.request.user,
             election=self.election,
             election_url=reverse('election-view',
                 kwargs=dict(username=self.election.agora.creator.username,
@@ -512,10 +519,6 @@ class VoteView(CreateView):
             render_to_string('agora_core/emails/vote_casted.html',
                 context), "text/html")
         email.send()
-
-
-        send_mass_html_mail(datatuples)
-
 
         if not is_following(self.request.user, self.election):
             follow(self.request.user, self.election, actor_only=False)
