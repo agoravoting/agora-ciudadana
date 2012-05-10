@@ -3,6 +3,15 @@
 {% load endless %}
 {% load agora_utils %}
 
+{% block script-block %}
+    <script src="{{ STATIC_URL }}js/endless_pagination/endless.js" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ STATIC_URL }}js/endless_pagination/endless_on_scroll.js" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/javascript" charset="utf-8">
+        var endless_on_scroll_margin = 300;
+    </script>
+{% endblock %}
+
 {% block running-board-wrapper-class %}home-loggedin{% endblock %}
 
 {% block running-board  %}
