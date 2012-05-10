@@ -98,11 +98,6 @@ class HomeView(AjaxListView):
         else:
             return Action.objects.public()[:10]
 
-    def get_context_data(self, **kwargs):
-        context = super(HomeView, self).get_context_data(**kwargs)
-        if self.request.user.is_authenticated() and not self.request.user.is_anonymous():
-            pass
-        return context
 
 class AgoraView(AjaxListView):
     '''

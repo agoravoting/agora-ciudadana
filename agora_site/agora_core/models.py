@@ -78,12 +78,13 @@ class Profile(UserenaLanguageBaseProfile):
         Returns the list of current and future elections that will or are
         taking place in our agoras.
         '''
-        return Election.objects.filter(
+        elections = Election.objects.filter(
             Q(voting_extended_until_date__gt=datetime.datetime.now()) |
             Q(voting_extended_until_date=None, voting_starts_at_date__lt=datetime.datetime.now()),
             Q(is_approved=True, agora__in=self.user.agoras.all())
             ).order_by('voting_extended_until_date',
                 'voting_starts_at_date')
+        return elections
 
     def get_requested_elections(self):
         '''
