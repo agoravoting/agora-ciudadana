@@ -67,7 +67,7 @@
                     {% endif %}
                     {% if "end_election" in permissions %}
                         <li>
-                            <a class="action-form-link" href="{ % url election-action-end election.agora.creator.username election.agora.name election.name %}">
+                            <a class="action-form-link" href="{% url election-action-stop election.agora.creator.username election.agora.name election.name %}">
                                 <i class="icon-stop"></i>
                                 {% trans "Stop voting period and publish results" %}
                             </a>

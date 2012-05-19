@@ -35,18 +35,18 @@
             <div class="action-title">
                 {% url agora-view action.actor.username action.target.name as agora_view_url %}
                 {% with isotime=action.timestamp|date:"c" %}
-                    {% blocktrans with username=action.actor.username agoraname=action.target.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">started
-                    following</strong> agora <a href="{{ agora_view_url }}">{{ username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    {% blocktrans with username=action.actor.username agora_username=action.target.creator.username agoraname=action.target.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">started
+                    following</strong> agora <a href="{{ agora_view_url }}">{{ agora_username }}/{{ agoraname }}</a>{% endblocktrans %}
                     <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
                 {% endwith %}
             </div>
 
             <div class="action-detail">
                 <a href="{{ agora_view_url }}" class="mugshot">
-                    <img src="{{ action.target.get_mugshot_url }}" alt="{{ action.actor.username }}/{{ action.target.name }}" />
+                    <img src="{{ action.target.get_mugshot_url }}" alt="{{ action.target.creator.username }}/{{ action.target.name }}" />
                 </a>
                 <div class="detail-body">
-                    <strong class="action-title"><a href="{{ agora_view_url }}">{{ action.actor.username }}/{{ action.target.name }}</a></strong>
+                    <strong class="action-title"><a href="{{ agora_view_url }}">{{ action.target.creator.username }}/{{ action.target.name }}</a></strong>
                     <p>{{ action.target.short_description }}</p>
                 </div>
             </div>
@@ -60,18 +60,18 @@
             <div class="action-title">
                 {% url agora-view action.actor.username action.target.name as agora_view_url %}
                 {% with isotime=action.timestamp|date:"c" %}
-                    {% blocktrans with username=action.actor.username agoraname=action.target.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">stopped
-                    following</strong> agora <a href="{{ agora_view_url }}">{{ username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    {% blocktrans with username=action.actor.username agora_username=action.target.creator.username agoraname=action.target.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">stopped
+                    following</strong> agora <a href="{{ agora_view_url }}">{{ agora_username }}/{{ agoraname }}</a>{% endblocktrans %}
                     <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
                 {% endwith %}
             </div>
 
             <div class="action-detail">
                 <a href="{{ agora_view_url }}" class="mugshot">
-                    <img src="{{ action.target.get_mugshot_url }}" alt="{{ action.actor.username }}/{{ action.target.name }}" />
+                    <img src="{{ action.target.get_mugshot_url }}" alt="{{ action.target.creator.username }}/{{ action.target.name }}" />
                 </a>
                 <div class="detail-body">
-                    <strong class="action-title"><a href="{{ agora_view_url }}">{{ action.actor.username }}/{{ action.target.name }}</a></strong>
+                    <strong class="action-title"><a href="{{ agora_view_url }}">{{ action.target.creator.username }}/{{ action.target.name }}</a></strong>
                     <p>{{ action.target.short_description }}</p>
                 </div>
             </div>

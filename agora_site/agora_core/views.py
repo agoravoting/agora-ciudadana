@@ -37,6 +37,7 @@ from actstream.models import model_stream, election_stream, Action, user_stream
 from actstream.signals import action
 from endless_pagination.views import AjaxListView
 
+from agora_site.agora_core.templatetags.agora_utils import get_delegate_in_agora
 from agora_site.agora_core.models import Agora, Election, Profile, CastVote
 from agora_site.agora_core.forms import (CreateAgoraForm, CreateElectionForm,
     VoteForm)
@@ -414,6 +415,11 @@ class StartElectionView(FormActionView):
         # NOTE: for now, electorate is dynamic and just taken from the election's
         # agora members' list
         for voter in election.agora.members.all():
+            context['to'] = voter
+            try:
+                context['delegate'] = get_delegate_in_agora(voter, election.agora)
+            except:
+                pass
             datatuples.append((
                 _('Vote in election %s') % election.pretty_name,
                 render_to_string('agora_core/emails/election_started.txt',
@@ -425,6 +431,7 @@ class StartElectionView(FormActionView):
 
         # Also notify third party delegates
         for voter in election.agora.active_nonmembers_delegates():
+            context['to'] = voter
             datatuples.append((
                 _('Vote in election %s') % election.pretty_name,
                 render_to_string('agora_core/emails/election_started.txt',
@@ -451,14 +458,48 @@ class StopElectionView(FormActionView):
             name=electionname, agora__name=agoraname,
             agora__creator__username=username)
 
-        if not election.has_perms('stop_election', request.user):
+        if not election.has_perms('end_election', request.user):
             messages.add_message(self.request, messages.ERROR, _('You don\'t '
                 'have permission to stop the election.'))
             return self.go_next(request)
 
-        election.voting_starts_at_date = datetime.datetime.now()
+        election.voting_extended_until_date = election.voting_ends_at_date = datetime.datetime.now()
         election.save()
-        # TODO: send an email to everyone interested
+        election.compute_result()
+
+        context = get_base_email_context(self.request)
+
+        context.update(dict(
+            election=election,
+            election_url=reverse('election-view',
+                kwargs=dict(username=election.agora.creator.username,
+                    agoraname=election.agora.name, electionname=election.name)),
+            agora_url=reverse('agora-view',
+                kwargs=dict(username=election.agora.creator.username,
+                    agoraname=election.agora.name)),
+        ))
+
+        # List of emails to send. tuples are of format:
+        #
+        # (subject, text, html, from_email, recipient)
+        datatuples = []
+
+        for vote in election.get_all_votes():
+            context['to'] = vote.voter
+            try:
+                context['delegate'] = get_delegate_in_agora(vote.voter, election.agora)
+            except:
+                pass
+            datatuples.append((
+                _('Election results for %s') % election.pretty_name,
+                render_to_string('agora_core/emails/election_results.txt',
+                    context),
+                render_to_string('agora_core/emails/election_results.html',
+                    context),
+                None,
+                [vote.voter.email]))
+
+        send_mass_html_mail(datatuples)
 
         return self.go_next(request)
 
@@ -643,8 +684,8 @@ class AgoraActionJoinView(FormActionView):
             'available at this agora') % dict(
                 agora=agora.creator.username+'/'+agora.name))
 
-        if not is_following(self.request.user, agora):
-            follow(self.request.user, agora, actor_only=False)
+        if not is_following(request.user, agora):
+            follow(request.user, agora, actor_only=False)
 
         return self.go_next(request)
 

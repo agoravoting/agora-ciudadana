@@ -9,11 +9,11 @@
 
         <p>Election <a href="{{ protocol }}://{{ site_domain }}{{ election_url }}">{{ election_name }}</a> at <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_username }}/{{ agora_name }}</a> has started, and now you can vote on it. Check it out!</p>
 
-        <p>{{ delegate_username }} is your delegate in this agora, so if you don't vote, he may vote for you.</p>
+        <p>{{delegate_username}} is your delegate in this agora, so if you don't vote, he may vote for you.</p>
 
         <h3>Election description</h3>
 
-        {{ election_description }} 
+        {{ election_description }}
     {% endblocktrans %}
 {% else %}
     {% blocktrans with to_username=to.username election_name=election.pretty_name agora_username=election.agora.creator.username agora_name=election.agora.name site_domain=site.domain election_description=election.description|textile %}

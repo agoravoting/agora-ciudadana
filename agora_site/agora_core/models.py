@@ -485,7 +485,7 @@ class Election(models.Model):
     questions = JSONField(_('Questions'), null=True)
 
 
-    delegated_votes = models.ManyToManyField(User, related_name='delegated_votes',
+    delegated_votes = models.ManyToManyField('CastVote', related_name='delegated_votes',
         verbose_name=_('Delegated votes'))
 
     #use_voter_aliases = models.BooleanField(_('Use Voter Aliases'), default=False)
@@ -610,6 +610,8 @@ class Election(models.Model):
         Counts both direct and delegated votes
         '''
 
+        # TODO: When you have first voted directly in a voting and then you
+        # delegate your vote in the agora, it's currently not counted
         if self.ballot_is_open():
             q=self.cast_votes.filter(is_counted=True, invalidated_at_date=None).values('voter__id').query
 
@@ -689,6 +691,256 @@ class Election(models.Model):
             tmp = _("Start date for voting is not set yet. ")
             desc += tmp.__unicode__()
         return desc
+
+    def compute_result(self):
+        '''
+        Computes the result of the election
+        '''
+
+        # Query with the direct votes in this election
+        q=self.cast_votes.filter(
+            is_counted=True,
+            invalidated_at_date=None
+        ).values('voter__id').query
+
+        # Query with the delegated votes
+        self.delegated_votes = CastVote.objects.filter(
+            election=self.agora.delegation_election,
+            is_direct=False,
+            is_counted=True,
+            invalidated_at_date=None
+            # we exclude from this query the people who voted directly so that
+            # you cannot vote twice
+        ).exclude(
+            is_direct=False,
+            voter__id__in=q
+        )
+
+        # These are all the people that can vote in this election
+        self.electorate = self.agora.members.all()
+
+        # These are all the direct votes, even from those who are not elegible
+        # to vote in this election
+        nodes = self.cast_votes.filter(is_direct=True, invalidated_at_date=None)
+
+        # These are all the delegation votes, i.e. those that point to a delegate
+        edges = self.agora.delegation_election.cast_votes.filter(is_direct=False, invalidated_at_date=None)
+
+        # list of saved paths
+        # A path has the following format:
+        #{
+            #user_ids: [id1, id2, ...],
+            #answers: [ question1_plaintext_answer, question2_plaintext_answer, ..],
+            #is_broken_loop: True|False
+        #}
+        # note that the user_ids do NOT include the last user in the chain
+        # also note that is_broken_loop is set to true if either the loop is
+        # closed (infinite) or does not end in a leaf (=node)
+        paths = []
+
+        # a dictionary where the number of delegated voted per delegate is stored
+        # the keys are the user_ids of the delegates, and the keys are the 
+        # number of delegated votes
+        delegation_counts = dict()
+
+        def update_delegation_counts(vote):
+            '''
+            function used to update the delegation counts, for each valid vote.
+            it basically goes deep in the delegation chain, updating the count
+            for each delegate
+            '''
+            def increment_delegate(delegate_id):
+                '''
+                Increments the delegate count or sets it to one if doesn't exist
+                '''
+                if delegate_id in delegation_counts:
+                    delegation_counts[delegate_id] += 1
+                else:
+                    delegation_counts[delegate_id] = 1
+
+            while not vote.is_direct:
+                next_delegate = vote.get_delegate()
+                if nodes.filter(voter__id=voter.id).count() == 1:
+                    increment_delegate(next_delegate.id)
+                    return
+                elif edges.filter(voter__id=voter.id).count() == 1:
+                    increment_delegate(next_delegate.id)
+                    vote = edges.filter(voter__id=voter.id)[0]
+                else:
+                    raise Exception('Broken delegation chain')
+
+        def get_path_for_user(user_id):
+            '''
+            Given an user id, checks if it's already in any known path, and 
+            return it if that path is found. Returns None otherwise.
+            '''
+            for path in paths:
+                if user_id in path["user_ids"]:
+                    return path
+            return None
+
+        def get_vote_for_voter(voter):
+            '''
+            Given a voter (an User), returns the vote of the vote of this voter
+            on the election. It will be either a proxy or a direct vote
+            '''
+            if nodes.filter(voter__id=voter.id).count() == 1:
+                return nodes.filter(voter__id=voter.id)[0]
+            else:
+                return edges.filter(voter__id=voter.id)[0]
+
+        if self.is_vote_secret or self.election_type != Agora.ELECTION_TYPES[0][0]:
+            raise Exception('do not know how to count this type of voting')
+
+        # result is in the same format as get_result_pretty(). Initialized here
+        result = self.questions
+        for question in result:
+            for answer in question['answers']:
+                answer['by_direct_vote_count'] = 0
+                answer['by_delegation_count'] = 0
+
+        def add_vote(user_answers, is_delegated):
+            '''
+            Given the answers of a vote, update the result
+            '''
+            i = 0
+            for question in result:
+                for answer in question['answers']:
+                    if answer['value'] in user_answers[i]["choices"]:
+                        if is_delegated:
+                            answer['by_delegation_count'] += 1
+                        else:
+                            answer['by_direct_vote_count'] += 1
+                        break
+                i += 1
+
+        # Here we go! for each voter, we try to find it in the paths, or in
+        # the proxy vote chain, or in the direct votes pool
+        for voter in self.electorate.all():
+            path_for_user = get_path_for_user(voter.id)
+
+            # Found the user in a known path
+            if path_for_user and not path_for_user['is_closed_loop']:
+                # found a path to which the user belongs
+
+                # update delegation counts
+                update_delegation_counts(self.get_vote_for_voter(voter))
+                add_vote(path_for_user['answers'], is_delegated=True)
+            # found the user in a direct vote
+            elif nodes.filter(voter__id=voter.id).count() == 1:
+                vote = nodes.filter(voter__id=voter.id)[0]
+                update_delegation_counts(vote)
+                add_vote(vote.data["answers"], is_delegated=False)
+            # found the user in an edge (delegated vote), but not yet in a path
+            elif edges.filter(voter__id=voter.id).count() == 1:
+                path = dict(
+                    user_ids=[voter.id],
+                    answers=[]
+                )
+
+                current_edge = edges.filter(voter__id=voter.id)[0]
+                loop = True
+                while loop:
+                    delegate = current_edge.get_delegate()
+                    path_for_user = get_path_for_user(delegate.id)
+
+                    if delegate in path['user_ids']:
+                        # wrong path! loop found, vote won't be counted
+                        path['is_broken_loop'] = True
+                        paths += [path]
+                        loop = False
+                    elif path_for_user and not path_for_user['is_closed_loop']:
+                        # extend the found path and count a new vote
+                        path_for_user['user_ids'] += path['user_ids']
+
+                        # Count the vote
+                        i = 0
+                        add_vote(path_for_user['answers'], is_delegated=True)
+                        update_delegation_counts(vote)
+                        loop = False
+                    elif nodes.filter(voter__id=delegate.id).count() == 1:
+                        # The delegate voted directly, add the path and count
+                        # the vote
+                        vote = nodes.filter(voter__id=delegate.id)[0]
+                        paths += [path]
+                        add_vote(vote.data['answers'], is_delegated=True)
+                        update_delegation_counts(vote)
+                        loop = False
+
+                    elif edges.filter(voter__id=delegate.id).count() == 1:
+                        # the delegate also delegated, so continue looping
+                        path['user_ids'] += [delegate.id]
+                    else:
+                        # broken path! we cannot continue
+                        path['is_broken_loop'] = True
+                        paths += [path]
+                        loop = False
+
+        # all votes counted, finish result
+        # contains the actual result in JSON format
+        # something like:
+        #{
+            #"a": "result",
+            #"counts": [
+                #[
+                    #<QUESTION_1_CANDIDATE_1_COUNT>, <QUESTION_1_CANDIDATE_2_COUNT>,
+                    #<QUESTION_1_CANDIDATE_3_COUNT>
+                #],
+                #[
+                    #<QUESTION_2_CANDIDATE_1_COUNT>, <QUESTION_2_CANDIDATE_2_COUNT>
+                #]
+            #]
+        #}
+        self.result = dict(
+            a= "result",
+            counts = []
+        )
+
+
+        #{
+            #"a": "result",
+            #"election_counts": [
+                #[
+                    #<QUESTION_1_CANDIDATE_1_COUNT>, <QUESTION_1_CANDIDATE_2_COUNT>,
+                    #<QUESTION_1_CANDIDATE_3_COUNT>
+                #],
+                #[
+                    #<QUESTION_2_CANDIDATE_1_COUNT>, <QUESTION_2_CANDIDATE_2_COUNT>
+                #]
+            #],
+            # "delegation_counts": [
+                #{
+                    #'delegate_username': '<DELEGATE_1_USERNAME>',
+                    #'count': <DELEGATE_1_COUNT>,
+                #},
+                #{
+                    #'delegate_username': '<DELEGATE_1_USERNAME>',
+                    #'count': <DELEGATE_1_COUNT>,
+                #}
+            # ]
+            #
+        #}
+        self.delegated_votes_result = dict(
+            a= "result",
+            election_counts = [],
+            delegation_counts = [dict(delegate_username=key, count=value)
+                for key, value in delegation_counts]
+        )
+        i = 0
+        for question in result:
+            j = 0
+            question_result = []
+            question_delegation_result = []
+            for answer in question['answers']:
+                question_result += [answer['by_direct_vote_count'] + answer['by_delegation_count']]
+                question_delegation_result += [answer['by_delegation_count']]
+            self.result['counts'] += [question_result]
+            self.delegated_votes_result['election_counts'] += [question_delegation_result]
+
+        self.result = result
+
+        # TODO: update result_hash
+        self.save()
 
     def get_results_pretty(self):
         '''
@@ -856,8 +1108,13 @@ class CastVote(models.Model):
         if self.data['a'] != 'delegated-vote' or not self.is_plaintext():
             raise Exception('This kind of vote does not have delegate user')
         else:
-            return get_object_or_404(User,
-                username=self.data['answers'][0]['choices'][0]['username'])
+            return get_object_or_404(User, username=self.get_delegate_id())
+
+    def get_delegate_id(self):
+        if self.data['a'] != 'delegated-vote' or not self.is_plaintext():
+            raise Exception('This kind of vote does not have delegate user')
+        else:
+            return self.data['answers'][0]['choices'][0]['username']
 
     def get_chained_first_pretty_answer(self):
         if self.data['a'] == 'vote':
