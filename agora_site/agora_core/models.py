@@ -400,54 +400,35 @@ class Election(models.Model):
 
     # contains the actual result in JSON format
     # something like:
-    #{
-        #"a": "result",
-        #"counts": [
-            #[
-                #<QUESTION_1_CANDIDATE_1_COUNT>, <QUESTION_1_CANDIDATE_2_COUNT>,
-                #<QUESTION_1_CANDIDATE_3_COUNT>
-            #],
-            #[
-                #<QUESTION_2_CANDIDATE_1_COUNT>, <QUESTION_2_CANDIDATE_2_COUNT>
-            #]
-        #]
-    #}
-    result = JSONField(_('Direct Votes Result'), null=True) 
-
-    # This will be stored not in the delegation election, but in the
-    # normal election which will store both the result and the delegated votes
-    # result. 
-    # 
-    # Note that "election_counts" is the count of the number of votes received
-    # indirectly via delegation for each answer for each question of the election,
-    # meanwhile "delegation_counts" is the count of how many delegated votes did
-    # each delegate who received votes received.
-    # 
-    # Format:
-    #{
-        #"a": "result",
-        #"election_counts": [
-            #[
-                #<QUESTION_1_CANDIDATE_1_COUNT>, <QUESTION_1_CANDIDATE_2_COUNT>,
-                #<QUESTION_1_CANDIDATE_3_COUNT>
-            #],
-            #[
-                #<QUESTION_2_CANDIDATE_1_COUNT>, <QUESTION_2_CANDIDATE_2_COUNT>
-            #]
-        #],
-        # "delegation_counts": [
-            #{
-                #'delegate_username': '<DELEGATE_1_USERNAME>',
-                #'count': <DELEGATE_1_COUNT>,
-            #},
-            #{
-                #'delegate_username': '<DELEGATE_1_USERNAME>',
-                #'count': <DELEGATE_1_COUNT>,
-            #}
-        # ]
-        #
-    #}
-    delegated_votes_result = JSONField(_('Delegates Result'), null=True)
+    #[
+        #{
+            #u'a': u'ballot/question',
+            #u'tally_type': u'simple',
+            #u'max': 1,
+            #u'min': 0,
+            #u'question': u"What's the next big thing?",
+            #u'randomize_answer_order': True,
+            #u'answers': [
+                #{
+                    #u'a': u'ballot/answer',
+                    #u'by_delegation_count': 0,
+                    #u'by_direct_vote_count': 1,
+                    #u'url': u'',
+                    #u'value': u'Wadobo',
+                    #u'details': u''
+                #},
+                #{
+                    #u'a': u'ballot/answer',
+                    #u'by_delegation_count': 0,
+                    #u'by_direct_vote_count': 0,
+                    #u'url': u'',
+                    #u'value': u'Agora',
+                    #u'details': u''
+                #},
+        #},
+        #...
+    #]
+    result = JSONField(_('Election Result'), null=True)
 
     pretty_name = models.CharField(_('Pretty Name'), max_length=140)
 
@@ -938,14 +919,15 @@ class Election(models.Model):
             self.delegated_votes_result['election_counts'] += [question_delegation_result]
 
         self.result = result
+        self.delegated_votes_frozen_at_date = self.voters_frozen_at_date =\
+            self.result_tallied_at_date = datetime.datetime.now()
 
         # TODO: update result_hash
         self.save()
 
-    def get_results_pretty(self):
+    def get_result_pretty(self):
         '''
-        Returns a mix of self.questions and self.result +
-        self.delegated_votes_result. Format:
+        Returns self.result with total_count field. Format:
 
         #[
             #{
@@ -971,19 +953,12 @@ class Election(models.Model):
             #...
         #]
         '''
-        results_pretty = self.questions
+        result_pretty = self.result
         i = 0
-        for question in results_pretty:
-            j = 0
+        for question in result_pretty:
             for answer in question['answers']:
-                by_direct_vote_count = self.result["counts"][i][j]
-                by_delegation_count = self.delegated_votes_result['election_counts'][i][j]
-                answer['total_count'] = by_direct_vote_count + by_delegation_count
-                answer['by_direct_vote_count'] = by_direct_vote_count
-                answer['by_delegation_count'] = by_delegation_count
-                j += 1
-            i += 1
-        return results_pretty
+                answer['total_count'] = answer['by_direct_vote_count'] + answer['by_delegation_count']
+        return result_pretty
 
 class CastVote(models.Model):
     '''

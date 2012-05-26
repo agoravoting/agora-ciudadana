@@ -204,9 +204,8 @@
                         {% endblock %}
                         {% if election.result_tallied_at_date %}
                             <h3>{% trans "Results" %}
-                            <a href="{ % url election-results election.agora.creator.username election.agora.name election.name %}">View details</a>
                             </h3>
-                            {% for question in election.get_results_pretty %}
+                            {% for question in election.get_result_pretty %}
                                 <div class="election-results">
                                     <h4>{{ question|getitem:'question' }}</h4>
                                     <ul>

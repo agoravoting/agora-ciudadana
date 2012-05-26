@@ -33,7 +33,7 @@ from django.views.i18n import set_language as django_set_language
 from django import http
 
 from actstream.actions import follow, unfollow, is_following
-from actstream.models import model_stream, election_stream, Action, user_stream
+from actstream.models import object_stream, election_stream, Action, user_stream
 from actstream.signals import action
 from endless_pagination.views import AjaxListView
 
@@ -113,7 +113,7 @@ class AgoraView(AjaxListView):
 
         self.agora = get_object_or_404(Agora, name=agoraname,
             creator__username=username)
-        return model_stream(self.agora)
+        return object_stream(self.agora)
 
     def get(self, request, *args, **kwargs):
         self.kwargs = kwargs
@@ -501,6 +501,10 @@ class StopElectionView(FormActionView):
 
         send_mass_html_mail(datatuples)
 
+        action.send(self.request.user, verb='published results', action_object=election,
+            target=election.agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=geolocate_ip(request.META.get('REMOTE_ADDR')))
+
         return self.go_next(request)
 
     @method_decorator(login_required)
@@ -568,7 +572,7 @@ class VoteView(CreateView):
         form = kwargs['form']
         context['vote_form'] = form
         context['election'] = form.election
-        context['activity'] = model_stream(form.election)
+        context['activity'] = election_stream(form.election)
         return context
 
     @method_decorator(login_required)
