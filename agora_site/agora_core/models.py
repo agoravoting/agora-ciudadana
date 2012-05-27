@@ -430,6 +430,8 @@ class Election(models.Model):
     #]
     result = JSONField(_('Election Result'), null=True)
 
+    delegated_votes_result = JSONField(_('Election Delegation Result'), null=True)
+
     pretty_name = models.CharField(_('Pretty Name'), max_length=140)
 
     name = models.CharField(_('name'), max_length=70)
@@ -956,8 +958,13 @@ class Election(models.Model):
         result_pretty = self.result
         i = 0
         for question in result_pretty:
+            total_votes = 0
             for answer in question['answers']:
                 answer['total_count'] = answer['by_direct_vote_count'] + answer['by_delegation_count']
+                total_votes += answer['total_count']
+            question['total_votes'] = total_votes
+            for answer in question['answers']:
+                answer['total_count_percentage'] = (answer['total_count'] * 100.0) / total_votes
         return result_pretty
 
 class CastVote(models.Model):

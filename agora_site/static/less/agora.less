@@ -6,6 +6,7 @@
 @green-background-color: #D4F8D9;
 @green-text-color: #00AA00;
 @sidebar-grey-text-color: #464748;
+@green-bright: #00D600;
 
 body {
     background-color: @footer-background-color;
@@ -690,6 +691,52 @@ body {
                     color: @green-text-color;
                     font-weight: bold;
                     font-size: 14px;
+                }
+            }
+
+            .election-results {
+                h4 {
+                    color: @sidebar-grey-text-color;
+                    padding-bottom: 10px;
+                }
+
+                ul {
+                    margin-left: 0;
+                }
+
+                li {
+                    display: block;
+                    font-size: 17px;
+                    color: @green-bright;
+                    font-weight: bold;
+                    text-transform: uppercase;
+
+                    em {
+                        color: @linkColor;
+                        font-style: normal;
+                        font-weight: normal;
+                        font-size: 12px;
+                        text-transform: none;
+                    }
+
+                    .progress {
+                        height: 42px;
+                        border-radius: 0;
+
+                        .bar {
+                            height: 42px;
+                            background-color: @green-bright;
+                            background-image: none;
+                            font-weight: bold;
+                            padding-top: 13px;
+                            text-align: left;
+
+                            color: white;
+                            font-size: 40px;
+                            font-family: "Sans, Arial";
+                            text-shadow: 0 0 10px @green-bright;
+                        }
+                    }
                 }
             }
         }

@@ -213,8 +213,8 @@
                                             <li>
                                                 {{ answer|getitem:'value' }} <em>({% blocktrans with count=answer|getitem:'total_count'|floatformat:"-2" %}{{ count }} votes{% endblocktrans %})</em>
                                                 <div class="progress progress-success">
-                                                    <div class="bar" style="width: {{ answer|getitem:'total_count' }}%">
-                                                    {{ answer|getitem:'total_count'|floatformat }}%
+                                                    <div class="bar" style="width: {{ answer|getitem:'total_count_percentage' }}%">
+                                                    {{ answer|getitem:'total_count_percentage'|floatformat }}%
                                                     </div>
                                                 </div>
                                             </li>
