@@ -40,7 +40,7 @@ from endless_pagination.views import AjaxListView
 from agora_site.agora_core.templatetags.agora_utils import get_delegate_in_agora
 from agora_site.agora_core.models import Agora, Election, Profile, CastVote
 from agora_site.agora_core.forms import (CreateAgoraForm, CreateElectionForm,
-    VoteForm)
+    VoteForm, PostCommentForm)
 from agora_site.misc.utils import (RequestCreateView, geolocate_ip,
     get_protocol, get_base_email_context, send_mass_html_mail)
 
@@ -380,6 +380,7 @@ class ElectionView(TemplateView):
         context['activity'] = election_stream(election)
         return context
 
+
 class StartElectionView(FormActionView):
     def post(self, request, username, agoraname, electionname, *args, **kwargs):
         election = get_object_or_404(Election,
@@ -520,13 +521,8 @@ class VoteView(CreateView):
 
     def get_form_kwargs(self):
         form_kwargs = super(VoteView, self).get_form_kwargs()
-        username = self.kwargs["username"]
-        agoraname = self.kwargs["agoraname"]
-        electionname = self.kwargs["electionname"]
         form_kwargs["request"] = self.request
-        form_kwargs["election"] = self.election = get_object_or_404(Election,
-            name=electionname, agora__name=agoraname,
-            agora__creator__username=username)
+        form_kwargs["election"] = self.election
         return form_kwargs
 
     def get_success_url(self):
@@ -577,6 +573,21 @@ class VoteView(CreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
+        username = kwargs["username"]
+        agoraname = kwargs["agoraname"]
+        electionname = kwargs["electionname"]
+        self.election = get_object_or_404(Election, name=electionname,
+            agora__name=agoraname, agora__creator__username=username)
+
+        # check if ballot is open
+        if not self.election.ballot_is_open():
+            messages.add_message(self.request, messages.ERROR, _('Sorry, '
+                'election is closed and thus you cannot vote.'))
+            election_url = reverse('election-view',
+                kwargs=dict(username=username, agoraname=agoraname,
+                    electionname=electionname))
+            return http.HttpResponseRedirect(election_url)
+
         return super(VoteView, self).dispatch(*args, **kwargs)
 
 class AgoraActionChooseDelegateView(FormActionView):
@@ -766,3 +777,52 @@ class AgoraActionRemoveAdminMembershipView(FormActionView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(AgoraActionRemoveAdminMembershipView, self).dispatch(*args, **kwargs)
+
+class ElectionCommentsView(RequestCreateView):
+    '''
+    Creates a new agora
+    '''
+    template_name = 'agora_core/election_comments.html'
+    form_class = PostCommentForm
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ElectionCommentsView, self).get_context_data(*args, **kwargs)
+        context['election'] = self.election
+        context['vote_form'] = VoteForm(self.request.POST, self.election)
+        context['activity'] = election_stream(self.election, verb='commented')
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super(ElectionCommentsView, self).get_form_kwargs()
+        kwargs['target_object'] = self.election
+        return kwargs
+
+    def get_success_url(self):
+        '''
+        After creating the comment, post the action and show last comments
+        '''
+        comment = self.object
+
+        messages.add_message(self.request, messages.SUCCESS, _('Your comment '
+            'was successfully posted.'))
+
+        action.send(self.request.user, verb='commented', target=self.election,
+            action_object=comment, ipaddr=self.request.META.get('REMOTE_ADDR'),
+            geolocation=geolocate_ip(self.request.META.get('REMOTE_ADDR')))
+
+        if not is_following(self.request.user, self.election):
+            follow(self.request.user, self.election, actor_only=False)
+
+        return reverse('election-comments',
+            kwargs=dict(username=self.election.agora.creator.username,
+                agoraname=self.election.agora.name,
+                electionname=self.election.name))
+
+    def dispatch(self, *args, **kwargs):
+        username = kwargs['username']
+        agoraname = kwargs['agoraname']
+        electionname = kwargs['electionname']
+        self.election = get_object_or_404(Election,
+            name=electionname, agora__name=agoraname,
+            agora__creator__username=username)
+        return super(ElectionCommentsView, self).dispatch(*args, **kwargs)

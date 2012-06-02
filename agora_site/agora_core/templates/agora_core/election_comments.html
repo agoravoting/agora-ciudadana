@@ -1,0 +1,20 @@
+{% extends 'agora_core/election_base.html' %}
+
+{% load i18n %}
+{% load agora_utils %}
+{% load crispy_forms_tags %}
+{% load comments %}
+
+{% block title %}{% trans "Comments" %} - {{ election.pretty_name }} - {{ election.agora.creator.username }}/{{ election.agora.name }}{% endblock %}
+
+{% block election-navigation %}{% activetab "election-nav" "comments" %}{{ block.super }}{% endblock %}
+{% block content-wrapper-class %}comments{% endblock %}
+
+{% block election_content %}
+
+{% if request.user.is_authenticated %}
+    {% crispy form %}
+{% endif %}
+
+{{ block.super }}
+{% endblock %}

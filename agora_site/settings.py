@@ -161,6 +161,7 @@ ACTSTREAM_ACTION_MODELS = [
     'agora_core.Agora',
     'agora_core.Election',
     'agora_core.CastVote',
+    'comments.Comment'
 ]
 
 # Modify the defaults to use BCrypt by default, because it's more secure, better

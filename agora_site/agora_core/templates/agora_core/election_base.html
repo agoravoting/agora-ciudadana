@@ -110,7 +110,7 @@
             <span class="badge badge-info">{{ election.get_all_votes.count }}</span></a>
         </li>
         <li {% ifactivetab "election-nav" "comments" %}class="active"{% endifactivetab %}>
-            <a href="{ % url election-comments election.agora.creator.username election.agora.name election.name %}">{% trans "Comments" %}
+            <a href="{% url election-comments election.agora.creator.username election.agora.name election.name %}">{% trans "Comments" %}
             {% get_comment_count for election as comment_count %}
             <span class="badge badge-info">{{ comment_count }}</span></a>
         </li>
@@ -136,6 +136,8 @@
                     {% paginate activity %}
                     {% for action in activity %}
                         {% include "agora_core/action_item.html" %}
+                    {% empty %}
+                        {% trans "No activity yet." %}
                     {% endfor %}
                     {% show_more %}
                 {% endblock %}

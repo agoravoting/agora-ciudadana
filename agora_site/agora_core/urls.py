@@ -26,7 +26,7 @@ from agora_site.agora_core.views import (HomeView, AgoraView, CreateAgoraView,
     ElectionView, ElectionDelegatesView, ElectionChooseDelegateView,
     ElectionVotesView, StartElectionView, StopElectionView, VoteView,
     AgoraActionChooseDelegateView, AgoraActionJoinView, AgoraActionLeaveView,
-    AgoraActionRemoveAdminMembershipView)
+    AgoraActionRemoveAdminMembershipView, ElectionCommentsView)
 from agora_site.misc.utils import RequestCreateView
 
 urlpatterns = patterns('',
@@ -66,6 +66,9 @@ urlpatterns = patterns('',
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)$',
         ElectionView.as_view(), name='election-view'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/comments$',
+        ElectionCommentsView.as_view(), name='election-comments'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/delegates$',
         ElectionDelegatesView.as_view(), name='election-delegates'),

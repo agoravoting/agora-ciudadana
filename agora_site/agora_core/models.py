@@ -639,8 +639,8 @@ class Election(models.Model):
         now = datetime.datetime.now()
 
         def timesince(dati):
-            return '<time class="timeago" title="%(isotime)s" ' +\
-                'datetime="%(isotime)s"></time>' % dict(isotime=dati.isoformat())
+            return ('<time class="timeago" title="%(isotime)s" '
+                'datetime="%(isotime)s"></time>') % dict(isotime=dati.isoformat())
 
         if self.ballot_is_open():
             tmp = _("Voting started %(start_date)s. " %\
@@ -653,19 +653,20 @@ class Election(models.Model):
             desc += tmp.__unicode__()
         elif self.voting_starts_at_date and self.voting_starts_at_date > now and\
             self.voting_extended_until_date:
-            tmp = _("Voting will start  %(start_date)s and finish " +
-                "%(end_date)s. " % dict(start_date=timesince(self.voting_starts_at_date),
+            tmp = _(("Voting will start  %(start_date)s and finish "
+                "%(end_date)s. ") % dict(start_date=timesince(self.voting_starts_at_date),
                     end_date=timesince(self.voting_extended_until_date)))
             desc += tmp.__unicode__()
         elif self.voting_starts_at_date and self.voting_starts_at_date < now and\
-            self.voting_extended_until_date:
-            tmp = _("Voting started %(start_date)s and will finish " +
-                "%(end_date)s. " % dict(start_date=timesince(self.voting_starts_at_date),
+            self.voting_extended_until_date and\
+            self.voting_extended_until_date > now:
+            tmp = _(("Voting started %(start_date)s and will finish "
+                "%(end_date)s. ") % dict(start_date=timesince(self.voting_starts_at_date),
                     end_date=timesince(self.voting_extended_until_date)))
             desc += tmp.__unicode__()
         elif self.result_tallied_at_date:
-            tmp = _("Voting started %(start_date)s and finished " +
-                "%(end_date)s. Results available since %(tally_date)s" %\
+            tmp = _(("Voting started %(start_date)s and finished "
+                "%(end_date)s. Results available since %(tally_date)s") %\
                     dict(start_date=timesince(self.voting_starts_at_date),
                         end_date=timesince(self.voting_extended_until_date),
                         tally_date=timesince(self.result_tallied_at_date)))
