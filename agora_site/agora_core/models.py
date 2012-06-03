@@ -492,17 +492,19 @@ class Election(models.Model):
 
     def get_winning_option(self):
         '''
-        Returns data of the winning option or throw an exception
+        Returns data of the winning option for the first question or throw an exception
         '''
         if not self.result:
             raise Exception('Election not tallied yet')
-        elif self.result['type'] != '2012/04/ElectionResult':
+        elif len(self.result) == 0 or self.result[0]['tally_type'] != 'simple':
             raise Exception('Unknown election result type: %s' % self.result['type'])
 
-        winner = dict(id=-1,  description='', votes=0.0, percent=0.0)
-        for item in self.result['data']:
-            if item['votes'] > winner['votes']:
-                winner = item
+        winner = dict(value='', total_count=0.0, total_count_percentage=0.0)
+
+        result = self.get_result_pretty()
+        for answer in result[0]['answers']:
+            if answer['total_count'] > winner['total_count']:
+                winner = answer
 
         return winner
 

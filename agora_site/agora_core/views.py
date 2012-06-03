@@ -33,16 +33,15 @@ from django.views.i18n import set_language as django_set_language
 from django import http
 
 from actstream.actions import follow, unfollow, is_following
-from actstream.models import object_stream, election_stream, Action, user_stream
+from actstream.models import (object_stream, election_stream, Action,
+    user_stream)
 from actstream.signals import action
 from endless_pagination.views import AjaxListView
 
 from agora_site.agora_core.templatetags.agora_utils import get_delegate_in_agora
 from agora_site.agora_core.models import Agora, Election, Profile, CastVote
-from agora_site.agora_core.forms import (CreateAgoraForm, CreateElectionForm,
-    VoteForm, PostCommentForm)
-from agora_site.misc.utils import (RequestCreateView, geolocate_ip,
-    get_protocol, get_base_email_context, send_mass_html_mail)
+from agora_site.agora_core.forms import *
+from agora_site.misc.utils import *
 
 class FormActionView(TemplateView):
     '''
@@ -89,7 +88,7 @@ class HomeView(AjaxListView):
     '''
     template_name = 'agora_core/home_activity.html'
     template_name_logged_in = 'agora_core/home_loggedin_activity.html'
-    page_template = 'agora_core/agora_activity_page.html'
+    page_template = 'agora_core/action_items_page.html'
 
     def get_queryset(self):
         if self.request.user.is_authenticated() and not self.request.user.is_anonymous():
@@ -105,24 +104,24 @@ class AgoraView(AjaxListView):
     Shows an agora main page
     '''
     template_name = 'agora_core/agora_activity.html'
-    page_template = 'agora_core/agora_activity_page.html'
+    page_template = 'agora_core/action_items_page.html'
 
     def get_queryset(self):
-        username = self.kwargs["username"]
-        agoraname = self.kwargs["agoraname"]
-
-        self.agora = get_object_or_404(Agora, name=agoraname,
-            creator__username=username)
         return object_stream(self.agora)
-
-    def get(self, request, *args, **kwargs):
-        self.kwargs = kwargs
-        return super(AgoraView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(AgoraView, self).get_context_data(**kwargs)
         context['agora'] = self.agora
         return context
+
+    def dispatch(self, *args, **kwargs):
+        self.kwargs = kwargs
+        username = self.kwargs["username"]
+        agoraname = self.kwargs["agoraname"]
+
+        self.agora = get_object_or_404(Agora, name=agoraname,
+            creator__username=username)
+        return super(AgoraView, self).dispatch(*args, **kwargs)
 
 class AgoraBiographyView(TemplateView):
     '''
@@ -365,20 +364,32 @@ class CreateElectionView(RequestCreateView):
     def dispatch(self, *args, **kwargs):
         return super(CreateElectionView, self).dispatch(*args, **kwargs)
 
-class ElectionView(TemplateView):
+class ElectionView(AjaxListView):
     '''
     Shows an election main page
     '''
     template_name = 'agora_core/election_activity.html'
+    page_template = 'agora_core/action_items_page.html'
 
-    def get_context_data(self, username, agoraname, electionname, **kwargs):
+    def get_queryset(self):
+        return election_stream(self.election)
+
+    def get_context_data(self, *args, **kwargs):
         context = super(ElectionView, self).get_context_data(**kwargs)
-        context['election'] = election = get_object_or_404(Election,
+        context['election'] = self.election
+        context['vote_form'] = VoteForm(self.request.POST, self.election)
+        return context
+
+    def dispatch(self, *args, **kwargs):
+        self.kwargs = kwargs
+
+        username = kwargs['username']
+        agoraname = kwargs['agoraname']
+        electionname = kwargs['electionname']
+        self.election = get_object_or_404(Election,
             name=electionname, agora__name=agoraname,
             agora__creator__username=username)
-        context['vote_form'] = VoteForm(self.request.POST, election)
-        context['activity'] = election_stream(election)
-        return context
+        return super(ElectionView, self).dispatch(*args, **kwargs)
 
 
 class StartElectionView(FormActionView):
@@ -568,7 +579,7 @@ class VoteView(CreateView):
         form = kwargs['form']
         context['vote_form'] = form
         context['election'] = form.election
-        context['activity'] = election_stream(form.election)
+        context['object_list'] = election_stream(form.election)
         return context
 
     @method_decorator(login_required)
@@ -778,22 +789,38 @@ class AgoraActionRemoveAdminMembershipView(FormActionView):
     def dispatch(self, *args, **kwargs):
         return super(AgoraActionRemoveAdminMembershipView, self).dispatch(*args, **kwargs)
 
-class ElectionCommentsView(RequestCreateView):
-    '''
-    Creates a new agora
-    '''
+
+class ElectionCommentsView(ElectionView):
+    template_name = 'agora_core/election_comments.html'
+
+    def get_queryset(self):
+        return object_stream(self.election, verb='commented')
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ElectionCommentsView, self).get_context_data(*args, **kwargs)
+
+        if self.request.user.is_authenticated():
+            context['form'] = PostCommentForm(request=self.request,
+                target_object=self.election)
+            context['form'].helper.form_action = reverse('election-comments-post',
+                kwargs=dict(username=self.election.agora.creator.username,
+                    agoraname=self.election.agora.name,
+                    electionname=self.election.name))
+        return context
+
+class ElectionPostCommentView(RequestCreateView):
     template_name = 'agora_core/election_comments.html'
     form_class = PostCommentForm
 
     def get_context_data(self, *args, **kwargs):
-        context = super(ElectionCommentsView, self).get_context_data(*args, **kwargs)
+        context = super(ElectionPostCommentView, self).get_context_data(*args, **kwargs)
         context['election'] = self.election
         context['vote_form'] = VoteForm(self.request.POST, self.election)
-        context['activity'] = election_stream(self.election, verb='commented')
+        context['object_list'] = election_stream(self.election, verb='commented')
         return context
 
     def get_form_kwargs(self):
-        kwargs = super(ElectionCommentsView, self).get_form_kwargs()
+        kwargs = super(ElectionPostCommentView, self).get_form_kwargs()
         kwargs['target_object'] = self.election
         return kwargs
 
@@ -819,10 +846,76 @@ class ElectionCommentsView(RequestCreateView):
                 electionname=self.election.name))
 
     def dispatch(self, *args, **kwargs):
+        self.kwargs = kwargs
+
         username = kwargs['username']
         agoraname = kwargs['agoraname']
         electionname = kwargs['electionname']
         self.election = get_object_or_404(Election,
             name=electionname, agora__name=agoraname,
             agora__creator__username=username)
-        return super(ElectionCommentsView, self).dispatch(*args, **kwargs)
+        return super(ElectionPostCommentView, self).dispatch(*args, **kwargs)
+
+
+class AgoraCommentsView(AgoraView):
+    template_name = 'agora_core/agora_comments.html'
+
+    def get_queryset(self):
+        return object_stream(self.agora, verb='commented')
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(AgoraCommentsView, self).get_context_data(*args, **kwargs)
+        context['agora'] = self.agora
+
+        if self.request.user.is_authenticated():
+            context['form'] = PostCommentForm(request=self.request,
+                target_object=self.agora)
+            context['form'].helper.form_action = reverse('agora-comments-post',
+                kwargs=dict(username=self.agora.creator.username,
+                    agoraname=self.agora.name))
+        return context
+
+
+class AgoraPostCommentView(RequestCreateView):
+    template_name = 'agora_core/agora_comments.html'
+    form_class = PostCommentForm
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(AgoraPostCommentView, self).get_context_data(*args, **kwargs)
+        context['agora'] = self.agora
+        context['object_list'] = object_stream(self.agora, verb='commented')
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super(AgoraPostCommentView, self).get_form_kwargs()
+        kwargs['target_object'] = self.agora
+        return kwargs
+
+    def get_success_url(self):
+        '''
+        After creating the comment, post the action and show last comments
+        '''
+        comment = self.object
+
+        messages.add_message(self.request, messages.SUCCESS, _('Your comment '
+            'was successfully posted.'))
+
+        action.send(self.request.user, verb='commented', target=self.agora,
+            action_object=comment, ipaddr=self.request.META.get('REMOTE_ADDR'),
+            geolocation=geolocate_ip(self.request.META.get('REMOTE_ADDR')))
+
+        if not is_following(self.request.user, self.agora):
+            follow(self.request.user, self.agora, actor_only=False)
+
+        return reverse('agora-comments',
+            kwargs=dict(username=self.agora.creator.username,
+                agoraname=self.agora.name))
+
+    def dispatch(self, *args, **kwargs):
+        self.kwargs = kwargs
+
+        username = kwargs['username']
+        agoraname = kwargs['agoraname']
+        self.agora = get_object_or_404(Agora, name=agoraname,
+            creator__username=username)
+        return super(AgoraPostCommentView, self).dispatch(*args, **kwargs)

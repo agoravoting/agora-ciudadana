@@ -21,12 +21,7 @@ from django.utils.translation import ugettext_lazy  as _
 
 from endless_pagination.views import AjaxListView
 
-from agora_site.agora_core.views import (HomeView, AgoraView, CreateAgoraView,
-    AgoraBiographyView, AgoraMembersView, SetLanguageView, CreateElectionView,
-    ElectionView, ElectionDelegatesView, ElectionChooseDelegateView,
-    ElectionVotesView, StartElectionView, StopElectionView, VoteView,
-    AgoraActionChooseDelegateView, AgoraActionJoinView, AgoraActionLeaveView,
-    AgoraActionRemoveAdminMembershipView, ElectionCommentsView)
+from agora_site.agora_core.views import *
 from agora_site.misc.utils import RequestCreateView
 
 urlpatterns = patterns('',
@@ -47,6 +42,12 @@ urlpatterns = patterns('',
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/members$',
         AgoraMembersView.as_view(), name='agora-members'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/comments$',
+        AgoraCommentsView.as_view(), name='agora-comments'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/comments/post$',
+        AgoraPostCommentView.as_view(), name='agora-comments-post'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/delegate/(?P<delegate_username>[\.\w]+)$',
         AgoraActionChooseDelegateView.as_view(), name='agora-action-choose-delegate'),
@@ -69,6 +70,9 @@ urlpatterns = patterns('',
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/comments$',
         ElectionCommentsView.as_view(), name='election-comments'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/comments/post$',
+        ElectionPostCommentView.as_view(), name='election-comments-post'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/delegates$',
         ElectionDelegatesView.as_view(), name='election-delegates'),

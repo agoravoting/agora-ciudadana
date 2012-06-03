@@ -103,6 +103,9 @@
         <li {% ifactivetab "agora-nav" "biography" %}class="active"{% endifactivetab %}>
             <a href="{% url agora-bio agora.creator.username agora.name %}">{% trans "Biography" %}</a>
         </li>
+        <li {% ifactivetab "agora-nav" "comments" %}class="active"{% endifactivetab %}>
+            <a href="{% url agora-comments agora.creator.username agora.name %}">{% trans "Comments" %}</a>
+        </li>
         <li {% ifactivetab "agora-nav" "approved_elections" %}class="active"{% endifactivetab %}>
             <a href="{ % url agora-approved-elections agora.creator.username agora.name %}">{% trans "Elections" %}
             <span class="badge badge-info">{{ agora.approved_elections.count }}</span></a>
@@ -215,14 +218,14 @@
                                 <a href="{ % url election-view election.id %}">
                                     <strong>{{ election.name|truncatechars:30 }}</strong>
                                     <time datetime="{{ election.result_tallied_at_date.isoformat }}">
-                                        {{ elections.election.result_tallied_at_date|pretty_date }}
+                                        {{ election.result_tallied_at_date|pretty_date }}
                                     </time>
-                                    <span>{{ elections.get_winning_option|getitem:'description' }}</span>
-                                    <small>{{ elections.get_winning_option|getitem:'votes' }}</small>
+                                    <span>{{ election.get_winning_option|getitem:'value' }}</span>
+                                    <small>{{ election.get_winning_option|getitem:'total_count' }}</small>
 
                                     <div class="progress progress-success">
-                                        <div class="bar" style="width: {{ elections.get_winning_option|getitem:'percent' }}%;">
-                                            {{ elections.get_winning_option|getitem:'percent'|floatformat }}%
+                                        <div class="bar" style="width: {{ election.get_winning_option|getitem:'total_count_percentage' }}%;">
+                                            {{ election.get_winning_option|getitem:'total_count_percentage'|floatformat }}%
                                         </div>
                                     </div>
                                 </a>

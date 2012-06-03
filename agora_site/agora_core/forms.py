@@ -329,6 +329,10 @@ class PostCommentForm(CommentSecurityForm):
         If COMMENTS_ALLOW_PROFANITIES is False, check that the comment doesn't
         contain anything in PROFANITIES_LIST.
         """
+
+        if not self.request.user.is_authenticated():
+            raise forms.ValidationError(ungettext("You must be authenticated to post a comment"))
+
         comment = self.cleaned_data["comment"]
         if settings.COMMENTS_ALLOW_PROFANITIES == False:
             bad_words = [w for w in settings.PROFANITIES_LIST if w in comment.lower()]
