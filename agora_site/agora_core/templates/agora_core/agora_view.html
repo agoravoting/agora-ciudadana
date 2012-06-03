@@ -207,24 +207,24 @@
                 </div>
             </div>
 
-            <div class="row-fluid right-widget agora-last-votings">
+            <div class="row-fluid right-widget right-widget-grey">
                 <div class="right-widget-header">
                     <h4>{% trans "Last elections" %} <span>({{ agora.get_tallied_elections.count }})</span></h4>
                 </div>
-                <div class="row-fluid last-voting-items">
+                <div class="row-fluid hover-items">
                     <ul>
                         {% for election in agora.get_tallied_elections|slice:':3' %}
                             <li>
-                                <a href="{ % url election-view election.id %}">
-                                    <strong>{{ election.name|truncatechars:30 }}</strong>
+                                <a href="{% url election-view agora.creator.username agora.name election.name %}" class="election">
+                                    <strong>{{ election.pretty_name|truncatechars:40 }}</strong>
                                     <time datetime="{{ election.result_tallied_at_date.isoformat }}">
                                         {{ election.result_tallied_at_date|pretty_date }}
                                     </time>
                                     <span>{{ election.get_winning_option|getitem:'value' }}</span>
-                                    <small>{{ election.get_winning_option|getitem:'total_count' }}</small>
+                                    <small>{% blocktrans with votes=election.get_winning_option|getitem:'total_count' %}({{ votes }} votes){% endblocktrans %}</small>
 
-                                    <div class="progress progress-success">
-                                        <div class="bar" style="width: {{ election.get_winning_option|getitem:'total_count_percentage' }}%;">
+                                    <div class="progress progress-success progress-small">
+                                        <div class="bar" style="width: 50%;">
                                             {{ election.get_winning_option|getitem:'total_count_percentage'|floatformat }}%
                                         </div>
                                     </div>

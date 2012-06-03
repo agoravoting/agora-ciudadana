@@ -466,12 +466,13 @@ body {
     min-width: 500 px;
 }
 
-.row-fluid.agora-list {
-    margin-top: 30px !important;
+.row-fluid.right-widget-grey     {
+    background-color: #F2F2F2;
+    margin-top: 10px;
 
     input.search-query { margin-bottom: 5px; }
 
-    .last-voting-items ul {
+    .hover-items ul {
         display: block;
         margin: 1px;
         list-style: none;
@@ -492,7 +493,100 @@ body {
             i {
                 float:right;
             }
+
+            &.election {
+                min-height: 70px;
+
+                strong {
+                    display: block;
+                    float: left;
+                    padding: 2px;
+                    font-weight: normal;
+                    font-size: 14px;
+                }
+
+                time {
+                    display: block;
+                    float: right;
+                    clear: right;
+                    padding: 2px;
+                    font-size: 12px;
+                    color: @gray;
+                }
+
+                span {
+                    display: block;
+                    float: left;
+                    clear: left;
+                    padding: 2px;
+                    color: @gray;
+                    font-size: 14px;
+                    font-weight: bold;
+                }
+
+                small {
+                    color: @gray;
+                    display: block;
+                    clear: right;
+                    float: left;
+                    padding: 2px;
+                    font-size: 12px;
+                }
+
+                .progress {
+                    float: left;
+                    clear: left;
+                    width: 100%;
+                }
+            }
         }
+    }
+}
+
+
+// This is used in home page for agora-list
+.row-fluid.agora-list {
+    margin-top: 30px !important;
+}
+
+.progress-small {
+    height: 17px;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    border: 1px solid @grayLighter;
+
+    .bar {
+        height: 17px;
+        background-color: @green-bright;
+        background-image: none;
+        font-weight: bold;
+        padding-top: 1px;
+        text-align: left;
+
+        color: white;
+        font-size: 16px;
+        font-family: "Sans, Arial";
+        text-shadow: 0 0 10px @green-bright;
+    }
+}
+
+.progress-large {
+    height: 42px;
+    border-radius: 0;
+
+    .bar {
+        height: 42px;
+        background-color: @green-bright;
+        background-image: none;
+        font-weight: bold;
+        padding-top: 13px;
+        text-align: left;
+
+        color: white;
+        font-size: 40px;
+        font-family: "Sans, Arial";
+        text-shadow: 0 0 10px @green-bright;
     }
 }
 
@@ -512,32 +606,6 @@ body {
 
             img {
                 margin-top: -3px;
-            }
-        }
-    }
-}
-
-.row-fluid.agora-last-votings {
-    background-color: @footer-background-color;
-    margin-top: 10px;
-
-    .last-voting-items {
-        display: block;
-        margin-top: 5px;
-
-        ul {
-            display: block;
-            list-style: none;
-            background-color: white;
-            margin: 1px;
-
-            li {
-                padding: 10px;
-                display: block;
-
-                &.empty {
-                    text-align: center;
-                }
             }
         }
     }
@@ -717,25 +785,6 @@ body {
                         font-weight: normal;
                         font-size: 12px;
                         text-transform: none;
-                    }
-
-                    .progress {
-                        height: 42px;
-                        border-radius: 0;
-
-                        .bar {
-                            height: 42px;
-                            background-color: @green-bright;
-                            background-image: none;
-                            font-weight: bold;
-                            padding-top: 13px;
-                            text-align: left;
-
-                            color: white;
-                            font-size: 40px;
-                            font-family: "Sans, Arial";
-                            text-shadow: 0 0 10px @green-bright;
-                        }
                     }
                 }
             }
