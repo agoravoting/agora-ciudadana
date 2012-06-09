@@ -466,7 +466,7 @@ body {
     min-width: 500 px;
 }
 
-.row-fluid.right-widget-grey     {
+.row-fluid.right-widget-grey {
     background-color: #F2F2F2;
     margin-top: 10px;
 
@@ -490,7 +490,7 @@ body {
                 background-color: @footer-background-color;
             }
 
-            span {
+            span.agora {
                 display: inline-block;
                 width: 90%;
                 overflow: hidden;
@@ -503,6 +503,27 @@ body {
 
             &.election {
                 min-height: 70px;
+
+                &.election-result {
+                    min-height: 140px;
+                    background: linear-gradient(top, rgb(255,255,255) 54%, rgb(242,242,242) 100%);
+                    background: -o-linear-gradient(top, rgb(255,255,255) 54%, rgb(242,242,242) 100%);
+                    background: -moz-linear-gradient(top, rgb(255,255,255) 54%, rgb(242,242,242) 100%);
+                    background: -webkit-linear-gradient(top, rgb(255,255,255) 54%, rgb(242,242,242) 100%);
+                    background: -ms-linear-gradient(top, rgb(255,255,255) 54%, rgb(242,242,242) 100%);
+
+                    background: -webkit-gradient(
+                        linear,
+                        left top,
+                        left bottom,
+                        color-stop(0.54, rgb(255,255,255)),
+                        color-stop(1, rgb(242,242,242))
+                    );
+                }
+
+                &.election-result:hover {
+                    background: #f2f2f2;
+                }
 
                 strong {
                     display: block;

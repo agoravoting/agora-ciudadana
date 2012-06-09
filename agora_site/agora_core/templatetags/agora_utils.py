@@ -19,6 +19,10 @@ def vote_for_election(user, election):
         election=election, is_public=True)
 
 @register.filter
+def get_chained_first_pretty_answer(vote, election):
+    return vote.get_chained_first_pretty_answer(election)
+
+@register.filter
 def last_election_voted(user, agora):
     '''
     Returns the last vote from the user in the given agora if any

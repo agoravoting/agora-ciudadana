@@ -235,7 +235,7 @@
                                     </div>
                                 {% endif %}
                             {% else %}
-                                {% with delegate=vote_from_user.get_delegate chained_answer=vote_from_user.get_chained_first_pretty_answer %}
+                                {% with delegate=vote_from_user.get_delegate chained_answer=vote_from_user.get_chained_first_pretty_answer|election %}
                                     {% if chained_answer %}
                                         {% blocktrans with delegate_username=delegate.username question=chained_answer|getitem:'question' answer=chained_answer|getitem:'answer' %}
                                         You delegated to <a href="{ {delegate_url}}">{{delegate_username}}</a> who answered

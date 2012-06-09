@@ -101,6 +101,17 @@ class Profile(UserenaLanguageBaseProfile):
         '''
         return CastVote.objects.filter(voter=self.user, is_direct=True, is_counted=True).count()
 
+    def get_participated_elections(self):
+        '''
+        Returns the list of elections in which the user participated, either
+        via a direct or a delegated vote
+        '''
+        user_direct_votes=CastVote.objects.filter(voter=self.user, is_direct=True, is_counted=True).all()
+        user_delegated_votes=CastVote.objects.filter(voter=self.user).all()
+        return Election.objects.filter(result_tallied_at_date__isnull=False).filter(
+            Q(delegated_votes__in=user_delegated_votes) |
+            Q(cast_votes__in=user_direct_votes))
+
     def has_delegated_in_agora(self, agora):
         '''
         Returns whether this user has currently delegated his vote in a given
@@ -121,13 +132,13 @@ class Profile(UserenaLanguageBaseProfile):
 
     def get_vote_in_election(self, election):
         '''
-        Returns the vote of this user in the given agora if any
+        Returns the vote of this user in the given agora if any. Note: if the
+        vote is a delegated one, this only works for tallied elections.
         '''
-        try:
-            return CastVote.objects.filter(voter=self.user, election=election,
-                is_counted=True).order_by('-casted_at_date')[0]
-        except Exception, e:
-            return None
+        if election.cast_votes.filter(voter=self.user, is_counted=True).count() == 1:
+            return election.cast_votes.filter(voter=self.user, is_counted=True)[0]
+        else:
+            return election.delegated_votes.filter(voter=self.user)[0]
 
 from django.db.models.signals import post_save
 
@@ -1120,22 +1131,23 @@ class CastVote(models.Model):
         else:
             return self.data['answers'][0]['choices'][0]['username']
 
-    def get_chained_first_pretty_answer(self):
+    def get_chained_first_pretty_answer(self, election=None):
         if self.data['a'] == 'vote':
             if self.data['answers'][0]['a'] != 'plaintext-answer':
                 raise Exception('Invalid direct vote')
 
             question_title = self.election.questions[0]['question']
             return dict(question=question_title,
-                answer=self.data['answers'][0]['choices'][0])
+                answer=self.data['answers'][0]['choices'][0],
+                reason=self.reason)
         elif self.data['a'] == 'delegated-vote':
             if self.data['answers'][0]['a'] != 'plaintext-delegate':
                 raise Exception('Invalid delegated vote')
 
             delegate = self.get_delegate()
-            delegate_vote = delegate.get_vote_in_election(self.election)
+            delegate_vote = delegate.get_vote_in_election(election)
             if delegate_vote:
-                return delegate_vote.get_chained_first_pretty_answer()
+                return delegate_vote.get_chained_first_pretty_answer(election)
             else:
                 return None
         else:

@@ -985,3 +985,32 @@ class CancelVoteView(FormActionView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(CancelVoteView, self).dispatch(*args, **kwargs)
+
+class UserView(AjaxListView):
+    '''
+    Shows an election main page
+    '''
+    template_name = 'agora_core/user_view.html'
+    page_template = 'agora_core/action_items_page.html'
+
+    def get_queryset(self):
+        return user_stream(self.user_shown)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserView, self).get_context_data(**kwargs)
+        context['user_shown'] = self.user_shown
+
+        context['election_items'] = []
+
+        for election in self.user_shown.get_profile().get_participated_elections().all():
+            vote = self.user_shown.get_profile().get_vote_in_election(election)
+            pretty_answer = vote.get_chained_first_pretty_answer(election)
+            context['election_items'] += [[election, vote, pretty_answer]]
+        return context
+
+    def dispatch(self, *args, **kwargs):
+        self.kwargs = kwargs
+
+        username = kwargs['username']
+        self.user_shown = get_object_or_404(User, username=username)
+        return super(UserView, self).dispatch(*args, **kwargs)
