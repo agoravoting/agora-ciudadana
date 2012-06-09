@@ -632,6 +632,25 @@ class Election(models.Model):
         '''
         return (self.get_all_votes().count() * 100.0) / self.agora.members.count()
 
+    def get_vote_for_voter(self, voter):
+        '''
+        Given a voter (an User), returns the vote of the vote of this voter
+        on the election. It will be either a proxy or a direct vote
+        '''
+        # These are all the direct votes, even from those who are not elegible
+        # to vote in this election
+        nodes = self.cast_votes.filter(is_direct=True, invalidated_at_date=None)
+
+        # These are all the delegation votes, i.e. those that point to a delegate
+        edges = self.agora.delegation_election.cast_votes.filter(is_direct=False, invalidated_at_date=None)
+
+        if nodes.filter(voter__id=voter.id).count() == 1:
+            return nodes.filter(voter__id=voter.id)[0]
+        elif edges.filter(voter__id=voter.id).count() == 1:
+            return edges.filter(voter__id=voter.id)[0]
+        else:
+            return None
+
     def get_brief_description(self):
         '''
         Returns a brief description of the election

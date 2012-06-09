@@ -224,7 +224,7 @@
                                     <small>{% blocktrans with votes=election.get_winning_option|getitem:'total_count' %}({{ votes }} votes){% endblocktrans %}</small>
 
                                     <div class="progress progress-success progress-small">
-                                        <div class="bar" style="width: 50%;">
+                                        <div class="bar" style="width: {{ election.get_winning_option|getitem:'total_count_percentage'|floatformat }}%;">
                                             {{ election.get_winning_option|getitem:'total_count_percentage'|floatformat }}%
                                         </div>
                                     </div>

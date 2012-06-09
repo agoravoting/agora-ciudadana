@@ -378,6 +378,10 @@ class ElectionView(AjaxListView):
         context = super(ElectionView, self).get_context_data(**kwargs)
         context['election'] = self.election
         context['vote_form'] = VoteForm(self.request.POST, self.election)
+
+        if self.request.user.is_authenticated():
+            context['vote_from_user'] = self.election.get_vote_for_voter(
+                self.request.user)
         return context
 
     def dispatch(self, *args, **kwargs):
@@ -919,3 +923,65 @@ class AgoraPostCommentView(RequestCreateView):
         self.agora = get_object_or_404(Agora, name=agoraname,
             creator__username=username)
         return super(AgoraPostCommentView, self).dispatch(*args, **kwargs)
+
+class CancelVoteView(FormActionView):
+    def post(self, request, username, agoraname, electionname, *args, **kwargs):
+        election = get_object_or_404(Election,
+            name=electionname, agora__name=agoraname,
+            agora__creator__username=username)
+
+        election_url=reverse('election-view',
+            kwargs=dict(username=election.agora.creator.username,
+                agoraname=election.agora.name, electionname=election.name))
+
+        if not election.ballot_is_open():
+            messages.add_message(self.request, messages.ERROR, _('You can\'t '
+                'cancel a vote in a closed election.'))
+            return http.HttpResponseRedirect(election_url)
+
+        vote = election.get_vote_for_voter(self.request.user)
+
+        if not vote or not vote.is_direct:
+            messages.add_message(self.request, messages.ERROR, _('You can\'t '
+                'didn\'t participate in this election.'))
+            return http.HttpResponseRedirect(election_url)
+
+        vote.invalidated_at_date = datetime.datetime.now()
+        vote.is_counted = False
+        vote.save()
+
+        context = get_base_email_context(self.request)
+        context.update(dict(
+            election=election,
+            election_url=election_url,
+            to=vote.voter,
+            agora_url=reverse('agora-view',
+                kwargs=dict(username=election.agora.creator.username,
+                    agoraname=election.agora.name)),
+        ))
+
+        try:
+            context['delegate'] = get_delegate_in_agora(vote.voter, election.agora)
+        except:
+            pass
+
+        email = EmailMultiAlternatives(
+            subject=_('Vote cancelled for election %s') % election.pretty_name,
+            body=render_to_string('agora_core/emails/vote_cancelled.txt',
+                context),
+            to=[vote.voter.email])
+
+        email.attach_alternative(
+            render_to_string('agora_core/emails/vote_cancelled.html',
+                context), "text/html")
+        email.send()
+
+        action.send(self.request.user, verb='vote cancelled', action_object=election,
+            target=election.agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=geolocate_ip(request.META.get('REMOTE_ADDR')))
+
+        return http.HttpResponseRedirect(election_url)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(CancelVoteView, self).dispatch(*args, **kwargs)

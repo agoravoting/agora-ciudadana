@@ -227,6 +227,37 @@
                 </div>
             </div>
         </div>
+    {% elif action.verb == 'vote cancelled' and action.target and action.target_content_type.name == 'agora' and action.action_object and action.action_object and action.action_object_content_type.name == 'election' %}
+        {% url user-view action.actor.username as user_view_url %}
+        {% url agora-view action.target.creator.username action.target.name as agora_view_url %}
+        <a href="{{ user_view_url }}" class="mugshot">
+            <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
+        </a>
+        <div class="action-body">
+            {% with isotime=action.timestamp|date:"c" election=action.action_object %}
+                {% url user-view delegate.username as delegate_view_url %}
+                <div class="action-title">
+                    {% blocktrans with username=action.actor.username agora_creator_username=action.target.creator.username agoraname=action.target.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a>
+                    <strong class="verb">cancelled his/her vote</strong> to <a href="{{ delegate_view_url }}">{{ delegate_username }}</a> at <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+                </div>
+                <div class="action-detail">
+                    <a href="{{ delegate_view_url }}" class="mugshot">
+                        <img src="{{ delegate.get_profile.get_mugshot_url }}" alt="{{ delegate.username }}" />
+                    </a>
+                    <div class="detail-body">
+                        <strong class="action-title"><a href="{{ delegate_view_url }}">{{ delegate.username }}</a></strong>
+                        <p>
+                        {% if delegate.get_profile.short_description %}
+                            {{ delegate.get_profile.short_description }}
+                        {% else %}
+                            {% blocktrans with num_agoras=delegate.agoras.count num_votes=delegate.get_profile.count_direct_votes %}Is a member of {{num_agoras}} agoras and has emitted {{num_votes}} direct votes.{% endblocktrans %}
+                        {% endif %}
+                        </p>
+                    </div>
+                </div>
+            {% endwith %}
+        </div>
     {% elif action.verb == 'delegated' and action.target and action.target_content_type.name == 'agora' and action.action_object and action.action_object_content_type.name == 'cast vote' and action.action_object.is_plaintext %}
         {% url user-view action.actor.username as user_view_url %}
         {% url agora-view action.target.creator.username action.target.name as agora_view_url %}

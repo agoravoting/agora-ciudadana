@@ -15,6 +15,7 @@
 {% if request.user.is_authenticated %}
     {% crispy form %}
 {% endif %}
+<div class="clear"></div>
 
 {{ block.super }}
 {% endblock %}

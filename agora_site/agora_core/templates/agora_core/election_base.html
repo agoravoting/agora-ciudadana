@@ -165,7 +165,12 @@
                                     </div>
                                 {% else %}
                                     <div class="button-vote">
-                                        <a class="btn btn-success" data-toggle="modal" href="#vote-modal-dialog" >{% trans "Vote" %}</a>
+                                        <a class="btn btn-success" data-toggle="modal" href="#vote-modal-dialog" >
+                                        {% if vote_from_user and vote_from_user.is_direct %}
+                                            {% trans "Change my vote" %}
+                                        {% else %}
+                                            {% trans "Vote" %}
+                                        {% endif %}</a>
                                     </div>
                                     <div class="modal fade {% block voting-form-class %}hide{% endblock %}" id="vote-modal-dialog">
                                         <div class="modal-header">
@@ -204,6 +209,47 @@
                                 {% endwith %}
                             {% endif %}
                         {% endblock %}
+
+                        {% if vote_from_user %}
+                            <h3>{% trans "Your vote" %}
+                            </h3>
+                            {% if vote_from_user.is_direct %}
+                                {% blocktrans with question=vote_from_user.get_first_pretty_answer|getitem:'question' answer=vote_from_user.get_first_pretty_answer|getitem:'answer' %}
+                                <p class="answer">You answered <strong>{{ answer }}</strong> to <em>{{ question }}</em></p>
+                                {% endblocktrans %}
+                                {% if election.ballot_is_open %}
+                                    <a class="btn" data-toggle="modal" href="#cancelVoteConfirmModalDialog">{% trans "Cancel direct vote" %}</a>
+                                    <div class="modal hide" id="cancelVoteConfirmModalDialog">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">×</button>
+                                            <h3>{% trans "Cancel vote?" %}</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>{% trans "Do you really want to cancel your direct vote in this election?" %}</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+
+                                            <a class="btn btn-danger action-form-link" href="{% url election-cancel-vote election.agora.creator.username election.agora.name election.name %}">{% trans "Cancel direct vote" %}</a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                {% with delegate=vote_from_user.get_delegate chained_answer=vote_from_user.get_chained_first_pretty_answer %}
+                                    {% if chained_answer %}
+                                        {% blocktrans with delegate_username=delegate.username question=chained_answer|getitem:'question' answer=chained_answer|getitem:'answer' %}
+                                        You delegated to <a href="{ {delegate_url}}">{{delegate_username}}</a> who answered
+                                        <strong>{{ answer }}</strong> to <em>{{ question }}</em></p>
+                                        {% endblocktrans %}
+                                    {% else %}
+                                        {% blocktrans with delegate_username=delegate.username %}
+                                        You delegated to <a href="{ {delegate_url}}">{{delegate_username}}</a> who didn't participate in this election yet.
+                                        {% endblocktrans %}
+                                    {% endif %}
+                                {% endwith %}
+                            {% endif %}
+                        {% endif%}
+
                         {% if election.result_tallied_at_date %}
                             <h3>{% trans "Results" %}
                             </h3>
@@ -243,13 +289,14 @@
 
                     <div class="row-fluid social-icons">
                         <div class="span12">
-                            <a href="{ % share-agora-on-twitter agora.creator.username agora.name %}">
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-text="{% blocktrans with electionname=election.pretty_name %}Participate in {{ electionname }}{% endblocktrans %}" data-lang="es" data-related="agoraciudadana">
                                 <img src="{{ STATIC_URL }}img/twitter-small-logo.png" alt="{% trans "Share on Twitter" %}" />
                             </a>
+                            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                             <a href="{ % share-agora-on-facebook agora.creator.username agora.name %}">
                                 <img src="{{ STATIC_URL }}img/facebook-small-logo.png" alt="{% trans "Share on Facebook" %}" />
                             </a>
-                            <a href="{ % share-agora-on-identica agora.creator.username agora.name %}">
+                            <a href="http://identi.ca/index.php?action=newnotice&status_textarea={% blocktrans with electionname=election.pretty_name %}Participate in {{ electionname }} at Agora Ciudadana{% endblocktrans %}">
                                 <img src="{{ STATIC_URL }}img/identica-small-logo.png" alt="{% trans "Share on Identica" %}" />
                             </a>
                             <a href="{ % share-agora-on-googleplus agora.creator.username agora.name %}">
