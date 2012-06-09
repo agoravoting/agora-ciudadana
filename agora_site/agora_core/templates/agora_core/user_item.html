@@ -5,7 +5,7 @@
 {% endifequal %}
 
 <div class="span6 span6-{{ row }}">
-    <a href="{ % user-view object.username %}">
+    <a href="{% user-view object.username %}">
         <div class="row-fluid">
             <div class="span4">
                 <img src="{{ object.get_profile.get_mugshot_url }}" alt="{% trans "User mugshot" %}" />

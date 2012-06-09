@@ -23,7 +23,7 @@
     <img class="agora-logo" src="{{ agora.get_mugshot_url }}" alt="{% blocktrans with name=agora.name %}{{ name }} logo{% endblocktrans %}" />
     <div class="item-detail">
         <h1>
-            <a href="{ % url user-view agora.creator.username %}">{{ agora.creator.username }}</a>
+            <a href="{% url user-view agora.creator.username %}">{{ agora.creator.username }}</a>
             / {{ agora.name }}
         </h1>
         <p>{{ agora.short_description }}</p>

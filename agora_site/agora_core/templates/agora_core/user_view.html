@@ -35,7 +35,7 @@
             <a href="{% url user-view user_shown.username %}">{% trans "Activity" %}</a>
         </li>
         <li {% ifactivetab "election-nav" "biography" %}class="active"{% endifactivetab %}>
-            <a href="{ % url user-bio user_shown.username %}">{% trans "Biography" %}
+            <a href="{ % url user-bio user_shown.username %}">{% trans "Biography" %}</a>
         </li>
         <li {% ifactivetab "election-nav" "elections" %}class="active"{% endifactivetab %}>
             <a href="{ % url user-elections user_shown.username %}">{% trans "Elections" %}
@@ -66,7 +66,7 @@
             {% show_more %}
         </div>
         <div class="span4 agora-right-side">
-            <div class="row-fluid right-widget right-widget-grey agora-list">
+            <div class="row-fluid right-widget right-widget-grey">
                 <div class="right-widget-header">
                     <h4>{% trans "Agoras" %} <span>({{ user_shown.agoras.count }})</span></h4>
                     <div class="btn-group">
@@ -81,7 +81,7 @@
                         {% for agora in user_shown.agoras.all %}
                             <li>
                                 <a href="{% url agora-view agora.creator.username agora.name %}">
-                                    {{ agora.creator.username }}/<strong>{{ agora.name }}</strong>
+                                    <span class="agora">{{ agora.creator.username }}/<strong>{{ agora.name }}</strong></span>
                                     <i class="icon-arrow-right"></i>
                                 </a>
                             </li>

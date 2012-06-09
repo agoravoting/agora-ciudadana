@@ -108,9 +108,10 @@ class Profile(UserenaLanguageBaseProfile):
         '''
         user_direct_votes=CastVote.objects.filter(voter=self.user, is_direct=True, is_counted=True).all()
         user_delegated_votes=CastVote.objects.filter(voter=self.user).all()
-        return Election.objects.filter(result_tallied_at_date__isnull=False).filter(
-            Q(delegated_votes__in=user_delegated_votes) |
-            Q(cast_votes__in=user_direct_votes))
+        return Election.objects.filter(agora__isnull=False,
+            result_tallied_at_date__isnull=False).filter(
+                Q(delegated_votes__in=user_delegated_votes) |
+                Q(cast_votes__in=user_direct_votes))
 
     def has_delegated_in_agora(self, agora):
         '''

@@ -12,7 +12,7 @@
             <a class="close" data-dismiss="modal">×</a>
             <h3>{{ election.pretty_name }}</h3>
             <p>{% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}
-                Election created by <a href="{ % url user-view election.agora.creator.username %}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
+                Election created by <a href="{% url user-view election.agora.creator.username %}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
             {% endblocktrans %}</p>
             <em>{{ election.short_description|truncatechars:139 }}</em>
         </div>
