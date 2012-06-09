@@ -145,7 +145,7 @@
                         {% for agora in user.agoras.all %}
                             <li>
                                 <a href="{% url agora-view agora.creator.username agora.name %}">
-                                    {{ agora.creator.username }}/<strong>{{ agora.name }}</strong>
+                                    <span>{{ agora.creator.username }}/<strong>{{ agora.name }}</strong></span>
                                     <i class="icon-arrow-right"></i>
                                 </a>
                             </li>
