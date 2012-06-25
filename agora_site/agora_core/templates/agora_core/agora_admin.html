@@ -1,0 +1,14 @@
+{% extends 'agora_core/agora_view.html' %}
+{% load i18n %}
+{% load agora_utils %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ agora.creator.username }}/{{ agora.name }} / {% trans "Admin" %}{% endblock %}
+
+{% block agora-navigation %}{% activetab "agora-nav" "admin" %}{{ block.super }}{% endblock %}
+
+{% block agora_content %}
+    <div class="form-data admin-form">
+    {% crispy form %}
+    </div>
+{% endblock %}

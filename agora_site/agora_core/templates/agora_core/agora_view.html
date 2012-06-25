@@ -38,7 +38,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="{ % url agora-admin agora.creator.username agora.name %}">
+                        <a href="{% url agora-admin agora.creator.username agora.name %}">
                             <i class="icon-edit"></i>
                             {% trans "Edit agora details" %}
                         </a>
@@ -59,7 +59,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="{ % url agora-action-edit agora.creator.username agora.name %}">
+                        <a href="{% url agora-admin agora.creator.username agora.name %}">
                             <i class="icon-edit"></i>
                             {% trans "Edit agora details" %}
                         </a>
@@ -100,9 +100,11 @@
         <li {% ifactivetab "agora-nav" "activity" %}class="active"{% endifactivetab %}>
             <a href="{%url agora-view agora.creator.username agora.name %}">{% trans "Activity" %}</a>
         </li>
+        <!-- TODO: maybe make this an option too? an expandable text -->
         <li {% ifactivetab "agora-nav" "biography" %}class="active"{% endifactivetab %}>
             <a href="{% url agora-bio agora.creator.username agora.name %}">{% trans "Biography" %}</a>
         </li>
+        <!-- TODO: maybe make this an option too? -->
         <li {% ifactivetab "agora-nav" "comments" %}class="active"{% endifactivetab %}>
             <a href="{% url agora-comments agora.creator.username agora.name %}">{% trans "Comments" %}</a>
         </li>
@@ -110,17 +112,23 @@
             <a href="{ % url agora-approved-elections agora.creator.username agora.name %}">{% trans "Elections" %}
             <span class="badge badge-info">{{ agora.approved_elections.count }}</span></a>
         </li>
+        <!--
+            TODO: Make this an option inside elections, like in IREKIA
         <li {% ifactivetab "agora-nav" "requested_elections" %}class="active"{% endifactivetab %}>
             <a href="{ % url agora-requested-elections agora.creator.username  agora.name %}">{% trans "Election requests" %}
             <span class="badge badge-info">{{ agora.requested_elections.count }}</span></a>
-        </li>
+        </li>-->
         <li {% ifactivetab "agora-nav" "delegates" %}class="active"{% endifactivetab %}>
             <a href="{ % url agora-delegates agora.creator.username agora.name %}">{% trans "Delegates" %}
             <span class="badge badge-info">{{ agora.active_delegates.count }}</span></a>
         </li>
+        <!-- TODO: make this an option like in IREKIA -->
         <li {% ifactivetab "agora-nav" "members" %}class="active"{% endifactivetab %}>
             <a href="{% url agora-members agora.creator.username agora.name %}">{% trans "Members" %}
             <span class="badge badge-info">{{ agora.members.count }}</span></a>
+        </li>
+        <li {% ifactivetab "agora-nav" "admin" %}class="active"{% endifactivetab %}>
+            <a href="{% url agora-admin agora.creator.username agora.name %}">{% trans "Admin" %}</a>
         </li>
         {% endblock %}
     </ul>

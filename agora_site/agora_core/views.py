@@ -15,6 +15,7 @@
 
 import datetime
 
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -26,9 +27,10 @@ from django.core.mail import EmailMultiAlternatives, EmailMessage, send_mail, se
 from django.utils import simplejson as json
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render_to_response
 from django.template.loader import render_to_string
-from django.views.generic import TemplateView, ListView, CreateView, FormView
+from django.views.generic import TemplateView, ListView, CreateView
+from django.views.generic.edit import UpdateView
 from django.views.i18n import set_language as django_set_language
 from django import http
 
@@ -222,7 +224,8 @@ class ElectionChooseDelegateView(AjaxListView):
         # instead. Also, you cannot delegate to yourself
         #if not self.election.ballot_is_open()\
             #or delegation_username == self.request.username:
-            #return reverse('agora-delegate', username, agoraname, delegate_username)
+            #return http.HttpResponseRedirect(reverse('agora-delegate',
+                #username, agoraname, delegate_username))
 
         self.delegate = get_object_or_404(User, username=delegate_username)
         self.vote = get_object_or_404(CastVote, is_counted=True,
@@ -985,3 +988,97 @@ class CancelVoteView(FormActionView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(CancelVoteView, self).dispatch(*args, **kwargs)
+
+class UserView(AjaxListView):
+    '''
+    Shows an election main page
+    '''
+    template_name = 'agora_core/user_view.html'
+    page_template = 'agora_core/action_items_page.html'
+
+    def get_queryset(self):
+        return user_stream(self.user_shown)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserView, self).get_context_data(**kwargs)
+        context['user_shown'] = self.user_shown
+
+        context['election_items'] = []
+
+        for election in self.user_shown.get_profile().get_participated_elections().all():
+            vote = self.user_shown.get_profile().get_vote_in_election(election)
+            pretty_answer = vote.get_chained_first_pretty_answer(election)
+            context['election_items'] += [[election, vote, pretty_answer]]
+        return context
+
+    def dispatch(self, *args, **kwargs):
+        self.kwargs = kwargs
+
+        username = kwargs['username']
+        self.user_shown = get_object_or_404(User, username=username)
+        return super(UserView, self).dispatch(*args, **kwargs)
+
+
+class AgoraAdminView(UpdateView):
+    '''
+    Creates a new agora
+    '''
+    template_name = 'agora_core/agora_admin.html'
+    form_class = AgoraAdminForm
+    model = Agora
+
+    def post(self, request, *args, **kwargs):
+        if not self.agora.has_perms('admin', self.request.user):
+            messages.add_message(self.request, messages.SUCCESS, _('Sorry, but '
+            'you don\'t have admin permissions on %(agoraname)s.') %\
+                dict(agoraname=self.agora.name))
+
+            return reverse('agora-view',
+                kwargs=dict(username=agora.creator.username, agoraname=agora.name))
+        return super(AgoraAdminView, self).post(request, *args, **kwargs)
+
+
+    def get(self, request, *args, **kwargs):
+        if not self.agora.has_perms('admin', self.request.user):
+            messages.add_message(self.request, messages.SUCCESS, _('Sorry, but '
+            'you don\'t have admin permissions on %(agoraname)s.') %\
+                dict(agoraname=self.agora.name))
+
+            url = reverse('agora-view',
+                kwargs=dict(username=self.agora.creator.username, agoraname=self.agora.name))
+            return http.HttpResponseRedirect(url)
+        return super(AgoraAdminView, self).get(request, *args, **kwargs)
+
+    def get_success_url(self):
+        '''
+        After creating the agora, show it
+        '''
+        agora = self.object
+
+        messages.add_message(self.request, messages.SUCCESS, _('Agora settings '
+            'changed for %(agoraname)s.') % dict(agoraname=self.agora.name))
+
+        action.send(self.request.user, verb='changed settings', action_object=agora,
+            ipaddr=self.request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
+
+        return reverse('agora-view',
+            kwargs=dict(username=agora.creator.username, agoraname=agora.name))
+
+    def get_object(self):
+        return self.agora
+
+    def get_form_kwargs(self):
+        kwargs = super(AgoraAdminView, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        username = kwargs['username']
+        agoraname = kwargs['agoraname']
+        self.agora = get_object_or_404(Agora, name=agoraname,
+            creator__username=username)
+
+        return super(AgoraAdminView, self).dispatch(*args, **kwargs)
+
