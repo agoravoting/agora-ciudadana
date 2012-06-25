@@ -314,6 +314,8 @@ class Agora(models.Model):
             return self.membership_policy == Agora.MEMBERSHIP_TYPE[0][0]
         elif permission_name == 'leave':
             return self.creator != user
+        elif permission_name == 'admin':
+            return self.creator == user
 
 class Election(models.Model):
     '''

@@ -73,6 +73,19 @@ class CreateAgoraForm(django_forms.ModelForm):
         model = Agora
         fields = ('pretty_name', 'short_description')
 
+
+class AgoraAdminForm(django_forms.ModelForm):
+    def __init__(self, request, *args, **kwargs):
+        super(AgoraAdminForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.request = request
+        self.helper.layout = Layout(Fieldset(_('General settings'), 'pretty_name', 'short_description', 'biography'))
+        self.helper.add_input(Submit('submit', _('Save settings'), css_class='btn btn-success btn-large'))
+
+    class Meta:
+        model = Agora
+        fields = ('pretty_name', 'short_description', 'biography')
+
 class CreateElectionForm(django_forms.ModelForm):
     question = django_forms.CharField(_("Question"), required=True)
     answers = django_forms.CharField(_("Answers"), required=True,

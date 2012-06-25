@@ -28,10 +28,12 @@
         <strong>
             {% url agora-view election.agora.creator.username election.agora.name as agora_view_url %}
             {% if election.is_approved %}
+                {% url user-view agora.creator.username as user_url %}
                 {% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}
                 Election created by <a href="{% url user-view agora.creator.username %}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
                 {% endblocktrans %}
             {% else %}
+                {% url user-view agora.creator.username as user_url %}
                 {% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}
                 Election proposed by <a href="{% url user-view agora.creator.username %}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
                 {% endblocktrans %}
