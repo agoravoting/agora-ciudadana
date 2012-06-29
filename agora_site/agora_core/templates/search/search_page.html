@@ -1,0 +1,13 @@
+{% load i18n %}
+{% load endless %}
+
+{% paginate object_list %}
+
+{% for action in object_list %}
+    <p>
+        <a href="{# result.object.get_absolute_url #}">{{ result.object.creator.username }}/{{ result.object.name }} {{ result.object.short_description }} {{ result.user.username }}</a>
+    </p>
+{% endfor %}
+
+{% show_more %}
+

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load endless %}
+{% load agora_utils %}
+
+{% block script-block %}
+    <script src="{{ STATIC_URL }}js/endless_pagination/endless.js" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ STATIC_URL }}js/endless_pagination/endless_on_scroll.js" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/javascript" charset="utf-8">
+        var endless_on_scroll_margin = 300;
+    </script>
+{% endblock %}
+
+{% block running-board-wrapper-class %}search{% endblock %}
+
+{% block running-board  %}
+{% endblock %}
+
+{% block content-wrapper-class %}home{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="span8 agora-left-side">
+            {% paginate object_list %}
+            {% for action in object_list %}
+                <p>
+                    <a href="{# result.object.get_absolute_url #}">{{ result.object.creator.username }}/{{ result.object.name }} {{ result.object.short_description }} {{ result.user.username }}</a>
+                </p>
+            {% empty %}
+                {% trans "No search results found." %}
+            {% endfor %}
+            {% show_more %}
+        </div>
+        <div class="span4 agora-right-side">
+        </div>
+    </div>
+{% endblock %}

@@ -38,7 +38,13 @@ from actstream.actions import follow, unfollow, is_following
 from actstream.models import (object_stream, election_stream, Action,
     user_stream)
 from actstream.signals import action
+
 from endless_pagination.views import AjaxListView
+
+from haystack.query import EmptySearchQuerySet
+from haystack.forms import ModelSearchForm, FacetedSearchForm
+from haystack.query import SearchQuerySet
+from haystack.views import SearchView as HaystackSearchView
 
 from agora_site.agora_core.templatetags.agora_utils import get_delegate_in_agora
 from agora_site.agora_core.models import Agora, Election, Profile, CastVote
@@ -1082,3 +1088,31 @@ class AgoraAdminView(UpdateView):
 
         return super(AgoraAdminView, self).dispatch(*args, **kwargs)
 
+
+class SearchView(AjaxListView, HaystackSearchView):
+    '''
+    Generic search view for all kinds of indexed objects
+    '''
+    template_name = 'search/search.html'
+    page_template = 'search/search_page.html'
+    form_class = ModelSearchForm
+    load_all = True
+    searchqueryset = None
+
+    def get_queryset(self):
+        return self.results
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchView, self).get_context_data(**kwargs)
+        context.update({
+            'query': self.query,
+            'form': self.form,
+        })
+        return context
+
+    def get(self, request, *args, **kwargs):
+        self.request = request
+        self.form = self.build_form()
+        self.query = self.get_query()
+        self.results = self.get_results()
+        return super(SearchView, self).get(request, *args, **kwargs)

@@ -1,0 +1,4 @@
+{{ object.creator.username }}/{{ object.name }}
+{{ object.pretty_name }}
+{{ object.short_description }}
+{{ object.biography }}

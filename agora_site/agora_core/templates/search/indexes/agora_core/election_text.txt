@@ -1,0 +1,5 @@
+{{ object.url }}
+{{ object.creator.username }}
+{{ object.name }}
+{{ object.short_description }}
+{{ object.description }}

@@ -3,6 +3,37 @@ from django.utils.translation import ugettext_lazy as _
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+
+# A sample logging configuration. The only tangible logging
+# performed by this configuration is to send an email to
+# the site admins on every HTTP 500 error.
+# See http://docs.djangoproject.com/en/dev/topics/logging for
+# more details on how to customize your logging configuration.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
+}
+
+
 ADMINS = (
     ('Eduardo Robles Elvira', 'edulix@wadobo.com'),
 )
@@ -149,6 +180,7 @@ INSTALLED_APPS = (
     'agora_site.agora_core',
     'agora_site.accounts',
     'endless_pagination',
+    'haystack'
 )
 
 # A list the models that you want to enable actions for. Models must be in the
@@ -224,6 +256,14 @@ LOGIN_ERROR_URL    = '/accounts/signin/'
 
 CRISPY_FAIL_SILENTLY = not DEBUG
 
+# Haystack
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+    },
+}
+
 # userena settings
 
 # For debugging, use the dummy backend, else comment this and django will use
@@ -242,7 +282,7 @@ USERENA_FORBIDDEN_USERNAMES = (
     'signup', 'signout', 'signin', 'activate', 'me', 'password', 'admin',
     'agora', 'staff', 'agoraciudadana', 'agoravoting', 'root', 'administrator',
     'adminstrador', 'hostmaster', 'info', 'ssladmin', 'sysadmin', 'webmaster',
-    'no-reply', 'mail', 'email', 'accounts', 'misc', 'api'
+    'no-reply', 'mail', 'email', 'accounts', 'misc', 'api', 'search'
 )
 
 USERENA_MUGSHOT_SIZE = 50

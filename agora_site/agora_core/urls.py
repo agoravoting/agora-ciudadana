@@ -31,6 +31,8 @@ urlpatterns = patterns('',
 
     url(r'^agora/new$', CreateAgoraView.as_view(), name='agora-new'),
 
+    url(r'^search/$', SearchView.as_view(), name='search-new'),
+
     url(r'^user/(?P<username>[\.\w]+)', UserView.as_view(), name='user-view'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)$',

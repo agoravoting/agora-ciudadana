@@ -1,0 +1,4 @@
+{{ object.user.username }}
+{{ object.user.email }}
+{{ object.short_description }}
+{{ object.biography }}
