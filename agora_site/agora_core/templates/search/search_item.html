@@ -1,0 +1,46 @@
+{% load i18n %}
+{% load agora_utils %}
+
+{% if result.object|is_content_type:"agora" %}
+    <div class="result-item agora-result">
+        <a href="{% url agora-view result.object.creator.username result.object.name %}">
+            <img src="{{ result.object.get_mugshot_url }}" />
+            <div>
+                <strong>{{ result.object.creator.username }}/{{ result.object.name }}</strong>
+                <p>{{ result.object.short_description }}</p>
+            </div>
+        </a>
+    </div>
+{% elif result.object|is_content_type:"election" %}
+    <div class="result-item agora-result">
+        <a href="{% url election-view result.object.agora.creator.username result.object.agora.name result.object.name %}">
+            <img src="{{ result.object.get_mugshot_url }}" />
+            <div>
+                <strong>
+                    {% blocktrans with user=result.object.agora.creator.username agoraname=result.object.agora.name electionname=result.object.pretty_name %}
+                    {{ electionname }} at {{ user }}/{{ agoraname }}
+                    {% endblocktrans %}
+                </strong>
+                <p>{{ result.object.description }}</p>
+            </div>
+        </a>
+    </div>
+{% elif result.object|is_content_type:"user" %}
+    <div class="result-item user-result">
+        <a href="{% url user-view result.object.user.username %}">
+            <img src="{{ result.object.get_mugshot_url }}" />
+            <div>
+                <strong>{{ result.object.user.username }} ({{ result.object.get_fullname }})</strong>
+                <p>
+                    {% if result.object.short_description %}
+                        {{ result.object.short_description }}
+                    {% else %}
+                        {% blocktrans with num_agoras=result.object.user.agoras.count num_votes=result.object.count_direct_votes %}
+                            Is a member of {{num_agoras}} agoras and has emitted {{num_votes}} direct votes.
+                        {% endblocktrans %}
+                    {% endif %}
+                </p>
+            </div>
+        </a>
+    </div>
+{% endif %}

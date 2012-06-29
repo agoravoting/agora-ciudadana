@@ -1107,6 +1107,7 @@ class SearchView(AjaxListView, HaystackSearchView):
         context.update({
             'query': self.query,
             'form': self.form,
+            'num_results': self.get_queryset().count()
         })
         return context
 

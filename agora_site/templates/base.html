@@ -83,9 +83,8 @@
                     <a class="btn btn-primary" href="{% url agora-new %}">{% trans "Create Agora" %}</a>
                 </div>
                 <div class="span4">
-                    <form id="search-form" class="form-search form-inline btn-toolbar" action="{ % url search-form %}">
-                        {% csrf_token %}
-                        <input type="text" class="input-medium search-query"  value="" placeholder="{% trans "Search" %}" name="q" />
+                    <form id="search-form" class="form-search form-inline btn-toolbar" action="{% url search-view %}">
+                        <input type="text" class="input-medium search-query"  value="{{ query }}" placeholder="{% trans "Search" %}" name="q" />
                     {% if not user or not user.is_authenticated %}
                         <a class="user-link link-green" href="{% url userena_signin %}">{% trans "Enter" %}</a>
                         <a class="user-link" href="{% url userena_signup %}">{% trans "Register" %}</a>

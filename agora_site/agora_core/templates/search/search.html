@@ -13,24 +13,22 @@
 {% endblock %}
 
 {% block running-board-wrapper-class %}search{% endblock %}
+{% block footer-wrapper-class %}short{% endblock %}
 
 {% block running-board  %}
-{% endblock %}
 
-{% block content-wrapper-class %}home{% endblock %}
-
-{% block content %}
     <div class="row">
         <div class="span8 agora-left-side">
-            {% paginate object_list %}
-            {% for action in object_list %}
-                <p>
-                    <a href="{# result.object.get_absolute_url #}">{{ result.object.creator.username }}/{{ result.object.name }} {{ result.object.short_description }} {{ result.user.username }}</a>
-                </p>
-            {% empty %}
-                {% trans "No search results found." %}
-            {% endfor %}
-            {% show_more %}
+            <p>{% blocktrans %}Search results for query: '{{ query }}', found {{ num_results }} matches{% endblocktrans %}</p>
+            {% if query %}
+                {% paginate object_list %}
+                {% for result in object_list %}
+                    {% include "search/search_item.html" %}
+                {% empty %}
+                    <p>{% trans "No search results found." %}</p>
+                {% endfor %}
+                {% show_more %}
+            {% endif %}
         </div>
         <div class="span4 agora-right-side">
         </div>

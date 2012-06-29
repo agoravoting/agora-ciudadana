@@ -4,7 +4,13 @@ from agora_site.agora_core.models import CastVote
 from django import template
 from django.utils.translation import pgettext as _
 from django.template.base import token_kwargs
+from django.contrib.contenttypes.models import ContentType
+
 register = template.Library()
+
+@register.filter
+def is_content_type(obj, content_type):
+    return ContentType.objects.get_for_model(obj).name == content_type
 
 @register.filter
 def debug_object(obj, obj2=None):
