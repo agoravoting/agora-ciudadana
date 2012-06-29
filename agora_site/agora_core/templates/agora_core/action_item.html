@@ -457,5 +457,19 @@
                 </div>
             </div>
         </div>
+    {% elif action.verb == 'changed settings' and action.action_object and action.action_object_content_type.name == 'agora' %}
+        {% url user-view action.actor.username as user_view_url%}
+        <a href="{{ user_view_url }}" class="mugshot">
+            <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
+        </a>
+        <div class="action-body">
+            <div class="action-title">
+                {% url agora-view action.action_object.creator.username action.action_object.name as agora_view_url %}
+                {% with isotime=action.timestamp|date:"c" %}
+                    {% blocktrans with username=action.actor.username agora_creator_username=action.action_object.creator.username agoraname=action.action_object.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">changed settings</strong> of <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+                {% endwith %}
+            </div>
+        </div>
     {% endif %}
 </div>
