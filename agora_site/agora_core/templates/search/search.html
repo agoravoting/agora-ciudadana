@@ -13,13 +13,19 @@
 {% endblock %}
 
 {% block running-board-wrapper-class %}search{% endblock %}
-{% block footer-wrapper-class %}short{% endblock %}
 
 {% block running-board  %}
+    <div class="row search">
+        <div class="span8 agora-left-side">
+            <h3>{% trans "Search" %}</h3>
+            <h4>{% blocktrans %}{{ num_results }} matches for '{{ query }}'{% endblocktrans %}</h4>
+        </div>
+    </div>
+{% endblock %}
 
+{% block content %}
     <div class="row">
         <div class="span8 agora-left-side">
-            <p>{% blocktrans %}Search results for query: '{{ query }}', found {{ num_results }} matches{% endblocktrans %}</p>
             {% if query %}
                 {% paginate object_list %}
                 {% for result in object_list %}
