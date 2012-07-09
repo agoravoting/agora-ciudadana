@@ -5,7 +5,13 @@
 
 {% for action in object_list %}
     <p>
-        {% include "search/search_item.html" %}
+        {% if query %}
+            {% with result=result.object %}
+                {% include "search/search_item.html" %}
+            {% endwith %}
+        {% else %}
+            {% include "search/search_item.html" %}
+        {% endif %}
     </p>
 {% endfor %}
 

@@ -201,7 +201,7 @@
                             <strong class="action-title">{{ vote.get_first_pretty_answer|getitem:'question' }}</strong>
                             <p>
                                 {% trans "Answered:" %}
-                                <a href="{ % url election-delegate action.action_object.agora.creator.username action.action_object.agora.name action.action_object.name %}">
+                                <a href="{% url election-delegate action.action_object.agora.creator.username action.action_object.agora.name action.action_object.name action.actor.username %}">
                                     {{ vote.get_first_pretty_answer|getitem:'answer' }}
                                 </a>
                             </p>

@@ -86,6 +86,8 @@ class FacetedSearchForm(SearchForm):
 class ModelSearchForm(SearchForm):
     def __init__(self, *args, **kwargs):
         super(ModelSearchForm, self).__init__(*args, **kwargs)
+        # [('agora_core.agora', u'Agoras'), ('agora_core.election', u'Elections'), ('agora_core.profile', u'Profiles')]
+
         self.fields['models'] = forms.MultipleChoiceField(choices=model_choices(), required=False, label=_('Search In'), widget=forms.CheckboxSelectMultiple)
 
     def get_models(self):

@@ -86,7 +86,7 @@
                                     <li class="divider"></li>
                                 {% endif %}
                             {% endfor %}
-                            <li><a href="{ % url agora-list %}">Find an agora to create an election</a></li>
+                            <li><a href="{% url agora-list %}">Find an agora to create an election</a></li>
                         </ul>
                     </div>
                     <input type="text" class="input-medium search-query"  value="" placeholder="{% trans "Search..." %}" name="q" />

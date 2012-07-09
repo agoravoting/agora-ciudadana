@@ -58,7 +58,7 @@
                                         <li class="divider"></li>
                                     {% endif %}
                                 {% endfor %}
-                                <li><a href="{ % url election-list %}">Find an election to vote</a></li>
+                                <li><a href="{% url election-list %}">Find an election to vote</a></li>
                             </ul>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                                         <li class="divider"></li>
                                     {% endif %}
                                 {% endfor %}
-                                <li><a href="{ % url agora-list %}">Find an agora to create an election</a></li>
+                                <li><a href="{% url agora-list %}">Find an agora to create an election</a></li>
                             </ul>
                         </div>
                     </div>
@@ -138,12 +138,12 @@
                                         <li><a href="{% url agora-view agora.creator.username agora.name %}">{{ agora.creator.username }}/{{ agora.name }}</a></li>
                                     {% endfor %}
                                     <li class="divider"></li>
-                                    <li><a href="{ % url agora-list %}">{% trans "Explore other agoras" %}</a></li>
+                                    <li><a href="{% url agora-list %}">{% trans "Explore other agoras" %}</a></li>
                                     </ul>
                             </li>
                         {% else %}
                             <li>
-                                <a href="{ % url agora-list %}">{% trans "Agoras" %}</a>
+                                <a href="{% url agora-list %}">{% trans "Agoras" %}</a>
                             </li>
                         {% endif %}
                         {% if user.profile.get_open_elections.count > 0 or user.profile.get_requested_elections.count > 0 %}
@@ -165,16 +165,16 @@
                                             <li><a href="{% url election-view election.agora.creator.username election.agora.name election.name %}">{{ election.pretty_name }}</a></li>
                                         {% endfor %}
                                         <li class="divider"></li>
-                                        <li><a href="{ % url election-list %}">{% trans "Explore other elections" %}</a></li>
+                                        <li><a href="{% url election-list %}">{% trans "Explore other elections" %}</a></li>
                                     </ul>
                             </li>
                         {% else %}
                             <li>
-                                <a href="{ % url election-list %}">{% trans "Elections" %}</a>
+                                <a href="{% url election-list %}">{% trans "Elections" %}</a>
                             </li>
                         {% endif %}
                         <li>
-                            <a href="{ % url delegates-list %}">{% trans "Delegates" %}</a>
+                            <a href="{% url user-list %}">{% trans "Delegates" %}</a>
                         </li>
                     </ul>
                 </div>
@@ -209,8 +209,8 @@
                             {% trans "<p>A new way of</p><h1>Taking group decissions</h1>" %}
                             <div id="agora_house">
                                 <img src="{{ STATIC_URL }}img/agora_house.png" />
-                                <a class="btn btn-success" href="{ % url participate %}">{% trans "Participate" %}</a>
-                                <a class="btn btn-primary" href="{ % url explore %}">{% trans "Explore" %}</a>
+                                <a class="btn btn-success" href="{% url election-list %}">{% trans "Participate" %}</a>
+                                <a class="btn btn-primary" href="{ % url agora-list %}">{% trans "Explore" %}</a>
                             </div>
                         </div>
                         <div class="span5">

@@ -1098,6 +1098,7 @@ class SearchView(AjaxListView, HaystackSearchView):
     form_class = ModelSearchForm
     load_all = True
     searchqueryset = None
+    searchmodel = None
 
     def get_queryset(self):
         return self.results
@@ -1113,7 +1114,17 @@ class SearchView(AjaxListView, HaystackSearchView):
 
     def get(self, request, *args, **kwargs):
         self.request = request
+        # [('agora_core.agora', u'Agoras'), ('agora_core.election', u'Elections'), ('agora_core.profile', u'Profiles')]
         self.form = self.build_form()
         self.query = self.get_query()
-        self.results = self.get_results()
+
+        if self.searchmodel != None and not self.query:
+            if self.searchmodel == "agoras":
+                self.results = Agora.objects.all()
+            elif self.searchmodel == "elections":
+                self.results = Election.objects.exclude(url__startswith="http://example.com/delegation/has/no/url/")
+            elif self.searchmodel == "profiles":
+                self.results = Profile.objects.all()
+        else:
+            self.results = self.get_results()
         return super(SearchView, self).get(request, *args, **kwargs)

@@ -18,7 +18,13 @@
     <div class="row search">
         <div class="span8 agora-left-side">
             <h3>{% trans "Search" %}</h3>
-            <h4>{% blocktrans %}{{ num_results }} matches for '{{ query }}'{% endblocktrans %}</h4>
+            <h4>
+            {% if query %}
+                {% blocktrans %}{{ num_results }} matches for '{{ query }}'{% endblocktrans %}
+            {% else %}
+                {% blocktrans %}{{ num_results }} matches{% endblocktrans %}
+            {% endif %}
+            </h4>
         </div>
     </div>
 {% endblock %}
@@ -26,15 +32,19 @@
 {% block content %}
     <div class="row">
         <div class="span8 agora-left-side">
-            {% if query %}
-                {% paginate object_list %}
-                {% for result in object_list %}
+            {% paginate object_list %}
+            {% for result in object_list %}
+                {% if query %}
+                    {% with result=result.object %}
+                        {% include "search/search_item.html" %}
+                    {% endwith %}
+                {% else %}
                     {% include "search/search_item.html" %}
-                {% empty %}
-                    <p>{% trans "No search results found." %}</p>
-                {% endfor %}
-                {% show_more %}
-            {% endif %}
+                {% endif %}
+            {% empty %}
+                <p>{% trans "No search results found." %}</p>
+            {% endfor %}
+            {% show_more %}
         </div>
         <div class="span4 agora-right-side">
         </div>
