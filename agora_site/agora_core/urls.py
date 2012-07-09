@@ -35,7 +35,7 @@ urlpatterns = patterns('',
 
     url(r'^elections/list$', SearchView.as_view(searchmodel="elections"), name='election-list'),
 
-    url(r'^profiles/list$', SearchView.as_view(searchmodel="profiles"), name='user-list'),
+    url(r'^user/list$', SearchView.as_view(searchmodel="profiles"), name='user-list'),
 
     url(r'^agora/list$', SearchView.as_view(searchmodel="agoras"), name='agora-list'),
 
@@ -107,12 +107,12 @@ urlpatterns = patterns('',
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/cancel_vote$',
         CancelVoteView.as_view(), name='election-cancel-vote'),
 
-    url(r'^userlist$', AjaxListView.as_view(
-        queryset=User.objects.all(),
-        template_name='agora_core/user_list.html',
-        page_template='agora_core/user_list_page.html'),
-        name="user-list"
-    ),
+    #url(r'^user/list$', AjaxListView.as_view(
+        #queryset=User.objects.all(),
+        #template_name='agora_core/user_list.html',
+        #page_template='agora_core/user_list_page.html'),
+        #name="user-list"
+    #),
 )
 
 # Some redirects

@@ -33,7 +33,7 @@
             </div>
         </a>
     </div>
-{% elif result|is_content_type:"user" %}
+{% elif result|is_content_type:"profile" %}
     <div class="result-item user-result">
         <a href="{% url user-view result.user.username %}">
             <div class="row">
@@ -41,7 +41,7 @@
                     <img src="{{ result.get_mugshot_url }}" />
                 </div>
                 <div class="span6">
-                    <strong>{{ result.user.username }} ({{ result.get_fullname }})</strong>
+                    <strong>{{ result.user.username }} {% if result.get_fullname and result.get_fullname != result.user.username %}({{ result.get_fullname }}){% endif %}</strong>
                     <p>
                         {% if result.short_description %}
                             {{ result.short_description }}
