@@ -22,24 +22,37 @@ Here we will detail the most simple way to get the application running. For a
 more detailed explanation about how to deploy a django, refer to:
 http://docs.djangoproject.com/en/dev/topics/install/
 
-First thing we need is installing the dependencies in virtualenv:
+First we need to create the virtual environment where dependencies will be
+installed:
 
-    $ ./setup_env.sh
+    $ ./virtualenv.py --system-site-packages env
 
 Now everytime we want to use the installed virtualenv, we can do the
 following within the directory containing the env/ subdirectory:
 
     $ source env/bin/activate
 
+Now we will install the dependencies:
+
+    $ pip install -r dependencies.txt --upgrade
+
+In this step you might get the error "fatal error: Python.h: No such file or
+directory". This happens for example in ubuntu. To fix that, you need to install
+python2.7-dev package. In Ubuntu/Debian you can do that:
+
+    $ sudo apt-get install python2.7-dev
+
 After that, we need to configure the database (we use sqlite by default):
 
     $ ./manage.py syncdb --migrate
 
-Then create the admin user in the database: # TODO, initial-data.json not
-available yet
+If you get an error saying something about xapin not installed, you need to
+install the package python-xapian. In ubuntu it comes installed by default,
+in openSUSE you can install it by executing "sudo zypper install python-xapian".
 
-    $ ./manage.py loaddata initial-data.json
+We use django haystack for searching, so we need to create the initial index:
 
+    $ ./manage.py rebuild_index
 
 That's it! Start the webserver with:
 
