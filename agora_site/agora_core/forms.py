@@ -110,7 +110,7 @@ class CreateElectionForm(django_forms.ModelForm):
                 if answer_value.strip()]
 
         if len(answers) < 2:
-            raise forms.ValidationError(_('You need to provide at least two '
+            raise django_forms.ValidationError(_('You need to provide at least two '
                 'possible answers'))
         return data
 

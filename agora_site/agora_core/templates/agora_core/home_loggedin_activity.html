@@ -37,7 +37,7 @@
     </div>
     <div class="span3">
         <div>
-            <a href="" title="Delegate and vote">
+            <a href="{% url election-list %}" title="Delegate and vote">
                 <img src="{{ STATIC_URL }}img/home_step3.png" id="home_step3_img" />
                 <h2>3</h2>
                 <h3>{% trans "Delegate and vote" %}</h3>
@@ -47,7 +47,7 @@
     </div>
     <div class="span3">
         <div class="last">
-            <a href="" title="Be social">
+            <a data-toggle="modal" href="#be-social-modal-dialog" title="Be social">
                 <img src="{{ STATIC_URL }}img/home_step4.png" id="home_step4_img" />
                 <h2>4</h2>
                 <h3>{% trans "Be social" %}</h3>
@@ -55,6 +55,32 @@
             </a>
         </div>
     </div>
+	
+	<div class="modal hide" id="be-social-modal-dialog">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">x</button>
+		<h3>Be social</h3>
+	</div>
+	<div class="modal-body">
+		<ul>
+			<li>
+				<a href="{ % url twitter %}">{% trans "Follow on Twitter" %}</a>
+			</li>
+			<li>
+				<a href="{ % url facebook %}">{% trans "Like in Facebook" %}</a>
+			</li>
+			<li>
+				<a href="{ % url identica %}">{% trans "Follow in Indenti.ca" %}</a>
+			</li>
+			<li>
+				<a href="{ % url google-plus %}">{% trans "+1 in Google Plus" %}</a>
+			</li>
+        </ul>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn" data-dismiss="modal">Close</a>
+	  </div>
+	</div>
 {% endblock %}
 
 {% block content-wrapper-class %}home{% endblock %}
