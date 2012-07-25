@@ -106,43 +106,36 @@ urlpatterns = patterns('',
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/cancel_vote$',
         CancelVoteView.as_view(), name='election-cancel-vote'),
-
-    #url(r'^user/list$', AjaxListView.as_view(
-        #queryset=User.objects.all(),
-        #template_name='agora_core/user_list.html',
-        #page_template='agora_core/user_list_page.html'),
-        #name="user-list"
-    #),
 )
 
 # Some redirects
-#urlpatterns += patterns('',
-    #url(r'^misc/link/twitter$', RedirectView.as_view(
-        #url= "https://twitter.com/#!/agoraciudadana", name='twitter'
-    #)),
+urlpatterns += patterns('',
+    url(r'^misc/link/twitter$', RedirectView.as_view(
+        url= "https://twitter.com/#!/agoraciudadana"), name='twitter'
+    ),
 
-    #url(r'^misc/link/facebook$', RedirectView.as_view(
-        #url= "https://www.facebook.com/pages/Partido-de-Internet-PDI/168786883166140",
-        #name='facebook'
-    #)),
+    url(r'^misc/link/facebook$', RedirectView.as_view(
+        url= "https://www.facebook.com/pages/Partido-de-Internet-PDI/168786883166140"),
+        name='facebook'
+    ),
 
-    #url(r'^misc/link/identica$', RedirectView.as_view(
-        #url= "https://identi.ca/search/notice?q=agoraciudadana", name='identica'
-    #)),
+    url(r'^misc/link/identica$', RedirectView.as_view(
+        url= "https://identi.ca/search/notice?q=agoraciudadana"), name='identica'
+    ),
 
-    #url(r'^misc/link/google-plus$', RedirectView.as_view(
-        #url= "https://plus.google.com/s/agora%20ciudadana", name='google-plus'
-    #)),
+    url(r'^misc/link/google-plus$', RedirectView.as_view(
+        url= "https://plus.google.com/s/agora%20ciudadana"), name='google-plus'
+    ),
 
-    #url(r'^misc/link/libre-software$', RedirectView.as_view(
-        #url= "https://github.com/agoraciudadana/agora-ciudadana", name='libre-software'
-    #)),
+    url(r'^misc/link/libre-software$', RedirectView.as_view(
+        url= "https://github.com/agoraciudadana/agora-ciudadana"), name='libre-software'
+    ),
 
-    #url(r'^misc/link/blog$', RedirectView.as_view(
-        #url= "https://agoraciudadana.org", name='blog'
-    #)),
+    url(r'^misc/link/blog$', RedirectView.as_view(
+        url= "https://agoraciudadana.org"), name='blog'
+    ),
 
-    #url(r'^misc/link/status$', RedirectView.as_view(
-        #url= "https://agoraciudadana.org", name='status'
-    #))
-#)
+    url(r'^misc/link/status$', RedirectView.as_view(
+        url= "https://agoraciudadana.org"), name='status'
+    )
+)

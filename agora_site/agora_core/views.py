@@ -29,7 +29,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.shortcuts import redirect, get_object_or_404, render_to_response
 from django.template.loader import render_to_string
-from django.views.generic import TemplateView, ListView, CreateView
+from django.views.generic import TemplateView, ListView, CreateView, RedirectView
 from django.views.generic.edit import UpdateView
 from django.views.i18n import set_language as django_set_language
 from django import http
