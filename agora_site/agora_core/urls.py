@@ -41,7 +41,9 @@ urlpatterns = patterns('',
 
     url(r'^search/$', SearchView.as_view(), name='search-view'),
 
-    url(r'^user/(?P<username>[\.\w]+)', UserView.as_view(), name='user-view'),
+    url(r'^user/(?P<username>[\.\w]+)$', UserView.as_view(), name='user-view'),
+
+    url(r'^user/(?P<username>[\.\w]+)/biography$', UserBiographyView.as_view(), name='user-bio'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)$',
         AgoraView.as_view(), name='agora-view'),

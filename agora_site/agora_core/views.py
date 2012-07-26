@@ -997,9 +997,9 @@ class CancelVoteView(FormActionView):
 
 class UserView(AjaxListView):
     '''
-    Shows an election main page
+    Shows an user main page
     '''
-    template_name = 'agora_core/user_view.html'
+    template_name = 'agora_core/user_activity.html'
     page_template = 'agora_core/action_items_page.html'
 
     def get_queryset(self):
@@ -1015,6 +1015,21 @@ class UserView(AjaxListView):
             vote = self.user_shown.get_profile().get_vote_in_election(election)
             pretty_answer = vote.get_chained_first_pretty_answer(election)
             context['election_items'] += [[election, vote, pretty_answer]]
+        return context
+
+    def dispatch(self, *args, **kwargs):
+        self.kwargs = kwargs
+
+        username = kwargs['username']
+        self.user_shown = get_object_or_404(User, username=username)
+        return super(UserView, self).dispatch(*args, **kwargs)
+
+class UserBiographyView(UserView):
+    template_name = 'agora_core/user_bio.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserBiographyView, self).get_context_data(**kwargs)
+        context['show_biography'] = True
         return context
 
     def dispatch(self, *args, **kwargs):

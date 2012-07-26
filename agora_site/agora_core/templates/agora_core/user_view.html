@@ -30,23 +30,21 @@
 
     <ul class="nav nav-tabs">
         {% block user-navigation %}
-        {% block user-navigation-base %}
-        <li {% ifactivetab "election-nav" "activity" %}class="active"{% endifactivetab %}>
+        <li {% ifactivetab "user-nav" "activity" %}class="active"{% endifactivetab %}>
             <a href="{% url user-view user_shown.username %}">{% trans "Activity" %}</a>
         </li>
-        <li {% ifactivetab "election-nav" "biography" %}class="active"{% endifactivetab %}>
-            <a href="{ % url user-bio user_shown.username %}">{% trans "Biography" %}</a>
+        <li {% ifactivetab "user-nav" "biography" %}class="active"{% endifactivetab %}>
+            <a href="{% url user-bio user_shown.username %}">{% trans "Biography" %}</a>
         </li>
-        <li {% ifactivetab "election-nav" "elections" %}class="active"{% endifactivetab %}>
+        <li {% ifactivetab "user-nav" "elections" %}class="active"{% endifactivetab %}>
             <a href="{ % url user-elections user_shown.username %}">{% trans "Elections" %}
             <span class="badge badge-info">{{ user_shown.get_profile.count_direct_votes }}</span></a>
         </li>
         {% if user == user_shown %}
-        <li {% ifactivetab "election-nav" "preferences" %}class="active"{% endifactivetab %}>
+        <li {% ifactivetab "user-nav" "preferences" %}class="active"{% endifactivetab %}>
             <a href="{ % url user-prefs user_shown.username %}">{% trans "Preferences" %}</a>
         </li>
         {% endif %}
-        {% endblock %}
         {% endblock %}
     </ul>
 {% endblock %}
@@ -57,13 +55,15 @@
 {% block content %}
     <div class="row">
         <div class="span8 agora-left-side">
-            {% paginate object_list %}
-            {% for action in object_list %}
-                {% include "agora_core/action_item.html" %}
-            {% empty %}
-                {% trans "Here your activity will be shown, but you didn't generate any yet." %}
-            {% endfor %}
-            {% show_more %}
+            {% block user-content %}
+                {% paginate object_list %}
+                {% for action in object_list %}
+                    {% include "agora_core/action_item.html" %}
+                {% empty %}
+                    {% trans "Here your activity will be shown, but you didn't generate any yet." %}
+                {% endfor %}
+                {% show_more %}
+            {% endblock %}
         </div>
         <div class="span4 agora-right-side">
             <div class="row-fluid right-widget right-widget-grey">

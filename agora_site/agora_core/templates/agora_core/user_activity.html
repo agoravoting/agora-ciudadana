@@ -1,0 +1,8 @@
+{% extends "agora_core/user_view.html" %}
+{% load i18n %}
+{% load endless %}
+{% load agora_utils %}
+
+{% block title %}{{ user_shown.name }} / {% trans "Activity" %}{% endblock %}
+
+{% block user-navigation %}{% activetab "user-nav" "activity" %}{{ block.super }}{% endblock %}
