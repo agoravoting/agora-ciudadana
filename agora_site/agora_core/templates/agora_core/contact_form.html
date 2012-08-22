@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% trans "Contact" %}{% endblock %}
+
+{% block running-board-wrapper-class %}{% endblock %}
+
+{% block running-board  %}
+
+<div class="row top-form">
+    <div class="span7 form-data">
+    {% crispy form %}
+    </div>
+</div>
+
+{% endblock %}

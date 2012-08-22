@@ -27,86 +27,88 @@ from agora_site.misc.utils import RequestCreateView
 urlpatterns = patterns('',
     url(r'^$', HomeView.as_view(), name='home'),
 
-    url(r'^misc/set-language/(?P<language>[\-\w]+)$', SetLanguageView.as_view(), name="set-language"),
+    url(r'^misc/set-language/(?P<language>[\-\w]+)/?$', SetLanguageView.as_view(), name="set-language"),
 
-    url(r'^agora/new$', CreateAgoraView.as_view(), name='agora-new'),
+    url(r'^agora/new/?$', CreateAgoraView.as_view(), name='agora-new'),
 
-    url(r'^agoras/list$', SearchView.as_view(searchmodel="agoras"), name='agora-list'),
+    url(r'^agoras/list/?$', SearchView.as_view(searchmodel="agoras"), name='agora-list'),
 
-    url(r'^elections/list$', SearchView.as_view(searchmodel="elections"), name='election-list'),
+    url(r'^elections/list/?$', SearchView.as_view(searchmodel="elections"), name='election-list'),
 
-    url(r'^user/list$', SearchView.as_view(searchmodel="profiles"), name='user-list'),
+    url(r'^user/list/?$', SearchView.as_view(searchmodel="profiles"), name='user-list'),
 
-    url(r'^agora/list$', SearchView.as_view(searchmodel="agoras"), name='agora-list'),
+    url(r'^agora/list/?$', SearchView.as_view(searchmodel="agoras"), name='agora-list'),
 
-    url(r'^search/$', SearchView.as_view(), name='search-view'),
+    url(r'^search/?$', SearchView.as_view(), name='search-view'),
 
-    url(r'^user/(?P<username>[\.\w]+)$', UserView.as_view(), name='user-view'),
+    url(r'^contact/?$', ContactView.as_view(), name='contact'),
 
-    url(r'^user/(?P<username>[\.\w]+)/biography$', UserBiographyView.as_view(), name='user-bio'),
+    url(r'^user/(?P<username>[\.\w]+)/?$', UserView.as_view(), name='user-view'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)$',
+    url(r'^user/(?P<username>[\.\w]+)/biography/?$', UserBiographyView.as_view(), name='user-bio'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)$/?',
         AgoraView.as_view(), name='agora-view'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/biography$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/biography/?$',
         AgoraBiographyView.as_view(), name='agora-bio'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/admin$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/admin/?$',
         AgoraAdminView.as_view(), name='agora-admin'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/members$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/members/?$',
         AgoraMembersView.as_view(), name='agora-members'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/comments$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/comments/?$',
         AgoraCommentsView.as_view(), name='agora-comments'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/comments/post$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/comments/post/?$',
         AgoraPostCommentView.as_view(), name='agora-comments-post'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/delegate/(?P<delegate_username>[\.\w]+)$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/delegate/(?P<delegate_username>[\.\w]+)/?$',
         AgoraActionChooseDelegateView.as_view(), name='agora-action-choose-delegate'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/join$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/join/?$',
         AgoraActionJoinView.as_view(), name='agora-action-join'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/leave$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/leave/?$',
         AgoraActionLeaveView.as_view(), name='agora-action-leave'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/leave-admin$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/leave-admin/?$',
         AgoraActionRemoveAdminMembershipView.as_view(),
         name='agora-action-leave-admin'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/new',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/new/?$',
         CreateElectionView.as_view(), name='election-new'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/?$',
         ElectionView.as_view(), name='election-view'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/comments$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/comments/?$',
         ElectionCommentsView.as_view(), name='election-comments'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/comments/post$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/comments/post/?$',
         ElectionPostCommentView.as_view(), name='election-comments-post'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/delegates$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/delegates/?$',
         ElectionDelegatesView.as_view(), name='election-delegates'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/delegate/(?P<delegate_username>[\.\w]+)$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/delegate/(?P<delegate_username>[\.\w]+)/?$',
         ElectionChooseDelegateView.as_view(), name='election-delegate'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/votes$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/votes/?$',
         ElectionVotesView.as_view(), name='election-votes'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/start$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/start/?$',
         StartElectionView.as_view(), name='election-action-start'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/stop$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/stop/?$',
         StopElectionView.as_view(), name='election-action-stop'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/vote$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/vote/?$',
         VoteView.as_view(), name='election-vote'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/cancel_vote$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/cancel_vote/?$',
         CancelVoteView.as_view(), name='election-cancel-vote'),
 )
 

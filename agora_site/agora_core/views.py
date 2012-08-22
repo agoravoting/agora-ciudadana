@@ -30,7 +30,7 @@ from django.utils.translation import ugettext as _
 from django.shortcuts import redirect, get_object_or_404, render_to_response
 from django.template.loader import render_to_string
 from django.views.generic import TemplateView, ListView, CreateView, RedirectView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, FormView
 from django.views.i18n import set_language as django_set_language
 from django import http
 
@@ -1143,4 +1143,19 @@ class SearchView(AjaxListView, HaystackSearchView):
         else:
             self.results = self.get_results()
         return super(SearchView, self).get(request, *args, **kwargs)
+
+
+class ContactView(FormView):
+    template_name = 'agora_core/contact_form.html'
+
+    def get_form_class(self):
+        if self.request.user.is_authenticated():
+            return ContactForm
+        else:
+            return AnonymousContactForm
+
+    def get_form_kwargs(self):
+        kwargs = super(ContactView, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
 
