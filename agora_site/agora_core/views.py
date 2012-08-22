@@ -1143,3 +1143,4 @@ class SearchView(AjaxListView, HaystackSearchView):
         else:
             self.results = self.get_results()
         return super(SearchView, self).get(request, *args, **kwargs)
+

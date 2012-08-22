@@ -234,7 +234,7 @@
     <div class="container-fluid {% block footer-wrapper-class %}{% endblock %}" id="footer-wrapper">
         <div class="container">
         <div class="row-fluid">
-                <div class="span4" id="footer-discover">
+                <div class="span3" id="footer-discover">
                     <h3>{% trans "Discover" %}</h3>
                     <ul>
                         <li>
@@ -252,7 +252,7 @@
                     </ul>
                 </div>
 
-                <div class="span4" id="footer-serious-stuff">
+                <div class="span3" id="footer-serious-stuff">
                     <h3>{% trans "Serious Stuff" %}</h3>
                     <ul>
                         <li id="footer-terms-of-service">
@@ -270,7 +270,7 @@
                     </ul>
                 </div>
 
-                <div class="span4" id="footer-be-social">
+                <div class="span3" id="footer-be-social">
                     <h3>{% trans "Be Social" %}</h3>
                     <ul>
                         <li>
@@ -286,6 +286,10 @@
                             <a href="{% url google-plus %}">{% trans "+1 in Google Plus" %}</a>
                         </li>
                     </ul>
+                </div>
+                <div class="span3" id="footer-be-social">
+                    <h3>{% trans "Powered by" %}</h3>
+                    <img title="{% trans "Wadobo Labs" %}" alt="{% trans "Wadobo Labs" %}" src="{{ STATIC_URL }}img/wadobolabs.png">
                 </div>
             </div>
         </div>
