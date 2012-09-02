@@ -1147,15 +1147,20 @@ class SearchView(AjaxListView, HaystackSearchView):
 
 class ContactView(FormView):
     template_name = 'agora_core/contact_form.html'
-
-    def get_form_class(self):
-        if self.request.user.is_authenticated():
-            return ContactForm
-        else:
-            return AnonymousContactForm
+    form_class = ContactForm
 
     def get_form_kwargs(self):
         kwargs = super(ContactView, self).get_form_kwargs()
         kwargs.update({'request': self.request})
         return kwargs
+
+    def get_success_url(self):
+        return reverse('home')
+
+
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        form.send()
+        return super(ContactView, self).form_valid(form)
 

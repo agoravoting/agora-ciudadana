@@ -364,7 +364,7 @@ class PostCommentForm(CommentSecurityForm):
                     escape(str(self.security_errors()))))
         return comment
 
-class AnonymousContactForm(django_forms.Form):
+class ContactForm(django_forms.Form):
     '''
     Contact form that can be used when the user is not logged in. Anyone
     can send it. Hence, we need information about the sender to be able to get
@@ -381,52 +381,28 @@ class AnonymousContactForm(django_forms.Form):
     def __init__(self, request, *args, **kwargs):
         self.request = request
         self.helper = FormHelper()
-        self.helper.layout = Layout(Fieldset(_('Contact'), 'name', 'email', 'subject', 'message'))
+        if not request.user.is_authenticated():
+            self.helper.layout = Layout(Fieldset(_('Contact'), 'name', 'email', 'subject', 'message'))
+        else:
+            self.helper.layout = Layout(Fieldset(_('Contact'), 'subject', 'message'))
         self.helper.add_input(Submit('submit', _('Send message'), css_class='btn btn-success btn-large'))
-        super(ContactForm, self).__init__(self, *args, **kwargs)
+        super(ContactForm, self).__init__(*args, **kwargs)
 
     def send(self):
         subject = self.cleaned_data['subject']
-        sender = self.cleaned_data['email']
-        name = self.cleaned_data['name']
+        if self.request.user.is_authenticated():
+            name = self.request.user.get_profile().get_fullname()
+            email = self.request.user.email
+        else:
+            name = self.cleaned_data['name']
+            email = self.cleaned_data['email']
+
         message = _("Message from %(name)s <%(email)s>: \n\n %(msg)s") % dict(
             msg=self.cleaned_data['message'],
-            email=sender,
+            email=email,
             name=name)
 
         from django.core.mail import mail_admins
-        mail_admins(subject, message, sender, recipients)
+        mail_admins(subject, message, email)
         messages.add_message(self.request, messages.SUCCESS,
             _("You have contacted us, we'll answer you as soon as possible."))
-
-
-class ContactForm(django_forms.Form):
-    '''
-    Simple contact form to be used for logged in users.
-    '''
-    subject = django_forms.CharField(label=_("Subject"), required=True,
-        min_length=5, max_length=200)
-    message = django_forms.CharField(label=_(u"Message"), required=True,
-        min_length=5, max_length=1000, widget=django_forms.Textarea())
-
-    def __init__(self, request, *args, **kwargs):
-        self.request = request
-        self.helper = FormHelper()
-        self.helper.layout = Layout(Fieldset(_('Contact'), 'subject', 'message'))
-        self.helper.add_input(Submit('submit', _('Send message'), css_class='btn btn-success btn-large'))
-        super(ContactForm, self).__init__(self, *args, **kwargs)
-
-    def send(self):
-        subject = self.cleaned_data['subject']
-        sender = self.cleaned_data['email']
-        name = self.cleaned_data['name']
-        message = _("Message from %(name)s <%(email)s>: \n\n %(msg)s") % dict(
-            msg=self.cleaned_data['message'],
-            email=sender,
-            name=name)
-
-        from django.core.mail import mail_admins
-        mail_admins(subject, message, sender, recipients)
-        messages.add_message(self.request, messages.SUCCESS,
-            _("Your message sent to us, we'll answer you as soon as possible."))
-
