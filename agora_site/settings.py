@@ -167,6 +167,7 @@ INSTALLED_APPS = (
     'django.contrib.comments',
     'django.contrib.staticfiles',
     'django.contrib.markup',
+    'django.contrib.flatpages',
     'debug_toolbar',
     'reversion',
     'south',

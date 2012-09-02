@@ -141,5 +141,21 @@ urlpatterns += patterns('',
 
     url(r'^misc/link/status$', RedirectView.as_view(
         url= "https://agoraciudadana.org"), name='status'
-    )
+    ),
+)
+
+urlpatterns += patterns('django.contrib.flatpages.views',
+    url(r'^misc/page/about/?$', 'flatpage', {'url': '/about/'}, name='about'),
+
+    url(r'^misc/page/libre-software/?$', 'flatpage',
+        {'url': '/libre-software/'}, name='libre-software'),
+
+    url(r'^misc/page/terms-of-service/?$', 'flatpage',
+        {'url': '/terms-of-service/'}, name='terms-of-service'),
+
+    url(r'^misc/page/privacy-policy/?$', 'flatpage',
+        {'url': '/privacy-policy/'}, name='privacy-policy'),
+
+    url(r'^misc/page/security/?$', 'flatpage', {'url': '/security/'},
+        name='security'),
 )

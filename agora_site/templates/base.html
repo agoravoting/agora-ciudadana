@@ -238,10 +238,10 @@
                     <h3>{% trans "Discover" %}</h3>
                     <ul>
                         <li>
-                            <a href="{ % url about %}">{% trans "About" %}</a>
+                            <a href="{% url about %}">{% trans "About" %}</a>
                         </li>
                         <li>
-                            <a href="{ % url libre-software %}">{% trans "Libre Software" %}</a>
+                            <a href="{% url libre-software %}">{% trans "Libre Software" %}</a>
                         </li>
                         <li>
                             <a href="{% url blog %}">{% trans "Blog" %}</a>
@@ -256,13 +256,13 @@
                     <h3>{% trans "Serious Stuff" %}</h3>
                     <ul>
                         <li id="footer-terms-of-service">
-                            <a href="{ % url terms-of-service %}">{% trans "Terms of Service" %}</a>
+                            <a href="{% url terms-of-service %}">{% trans "Terms of Service" %}</a>
                         </li>
                         <li id="footer-privacy-policy">
-                            <a href="{ % url privacy-policy %}">{% trans "Privacy Policy" %}</a>
+                            <a href="{% url privacy-policy %}">{% trans "Privacy Policy" %}</a>
                         </li>
                         <li id="footer-security">
-                            <a href="{ % url security %}">{% trans "Security" %}</a>
+                            <a href="{% url security %}">{% trans "Security" %}</a>
                         </li>
                         <li>
                             <a href="{% url contact %}">{% trans "Contact Us" %}</a>
