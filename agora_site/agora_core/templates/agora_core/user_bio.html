@@ -8,30 +8,28 @@
 {% block user-navigation %}{% activetab "user-nav" "biography" %}{{ block.super }}{% endblock %}
 
 {% block user-content %}
-    {% if show_biography %}
-        {% if user_shown.biography == "" %}
-            <div class="alert alert-info">
-            {% if user == user_shown %}
-                {# TODO: real url!! #}
-                {% url user-view user.username %}
-                {% blocktrans %}
-                    This biography is empty! now you have the opportunity to <a href="{{ edit_bio_url }}">start writing it</a>.
-                {% endblocktrans %}
-            {% else %}
-                {% trans "This biography is empty, sorry about that." %}
-            {% endif %}
-            </div>
+    {% if user_shown.get_profile.biography == "" %}
+        <div class="alert alert-info">
+        {% if user == user_shown %}
+            {# TODO: real url!! #}
+            {% url user-view user.username %}
+            {% blocktrans %}
+                This biography is empty! now you have the opportunity to <a href="{{ edit_bio_url }}">start writing it</a>.
+            {% endblocktrans %}
         {% else %}
-            {% if user == user_shown %}
-                <div class="alert alert-info">
-                {# TODO: real url!! #}
-                {% url user-view user.username %}
-                {% blocktrans %}
-                    This biography is a bit short, perhaps you can <a href="{{ edit_bio_url }}">improve it adding some additional information</a>.
-                {% endblocktrans %}
-                </div>
-            {% endif %}
-            {{ user_shown.biography }}
+            {% trans "This biography is empty, sorry about that." %}
         {% endif %}
+        </div>
+    {% else %}
+        {% if user == user_shown %}
+            <div class="alert alert-info">
+            {# TODO: real url!! #}
+            {% url user-view user.username %}
+            {% blocktrans %}
+                This biography is a bit short, perhaps you can <a href="{{ edit_bio_url }}">improve it adding some additional information</a>.
+            {% endblocktrans %}
+            </div>
+        {% endif %}
+        {{ user_shown.get_profile.biography }}
     {% endif %}
 {% endblock %}

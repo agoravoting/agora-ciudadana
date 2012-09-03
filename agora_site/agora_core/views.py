@@ -1029,7 +1029,7 @@ class UserBiographyView(UserView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(UserBiographyView, self).get_context_data(**kwargs)
-        context['show_biography'] = True
+        context['user_shown'] = self.user_shown
         return context
 
     def dispatch(self, *args, **kwargs):

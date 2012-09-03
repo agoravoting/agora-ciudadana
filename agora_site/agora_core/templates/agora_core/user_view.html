@@ -42,7 +42,7 @@
         </li>
         {% if user == user_shown %}
         <li {% ifactivetab "user-nav" "preferences" %}class="active"{% endifactivetab %}>
-            <a href="{ % url user-prefs user_shown.username %}">{% trans "Preferences" %}</a>
+            <a href="{ % url user-preferences %}">{% trans "Preferences" %}</a>
         </li>
         {% endif %}
         {% endblock %}
