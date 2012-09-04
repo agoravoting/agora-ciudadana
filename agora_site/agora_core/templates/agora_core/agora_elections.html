@@ -18,6 +18,11 @@
                         {% trans "Open" %} ({{ agora.open_elections.count }})
                     </a>
                 </li>
+                <li{% ifequal filter 'tallied' %} class="active"{% endifequal %}>
+                    <a href="{% url agora-elections agora.creator.username agora.name 'tallied' %}">
+                        {% trans "Tallied" %} ({{ agora.get_tallied_elections.count }})
+                    </a>
+                </li>
                 <li{% ifequal filter 'approved' %} class="active"{% endifequal %}>
                     <a href="{% url agora-elections agora.creator.username agora.name 'approved' %}">
                         {% trans "Approved" %} ({{ agora.approved_elections.count }})

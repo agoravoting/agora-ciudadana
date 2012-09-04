@@ -50,7 +50,7 @@ urlpatterns = patterns('',
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/?$',
         AgoraView.as_view(), name='agora-view'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/elections/(?P<election_filter>open|all|approved|requested)/?$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/elections/(?P<election_filter>open|all|approved|requested|tallied)/?$',
         AgoraElectionsView.as_view(), name='agora-elections'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/biography/?$',

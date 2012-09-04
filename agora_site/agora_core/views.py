@@ -167,6 +167,8 @@ class AgoraElectionsView(AjaxListView):
             election_list = self.agora.approved_elections()
         elif election_filter == "requested":
             election_list = self.agora.requested_elections()
+        elif election_filter == "tallied":
+            election_list = self.agora.get_tallied_elections()
 
         return election_list
 
