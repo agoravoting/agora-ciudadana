@@ -192,13 +192,13 @@
             <div class="row-fluid social-icons">
 
                 <div class="span12">
-                    <a href="{ % share-agora-on-twitter agora.creator.username agora.name %}">
+                    <a href="{ % url share-agora-on-twitter agora.creator.username agora.name %}">
                         <img src="{{ STATIC_URL }}img/twitter-small-logo.png" alt="{% trans "Share on Twitter" %}" />
                     </a>
-                    <a href="{ % share-agora-on-facebook agora.creator.username agora.name %}">
+                    <a href="{ % url share-agora-on-facebook agora.creator.username agora.name %}">
                         <img src="{{ STATIC_URL }}img/facebook-small-logo.png" alt="{% trans "Share on Facebook" %}" />
                     </a>
-                    <a href="{ % share-agora-on-identica agora.creator.username agora.name %}">
+                    <a href="{ % url share-agora-on-identica agora.creator.username agora.name %}">
                         <img src="{{ STATIC_URL }}img/identica-small-logo.png" alt="{% trans "Share on Identica" %}" />
                     </a>
                     <a href="{ % share-agora-on-googleplus agora.creator.username agora.name %}">

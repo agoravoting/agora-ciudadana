@@ -164,6 +164,54 @@ class CreateElectionForm(django_forms.ModelForm):
         model = Election
         fields = ('pretty_name', 'description')
 
+
+class ElectionEditForm(django_forms.ModelForm):
+    question = django_forms.CharField(_("Question"), required=True)
+    answers = django_forms.CharField(_("Answers"), required=True,
+        help_text=_("Each choice on separate lines"), widget=django_forms.Textarea)
+
+    def __init__(self, request, *args, **kwargs):
+        super(ElectionEditForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.request = request
+
+        instance = kwargs['instance']
+        self.fields['question'].initial = instance.questions[0]['question']
+        self.fields['answers'].initial = "\n".join(answer['value']
+            for answer in instance.questions[0]['answers'])
+
+        self.helper.layout = Layout(Fieldset(_('General settings'), 'pretty_name', 'description', 'question', 'answers'))
+        self.helper.add_input(Submit('submit', _('Save settings'), css_class='btn btn-success btn-large'))
+
+    def save(self, *args, **kwargs):
+        election = super(ElectionEditForm, self).save(*args, **kwargs)
+        # Questions/answers have a special formatting
+        answers = []
+        for answer_value in self.cleaned_data["answers"].splitlines():
+            if answer_value.strip():
+                answers += [{
+                    "a": "ballot/answer",
+                    "value": answer_value.strip(),
+                    "url": "",
+                    "details": "",
+                }]
+
+        election.questions = [{
+                "a": "ballot/question",
+                "answers": answers,
+                "max": 1, "min": 0,
+                "question": self.cleaned_data["question"],
+                "randomize_answer_order": True,
+                "tally_type": "simple"
+            },]
+        election.last_modified_at_date = datetime.datetime.now()
+        election.save()
+
+    class Meta:
+        model = Election
+        fields = ('pretty_name', 'description')
+
+
 class VoteForm(django_forms.ModelForm):
     '''
     Given an election, creates a form that lets the user choose the options

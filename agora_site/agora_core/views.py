@@ -418,6 +418,7 @@ class CreateElectionView(RequestCreateView):
     def dispatch(self, *args, **kwargs):
         return super(CreateElectionView, self).dispatch(*args, **kwargs)
 
+
 class ElectionView(AjaxListView):
     '''
     Shows an election main page
@@ -448,6 +449,79 @@ class ElectionView(AjaxListView):
             name=electionname, agora__name=agoraname,
             agora__creator__username=username)
         return super(ElectionView, self).dispatch(*args, **kwargs)
+
+
+class EditElectionView(UpdateView):
+    '''
+    Creates a new agora
+    '''
+    template_name = 'agora_core/election_edit.html'
+    form_class = ElectionEditForm
+    model = Election
+
+    def post(self, request, *args, **kwargs):
+        if not self.election.has_perms('edit_details', self.request.user):
+            messages.add_message(self.request, messages.SUCCESS, _('Sorry, but '
+            'you don\'t have edit permissions on <em>%(electionname)s</em>.') %\
+                dict(electionname=self.election.pretty_name))
+
+            url = reverse('election-view',
+                kwargs=dict(username=election.agora.creator.username,
+                    agoraname=election.agora.name, electionname=election.name))
+            return http.HttpResponseRedirect(url)
+        return super(EditElectionView, self).post(request, *args, **kwargs)
+
+
+    def get(self, request, *args, **kwargs):
+        if not self.election.has_perms('edit_details', self.request.user):
+            messages.add_message(self.request, messages.SUCCESS, _('Sorry, but '
+            'you don\'t have edit permissions on <em>%(electionname)s</em>.') %\
+                dict(electionname=self.election.pretty_name))
+
+            url = reverse('election-view',
+                kwargs=dict(username=election.agora.creator.username,
+                    agoraname=election.agora.name, electionname=election.name))
+            return http.HttpResponseRedirect(url)
+        return super(EditElectionView, self).get(request, *args, **kwargs)
+
+    def get_success_url(self):
+        '''
+        After creating the agora, show it
+        '''
+        messages.add_message(self.request, messages.SUCCESS, _('Election '
+            '%(electionname)s edited.') % dict(electionname=self.election.pretty_name))
+
+        action.send(self.request.user, verb='edited', action_object=self.election,
+            ipaddr=self.request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
+
+        return reverse('election-view',
+            kwargs=dict(username=self.election.agora.creator.username,
+                agoraname=self.election.agora.name,
+                electionname=self.election.name))
+
+    def get_object(self):
+        return self.election
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(EditElectionView, self).get_context_data(**kwargs)
+        context['object_list'] = []
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super(EditElectionView, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        username = kwargs['username']
+        agoraname = kwargs['agoraname']
+        electionname = kwargs['electionname']
+        self.election = get_object_or_404(Election, name=electionname,
+            agora__name=agoraname, agora__creator__username=username)
+
+        return super(EditElectionView, self).dispatch(*args, **kwargs)
 
 
 class StartElectionView(FormActionView):
@@ -1200,8 +1274,9 @@ class AgoraAdminView(UpdateView):
             'you don\'t have admin permissions on %(agoraname)s.') %\
                 dict(agoraname=self.agora.name))
 
-            return reverse('agora-view',
+            url = reverse('agora-view',
                 kwargs=dict(username=agora.creator.username, agoraname=agora.name))
+            return http.HttpResponseRedirect(url)
         return super(AgoraAdminView, self).post(request, *args, **kwargs)
 
 

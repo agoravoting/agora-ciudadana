@@ -50,15 +50,6 @@
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    {% with permissions=election|get_perms:user%}
-                    {% if "edit_details" in permissions %}
-                        <li>
-                            <a class="action-form-link" href="{ % url election-edit election.agora.creator.username election.agora.name election.name %}">
-                                <i class="icon-edit"></i>
-                                {% trans "Edit Election details" %}
-                            </a>
-                        </li>
-                    {% endif %}
                     {% if "begin_election" in permissions %}
                         <li>
                             <a class="action-form-link" href="{% url election-action-start election.agora.creator.username election.agora.name election.name %}">
@@ -83,7 +74,6 @@
                             </a>
                         </li>
                     {% endif %}
-                    {% endwith %}
                 </ul>
             </div>
         {% elif user not in election.members.all %}
@@ -115,6 +105,13 @@
             <a href="{% url election-delegates election.agora.creator.username election.agora.name election.name %}">{% trans "Delegates" %}
             <span class="badge badge-info">{{ election.get_votes_from_delegates.count }}</span></a>
         </li>
+        {% with permissions=election|get_perms:user%}
+        {% if "edit_details" in permissions %}
+        <li {% ifactivetab "election-nav" "edit" %}class="active"{% endifactivetab %}>
+            <a href="{% url election-edit election.agora.creator.username election.agora.name election.name %}">{% trans "Edit" %}</a>
+        </li>
+        {% endif %}
+        {% endwith %}
         {% endblock %}
         {% endblock %}
     </ul>
@@ -292,7 +289,7 @@
                                 <img src="{{ STATIC_URL }}img/twitter-small-logo.png" alt="{% trans "Share on Twitter" %}" />
                             </a>
                             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-                            <a href="{ % share-agora-on-facebook agora.creator.username agora.name %}">
+                            <a href="{ % url share-agora-on-facebook agora.creator.username agora.name %}">
                                 <img src="{{ STATIC_URL }}img/facebook-small-logo.png" alt="{% trans "Share on Facebook" %}" />
                             </a>
                             <a href="http://identi.ca/index.php?action=newnotice&status_textarea={% blocktrans with electionname=election.pretty_name %}Participate in {{ electionname }} at Agora Ciudadana{% endblocktrans %}">
@@ -308,4 +305,3 @@
         </div>
 {% endblock %}
 
-{% block footer %} {% endblock %}

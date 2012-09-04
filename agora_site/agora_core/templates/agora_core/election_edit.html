@@ -1,0 +1,32 @@
+{% extends 'agora_core/election_base.html' %}
+{% load i18n %}
+{% load agora_utils %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% trans "Edit" %} - {{ election.pretty_name }} - {{ election.agora.creator.username }}/{{ election.agora.name }}{% endblock %}
+
+{% block election-navigation %}{% activetab "election-nav" "edit" %}{{ block.super }}{% endblock %}
+
+{% block footer-wrapper-class %}short{% endblock %}
+{% block running-board-wrapper-class %}{% endblock %}
+
+{% block running-board  %}
+
+<div class="row top-form">
+    <div class="span7 form-data">
+    {% crispy form %}
+    </div>
+
+
+    <div class="span3 form-info" id="agora_new_form_info">
+        <img src="{{ STATIC_URL }}img/election_new_form_info.png" alt="{% trans "Edit an Election" %}" />
+        <h1>1</h1>
+        <h2>{% trans "Edit an Election" %}</h2>
+        <p>
+        {% trans "Remember: An election can only be edited when voting has not yet started." %}
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}{% endblock %}

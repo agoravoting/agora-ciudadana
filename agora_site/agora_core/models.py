@@ -1029,6 +1029,7 @@ class Election(models.Model):
                 answer['total_count_percentage'] = (answer['total_count'] * 100.0) / total_votes
         return result_pretty
 
+
 class CastVote(models.Model):
     '''
     Represent a vote casted in an election. 
