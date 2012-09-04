@@ -1,0 +1,19 @@
+{% extends 'agora_core/user_view.html' %}
+{% load i18n %}
+{% load agora_utils %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% trans "User settings" %}{{ election.agora.name }}{% endblock %}
+
+{% block user-navigation %}{% activetab "user-nav" "settings" %}{{ block.super }}{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="span8 agora-left-side">
+            <div class="form-data admin-form">
+                {% crispy form %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

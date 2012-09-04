@@ -41,8 +41,8 @@
             <span class="badge badge-info">{{ user_shown.get_profile.count_direct_votes }}</span></a>
         </li>
         {% if user == user_shown %}
-        <li {% ifactivetab "user-nav" "preferences" %}class="active"{% endifactivetab %}>
-            <a href="{ % url user-preferences %}">{% trans "Preferences" %}</a>
+        <li {% ifactivetab "user-nav" "settings" %}class="active"{% endifactivetab %}>
+            <a href="{% url user-settings %}">{% trans "Settings" %}</a>
         </li>
         {% endif %}
         {% endblock %}

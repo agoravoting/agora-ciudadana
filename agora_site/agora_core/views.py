@@ -1224,6 +1224,44 @@ class UserBiographyView(UserView):
         self.user_shown = get_object_or_404(User, username=username)
         return super(UserView, self).dispatch(*args, **kwargs)
 
+class UserSettingsView(UpdateView):
+    '''
+    Creates a new agora
+    '''
+    template_name = 'agora_core/user_settings.html'
+    form_class = UserSettingsForm
+    model = User
+
+    def get_success_url(self):
+        '''
+        After creating the agora, show it
+        '''
+        messages.add_message(self.request, messages.SUCCESS,
+            _('User settings updated.'))
+
+        action.send(self.request.user, verb='settings updated',
+            ipaddr=self.request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
+
+        return reverse('user-view',
+            kwargs=dict(username=self.request.user.username))
+
+    def get_object(self):
+        return self.request.user
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserSettingsView, self).get_context_data(**kwargs)
+        context['user_shown'] = self.request.user
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super(UserSettingsView, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(UserSettingsView, self).dispatch(*args, **kwargs)
 
 class UserElectionsView(AjaxListView):
     '''

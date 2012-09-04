@@ -21,6 +21,7 @@ from django import forms as django_forms
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.contrib.comments.forms import CommentSecurityForm
 from django.contrib.comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
@@ -31,6 +32,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Hidden, Layout, Fieldset
 from actstream.models import Action
 from actstream.signals import action as actstream_action
+from userena.models import UserenaSignup
+from userena import settings as userena_settings
 
 from agora_site.agora_core.models import Agora, Election, CastVote
 
@@ -73,6 +76,100 @@ class CreateAgoraForm(django_forms.ModelForm):
     class Meta:
         model = Agora
         fields = ('pretty_name', 'short_description')
+
+
+attrs_dict = {'class': 'required'}
+
+class UserSettingsForm(django_forms.ModelForm):
+    short_description = django_forms.CharField(_('Short Description'),
+        help_text=_("Say something about yourself (140 chars max)"), required=False)
+
+    biography = django_forms.CharField(_('Biography'),
+        help_text=_("Tell us about you, use as much text as needed"),
+        widget=django_forms.Textarea, required=False)
+
+    email = django_forms.EmailField(widget=django_forms.TextInput(attrs=dict(attrs_dict,
+        maxlength=75)), label=_(u"Email"), required=False)
+
+    old_password = django_forms.CharField(widget=django_forms.PasswordInput(attrs=attrs_dict,
+        render_value=False), label=_("Current password"),
+        help_text=_("Provide your current password for security, required field"),
+        required=True)
+
+    password1 = django_forms.CharField(widget=django_forms.PasswordInput(attrs=attrs_dict,
+        render_value=False),label=_("New password"), required=False,
+        help_text=_("Specify your new password if you want to change it, or leave it blank"))
+
+    password2 = django_forms.CharField(widget=django_forms.PasswordInput(attrs=attrs_dict,
+        render_value=False), required=False, label=_("Repeat new password"))
+
+    def __init__(self, request, *args, **kwargs):
+        super(UserSettingsForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.request = request
+        self.user = kwargs['instance']
+        self.fields['short_description'].initial = self.user.get_profile().short_description
+        self.fields['biography'].initial = self.user.get_profile().biography
+        self.fields['email'].initial = self.user.email
+
+        # Users who login via twitter or other means do not have a password
+        if self.user.password == '!':
+            del self.fields['old_password']
+            self.helper.layout = Layout(
+                Fieldset(_('Profile'), 'first_name', 'last_name', 'short_description', 'biography'),
+                Fieldset(_('Change email'), 'email'),
+                Fieldset(_('Change password'), 'password1', 'password2')
+            )
+        else:
+            self.helper.layout = Layout(
+                Fieldset(_('Profile'), 'first_name', 'last_name', 'short_description', 'biography'),
+                Fieldset(_('Change email'), 'email'),
+                Fieldset(_('Change password'), 'password1', 'password2'),
+                Fieldset(_('Security'), 'old_password')
+            )
+        self.helper.add_input(Submit('submit', _('Save settings'), css_class='btn btn-success btn-large'))
+
+    def save(self, *args, **kwargs):
+        old_email = self.user.email
+        user = super(UserSettingsForm, self).save(commit=False)
+        profile = user.get_profile()
+        profile.short_description = self.cleaned_data['short_description']
+        profile.biography = self.cleaned_data['biography']
+        user.email = self.cleaned_data['email']
+        profile.save()
+        user.save()
+        return user
+
+    def clean_email(self):
+        """ Validate that the email is not already registered with another user """
+        if len(self.cleaned_data['email']) != 0 and\
+            self.cleaned_data['email'].lower() == self.user.email:
+                raise django_forms.ValidationError(_(u'You\'re already known under this email.'))
+        if User.objects.filter(email__iexact=self.cleaned_data['email']).exclude(email__iexact=self.user.email):
+            raise django_forms.ValidationError(_(u'This email is already in use. Please supply a different email.'))
+        return self.cleaned_data['email']
+
+    def clean_old_password(self):
+        """ Validate that the email is not already registered with another user """
+        if not self.user.check_password(self.cleaned_data['old_password']):
+            raise django_forms.ValidationError(_(u'Invalid password.'))
+        return self.cleaned_data['old_password']
+
+    def clean(self):
+        """
+        Validates that the values entered into the two password fields match.
+        Note that an error here will end up in ``non_field_errors()`` because
+        it doesn't apply to a single field.
+
+        """
+        if 'password' in self.cleaned_data and 'password2' in self.cleaned_data and\
+            self.cleaned_data['password1'] != self.cleaned_data['password2']:
+                raise forms.ValidationError(_('The two password fields didn\'t match.'))
+        return self.cleaned_data
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name')
 
 
 class AgoraAdminForm(django_forms.ModelForm):
@@ -206,6 +303,7 @@ class ElectionEditForm(django_forms.ModelForm):
             },]
         election.last_modified_at_date = datetime.datetime.now()
         election.save()
+        return election
 
     class Meta:
         model = Election
