@@ -143,6 +143,47 @@ class AgoraBiographyView(TemplateView):
             creator__username=username)
         return context
 
+
+class AgoraElectionsView(AjaxListView):
+    '''
+    Shows the list of elections of an agora
+    '''
+    template_name = 'agora_core/agora_elections.html'
+    page_template = 'agora_core/election_list_page.html'
+
+    def get_queryset(self):
+        username = self.kwargs["username"]
+        agoraname = self.kwargs["agoraname"]
+        election_filter = self.kwargs["election_filter"]
+
+        self.agora = get_object_or_404(Agora, name=agoraname,
+            creator__username=username)
+
+        election_list = self.agora.open_elections()
+
+        if election_filter == "all":
+            election_list = self.agora.all_elections()
+        elif election_filter == "approved":
+            election_list = self.agora.approved_elections()
+        elif election_filter == "requested":
+            election_list = self.agora.requested_elections()
+
+        return election_list
+
+    def get(self, request, *args, **kwargs):
+        self.kwargs = kwargs
+        return super(AgoraElectionsView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(AgoraElectionsView, self).get_context_data(**kwargs)
+        context['agora'] = self.agora
+        if "election_filter" in self.kwargs:
+            context['filter'] = self.kwargs["election_filter"]
+        else:
+            context['filter'] = "open"
+        return context
+
+
 class AgoraMembersView(AjaxListView):
     '''
     Shows the biography of an agora

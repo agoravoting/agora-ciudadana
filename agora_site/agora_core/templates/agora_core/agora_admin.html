@@ -7,8 +7,13 @@
 
 {% block agora-navigation %}{% activetab "agora-nav" "admin" %}{{ block.super }}{% endblock %}
 
-{% block agora_content %}
-    <div class="form-data admin-form">
-    {% crispy form %}
+{% block content %}
+
+    <div class="row">
+        <div class="span8 agora-left-side">
+            <div class="form-data admin-form">
+            {% crispy form %}
+            </div>
+        </div>
     </div>
 {% endblock %}

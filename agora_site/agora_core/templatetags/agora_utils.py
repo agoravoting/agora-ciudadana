@@ -16,6 +16,11 @@ def is_content_type(obj, content_type):
 def debug_object(obj, obj2=None):
     import ipdb; ipdb.set_trace()
 
+
+@register.filter
+def ispair(obj):
+    return obj % 2 == 0
+
 @register.filter
 def vote_for_election(user, election):
     '''

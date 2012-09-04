@@ -291,18 +291,37 @@ class Agora(models.Model):
             )\
             .exclude(id__in=self.members.values('id').query)
 
+    def all_elections(self):
+        '''
+        Returns the QuerySet with all elections but the delegation on
+        '''
+        return self.elections.exclude(name__exact='delegation')
+    
+
     def approved_elections(self):
         '''
         Returns the QuerySet with the approved elections
         '''
         return self.elections.filter(is_approved=True)
 
+    def open_elections(self):
+        '''
+        Returns the QuerySet with the open and approved elections
+        '''
+
+        return self.elections.filter(
+            Q(voting_extended_until_date__gt=datetime.datetime.now()) |
+            Q(voting_extended_until_date=None, voting_starts_at_date__lt=datetime.datetime.now()),
+            Q(is_approved=True)
+        ).order_by('voting_extended_until_date',
+            'voting_starts_at_date')
+
 
     def requested_elections(self):
         '''
         Returns a QuerySet with the not approved elections
         '''
-        return self.elections.filter(is_approved=False, agora=None)
+        return self.elections.filter(is_approved=False).exclude(name='delegation')
 
     def has_perms(self, permission_name, user):
         '''
@@ -371,6 +390,9 @@ class Election(models.Model):
     # an election is always related to an agora, except if it's a delegated election
     agora = models.ForeignKey('Agora', related_name='elections',
         verbose_name=_('Agora'), null=True)
+
+    def is_delegated_election(self):
+        return self.name == "delegation"
 
     creator = models.ForeignKey(User, related_name='created_elections',
         verbose_name=_('Creator'), blank=False)

@@ -1,0 +1,18 @@
+{% load i18n %}
+{% load endless %}
+{% load agora_utils %}
+
+{% paginate object_list %}
+{% for object in object_list %}
+    <!-- {% cycle "left" "right" as row %} -->
+
+    {% include "agora_core/election_item.html" %}
+{% empty %}
+    {% trans "Sorry, this election list is empty." %}
+{% endfor %}
+
+{% if not object_list.count|ispair %}
+    </div>
+{% endif %}
+
+{% show_more %}

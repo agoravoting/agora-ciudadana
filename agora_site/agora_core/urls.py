@@ -47,8 +47,11 @@ urlpatterns = patterns('',
 
     url(r'^user/(?P<username>[\.\w]+)/biography/?$', UserBiographyView.as_view(), name='user-bio'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)$/?',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/?$',
         AgoraView.as_view(), name='agora-view'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/elections/(?P<election_filter>open|all|approved|requested)/?$',
+        AgoraElectionsView.as_view(), name='agora-elections'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/biography/?$',
         AgoraBiographyView.as_view(), name='agora-bio'),

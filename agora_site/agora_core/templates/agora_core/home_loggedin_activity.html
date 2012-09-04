@@ -136,7 +136,7 @@
                                                 </li>
                                             {% elif forloop.counter == 5 %}
                                                 <li>
-                                                    <a class="remaining" href="{ % url agora-elections-view election.agora.creator.username election.agora.name elections_date "open" %}">
+                                                    <a class="remaining" href="{% url agora-elections election.agora.creator.username election.agora.name elections_date 'open' %}">
                                                     {% blocktrans with remaining=forloop.revcounter0 %}
                                                         ... and {{ remaning }} more elections
                                                     {% endblocktrans %}
