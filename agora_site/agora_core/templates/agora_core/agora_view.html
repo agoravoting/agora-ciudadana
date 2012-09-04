@@ -113,12 +113,8 @@
             <a href="{% url agora-elections agora.creator.username agora.name 'open' %}">{% trans "Elections" %}
             <span class="badge badge-info">{{ agora.open_elections.count }}</span></a>
         </li>
-        <li {% ifactivetab "agora-nav" "delegates" %}class="active"{% endifactivetab %}>
-            <a href="{ % url agora-delegates agora.creator.username agora.name %}">{% trans "Delegates" %}
-            <span class="badge badge-info">{{ agora.active_delegates.count }}</span></a>
-        </li>
         <li {% ifactivetab "agora-nav" "members" %}class="active"{% endifactivetab %}>
-            <a href="{% url agora-members agora.creator.username agora.name %}">{% trans "Members" %}
+            <a href="{% url agora-members agora.creator.username agora.name 'all' %}">{% trans "Members" %}
             <span class="badge badge-info">{{ agora.members.count }}</span></a>
         </li>
         <li {% ifactivetab "agora-nav" "admin" %}class="active"{% endifactivetab %}>

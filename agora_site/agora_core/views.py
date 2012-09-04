@@ -177,10 +177,7 @@ class AgoraElectionsView(AjaxListView):
     def get_context_data(self, *args, **kwargs):
         context = super(AgoraElectionsView, self).get_context_data(**kwargs)
         context['agora'] = self.agora
-        if "election_filter" in self.kwargs:
-            context['filter'] = self.kwargs["election_filter"]
-        else:
-            context['filter'] = "open"
+        context['filter'] = self.kwargs["election_filter"]
         return context
 
 
@@ -197,7 +194,11 @@ class AgoraMembersView(AjaxListView):
 
         self.agora = get_object_or_404(Agora, name=agoraname,
             creator__username=username)
-        return self.agora.members.all()
+
+        member_list = self.agora.members.all()
+        if self.kwargs['members_filter'] == 'delegates':
+            member_list = self.agora.active_delegates()
+        return member_list
 
     def get(self, request, *args, **kwargs):
         self.kwargs = kwargs
@@ -206,6 +207,7 @@ class AgoraMembersView(AjaxListView):
     def get_context_data(self, **kwargs):
         context = super(AgoraMembersView, self).get_context_data(**kwargs)
         context['agora'] = self.agora
+        context['filter'] = self.kwargs["members_filter"]
 
         return context
 
