@@ -522,6 +522,7 @@ class StartElectionView(FormActionView):
     def dispatch(self, *args, **kwargs):
         return super(StartElectionView, self).dispatch(*args, **kwargs)
 
+
 class StopElectionView(FormActionView):
     def post(self, request, username, agoraname, electionname, *args, **kwargs):
         election = get_object_or_404(Election,
@@ -580,6 +581,71 @@ class StopElectionView(FormActionView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(StopElectionView, self).dispatch(*args, **kwargs)
+
+
+class ArchiveElectionView(FormActionView):
+    def post(self, request, username, agoraname, electionname, *args, **kwargs):
+        election = get_object_or_404(Election,
+            name=electionname, agora__name=agoraname,
+            agora__creator__username=username)
+
+        if not election.has_perms('archive_election', request.user):
+            messages.add_message(self.request, messages.ERROR, _('You don\'t '
+                'have permission to archive the election.'))
+            return self.go_next(request)
+
+        if election.archived_at_date != None:
+            messages.add_message(self.request, messages.ERROR, _('Election is '
+                'already archived.'))
+            return self.go_next(request)
+
+        election.archived_at_date = datetime.datetime.now()
+        election.save()
+
+        context = get_base_email_context(self.request)
+
+        context.update(dict(
+            election=election,
+            election_url=reverse('election-view',
+                kwargs=dict(username=election.agora.creator.username,
+                    agoraname=election.agora.name, electionname=election.name)),
+            agora_url=reverse('agora-view',
+                kwargs=dict(username=election.agora.creator.username,
+                    agoraname=election.agora.name)),
+        ))
+
+        # List of emails to send. tuples are of format:
+        #
+        # (subject, text, html, from_email, recipient)
+        datatuples = []
+
+        for vote in election.get_all_votes():
+            context['to'] = vote.voter
+            try:
+                context['delegate'] = get_delegate_in_agora(vote.voter, election.agora)
+            except:
+                pass
+            datatuples.append((
+                _('Election archived: %s') % election.pretty_name,
+                render_to_string('agora_core/emails/election_archived.txt',
+                    context),
+                render_to_string('agora_core/emails/election_archived.html',
+                    context),
+                None,
+                [vote.voter.email]))
+
+        send_mass_html_mail(datatuples)
+
+        action.send(self.request.user, verb='archived', action_object=election,
+            target=election.agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=geolocate_ip(request.META.get('REMOTE_ADDR')))
+
+        return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ArchiveElectionView, self).dispatch(*args, **kwargs)
+
 
 class VoteView(CreateView):
     '''

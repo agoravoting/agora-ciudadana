@@ -108,6 +108,9 @@ urlpatterns = patterns('',
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/stop/?$',
         StopElectionView.as_view(), name='election-action-stop'),
 
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/archive/?$',
+        ArchiveElectionView.as_view(), name='election-action-archive'),
+
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/vote/?$',
         VoteView.as_view(), name='election-vote'),
 

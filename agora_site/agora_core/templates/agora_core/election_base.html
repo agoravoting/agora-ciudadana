@@ -77,15 +77,10 @@
                     {% endif %}
                     {% if "archive_election" in permissions %}
                         <li>
-                            <a class="action-form-link" href="{ % url election-action-archive election.agora.creator.username election.agora.name election.name %}">
+                            <a class="action-form-link" href="{% url election-action-archive election.agora.creator.username election.agora.name election.name %}">
                                 <i class="icon-folder-open"></i>
                                 {% trans "Dismiss and archive election" %}
                             </a>
-                        </li>
-                    {% endif %}
-                    {% if election.archived_at_date != None %}
-                        <li>
-                            {% trans "Election is dismissed and archived" %}
                         </li>
                     {% endif %}
                     {% endwith %}

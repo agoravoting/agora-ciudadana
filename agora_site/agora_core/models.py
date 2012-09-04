@@ -582,7 +582,7 @@ class Election(models.Model):
                 self.voting_ends_at_date == None and isadminorcreator and\
                 not isarchived
         elif permission_name == 'archive_election':
-            return isadminorcreator
+            return isadminorcreator and self.archived_at_date == None
 
     def get_perms(self, user):
         '''
@@ -723,13 +723,17 @@ class Election(models.Model):
             desc += tmp.__unicode__()
         elif self.result_tallied_at_date:
             tmp = _(("Voting started %(start_date)s and finished "
-                "%(end_date)s. Results available since %(tally_date)s") %\
+                "%(end_date)s. Results available since %(tally_date)s. ") %\
                     dict(start_date=timesince(self.voting_starts_at_date),
                         end_date=timesince(self.voting_extended_until_date),
                         tally_date=timesince(self.result_tallied_at_date)))
             desc += tmp.__unicode__()
         elif not self.voting_starts_at_date:
             tmp = _("Start date for voting is not set yet. ")
+            desc += tmp.__unicode__()
+
+        if self.archived_at_date:
+            tmp = _("Election is <b>archived and dismissed</b>.")
             desc += tmp.__unicode__()
         return desc
 

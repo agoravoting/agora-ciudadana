@@ -1,0 +1,22 @@
+{% load i18n %}
+{% load markup %}
+{% load agora_utils %}
+{% autoescape off %}
+
+{% blocktrans with to_username=to.username election_name=election.pretty_name agora_username=election.agora.creator.username agora_name=election.agora.name site_domain=site.domain election_description=election.description|striptags %}
+    <p>Hello {{ to_username }},</p>
+
+    <p>Election <a href="{{ protocol }}://{{ site_domain }}{{ election_url }}">{{ election_name }}</a> at <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_username }}/{{ agora_name }}</a> has been archived.</p>
+
+    <h3>Election description</h3>
+
+    {{ election_description }}
+{% endblocktrans %}
+<p>
+    --<br/>
+        {% blocktrans with to_email=to.email site_name=site.name site_domain=site.domain %}
+            This message was sent to {{ to_email }}. If you want to stop receiving these message from {{ site_name }}, please click here: {{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}
+        {% endblocktrans %}
+</p>
+
+{% endautoescape %}
