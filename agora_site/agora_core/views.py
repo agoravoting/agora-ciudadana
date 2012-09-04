@@ -388,6 +388,9 @@ class CreateElectionView(RequestCreateView):
         for admin in election.agora.admins.all():
             context['to'] = admin
 
+            if not admin.email:
+                continue
+
             email = EmailMultiAlternatives(
                 subject=_('Election %s created') % election.pretty_name,
                 body=render_to_string('agora_core/emails/election_created.txt',
@@ -559,6 +562,10 @@ class StartElectionView(FormActionView):
         # NOTE: for now, electorate is dynamic and just taken from the election's
         # agora members' list
         for voter in election.agora.members.all():
+
+            if not voter.email:
+                continue
+
             context['to'] = voter
             try:
                 context['delegate'] = get_delegate_in_agora(voter, election.agora)
@@ -575,6 +582,10 @@ class StartElectionView(FormActionView):
 
         # Also notify third party delegates
         for voter in election.agora.active_nonmembers_delegates():
+
+            if not voter.email:
+                continue
+
             context['to'] = voter
             datatuples.append((
                 _('Vote in election %s') % election.pretty_name,
@@ -630,6 +641,10 @@ class StopElectionView(FormActionView):
         datatuples = []
 
         for vote in election.get_all_votes():
+
+            if not vote.voter.email:
+                continue
+
             context['to'] = vote.voter
             try:
                 context['delegate'] = get_delegate_in_agora(vote.voter, election.agora)
@@ -694,6 +709,10 @@ class ArchiveElectionView(FormActionView):
         datatuples = []
 
         for vote in election.get_all_votes():
+
+            if not vote.voter.email:
+                continue
+
             context['to'] = vote.voter
             try:
                 context['delegate'] = get_delegate_in_agora(vote.voter, election.agora)
@@ -754,16 +773,17 @@ class VoteView(CreateView):
                     agoraname=self.election.agora.name)),
         ))
 
-        email = EmailMultiAlternatives(
-            subject=_('Vote casted for election %s') % self.election.pretty_name,
-            body=render_to_string('agora_core/emails/vote_casted.txt',
-                context),
-            to=[self.request.user.email])
+        if self.request.user.email:
+            email = EmailMultiAlternatives(
+                subject=_('Vote casted for election %s') % self.election.pretty_name,
+                body=render_to_string('agora_core/emails/vote_casted.txt',
+                    context),
+                to=[self.request.user.email])
 
-        email.attach_alternative(
-            render_to_string('agora_core/emails/vote_casted.html',
-                context), "text/html")
-        email.send()
+            email.attach_alternative(
+                render_to_string('agora_core/emails/vote_casted.html',
+                    context), "text/html")
+            email.send()
 
         if not is_following(self.request.user, self.election):
             follow(self.request.user, self.election, actor_only=False)
@@ -1159,16 +1179,17 @@ class CancelVoteView(FormActionView):
         except:
             pass
 
-        email = EmailMultiAlternatives(
-            subject=_('Vote cancelled for election %s') % election.pretty_name,
-            body=render_to_string('agora_core/emails/vote_cancelled.txt',
-                context),
-            to=[vote.voter.email])
+        if vote.voter.email:
+            email = EmailMultiAlternatives(
+                subject=_('Vote cancelled for election %s') % election.pretty_name,
+                body=render_to_string('agora_core/emails/vote_cancelled.txt',
+                    context),
+                to=[vote.voter.email])
 
-        email.attach_alternative(
-            render_to_string('agora_core/emails/vote_cancelled.html',
-                context), "text/html")
-        email.send()
+            email.attach_alternative(
+                render_to_string('agora_core/emails/vote_cancelled.html',
+                    context), "text/html")
+            email.send()
 
         action.send(self.request.user, verb='vote cancelled', action_object=election,
             target=election.agora, ipaddr=request.META.get('REMOTE_ADDR'),
