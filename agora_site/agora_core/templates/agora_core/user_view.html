@@ -37,7 +37,7 @@
             <a href="{% url user-bio user_shown.username %}">{% trans "Biography" %}</a>
         </li>
         <li {% ifactivetab "user-nav" "elections" %}class="active"{% endifactivetab %}>
-            <a href="{ % url user-elections user_shown.username %}">{% trans "Elections" %}
+            <a href="{% url user-elections user_shown.username 'participated' %}">{% trans "Elections" %}
             <span class="badge badge-info">{{ user_shown.get_profile.count_direct_votes }}</span></a>
         </li>
         {% if user == user_shown %}
@@ -97,7 +97,7 @@
                 <div class="right-widget-header">
                     <h4>{% trans "Last elections" %} <span>({{ user_shown.get_profile.get_participated_elections.count }})</span></h4>
                     <div class="btn-group">
-                        <a class="btn btn-primary" data-toggle="dropdown" href="{ % url user-elections user_shown.username %}">
+                        <a class="btn btn-primary" data-toggle="dropdown" href="{% url user-elections user_shown.username 'open' %}">
                             {% trans "Explore" %}
                         </a>
                     </div>

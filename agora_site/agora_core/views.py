@@ -1151,6 +1151,41 @@ class UserBiographyView(UserView):
         return super(UserView, self).dispatch(*args, **kwargs)
 
 
+class UserElectionsView(AjaxListView):
+    '''
+    Shows the list of elections of an agora
+    '''
+    template_name = 'agora_core/user_elections.html'
+    page_template = 'agora_core/election_list_page.html'
+
+    def get_queryset(self):
+        username = self.kwargs["username"]
+        election_filter = self.kwargs["election_filter"]
+
+        self.user_shown = get_object_or_404(User, username=username)
+
+        election_list = self.user_shown.get_profile().get_open_elections()
+
+        if election_filter == "participated":
+            election_list = self.user_shown.get_profile().get_participated_elections()
+        elif election_filter == "requested":
+            election_list = self.user_shown.get_profile().get_requested_elections()
+
+        return election_list
+
+    def get(self, request, *args, **kwargs):
+        self.kwargs = kwargs
+        return super(UserElectionsView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserElectionsView, self).get_context_data(**kwargs)
+        context['user_shown'] = self.user_shown
+        context['filter'] = self.kwargs["election_filter"]
+        return context
+
+
+
+
 class AgoraAdminView(UpdateView):
     '''
     Creates a new agora

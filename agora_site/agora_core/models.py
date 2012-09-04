@@ -91,9 +91,9 @@ class Profile(UserenaLanguageBaseProfile):
         Returns the list of requested elections related to us.
         '''
         return Election.objects.filter(
-            Q(agora__in=self.user.adminstrated_agoras.all()) | Q(creator=self.user),
+            Q(agora__in=self.user.administrated_agoras.all()) | Q(creator=self.user),
             Q(is_approved=False) | Q(result_tallied_at_date=None)
-        ).order_by('voting_extended_until_date', 'voting_starts_at_date')
+        ).exclude(name='delegation').order_by('voting_extended_until_date', 'voting_starts_at_date')
 
     def count_direct_votes(self):
         '''
