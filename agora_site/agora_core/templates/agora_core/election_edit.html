@@ -7,26 +7,13 @@
 
 {% block election-navigation %}{% activetab "election-nav" "edit" %}{{ block.super }}{% endblock %}
 
-{% block footer-wrapper-class %}short{% endblock %}
-{% block running-board-wrapper-class %}{% endblock %}
+{% block content %}
 
-{% block running-board  %}
-
-<div class="row top-form">
-    <div class="span7 form-data">
-    {% crispy form %}
+    <div class="row">
+        <div class="span8 agora-left-side">
+            <div class="form-data admin-form">
+                {% crispy form %}
+            </div>
+        </div>
     </div>
-
-
-    <div class="span3 form-info" id="agora_new_form_info">
-        <img src="{{ STATIC_URL }}img/election_new_form_info.png" alt="{% trans "Edit an Election" %}" />
-        <h1>1</h1>
-        <h2>{% trans "Edit an Election" %}</h2>
-        <p>
-        {% trans "Remember: An election can only be edited when voting has not yet started." %}
-        </p>
-    </div>
-</div>
 {% endblock %}
-
-{% block content %}{% endblock %}
