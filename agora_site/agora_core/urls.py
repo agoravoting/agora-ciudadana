@@ -27,6 +27,15 @@ from agora_site.misc.utils import RequestCreateView
 urlpatterns = patterns('',
     url(r'^$', HomeView.as_view(), name='home'),
 
+    #TODO: create a robots.txt
+    #(r'^robots\.txt$', 'django.views.generic.simple.direct_to_template', {'template': 'agora_core/robots.txt', 'mimetype': 'text/plain'}),
+
+    (r'^404/?$', 'django.views.generic.simple.direct_to_template', {'template': '404.html'}),
+
+    (r'^500/?$', 'django.views.generic.simple.direct_to_template', {'template': '500.html'}),
+
+    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/img/favicon.ico'}),
+
     url(r'^misc/set-language/(?P<language>[\-\w]+)/?$', SetLanguageView.as_view(), name="set-language"),
 
     url(r'^agora/new/?$', CreateAgoraView.as_view(), name='agora-new'),
