@@ -142,7 +142,7 @@ urlpatterns += patterns('',
     ),
 
     url(r'^misc/link/facebook/?$', RedirectView.as_view(
-        url= "https://www.facebook.com/pages/Partido-de-Internet-PDI/168786883166140"),
+        url= "https://www.facebook.com/AgoraVoting"),
         name='facebook'
     ),
 
