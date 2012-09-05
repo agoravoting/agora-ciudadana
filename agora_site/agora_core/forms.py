@@ -228,11 +228,10 @@ class CreateElectionForm(django_forms.ModelForm):
 
         # Anyone can create a voting for a given agora, but if you're not the
         # admin, it must be approved
-        if election.agora.creator in election.agora.admins.all():
+        if election.creator in election.agora.admins.all():
             election.is_approved = True
         else:
             election.is_approved = False
-            #TODO send notification to admins if agora is configured to do so
 
         # Questions/answers have a special formatting
         answers = []
