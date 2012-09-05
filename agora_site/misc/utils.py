@@ -65,7 +65,7 @@ class JSONField(models.TextField):
         try:
             parsed_value = json.loads(value)
         except:
-            raise Exception("not JSON")
+            return None
 
         if self.json_type and parsed_value:
             parsed_value = self.json_type.fromJSONDict(parsed_value, **self.deserialization_params)
