@@ -303,6 +303,8 @@ AUTH_PROFILE_MODULE = 'agora_core.Profile'
 
 INTERNAL_IPS = ('127.0.0.1',)
 
+ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
+
 try:
     # custom settings is the file where you should set your modifications of the
     # settings file

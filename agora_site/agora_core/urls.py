@@ -24,7 +24,13 @@ from endless_pagination.views import AjaxListView
 from agora_site.agora_core.views import *
 from agora_site.misc.utils import RequestCreateView
 
-urlpatterns = patterns('',
+
+if 'rosetta' in settings.INSTALLED_APPS:
+    urlpatterns = patterns('',
+        url(r'^rosetta/', include('rosetta.urls')),
+    )
+
+urlpatterns += patterns('',
     url(r'^$', HomeView.as_view(), name='home'),
 
     #TODO: create a robots.txt
@@ -182,3 +188,4 @@ urlpatterns += patterns('django.contrib.flatpages.views',
     url(r'^misc/page/security/?$', 'flatpage', {'url': '/security/'},
         name='security'),
 )
+
