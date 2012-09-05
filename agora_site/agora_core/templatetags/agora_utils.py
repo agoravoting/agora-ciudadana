@@ -10,7 +10,10 @@ register = template.Library()
 
 @register.filter
 def is_content_type(obj, content_type):
-    return ContentType.objects.get_for_model(obj).name == content_type
+    try:
+        return ContentType.objects.get_for_model(obj).name == content_type
+    except Exception:
+        return False
 
 @register.filter
 def debug_object(obj, obj2=None):
