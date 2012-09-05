@@ -59,7 +59,7 @@ class JSONField(models.TextField):
         if isinstance(value, dict) or isinstance(value, list):
             return value
 
-        if (type(value)==unicode) and len(value.strip()) == 0) or value == None:
+        if (type(value)==unicode and len(value.strip()) == 0) or value == None:
             return None
 
         try:
