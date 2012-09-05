@@ -139,7 +139,11 @@ class Profile(UserenaLanguageBaseProfile):
         if election.cast_votes.filter(voter=self.user, is_counted=True).count() == 1:
             return election.cast_votes.filter(voter=self.user, is_counted=True)[0]
         else:
-            return election.delegated_votes.filter(voter=self.user)[0]
+            votes = election.delegated_votes.filter(voter=self.user)
+            if len(votes) == 0:
+                return None
+
+            return votes[0]
 
 from django.db.models.signals import post_save
 
