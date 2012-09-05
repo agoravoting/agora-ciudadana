@@ -29,8 +29,11 @@ def vote_for_election(user, election):
     '''
     Returns the vote of the requested user in the requested election if any
     '''
-    return user.cast_votes.get(is_direct=True, is_counted=True,
-        election=election, is_public=True)
+    try:
+        return user.cast_votes.get(is_direct=True, is_counted=True,
+            election=election, is_public=True)
+    except Exception:
+        return None
 
 @register.filter
 def get_chained_first_pretty_answer(vote, election):
