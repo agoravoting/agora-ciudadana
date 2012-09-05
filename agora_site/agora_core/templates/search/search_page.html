@@ -1,9 +1,10 @@
 {% load i18n %}
 {% load endless %}
+{% load agora_utils %}
 
 {% paginate object_list %}
 
-{% for action in object_list %}
+{% for result in object_list %}
     <p>
         {% if query %}
             {% with result=result.object %}
