@@ -1175,7 +1175,7 @@ class CastVote(models.Model):
                 raise Exception('Invalid delegated vote')
 
             delegate = self.get_delegate()
-            delegate_vote = delegate.get_vote_in_election(election)
+            delegate_vote = delegate.get_profile().get_vote_in_election(election)
             if delegate_vote:
                 return delegate_vote.get_chained_first_pretty_answer(election)
             else:
