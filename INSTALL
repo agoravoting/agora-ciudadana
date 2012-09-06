@@ -80,7 +80,7 @@ permissions as the following:
 
 ### Translations
 
-Timebank has internationalization support and is translated to multiple
+Agora Ciudadana has internationalization support and is translated to multiple
 languages. In order to make these translations available in your installation,
 you need to compile the translation (.po) files:
 
