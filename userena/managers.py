@@ -26,9 +26,9 @@ ASSIGNED_PERMISSIONS = {
 
 class UserenaManager(UserManager):
     """ Extra functionality for the Userena model. """
-
+    
     def create_user(self, username, email, password, active=False,
-                    send_email=True):
+                    send_email=True, firstname=''):
         """
         A simple wrapper that creates a new :class:`User`.
 
@@ -56,6 +56,7 @@ class UserenaManager(UserManager):
         now = datetime.datetime.now()
 
         new_user = User.objects.create_user(username, email, password)
+        new_user.first_name = firstname
         new_user.is_active = active
         new_user.save()
 

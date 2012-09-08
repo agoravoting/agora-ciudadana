@@ -35,8 +35,9 @@ class AccountSignupForm(userena_forms.SignupForm):
         self.helper.add_input(Hidden('type', 'register'))
 
     def save(self):
-        new_user = super(AccountSignupForm, self).save()
-        new_user.first_name = self.cleaned_data['first_name']
+        # new_user = super(AccountSignupForm, self).save()
+        # new_user.first_name = self.cleaned_data['first_name']
+        new_user = super(AccountSignupForm, self).saveWithFirstName()
         new_user.save()
         return new_user
 
