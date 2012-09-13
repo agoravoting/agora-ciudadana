@@ -23,7 +23,7 @@ from django.contrib.auth.models import User
 from django.conf.urls import patterns, url, include
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.core.mail import EmailMultiAlternatives, EmailMessage, send_mail, send_mass_mail
+from django.core.mail import EmailMultiAlternatives, EmailMessage, send_mass_mail
 from django.utils import simplejson as json
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
@@ -388,7 +388,7 @@ class CreateElectionView(RequestCreateView):
         for admin in election.agora.admins.all():
             context['to'] = admin
 
-            if not admin.email:
+            if not admin.email or not admin.email_updates:
                 continue
 
             email = EmailMultiAlternatives(
@@ -563,7 +563,7 @@ class StartElectionView(FormActionView):
         # agora members' list
         for voter in election.agora.members.all():
 
-            if not voter.email:
+            if not voter.email or not voter.email_updates:
                 continue
 
             context['to'] = voter
@@ -583,7 +583,7 @@ class StartElectionView(FormActionView):
         # Also notify third party delegates
         for voter in election.agora.active_nonmembers_delegates():
 
-            if not voter.email:
+            if not voter.email or not voter.email_updates:
                 continue
 
             context['to'] = voter
@@ -642,7 +642,7 @@ class StopElectionView(FormActionView):
 
         for vote in election.get_all_votes():
 
-            if not vote.voter.email:
+            if not vote.voter.email or not vote.voter.email_updates:
                 continue
 
             context['to'] = vote.voter
@@ -710,7 +710,7 @@ class ArchiveElectionView(FormActionView):
 
         for vote in election.get_all_votes():
 
-            if not vote.voter.email:
+            if not vote.voter.email or not vote.voter.email_updates:
                 continue
 
             context['to'] = vote.voter
@@ -773,7 +773,7 @@ class VoteView(CreateView):
                     agoraname=self.election.agora.name)),
         ))
 
-        if self.request.user.email:
+        if self.request.user.email and self.request.user.email_updates:
             email = EmailMultiAlternatives(
                 subject=_('Vote casted for election %s') % self.election.pretty_name,
                 body=render_to_string('agora_core/emails/vote_casted.txt',
@@ -1179,7 +1179,7 @@ class CancelVoteView(FormActionView):
         except:
             pass
 
-        if vote.voter.email:
+        if vote.voter.email and vote.voter.email_updates:
             email = EmailMultiAlternatives(
                 subject=_('Vote cancelled for election %s') % election.pretty_name,
                 body=render_to_string('agora_core/emails/vote_cancelled.txt',

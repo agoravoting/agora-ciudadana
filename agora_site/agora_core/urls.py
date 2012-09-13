@@ -60,6 +60,8 @@ urlpatterns += patterns('',
 
     url(r'^user/settings/?$', UserSettingsView.as_view(), name='user-settings'),
 
+    url(r'^user/cancel_email_updates/?$', UserSettingsView.as_view(), name='cancel-email-updates'),
+
     url(r'^user/(?P<username>[\.\w]+)/?$', UserView.as_view(), name='user-view'),
 
     url(r'^user/(?P<username>[\.\w]+)/biography/?$', UserBiographyView.as_view(), name='user-bio'),
