@@ -234,6 +234,21 @@ class Agora(models.Model):
                     voting_starts_at_date__lt=datetime.datetime.now()),
             Q(is_approved=True)).order_by('voting_extended_until_date',
                 'voting_starts_at_date')
+                
+    def get_open_elections_with_name_start(self, name):
+        '''
+        Returns the list of current and future elections that will or are
+        taking place, that start with a name.
+        
+        Used by ajax endpoint searchElection
+        '''
+        return self.elections.filter(
+            Q(voting_extended_until_date__gt=datetime.datetime.now()) |
+                Q(voting_extended_until_date=None,
+                    voting_starts_at_date__lt=datetime.datetime.now()),
+            Q(is_approved=True),
+            Q(pretty_name__startswith=name)).order_by('voting_extended_until_date',
+                'voting_starts_at_date')
 
     def get_tallied_elections(self):
         '''

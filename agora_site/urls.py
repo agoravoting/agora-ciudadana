@@ -21,12 +21,18 @@ from django.contrib import admin
 
 admin.autodiscover()
 
+from dajaxice.core import dajaxice_autodiscover, dajaxice_config
+dajaxice_autodiscover()
+
 urlpatterns = patterns('',
     # Uncomment the admin/doc line below to enable admin documentation:
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
+    
+    # dajaxice ajax endpoint urls
+    url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
 
     (r'^accounts/', include('agora_site.accounts.urls')),
 

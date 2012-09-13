@@ -10,7 +10,63 @@
     <script type="text/javascript" charset="utf-8">
         var endless_on_scroll_margin = 300;
     </script>
+    
+    <script type="text/javascript" charset="utf-8">
+        Agora.uv = (function () {
+            var module = {};
+            
+            module.searchResult = function (response) {
+                if(response.error == 0) {
+                    if(response.data.length > 0) {
+                        $( "#agoraList" ).html($( "#agoraTemplate" ).render( response.data ) );
+                    }
+                    else {
+                        $( "#agoraList" ).html($("#no-agoras").html());
+                    }
+                }
+                else {
+                    // FIXME error handling (error returned by server)
+                }
+            };
+            
+            module.error = function() {
+                // FIXME error handling (ajax error)
+            }
+        
+            return module;
+        }());
+        
+        
+        $(document).ready(function() {
+            var userid = {{ user_shown.id }};
+            var search = $('.agora-search-query').val();
+            
+            // render results for no filter
+            Dajaxice.agora_site.agora_core.searchAgoras(Agora.uv.searchResult, {'userid': userid, 'search': ''}, {'error_callback': Agora.uv.error});
+            
+            $('.agora-search-query').keyup(function(event) {
+                var tmp = $('.agora-search-query').val();
+                if(search != tmp) {
+                    search = tmp;
+                    Dajaxice.agora_site.agora_core.searchAgoras(Agora.uv.searchResult, {'userid': userid, 'search': search}, {'error_callback': Agora.uv.error});
+                }
+            });
+        });
+    </script>
+    
+    <script id="agoraTemplate" type="text/x-jsrender">
+        <li>
+            <a href="{% templatetag openvariable%}>url{% templatetag closevariable%}">
+            <span class="agora">{% templatetag openvariable%}>username{% templatetag closevariable%}/<strong>{% templatetag openvariable%}>name{% templatetag closevariable%}</strong>
+            </span>
+            <i class="icon-arrow-right"></i>
+            </a>
+        </li>
+    </script>
+    
 {% endblock %}
+
+
 
 {% block title %}{{ user_shown.username }}{% endblock %}
 
@@ -74,23 +130,17 @@
                             {% trans "Create agora" %}
                         </a>
                     </div>
-                    <input type="text" class="input-medium search-query"  value="" placeholder="{% trans "Search..." %}" name="q" />
+                    <input type="text" class="input-medium agora-search-query"  value="" placeholder="{% trans "Search..." %}" name="q" />
                 </div>
                 <div class="row-fluid hover-items last-elections">
                     <ul>
-                        {% for agora in user_shown.agoras.all %}
-                            <li>
-                                <a href="{% url agora-view agora.creator.username agora.name %}">
-                                    <span class="agora">{{ agora.creator.username }}/<strong>{{ agora.name }}</strong></span>
-                                    <i class="icon-arrow-right"></i>
-                                </a>
-                            </li>
-                        {% empty %}
-                            <li class="empty">
-                                {% trans "He is not a member of an agora yet" %}
-                            </li>
-                        {% endfor %}
+                        <div id="agoraList"></div>
                     </ul>
+                    <div style="display:none">
+                        <li id="no-agoras" class="empty">
+                            {% trans "No agoras found" %}
+                        </li>
+                    </div>
                 </div>
             </div>
             <div class="row-fluid right-widget right-widget-grey agora-list">

@@ -18,3 +18,4 @@ django-debug-toolbar
 textile
 simplejson
 pygeoip
+django-dajaxice

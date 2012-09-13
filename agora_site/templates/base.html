@@ -1,6 +1,7 @@
 {% load i18n %}
 {% load string_tags %}
 {% load agora_utils %}
+{% load dajaxice_templatetags %}
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,8 +10,13 @@
     <meta content="telephone=no" name="format-detection" />
     <link href="{{STATIC_URL}}favicon.ico" rel="icon" type="image/png" />
     <script src="{{ STATIC_URL }}js/jquery.min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}js/jsrender.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}js/jquery.timeago.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var Agora = window.Agora || {};
+    </script>
+
     <script type="text/javascript">
     jQuery(document).ready(function() {
         jQuery("time.timeago").timeago();
@@ -23,6 +29,7 @@
         });
     });
     </script>
+    {% dajaxice_js_import %}
     {% if not DEBUG %}
         <link rel="stylesheet" href="{{ STATIC_URL }}less/agora.css" type="text/css" />
     {% else %}

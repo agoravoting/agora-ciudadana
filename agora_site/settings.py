@@ -96,7 +96,7 @@ SECRET_KEY = '_ntqq^5)ii^vd2o6cghis-@h8dy*4)-#()8q=yw*$!#^(8+(fd'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -153,6 +153,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "dajaxice.finders.DajaxiceFinder"
 )
 
 INSTALLED_APPS = (
@@ -181,7 +182,8 @@ INSTALLED_APPS = (
     'agora_site.agora_core',
     'agora_site.accounts',
     'endless_pagination',
-    'haystack'
+    'haystack',
+    'dajaxice'
 )
 
 # A list the models that you want to enable actions for. Models must be in the

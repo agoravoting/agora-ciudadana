@@ -7,9 +7,72 @@
 {% block script-block %}
     <script src="{{ STATIC_URL }}js/endless_pagination/endless.js" type="text/javascript" charset="utf-8"></script>
     <script src="{{ STATIC_URL }}js/endless_pagination/endless_on_scroll.js" type="text/javascript" charset="utf-8"></script>
-
+    
     <script type="text/javascript" charset="utf-8">
         var endless_on_scroll_margin = 300;
+    </script>
+    
+    <script type="text/javascript" charset="utf-8">
+        Agora.av = (function () {
+            var module = {};
+            
+            module.searchResult = function (response) {
+                if(response.error == 0) {
+                    if(response.data.length > 0) {
+                        $( "#electionList" ).html($( "#electionTemplateRoot" ).render( response.data ) );
+                    }
+                    else {
+                        $( "#electionList" ).html($("#no-elections").html());
+                    }
+                }
+                else {
+                    // FIXME error handling (error returned by server)
+                }
+            };
+            
+            module.error = function() {
+                // FIXME error handling (ajax error)
+            }
+        
+            return module;
+        }());
+        
+        
+        $(document).ready(function() {
+            var agoraid = {{ agora.id }};
+            var search = $('.election-search-query').val();
+            
+            // render results for no filter
+            Dajaxice.agora_site.agora_core.searchElections(Agora.av.searchResult, {'agoraid': agoraid, 'search': ''}, {'error_callback': Agora.av.error});
+            
+            $('.election-search-query').keyup(function(event) {
+                var tmp = $('.election-search-query').val();
+                if(search != tmp) {
+                    search = tmp;
+                    Dajaxice.agora_site.agora_core.searchElections(Agora.av.searchResult, {'agoraid': agoraid, 'search': search}, {'error_callback': Agora.av.error});
+                }
+            });
+        });
+    </script>
+    
+    <script id="electionTemplateRoot" type="text/x-jsrender">
+        <li>
+            <time datetime="{% templatetag openvariable%}>date{% templatetag closevariable%}">{% templatetag openvariable%}>pretty_date{% templatetag closevariable%}</time>
+            <ul>
+                {% templatetag openvariable%}for elections tmpl="#electionTemplate"/{% templatetag closevariable%}
+            </ul>
+        </li>
+    </script>
+    
+    <script id="electionTemplate" type="text/x-jsrender">
+        <li>
+            <a href="{% templatetag openvariable%}>url{% templatetag closevariable%}">
+                <img src="{{ STATIC_URL }}img/small-icon-envelope.png" />
+                {% templatetag openvariable%}>pretty_name{% templatetag closevariable%}
+            </a>
+            {# TODO: create templatefilter to check if user voted in an election #}
+            <img src="{{ STATIC_URL }}img/small-icon-ok.png" />
+        </li>
     </script>
 {% endblock %}
 
@@ -148,10 +211,10 @@
                 <div class="right-widget-header">
                     <h4>{% trans "Calendar" %} <span>({{ agora.get_open_elections.count }})</span></h4>
                     <a class="btn btn-primary" href="{% url election-new agora.creator.username agora.name %}">{% trans "Create election" %}</a>
-                    <input type="text" class="input-medium search-query"  value="" placeholder="{% trans "Search..." %}" name="q" />
+                    <input type="text" class="input-medium election-search-query"  value="" placeholder="{% trans "Search..." %}" name="q" />
                 </div>
                 <div class="row-fluid agora-dates">
-                    <ul>
+                    <!-- ul>
                         {% with election_groups=agora.get_open_elections|elections_grouped_by_date %}
                             {% for elections_date, elections in election_groups.items %}
                                 <li>
@@ -185,7 +248,16 @@
                                 </li>
                             {% endfor %}
                         {% endwith %}
+                    </ul-->
+                    
+                    <ul>
+                        <div id="electionList"></div>
                     </ul>
+                    <div style="display:none">
+                        <li id="no-elections" class="empty">
+                            {% trans "No elections found" %}
+                        </li>
+                    </div>
                 </div>
             </div>
 
