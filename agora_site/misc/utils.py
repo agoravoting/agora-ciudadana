@@ -5,6 +5,7 @@ http://www.djangosnippets.org/snippets/377/
 """
 
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
 from django.core import mail as django_mail
 from django.core.mail import (EmailMultiAlternatives, EmailMessage, send_mail,
@@ -133,7 +134,7 @@ def get_base_email_context(request):
     Returns a basic email context
     '''
     return dict(
-            cancel_emails_url='/user/cancel_email_notifications',
+            cancel_emails_url=reverse('cancel-email-updates'),
             site=Site.objects.get_current(),
             protocol=get_protocol(request)
         )

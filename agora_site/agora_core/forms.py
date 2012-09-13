@@ -91,6 +91,8 @@ class UserSettingsForm(django_forms.ModelForm):
     email = django_forms.EmailField(widget=django_forms.TextInput(attrs=dict(attrs_dict,
         maxlength=75)), label=_(u"Email"), required=False)
 
+    email_updates = django_forms.BooleanField(label=_("Receive email updates"), required=False)
+
     old_password = django_forms.CharField(widget=django_forms.PasswordInput(attrs=attrs_dict,
         render_value=False), label=_("Current password"),
         help_text=_("Provide your current password for security, required field"),
@@ -111,18 +113,21 @@ class UserSettingsForm(django_forms.ModelForm):
         self.fields['short_description'].initial = self.user.get_profile().short_description
         self.fields['biography'].initial = self.user.get_profile().biography
         self.fields['email'].initial = self.user.email
+        self.fields['email_updates'].initial = self.user.get_profile().email_updates
 
         # Users who login via twitter or other means do not have a password
         if self.user.password == '!':
             del self.fields['old_password']
             self.helper.layout = Layout(
-                Fieldset(_('Profile'), 'first_name', 'last_name', 'short_description', 'biography'),
+                Fieldset(_('Profile'), 'first_name', 'last_name',
+                    'short_description', 'biography', 'email_updates'),
                 Fieldset(_('Change email'), 'email'),
                 Fieldset(_('Change password'), 'password1', 'password2')
             )
         else:
             self.helper.layout = Layout(
-                Fieldset(_('Profile'), 'first_name', 'last_name', 'short_description', 'biography'),
+                Fieldset(_('Profile'), 'first_name', 'last_name',
+                    'short_description', 'biography', 'email_updates'),
                 Fieldset(_('Change email'), 'email'),
                 Fieldset(_('Change password'), 'password1', 'password2'),
                 Fieldset(_('Security'), 'old_password')
@@ -135,6 +140,7 @@ class UserSettingsForm(django_forms.ModelForm):
         profile = user.get_profile()
         profile.short_description = self.cleaned_data['short_description']
         profile.biography = self.cleaned_data['biography']
+        profile.email_updates = self.cleaned_data['email_updates']
         user.email = self.cleaned_data['email']
         profile.save()
         user.save()
@@ -142,9 +148,6 @@ class UserSettingsForm(django_forms.ModelForm):
 
     def clean_email(self):
         """ Validate that the email is not already registered with another user """
-        if len(self.cleaned_data['email']) != 0 and\
-            self.cleaned_data['email'].lower() == self.user.email:
-                raise django_forms.ValidationError(_(u'You\'re already known under this email.'))
         if User.objects.filter(email__iexact=self.cleaned_data['email']).exclude(email__iexact=self.user.email):
             raise django_forms.ValidationError(_(u'This email is already in use. Please supply a different email.'))
         return self.cleaned_data['email']
