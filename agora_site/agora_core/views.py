@@ -1156,8 +1156,8 @@ class CancelVoteView(FormActionView):
         vote = election.get_vote_for_voter(self.request.user)
 
         if not vote or not vote.is_direct:
-            messages.add_message(self.request, messages.ERROR, _('You can\'t '
-                'didn\'t participate in this election.'))
+            messages.add_message(self.request, messages.ERROR, _('You didn\'t '
+                'participate in this election.'))
             return http.HttpResponseRedirect(election_url)
 
         vote.invalidated_at_date = datetime.datetime.now()

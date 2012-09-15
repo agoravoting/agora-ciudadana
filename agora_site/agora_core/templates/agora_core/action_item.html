@@ -291,7 +291,6 @@
                         </div>
                     </div>
                 {% endif %}
-            {% endwith %}
             <div class="action-detail">
                 <a href="{{ election_view_url }}" class="mugshot">
                     <img src="{{ action.action_object.get_mugshot_url }}" alt="{{ action.action_object.pretty_name }}" />
@@ -301,6 +300,7 @@
                     <p>{{ action.action_object.short_description }}</p>
                 </div>
             </div>
+            {% endwith %}
         </div>
     {% elif action.verb == 'vote cancelled' and action.target and action.target_content_type.name == 'agora' and action.action_object and action.action_object and action.action_object_content_type.name == 'election' %}
         {% url user-view action.actor.username as user_view_url %}
