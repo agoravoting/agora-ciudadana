@@ -50,30 +50,32 @@
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    {% if "begin_election" in permissions %}
-                        <li>
-                            <a class="action-form-link" href="{% url election-action-start election.agora.creator.username election.agora.name election.name %}">
-                                <i class="icon-play"></i>
-                                {% trans "Freeze election and start voting period" %}
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if "end_election" in permissions %}
-                        <li>
-                            <a class="action-form-link" href="{% url election-action-stop election.agora.creator.username election.agora.name election.name %}">
-                                <i class="icon-stop"></i>
-                                {% trans "Stop voting period and publish results" %}
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if "archive_election" in permissions %}
-                        <li>
-                            <a class="action-form-link" href="{% url election-action-archive election.agora.creator.username election.agora.name election.name %}">
-                                <i class="icon-folder-open"></i>
-                                {% trans "Dismiss and archive election" %}
-                            </a>
-                        </li>
-                    {% endif %}
+                    {%with permissions=election|get_perms:user %}
+                        {% if "begin_election" in permissions %}
+                            <li>
+                                <a class="action-form-link" href="{% url election-action-start election.agora.creator.username election.agora.name election.name %}">
+                                    <i class="icon-play"></i>
+                                    {% trans "Freeze election and start voting period" %}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if "end_election" in permissions %}
+                            <li>
+                                <a class="action-form-link" href="{% url election-action-stop election.agora.creator.username election.agora.name election.name %}">
+                                    <i class="icon-stop"></i>
+                                    {% trans "Stop voting period and publish results" %}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if "archive_election" in permissions %}
+                            <li>
+                                <a class="action-form-link" href="{% url election-action-archive election.agora.creator.username election.agora.name election.name %}">
+                                    <i class="icon-folder-open"></i>
+                                    {% trans "Dismiss and archive election" %}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endwith %}
                 </ul>
             </div>
         {% elif user not in election.members.all %}
