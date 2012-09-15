@@ -43,13 +43,13 @@
             var search = $('.election-search-query').val();
             
             // render results for no filter
-            Dajaxice.agora_site.agora_core.searchElections(Agora.av.searchResult, {'agoraid': agoraid, 'search': ''}, {'error_callback': Agora.av.error});
+            Dajaxice.agora_site.agora_core.searchElectionsForAgora(Agora.av.searchResult, {'agoraid': agoraid, 'search': ''}, {'error_callback': Agora.av.error});
             
             $('.election-search-query').keyup(function(event) {
                 var tmp = $('.election-search-query').val();
                 if(search != tmp) {
                     search = tmp;
-                    Dajaxice.agora_site.agora_core.searchElections(Agora.av.searchResult, {'agoraid': agoraid, 'search': search}, {'error_callback': Agora.av.error});
+                    Dajaxice.agora_site.agora_core.searchElectionsForAgora(Agora.av.searchResult, {'agoraid': agoraid, 'search': search}, {'error_callback': Agora.av.error});
                 }
             });
         });
