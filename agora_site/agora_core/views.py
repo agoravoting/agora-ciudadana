@@ -36,7 +36,7 @@ from django import http
 
 from actstream.actions import follow, unfollow, is_following
 from actstream.models import (object_stream, election_stream, Action,
-    user_stream)
+    user_stream, actor_stream)
 from actstream.signals import action
 
 from endless_pagination.views import AjaxListView
@@ -102,7 +102,7 @@ class HomeView(AjaxListView):
         if self.request.user.is_authenticated() and not self.request.user.is_anonymous():
             # change template
             self.template_name = self.template_name_logged_in
-            return user_stream(self.request.user)
+            return actor_stream(self.request.user)
         else:
             return Action.objects.public()[:10]
 
