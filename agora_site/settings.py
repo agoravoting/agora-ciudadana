@@ -67,7 +67,7 @@ LANGUAGE_CODE = 'en'
 LANGUAGES = (
     ('es', _('Spanish')),
     ('en', _('English')),
-    ('gl', _('Gallego')),
+    ('gl', _('Galician')),
 )
 
 SITE_ID = 1
