@@ -8,11 +8,10 @@
 {% block user-navigation %}{% activetab "user-nav" "biography" %}{{ block.super }}{% endblock %}
 
 {% block user-content %}
+    {% url user-settings as edit_bio_url %}
     {% if user_shown.get_profile.biography == "" %}
         <div class="alert alert-info">
         {% if user == user_shown %}
-            {# TODO: real url!! #}
-            {% url user-view user.username %}
             {% blocktrans %}
                 This biography is empty! now you have the opportunity to <a href="{{ edit_bio_url }}">start writing it</a>.
             {% endblocktrans %}
@@ -23,8 +22,6 @@
     {% else %}
         {% if user == user_shown %}
             <div class="alert alert-info">
-            {# TODO: real url!! #}
-            {% url user-view user.username %}
             {% blocktrans %}
                 This biography is a bit short, perhaps you can <a href="{{ edit_bio_url }}">improve it adding some additional information</a>.
             {% endblocktrans %}

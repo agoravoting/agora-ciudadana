@@ -102,6 +102,7 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
@@ -132,6 +133,12 @@ import os
 ROOT_PATH = os.path.dirname(__file__)
 TEMPLATE_DIRS = (
     os.path.join(ROOT_PATH, 'templates'),
+)
+
+
+
+LOCALE_PATHS = (
+    os.path.join(ROOT_PATH, 'locale'),
 )
 
 # IP database geolocalization:

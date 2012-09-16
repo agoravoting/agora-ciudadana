@@ -27,6 +27,7 @@ from django.core.mail import EmailMultiAlternatives, EmailMessage, send_mass_mai
 from django.utils import simplejson as json
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
+from django.utils.translation import check_for_language
 from django.shortcuts import redirect, get_object_or_404, render_to_response
 from django.template.loader import render_to_string
 from django.views.generic import TemplateView, ListView, CreateView, RedirectView
@@ -85,7 +86,20 @@ class SetLanguageView(FormActionView):
             request.user.lang_code = language
             request.user.save()
 
-        return django_set_language(self.request)
+        next = request.REQUEST.get('next', None)
+        if not next:
+            next = request.META.get('HTTP_REFERER', None)
+        if not next:
+            next = '/'
+        response = http.HttpResponseRedirect(next)
+        if request.method == 'POST':
+            if language and check_for_language(language):
+                if hasattr(request, 'session'):
+                    request.session['django_language'] = language
+                else:
+                    response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language)
+        return response
+
 
 class HomeView(AjaxListView):
     '''
