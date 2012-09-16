@@ -52,7 +52,7 @@ def searchAgoras(request, userid, search):
         agoras = Agora.objects
 
     if(len(search) > 0):
-        agoras = agoras.filter(name__contains=search, creator__id=userid)
+        agoras = agoras.filter(name__icontains=search, creator__id=userid)
 
     if(agoras.count() > 0):
         return dumps({'error': 0, 'data': preJson(agoras.all())})
@@ -70,7 +70,7 @@ def searchElectionsForUserPage(request, userid, search):
         user = users[0]
 
         ret = []
-        for election in user.get_profile().get_participated_elections().filter(pretty_name__contains=search):
+        for election in user.get_profile().get_participated_elections().filter(pretty_name__icontains=search):
             vote = user.get_profile().get_vote_in_election(election)
             pretty_answer = vote.get_chained_first_pretty_answer(election)
             ret +=  [{'election': election, 'pretty_answer': pretty_answer, 'shown_user': user.username}]

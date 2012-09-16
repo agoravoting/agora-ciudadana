@@ -84,7 +84,7 @@ class Profile(UserenaLanguageBaseProfile):
             Q(is_approved=True, agora__in=self.user.agoras.all()))
 
         if searchquery:
-            elections = elections.filter(pretty_name__startswith=name)
+            elections = elections.filter(pretty_name__icontains=searchquery)
 
         return elections.order_by('voting_extended_until_date',
                 'voting_starts_at_date')
@@ -250,7 +250,7 @@ class Agora(models.Model):
                 Q(voting_extended_until_date=None,
                     voting_starts_at_date__lt=datetime.datetime.now()),
             Q(is_approved=True),
-            Q(pretty_name__contains=name)).order_by('voting_extended_until_date',
+            Q(pretty_name__icontains=name)).order_by('voting_extended_until_date',
                 'voting_starts_at_date')
 
     def get_tallied_elections(self):
