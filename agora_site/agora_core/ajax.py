@@ -44,6 +44,7 @@ def searchAgoras(request, userid, search):
     """
         Ajax endpoint, used from user-view and home-loggedin-activity
     """
+    search = search.strip()
     if userid:
         user = get_object_or_404(User, pk=userid)
         agoras = user.agoras
@@ -51,7 +52,7 @@ def searchAgoras(request, userid, search):
         agoras = Agora.objects
 
     if(len(search) > 0):
-        agoras = agoras.filter(name__startswith=search, creator__id=userid)
+        agoras = agoras.filter(name__contains=search, creator__id=userid)
 
     if(agoras.count() > 0):
         return dumps({'error': 0, 'data': preJson(agoras.all())})
@@ -63,12 +64,13 @@ def searchElectionsForUserPage(request, userid, search):
     """
     Ajax endpoint, used from home-loggedin-activity
     """
+    search = search.strip()
     users = User.objects.filter(id=userid)
     if(len(users) == 1):
         user = users[0]
 
         ret = []
-        for election in user.get_profile().get_participated_elections().filter(pretty_name__startswith=search):
+        for election in user.get_profile().get_participated_elections().filter(pretty_name__contains=search):
             vote = user.get_profile().get_vote_in_election(election)
             pretty_answer = vote.get_chained_first_pretty_answer(election)
             ret +=  [{'election': election, 'pretty_answer': pretty_answer, 'shown_user': user.username}]
@@ -78,35 +80,29 @@ def searchElectionsForUserPage(request, userid, search):
         return dumps({'error': 0, 'data': preJson(ret)})
     else:
         return dumps({'error': 1, 'message': 'User ' + `userid` + ' not found'})
-        
+
 @dajaxice_register
 def searchElectionsForUser(request, userid, search):
     """
         Ajax endpoint, used from user-view
     """
-    agoras = Agora.objects.filter(id=userid)
-    if(len(agoras) == 1):
-        agora = agoras[0]
-        
-        if(len(search) > 0):
-            tmp = agora.get_open_elections_with_name_start(search)
-        else:
-            tmp = agora.get_open_elections()
+    search = search.strip()
+    user = get_object_or_404(User, pk=userid)
+    tmp = user.get_profile().get_open_elections(search)
 
-        elections = [{'date': k, 'pretty_date': pretty_date(k), 'elections': v} for (k,v) in elections_grouped_by_date(tmp).items()]
-        
-        if(len(elections) > 0):
-            return dumps({'error': 0, 'data': preJson(elections)})
-        else:
-            return dumps({'error': 0, 'data': []})
+    elections = [{'date': k, 'pretty_date': pretty_date(k), 'elections': v} for (k,v) in elections_grouped_by_date(tmp).items()]
+
+    if(len(elections) > 0):
+        return dumps({'error': 0, 'data': preJson(elections)})
     else:
-        return dumps({'error': 1, 'message': 'Agora ' + `agoraid` + ' not found'})        
+        return dumps({'error': 0, 'data': []})
 
 @dajaxice_register
 def searchElectionsForAgora(request, agoraid, search):
     """
         Ajax endpoint, used from agora-view
     """
+    search = search.strip()
     agoras = Agora.objects.filter(id=agoraid)
     if(len(agoras) == 1):
         agora = agoras[0]

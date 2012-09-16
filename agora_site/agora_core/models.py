@@ -73,7 +73,7 @@ class Profile(UserenaLanguageBaseProfile):
     # Stores extra data
     extra = JSONField(_('Extra'), null=True)
 
-    def get_open_elections(self):
+    def get_open_elections(self, searchquery = None):
         '''
         Returns the list of current and future elections that will or are
         taking place in our agoras.
@@ -81,10 +81,13 @@ class Profile(UserenaLanguageBaseProfile):
         elections = Election.objects.filter(
             Q(voting_extended_until_date__gt=datetime.datetime.now()) |
             Q(voting_extended_until_date=None, voting_starts_at_date__lt=datetime.datetime.now()),
-            Q(is_approved=True, agora__in=self.user.agoras.all())
-            ).order_by('voting_extended_until_date',
+            Q(is_approved=True, agora__in=self.user.agoras.all()))
+
+        if searchquery:
+            elections = elections.filter(pretty_name__startswith=name)
+
+        return elections.order_by('voting_extended_until_date',
                 'voting_starts_at_date')
-        return elections
 
     def get_requested_elections(self):
         '''
@@ -234,12 +237,12 @@ class Agora(models.Model):
                     voting_starts_at_date__lt=datetime.datetime.now()),
             Q(is_approved=True)).order_by('voting_extended_until_date',
                 'voting_starts_at_date')
-                
+
     def get_open_elections_with_name_start(self, name):
         '''
         Returns the list of current and future elections that will or are
         taking place, that start with a name.
-        
+
         Used by ajax endpoint searchElection
         '''
         return self.elections.filter(
@@ -247,7 +250,7 @@ class Agora(models.Model):
                 Q(voting_extended_until_date=None,
                     voting_starts_at_date__lt=datetime.datetime.now()),
             Q(is_approved=True),
-            Q(pretty_name__startswith=name)).order_by('voting_extended_until_date',
+            Q(pretty_name__contains=name)).order_by('voting_extended_until_date',
                 'voting_starts_at_date')
 
     def get_tallied_elections(self):
