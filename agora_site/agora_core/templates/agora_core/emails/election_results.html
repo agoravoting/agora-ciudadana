@@ -3,33 +3,19 @@
 {% load agora_utils %}
 {% autoescape off %}
 
-{% if to|has_delegated_in_agora:election.agora %}
-    {% blocktrans with to_username=to.username election_name=election.pretty_name agora_username=election.agora.creator.username agora_name=election.agora.name site_domain=site.domain election_description=election.description|striptags delegate_username=delegate.username %}
-        <p>Hello {{ to_username }},</p>
+{% blocktrans with to_username=to.username election_name=election.pretty_name agora_username=election.agora.creator.username agora_name=election.agora.name site_domain=site.domain election_description=election.description|textile %}
+    <p>Hello {{ to_username }},</p>
 
-        <p>Election <a href="{{ protocol }}://{{ site_domain }}{{ election_url }}">{{ election_name }}</a> at <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_username }}/{{ agora_name }}</a> has started, and now you can vote on it. Check it out!</p>
+    <p>Election <a href="{{ protocol }}://{{ site_domain }}{{ election_url }}">{{ election_name }}</a> at <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_username }}/{{ agora_name }}</a> has been tallied, and now you can see the results. Check it out!</p>
 
-        <p>{{delegate_username}} is your delegate in this agora, so if you don't vote, he may vote for you.</p>
+    <h3>Election description</h3>
 
-        <h3>Election description</h3>
-
-        {{ election_description }}
-    {% endblocktrans %}
-{% else %}
-    {% blocktrans with to_username=to.username election_name=election.pretty_name agora_username=election.agora.creator.username agora_name=election.agora.name site_domain=site.domain election_description=election.description|textile %}
-        <p>Hello {{ to_username }},</p>
-
-        <p>Election <a href="{{ protocol }}://{{ site_domain }}{{ election_url }}">{{ election_name }}</a> at <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_username }}/{{ agora_name }}</a> has started, and now you can vote on it. Check it out! Don't forget to check what is the position of available delegates. If you don't want to track all elections in this agora, we recommend you to delegate your vote.</p>
-
-        <h3>Election description</h3>
-
-        {{ election_description }}
-    {% endblocktrans %}
-{% endif %}
+    {{ election_description }}
+{% endblocktrans %}
 <p>
     --<br/>
         {% blocktrans with to_email=to.email site_name=site.name site_domain=site.domain %}
-            This message was sent to {{ to_email }}. If you want to stop receiving these message from {{ site_name }}, please click here: {{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}
+            This message was sent to {{ to_email }}. If you want to stop receiving these messages from {{ site_name }}, please click here: {{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}
         {% endblocktrans %}
 </p>
 {% endautoescape %}

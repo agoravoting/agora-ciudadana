@@ -1,21 +1,12 @@
-{% load i18n %}{% load agora_utils %}{% autoescape off %}{% if to|has_delegated_in_agora:election.agora %}{% blocktrans with to_username=to.username election_name=election.pretty_name agora_username=election.agora.creator.username agora_name=election.agora.name site_domain=site.domain election_description=election.description|striptags delegate_username=delegate.username %}Hello {{ to_username }},
+{% load i18n %}{% load agora_utils %}{% autoescape off %}{% blocktrans with to_username=to.username election_name=election.pretty_name agora_username=election.agora.creator.username agora_name=election.agora.name site_domain=site.domain election_description=election.description|striptags delegate_username=delegate.username %}Hello {{ to_username }},
 
-Election {{ election_name }} at {{ agora_username }}/{{ agora_name }} has started, and now you can vote on it. Check it out!
-
-{{delegate_username}} is your delegate in this agora, so if you don't vote, he may vote for you.
+Election {{ election_name }} at {{ agora_username }}/{{ agora_name }} has been tallied, and now you can see the results. Check it out!
 
 Election URL: {{ protocol }}://{{ site_domain }}{{ election_url }}
 
 Election description: {{ election_description }}
 
-{% endblocktrans %}{% else %}{% blocktrans with to_username=to.username election_name=election.pretty_name agora_username=election.agora.creator.username agora_name=election.agora.name site_domain=site.domain election_description=election.description|striptags %}Hello {{ to_username }},
-
-Election {{ election_name }} at {{ agora_username }}/{{ agora_name }} has started, and now you can vote on it. Check it out!
-
-Election URL: {{ protocol }}://{{ site_domain }}{{ election_url }}
-
-Election description: {{ election_description }}
-{% endblocktrans %}{% endif %}
+{% endblocktrans %}
 --
-{% blocktrans with to_email=to.email site_name=site.name site_domain=site.domain %}This message was sent to {{ to_email }}. If you want to stop receiving these message from {{ site_name }}, please click here: {{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}
+{% blocktrans with to_email=to.email site_name=site.name site_domain=site.domain %}This message was sent to {{ to_email }}. If you want to stop receiving these messages from {{ site_name }}, please click here: {{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}
 {% endblocktrans %}{% endautoescape %}

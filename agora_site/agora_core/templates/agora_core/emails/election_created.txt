@@ -13,5 +13,5 @@ Election URL: {{ protocol }}://{{ site_domain }}{{ election_url }}
 
 {% endblocktrans %}{% endif %}
 --
-{% blocktrans with to_email=to.email site_name=site.name site_domain=site.domain %}This message was sent to {{ to_email }}. If you want to stop receiving these message from {{ site_name }}, please click here: {{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}
+{% blocktrans with to_email=to.email site_name=site.name site_domain=site.domain %}This message was sent to {{ to_email }}. If you want to stop receiving these messages from {{ site_name }}, please click here: {{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}
 {% endblocktrans %}{% endautoescape %}
