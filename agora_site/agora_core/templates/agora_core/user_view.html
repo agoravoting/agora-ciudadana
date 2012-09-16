@@ -56,25 +56,26 @@
         
         $(document).ready(function() {
             var userid = {{ user_shown.id }};
-            var search = $('.agora-search-query').val();
+            var searchAgora = $('.agora-search-query').val();
+            var searchElection = $('.election-search-query').val();
             
             // render results for no filter
             Dajaxice.agora_site.agora_core.searchAgoras(Agora.uv.onAgoraSearch, {'userid': userid, 'search': ''}, {'error_callback': Agora.uv.agoraError});
-            Dajaxice.agora_site.agora_core.searchElectionsForUser(Agora.uv.onElectionSearch, {'userid': userid, 'search': ''}, {'error_callback': Agora.uv.electionError});
+            Dajaxice.agora_site.agora_core.searchElectionsForUserPage(Agora.uv.onElectionSearch, {'userid': userid, 'search': ''}, {'error_callback': Agora.uv.electionError});
 			
             $('.agora-search-query').keyup(function(event) {
                 var tmp = $('.agora-search-query').val();
-                if(search != tmp) {
-                    search = tmp;
-                    Dajaxice.agora_site.agora_core.searchAgoras(Agora.uv.onAgoraSearch, {'userid': userid, 'search': search}, {'error_callback': Agora.uv.agoraError});
+                if(searchAgora != tmp) {
+                    searchAgora = tmp;
+                    Dajaxice.agora_site.agora_core.searchAgoras(Agora.uv.onAgoraSearch, {'userid': userid, 'search': searchAgora}, {'error_callback': Agora.uv.agoraError});
                 }
             });
 			
 			$('.election-search-query').keyup(function(event) {
                 var tmp = $('.election-search-query').val();
-                if(search != tmp) {
-                    search = tmp;
-                    Dajaxice.agora_site.agora_core.searchElectionsForUser(Agora.uv.onElectionSearch, {'userid': userid, 'search': search}, {'error_callback': Agora.uv.electionError});
+                if(searchElection != tmp) {
+                    searchElection = tmp;
+                    Dajaxice.agora_site.agora_core.searchElectionsForUserPage(Agora.uv.onElectionSearch, {'userid': userid, 'search': searchElection}, {'error_callback': Agora.uv.electionError});
                 }
             });
         });

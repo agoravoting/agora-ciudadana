@@ -10,6 +10,106 @@
     <script type="text/javascript" charset="utf-8">
         var endless_on_scroll_margin = 300;
     </script>
+    
+    <script type="text/javascript" charset="utf-8">
+        Agora.hla = (function () {
+            var module = {};
+            
+            module.onAgoraSearch = function (response) {
+                if(response.error == 0) {
+                    if(response.data.length > 0) {
+                        $( "#agoraList" ).html($( "#agoraTemplate" ).render( response.data ) );
+                    }
+                    else {
+                        $( "#agoraList" ).html($("#no-agoras").html());
+                    }
+                }
+                else {
+                    // FIXME error handling (error returned by server)
+                }
+            };
+			
+			module.onElectionSearch = function (response) {
+                if(response.error == 0) {
+                    if(response.data.length > 0) {
+                        $( "#electionList" ).html($( "#electionTemplateRoot" ).render( response.data ) );
+                    }
+                    else {
+                        $( "#electionList" ).html($("#no-elections").html());
+                    }
+                }
+                else {
+                    // FIXME error handling (error returned by server)
+                }
+            };
+            
+            module.agoraError = function() {
+                // FIXME error handling (ajax error)
+            }
+			module.electionError = function() {
+                // FIXME error handling (ajax error)
+            }
+        
+            return module;
+        }());
+        
+        
+        $(document).ready(function() {
+            var userid = {{ user.id }};
+            var searchAgora = $('.agora-search-query').val();
+            var searchElection = $('.election-search-query').val();
+            
+            // render results for no filter
+            Dajaxice.agora_site.agora_core.searchAgoras(Agora.hla.onAgoraSearch, {'userid': userid, 'search': ''}, {'error_callback': Agora.hla.agoraError});
+            Dajaxice.agora_site.agora_core.searchElectionsForUser(Agora.hla.onElectionSearch, {'userid': userid, 'search': ''}, {'error_callback': Agora.hla.electionError});
+			
+            $('.agora-search-query').keyup(function(event) {
+                var tmp = $('.agora-search-query').val();
+                if(searchAgora != tmp) {
+                    searchAgora = tmp;
+                    Dajaxice.agora_site.agora_core.searchAgoras(Agora.hla.onAgoraSearch, {'userid': userid, 'search': searchAgora}, {'error_callback': Agora.hla.agoraError});
+                }
+            });
+			
+			$('.election-search-query').keyup(function(event) {
+                var tmp = $('.election-search-query').val();
+                if(searchElection != tmp) {
+                    searchElection = tmp;
+                    Dajaxice.agora_site.agora_core.searchElectionsForUser(Agora.hla.onElectionSearch, {'userid': userid, 'search': searchElection}, {'error_callback': Agora.hla.electionError});
+                }
+            });
+        });
+    </script>
+    
+    <script id="agoraTemplate" type="text/x-jsrender">
+        <li>
+            <a href="{% templatetag openvariable%}>url{% templatetag closevariable%}">
+            <span class="agora">{% templatetag openvariable%}>username{% templatetag closevariable%}/<strong>{% templatetag openvariable%}>name{% templatetag closevariable%}</strong>
+            </span>
+            <i class="icon-arrow-right"></i>
+            </a>
+        </li>
+    </script>
+	
+	<script id="electionTemplateRoot" type="text/x-jsrender">
+        <li>
+            <time datetime="{% templatetag openvariable%}>date{% templatetag closevariable%}">{% templatetag openvariable%}>pretty_date{% templatetag closevariable%}</time>
+            <ul>
+                {% templatetag openvariable%}for elections tmpl="#electionTemplate"/{% templatetag closevariable%}
+            </ul>
+        </li>
+    </script>
+    
+    <script id="electionTemplate" type="text/x-jsrender">
+        <li>
+            <a href="{% templatetag openvariable%}>url{% templatetag closevariable%}">
+                <img src="{{ STATIC_URL }}img/small-icon-envelope.png" />
+                {% templatetag openvariable%}>pretty_name{% templatetag closevariable%}
+            </a>
+            {# TODO: create templatefilter to check if user voted in an election #}
+            <img src="{{ STATIC_URL }}img/small-icon-ok.png" />
+        </li>
+    </script>
 {% endblock %}
 
 {% block running-board-wrapper-class %}home-loggedin{% endblock %}
@@ -115,10 +215,10 @@
                             <li><a href="{% url agora-list %}">Find an agora to create an election</a></li>
                         </ul>
                     </div>
-                    <input type="text" class="input-medium search-query"  value="" placeholder="{% trans "Search..." %}" name="q" />
+                    <input type="text" class="input-medium election-search-query"  value="" placeholder="{% trans "Search..." %}" name="q" />
                 </div>
                 <div class="row-fluid agora-dates">
-                    <ul>
+                    <!--ul>
                         {% with election_groups=user.get_profile.get_open_elections|elections_grouped_by_date %}
                             {% for elections_date, elections in election_groups.items %}
                                 <li>
@@ -152,7 +252,15 @@
                                 </li>
                             {% endfor %}
                         {% endwith %}
+                    </ul-->
+                    <ul>
+                        <div id="electionList"></div>
                     </ul>
+                    <div style="display:none">
+                        <li id="no-elections" class="empty">
+                            {% trans "No tallied elections found" %}
+                        </li>
+                    </div>
                 </div>
             </div>
 
@@ -164,10 +272,10 @@
                             {% trans "Create agora" %}
                         </a>
                     </div>
-                    <input type="text" class="input-medium search-query"  value="" placeholder="{% trans "Search..." %}" name="q" />
+                    <input type="text" class="input-medium agora-search-query"  value="" placeholder="{% trans "Search..." %}" name="q" />
                 </div>
                 <div class="row-fluid hover-items last-elections">
-                    <ul>
+                    <!--ul>
                         {% for agora in user.agoras.all %}
                             <li>
                                 <a href="{% url agora-view agora.creator.username agora.name %}">
@@ -180,7 +288,15 @@
                                 {% trans "You are not a member of an agora yet" %}
                             </li>
                         {% endfor %}
+                    </ul-->
+                    <ul>
+                        <div id="agoraList"></div>
                     </ul>
+                    <div style="display:none">
+                        <li id="no-agoras" class="empty">
+                            {% trans "No agoras found" %}
+                        </li>
+                    </div>
                 </div>
             </div>
             <!-- here goes: following right-boxes -->
