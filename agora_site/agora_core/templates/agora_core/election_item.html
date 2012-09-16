@@ -12,8 +12,8 @@
                 <img src="{{ object.get_mugshot_url }}" alt="{% trans "Election mugshot" %}" />
             </div>
             <div class="span8">
-                <strong>{{ object.pretty_name }}</strong>
-                <p>{{ object.short_description }}</p>
+                <strong>{{ object.pretty_name|truncatechars:50 }}</strong>
+                <p>{{ object.short_description|truncatechars:25 }}</p>
             </div>
         </div>
     </a>
