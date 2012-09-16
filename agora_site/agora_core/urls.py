@@ -167,19 +167,16 @@ urlpatterns += patterns('',
     ),
 
     url(r'^misc/link/blog/?$', RedirectView.as_view(
-        url= "https://agoraciudadana.org"), name='blog'
+        url= "https://blog.agoravoting.com"), name='blog'
     ),
 
     url(r'^misc/link/status/?$', RedirectView.as_view(
-        url= "https://agoraciudadana.org"), name='status'
+        url= "https://blog.agoravoting.com"), name='status'
     ),
 )
 
 urlpatterns += patterns('django.contrib.flatpages.views',
     url(r'^misc/page/about/?$', 'flatpage', {'url': '/about/'}, name='about'),
-
-    url(r'^misc/page/libre-software/?$', 'flatpage',
-        {'url': '/libre-software/'}, name='libre-software'),
 
     url(r'^misc/page/terms-of-service/?$', 'flatpage',
         {'url': '/terms-of-service/'}, name='terms-of-service'),
