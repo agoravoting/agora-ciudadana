@@ -116,7 +116,6 @@ def geolocate_ip(ip_addr):
         if not GEOIP:
             GEOIP = pygeoip.GeoIP(settings.GEOIP_DB_PATH)
         data = GEOIP.record_by_addr(ip_addr)
-	import ipdb; ipdb.set_trace()
         return [data["latitude"], data["longitude"]]
     except Exception, e:
         return [0, 0]
