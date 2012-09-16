@@ -36,6 +36,7 @@ from userena.models import UserenaSignup
 from userena import settings as userena_settings
 
 from agora_site.agora_core.models import Agora, Election, CastVote
+from agora_site.misc.utils import *
 
 COMMENT_MAX_LENGTH = getattr(settings, 'COMMENT_MAX_LENGTH', 3000)
 
@@ -390,7 +391,8 @@ class VoteForm(django_forms.ModelForm):
         vote.create_hash()
 
         actstream_action.send(self.request.user, verb='voted', action_object=self.election,
-            target=self.election.agora)
+            target=self.election.agora,
+            geolocation=geolocate_ip(self.request.META.get('REMOTE_ADDR')))
 
         vote.action_id = Action.objects.filter(actor_object_id=self.request.user.id,
             verb='voted', action_object_object_id=self.election.id,
