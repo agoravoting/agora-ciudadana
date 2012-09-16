@@ -1067,7 +1067,7 @@ class ElectionPostCommentView(RequestCreateView):
 
         action.send(self.request.user, verb='commented', target=self.election,
             action_object=comment, ipaddr=self.request.META.get('REMOTE_ADDR'),
-            geolocation=geolocate_ip(self.request.META.get('REMOTE_ADDR')))
+            geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
 
         if not is_following(self.request.user, self.election):
             follow(self.request.user, self.election, actor_only=False)
@@ -1134,7 +1134,7 @@ class AgoraPostCommentView(RequestCreateView):
 
         action.send(self.request.user, verb='commented', target=self.agora,
             action_object=comment, ipaddr=self.request.META.get('REMOTE_ADDR'),
-            geolocation=geolocate_ip(self.request.META.get('REMOTE_ADDR')))
+            geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
 
         if not is_following(self.request.user, self.agora):
             follow(self.request.user, self.agora, actor_only=False)

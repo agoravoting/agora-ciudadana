@@ -27,6 +27,7 @@ from django.contrib.comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_unicode
+from django.utils import simplejson as json
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Hidden, Layout, Fieldset
@@ -392,7 +393,7 @@ class VoteForm(django_forms.ModelForm):
 
         actstream_action.send(self.request.user, verb='voted', action_object=self.election,
             target=self.election.agora,
-            geolocation=geolocate_ip(self.request.META.get('REMOTE_ADDR')))
+            geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
 
         vote.action_id = Action.objects.filter(actor_object_id=self.request.user.id,
             verb='voted', action_object_object_id=self.election.id,
