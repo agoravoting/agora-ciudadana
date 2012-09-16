@@ -32,7 +32,7 @@
         <a href="{{ user_view_url }}" class="mugshot">
             <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
         </a>
-        {% url agora-view action.actor.username action.target.name as agora_view_url %}
+        {% url agora-view action.target.creator.username action.target.name as agora_view_url %}
         {% with isotime=action.timestamp|date:"c" %}
             <div class="action-body">
                 <div class="action-title">
@@ -57,7 +57,7 @@
         <a href="{{ user_view_url }}" class="mugshot">
             <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
         </a>
-        {% url agora-view action.actor.username action.target.name as agora_view_url %}
+        {% url agora-view action.target.creator.username action.target.name as agora_view_url %}
         {% with isotime=action.timestamp|date:"c" %}
             <div class="action-body">
                 <div class="action-title">
