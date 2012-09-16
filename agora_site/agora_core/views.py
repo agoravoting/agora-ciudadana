@@ -332,7 +332,7 @@ class CreateAgoraView(RequestCreateView):
             ipaddr=self.request.META.get('REMOTE_ADDR'),
             geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
 
-        follow(self.request.user, agora, actor_only=False)
+        follow(self.request.user, agora, actor_only=False, request=self.request)
 
         return reverse('agora-view',
             kwargs=dict(username=agora.creator.username, agoraname=agora.name))
@@ -416,7 +416,7 @@ class CreateElectionView(RequestCreateView):
                     context), "text/html")
             email.send()
 
-        follow(self.request.user, election, actor_only=False)
+        follow(self.request.user, election, actor_only=False, request=self.request)
 
         return reverse('election-view',
             kwargs=dict(username=election.agora.creator.username,
@@ -613,7 +613,7 @@ class StartElectionView(FormActionView):
         send_mass_html_mail(datatuples)
 
         if not is_following(self.request.user, election):
-            follow(self.request.user, election, actor_only=False)
+            follow(self.request.user, election, actor_only=False, request=self.request)
 
         return self.go_next(request)
 
@@ -677,7 +677,7 @@ class StopElectionView(FormActionView):
 
         action.send(self.request.user, verb='published results', action_object=election,
             target=election.agora, ipaddr=request.META.get('REMOTE_ADDR'),
-            geolocation=geolocate_ip(request.META.get('REMOTE_ADDR')))
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
         return self.go_next(request)
 
@@ -745,7 +745,7 @@ class ArchiveElectionView(FormActionView):
 
         action.send(self.request.user, verb='archived', action_object=election,
             target=election.agora, ipaddr=request.META.get('REMOTE_ADDR'),
-            geolocation=geolocate_ip(request.META.get('REMOTE_ADDR')))
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
         return self.go_next(request)
 
@@ -800,7 +800,7 @@ class VoteView(CreateView):
             email.send()
 
         if not is_following(self.request.user, self.election):
-            follow(self.request.user, self.election, actor_only=False)
+            follow(self.request.user, self.election, actor_only=False, request=self.request)
 
         return reverse('election-view',
             kwargs=dict(username=self.election.agora.creator.username,
@@ -891,7 +891,7 @@ class AgoraActionChooseDelegateView(FormActionView):
 
         action.send(self.request.user, verb='delegated', action_object=vote,
             target=agora, ipaddr=request.META.get('REMOTE_ADDR'),
-            geolocation=geolocate_ip(request.META.get('REMOTE_ADDR')))
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
         vote.action_id = Action.objects.filter(actor_object_id=self.request.user.id,
             verb='delegated', action_object_object_id=vote.id,
@@ -905,7 +905,7 @@ class AgoraActionChooseDelegateView(FormActionView):
                 username=delegate.username))
 
         if not is_following(self.request.user, delegate):
-            follow(self.request.user, delegate, actor_only=False)
+            follow(self.request.user, delegate, actor_only=False, request=self.request)
 
         return self.go_next(request)
 
@@ -934,7 +934,7 @@ class AgoraActionJoinView(FormActionView):
 
         action.send(request.user, verb='joined', action_object=agora,
             ipaddr=request.META.get('REMOTE_ADDR'),
-            geolocation=geolocate_ip(request.META.get('REMOTE_ADDR')))
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
         # TODO: send an email to the user
         messages.add_message(request, messages.SUCCESS, _('You joined '
@@ -943,7 +943,7 @@ class AgoraActionJoinView(FormActionView):
                 agora=agora.creator.username+'/'+agora.name))
 
         if not is_following(request.user, agora):
-            follow(request.user, agora, actor_only=False)
+            follow(request.user, agora, actor_only=False, request=request)
 
         return self.go_next(request)
 
@@ -973,14 +973,14 @@ class AgoraActionLeaveView(FormActionView):
 
         action.send(request.user, verb='left', action_object=agora,
             ipaddr=request.META.get('REMOTE_ADDR'),
-            geolocation=geolocate_ip(request.META.get('REMOTE_ADDR')))
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
         # TODO: send an email to the user
         messages.add_message(request, messages.SUCCESS, _('You left '
             '%(agora)s.') % dict(agora=agora.creator.username+'/'+agora.name))
 
         if is_following(self.request.user, agora):
-            unfollow(self.request.user, agora)
+            unfollow(self.request.user, agora, request=self.request)
 
         return self.go_next(request)
 
@@ -1009,7 +1009,7 @@ class AgoraActionRemoveAdminMembershipView(FormActionView):
 
         action.send(request.user, verb='removed admin membership',
             action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
-            geolocation=geolocate_ip(request.META.get('REMOTE_ADDR')))
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
         # TODO: send an email to the user
         messages.add_message(request, messages.SUCCESS, _('You removed your '
@@ -1070,7 +1070,7 @@ class ElectionPostCommentView(RequestCreateView):
             geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
 
         if not is_following(self.request.user, self.election):
-            follow(self.request.user, self.election, actor_only=False)
+            follow(self.request.user, self.election, actor_only=False, request=self.request)
 
         return reverse('election-comments',
             kwargs=dict(username=self.election.agora.creator.username,
@@ -1137,7 +1137,7 @@ class AgoraPostCommentView(RequestCreateView):
             geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
 
         if not is_following(self.request.user, self.agora):
-            follow(self.request.user, self.agora, actor_only=False)
+            follow(self.request.user, self.agora, actor_only=False, request=self.request)
 
         return reverse('agora-comments',
             kwargs=dict(username=self.agora.creator.username,
@@ -1207,7 +1207,7 @@ class CancelVoteView(FormActionView):
 
         action.send(self.request.user, verb='vote cancelled', action_object=election,
             target=election.agora, ipaddr=request.META.get('REMOTE_ADDR'),
-            geolocation=geolocate_ip(request.META.get('REMOTE_ADDR')))
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
         return http.HttpResponseRedirect(election_url)
 

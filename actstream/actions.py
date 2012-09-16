@@ -6,7 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 from actstream.exceptions import check_actionable_model
 
 
-def follow(user, obj, send_action=True, actor_only=False):
+def follow(user, obj, send_action=True, actor_only=False, request=None):
     """
     Creates a relationship allowing the object's activities to appear in the
     user's stream.
@@ -33,11 +33,19 @@ def follow(user, obj, send_action=True, actor_only=False):
         content_type=ContentType.objects.get_for_model(obj),
         actor_only=actor_only)
     if send_action and created:
-        action.send(user, verb=_('started following'), target=obj)
+        if request:
+            from django.utils import simplejson as json
+            from agora_site.misc.utils import geolocate_ip
+
+            action.send(user, verb=_('started following'), target=obj,
+                ipaddr=request.META.get('REMOTE_ADDR'),
+                geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+        else:
+            action.send(user, verb=_('started following'), target=obj)
     return follow
 
 
-def unfollow(user, obj, send_action=False):
+def unfollow(user, obj, send_action=False, request=None):
     """
     Removes a "follow" relationship.
 
@@ -54,7 +62,16 @@ def unfollow(user, obj, send_action=False):
     Follow.objects.filter(user=user, object_id=obj.pk,
         content_type=ContentType.objects.get_for_model(obj)).delete()
     if send_action:
-        action.send(user, verb=_('stopped following'), target=obj)
+
+        if request:
+            from django.utils import simplejson as json
+            from agora_site.misc.utils import geolocate_ip
+
+            action.send(user, verb=_('stopped following'), target=obj,
+                ipaddr=request.META.get('REMOTE_ADDR'),
+                geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+        else:
+            action.send(user, verb=_('stopped following'), target=obj)
 
 
 def is_following(user, obj):
