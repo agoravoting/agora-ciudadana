@@ -688,7 +688,10 @@ class Election(models.Model):
         Returns the percentage (0 to 100%) of people that have voted with
         respect to the electorate
         '''
-        return (self.get_all_votes().count() * 100.0) / self.agora.members.count()
+        if self.agora.members.count() > 0:
+            return (self.get_all_votes().count() * 100.0) / self.agora.members.count()
+        else:
+            return 0
 
     def get_vote_for_voter(self, voter):
         '''
@@ -1048,7 +1051,10 @@ class Election(models.Model):
                 total_votes += answer['total_count']
             question['total_votes'] = total_votes
             for answer in question['answers']:
-                answer['total_count_percentage'] = (answer['total_count'] * 100.0) / total_votes
+                if total_votes > 0:
+                    answer['total_count_percentage'] = (answer['total_count'] * 100.0) / total_votes
+                else:
+                    answer['total_count_percentage'] = 0
         return result_pretty
 
 
