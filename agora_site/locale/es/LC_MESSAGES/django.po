@@ -1723,7 +1723,7 @@ msgstr "Votos"
 #: agora_core/templates/agora_core/election_base.html:113
 #: agora_core/templates/agora_core/election_edit.html:6
 msgid "Edit"
-msgstr "Edita"
+msgstr "Editar"
 
 #: agora_core/templates/agora_core/election_base.html:136
 msgid "No activity yet."
@@ -2620,7 +2620,7 @@ msgstr "Explorar otras ágoras"
 
 #: templates/base.html:174
 msgid "Explore other elections"
-msgstr "Explorar otras votaciónes"
+msgstr "Explorar otras votaciones"
 
 #: templates/base.html:215
 msgid "<p>A new way of</p><h1>Making group decisions</h1>"
@@ -2676,7 +2676,7 @@ msgstr "Política de Privacidad"
 
 #: templates/base.html:274
 msgid "Contact Us"
-msgstr "Contacta con Nosotros"
+msgstr "Contáctanos"
 
 #: templates/base.html:280
 msgid "Be Social"
