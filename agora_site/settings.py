@@ -68,7 +68,6 @@ LANGUAGES = (
     ('es', _('Spanish')),
     ('en', _('English')),
     ('gl', _('Galician')),
-    ('cl', _('Catalan')),
 )
 
 SITE_ID = 1

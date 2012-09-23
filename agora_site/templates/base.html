@@ -47,7 +47,7 @@
     <div class="container-fluid top-bar">
         <div class="container">
             <div class="row" id="headerbar">
-                <div class="span8">
+                <div class="span7">
                     <a class="brand" href="{% url home %}">
                         <img alt="{{ SITE_NAME }}" src="{{ STATIC_URL }}img/agoralogo.png" />
                     </a>
@@ -88,7 +88,7 @@
 
                     <a class="btn btn-primary" href="{% url agora-new %}">{% trans "Create Agora" %}</a>
                 </div>
-                <div class="span4">
+                <div class="span5">
                     <form id="search-form" class="form-search form-inline btn-toolbar" action="{% url search-view %}">
                         <input type="text" class="input-medium search-query"  value="{{ query }}" placeholder="{% trans "Search" %}" name="q" />
                     {% if not user or not user.is_authenticated %}
