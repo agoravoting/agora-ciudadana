@@ -46,7 +46,7 @@ class CreateAgoraForm(django_forms.ModelForm):
         super(CreateAgoraForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.request = request
-        self.helper.layout = Layout(Fieldset(_('Create Agora'), 'pretty_name', 'short_description'))
+        self.helper.layout = Layout(Fieldset(_('Create Agora'), 'pretty_name', 'short_description', 'is_vote_secret'))
         self.helper.add_input(Submit('submit', _('Create Agora'), css_class='btn btn-success btn-large'))
 
     def save(self, *args, **kwargs):
@@ -77,7 +77,7 @@ class CreateAgoraForm(django_forms.ModelForm):
 
     class Meta:
         model = Agora
-        fields = ('pretty_name', 'short_description')
+        fields = ('pretty_name', 'short_description', 'is_vote_secret')
 
 
 attrs_dict = {'class': 'required'}
@@ -187,7 +187,7 @@ class AgoraAdminForm(django_forms.ModelForm):
 
     class Meta:
         model = Agora
-        fields = ('pretty_name', 'short_description', 'biography')
+        fields = ('pretty_name', 'short_description', 'is_vote_secret', 'biography')
 
 class CreateElectionForm(django_forms.ModelForm):
     question = django_forms.CharField(_("Question"), required=True)
@@ -209,6 +209,7 @@ class CreateElectionForm(django_forms.ModelForm):
         self.helper.form_class = 'form-horizontal'
         self.request = request
         self.agora = agora
+        self.fields['is_vote_secret'].initial = agora.is_vote_secret
         self.helper.layout = Layout(Fieldset(_('Create election'),
             'pretty_name', 'description', 'question', 'answers', 'is_vote_secret', 'from_date', 'to_date'))
         self.helper.add_input(Submit('submit', _('Create Election'),

@@ -656,7 +656,7 @@ class Election(models.Model):
         # TODO: When you have first voted directly in a voting and then you
         # delegate your vote in the agora, it's currently not counted
         if self.ballot_is_open():
-            q=self.cast_votes.filter(is_counted=True, invalidated_at_date=None).values('voter__id').query
+            q=self.cast_votes.filter(is_counted=True, is_direct=True, invalidated_at_date=None).values('voter__id').query
 
             # if ballot is open, we have yet not collected the final list of
             # delegated votes so we get it in real time from
@@ -716,7 +716,6 @@ class Election(models.Model):
         '''
         Returns a brief description of the election
         '''
-        import ipdb; ipdb.set_trace()
         if self.is_vote_secret:
             desc = _('This election allows delegation from any party and vote is secret (public for delegates). ')
         else:

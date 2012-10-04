@@ -18,32 +18,37 @@
     </a>
     <div class="row-fluid delegates">
         {% trans "Delegates to:" %}
-    </div>
-    {% with delegate=object.get_delegate %}
-    <a href="{% url user-view delegate.username %}">
-        <div class="row-fluid user delegated">
-            <div class="span4">
-                <img src="{{ delegate.get_profile.get_mugshot_url }}" alt="{% trans "User mugshot" %}" />
-            </div>
-            <div class="span8">
-                <strong>{{ delegate.username|truncatechars:36 }}</strong>
-                <p>{{ delegate.first_name|truncatechars:36 }}</p>
-            </div>
-        </div>
-        {% if delegate|vote_for_election:election %}
-            {% with delegate_vote=delegate|vote_for_election:election %}
-                <div class="row-fluid vote user delegated">
-                <h4>{{ delegate_vote.get_first_pretty_answer|getitem:'question'|truncatechars:49 }}</h4>
-                {% if delegated_vote.is_public %}
-                    <div>{% trans "Answers:" %} <em>{{ delegate_vote.get_first_pretty_answer|getitem:'answer'|truncatechars:24 }}</em></div>
-                {% else %}
-                    <div>{% trans "Vote is secret" %}</div>
-                {% endif %}
-            {% endwith %}
-        </div>
+        {% if not object.is_public %}
+            <strong>{% trans "Vote is secret" %}</strong>
         {% endif %}
-    </a>
-    {% endwith %}
+    </div>
+    {% if object.is_public %}
+        {% with delegate=object.get_delegate %}
+        <a href="{% url user-view delegate.username %}">
+            <div class="row-fluid user delegated">
+                <div class="span4">
+                    <img src="{{ delegate.get_profile.get_mugshot_url }}" alt="{% trans "User mugshot" %}" />
+                </div>
+                <div class="span8">
+                    <strong>{{ delegate.username|truncatechars:36 }}</strong>
+                    <p>{{ delegate.first_name|truncatechars:36 }}</p>
+                </div>
+            </div>
+            {% if delegate|vote_for_election:election %}
+                {% with delegate_vote=delegate|vote_for_election:election %}
+                    <div class="row-fluid vote user delegated">
+                    <h4>{{ delegate_vote.get_first_pretty_answer|getitem:'question'|truncatechars:49 }}</h4>
+                    {% if delegated_vote.is_public %}
+                        <div>{% trans "Answers:" %} <em>{{ delegate_vote.get_first_pretty_answer|getitem:'answer'|truncatechars:24 }}</em></div>
+                    {% else %}
+                        <div>{% trans "Vote is secret" %}</div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+            {% endif %}
+        </a>
+        {% endwith %}
+    {% endif %}
 </div>
 
 {% ifequal row "right" %}

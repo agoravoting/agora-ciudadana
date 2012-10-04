@@ -855,7 +855,7 @@ class AgoraActionChooseDelegateView(FormActionView):
 
         # invalidate older votes from the same voter to the same election
         old_votes = agora.delegation_election.cast_votes.filter(
-            is_direct=False, invalidated_at_date=None)
+            is_direct=False, invalidated_at_date=None, voter=self.request.user)
         for old_vote in old_votes:
             old_vote.invalidated_at_date = datetime.datetime.now()
             old_vote.save()
@@ -884,7 +884,7 @@ class AgoraActionChooseDelegateView(FormActionView):
         vote.election = agora.delegation_election
         vote.is_counted = self.request.user in agora.members.all()
         vote.is_direct = False
-        vote.is_public = True
+        vote.is_public = not agora.is_vote_secret
         vote.casted_at_date = datetime.datetime.now()
         vote.create_hash()
         vote.save()
@@ -904,7 +904,7 @@ class AgoraActionChooseDelegateView(FormActionView):
                 agora=agora.creator.username+'/'+agora.name,
                 username=delegate.username))
 
-        if not is_following(self.request.user, delegate):
+        if not is_following(self.request.user, delegate) and vote.is_public:
             follow(self.request.user, delegate, actor_only=False, request=self.request)
 
         return self.go_next(request)
@@ -1422,9 +1422,9 @@ class SearchView(AjaxListView, HaystackSearchView):
 
         if self.searchmodel != None and not self.query:
             if self.searchmodel == "agoras":
-                self.results = Agora.objects.all()
+                self.results = Agora.objects.order_by('-created_at_date').all()
             elif self.searchmodel == "elections":
-                self.results = Election.objects.exclude(url__startswith="http://example.com/delegation/has/no/url/")
+                self.results = Election.objects.exclude(url__startswith="http://example.com/delegation/has/no/url/").order_by('-last_modified_at_date')
             elif self.searchmodel == "profiles":
                 self.results = Profile.objects.all()
         else:
