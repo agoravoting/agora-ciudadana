@@ -210,7 +210,7 @@ class CreateElectionForm(django_forms.ModelForm):
         self.request = request
         self.agora = agora
         self.helper.layout = Layout(Fieldset(_('Create election'),
-            'pretty_name', 'description', 'question', 'answers', 'from_date', 'to_date'))
+            'pretty_name', 'description', 'question', 'answers', 'is_vote_secret', 'from_date', 'to_date'))
         self.helper.add_input(Submit('submit', _('Create Election'),
             css_class='btn btn-success btn-large'))
 
@@ -218,6 +218,9 @@ class CreateElectionForm(django_forms.ModelForm):
         cleaned_data = super(CreateElectionForm, self).clean()
         from_date = cleaned_data["from_date"]
         to_date = cleaned_data["to_date"]
+
+        if not from_date and not to_date:
+            return cleaned_data
 
         if from_date < datetime.datetime.now():
             raise django_forms.ValidationError(_('Invalid start date, must be '
@@ -256,7 +259,6 @@ class CreateElectionForm(django_forms.ModelForm):
             kwargs=dict(username=election.agora.creator.username, agoraname=election.agora.name,
                 electionname=election.name)))
         election.election_type = Agora.ELECTION_TYPES[0][0] # ONE CHOICE
-        election.is_vote_secret = False
 
         from_date = self.cleaned_data["from_date"]
         to_date = self.cleaned_data["to_date"]
@@ -297,7 +299,7 @@ class CreateElectionForm(django_forms.ModelForm):
 
     class Meta:
         model = Election
-        fields = ('pretty_name', 'description')
+        fields = ('pretty_name', 'description', 'is_vote_secret')
 
 
 class ElectionEditForm(django_forms.ModelForm):
@@ -315,7 +317,7 @@ class ElectionEditForm(django_forms.ModelForm):
         self.fields['answers'].initial = "\n".join(answer['value']
             for answer in instance.questions[0]['answers'])
 
-        self.helper.layout = Layout(Fieldset(_('General settings'), 'pretty_name', 'description', 'question', 'answers'))
+        self.helper.layout = Layout(Fieldset(_('General settings'), 'pretty_name', 'description', 'question', 'answers', 'is_vote_secret'))
         self.helper.add_input(Submit('submit', _('Save settings'), css_class='btn btn-success btn-large'))
 
     def save(self, *args, **kwargs):
@@ -345,7 +347,7 @@ class ElectionEditForm(django_forms.ModelForm):
 
     class Meta:
         model = Election
-        fields = ('pretty_name', 'description')
+        fields = ('pretty_name', 'description', 'is_vote_secret')
 
 
 class VoteForm(django_forms.ModelForm):
@@ -373,8 +375,14 @@ class VoteForm(django_forms.ModelForm):
                 widget=django_forms.RadioSelect(attrs={'class': 'question'})))
             i += 1
 
-        self.helper.add_input(Submit('submit', _('Vote'),
-            css_class='btn btn-success btn-large'))
+        if election.is_vote_secret:
+            self.helper.add_input(Submit('submit-secret', _('Vote secretly'),
+                css_class='btn btn-success btn-large'))
+            self.helper.add_input(Submit('submit', _('Vote in public as a delegate'),
+                css_class='btn btn-info btn-large separated-button'))
+        else:
+            self.helper.add_input(Submit('submit', _('Vote'),
+                css_class='btn btn-success btn-large'))
 
     def clean(self):
         cleaned_data = super(VoteForm, self).clean()
@@ -419,8 +427,11 @@ class VoteForm(django_forms.ModelForm):
         vote.election = self.election
         vote.is_counted = self.request.user in self.election.agora.members.all()
         vote.is_direct = True
-        vote.is_public = True
-        vote.reason = self.cleaned_data['reason']
+        if 'submit-secret' in self.request.POST:
+            vote.is_public = False
+        else:
+            vote.reason = self.cleaned_data['reason']
+            vote.is_public = True
         vote.data = data
         vote.casted_at_date = datetime.datetime.now()
         vote.create_hash()
@@ -443,7 +454,7 @@ class VoteForm(django_forms.ModelForm):
             'reason': django_forms.TextInput(
                 attrs={
                     'placeholder': _('Explain your public position on '
-                    'the vote if you want'),
+                    'the vote if you want and if your vote is public'),
                     'maxlength': 140
                 })
         }

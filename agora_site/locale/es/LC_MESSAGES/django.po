@@ -1766,7 +1766,7 @@ msgid ""
 "                                            "
 msgstr ""
 "\n"
-"                                                Votación creada por<a href="
+"                                                Votación creada por <a href="
 "\"%(user_url)s\">%(election_creator_username)s</a> en <a href="
 "\"%(agora_view_url)s\">%(agora_creator_username)s/%(agora_name)s</a>"
 

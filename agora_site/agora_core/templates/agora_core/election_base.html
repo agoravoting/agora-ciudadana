@@ -209,12 +209,16 @@
                         {% endblock %}
 
                         {% if vote_from_user %}
-                            <h3>{% trans "Your vote" %}
-                            </h3>
+                            {% if vote_from_user.is_public %}
+                                <h3>{% trans "Your vote" %}</h3>
+                            {% endif %}
+
                             {% if vote_from_user.is_direct %}
-                                {% blocktrans with question=vote_from_user.get_first_pretty_answer|getitem:'question' answer=vote_from_user.get_first_pretty_answer|getitem:'answer' %}
-                                <p class="answer">You answered <strong>{{ answer }}</strong> to <em>{{ question }}</em></p>
-                                {% endblocktrans %}
+                                {% if vote_from_user.is_public %}
+                                    {% blocktrans with question=vote_from_user.get_first_pretty_answer|getitem:'question' answer=vote_from_user.get_first_pretty_answer|getitem:'answer' %}
+                                    <p class="answer">You answered <strong>{{ answer }}</strong> to <em>{{ question }}</em></p>
+                                    {% endblocktrans %}
+                                {% endif %}
                                 {% if election.ballot_is_open %}
                                     <a class="btn" data-toggle="modal" href="#cancelVoteConfirmModalDialog">{% trans "Cancel direct vote" %}</a>
                                     <div class="modal hide" id="cancelVoteConfirmModalDialog">
@@ -232,7 +236,7 @@
                                         </div>
                                     </div>
                                 {% endif %}
-                            {% else %}
+                            {% elif vote_from_user.is_public %}
                                 {% with delegate=vote_from_user.get_delegate chained_answer=vote_from_user|get_chained_first_pretty_answer:election %}
                                     {% if chained_answer %}
                                         {% blocktrans with delegate_username=delegate.username question=chained_answer|getitem:'question' answer=chained_answer|getitem:'answer' %}

@@ -295,7 +295,7 @@ class ElectionChooseDelegateView(AjaxListView):
         self.delegate = get_object_or_404(User, username=delegate_username)
         self.vote = get_object_or_404(CastVote, is_counted=True,
             election=self.election, invalidated_at_date=None,
-            voter=self.delegate)
+            voter=self.delegate, is_public=True)
 
         return super(ElectionChooseDelegateView, self).dispatch(*args, **kwargs)
 
@@ -1228,13 +1228,6 @@ class UserView(AjaxListView):
     def get_context_data(self, *args, **kwargs):
         context = super(UserView, self).get_context_data(**kwargs)
         context['user_shown'] = self.user_shown
-
-        context['election_items'] = []
-
-        for election in self.user_shown.get_profile().get_participated_elections().all():
-            vote = self.user_shown.get_profile().get_vote_in_election(election)
-            pretty_answer = vote.get_chained_first_pretty_answer(election)
-            context['election_items'] += [[election, vote, pretty_answer]]
         return context
 
     def dispatch(self, *args, **kwargs):

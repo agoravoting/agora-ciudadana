@@ -34,7 +34,11 @@
             {% with delegate_vote=delegate|vote_for_election:election %}
                 <div class="row-fluid vote user delegated">
                 <h4>{{ delegate_vote.get_first_pretty_answer|getitem:'question'|truncatechars:49 }}</h4>
-                <div>{% trans "Answers:" %} <em>{{ delegate_vote.get_first_pretty_answer|getitem:'answer'|truncatechars:24 }}</em></div>
+                {% if delegated_vote.is_public %}
+                    <div>{% trans "Answers:" %} <em>{{ delegate_vote.get_first_pretty_answer|getitem:'answer'|truncatechars:24 }}</em></div>
+                {% else %}
+                    <div>{% trans "Vote is secret" %}</div>
+                {% endif %}
             {% endwith %}
         </div>
         {% endif %}

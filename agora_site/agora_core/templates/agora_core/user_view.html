@@ -110,9 +110,19 @@
                 </div>
 
 
-                <span>{% templatetag openvariable%}>shown_user{% templatetag closevariable%} {% blocktrans %}answered {% endblocktrans %}{% templatetag openvariable%}>pretty_answer.answer{% templatetag closevariable%}
-                </span>
-                <small class="reason">{% templatetag openvariable%}>pretty_answer.reason{% templatetag closevariable%}</small>
+                {% raw %}
+                {{if is_public}}
+                {% endraw %}
+                    <span>{% templatetag openvariable%}>shown_user{% templatetag closevariable%} {% blocktrans %}answered {% endblocktrans %}{% templatetag openvariable%}>pretty_answer.answer{% templatetag closevariable%}
+                    </span>
+                    <small class="reason">{% templatetag openvariable%}>pretty_answer.reason{% templatetag closevariable%}</small>
+                {% raw %}
+                {{else}}
+                {% endraw %}
+                <span>{% blocktrans %}Vote is secret{% endblocktrans %}</span>
+                {% raw %}
+                {{/if}}
+                {% endraw %}
             </a>
         </li>
     </script>
@@ -207,36 +217,6 @@
                     <input type="text" class="input-medium election-search-query search-query" autocomplete="off" value="" placeholder="{% trans "Search..." %}" name="q" />
                 </div>
                 <div class="row-fluid hover-items last-user-elections">
-                    <!--ul>
-                        {% for election, vote, pretty_answer in election_items %}
-                            <li>
-                                <a href="{% url election-view election.agora.creator.username election.agora.name election.name %}" class="election election-result">
-                                    <strong>{{ election.pretty_name|truncatechars:40 }}</strong>
-                                    <time datetime="{{ election.result_tallied_at_date.isoformat }}">
-                                        {{ election.result_tallied_at_date|pretty_date }}
-                                    </time>
-                                    <span>{{ election.get_winning_option|getitem:'value' }}</span>
-                                    <small>{% blocktrans with votes=election.get_winning_option|getitem:'total_count' %}({{ votes }} votes){% endblocktrans %}</small>
-
-                                    <div class="progress progress-success progress-small">
-                                        <div class="bar" style="width: {{ election.get_winning_option|getitem:'total_count_percentage'|floatformat }}%;">
-                                            {{ election.get_winning_option|getitem:'total_count_percentage'|floatformat }}%
-                                        </div>
-                                    </div>
-
-
-                                    <span>{% blocktrans with username=user_shown.username answer=pretty_answer|getitem:'answer' %}{{ username }} answered {{ answer }}
-                                    {% endblocktrans %}</span>
-                                    <small class="reason">{{ pretty_answer|getitem:'reason' }}</small>
-                                </a>
-                            </li>
-                        {% empty %}
-                            <li class="empty">
-                                {% trans "This user has not participated in any tallied election yet" %}
-                            </li>
-                        {% endfor %}
-                    </ul-->
-					
                     <ul>
                         <div id="electionList"></div>
                     </ul>

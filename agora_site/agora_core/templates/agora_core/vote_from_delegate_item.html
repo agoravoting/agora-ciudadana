@@ -6,7 +6,11 @@
 
 <div class="span6 span6-{{ row }}">
     {% if election.ballot_is_open %}
-        <a href="{% url election-delegate object.election.agora.creator.username object.election.agora.name object.election.name object.voter.username %}">
+        {% if object.is_public %}
+            <a href="{% url election-delegate object.election.agora.creator.username object.election.agora.name object.election.name object.voter.username %}">
+        {% else %}
+            <a href="{% url user-view object.voter.username  %}">
+        {% endif %}
     {% else %}
         <a href="{% url user-view object.voter.username  %}">
     {% endif %}
@@ -21,8 +25,12 @@
         </div>
     </a>
     <div class="row-fluid vote">
-        <h4>{{ object.get_first_pretty_answer|getitem:'question'|truncatechars:49 }}</h4>
-        <div>{% trans "Answers:" %} <em>{{ object.get_first_pretty_answer|getitem:'answer'|truncatechars:24 }}</em></div>
+        {% if object.is_public %}
+            <h4>{{ object.get_first_pretty_answer|getitem:'question'|truncatechars:49 }}</h4>
+            <div>{% trans "Answers:" %} <em>{{ object.get_first_pretty_answer|getitem:'answer'|truncatechars:24 }}</em></div>
+        {% else %}
+            <div>{% trans "Vote is secret" %}</div>
+        {% endif %}
         <p>
         {% if object.reason %}
             {{ object.reason }}

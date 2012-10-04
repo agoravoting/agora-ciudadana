@@ -86,8 +86,8 @@ class Profile(UserenaLanguageBaseProfile):
         if searchquery:
             elections = elections.filter(pretty_name__icontains=searchquery)
 
-        return elections.order_by('voting_extended_until_date',
-                'voting_starts_at_date')
+        return elections.order_by('-voting_extended_until_date',
+                '-voting_starts_at_date')
 
     def get_requested_elections(self):
         '''
@@ -96,7 +96,7 @@ class Profile(UserenaLanguageBaseProfile):
         return Election.objects.filter(
             Q(agora__in=self.user.administrated_agoras.all()) | Q(creator=self.user),
             Q(is_approved=False) | Q(result_tallied_at_date=None)
-        ).exclude(name='delegation').order_by('voting_extended_until_date', 'voting_starts_at_date')
+        ).exclude(name='delegation').order_by('-voting_extended_until_date', '-voting_starts_at_date')
 
     def count_direct_votes(self):
         '''
@@ -114,7 +114,7 @@ class Profile(UserenaLanguageBaseProfile):
         return Election.objects.filter(agora__isnull=False,
             result_tallied_at_date__isnull=False).filter(
                 Q(delegated_votes__in=user_delegated_votes) |
-                Q(cast_votes__in=user_direct_votes))
+                Q(cast_votes__in=user_direct_votes)).order_by('-result_tallied_at_date','-voting_extended_until_date')
 
     def has_delegated_in_agora(self, agora):
         '''
@@ -235,8 +235,8 @@ class Agora(models.Model):
             Q(voting_extended_until_date__gt=datetime.datetime.now()) |
                 Q(voting_extended_until_date=None,
                     voting_starts_at_date__lt=datetime.datetime.now()),
-            Q(is_approved=True)).order_by('voting_extended_until_date',
-                'voting_starts_at_date')
+            Q(is_approved=True)).order_by('-voting_extended_until_date',
+                '-voting_starts_at_date')
 
     def get_open_elections_with_name_start(self, name):
         '''
@@ -250,8 +250,8 @@ class Agora(models.Model):
                 Q(voting_extended_until_date=None,
                     voting_starts_at_date__lt=datetime.datetime.now()),
             Q(is_approved=True),
-            Q(pretty_name__icontains=name)).order_by('voting_extended_until_date',
-                'voting_starts_at_date')
+            Q(pretty_name__icontains=name)).order_by('-voting_extended_until_date',
+                '-voting_starts_at_date')
 
     def get_tallied_elections(self):
         '''
@@ -335,8 +335,8 @@ class Agora(models.Model):
             Q(voting_extended_until_date__gt=datetime.datetime.now()) |
             Q(voting_extended_until_date=None, voting_starts_at_date__lt=datetime.datetime.now()),
             Q(is_approved=True)
-        ).order_by('voting_extended_until_date',
-            'voting_starts_at_date')
+        ).order_by('-voting_extended_until_date',
+            '-voting_starts_at_date')
 
 
     def requested_elections(self):
@@ -716,7 +716,11 @@ class Election(models.Model):
         '''
         Returns a brief description of the election
         '''
-        desc = _('This voting allows delegation from any party and vote is not secret. ')
+        import ipdb; ipdb.set_trace()
+        if self.is_vote_secret:
+            desc = _('This election allows delegation from any party and vote is secret (public for delegates). ')
+        else:
+            desc = _('This election allows delegation from any party and vote is not secret. ')
         desc = desc.__unicode__()
         now = datetime.datetime.now()
 
@@ -755,11 +759,11 @@ class Election(models.Model):
             desc += tmp
         elif not self.voting_starts_at_date:
             tmp = (_("Start date for voting is not set yet. "))
-            desc += tmp
+            desc += tmp.__unicode__()
 
         if self.archived_at_date:
             tmp = (_("Election is <b>archived and dismissed</b>."))
-            desc += tmp
+            desc += tmp.__unicode__()
         return desc
 
     def compute_result(self):
@@ -859,7 +863,7 @@ class Election(models.Model):
             else:
                 return edges.filter(voter__id=voter.id)[0]
 
-        if self.is_vote_secret or self.election_type != Agora.ELECTION_TYPES[0][0]:
+        if self.election_type != Agora.ELECTION_TYPES[0][0]:
             raise Exception('do not know how to count this type of voting')
 
         # result is in the same format as get_result_pretty(). Initialized here
@@ -1190,7 +1194,9 @@ class CastVote(models.Model):
             return self.data['answers'][0]['choices'][0]['username']
 
     def get_chained_first_pretty_answer(self, election=None):
-        if self.data['a'] == 'vote':
+        if not self.is_public:
+            raise Exception('Vote is not public')
+        elif self.data['a'] == 'vote':
             if self.data['answers'][0]['a'] != 'plaintext-answer':
                 raise Exception('Invalid direct vote')
 
@@ -1210,8 +1216,11 @@ class CastVote(models.Model):
                 return None
         else:
             raise Exception('Invalid vote')
+
     def get_first_pretty_answer(self):
-        if self.data['a'] == 'vote':
+        if not self.is_public:
+            raise Exception('Vote is not public')
+        elif self.data['a'] == 'vote':
             if self.data['answers'][0]['a'] != 'plaintext-answer':
                 raise Exception('Invalid direct vote')
 
