@@ -90,7 +90,15 @@ def searchElectionsForUser(request, userid, search):
     user = get_object_or_404(User, pk=userid)
     tmp = user.get_profile().get_open_elections(search)
 
-    elections = [{'date': k, 'pretty_date': pretty_date(k), 'elections': v} for (k,v) in elections_grouped_by_date(tmp).items()]
+    elections = [{
+        'date': k,
+        'pretty_date': pretty_date(k),
+        'elections': [{
+            'url': election.url,
+            'pretty_name': election.pretty_name,
+            'has_user_voted': not election.has_user_voted(user)
+        } for election in v]
+    } for (k,v) in elections_grouped_by_date(tmp).items()]
 
     if(len(elections) > 0):
         return dumps({'error': 0, 'data': preJson(elections)})

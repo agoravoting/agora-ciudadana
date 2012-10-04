@@ -194,6 +194,15 @@ class CreateElectionForm(django_forms.ModelForm):
     answers = django_forms.CharField(_("Answers"), required=True,
         help_text=_("Each choice on separate lines"), widget=django_forms.Textarea)
 
+    from_date = django_forms.DateTimeField(label=_('Start voting'), required=False,
+        help_text=_("Not required, you can choose to start the voting period manually"),
+        widget=django_forms.TextInput(attrs={'class': 'datetimepicker'}),
+        input_formats=('%m/%d/%Y %H:%M',))
+    to_date = django_forms.DateTimeField(label=_('End voting'), required=False,
+        help_text=_("Not required, you can choose to end the voting period manually"),
+        widget=django_forms.TextInput(attrs={'class': 'datetimepicker'}),
+        input_formats=('%m/%d/%Y %H:%M',))
+
     def __init__(self, request, agora, *args, **kwargs):
         super(CreateElectionForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -201,9 +210,27 @@ class CreateElectionForm(django_forms.ModelForm):
         self.request = request
         self.agora = agora
         self.helper.layout = Layout(Fieldset(_('Create election'),
-            'pretty_name', 'description', 'question', 'answers'))
+            'pretty_name', 'description', 'question', 'answers', 'from_date', 'to_date'))
         self.helper.add_input(Submit('submit', _('Create Election'),
             css_class='btn btn-success btn-large'))
+
+    def clean(self, *args, **kwargs):
+        cleaned_data = super(CreateElectionForm, self).clean()
+        from_date = cleaned_data["from_date"]
+        to_date = cleaned_data["to_date"]
+
+        if from_date < datetime.datetime.now():
+            raise django_forms.ValidationError(_('Invalid start date, must be '
+                'in the future'))
+
+        if (not from_date and to_date) or (from_date and not to_date):
+            raise django_forms.ValidationError(_('You need to either provide '
+                'none or both start and end voting dates'))
+
+        if to_date - from_date < datetime.timedelta(hours=1):
+            raise django_forms.ValidationError(_('Voting time must be at least 1 hour'))
+
+        return cleaned_data
 
     def clean_answers(self, *args, **kwargs):
         data = self.cleaned_data["answers"]
@@ -230,6 +257,13 @@ class CreateElectionForm(django_forms.ModelForm):
                 electionname=election.name)))
         election.election_type = Agora.ELECTION_TYPES[0][0] # ONE CHOICE
         election.is_vote_secret = False
+
+        from_date = self.cleaned_data["from_date"]
+        to_date = self.cleaned_data["to_date"]
+        if from_date and to_date:
+            election.voting_starts_at_date = from_date
+            election.voting_ends_at_date = to_date
+
 
         # Anyone can create a voting for a given agora, but if you're not the
         # admin, it must be approved
