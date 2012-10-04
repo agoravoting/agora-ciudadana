@@ -373,6 +373,9 @@ class Election(models.Model):
     # cache the hash of the election. It will be null until frozen
     hash = models.CharField(max_length=100, unique=True, null=True)
 
+    def task_id(self, task):
+        return "election_task_" + str(self.id) + task.name
+
     def get_serializable_data(self):
         data = {
             'creator_username': self.creator.username,
@@ -585,6 +588,28 @@ class Election(models.Model):
         '''
         return settings.STATIC_URL + 'img/election_new_form_info.png'
 
+    def has_started(self):
+        '''
+        Returns true if voting has started, false otherwise
+        '''
+        return self.voting_starts_at_date != None and self.voting_starts_at_date < datetime.datetime.now()
+
+    def has_ended(self):
+        '''
+        Returns true if voting has ended, false otherwise
+        '''
+        now = datetime.datetime.now()
+        if self.voting_extended_until_date == None:
+            return self.voting_ends_at_date and  self.voting_ends_at_date < datetime.datetime.now()
+        else:
+            return self.voting_extended_until_date and self.voting_extended_until_date < datetime.datetime.now()
+
+    def is_archived(self):
+        '''
+        Returns true if voting has been archived, false otherwise
+        '''
+        return self.archived_at_date != None
+
     def has_perms(self, permission_name, user):
         '''
         Return whether a given user has a given permission name, depending on
@@ -595,16 +620,14 @@ class Election(models.Model):
         isarchived = self.archived_at_date != None
 
         if permission_name == 'edit_details':
-            return self.voting_starts_at_date == None and isadminorcreator and not isarchived
+            return not self.has_started() and isadminorcreator and not isarchived
         elif permission_name == 'begin_election':
-            return self.voting_starts_at_date == None and isadminorcreator and not isarchived
+            return not self.has_started() and isadminorcreator and not isarchived
         elif permission_name == 'end_election':
-            return self.voting_starts_at_date  != None and\
-                self.voting_starts_at_date < datetime.datetime.now() and\
-                self.voting_ends_at_date == None and isadminorcreator and\
-                not isarchived
+            return self.has_started() and not self.has_ended() and\
+                isadminorcreator and not isarchived
         elif permission_name == 'archive_election':
-            return isadminorcreator and self.archived_at_date == None
+            return isadminorcreator and not self.is_archived()
 
     def get_perms(self, user):
         '''
@@ -621,8 +644,7 @@ class Election(models.Model):
         advance. For now, any voter is a delegate.
         '''
         now = datetime.datetime.now()
-        return self.voting_starts_at_date != None and self.voting_starts_at_date < now and (self.voting_extended_until_date == None or
-            self.voting_extended_until_date > now)
+        return self.has_started() and not self.has_ended()
 
     def has_user_voted(self, user):
         '''
@@ -727,27 +749,25 @@ class Election(models.Model):
             return ('<time class="timeago" title="%(isotime)s" '
                 'datetime="%(isotime)s"></time>') % dict(isotime=dati.isoformat())
 
-        if self.ballot_is_open():
-            tmp = (_("Voting started %(start_date)s. ") %\
-                dict(start_date=timesince(self.voting_starts_at_date)))
-            desc += tmp
-        elif self.voting_starts_at_date and self.voting_starts_at_date > now and\
-            not self.voting_extended_until_date:
-            tmp = (_("Voting will start %(start_date)s. ") %\
-                dict(start_date=timesince(self.voting_starts_at_date)))
-            desc += tmp
-        elif self.voting_starts_at_date and self.voting_starts_at_date > now and\
-            self.voting_extended_until_date:
+        if self.voting_starts_at_date and self.voting_extended_until_date and\
+            not self.has_started():
             tmp = (_("Voting will start  %(start_date)s and finish "
                 "%(end_date)s. ") % dict(start_date=timesince(self.voting_starts_at_date),
                     end_date=timesince(self.voting_extended_until_date)))
             desc += tmp
-        elif self.voting_starts_at_date and self.voting_starts_at_date < now and\
-            self.voting_extended_until_date and\
-            self.voting_extended_until_date > now:
+        elif self.voting_starts_at_date and not self.has_started():
+            tmp = (_("Voting will start %(start_date)s. ") %\
+                dict(start_date=timesince(self.voting_starts_at_date)))
+            desc += tmp
+        elif self.voting_starts_at_date and self.voting_extended_until_date and\
+            self.has_started() and not self.has_ended():
             tmp = (_("Voting started %(start_date)s and will finish "
                 "%(end_date)s. ") % dict(start_date=timesince(self.voting_starts_at_date),
                     end_date=timesince(self.voting_extended_until_date)))
+            desc += tmp
+        elif self.ballot_is_open():
+            tmp = (_("Voting started %(start_date)s. ") %\
+                dict(start_date=timesince(self.voting_starts_at_date)))
             desc += tmp
         elif self.result_tallied_at_date:
             tmp = (_("Voting started %(start_date)s and finished "

@@ -80,7 +80,7 @@ class ActionManager(GFKManager):
         etype = ContentType.objects.get_for_model(election)
         atype = ContentType.objects.get_for_model(election.agora)
 
-        if election.voting_starts_at_date and election.voting_extended_until_date:
+        if election.has_started() and election.has_ended():
             return self.public(
                 (Q(target_content_type=etype, target_object_id = election.id) |
                 Q(action_object_content_type=etype, action_object_object_id=election.id) |
@@ -90,7 +90,7 @@ class ActionManager(GFKManager):
                     timestamp__lt=election.voting_extended_until_date,
                     timestamp__gt=election.voting_starts_at_date)),
                 **kwargs)
-        elif election.voting_starts_at_date:
+        elif election.has_started():
             return self.public(
                 (Q(target_content_type=etype, target_object_id = election.id) |
                 Q(action_object_content_type=etype, action_object_object_id=election.id) |

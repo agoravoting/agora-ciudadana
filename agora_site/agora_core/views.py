@@ -50,6 +50,7 @@ from haystack.views import SearchView as HaystackSearchView
 from agora_site.agora_core.templatetags.agora_utils import get_delegate_in_agora
 from agora_site.agora_core.models import Agora, Election, Profile, CastVote
 from agora_site.agora_core.forms import *
+from agora_site.agora_core.tasks import *
 from agora_site.misc.utils import *
 
 class FormActionView(TemplateView):
@@ -549,71 +550,19 @@ class StartElectionView(FormActionView):
 
         if not election.has_perms('begin_election', request.user):
             messages.add_message(self.request, messages.ERROR, _('You don\'t '
-                'have permission to begin the election.'))
+                'have permission to start the election.'))
             return self.go_next(request)
 
         election.voting_starts_at_date = datetime.datetime.now()
-        election.create_hash()
         election.save()
 
-        context = get_base_email_context(self.request)
-
-        context.update(dict(
-            election=election,
-            election_url=reverse('election-view',
-                kwargs=dict(username=election.agora.creator.username,
-                    agoraname=election.agora.name, electionname=election.name)),
-            agora_url=reverse('agora-view',
-                kwargs=dict(username=election.agora.creator.username,
-                    agoraname=election.agora.name)),
-        ))
-
-        # List of emails to send. tuples are of format:
-        # 
-        # (subject, text, html, from_email, recipient)
-        datatuples = []
-
-        # NOTE: for now, electorate is dynamic and just taken from the election's
-        # agora members' list
-        for voter in election.agora.members.all():
-
-            if not voter.email or not voter.get_profile().email_updates:
-                continue
-
-            context['to'] = voter
-            try:
-                context['delegate'] = get_delegate_in_agora(voter, election.agora)
-            except:
-                pass
-            datatuples.append((
-                _('Vote in election %s') % election.pretty_name,
-                render_to_string('agora_core/emails/election_started.txt',
-                    context),
-                render_to_string('agora_core/emails/election_started.html',
-                    context),
-                None,
-                [voter.email]))
-
-        # Also notify third party delegates
-        for voter in election.agora.active_nonmembers_delegates():
-
-            if not voter.email or not voter.get_profile().email_updates:
-                continue
-
-            context['to'] = voter
-            datatuples.append((
-                _('Vote in election %s') % election.pretty_name,
-                render_to_string('agora_core/emails/election_started.txt',
-                    context),
-                render_to_string('agora_core/emails/election_started.html',
-                    context),
-                None,
-                [voter.email]))
-
-        send_mass_html_mail(datatuples)
-
-        if not is_following(self.request.user, election):
-            follow(self.request.user, election, actor_only=False, request=self.request)
+        cancel_start_election(election.id)
+        start_election(
+            election_id=election.id,
+            is_secure=self.request.is_secure(),
+            site_id=Site.objects.get_current().id,
+            remote_addr=self.request.META.get('REMOTE_ADDR')
+        )
 
         return self.go_next(request)
 
@@ -635,49 +584,15 @@ class StopElectionView(FormActionView):
 
         election.voting_extended_until_date = election.voting_ends_at_date = datetime.datetime.now()
         election.save()
-        election.compute_result()
 
-        context = get_base_email_context(self.request)
-
-        context.update(dict(
-            election=election,
-            election_url=reverse('election-view',
-                kwargs=dict(username=election.agora.creator.username,
-                    agoraname=election.agora.name, electionname=election.name)),
-            agora_url=reverse('agora-view',
-                kwargs=dict(username=election.agora.creator.username,
-                    agoraname=election.agora.name)),
-        ))
-
-        # List of emails to send. tuples are of format:
-        #
-        # (subject, text, html, from_email, recipient)
-        datatuples = []
-
-        for vote in election.get_all_votes():
-
-            if not vote.voter.email or not vote.voter.get_profile().email_updates:
-                continue
-
-            context['to'] = vote.voter
-            try:
-                context['delegate'] = get_delegate_in_agora(vote.voter, election.agora)
-            except:
-                pass
-            datatuples.append((
-                _('Election results for %s') % election.pretty_name,
-                render_to_string('agora_core/emails/election_results.txt',
-                    context),
-                render_to_string('agora_core/emails/election_results.html',
-                    context),
-                None,
-                [vote.voter.email]))
-
-        send_mass_html_mail(datatuples)
-
-        action.send(self.request.user, verb='published results', action_object=election,
-            target=election.agora, ipaddr=request.META.get('REMOTE_ADDR'),
-            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+        cancel_end_election(election.id)
+        end_election(
+            election_id=election.id,
+            is_secure=self.request.is_secure(),
+            site_id=Site.objects.get_current().id,
+            remote_addr=self.request.META.get('REMOTE_ADDR'),
+            user_id=request.user.id
+        )
 
         return self.go_next(request)
 

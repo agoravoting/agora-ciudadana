@@ -190,7 +190,8 @@ INSTALLED_APPS = (
     'agora_site.accounts',
     'endless_pagination',
     'haystack',
-    'dajaxice'
+    'dajaxice',
+    'djcelery'
 )
 
 # A list the models that you want to enable actions for. Models must be in the
@@ -303,6 +304,16 @@ USERENA_WITHOUT_USERNAMES = False
 
 # required by  django-guardian to be set
 ANONYMOUS_USER_ID = -1
+
+# Celery settings
+
+import djcelery
+djcelery.setup_loader()
+
+BROKER_URL = 'amqp://guest:guest@localhost:5672/'
+
+CELERY_DISABLE_RATE_LIMITS = True
+
 
 # Project settings
 

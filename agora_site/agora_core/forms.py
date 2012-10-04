@@ -28,6 +28,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_unicode
 from django.utils import simplejson as json
+from django.contrib.sites.models import Site
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Hidden, Layout, Fieldset
@@ -37,6 +38,7 @@ from userena.models import UserenaSignup
 from userena import settings as userena_settings
 
 from agora_site.agora_core.models import Agora, Election, CastVote
+from agora_site.agora_core.tasks import *
 from agora_site.misc.utils import *
 
 COMMENT_MAX_LENGTH = getattr(settings, 'COMMENT_MAX_LENGTH', 3000)
@@ -217,12 +219,12 @@ class CreateElectionForm(django_forms.ModelForm):
 
     def clean(self, *args, **kwargs):
         cleaned_data = super(CreateElectionForm, self).clean()
-        from_date = cleaned_data["from_date"]
-        to_date = cleaned_data["to_date"]
 
-        if not from_date and not to_date:
+        if (not "from_date" in self.cleaned_data) and (not "to_date" in self.cleaned_data):
             return cleaned_data
 
+        from_date = cleaned_data["from_date"]
+        to_date = cleaned_data["to_date"]
         if from_date < datetime.datetime.now():
             raise django_forms.ValidationError(_('Invalid start date, must be '
                 'in the future'))
@@ -261,11 +263,11 @@ class CreateElectionForm(django_forms.ModelForm):
                 electionname=election.name)))
         election.election_type = Agora.ELECTION_TYPES[0][0] # ONE CHOICE
 
-        from_date = self.cleaned_data["from_date"]
-        to_date = self.cleaned_data["to_date"]
-        if from_date and to_date:
+        if ("from_date" in self.cleaned_data) and ("to_date" in self.cleaned_data):
+            from_date = self.cleaned_data["from_date"]
+            to_date = self.cleaned_data["to_date"]
             election.voting_starts_at_date = from_date
-            election.voting_ends_at_date = to_date
+            election.voting_extended_until_date = election.voting_ends_at_date = to_date
 
 
         # Anyone can create a voting for a given agora, but if you're not the
@@ -296,6 +298,20 @@ class CreateElectionForm(django_forms.ModelForm):
             },]
         election.save()
 
+
+        if from_date and to_date:
+            kwargs=dict(
+                election_id=election.id,
+                is_secure=self.request.is_secure(),
+                site_id=Site.objects.get_current().id,
+                remote_addr=self.request.META.get('REMOTE_ADDR')
+            )
+            start_election.apply_async(kwargs=kwargs, task_id=election.task_id(start_election),
+                eta=election.voting_starts_at_date)
+            kwargs["user_id"] = self.request.user.id
+            end_election.apply_async(kwargs=kwargs, task_id=election.task_id(end_election),
+                eta=election.voting_ends_at_date)
+
         return election
 
     class Meta:
@@ -308,6 +324,15 @@ class ElectionEditForm(django_forms.ModelForm):
     answers = django_forms.CharField(_("Answers"), required=True,
         help_text=_("Each choice on separate lines"), widget=django_forms.Textarea)
 
+    from_date = django_forms.DateTimeField(label=_('Start voting'), required=False,
+        help_text=_("Not required, you can choose to start the voting period manually"),
+        widget=django_forms.TextInput(attrs={'class': 'datetimepicker'}),
+        input_formats=('%m/%d/%Y %H:%M',))
+    to_date = django_forms.DateTimeField(label=_('End voting'), required=False,
+        help_text=_("Not required, you can choose to end the voting period manually"),
+        widget=django_forms.TextInput(attrs={'class': 'datetimepicker'}),
+        input_formats=('%m/%d/%Y %H:%M',))
+
     def __init__(self, request, *args, **kwargs):
         super(ElectionEditForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -317,12 +342,38 @@ class ElectionEditForm(django_forms.ModelForm):
         self.fields['question'].initial = instance.questions[0]['question']
         self.fields['answers'].initial = "\n".join(answer['value']
             for answer in instance.questions[0]['answers'])
+        if instance.voting_starts_at_date and instance.voting_ends_at_date:
+            self.fields['from_date'].initial = instance.voting_starts_at_date.strftime('%m/%d/%Y %H:%M')
+            self.fields['to_date'].initial = instance.voting_ends_at_date.strftime('%m/%d/%Y %H:%M')
 
         self.helper.layout = Layout(Fieldset(_('General settings'), 'pretty_name', 'description', 'question', 'answers', 'is_vote_secret'))
         self.helper.add_input(Submit('submit', _('Save settings'), css_class='btn btn-success btn-large'))
 
+    def clean(self, *args, **kwargs):
+        cleaned_data = super(ElectionEditForm, self).clean()
+
+        if (not "from_date" in cleaned_data) or (not "to_date" in cleaned_data):
+            return cleaned_data
+
+        from_date = cleaned_data["from_date"]
+        to_date = cleaned_data["to_date"]
+
+        #if from_date < datetime.datetime.now():
+            #raise django_forms.ValidationError(_('Invalid start date, must be '
+                #'in the future'))
+
+        if (not from_date and to_date) or (from_date and not to_date):
+            raise django_forms.ValidationError(_('You need to either provide '
+                'none or both start and end voting dates'))
+
+        ##if to_date - from_date < datetime.timedelta(hours=1):
+            ##raise django_forms.ValidationError(_('Voting time must be at least 1 hour'))
+
+        return cleaned_data
+
     def save(self, *args, **kwargs):
         election = super(ElectionEditForm, self).save(*args, **kwargs)
+
         # Questions/answers have a special formatting
         answers = []
         for answer_value in self.cleaned_data["answers"].splitlines():
@@ -344,6 +395,28 @@ class ElectionEditForm(django_forms.ModelForm):
             },]
         election.last_modified_at_date = datetime.datetime.now()
         election.save()
+
+        if ("from_date" in self.cleaned_data) and ("to_date" in self.cleaned_data):
+            from_date = self.cleaned_data["from_date"]
+            to_date = self.cleaned_data["to_date"]
+            election.voting_starts_at_date = from_date
+            election.voting_extended_until_date = election.voting_ends_at_date = to_date
+            election.save()
+
+            kwargs=dict(
+                election_id=election.id,
+                is_secure=self.request.is_secure(),
+                site_id=Site.objects.get_current().id,
+                remote_addr=self.request.META.get('REMOTE_ADDR')
+            )
+            cancel_start_election(election.id)
+            cancel_end_election(election.id)
+            start_election.apply_async(kwargs=kwargs, task_id=election.task_id(start_election),
+                eta=election.voting_starts_at_date)
+            kwargs["user_id"] = self.request.user.id
+            end_election.apply_async(kwargs=kwargs, task_id=election.task_id(end_election),
+                eta=election.voting_ends_at_date)
+
         return election
 
     class Meta:
