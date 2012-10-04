@@ -358,16 +358,16 @@ class ElectionEditForm(django_forms.ModelForm):
         from_date = cleaned_data["from_date"]
         to_date = cleaned_data["to_date"]
 
-        #if from_date < datetime.datetime.now():
-            #raise django_forms.ValidationError(_('Invalid start date, must be '
-                #'in the future'))
+        if from_date < datetime.datetime.now():
+            raise django_forms.ValidationError(_('Invalid start date, must be '
+                'in the future'))
 
         if (not from_date and to_date) or (from_date and not to_date):
             raise django_forms.ValidationError(_('You need to either provide '
                 'none or both start and end voting dates'))
 
-        ##if to_date - from_date < datetime.timedelta(hours=1):
-            ##raise django_forms.ValidationError(_('Voting time must be at least 1 hour'))
+        if to_date - from_date < datetime.timedelta(hours=1):
+            raise django_forms.ValidationError(_('Voting time must be at least 1 hour'))
 
         return cleaned_data
 
