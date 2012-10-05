@@ -220,18 +220,19 @@ class CreateElectionForm(django_forms.ModelForm):
     def clean(self, *args, **kwargs):
         cleaned_data = super(CreateElectionForm, self).clean()
 
-        if (not "from_date" in self.cleaned_data) and (not "to_date" in self.cleaned_data):
-            return cleaned_data
+        from_date = cleaned_data.get("from_date", None)
+        to_date = cleaned_data.get("to_date", None)
 
-        from_date = cleaned_data["from_date"]
-        to_date = cleaned_data["to_date"]
-        if from_date < datetime.datetime.now():
-            raise django_forms.ValidationError(_('Invalid start date, must be '
-                'in the future'))
+        if not from_date and not to_date:
+            return cleaned_data
 
         if (not from_date and to_date) or (from_date and not to_date):
             raise django_forms.ValidationError(_('You need to either provide '
                 'none or both start and end voting dates'))
+
+        if from_date < datetime.datetime.now():
+            raise django_forms.ValidationError(_('Invalid start date, must be '
+                'in the future'))
 
         if to_date - from_date < datetime.timedelta(hours=1):
             raise django_forms.ValidationError(_('Voting time must be at least 1 hour'))
@@ -352,19 +353,19 @@ class ElectionEditForm(django_forms.ModelForm):
     def clean(self, *args, **kwargs):
         cleaned_data = super(ElectionEditForm, self).clean()
 
-        if (not "from_date" in cleaned_data) or (not "to_date" in cleaned_data):
+        from_date = cleaned_data.get("from_date", None)
+        to_date = cleaned_data.get("to_date", None)
+
+        if not from_date and not to_date:
             return cleaned_data
-
-        from_date = cleaned_data["from_date"]
-        to_date = cleaned_data["to_date"]
-
-        if from_date < datetime.datetime.now():
-            raise django_forms.ValidationError(_('Invalid start date, must be '
-                'in the future'))
 
         if (not from_date and to_date) or (from_date and not to_date):
             raise django_forms.ValidationError(_('You need to either provide '
                 'none or both start and end voting dates'))
+
+        if from_date < datetime.datetime.now():
+            raise django_forms.ValidationError(_('Invalid start date, must be '
+                'in the future'))
 
         if to_date - from_date < datetime.timedelta(hours=1):
             raise django_forms.ValidationError(_('Voting time must be at least 1 hour'))
