@@ -33,7 +33,13 @@ def preJson(obj):
 
         ret = {'username': obj.creator.username,'name': obj.name, 'url': url, 'pretty_name': obj.pretty_name}
         if(obj.result_tallied_at_date != None):
-            ret.update({'tallied_date_pretty': pretty_date(obj.result_tallied_at_date), 'tallied_date': preJson(obj.result_tallied_at_date), 'winner': getitem(obj.get_winning_option(), 'value'), 'votes': getitem(obj.get_winning_option(), 'total_count'), 'bar_width': floatformat(getitem(obj.get_winning_option(), 'total_count_percentage'))})
+            ret.update({
+                'tallied_date_pretty': pretty_date(obj.result_tallied_at_date),
+                'tallied_date': preJson(obj.result_tallied_at_date),
+                'winner': getitem(obj.get_winning_option(), 'value'),
+                'votes': getitem(obj.get_winning_option(), 'total_count'),
+                'bar_width': floatformat(getitem(obj.get_winning_option(), 'total_count_percentage'))
+            })
 
         return ret
     else:
@@ -70,7 +76,7 @@ def searchElectionsForUserPage(request, userid, search):
         user = users[0]
 
         ret = []
-        for election in user.get_profile().get_participated_elections().filter(pretty_name__icontains=search):
+        for election in user.get_profile().get_open_elections().filter(pretty_name__icontains=search):
             vote = user.get_profile().get_vote_in_election(election)
             if vote.is_public:
                 pretty_answer = vote.get_chained_first_pretty_answer(election)
@@ -78,8 +84,6 @@ def searchElectionsForUserPage(request, userid, search):
             else:
                 ret +=  [{'election': election, 'is_public': vote.is_public, 'shown_user': user.username}]
 
-        # z = preJson(ret)
-        # import pdb; pdb.set_trace()
         return dumps({'error': 0, 'data': preJson(ret)})
     else:
         return dumps({'error': 1, 'message': 'User ' + `userid` + ' not found'})
@@ -99,7 +103,8 @@ def searchElectionsForUser(request, userid, search):
         'elections': [{
             'url': election.url,
             'pretty_name': election.pretty_name,
-            'has_user_voted': not election.has_user_voted(user)
+            'has_user_voted': election.has_user_voted(user),
+            'has_user_voted_via_a_delegate': election.has_user_voted_via_a_delegate(user)
         } for election in v]
     } for (k,v) in elections_grouped_by_date(tmp).items()]
 

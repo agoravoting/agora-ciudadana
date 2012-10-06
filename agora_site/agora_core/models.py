@@ -81,9 +81,9 @@ class Profile(UserenaLanguageBaseProfile):
         elections = Election.objects.filter(
             Q(voting_extended_until_date__gt=datetime.datetime.now()) |
             Q(voting_extended_until_date=None, voting_starts_at_date__lt=datetime.datetime.now()),
-            Q(is_approved=True, agora__in=self.user.agoras.all()))
+            Q(is_approved=True, agora__in=self.user.agoras.all())).filter(archived_at_date=None)
 
-        if searchquery:
+        if searchquery and len(searchquery) > 1:
             elections = elections.filter(pretty_name__icontains=searchquery)
 
         return elections.order_by('-voting_extended_until_date',
@@ -96,7 +96,7 @@ class Profile(UserenaLanguageBaseProfile):
         return Election.objects.filter(
             Q(agora__in=self.user.administrated_agoras.all()) | Q(creator=self.user),
             Q(is_approved=False) | Q(result_tallied_at_date=None)
-        ).exclude(name='delegation').order_by('-voting_extended_until_date', '-voting_starts_at_date')
+        ).filter(archived_at_date=None).exclude(name='delegation').order_by('-voting_extended_until_date', '-voting_starts_at_date')
 
     def count_direct_votes(self):
         '''
@@ -663,7 +663,7 @@ class Election(models.Model):
 
     def has_user_voted(self, user):
         '''
-        Return true if the user has voted
+        Return true if the user has voted directly
         '''
         return self.cast_votes.filter(is_counted=True, is_direct=True,
             voter=user).count() > 0
@@ -729,6 +729,14 @@ class Election(models.Model):
             return (self.get_all_votes().count() * 100.0) / self.agora.members.count()
         else:
             return 0
+
+    def has_user_voted_via_a_delegate(self, voter):
+        vote = self.get_vote_for_voter(voter)
+        if not vote:
+            return False
+        if vote.voter != voter:
+            return True
+        return False
 
     def get_vote_for_voter(self, voter):
         '''

@@ -133,20 +133,23 @@ def elections_grouped_by_date(elections):
     '''
     grouping = dict()
     last_date = None
+    used_elections = []
 
     for election in elections:
         end_date = None
         if election.voting_extended_until_date:
             end_date = election.voting_extended_until_date.date()
 
-        start_date = election.voting_starts_at_date.date()
+        start_date = None
+        if election.voting_starts_at_date:
+            start_date = election.voting_starts_at_date.date()
 
-        if start_date not in grouping:
-            grouping[start_date] = (election,)
-        elif election not in grouping[start_date]:
-            grouping[start_date] += (election,)
-
-        if end_date and start_date != end_date:
+        if not election.has_started():
+            if start_date not in grouping:
+                grouping[start_date] = (election,)
+            elif election not in grouping[start_date]:
+                grouping[start_date] += (election,)
+        elif not election.has_finished():
             if end_date not in grouping:
                 grouping[end_date] = (election,)
             elif election not in grouping[end_date]:
