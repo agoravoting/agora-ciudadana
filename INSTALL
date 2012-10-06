@@ -11,6 +11,7 @@ The source code is available here: http://github.com/agoraciudadana/agora-ciudad
 
 * Python 2.x >= 2.7
 * python-virtualenv
+* rabbitmq
 * Has only been tested in Linux so far
 
 Other dependencies can be installed with virtualenv.
@@ -54,6 +55,17 @@ We use django haystack for searching, so we need to create the initial index:
 
     $ ./manage.py rebuild_index
 
+We use celery and rabbitmq for programmed tasks, so you need to setup it correctly
+in your server. Usually you just need to install it and run it as a system daemon
+with:
+
+    $ sudo /etc/rc.d/rabbitmq start
+
+And then for celery to actually process the tasks sent to it (for example start
+or stop an election), you need to run it as a daemon:
+
+    $ ./manage.py celeryd -l INFO
+
 That's it! Start the webserver with:
 
     $ ./manage.py runserver
@@ -66,17 +78,9 @@ django, and a more powerful database like postgresql. Django documentation
 explains how to do that:
 http://docs.djangoproject.com/en/dev/topics/install/
 
-### Send email updates
-
-If you want users to receive email reminders about unread messages or pending
-transfers, you should add a cron task that visits every day the following url:
-http://<yourserver>/tasks/send_email_updates/ .
-
-This can be done adding a timebank.sh script to /etc/cron.daily/ with execution
-permissions as the following:
-
-    #!/bin/bash
-    wget http://<tuservidor>/tasks/send_email_updates/ -O /dev/null
+We also refer to celery documentation for more details on how
+to setup them correctly in your server:
+http://docs.celeryproject.org/en/latest/getting-started/brokers/rabbitmq.html
 
 ### Translations
 
@@ -90,7 +94,7 @@ you need to compile the translation (.po) files:
 
 The settings.py file contains the default configuration for the project. You
 shouldn't modify it; any settings configuration you need should be added to the
-local_settings.py file.
+custom_settings.py file.
 
 Most of the variables in settings are self-explanatory and are documented in
 django: http://docs.djangoproject.com/en/dev/ref/settings/
@@ -114,8 +118,17 @@ You can also help us adding or maintaining translations, testing the releases
 or improving the wiki. Don't hesitate to contact with us if you want to help,
 your collaboration will be much appreciated.
 
+We use Trello for managing the work in the project, using the following board
+where all the work we are doing and planning to do for future releases can be
+seen at a glance:
+
+https://trello.com/board/agora-ciudadana/5054e9e060d5bc9a08196b96
+
 ### Contact
 
 Should you have any doubt or problem please contact us sending an email to
 agora-ciudadana-devel@googlegroups.com which is the development mailing list of
-the project.
+the project. The url of the google group is:
+
+https://groups.google.com/group/agora-ciudadana-devel
+
