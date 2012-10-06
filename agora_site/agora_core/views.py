@@ -542,6 +542,56 @@ class EditElectionView(UpdateView):
         return super(EditElectionView, self).dispatch(*args, **kwargs)
 
 
+class ApproveElectionView(FormActionView):
+    def post(self, request, username, agoraname, electionname, *args, **kwargs):
+        election = get_object_or_404(Election,
+            name=electionname, agora__name=agoraname,
+            agora__creator__username=username)
+
+        if not election.has_perms('approve_election', request.user):
+            messages.add_message(self.request, messages.ERROR, _('You don\'t '
+                'have permission to approve the election.'))
+            return self.go_next(request)
+
+        election.is_approved = True
+        election.save()
+
+        action.send(self.request.user, verb='approved', action_object=election,
+            target=election.agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ApproveElectionView, self).dispatch(*args, **kwargs)
+
+
+class FreezeElectionView(FormActionView):
+    def post(self, request, username, agoraname, electionname, *args, **kwargs):
+        election = get_object_or_404(Election,
+            name=electionname, agora__name=agoraname,
+            agora__creator__username=username)
+
+        if not election.has_perms('freeze_election', request.user):
+            messages.add_message(self.request, messages.ERROR, _('You don\'t '
+                'have permission to freeze the election.'))
+            return self.go_next(request)
+
+        election.frozen_at_date = datetime.datetime.now()
+        election.save()
+
+        action.send(self.request.user, verb='frozen', action_object=election,
+            target=election.agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(FreezeElectionView, self).dispatch(*args, **kwargs)
+
+
 class StartElectionView(FormActionView):
     def post(self, request, username, agoraname, electionname, *args, **kwargs):
         election = get_object_or_404(Election,

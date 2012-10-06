@@ -127,6 +127,12 @@ urlpatterns += patterns('',
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/votes/?$',
         ElectionVotesView.as_view(), name='election-votes'),
 
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/approve/?$',
+        ApproveElectionView.as_view(), name='election-action-approve'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/freeze/?$',
+        FreezeElectionView.as_view(), name='election-action-freeze'),
+
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/start/?$',
         StartElectionView.as_view(), name='election-action-start'),
 

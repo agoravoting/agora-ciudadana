@@ -51,11 +51,27 @@
                 </a>
                 <ul class="dropdown-menu">
                     {%with permissions=election|get_perms:user %}
+                        {% if "approve_election" in permissions %}
+                            <li>
+                                <a class="action-form-link" href="{% url election-action-approve election.agora.creator.username election.agora.name election.name %}">
+                                    <i class="icon-play"></i>
+                                    {% trans "Approve election" %}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if "freeze_election" in permissions %}
+                            <li>
+                                <a class="action-form-link" href="{% url election-action-freeze election.agora.creator.username election.agora.name election.name %}">
+                                    <i class="icon-play"></i>
+                                    {% trans "Freeze election" %}
+                                </a>
+                            </li>
+                        {% endif %}
                         {% if "begin_election" in permissions %}
                             <li>
                                 <a class="action-form-link" href="{% url election-action-start election.agora.creator.username election.agora.name election.name %}">
                                     <i class="icon-play"></i>
-                                    {% trans "Freeze election and start voting period" %}
+                                    {% trans "Start voting period" %}
                                 </a>
                             </li>
                         {% endif %}
@@ -198,10 +214,29 @@
                                 {% endif %}
                             {% else %}
                                 {% with permissions=election|get_perms:user%}
-                                    {% if "begin_election" in permissions %}
+                                    {% if "approve_election" in permissions %}
                                         <div class="button-vote">
                                             <a class="btn btn-success action-form-link"
-                                            href="{% url election-action-start election.agora.creator.username election.agora.name election.name %}">{% trans "Freeze election and start voting period" %}</a>
+                                            href="{% url election-action-approve election.agora.creator.username election.agora.name election.name %}">
+                                            {% trans "Approve election" %}</a>
+                                        </div>
+                                    {% elif "freeze_election" in permissions %}
+                                        <div class="button-vote">
+                                            <a class="btn btn-success action-form-link"
+                                            href="{% url election-action-freeze election.agora.creator.username election.agora.name election.name %}">
+                                            {% trans "Freeze election" %}</a>
+                                        </div>
+                                    {% elif "begin_election" in permissions %}
+                                        <div class="button-vote">
+                                            <a class="btn btn-success action-form-link"
+                                            href="{% url election-action-start election.agora.creator.username election.agora.name election.name %}">
+                                            {% trans "Start voting period" %}</a>
+                                        </div>
+                                    {% elif "end_election" in permissions %}
+                                        <div class="button-vote">
+                                            <a class="btn btn-success action-form-link"
+                                            href="{% url election-action-stop election.agora.creator.username election.agora.name election.name %}">
+                                            {% trans "Stop voting period and publish results" %}</a>
                                         </div>
                                     {% endif %}
                                 {% endwith %}

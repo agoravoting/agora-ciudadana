@@ -606,35 +606,50 @@ class Election(models.Model):
 
     def is_archived(self):
         '''
-        Returns true if voting has been archived, false otherwise
+        Returns true if the election has been archived, false otherwise
         '''
         return self.archived_at_date != None
+
+    def is_frozen(self):
+        '''
+        Returns true if the election has been frozen and thus it cannot be
+        editted anymore, false otherwise
+        '''
+        return self.frozen_at_date != None
 
     def has_perms(self, permission_name, user):
         '''
         Return whether a given user has a given permission name, depending on
         also in the state of the election.
         '''
-        isadminorcreator = (self.creator == user or\
-            self.agora.admins.filter(id=self.creator.id).exists())
-        isarchived = self.archived_at_date != None
+        isadmin = self.agora.admins.filter(id=user.id).exists()
+        isadminorcreator = (self.creator == user or isadmin)
+        isarchived = self.is_archived()
+        isfrozen = self.is_frozen()
 
         if permission_name == 'edit_details':
-            return not self.has_started() and isadminorcreator and not isarchived
+            return not self.has_started() and isadminorcreator and\
+                not isarchived and not isfrozen
+        elif permission_name == 'freeze_election':
+            return not isfrozen and isadminorcreator and not isarchived
+        elif permission_name == 'approve_election':
+            return not self.is_approved and isadmin and not isarchived
         elif permission_name == 'begin_election':
-            return not self.has_started() and isadminorcreator and not isarchived
+            return not self.voting_starts_at_date and isadmin and not isarchived and\
+                self.is_approved
         elif permission_name == 'end_election':
-            return self.has_started() and not self.has_ended() and\
-                isadminorcreator and not isarchived
+            return self.has_started() and not self.voting_ends_at_date and\
+                isadmin and not isarchived
         elif permission_name == 'archive_election':
-            return isadminorcreator and not self.is_archived()
+            return isadminorcreator and not isarchived
 
     def get_perms(self, user):
         '''
         Returns a list of permissions for a given user calling to self.has_perms()
         '''
-        return [perm for perm in ('edit_details', 'begin_election',
-            'end_election', 'archive_election') if self.has_perms(perm, user)]
+        return [perm for perm in ('edit_details', 'approve_election',
+            'begin_election', 'freeze_election', 'end_election',
+            'archive_election') if self.has_perms(perm, user)]
 
     def ballot_is_open(self):
         '''
@@ -748,6 +763,21 @@ class Election(models.Model):
         def timesince(dati):
             return ('<time class="timeago" title="%(isotime)s" '
                 'datetime="%(isotime)s"></time>') % dict(isotime=dati.isoformat())
+
+        if self.is_approved and self.frozen_at_date:
+            tmp = (_("The election has been approved and was frozen "
+                " %(frozen_date)s. ") % dict(frozen_date=timesince(self.frozen_at_date)))
+            desc += tmp
+        elif self.is_approved and not self.frozen_at_date:
+            tmp = (_("The election has been approved and is not frozen yet. "))
+            desc += tmp.__unicode__()
+        elif not self.is_approved and self.frozen_at_date:
+            tmp = (_("The election has not been approved yet and was frozen "
+                " %(frozen_date)s. ") % dict(frozen_date=timesince(self.frozen_at_date)))
+            desc += tmp
+        elif not self.is_approved and not self.frozen_at_date:
+            tmp = (_("The election has been not approved and is not frozen yet. "))
+            desc += tmp.__unicode__()
 
         if self.voting_starts_at_date and self.voting_extended_until_date and\
             not self.has_started():

@@ -45,6 +45,11 @@ def cancel_end_election(election_id):
 def start_election(election_id, is_secure, site_id, remote_addr):
     election = Election.objects.get(pk=election_id)
 
+    if not election.is_approved:
+        election.voting_starts_at_date = None
+        election.save()
+        return
+
     election.voting_starts_at_date = datetime.datetime.now()
     election.create_hash()
     election.save()
@@ -109,6 +114,12 @@ def start_election(election_id, is_secure, site_id, remote_addr):
 @task(ignore_result=True)
 def end_election(election_id, is_secure, site_id, remote_addr, user_id):
     election = Election.objects.get(pk=election_id)
+
+    if not election.is_approved:
+        election.voting_extended_until_date = election.voting_ends_at_date = None
+        election.save()
+        return
+
     user = User.objects.get(pk=user_id)
 
     election.voting_extended_until_date = election.voting_ends_at_date = datetime.datetime.now()
