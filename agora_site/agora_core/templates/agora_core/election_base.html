@@ -54,7 +54,7 @@
                         {% if "approve_election" in permissions %}
                             <li>
                                 <a class="action-form-link" href="{% url election-action-approve election.agora.creator.username election.agora.name election.name %}">
-                                    <i class="icon-play"></i>
+                                    <i class="icon-ok"></i>
                                     {% trans "Approve election" %}
                                 </a>
                             </li>
@@ -62,7 +62,7 @@
                         {% if "freeze_election" in permissions %}
                             <li>
                                 <a class="action-form-link" href="{% url election-action-freeze election.agora.creator.username election.agora.name election.name %}">
-                                    <i class="icon-play"></i>
+                                    <i class="icon-ok-circle"></i>
                                     {% trans "Freeze election" %}
                                 </a>
                             </li>
