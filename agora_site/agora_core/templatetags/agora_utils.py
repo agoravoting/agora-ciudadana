@@ -144,7 +144,7 @@ def elections_grouped_by_date(elections):
         if election.voting_starts_at_date:
             start_date = election.voting_starts_at_date.date()
 
-        if not election.has_started():
+        if not election.has_started() or not end_date:
             if start_date not in grouping:
                 grouping[start_date] = (election,)
             elif election not in grouping[start_date]:
