@@ -149,7 +149,7 @@ def elections_grouped_by_date(elections):
                 grouping[start_date] = (election,)
             elif election not in grouping[start_date]:
                 grouping[start_date] += (election,)
-        elif not election.has_finished():
+        elif not election.has_ended():
             if end_date not in grouping:
                 grouping[end_date] = (election,)
             elif election not in grouping[end_date]:
