@@ -469,8 +469,8 @@ class VoteForm(django_forms.ModelForm):
 
     def save(self, *args, **kwargs):
         # invalidate older votes from the same voter to the same election
-        old_votes = self.election.cast_votes.filter(is_public=True,
-            is_direct=True, invalidated_at_date=None, voter=self.request.user)
+        old_votes = self.election.cast_votes.filter(is_direct=True,
+            invalidated_at_date=None, voter=self.request.user)
         for old_vote in old_votes:
             old_vote.invalidated_at_date = datetime.datetime.now()
             old_vote.is_counted = False
@@ -504,6 +504,7 @@ class VoteForm(django_forms.ModelForm):
         vote.is_direct = True
         if 'submit-secret' in self.request.POST:
             vote.is_public = False
+            vote.reason = None
         else:
             vote.reason = self.cleaned_data['reason']
             vote.is_public = True
