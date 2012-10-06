@@ -21,6 +21,11 @@
     jQuery(document).ready(function() {
         jQuery.timeago.settings.allowFuture = true;
         jQuery("time.timeago").timeago();
+
+        // execute timeago always after an ajax request
+        $(document).ajaxStop(function() {
+            jQuery("time.timeago").timeago();;
+        });
         $("a.action-form-link").click(function(event) {
             event.preventDefault();
             var url = $(this).attr('href');

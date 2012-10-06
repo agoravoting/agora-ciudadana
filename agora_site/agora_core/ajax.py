@@ -76,9 +76,9 @@ def searchElectionsForUserPage(request, userid, search):
         user = users[0]
 
         ret = []
-        for election in user.get_profile().get_open_elections().filter(pretty_name__icontains=search):
+        for election in user.get_profile().get_participated_elections().filter(pretty_name__icontains=search).all()[0:5]:
             vote = user.get_profile().get_vote_in_election(election)
-            if vote.is_public:
+            if vote and vote.is_public:
                 pretty_answer = vote.get_chained_first_pretty_answer(election)
                 ret +=  [{'election': election, 'is_public': vote.is_public, 'pretty_answer': pretty_answer, 'shown_user': user.username}]
             else:
