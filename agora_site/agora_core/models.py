@@ -642,6 +642,8 @@ class Election(models.Model):
                 isadmin and not isarchived
         elif permission_name == 'archive_election':
             return isadminorcreator and not isarchived
+        elif permission_name == 'comment_election':
+            return isadminorcreator or not isarchived and user.is_authenticated()
 
     def get_perms(self, user):
         '''
@@ -649,7 +651,7 @@ class Election(models.Model):
         '''
         return [perm for perm in ('edit_details', 'approve_election',
             'begin_election', 'freeze_election', 'end_election',
-            'archive_election') if self.has_perms(perm, user)]
+            'archive_election', 'comment_election') if self.has_perms(perm, user)]
 
     def ballot_is_open(self):
         '''

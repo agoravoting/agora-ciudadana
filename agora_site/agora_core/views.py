@@ -479,7 +479,7 @@ class EditElectionView(UpdateView):
 
     def post(self, request, *args, **kwargs):
         if not self.election.has_perms('edit_details', self.request.user):
-            messages.add_message(self.request, messages.SUCCESS, _('Sorry, but '
+            messages.add_message(self.request, messages.ERROR, _('Sorry, but '
             'you don\'t have edit permissions on <em>%(electionname)s</em>.') %\
                 dict(electionname=self.election.pretty_name))
 
@@ -492,7 +492,7 @@ class EditElectionView(UpdateView):
 
     def get(self, request, *args, **kwargs):
         if not self.election.has_perms('edit_details', self.request.user):
-            messages.add_message(self.request, messages.SUCCESS, _('Sorry, but '
+            messages.add_message(self.request, messages.ERROR, _('Sorry, but '
             'you don\'t have edit permissions on <em>%(electionname)s</em>.') %\
                 dict(electionname=self.election.pretty_name))
 
@@ -604,6 +604,8 @@ class StartElectionView(FormActionView):
             return self.go_next(request)
 
         election.voting_starts_at_date = datetime.datetime.now()
+        if not election.is_frozen():
+            election.frozen_at_date = election.voting_starts_at_date
         election.save()
 
         cancel_start_election(election.id)
@@ -1044,6 +1046,18 @@ class ElectionPostCommentView(RequestCreateView):
                 agoraname=self.election.agora.name,
                 electionname=self.election.name))
 
+    def post(self, request, *args, **kwargs):
+        if not self.election.has_perms('comment_election', self.request.user):
+            messages.add_message(self.request, messages.ERROR, _('Sorry, but '
+            'you don\'t have comment permissions on <em>%(electionname)s</em>.') %\
+                dict(electionname=self.election.pretty_name))
+
+            url = reverse('election-view',
+                kwargs=dict(username=election.agora.creator.username,
+                    agoraname=election.agora.name, electionname=election.name))
+            return http.HttpResponseRedirect(url)
+        return super(ElectionPostCommentView, self).post(request, *args, **kwargs)
+
     def dispatch(self, *args, **kwargs):
         self.kwargs = kwargs
 
@@ -1053,6 +1067,7 @@ class ElectionPostCommentView(RequestCreateView):
         self.election = get_object_or_404(Election,
             name=electionname, agora__name=agoraname,
             agora__creator__username=username)
+
         return super(ElectionPostCommentView, self).dispatch(*args, **kwargs)
 
 
@@ -1303,7 +1318,7 @@ class AgoraAdminView(UpdateView):
 
     def post(self, request, *args, **kwargs):
         if not self.agora.has_perms('admin', self.request.user):
-            messages.add_message(self.request, messages.SUCCESS, _('Sorry, but '
+            messages.add_message(self.request, messages.ERROR, _('Sorry, but '
             'you don\'t have admin permissions on %(agoraname)s.') %\
                 dict(agoraname=self.agora.name))
 
@@ -1315,7 +1330,7 @@ class AgoraAdminView(UpdateView):
 
     def get(self, request, *args, **kwargs):
         if not self.agora.has_perms('admin', self.request.user):
-            messages.add_message(self.request, messages.SUCCESS, _('Sorry, but '
+            messages.add_message(self.request, messages.ERROR, _('Sorry, but '
             'you don\'t have admin permissions on %(agoraname)s.') %\
                 dict(agoraname=self.agora.name))
 

@@ -12,9 +12,12 @@
 
 {% block election_content %}
 
-{% if request.user.is_authenticated %}
+{% with permissions=election|get_perms:user %}
+{% if "comment_election" in permissions %}
     {% crispy form %}
 {% endif %}
+{% endwith %}
+
 <div class="clear"></div>
 
 {{ block.super }}
