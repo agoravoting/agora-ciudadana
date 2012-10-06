@@ -141,7 +141,7 @@
     <img class="agora-logo" src="{{ user_shown.get_profile.get_mugshot_url }}" alt="{% blocktrans with username=user_shown.username %}{{ username }} logo{% endblocktrans %}" />
     <div class="item-detail">
         <h1>
-            <a href="#">{{ user_shown.username }}</a>
+            <a href="{% url user-view user_shown.username %}">{{ user_shown.username }}</a>
             / {{ user_shown.get_profile.get_fullname }}
         </h1>
         <p>{{ user_shown.get_profile.short_description }}</p>
