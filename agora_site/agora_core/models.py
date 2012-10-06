@@ -736,7 +736,7 @@ class Election(models.Model):
         vote = self.get_vote_for_voter(voter)
         if not vote:
             return False
-        if vote.voter != voter:
+        if vote.is_direct == False:
             return True
         return False
 

@@ -70,8 +70,21 @@
                 <img src="{{ STATIC_URL }}img/small-icon-envelope.png" />
                 {% templatetag openvariable%}>pretty_name{% templatetag closevariable%}
             </a>
-            {# TODO: create templatefilter to check if user voted in an election #}
-            <img src="{{ STATIC_URL }}img/small-icon-ok.png" />
+            {% raw %}
+                {{if has_user_voted}}
+            {% endraw %}
+                <img src="{{ STATIC_URL }}img/small-icon-ok.png" />
+            {% raw %}
+                {{/if}}
+            {% endraw %}
+
+            {% raw %}
+                {{if has_user_voted_via_a_delegate}}
+            {% endraw %}
+                <img src="{{ STATIC_URL }}img/small-icon-delegate.png" />
+            {% raw %}
+                {{/if}}
+            {% endraw %}
         </li>
     </script>
 {% endblock %}
