@@ -335,7 +335,7 @@ INTERNAL_IPS = ('127.0.0.1',)
 #    pagewhen they click on it.
 #  * "superusers-only" - Only users whose is_superuser() function returns true
 #    will see the create agora button and will be able to create agoras.
-AGORA_CREATION_PERMISSIONS="superusers-only"
+AGORA_CREATION_PERMISSIONS="any-user"
 
 try:
     # custom settings is the file where you should set your modifications of the
