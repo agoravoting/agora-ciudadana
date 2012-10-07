@@ -410,7 +410,7 @@ class Election(models.Model):
 
     uuid = models.CharField(max_length=50, unique=True)
 
-    url = models.CharField(max_length=300, unique=True)
+    url = models.CharField(max_length=255, unique=True)
 
     # an election is always related to an agora, except if it's a delegated election
     agora = models.ForeignKey('Agora', related_name='elections',
