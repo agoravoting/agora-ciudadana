@@ -11,7 +11,8 @@ The source code is available here: http://github.com/agoraciudadana/agora-ciudad
 
 * Python 2.x >= 2.7
 * python-virtualenv
-* rabbitmq
+* python-celery (install with pip system-wide)
+* rabbitmq-server
 * Has only been tested in Linux so far
 
 Other dependencies can be installed with virtualenv.

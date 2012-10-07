@@ -90,8 +90,9 @@
                             </ul>
                         </div>
                     </div>
-
+                    {% if can_create_agoras %}
                     <a class="btn btn-primary" href="{% url agora-new %}">{% trans "Create Agora" %}</a>
+                    {% endif %}
                 </div>
                 <div class="span5">
                     <form id="search-form" class="form-search form-inline btn-toolbar" action="{% url search-view %}">

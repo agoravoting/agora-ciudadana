@@ -314,6 +314,10 @@ BROKER_URL = 'amqp://guest:guest@localhost:5672/'
 
 CELERY_DISABLE_RATE_LIMITS = True
 
+# Rosetta settings
+
+ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
+
 
 # Project settings
 
@@ -323,7 +327,15 @@ AUTH_PROFILE_MODULE = 'agora_core.Profile'
 
 INTERNAL_IPS = ('127.0.0.1',)
 
-ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
+# This settings allows to configure who can create agoras. For the users who
+# cannot create agoras, the Create Agora button won't appear. Possible values
+# are:
+#  * "any-user" (default) - Any logged in user can create agoras. Anonymous
+#    users will also see the button but they will be redirected to the login
+#    pagewhen they click on it.
+#  * "superusers-only" - Only users whose is_superuser() function returns true
+#    will see the create agora button and will be able to create agoras.
+AGORA_CREATION_PERMISSIONS="superusers-only"
 
 try:
     # custom settings is the file where you should set your modifications of the

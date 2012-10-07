@@ -130,17 +130,26 @@
 {% block running-board  %}
     <div class="span3">
         <div>
-            <a href="{% url agora-new %}" title="Create a new agora">
-                <img src="{{ STATIC_URL }}img/home_step1.png" id="home_step1_img" />
-                <h2>1</h2>
-                <h3>{% trans "Create a new agora" %}</h3>
-                <p>{% trans "Create the place where the votings of your group will be held." %}</p>
-            </a>
+            {% if can_create_agoras %}
+                <a href="{% url agora-new %}" title="Create a new agora">
+                    <img src="{{ STATIC_URL }}img/home_step1.png" id="home_step1_img" />
+                    <h2>1</h2>
+                    <h3>{% trans "Create a new agora" %}</h3>
+                    <p>{% trans "Create the place where the votings of your group will be held." %}</p>
+                </a>
+            {% else %}
+                <a href="{% url agora-list %}" title="Join an agora">
+                    <img src="{{ STATIC_URL }}img/home_step1.png" id="home_step1_img" />
+                    <h2>1</h2>
+                    <h3>{% trans "Join an agora" %}</h3>
+                    <p>{% trans "Join to one of the communities where votings will be held." %}</p>
+                </a>
+            {% endif %}
         </div>
     </div>
     <div class="span3">
         <div>
-        <a href="" title="Create a new election">
+        <a href="{% url agora-list %}" title="Create a new election">
             <img src="{{ STATIC_URL }}img/home_step2.png" id="home_step2_img" />
             <h2>2</h2>
             <h3>{% trans "Create a new election" %}</h3>
@@ -245,11 +254,13 @@
             <div class="row-fluid right-widget right-widget-grey agora-list">
                 <div class="right-widget-header">
                     <h4>{% trans "Agoras" %} <span>({{ user.agoras.count }})</span></h4>
+                    {% if can_create_agoras %}
                     <div class="btn-group">
                         <a class="btn btn-primary" data-toggle="dropdown" href="{% url agora-new %}">
                             {% trans "Create agora" %}
                         </a>
                     </div>
+                    {% endif %}
                     <input type="text" class="input-medium agora-search-query search-query" autocomplete="off" value="" placeholder="{% trans "Search..." %}" name="q" />
                 </div>
                 <div class="row-fluid hover-items last-elections">

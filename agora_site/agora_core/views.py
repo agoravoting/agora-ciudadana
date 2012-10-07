@@ -18,7 +18,7 @@ import datetime
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.conf.urls import patterns, url, include
 from django.conf import settings
@@ -318,6 +318,25 @@ class CreateAgoraView(RequestCreateView):
     '''
     template_name = 'agora_core/create_agora_form.html'
     form_class = CreateAgoraForm
+
+    def get(self, request, *args, **kwargs):
+        if not Agora.static_has_perms('create', request.user):
+            messages.add_message(self.request, messages.ERROR, _('Sorry, but '
+            'you don\'t have permission to create agoras'))
+
+            return http.HttpResponseRedirect(reverse('home'))
+
+        return super(CreateAgoraView, self).get(request, *args, **kwargs)
+
+
+    def post(self, request, *args, **kwargs):
+        if not Agora.static_has_perms('create', request.user):
+            messages.add_message(self.request, messages.ERROR, _('Sorry, but '
+            'you don\'t have permission to create agoras'))
+
+            return http.HttpResponseRedirect(reverse('home'))
+
+        return super(CreateAgoraView, self).post(request, *args, **kwargs)
 
     def get_success_url(self):
         '''

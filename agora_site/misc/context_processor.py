@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from agora_site.agora_core.models import Agora
+
 from django.conf import settings
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.flatpages.models import FlatPage
@@ -26,7 +28,8 @@ def base(request):
     This is a context processor that adds some vars to the base template
     '''
     return {
-        'session': request.session
+        'session': request.session,
+        'can_create_agoras': Agora.static_has_perms('create', request.user)
     }
 
 class SettingsProcessor(object):

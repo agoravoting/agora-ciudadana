@@ -345,12 +345,23 @@ class Agora(models.Model):
         '''
         return self.elections.filter(is_approved=False).exclude(name='delegation')
 
+    @staticmethod
+    def static_has_perms(permission_name, user):
+        if permission_name == 'create':
+            if settings.AGORA_CREATION_PERMISSIONS == 'any-user':
+                return True
+            elif settings.AGORA_CREATION_PERMISSIONS == 'superusers-only':
+                return user.is_superuser
+            else:
+                return False
+        else:
+            return False
+
     def has_perms(self, permission_name, user):
         '''
         Return whether a given user has a given permission name, depending on
         also in the state of the election.
         '''
-
         if permission_name == 'join':
             return self.membership_policy == Agora.MEMBERSHIP_TYPE[0][0]
         elif permission_name == 'leave':
