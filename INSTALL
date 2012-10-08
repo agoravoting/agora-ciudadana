@@ -104,6 +104,14 @@ There are some settings non standard in django in the settings.py file,
 quite self explanatory, but you can ask us if you need help with them. See
 Contact seccion for that.
 
+For example all the actions are geolocalized based on the user's ip address. But
+in order for this to work you need to first have to download the geolocalized
+cities data base and put it where the settings.py will look it for:
+
+    $ cd agora_site/media/ && mkdir -p media/data && cd media/data
+    $ wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+    $ gunzip GeoLiteCity.dat.gz && rm GeoLiteCity.dat.gz
+
 ### Contribute
 
 We would be happy to consider any additions or bugfixes that you would like to
