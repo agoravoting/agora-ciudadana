@@ -49,6 +49,12 @@
                         {% trans "Remove membership" %}
                     </a>
                 </li>
+                <li>
+                    <a href="{% url agora-action-make-admin agora.creator.username agora.name object.username %}" class="action-form-link">
+                        <i class="icon-eject"></i>
+                        {% trans "Make admin" %}
+                    </a>
+                </li>
                 {% endif %}
                 {% if "leave_admin" in perms %}
                 <li>

@@ -405,7 +405,8 @@ class Agora(models.Model):
             return user in self.members.all() and\
                 'requested_admin_membership' in opc.get_perms(self)
         elif permission_name == 'leave':
-            return self.creator != user and user in self.members.all()
+            return self.creator != user and user in self.members.all() and\
+                user not in self.admins.all()
         elif permission_name == 'admin':
             return self.creator == user or user in self.admins.all()
         elif permission_name == 'leave_admin':

@@ -1073,6 +1073,44 @@ class AgoraActionAcceptMembershipRequestView(FormActionView):
         return super(AgoraActionAcceptMembershipRequestView, self).dispatch(*args, **kwargs)
 
 
+class AgoraActionMakeAdminView(FormActionView):
+    def post(self, request, username, agoraname, username2, *args, **kwargs):
+        agora = get_object_or_404(Agora,
+            name=agoraname, creator__username=username)
+        user = get_object_or_404(User, username=username2)
+
+        if not agora.has_perms('admin', request.user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you '
+                'don\'t have admin permissions in this agora.'))
+            return self.go_next(request)
+
+        if not agora.has_perms('leave', user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you cannot '
+                'make admin to this user.'))
+            return self.go_next(request)
+
+        agora.admins.add(user)
+        agora.save()
+
+        action.send(request.user, verb='made admin', action_object=agora,
+            ipaddr=request.META.get('REMOTE_ADDR'),
+            target=user,
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        # TODO: send an email to the user
+        messages.add_message(request, messages.SUCCESS, _('You made admin to '
+            '%(username)s admin in %(agora)s.') % dict(
+                username=username2,
+                agora=agora.creator.username+'/'+agora.name))
+
+
+        return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AgoraActionMakeAdminView, self).dispatch(*args, **kwargs)
+
+
 class AgoraActionAcceptAdminMembershipRequestView(FormActionView):
     def post(self, request, username, agoraname, username2, *args, **kwargs):
         agora = get_object_or_404(Agora,
@@ -1319,7 +1357,7 @@ class AgoraActionRemoveAdminMembershipView(FormActionView):
                 'don\'t have admin permissions in this agora.'))
             return self.go_next(request)
 
-        if not agora.has_perms('leave', user):
+        if not agora.has_perms('leave_admin', user):
             messages.add_message(request, messages.ERROR, _('Sorry, this user '
                 'doesn\'t have permission to leave this agora.'))
             return self.go_next(request)

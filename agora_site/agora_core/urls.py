@@ -123,6 +123,10 @@ urlpatterns += patterns('',
         AgoraActionRemoveMembershipView.as_view(),
         name='agora-action-remove-membership'),
 
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/make-admin/(?P<username2>[\.\w]+)/?$',
+        AgoraActionMakeAdminView.as_view(),
+        name='agora-action-make-admin'),
+
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/remove-admin-membership/(?P<username2>[\.\w]+)/?$',
         AgoraActionRemoveAdminMembershipView.as_view(),
         name='agora-action-remove-admin-membership'),
