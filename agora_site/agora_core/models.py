@@ -386,23 +386,24 @@ class Agora(models.Model):
         Return whether a given user has a given permission name, depending on
         also in the state of the election.
         '''
+        opc = ObjectPermissionChecker(user)
         if permission_name == 'join':
             return self.membership_policy == Agora.MEMBERSHIP_TYPE[0][0] and\
                 not user in self.members.all()
         elif permission_name == 'request_membership':
             return self.membership_policy == Agora.MEMBERSHIP_TYPE[1][0] and\
                 not user in self.members.all() and\
-                not user.has_perm('requested_membership', self)
+                'requested_membership' not in opc.get_perms(self)
         elif permission_name == "cancel_membership_request":
             return self.membership_policy == Agora.MEMBERSHIP_TYPE[1][0] and\
                 not user in self.members.all() and\
-                user.has_perm('requested_membership', self)
+                'requested_membership' in opc.get_perms(self)
         if permission_name == 'request_admin_membership':
             return user in self.members.all() and\
-                not user.has_perm('requested_admin_membership', self)
+                'requested_admin_membership' not in opc.get_perms(self)
         elif permission_name == "cancel_admin_membership_request":
             return user in self.members.all() and\
-                user.has_perm('requested_admin_membership', self)
+                'requested_admin_membership' in opc.get_perms(self)
         elif permission_name == 'leave':
             return self.creator != user and user in self.members.all()
         elif permission_name == 'admin':

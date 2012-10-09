@@ -558,7 +558,7 @@
             <div class="action-title">
                 {% with isotime=action.timestamp|date:"c" %}
                     {% blocktrans with username=action.actor.username agora_creator_username=action.action_object.creator.username agoraname=action.action_object.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a>
-                    <strong class="verb">cancelled his/her admin membership</strong> at agora
+                    <strong class="verb">cancelled his/her admin membership request</strong> at agora
                     <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>{% endblocktrans %}
                     <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
                 {% endwith %}
