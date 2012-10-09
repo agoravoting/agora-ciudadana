@@ -697,7 +697,7 @@
                     {% blocktrans with username=action.actor.username username2=action.target.username agora_creator_username=action.action_object.creator.username agoraname=action.action_object.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a>
                     <strong class="verb">made admin</strong> at agora
                     <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>
-                    ti <a href="{{ user2_view_url }}">{{ username2 }}</a>{% endblocktrans %}
+                    to <a href="{{ user2_view_url }}">{{ username2 }}</a>{% endblocktrans %}
                     <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
                 {% endwith %}
             </div>
