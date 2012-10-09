@@ -734,7 +734,10 @@ body{background-color:#ececec;}
 #footer-wrapper.short{margin-top:-160px;margin-bottom:0;}
 #footer-wrapper.endless{background-color:#ECECEC;min-height:20px !important;}
 .user_list_item.row-fluid{width:600px;margin-left:0;padding-left:0;}.user_list_item.row-fluid.row-first .span6{border-top:1px solid #eeeeee;}
-.user_list_item.row-fluid .span6{border-bottom:1px solid #eeeeee;border-left:1px solid #eeeeee;margin-left:0;padding-left:0;}.user_list_item.row-fluid .span6.span6-right{border-right:1px solid #eeeeee;min-height:84px;}
+.user_list_item.row-fluid .span6{border-bottom:1px solid #eeeeee;border-left:1px solid #eeeeee;margin-left:0;padding-left:0;}.user_list_item.row-fluid .span6.with-actions .nav-pills{float:right;margin-bottom:0;}
+.user_list_item.row-fluid .span6.with-actions strong{margin-top:0 !important;}
+.user_list_item.row-fluid .span6.with-actions .span8{margin-top:-20px;}
+.user_list_item.row-fluid .span6.span6-right{border-right:1px solid #eeeeee;min-height:84px;}
 .user_list_item.row-fluid .span6:hover{background-color:#eeeeee;color:#0088cc;text-decoration:none;}
 .user_list_item.row-fluid .span6 div.row-fluid{line-height:25px;}.user_list_item.row-fluid .span6 div.row-fluid img{padding:17px;}
 .user_list_item.row-fluid .span6 div.row-fluid strong{display:block;margin-top:17px;}
@@ -840,6 +843,7 @@ body{background-color:#ececec;}
 .comments .activity-action-first{margin-top:25px;}
 #post-comment{display:block;margin-right:15px;padding:5px;}#post-comment #div_id_comment{width:83%;display:block;float:left;}#post-comment #div_id_comment textarea{width:97%;height:121px;}
 #post-comment .form-actions{width:15%;clear:none;display:block;float:left;background-color:none !important;border:none;margin:0;padding:0;}#post-comment .form-actions input.btn{width:100%;height:130px;}
+.btn.separated-button{margin-left:20px;}
 div.clear{clear:both;}
 div.result-item{clear:both;}div.result-item a img{display:block;float:left;padding:5px;}
 div.result-item a p,div.result-item a p:hover{margin-top:5px;color:#000000;}
