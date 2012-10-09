@@ -186,6 +186,8 @@ class AgoraElectionsView(AjaxListView):
             election_list = self.agora.requested_elections()
         elif election_filter == "tallied":
             election_list = self.agora.get_tallied_elections()
+        elif election_filter == "archived":
+            election_list = self.agora.archived_elections()
 
         return election_list
 
@@ -217,9 +219,14 @@ class AgoraMembersView(AjaxListView):
         member_list = self.agora.members.all()
         if self.kwargs['members_filter'] == 'delegates':
             member_list = self.agora.active_delegates()
-        if self.kwargs['members_filter'] == 'requested_membership' and\
+        elif self.kwargs['members_filter'] == 'admins':
+            member_list = self.agora.admins.all()
+        elif self.kwargs['members_filter'] == 'requested_membership' and\
             self.agora.has_perms('admin', self.request.user):
             member_list = self.agora.users_who_requested_membership()
+        elif self.kwargs['members_filter'] == 'requested_admin_membership' and\
+            self.agora.has_perms('admin', self.request.user):
+            member_list = self.agora.users_who_requested_admin_membership()
         return member_list
 
     def get(self, request, *args, **kwargs):
@@ -907,6 +914,7 @@ class AgoraActionChooseDelegateView(FormActionView):
     def dispatch(self, *args, **kwargs):
         return super(AgoraActionChooseDelegateView, self).dispatch(*args, **kwargs)
 
+
 class AgoraActionJoinView(FormActionView):
     def post(self, request, username, agoraname, *args, **kwargs):
         agora = get_object_or_404(Agora,
@@ -965,6 +973,145 @@ class AgoraActionJoinView(FormActionView):
         return super(AgoraActionJoinView, self).dispatch(*args, **kwargs)
 
 
+class AgoraActionRequestAdminMembershipView(FormActionView):
+    def post(self, request, username, agoraname, *args, **kwargs):
+        agora = get_object_or_404(Agora,
+            name=agoraname, creator__username=username)
+
+        if request.user not in agora.members.all():
+            messages.add_message(request, messages.ERROR, _('Sorry but you need'
+                ' to be a member of %(agora)s to request admin membership!' %\
+                    dict(agora=username+'/'+agoraname)))
+            return self.go_next(request)
+
+        if not agora.has_perms('request_admin_membership', request.user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you '
+                'don\'t have permission to request admin membership in this agora.'))
+            return self.go_next(request)
+
+        assign('requested_admin_membership', request.user, agora)
+
+        action.send(request.user, verb='requested admin membership', action_object=agora,
+            ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        # TODO: send an email to the user
+        messages.add_message(request, messages.SUCCESS, _('You requested '
+            'admin membership in %(agora)s. Soon the admins of this agora will '
+            'decide on your request.') % dict(
+                agora=agora.creator.username+'/'+agora.name))
+        return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AgoraActionRequestAdminMembershipView, self).dispatch(*args, **kwargs)
+
+
+class AgoraActionCancelAdminMembershipRequestView(FormActionView):
+    def post(self, request, username, agoraname, *args, **kwargs):
+        agora = get_object_or_404(Agora,
+            name=agoraname, creator__username=username)
+
+        if not agora.has_perms('cancel_admin_membership_request', request.user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you '
+                'don\'t have permission to cancel admin membership request in this agora.'))
+            return self.go_next(request)
+
+        remove_perm('requested_admin_membership', request.user, agora)
+
+        action.send(request.user, verb='cancelled requested admin membership', action_object=agora,
+            ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        # TODO: send an email to the user
+        messages.add_message(request, messages.SUCCESS, _('Your admin '
+            'membership in %(agora)s was cancelled.') % dict(
+                agora=agora.creator.username+'/'+agora.name))
+        return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AgoraActionCancelAdminMembershipRequestView, self).dispatch(*args, **kwargs)
+
+
+class AgoraActionAcceptMembershipRequestView(FormActionView):
+    def post(self, request, username, agoraname, username2, *args, **kwargs):
+        agora = get_object_or_404(Agora,
+            name=agoraname, creator__username=username)
+        user = get_object_or_404(User, username=username2)
+
+        if not agora.has_perms('admin', request.user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you '
+                'don\'t have admin permissions in this agora.'))
+            return self.go_next(request)
+
+        if not agora.has_perms('cancel_membership_request', user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you cannot '
+                'accept this user\'s  membership request.'))
+            return self.go_next(request)
+
+        remove_perm('requested_membership', user, agora)
+        agora.members.add(user)
+        agora.save()
+
+        action.send(request.user, verb='accepted membership request', action_object=agora,
+            ipaddr=request.META.get('REMOTE_ADDR'),
+            target=user,
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        # TODO: send an email to the user
+        messages.add_message(request, messages.SUCCESS, _('You accepted  '
+            '%(username)s membership request in %(agora)s.') % dict(
+                username=username2,
+                agora=agora.creator.username+'/'+agora.name))
+
+
+        return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AgoraActionAcceptMembershipRequestView, self).dispatch(*args, **kwargs)
+
+
+class AgoraActionAcceptAdminMembershipRequestView(FormActionView):
+    def post(self, request, username, agoraname, username2, *args, **kwargs):
+        agora = get_object_or_404(Agora,
+            name=agoraname, creator__username=username)
+        user = get_object_or_404(User, username=username2)
+
+        if not agora.has_perms('admin', request.user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you '
+                'don\'t have admin permissions in this agora.'))
+            return self.go_next(request)
+
+        if not agora.has_perms('cancel_admin_membership_request', user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you cannot '
+                'accept this user\'s  admin membership request.'))
+            return self.go_next(request)
+
+        remove_perm('requested_admin_membership', user, agora)
+        agora.admins.add(user)
+        agora.save()
+
+        action.send(request.user, verb='accepted admin membership request', action_object=agora,
+            ipaddr=request.META.get('REMOTE_ADDR'),
+            target=user,
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        # TODO: send an email to the user
+        messages.add_message(request, messages.SUCCESS, _('You accepted  '
+            '%(username)s admin membership request in %(agora)s.') % dict(
+                username=username2,
+                agora=agora.creator.username+'/'+agora.name))
+
+
+        return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AgoraActionAcceptAdminMembershipRequestView, self).dispatch(*args, **kwargs)
+
+
 class AgoraActionLeaveView(FormActionView):
     def post(self, request, username, agoraname, *args, **kwargs):
         agora = get_object_or_404(Agora,
@@ -1011,20 +1158,136 @@ class AgoraActionLeaveView(FormActionView):
     def dispatch(self, *args, **kwargs):
         return super(AgoraActionLeaveView, self).dispatch(*args, **kwargs)
 
-class AgoraActionRemoveAdminMembershipView(FormActionView):
+
+class AgoraActionDismissMembershipRequestView(FormActionView):
+    def post(self, request, username, agoraname, username2, *args, **kwargs):
+        agora = get_object_or_404(Agora,
+            name=agoraname, creator__username=username)
+        user = get_object_or_404(User, username=username2)
+
+        if not agora.has_perms('admin', request.user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you '
+                'don\'t have admin permissions in this agora.'))
+            return self.go_next(request)
+
+        if not agora.has_perms('cancel_membership_request', user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you cannot '
+                'dismiss this user\'s  membership request.'))
+            return self.go_next(request)
+
+        remove_perm('requested_membership', user, agora)
+
+        action.send(request.user, verb='dismissed membership request',
+            action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            target=user,
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        # TODO: send an email to the user
+        messages.add_message(request, messages.SUCCESS, _('You '
+            'dismissed %(username)s membership request at %(agora)s.') % dict(
+                username=username2,
+                agora=agora.creator.username+'/'+agora.name))
+
+
+        if is_following(self.request.user, agora):
+            unfollow(self.request.user, agora, request=self.request)
+
+        return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AgoraActionDismissMembershipRequestView, self).dispatch(*args, **kwargs)
+
+
+class AgoraActionDismissAdminMembershipRequestView(FormActionView):
+    def post(self, request, username, agoraname, username2, *args, **kwargs):
+        agora = get_object_or_404(Agora,
+            name=agoraname, creator__username=username)
+        user = get_object_or_404(User, username=username2)
+
+        if not agora.has_perms('admin', request.user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you '
+                'don\'t have admin permissions in this agora.'))
+            return self.go_next(request)
+
+        if not agora.has_perms('cancel_admin_membership_request', user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you cannot '
+                'dismiss this user\'s  admin membership request.'))
+            return self.go_next(request)
+
+        remove_perm('requested_admin_membership', user, agora)
+
+        action.send(request.user, verb='dismissed admin membership request',
+            action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            target=user,
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        # TODO: send an email to the user
+        messages.add_message(request, messages.SUCCESS, _('You '
+            'dismissed %(username)s admin membership request at %(agora)s.') % dict(
+                username=username2,
+                agora=agora.creator.username+'/'+agora.name))
+
+
+        if is_following(self.request.user, agora):
+            unfollow(self.request.user, agora, request=self.request)
+
+        return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AgoraActionDismissAdminMembershipRequestView, self).dispatch(*args, **kwargs)
+
+
+
+class AgoraActionRemoveMembershipView(FormActionView):
+    def post(self, request, username, agoraname, username2, *args, **kwargs):
+        agora = get_object_or_404(Agora,
+            name=agoraname, creator__username=username)
+        user = get_object_or_404(User, username=username2)
+
+        if not agora.has_perms('admin', request.user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you '
+                'don\'t have admin permissions in this agora.'))
+            return self.go_next(request)
+
+        if not agora.has_perms('leave', user):
+            messages.add_message(request, messages.ERROR, _('Sorry, this user '
+                'doesn\'t have permission to leave this agora.'))
+            return self.go_next(request)
+
+        agora.members.remove(user)
+        agora.save()
+        action.send(request.user, verb='removed membership', action_object=agora,
+            ipaddr=request.META.get('REMOTE_ADDR'),
+            target=user,
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        # TODO: send an email to the user
+        messages.add_message(request, messages.SUCCESS, _('You removed '
+            'membership from %(agora)s to %(username)s.') % dict(
+                username=username2,
+                agora=agora.creator.username+'/'+agora.name))
+
+
+        if is_following(self.request.user, agora):
+            unfollow(self.request.user, agora, request=self.request)
+
+        return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AgoraActionRemoveMembershipView, self).dispatch(*args, **kwargs)
+
+
+class AgoraActionLeaveAdminView(FormActionView):
     def post(self, request, username, agoraname, *args, **kwargs):
         agora = get_object_or_404(Agora,
             name=agoraname, creator__username=username)
 
-        if not agora.has_perms('leave', request.user):
+        if not agora.has_perms('leave_admin', request.user):
             messages.add_message(request, messages.ERROR, _('Sorry, you '
                 'don\'t have permission to leave this agora.'))
-            return self.go_next(request)
-
-        if request.user not in agora.admins.all():
-            messages.add_message(request, messages.ERROR, _('Guess what, you '
-                'are already not an admin member of %(agora)s!' %\
-                    dict(agora=username+'/'+agoraname)))
             return self.go_next(request)
 
         agora.admins.remove(request.user)
@@ -1037,6 +1300,43 @@ class AgoraActionRemoveAdminMembershipView(FormActionView):
         # TODO: send an email to the user
         messages.add_message(request, messages.SUCCESS, _('You removed your '
             'admin membership at %(agora)s.') % dict(agora=agora.creator.username+'/'+agora.name))
+
+        return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AgoraActionLeaveAdminView, self).dispatch(*args, **kwargs)
+
+
+class AgoraActionRemoveAdminMembershipView(FormActionView):
+    def post(self, request, username, agoraname, username2, *args, **kwargs):
+        agora = get_object_or_404(Agora,
+            name=agoraname, creator__username=username)
+        user = get_object_or_404(User, username=username2)
+
+        if not agora.has_perms('admin', request.user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you '
+                'don\'t have admin permissions in this agora.'))
+            return self.go_next(request)
+
+        if not agora.has_perms('leave', user):
+            messages.add_message(request, messages.ERROR, _('Sorry, this user '
+                'doesn\'t have permission to leave this agora.'))
+            return self.go_next(request)
+
+        agora.admins.remove(user)
+        agora.save()
+
+        action.send(request.user, verb='removed admin membership',
+            action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            target=user,
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        # TODO: send an email to the user
+        messages.add_message(request, messages.SUCCESS, _('You removed  '
+            'admin membership from %(agora)s to %(username)s.') % dict(
+                username=username2,
+                agora=agora.creator.username+'/'+agora.name))
 
         return self.go_next(request)
 

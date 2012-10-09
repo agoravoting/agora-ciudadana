@@ -72,7 +72,7 @@ urlpatterns += patterns('',
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/?$',
         AgoraView.as_view(), name='agora-view'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/elections/(?P<election_filter>open|all|approved|requested|tallied)/?$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/elections/(?P<election_filter>open|all|approved|requested|tallied|archived)/?$',
         AgoraElectionsView.as_view(), name='agora-elections'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/biography/?$',
@@ -81,7 +81,7 @@ urlpatterns += patterns('',
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/admin/?$',
         AgoraAdminView.as_view(), name='agora-admin'),
 
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/members/(?P<members_filter>members|delegates|requested_membership)/?$',
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/members/(?P<members_filter>members|admins|delegates|requested_membership|requested_admin_membership)/?$',
         AgoraMembersView.as_view(), name='agora-members'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/comments/?$',
@@ -100,8 +100,40 @@ urlpatterns += patterns('',
         AgoraActionLeaveView.as_view(), name='agora-action-leave'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/leave-admin/?$',
-        AgoraActionRemoveAdminMembershipView.as_view(),
+        AgoraActionLeaveAdminView.as_view(),
         name='agora-action-leave-admin'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/request-admin-membership/?$',
+        AgoraActionRequestAdminMembershipView.as_view(),
+        name='agora-action-request-admin-membership'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/cancel-admin-membership-request/?$',
+        AgoraActionCancelAdminMembershipRequestView.as_view(),
+        name='agora-action-cancel-admin-membership-request'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/accept-membership-request/(?P<username2>[\.\w]+)/?$',
+        AgoraActionAcceptMembershipRequestView.as_view(),
+        name='agora-action-accept-membership-request'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/dismiss-membership-request/(?P<username2>[\.\w]+)/?$',
+        AgoraActionDismissMembershipRequestView.as_view(),
+        name='agora-action-dismiss-membership-request'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/remove-membership/(?P<username2>[\.\w]+)/?$',
+        AgoraActionRemoveMembershipView.as_view(),
+        name='agora-action-remove-membership'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/remove-admin-membership/(?P<username2>[\.\w]+)/?$',
+        AgoraActionRemoveAdminMembershipView.as_view(),
+        name='agora-action-remove-admin-membership'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/accept-admin-membership-request/(?P<username2>[\.\w]+)/?$',
+        AgoraActionAcceptAdminMembershipRequestView.as_view(),
+        name='agora-action-accept-admin-membership-request'),
+
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/action/dismiss-admin-membership-request/(?P<username2>[\.\w]+)/?$',
+        AgoraActionDismissAdminMembershipRequestView.as_view(),
+        name='agora-action-dismiss-admin-membership-request'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/new/?$',
         CreateElectionView.as_view(), name='election-new'),

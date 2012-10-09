@@ -264,7 +264,7 @@ body {
         margin-top: 30px;
 
         h1 {
-            font-size: 56px;
+        font-size: 56px;
             color: #47BC53;
         }
 
@@ -321,6 +321,16 @@ body {
     .span6 {
         border-bottom: 1px solid @grayLighter;
         border-left: 1px solid @grayLighter;
+
+        &.with-actions {
+            .nav-pills {
+                float: right;
+                margin-bottom: 0;
+            }
+
+            strong { margin-top: 0 !important; }
+            .span8 { margin-top: -20px; }
+        }
 
         &.span6-right {
             border-right: 1px solid @grayLighter;

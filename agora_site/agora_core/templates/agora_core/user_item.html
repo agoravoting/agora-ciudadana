@@ -1,10 +1,69 @@
 {% load i18n %}
+{% load agora_utils %}
 
 {% ifequal row "left" %}
     <div class="user_list_item row-fluid row-{% if forloop.first %}first{% endif %}">
 {% endifequal %}
 
-<div class="span6 span6-{{ row }}">
+{% if agora and agora|is_agora_admin:user %}
+    <div class="span6 with-actions span6-{{ row }}">
+    {% with perms=agora|get_perms:object %}
+        <ul class="nav nav-pills"><li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                {% trans "Actions" %}
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                {% if "cancel_membership_request" in perms %}
+                <li>
+                    <a href="{% url agora-action-accept-membership-request agora.creator.username agora.name object.username %}" class="action-form-link">
+                        <i class="icon-ok"></i>
+                        {% trans "Accept membership request" %}
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url agora-action-dismiss-membership-request agora.creator.username agora.name object.username %}" class="action-form-link">
+                        <i class="icon-remove"></i>
+                        {% trans "Dismiss membership request" %}
+                    </a>
+                </li>
+                {% endif %}
+                {% if "cancel_admin_membership_request" in perms %}
+                <li>
+                    <a href="{% url agora-action-accept-admin-membership-request agora.creator.username agora.name object.username %}" class="action-form-link">
+                        <i class="icon-ok"></i>
+                        {% trans "Accept admin membership request" %}
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url agora-action-dismiss-admin-membership-request agora.creator.username agora.name object.username %}" class="action-form-link">
+                        <i class="icon-remove"></i>
+                        {% trans "Dismiss admin membership request" %}
+                    </a>
+                </li>
+                {% endif %}
+                {% if "leave" in perms %}
+                <li>
+                    <a href="{% url agora-action-remove-membership agora.creator.username agora.name object.username %}" class="action-form-link">
+                        <i class="icon-remove"></i>
+                        {% trans "Remove membership" %}
+                    </a>
+                </li>
+                {% endif %}
+                {% if "leave_admin" in perms %}
+                <li>
+                    <a href="{% url agora-action-remove-admin-membership agora.creator.username agora.name object.username %}" class="action-form-link">
+                        <i class="icon-edit"></i>
+                        {% trans "Remove admin membership" %}
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </li></ul>
+    {% endwith %}
+{% else %}
+    <div class="span6 span6-{{ row }}">
+{% endif %}
     <a href="{% url user-view object.username %}">
         <div class="row-fluid">
             <div class="span4">

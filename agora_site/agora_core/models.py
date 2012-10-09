@@ -325,11 +325,23 @@ class Agora(models.Model):
         '''
         return get_users_with_perm(self, 'requested_membership')
 
+    def users_who_requested_admin_membership(self):
+        '''
+        Returns those users who requested admin membership in this Agora
+        '''
+        return get_users_with_perm(self, 'requested_admin_membership')
+
     def all_elections(self):
         '''
-        Returns the QuerySet with all elections but the delegation on
+        Returns the QuerySet with all elections but the delegation one
         '''
         return self.elections.exclude(name__exact='delegation')
+
+    def archived_elections(self):
+        '''
+        Returns the QuerySet with all archived elections in this agora
+        '''
+        return self.elections.filter(archived_at_date__isnull=False).exclude(name__exact='delegation')
     
 
     def approved_elections(self):
@@ -377,7 +389,7 @@ class Agora(models.Model):
         if permission_name == 'join':
             return self.membership_policy == Agora.MEMBERSHIP_TYPE[0][0] and\
                 not user in self.members.all()
-        if permission_name == 'request_membership':
+        elif permission_name == 'request_membership':
             return self.membership_policy == Agora.MEMBERSHIP_TYPE[1][0] and\
                 not user in self.members.all() and\
                 not user.has_perm('requested_membership', self)
@@ -385,17 +397,27 @@ class Agora(models.Model):
             return self.membership_policy == Agora.MEMBERSHIP_TYPE[1][0] and\
                 not user in self.members.all() and\
                 user.has_perm('requested_membership', self)
+        if permission_name == 'request_admin_membership':
+            return user in self.members.all() and\
+                not user.has_perm('requested_admin_membership', self)
+        elif permission_name == "cancel_admin_membership_request":
+            return user in self.members.all() and\
+                user.has_perm('requested_admin_membership', self)
         elif permission_name == 'leave':
             return self.creator != user and user in self.members.all()
         elif permission_name == 'admin':
             return self.creator == user or user in self.admins.all()
+        elif permission_name == 'leave_admin':
+            return self.creator != user and user in self.admins.all()
 
     def get_perms(self, user):
         '''
         Returns a list of permissions for a given user calling to self.has_perms()
         '''
         return [perm for perm in ('join', 'request_membership',
-            'cancel_membership_request', 'leave', 'admin') if self.has_perms(perm, user)]
+            'cancel_membership_request', 'request_admin_membership',
+            'cancel_admin_membership_request', 'leave', 'leave_admin',
+            'admin') if self.has_perms(perm, user)]
 
 
 class Election(models.Model):

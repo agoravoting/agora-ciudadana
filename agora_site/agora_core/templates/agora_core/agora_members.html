@@ -31,6 +31,11 @@
                         {% trans "Members" %} ({{ agora.members.count }})
                     </a>
                 </li>
+                <li{% ifequal filter 'admins' %} class="active"{% endifequal %}>
+                    <a href="{% url agora-members agora.creator.username agora.name 'admins' %}">
+                        {% trans "Admins" %} ({{ agora.admins.count }})
+                    </a>
+                </li>
                 <li{% ifequal filter 'delegates' %} class="active"{% endifequal %}>
                     <a href="{% url agora-members agora.creator.username agora.name 'delegates' %}">
                         {% trans "Delegates" %} ({{ agora.active_delegates.count }})
@@ -40,6 +45,11 @@
                     <li{% ifequal filter 'requested_membership' %} class="active"{% endifequal %}>
                         <a href="{% url agora-members agora.creator.username agora.name 'requested_membership' %}">
                             {% trans "Requested membership" %} ({{ agora.users_who_requested_membership.count }})
+                        </a>
+                    </li>
+                    <li{% ifequal filter 'requested_admin_membership' %} class="active"{% endifequal %}>
+                        <a href="{% url agora-members agora.creator.username agora.name 'requested_admin_membership' %}">
+                            {% trans "Requested admin membership" %} ({{ agora.users_who_requested_admin_membership.count }})
                         </a>
                     </li>
                 {% endif %}

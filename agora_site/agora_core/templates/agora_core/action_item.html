@@ -522,6 +522,58 @@
                 </div>
             </div>
         </div>
+    {% elif action.verb == 'requested admin membership' and action.action_object and action.action_object_content_type.name == 'agora' %}
+        {% url user-view action.actor.username as user_view_url %}
+        {% url agora-view action.action_object.creator.username action.action_object.name as agora_view_url %}
+        <a href="{{ user_view_url }}" class="mugshot">
+            <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
+        </a>
+        <div class="action-body">
+            <div class="action-title">
+                {% with isotime=action.timestamp|date:"c" %}
+                    {% blocktrans with username=action.actor.username agora_creator_username=action.action_object.creator.username agoraname=action.action_object.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a>
+                    <strong class="verb">requested admin membership</strong> at agora
+                    <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+                {% endwith %}
+            </div>
+
+            <div class="action-detail">
+                <a href="{{ agora_view_url }}" class="mugshot">
+                    <img src="{{ action.action_object.get_mugshot_url }}" alt="{{ action.action_object.creator.username }}/{{ action.action_object.name }}" />
+                </a>
+                <div class="detail-body">
+                    <strong class="action-title"><a href="{{ agora_view_url }}">{{ action.action_object.creator.username }}/{{ action.action_object.name }}</a></strong>
+                    <p>{{ action.action_object.short_description }}</p>
+                </div>
+            </div>
+        </div>
+    {% elif action.verb == 'cancelled requested admin membership' and action.action_object and action.action_object_content_type.name == 'agora' %}
+        {% url user-view action.actor.username as user_view_url %}
+        {% url agora-view action.action_object.creator.username action.action_object.name as agora_view_url %}
+        <a href="{{ user_view_url }}" class="mugshot">
+            <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
+        </a>
+        <div class="action-body">
+            <div class="action-title">
+                {% with isotime=action.timestamp|date:"c" %}
+                    {% blocktrans with username=action.actor.username agora_creator_username=action.action_object.creator.username agoraname=action.action_object.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a>
+                    <strong class="verb">cancelled his/her admin membership</strong> at agora
+                    <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+                {% endwith %}
+            </div>
+
+            <div class="action-detail">
+                <a href="{{ agora_view_url }}" class="mugshot">
+                    <img src="{{ action.action_object.get_mugshot_url }}" alt="{{ action.action_object.creator.username }}/{{ action.action_object.name }}" />
+                </a>
+                <div class="detail-body">
+                    <strong class="action-title"><a href="{{ agora_view_url }}">{{ action.action_object.creator.username }}/{{ action.action_object.name }}</a></strong>
+                    <p>{{ action.action_object.short_description }}</p>
+                </div>
+            </div>
+        </div>
     {% elif action.verb == 'cancelled his/her membership request' and action.action_object and action.action_object_content_type.name == 'agora' %}
         {% url user-view action.actor.username as user_view_url %}
         {% url agora-view action.action_object.creator.username action.action_object.name as agora_view_url %}
@@ -534,6 +586,146 @@
                     {% blocktrans with username=action.actor.username agora_creator_username=action.action_object.creator.username agoraname=action.action_object.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a>
                     <strong class="verb">cancelled his/her membership request</strong> at agora
                     <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>{% endblocktrans %}
+                    <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+                {% endwith %}
+            </div>
+
+            <div class="action-detail">
+                <a href="{{ agora_view_url }}" class="mugshot">
+                    <img src="{{ action.action_object.get_mugshot_url }}" alt="{{ action.action_object.creator.username }}/{{ action.action_object.name }}" />
+                </a>
+                <div class="detail-body">
+                    <strong class="action-title"><a href="{{ agora_view_url }}">{{ action.action_object.creator.username }}/{{ action.action_object.name }}</a></strong>
+                    <p>{{ action.action_object.short_description }}</p>
+                </div>
+            </div>
+        </div>
+    {% elif action.verb == 'dismissed membership request' and action.action_object and action.action_object_content_type.name == 'agora' %}
+        {% url user-view action.actor.username as user_view_url %}
+        {% url user-view action.target.username as user2_view_url %}
+        {% url agora-view action.action_object.creator.username action.action_object.name as agora_view_url %}
+        <a href="{{ user_view_url }}" class="mugshot">
+            <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
+        </a>
+        <div class="action-body">
+            <div class="action-title">
+                {% with isotime=action.timestamp|date:"c" %}
+                    {% blocktrans with username=action.actor.username username2=action.target.username agora_creator_username=action.action_object.creator.username agoraname=action.action_object.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a>
+                    <strong class="verb">dismissed membership request</strong> at agora
+                    <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>
+                    to <a href="{{ user2_view_url }}">{{ username2 }}</a>{% endblocktrans %}
+                    <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+                {% endwith %}
+            </div>
+
+            <div class="action-detail">
+                <a href="{{ agora_view_url }}" class="mugshot">
+                    <img src="{{ action.action_object.get_mugshot_url }}" alt="{{ action.action_object.creator.username }}/{{ action.action_object.name }}" />
+                </a>
+                <div class="detail-body">
+                    <strong class="action-title"><a href="{{ agora_view_url }}">{{ action.action_object.creator.username }}/{{ action.action_object.name }}</a></strong>
+                    <p>{{ action.action_object.short_description }}</p>
+                </div>
+            </div>
+        </div>
+    {% elif action.verb == 'dismissed admin membership request' and action.action_object and action.action_object_content_type.name == 'agora' %}
+        {% url user-view action.actor.username as user_view_url %}
+        {% url user-view action.target.username as user2_view_url %}
+        {% url agora-view action.action_object.creator.username action.action_object.name as agora_view_url %}
+        <a href="{{ user_view_url }}" class="mugshot">
+            <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
+        </a>
+        <div class="action-body">
+            <div class="action-title">
+                {% with isotime=action.timestamp|date:"c" %}
+                    {% blocktrans with username=action.actor.username username2=action.target.username agora_creator_username=action.action_object.creator.username agoraname=action.action_object.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a>
+                    <strong class="verb">dismissed admin membership request</strong> at agora
+                    <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>
+                    to <a href="{{ user2_view_url }}">{{ username2 }}</a>{% endblocktrans %}
+                    <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+                {% endwith %}
+            </div>
+
+            <div class="action-detail">
+                <a href="{{ agora_view_url }}" class="mugshot">
+                    <img src="{{ action.action_object.get_mugshot_url }}" alt="{{ action.action_object.creator.username }}/{{ action.action_object.name }}" />
+                </a>
+                <div class="detail-body">
+                    <strong class="action-title"><a href="{{ agora_view_url }}">{{ action.action_object.creator.username }}/{{ action.action_object.name }}</a></strong>
+                    <p>{{ action.action_object.short_description }}</p>
+                </div>
+            </div>
+        </div>
+    {% elif action.verb == 'accepted membership request' and action.action_object and action.action_object_content_type.name == 'agora' %}
+        {% url user-view action.actor.username as user_view_url %}
+        {% url user-view action.target.username as user2_view_url %}
+        {% url agora-view action.action_object.creator.username action.action_object.name as agora_view_url %}
+        <a href="{{ user_view_url }}" class="mugshot">
+            <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
+        </a>
+        <div class="action-body">
+            <div class="action-title">
+                {% with isotime=action.timestamp|date:"c" %}
+                    {% blocktrans with username=action.actor.username username2=action.target.username agora_creator_username=action.action_object.creator.username agoraname=action.action_object.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a>
+                    <strong class="verb">accepted membership request</strong> at agora
+                    <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>
+                    from <a href="{{ user2_view_url }}">{{ username2 }}</a>{% endblocktrans %}
+                    <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+                {% endwith %}
+            </div>
+
+            <div class="action-detail">
+                <a href="{{ agora_view_url }}" class="mugshot">
+                    <img src="{{ action.action_object.get_mugshot_url }}" alt="{{ action.action_object.creator.username }}/{{ action.action_object.name }}" />
+                </a>
+                <div class="detail-body">
+                    <strong class="action-title"><a href="{{ agora_view_url }}">{{ action.action_object.creator.username }}/{{ action.action_object.name }}</a></strong>
+                    <p>{{ action.action_object.short_description }}</p>
+                </div>
+            </div>
+        </div>
+    {% elif action.verb == 'accepted admin membership request' and action.action_object and action.action_object_content_type.name == 'agora' %}
+        {% url user-view action.actor.username as user_view_url %}
+        {% url user-view action.target.username as user2_view_url %}
+        {% url agora-view action.action_object.creator.username action.action_object.name as agora_view_url %}
+        <a href="{{ user_view_url }}" class="mugshot">
+            <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
+        </a>
+        <div class="action-body">
+            <div class="action-title">
+                {% with isotime=action.timestamp|date:"c" %}
+                    {% blocktrans with username=action.actor.username username2=action.target.username agora_creator_username=action.action_object.creator.username agoraname=action.action_object.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a>
+                    <strong class="verb">accepted admin membership request</strong> at agora
+                    <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>
+                    from <a href="{{ user2_view_url }}">{{ username2 }}</a>{% endblocktrans %}
+                    <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+                {% endwith %}
+            </div>
+
+            <div class="action-detail">
+                <a href="{{ agora_view_url }}" class="mugshot">
+                    <img src="{{ action.action_object.get_mugshot_url }}" alt="{{ action.action_object.creator.username }}/{{ action.action_object.name }}" />
+                </a>
+                <div class="detail-body">
+                    <strong class="action-title"><a href="{{ agora_view_url }}">{{ action.action_object.creator.username }}/{{ action.action_object.name }}</a></strong>
+                    <p>{{ action.action_object.short_description }}</p>
+                </div>
+            </div>
+        </div>
+    {% elif action.verb == 'removed membership' and action.action_object and action.action_object_content_type.name == 'agora' and action.target %}
+        {% url user-view action.actor.username as user_view_url%}
+        {% url user-view action.target.username as user2_view_url%}
+        {% url agora-view action.action_object.creator.username action.action_object.name as agora_view_url %}
+        <a href="{{ user_view_url }}" class="mugshot">
+            <img src="{{ action.actor.get_profile.get_mugshot_url }}" alt="{{ action.actor.username }}" />
+        </a>
+        <div class="action-body">
+            <div class="action-title">
+                {% with isotime=action.timestamp|date:"c" %}
+                    {% blocktrans with username=action.actor.username username2=action.target.username agora_creator_username=action.action_object.creator.username agoraname=action.action_object.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a>
+                    <strong class="verb">removed membership</strong> at agora
+                    <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>
+                    to <a href="{{ user2_view_url }}">{{ username2 }}</a>{% endblocktrans %}
                     <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
                 {% endwith %}
             </div>
@@ -582,7 +774,7 @@
         <div class="action-body">
             <div class="action-title">
                 {% with isotime=action.timestamp|date:"c" %}
-                    {% blocktrans with username=action.actor.username agora_creator_username=action.action_object.creator.username agoraname=action.action_object.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">left admin membership</strong> at agora
+                    {% blocktrans with username=action.actor.username agora_creator_username=action.action_object.creator.username agoraname=action.action_object.name %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">removed admin membership</strong> at agora
                     <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agoraname }}</a>{% endblocktrans %}
                     <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
                 {% endwith %}
