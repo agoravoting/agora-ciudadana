@@ -47,8 +47,8 @@ def last_election_voted(user, agora):
     return user.cast_votes.filter(is_counted=True, election__agora=agora).order_by('-casted_at_date')[0]
 
 @register.filter
-def get_perms(election, user):
-    return election.get_perms(user)
+def get_perms(obj, user):
+    return obj.get_perms(user)
 
 @register.filter
 def has_delegated_in_agora(user, agora):

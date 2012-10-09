@@ -15,9 +15,18 @@ from django.db import models
 from django.db.models import signals
 from django.utils import simplejson as json
 from django.views.generic import CreateView
+from django.contrib.auth.models import Permission, User
+from django.contrib.contenttypes.models import ContentType
+from django.db.models import Q
+from django.shortcuts import _get_queryset
 
 import datetime
 import pygeoip
+
+from guardian.core import ObjectPermissionChecker
+from guardian.models import UserObjectPermission, GroupObjectPermission
+from guardian.utils import get_identity
+
 
 class FormRequestMixin(object):
     '''
@@ -163,3 +172,13 @@ def send_mass_html_mail(datatuple, fail_silently=True, user=None, password=None,
         messages.append(message)
 
     return connection.send_messages(messages)
+
+
+def get_users_with_perm(obj, perm_codename):
+    ctype = ContentType.objects.get_for_model(obj)
+    qset = Q(
+        userobjectpermission__content_type=ctype,
+        userobjectpermission__object_pk=obj.pk,
+        userobjectpermission__permission__codename=perm_codename,
+        userobjectpermission__permission__content_type=ctype,)
+    return User.objects.filter(qset).distinct()

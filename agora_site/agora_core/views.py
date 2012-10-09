@@ -40,6 +40,8 @@ from actstream.models import (object_stream, election_stream, Action,
     user_stream, actor_stream)
 from actstream.signals import action
 
+from guardian.shortcuts import *
+
 from endless_pagination.views import AjaxListView
 
 from haystack.query import EmptySearchQuerySet
@@ -215,10 +217,14 @@ class AgoraMembersView(AjaxListView):
         member_list = self.agora.members.all()
         if self.kwargs['members_filter'] == 'delegates':
             member_list = self.agora.active_delegates()
+        if self.kwargs['members_filter'] == 'requested_membership' and\
+            self.agora.has_perms('admin', self.request.user):
+            member_list = self.agora.users_who_requested_membership()
         return member_list
 
     def get(self, request, *args, **kwargs):
         self.kwargs = kwargs
+        self.request = request
         return super(AgoraMembersView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -906,32 +912,51 @@ class AgoraActionJoinView(FormActionView):
         agora = get_object_or_404(Agora,
             name=agoraname, creator__username=username)
 
-        if not agora.has_perms('join', request.user):
-            messages.add_message(request, messages.ERROR, _('Sorry, you '
-                'don\'t have permission to join this agora.'))
-            return self.go_next(request)
-
         if request.user in agora.members.all():
             messages.add_message(request, messages.ERROR, _('Guess what, you '
                 'are already a member of %(agora)s!' %\
                     dict(agora=username+'/'+agoraname)))
             return self.go_next(request)
 
-        agora.members.add(request.user)
-        agora.save()
+        can_join = agora.has_perms('join', request.user)
+        can_request_membership = agora.has_perms('request_membership', request.user)
 
-        action.send(request.user, verb='joined', action_object=agora,
-            ipaddr=request.META.get('REMOTE_ADDR'),
-            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+        if not can_join and not can_request_membership:
+            messages.add_message(request, messages.ERROR, _('Sorry, you '
+                'don\'t have permission to join this agora.'))
+            return self.go_next(request)
 
-        # TODO: send an email to the user
-        messages.add_message(request, messages.SUCCESS, _('You joined '
-            '%(agora)s. Now you could take a look at what elections are '
-            'available at this agora') % dict(
-                agora=agora.creator.username+'/'+agora.name))
+        if can_join:
+            agora.members.add(request.user)
+            agora.save()
 
-        if not is_following(request.user, agora):
-            follow(request.user, agora, actor_only=False, request=request)
+            action.send(request.user, verb='joined', action_object=agora,
+                ipaddr=request.META.get('REMOTE_ADDR'),
+                geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+            # TODO: send an email to the user
+            messages.add_message(request, messages.SUCCESS, _('You joined '
+                '%(agora)s. Now you could take a look at what elections are '
+                'available at this agora') % dict(
+                    agora=agora.creator.username+'/'+agora.name))
+
+            if not is_following(request.user, agora):
+                follow(request.user, agora, actor_only=False, request=request)
+        elif can_request_membership:
+            assign('requested_membership', request.user, agora)
+
+            action.send(request.user, verb='requested membership', action_object=agora,
+                ipaddr=request.META.get('REMOTE_ADDR'),
+                geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+            # TODO: send an email to the user
+            messages.add_message(request, messages.SUCCESS, _('You requested '
+                'membership in %(agora)s. Soon the admins of this agora will '
+                'decide on your request.') % dict(
+                    agora=agora.creator.username+'/'+agora.name))
+
+            if not is_following(request.user, agora):
+                follow(request.user, agora, actor_only=False, request=request)
 
         return self.go_next(request)
 
@@ -945,27 +970,37 @@ class AgoraActionLeaveView(FormActionView):
         agora = get_object_or_404(Agora,
             name=agoraname, creator__username=username)
 
-        if not agora.has_perms('leave', request.user):
+        can_leave = agora.has_perms('leave', request.user)
+        can_cancel_mem_request = agora.has_perms('cancel_membership_request',
+            request.user)
+
+        if not can_leave and not can_cancel_mem_request:
             messages.add_message(request, messages.ERROR, _('Sorry, you '
                 'don\'t have permission to leave this agora.'))
             return self.go_next(request)
 
-        if request.user not in agora.members.all():
-            messages.add_message(request, messages.ERROR, _('Guess what, you '
-                'are already not a member of %(agora)s!' %\
-                    dict(agora=username+'/'+agoraname)))
-            return self.go_next(request)
+        if can_leave:
+            agora.members.remove(request.user)
+            agora.save()
+            action.send(request.user, verb='left', action_object=agora,
+                ipaddr=request.META.get('REMOTE_ADDR'),
+                geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
-        agora.members.remove(request.user)
-        agora.save()
+            # TODO: send an email to the user
+            messages.add_message(request, messages.SUCCESS, _('You left '
+                '%(agora)s.') % dict(agora=agora.creator.username+'/'+agora.name))
+        else:
+            remove_perm('requested_membership', request.user, agora)
 
-        action.send(request.user, verb='left', action_object=agora,
-            ipaddr=request.META.get('REMOTE_ADDR'),
-            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+            action.send(request.user, verb='cancelled his/her membership request',
+                action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
+                geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
-        # TODO: send an email to the user
-        messages.add_message(request, messages.SUCCESS, _('You left '
-            '%(agora)s.') % dict(agora=agora.creator.username+'/'+agora.name))
+            # TODO: send an email to the user
+            messages.add_message(request, messages.SUCCESS, _('You '
+            'cancelled your membership request at %(agora)s.') %\
+                dict(agora=agora.creator.username+'/'+agora.name))
+
 
         if is_following(self.request.user, agora):
             unfollow(self.request.user, agora, request=self.request)

@@ -30,8 +30,9 @@ from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
 
 from userena.models import UserenaLanguageBaseProfile
+from guardian.shortcuts import *
 
-from agora_site.misc.utils import JSONField
+from agora_site.misc.utils import JSONField, get_users_with_perm
 
 class Profile(UserenaLanguageBaseProfile):
     '''
@@ -170,8 +171,8 @@ class Agora(models.Model):
 
     MEMBERSHIP_TYPE = (
         ('ANYONE_CAN_JOIN', _('Anyone can join')),
-        #('JOINING_REQUIRES_ADMINS_APPROVAL', _('Joining requires admins approval')),
-        #('INVITATION_ONLY', _('Invitation only by admins')),
+        ('JOINING_REQUIRES_ADMINS_APPROVAL', _('Joining requires admins approval')),
+        ('INVITATION_ONLY', _('Invitation only by admins')),
         #('EXTERNAL', _('External url')),
     )
 
@@ -293,6 +294,11 @@ class Agora(models.Model):
         name of the agora is unique for a given creator
         '''
         unique_together = (('name', 'creator'),)
+        permissions = (
+            ('requested_membership', _('Requested membership')),
+            ('invited_to_membership', _('Invited to membership')),
+            ('requested_admin_membership', _('Requested admin membership')),
+        )
 
     def active_delegates(self):
         '''
@@ -312,6 +318,12 @@ class Agora(models.Model):
                 invalidated_at_date=None, election__agora__id=self.id)
             )\
             .exclude(id__in=self.members.values('id').query)
+
+    def users_who_requested_membership(self):
+        '''
+        Returns those users who requested membership in this Agora
+        '''
+        return get_users_with_perm(self, 'requested_membership')
 
     def all_elections(self):
         '''
@@ -363,11 +375,28 @@ class Agora(models.Model):
         also in the state of the election.
         '''
         if permission_name == 'join':
-            return self.membership_policy == Agora.MEMBERSHIP_TYPE[0][0]
+            return self.membership_policy == Agora.MEMBERSHIP_TYPE[0][0] and\
+                not user in self.members.all()
+        if permission_name == 'request_membership':
+            return self.membership_policy == Agora.MEMBERSHIP_TYPE[1][0] and\
+                not user in self.members.all() and\
+                not user.has_perm('requested_membership', self)
+        elif permission_name == "cancel_membership_request":
+            return self.membership_policy == Agora.MEMBERSHIP_TYPE[1][0] and\
+                not user in self.members.all() and\
+                user.has_perm('requested_membership', self)
         elif permission_name == 'leave':
-            return self.creator != user
+            return self.creator != user and user in self.members.all()
         elif permission_name == 'admin':
-            return self.creator == user
+            return self.creator == user or user in self.admins.all()
+
+    def get_perms(self, user):
+        '''
+        Returns a list of permissions for a given user calling to self.has_perms()
+        '''
+        return [perm for perm in ('join', 'request_membership',
+            'cancel_membership_request', 'leave', 'admin') if self.has_perms(perm, user)]
+
 
 class Election(models.Model):
     '''

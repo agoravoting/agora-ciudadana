@@ -251,8 +251,8 @@ AUTHENTICATION_BACKENDS = (
     #'social_auth.backends.contrib.instagram.InstagramBackend',
     #'social_auth.backends.OpenIDBackend',
     'userena.backends.UserenaAuthenticationBackend',
-    'guardian.backends.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
 )
 
 TWITTER_CONSUMER_KEY         = ''
