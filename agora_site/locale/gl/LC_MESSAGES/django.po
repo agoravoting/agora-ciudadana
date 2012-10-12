@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-09-23 19:10+0200\n"
-"PO-Revision-Date: 2012-09-23 14:42+0200\n"
+"PO-Revision-Date: 2012-10-12 09:47+0200\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: gl\n"
@@ -32,7 +32,7 @@ msgstr "Galego"
 
 #: settings.py:71
 msgid "Catalan"
-msgstr ""
+msgstr "Català"
 
 #: accounts/forms.py:30 accounts/templates/accounts/profile_detail.html:24
 msgid "Name"
@@ -587,11 +587,11 @@ msgstr "Escriba cada opción nunha liña distinta."
 
 #: agora_core/forms.py:197 agora_core/forms.py:279
 msgid "Begin Voting"
-msgstr ""
+msgstr "Iniciar a votación"
 
 #: agora_core/forms.py:199 agora_core/forms.py:281
 msgid "End Voting"
-msgstr ""
+msgstr "Rematar a votación"
 
 #: agora_core/forms.py:208 agora_core/templates/agora_core/agora_view.html:213
 #: agora_core/templates/agora_core/home_loggedin_activity.html:205
@@ -845,14 +845,14 @@ msgid "Voting will start %(start_date)s. "
 msgstr "A votación comezará o %(start_date)s. "
 
 #: agora_core/models.py:738
-#, fuzzy, python-format
+#, python-format
 msgid "Voting will start  %(start_date)s and finish %(end_date)s. "
-msgstr "A votación comezará o %(start_date)s. "
+msgstr "A votación comezará o %(start_date)s e rematará o %(end_date)s. "
 
 #: agora_core/models.py:745
-#, fuzzy, python-format
+#, python-format
 msgid "Voting started %(start_date)s and will finish %(end_date)s. "
-msgstr "A votación comezou o %(start_date)s. "
+msgstr "A votación comezou o %(start_date)s e rematará o %(end_date)s. "
 
 #: agora_core/models.py:750
 #, python-format
@@ -860,6 +860,8 @@ msgid ""
 "Voting started %(start_date)s and finished %(end_date)s. Results available "
 "since %(tally_date)s. "
 msgstr ""
+"A votación comezou o (start_date)s e rematou o %(end_date)s. Os resultados "
+"están dispoñíbeis desde o %(tally_date)s. "
 
 #: agora_core/models.py:757
 msgid "Start date for voting is not set yet. "
@@ -1832,7 +1834,7 @@ msgid "Close"
 msgstr "Pechar"
 
 #: agora_core/templates/agora_core/election_base.html:238
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "                                        You delegated to <a href="
@@ -1843,12 +1845,12 @@ msgid ""
 msgstr ""
 "\n"
 "                                        Delegou en <a href="
-"\"{ {delegate_url}}\">%(delegate_username)s</a>, que respondeu <strong>"
+"\"%(delegate_url)s\">%(delegate_username)s</a>, que respondeu <strong>"
 "%(answer)s</strong> á cuestión «<em>%(question)s</em>»</p>\n"
 "                                        "
 
 #: agora_core/templates/agora_core/election_base.html:243
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "                                        You delegated to <a href="
@@ -1858,7 +1860,7 @@ msgid ""
 msgstr ""
 "\n"
 "                                        Delegou en <a href="
-"\"{ {delegate_url}}\">%(delegate_username)s</a>, que aínda non participou na "
+"\"%(delegate_url)s\">%(delegate_username)s</a>, que aínda non participou na "
 "votación.\n"
 "                                        "
 
@@ -2623,12 +2625,11 @@ msgstr ""
 
 #: templates/base.html:67
 msgid "Find an election to vote"
-msgstr ""
+msgstr "Atope unha votación na que participar"
 
 #: templates/base.html:84
-#, fuzzy
 msgid "Find an agora to create an election"
-msgstr "Crear unha votación"
+msgstr "Atope unha ágora na que crear unha votación"
 
 #: templates/base.html:95
 msgid "Enter"
