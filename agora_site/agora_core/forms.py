@@ -147,6 +147,8 @@ class UserSettingsForm(django_forms.ModelForm):
         profile.biography = self.cleaned_data['biography']
         profile.email_updates = self.cleaned_data['email_updates']
         user.email = self.cleaned_data['email']
+        if len(self.cleaned_data['password1']) > 0:
+            user.set_password(self.cleaned_data['password1'])
         profile.save()
         user.save()
         return user
@@ -173,6 +175,7 @@ class UserSettingsForm(django_forms.ModelForm):
         if 'password' in self.cleaned_data and 'password2' in self.cleaned_data and\
             self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 raise forms.ValidationError(_('The two password fields didn\'t match.'))
+
         return self.cleaned_data
 
     class Meta:
