@@ -25,33 +25,27 @@ def get_base_email_context(is_secure, site_id):
             protocol=is_secure and 'https' or 'http'
         )
 
-def cancel_start_election(election_id):
-    election = Election.objects.get(pk=election_id)
-    try:
-        result = start_election.AsyncResult(election.task_id(start_election))
-        result.revoke()
-    except Exception:
-        pass
-
-def cancel_end_election(election_id):
-    election = Election.objects.get(pk=election_id)
-    try:
-        result = end_election.AsyncResult(election.task_id(end_election))
-        result.revoke()
-    except Exception:
-        pass
-
 @task(ignore_result=True)
 def start_election(election_id, is_secure, site_id, remote_addr):
     election = Election.objects.get(pk=election_id)
-
     if not election.is_approved:
         election.voting_starts_at_date = None
         election.save()
         return
 
+    if election.extra_data and "started" in election.extra_data:
+        return
+
+    if not election.voting_starts_at_date or not election.frozen_at_date or\
+        election.voting_starts_at_date > datetime.datetime.now():
+        return
+
     election.voting_starts_at_date = datetime.datetime.now()
     election.create_hash()
+    if not election.extra_data:
+        election.extra_data = dict(started=True)
+    else:
+        election.extra_data["started"]=True
     election.save()
 
     context = get_base_email_context(is_secure, site_id)
@@ -114,15 +108,25 @@ def start_election(election_id, is_secure, site_id, remote_addr):
 @task(ignore_result=True)
 def end_election(election_id, is_secure, site_id, remote_addr, user_id):
     election = Election.objects.get(pk=election_id)
-
     if not election.is_approved:
         election.voting_extended_until_date = election.voting_ends_at_date = None
         election.save()
         return
 
+    if election.extra_data and "ended" in election.extra_data:
+        return
+
+    if not election.voting_extended_until_date or not election.frozen_at_date or\
+        election.voting_extended_until_date > datetime.datetime.now():
+        return
+
     user = User.objects.get(pk=user_id)
 
-    election.voting_extended_until_date = election.voting_ends_at_date = datetime.datetime.now()
+    election.voting_extended_until_date = datetime.datetime.now()
+    if not election.extra_data:
+        election.extra_data = dict(ended=True)
+    else:
+        election.extra_data["ended"]=True
     election.save()
     election.compute_result()
 

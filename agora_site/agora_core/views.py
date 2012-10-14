@@ -34,6 +34,7 @@ from django.views.generic import TemplateView, ListView, CreateView, RedirectVie
 from django.views.generic.edit import UpdateView, FormView
 from django.views.i18n import set_language as django_set_language
 from django import http
+from django.db import transaction
 
 from actstream.actions import follow, unfollow, is_following
 from actstream.models import (object_stream, election_stream, Action,
@@ -639,14 +640,15 @@ class StartElectionView(FormActionView):
         if not election.is_frozen():
             election.frozen_at_date = election.voting_starts_at_date
         election.save()
+        transaction.commit()
 
-        cancel_start_election(election.id)
-        start_election(
+        kwargs=dict(
             election_id=election.id,
             is_secure=self.request.is_secure(),
             site_id=Site.objects.get_current().id,
             remote_addr=self.request.META.get('REMOTE_ADDR')
         )
+        start_election.apply_async(kwargs=kwargs, task_id=election.task_id(start_election))
 
         return self.go_next(request)
 
@@ -668,15 +670,16 @@ class StopElectionView(FormActionView):
 
         election.voting_extended_until_date = election.voting_ends_at_date = datetime.datetime.now()
         election.save()
+        transaction.commit()
 
-        cancel_end_election(election.id)
-        end_election(
+        kwargs=dict(
             election_id=election.id,
             is_secure=self.request.is_secure(),
             site_id=Site.objects.get_current().id,
             remote_addr=self.request.META.get('REMOTE_ADDR'),
             user_id=request.user.id
         )
+        end_election.apply_async(kwargs=kwargs, task_id=election.task_id(end_election))
 
         return self.go_next(request)
 

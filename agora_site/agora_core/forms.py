@@ -29,6 +29,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_unicode
 from django.utils import simplejson as json
 from django.contrib.sites.models import Site
+from django.db import transaction
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Hidden, Layout, Fieldset
@@ -403,6 +404,7 @@ class ElectionEditForm(django_forms.ModelForm):
             election.voting_starts_at_date = from_date
             election.voting_extended_until_date = election.voting_ends_at_date = to_date
             election.save()
+            transaction.commit()
 
             kwargs=dict(
                 election_id=election.id,
@@ -410,8 +412,6 @@ class ElectionEditForm(django_forms.ModelForm):
                 site_id=Site.objects.get_current().id,
                 remote_addr=self.request.META.get('REMOTE_ADDR')
             )
-            cancel_start_election(election.id)
-            cancel_end_election(election.id)
             start_election.apply_async(kwargs=kwargs, task_id=election.task_id(start_election),
                 eta=election.voting_starts_at_date)
             kwargs["user_id"] = self.request.user.id
