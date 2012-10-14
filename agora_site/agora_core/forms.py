@@ -122,6 +122,7 @@ class UserSettingsForm(django_forms.ModelForm):
         self.fields['biography'].initial = self.user.get_profile().biography
         self.fields['email'].initial = self.user.email
         self.fields['email_updates'].initial = self.user.get_profile().email_updates
+        self.fields['avatar'].required = False
 
         # Users who login via twitter or other means do not have a password
         if self.user.password == '!':
