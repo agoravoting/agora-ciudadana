@@ -879,8 +879,10 @@
         </a>
         <div class="action-body">
             <div class="action-title">
+                {% with isotime=action.timestamp|date:"c" %}
                 {% blocktrans with username=action.actor.username isotime=action.timestamp|date:"c" %}<a href="{{ user_view_url }}"><strong class="username">{{ username }}</strong></a> <strong class="verb">changed his settings/profile</strong>{% endblocktrans %}
                 <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
+                {% endwith %}
             </div>
         </div>
     {% endif %}
