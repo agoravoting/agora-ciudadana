@@ -55,6 +55,12 @@ class Profile(UserenaLanguageBaseProfile):
         else:
             return self.user.first_name
 
+    def get_first_name_or_nick(self):
+        if self.user.first_name:
+            return self.user.first_name
+        else:
+            return self.user.username
+
     short_description = models.CharField(_('Short Description'), max_length=140)
 
     biography = models.TextField(_('Biography'))

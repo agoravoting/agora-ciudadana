@@ -103,7 +103,7 @@
                     {% else %}
                         <div class="btn-group">
                             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                {{ user.first_name|truncate_words:1 }}
+                                {{ user.get_profile.get_first_name_or_nick|truncate_words:1 }}
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
