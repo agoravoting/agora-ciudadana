@@ -28,7 +28,7 @@ def get_base_email_context(is_secure, site_id):
 @task(ignore_result=True)
 def start_election(election_id, is_secure, site_id, remote_addr):
     election = Election.objects.get(pk=election_id)
-    if not election.is_approved:
+    if not election.is_approved or election.is_archived():
         election.voting_starts_at_date = None
         election.save()
         return
@@ -108,7 +108,7 @@ def start_election(election_id, is_secure, site_id, remote_addr):
 @task(ignore_result=True)
 def end_election(election_id, is_secure, site_id, remote_addr, user_id):
     election = Election.objects.get(pk=election_id)
-    if not election.is_approved:
+    if not election.is_approved or election.is_archived():
         election.voting_extended_until_date = election.voting_ends_at_date = None
         election.save()
         return

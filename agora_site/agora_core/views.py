@@ -694,8 +694,6 @@ class ArchiveElectionView(FormActionView):
             name=electionname, agora__name=agoraname,
             agora__creator__username=username)
 
-        cancel_start_election(election.id)
-        cancel_end_election(election.id)
         if not election.has_perms('archive_election', request.user):
             messages.add_message(self.request, messages.ERROR, _('You don\'t '
                 'have permission to archive the election.'))
