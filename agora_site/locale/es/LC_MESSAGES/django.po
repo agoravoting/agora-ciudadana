@@ -914,7 +914,7 @@ msgid ""
 "delegates). "
 msgstr ""
 "Esta votación permite la delegación abierta a todo el mundo y el voto es "
-"secreto (público para delegados)."
+"secreto (público para delegados). "
 
 #: agora_core/models.py:833
 msgid "This election allows delegation from any party and vote is not secret. "
@@ -925,7 +925,7 @@ msgstr ""
 #: agora_core/models.py:842
 #, python-format
 msgid "The election has been approved and was frozen  %(frozen_date)s. "
-msgstr "La votación ha sido aprobada y fue congelada %(frozen_date)s"
+msgstr "La votación ha sido aprobada y fue congelada %(frozen_date)s. "
 
 #: agora_core/models.py:846
 msgid "The election has been approved and is not frozen yet. "
@@ -940,12 +940,12 @@ msgstr ""
 
 #: agora_core/models.py:853
 msgid "The election has been not approved and is not frozen yet. "
-msgstr "La votación no ha sido aprobada ni congelada todavía."
+msgstr "La votación no ha sido aprobada ni congelada todavía. "
 
 #: agora_core/models.py:858
 #, python-format
 msgid "Voting will start  %(start_date)s and finish %(end_date)s. "
-msgstr " La votación se iniciará %(start_date)s. y terminará %(end_date)s "
+msgstr " La votación se iniciará %(start_date)s. y terminará %(end_date)s. "
 
 #: agora_core/models.py:863
 #, python-format
@@ -973,7 +973,7 @@ msgstr ""
 
 #: agora_core/models.py:884
 msgid "Start date for voting is not set yet. "
-msgstr "La fecha de inicio de la votación no ha sido establecido aún."
+msgstr "La fecha de inicio de la votación no ha sido establecido aún. "
 
 #: agora_core/models.py:888
 msgid "Election is <b>archived and dismissed</b>."
