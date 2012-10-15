@@ -33,7 +33,7 @@
                 Election created by <a href="{{ user_url }}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
                 {% endblocktrans %}
             {% else %}
-                {% url user-view agora.creator.username as user_url %}
+                {% url user-view election.creator.username as user_url %}
                 {% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}
                 Election proposed by <a href="{{ user_url }}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
                 {% endblocktrans %}
