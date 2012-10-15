@@ -737,6 +737,9 @@ class Election(models.Model):
         '''
         Return true if the user has voted directly
         '''
+        if user.is_anonymous():
+            return False
+
         return self.cast_votes.filter(is_counted=True, is_direct=True,
             voter=user).count() > 0
 
