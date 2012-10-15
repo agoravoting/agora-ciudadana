@@ -88,6 +88,8 @@ attrs_dict = {'class': 'required'}
 class UserSettingsForm(django_forms.ModelForm):
     avatar = django_forms.ImageField(_('Avatar'),
         help_text=_("Upload an image to use as avatar instead of gravatar service"))
+    delete_avatar = django_forms.BooleanField(label=_("Remove this avatar"),
+                                              required=False)
 
     short_description = django_forms.CharField(_('Short Description'),
         help_text=_("Say something about yourself (140 chars max)"), required=False)
@@ -122,19 +124,22 @@ class UserSettingsForm(django_forms.ModelForm):
         self.fields['biography'].initial = self.user.get_profile().biography
         self.fields['email'].initial = self.user.email
         self.fields['email_updates'].initial = self.user.get_profile().email_updates
+        self.fields['avatar'].required = False
 
         # Users who login via twitter or other means do not have a password
         if self.user.password == '!':
             del self.fields['old_password']
             self.helper.layout = Layout(
-                Fieldset(_('Profile'), 'avatar', 'first_name', 'last_name',
+                Fieldset(_('Profile'), 'avatar', 'delete_avatar',
+                    'first_name', 'last_name',
                     'short_description', 'biography', 'email_updates'),
                 Fieldset(_('Change email'), 'email'),
                 Fieldset(_('Change password'), 'password1', 'password2')
             )
         else:
             self.helper.layout = Layout(
-                Fieldset(_('Profile'), 'avatar', 'first_name', 'last_name',
+                Fieldset(_('Profile'), 'avatar', 'delete_avatar',
+                    'first_name', 'last_name',
                     'short_description', 'biography', 'email_updates'),
                 Fieldset(_('Change email'), 'email'),
                 Fieldset(_('Change password'), 'password1', 'password2'),
@@ -149,7 +154,16 @@ class UserSettingsForm(django_forms.ModelForm):
         profile.short_description = self.cleaned_data['short_description']
         profile.biography = self.cleaned_data['biography']
         profile.email_updates = self.cleaned_data['email_updates']
-        profile.mugshot = self.cleaned_data['avatar']
+
+        avatar = self.cleaned_data['avatar']
+        if avatar:
+            if profile.mugshot:
+                profile.mugshot.delete()
+            profile.mugshot = avatar
+        if self.cleaned_data['delete_avatar']:
+            profile.mugshot.delete()
+            profile.mugshot = None
+
         user.email = self.cleaned_data['email']
         if len(self.cleaned_data['password1']) > 0:
             user.set_password(self.cleaned_data['password1'])
