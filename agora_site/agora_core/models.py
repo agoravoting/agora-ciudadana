@@ -393,7 +393,14 @@ class Agora(models.Model):
         Return whether a given user has a given permission name, depending on
         also in the state of the election.
         '''
+
+        is_superuser = user.is_superuser
+        user.is_superuser = False
+
         opc = ObjectPermissionChecker(user)
+        opc_perms = opc.get_perms(self)
+        user.is_superuser = is_superuser
+
         requires_membership_approval = (
             self.membership_policy == Agora.MEMBERSHIP_TYPE[1][0] or\
             self.membership_policy == Agora.MEMBERSHIP_TYPE[2][0]
@@ -404,16 +411,16 @@ class Agora(models.Model):
                 not user in self.members.all()
         elif permission_name == 'request_membership':
             return not user.is_anonymous() and  requires_membership_approval and not user in self.members.all() and\
-                'requested_membership' not in opc.get_perms(self)
+                'requested_membership' not in opc_perms
         elif permission_name == "cancel_membership_request":
             return requires_membership_approval and not user in self.members.all() and\
-                'requested_membership' in opc.get_perms(self)
+                'requested_membership' in opc_perms
         if permission_name == 'request_admin_membership':
             return user in self.members.all() and user not in self.admins.all() and\
-                'requested_admin_membership' not in opc.get_perms(self)
+                'requested_admin_membership' not in opc_perms
         elif permission_name == "cancel_admin_membership_request":
             return user in self.members.all() and user not in self.admins.all() and\
-                'requested_admin_membership' in opc.get_perms(self)
+                'requested_admin_membership' in opc_perms
         elif permission_name == 'leave':
             return self.creator != user and user in self.members.all() and\
                 user not in self.admins.all()
