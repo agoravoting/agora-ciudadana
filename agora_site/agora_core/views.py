@@ -266,6 +266,8 @@ class ElectionDelegatesView(AjaxListView):
         context = super(ElectionDelegatesView, self).get_context_data(**kwargs)
         context['election'] = self.election
         context['vote_form'] = VoteForm(self.request, self.election)
+        context['permissions'] = self.election.get_perms(self.request.user)
+        context['agora_perms'] = self.election.agora.get_perms(self.request.user)
 
         if self.request.user.is_authenticated():
             context['vote_from_user'] = self.election.get_vote_for_voter(
@@ -288,6 +290,8 @@ class ElectionChooseDelegateView(AjaxListView):
     def get_context_data(self, **kwargs):
         context = super(ElectionChooseDelegateView, self).get_context_data(**kwargs)
         context['election'] = self.election
+        context['permissions'] = self.election.get_perms(self.request.user)
+        context['agora_perms'] = self.election.agora.get_perms(self.request.user)
         context['delegate'] = self.delegate
         context['vote'] = self.vote
         context['vote_form'] = VoteForm(self.request, self.election)
@@ -488,6 +492,8 @@ class ElectionView(AjaxListView):
         context = super(ElectionView, self).get_context_data(**kwargs)
         context['election'] = self.election
         context['vote_form'] = VoteForm(self.request, self.election)
+        context['permissions'] = self.election.get_perms(self.request.user)
+        context['agora_perms'] = self.election.agora.get_perms(self.request.user)
 
         if self.request.user.is_authenticated():
             context['vote_from_user'] = self.election.get_vote_for_voter(
@@ -817,6 +823,8 @@ class VoteView(CreateView):
         form = kwargs['form']
         context['vote_form'] = form
         context['election'] = form.election
+        context['permissions'] = form.election.get_perms(self.request.user)
+        context['agora_perms'] = form.election.agora.get_perms(self.request.user)
         context['object_list'] = election_stream(form.election)
         return context
 
@@ -1414,6 +1422,8 @@ class ElectionPostCommentView(RequestCreateView):
         context = super(ElectionPostCommentView, self).get_context_data(*args, **kwargs)
         context['election'] = self.election
         context['vote_form'] = VoteForm(self.request, self.election)
+        context['permissions'] = self.election.get_perms(self.request.user)
+        context['agora_perms'] = self.election.agora.get_perms(self.request.user)
         context['object_list'] = election_stream(self.election, verb='commented')
         return context
 

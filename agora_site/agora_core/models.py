@@ -177,7 +177,8 @@ class Agora(models.Model):
 
     MEMBERSHIP_TYPE = (
         ('ANYONE_CAN_JOIN', _('Anyone can join')),
-        ('JOINING_REQUIRES_ADMINS_APPROVAL', _('Joining requires admins approval')),
+        ('JOINING_REQUIRES_ADMINS_APPROVAL_ANY_DELEGATE', _('Joining requires admins approval, allow non-member delegates')),
+        ('JOINING_REQUIRES_ADMINS_APPROVAL', _('Joining requires admins approval and delegates must be agora members')),
         #('INVITATION_ONLY', _('Invitation only by admins')),
         #('EXTERNAL', _('External url')),
     )
@@ -393,22 +394,25 @@ class Agora(models.Model):
         also in the state of the election.
         '''
         opc = ObjectPermissionChecker(user)
+        requires_membership_approval = (
+            self.membership_policy == Agora.MEMBERSHIP_TYPE[1][0] or\
+            self.membership_policy == Agora.MEMBERSHIP_TYPE[2][0]
+        )
+
         if permission_name == 'join':
             return self.membership_policy == Agora.MEMBERSHIP_TYPE[0][0] and\
                 not user in self.members.all()
         elif permission_name == 'request_membership':
-            return self.membership_policy == Agora.MEMBERSHIP_TYPE[1][0] and\
-                not user in self.members.all() and\
+            return requires_membership_approval and not user in self.members.all() and\
                 'requested_membership' not in opc.get_perms(self)
         elif permission_name == "cancel_membership_request":
-            return self.membership_policy == Agora.MEMBERSHIP_TYPE[1][0] and\
-                not user in self.members.all() and\
+            return requires_membership_approval and not user in self.members.all() and\
                 'requested_membership' in opc.get_perms(self)
         if permission_name == 'request_admin_membership':
-            return user in self.members.all() and\
+            return user in self.members.all() and user not in self.admins.all() and\
                 'requested_admin_membership' not in opc.get_perms(self)
         elif permission_name == "cancel_admin_membership_request":
-            return user in self.members.all() and\
+            return user in self.members.all() and user not in self.admins.all() and\
                 'requested_admin_membership' in opc.get_perms(self)
         elif permission_name == 'leave':
             return self.creator != user and user in self.members.all() and\
@@ -714,6 +718,16 @@ class Election(models.Model):
             return isadminorcreator and not isarchived
         elif permission_name == 'comment_election':
             return isadminorcreator or not isarchived and user.is_authenticated()
+        elif permission_name == 'emit_direct_vote':
+            return user in self.agora.members.all() or\
+                self.agora.has_perms('join', user)
+        elif permission_name == 'vote_counts':
+            return user in self.agora.members.all() or\
+                self.agora.has_perms('join', user)
+        elif permission_name == 'emit_delegate_vote':
+            return user in self.agora.members.all() or\
+                self.agora.has_perms('join', user) or\
+                self.agora.membership_policy == Agora.MEMBERSHIP_TYPE[1][0]
 
     def get_perms(self, user):
         '''
@@ -721,7 +735,8 @@ class Election(models.Model):
         '''
         return [perm for perm in ('edit_details', 'approve_election',
             'begin_election', 'freeze_election', 'end_election',
-            'archive_election', 'comment_election') if self.has_perms(perm, user)]
+            'archive_election', 'comment_election', 'emit_direct_vote',
+            'emit_delegate_vote', 'vote_counts') if self.has_perms(perm, user)]
 
     def ballot_is_open(self):
         '''
@@ -841,7 +856,10 @@ class Election(models.Model):
             desc = _('This election allows everyone to vote. ')
             desc.__unicode__()
         elif self.agora.membership_policy == Agora.MEMBERSHIP_TYPE[1][0]:
-            desc = _('This election allows agora members to vote. ')
+            desc = _('This election only allows agora members to vote. ')
+            desc.__unicode__()
+        elif self.agora.membership_policy == Agora.MEMBERSHIP_TYPE[2][0]:
+            desc = _('This election only allows agora members to vote, but any delegate can emit their position. ')
             desc.__unicode__()
 
         if self.is_vote_secret:

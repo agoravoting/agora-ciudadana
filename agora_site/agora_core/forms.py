@@ -212,6 +212,9 @@ class AgoraAdminForm(django_forms.ModelForm):
     class Meta:
         model = Agora
         fields = ('pretty_name', 'short_description', 'is_vote_secret', 'biography', 'membership_policy')
+        widgets = {
+            'membership_policy': django_forms.RadioSelect
+        }
 
 class CreateElectionForm(django_forms.ModelForm):
     question = django_forms.CharField(_("Question"), required=True)
