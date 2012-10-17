@@ -399,21 +399,23 @@
                     {% endif %}
                     <time class="timeago" title="{{ isotime }}" datetime="{{ isotime }}"></time>
                 </div>
-                <div class="action-detail">
-                    <a href="{{ delegate_view_url }}" class="mugshot">
-                        <img src="{{ delegate.get_profile.get_mugshot_url }}" alt="{{ delegate.username }}" />
-                    </a>
-                    <div class="detail-body">
-                        <strong class="action-title"><a href="{{ delegate_view_url }}">{{ delegate.username }}</a></strong>
-                        <p>
-                        {% if delegate.get_profile.short_description %}
-                            {{ delegate.get_profile.short_description }}
-                        {% else %}
-                            {% blocktrans with num_agoras=delegate.agoras.count num_votes=delegate.get_profile.count_direct_votes %}Is a member of {{num_agoras}} agoras and has emitted {{num_votes}} direct votes.{% endblocktrans %}
-                        {% endif %}
-                        </p>
+                {% if action.action_object.is_public %}
+                    <div class="action-detail">
+                        <a href="{{ delegate_view_url }}" class="mugshot">
+                            <img src="{{ delegate.get_profile.get_mugshot_url }}" alt="{{ delegate.username }}" />
+                        </a>
+                        <div class="detail-body">
+                            <strong class="action-title"><a href="{{ delegate_view_url }}">{{ delegate.username }}</a></strong>
+                            <p>
+                            {% if delegate.get_profile.short_description %}
+                                {{ delegate.get_profile.short_description }}
+                            {% else %}
+                                {% blocktrans with num_agoras=delegate.agoras.count num_votes=delegate.get_profile.count_direct_votes %}Is a member of {{num_agoras}} agoras and has emitted {{num_votes}} direct votes.{% endblocktrans %}
+                            {% endif %}
+                            </p>
+                        </div>
                     </div>
-                </div>
+                {% endif %}
             {% endwith %}
         </div>
     {% elif action.verb == 'started following' and action.target and action.target_content_type.name == 'user' %}

@@ -300,6 +300,8 @@
                                         {% endblocktrans %}
                                     {% endif %}
                                 {% endwith %}
+                            {% else %}
+                                {% trans "You delegated your vote, and your vote is secret" %}
                             {% endif %}
 
                             {% if election.ballot_is_open %}
@@ -320,6 +322,7 @@
                                     </div>
                                 </div>
                             {% endif %}
+
                         {% endif%}
 
                         {% if election.result_tallied_at_date %}
