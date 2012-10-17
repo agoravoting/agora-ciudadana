@@ -472,13 +472,23 @@ class VoteForm(django_forms.ModelForm):
             i += 1
 
         if election.is_vote_secret:
-            self.helper.add_input(Submit('submit-secret', _('Vote secretly'),
-                css_class='btn btn-success btn-large'))
-            self.helper.add_input(Submit('submit', _('Vote in public as a delegate'),
-                css_class='btn btn-info btn-large separated-button'))
+            if self.request.user in self.election.agora.members.all() or\
+                self.election.agora.has_perms('join', self.request.user):
+                self.helper.add_input(Submit('submit-secret', _('Vote secretly'),
+                    css_class='btn btn-success btn-large'))
+                self.helper.add_input(Submit('submit', _('Vote in public as a delegate'),
+                    css_class='btn btn-info btn-large separated-button'))
+            else:
+                self.helper.add_input(Submit('submit', _('Vote in public as a non-member delegate'),
+                    css_class='btn btn-info btn-large'))
         else:
-            self.helper.add_input(Submit('submit', _('Vote'),
-                css_class='btn btn-success btn-large'))
+            if self.request.user in self.election.agora.members.all() or\
+                self.election.agora.has_perms('join', self.request.user):
+                self.helper.add_input(Submit('submit', _('Vote'),
+                    css_class='btn btn-success btn-large'))
+            else:
+                self.helper.add_input(Submit('submit', _('Vote in public as a non-member delegate'),
+                    css_class='btn btn-info btn-large'))
 
     def clean(self):
         cleaned_data = super(VoteForm, self).clean()

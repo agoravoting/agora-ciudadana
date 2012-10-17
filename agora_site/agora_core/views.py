@@ -265,7 +265,7 @@ class ElectionDelegatesView(AjaxListView):
     def get_context_data(self, **kwargs):
         context = super(ElectionDelegatesView, self).get_context_data(**kwargs)
         context['election'] = self.election
-        context['vote_form'] = VoteForm(self.request.POST, self.election)
+        context['vote_form'] = VoteForm(self.request, self.election)
 
         if self.request.user.is_authenticated():
             context['vote_from_user'] = self.election.get_vote_for_voter(
@@ -290,7 +290,7 @@ class ElectionChooseDelegateView(AjaxListView):
         context['election'] = self.election
         context['delegate'] = self.delegate
         context['vote'] = self.vote
-        context['vote_form'] = VoteForm(self.request.POST, self.election)
+        context['vote_form'] = VoteForm(self.request, self.election)
         return context
 
     @method_decorator(login_required)
@@ -487,7 +487,7 @@ class ElectionView(AjaxListView):
     def get_context_data(self, *args, **kwargs):
         context = super(ElectionView, self).get_context_data(**kwargs)
         context['election'] = self.election
-        context['vote_form'] = VoteForm(self.request.POST, self.election)
+        context['vote_form'] = VoteForm(self.request, self.election)
 
         if self.request.user.is_authenticated():
             context['vote_from_user'] = self.election.get_vote_for_voter(
@@ -1413,7 +1413,7 @@ class ElectionPostCommentView(RequestCreateView):
     def get_context_data(self, *args, **kwargs):
         context = super(ElectionPostCommentView, self).get_context_data(*args, **kwargs)
         context['election'] = self.election
-        context['vote_form'] = VoteForm(self.request.POST, self.election)
+        context['vote_form'] = VoteForm(self.request, self.election)
         context['object_list'] = election_stream(self.election, verb='commented')
         return context
 

@@ -202,11 +202,27 @@
                                                 </div>
                                                 <div class="span4">
                                                     <div>
+                                                    {%with perms=election.agora|get_perms:user %}
+                                                    {% if user in agora.members.all or 'join' in perms %}
                                                         <strong>{% trans "Who represents you?" %}</strong>
                                                         <p>{% trans "If you don't know what to vote or you'd rather not have to be aware of all the elections of this Agora, you can delegate your vote to someone you trust." %}</p>
                                                         <a href="{% url election-delegates election.agora.creator.username election.agora.name election.name %}"
                                                             class="btn btn-primary btn-large">{% trans "Delegate" %}</a>
                                                     </div>
+                                                    {% elif 'join' not in perms %}
+                                                            <strong>{% trans "What's a non-member delegate?" %}</strong>
+                                                            <p>{% trans "You're not a member in this agora and <b>your vote won't be counted</b>. But if you vote as a delegate, even if your vote is not counted, others will be able to delegate in you and their vote will count." %}</p>
+                                                            {% if 'request_membership' in perms %}
+                                                                <a class="btn btn-success action-form-link"
+                                                                    href="{% url agora-action-join election.agora.creator.username election.agora.name %}">
+                                                                    {% trans "Request agora membership" %}
+                                                                </a>
+                                                            {% elif 'cancel_membership_request' in perms %}
+                                                                {% trans "Your agora membership request is pending" %}
+                                                            {% endif %}
+                                                        </div>
+                                                    {% endif %}
+                                                    {% endwith %}
                                                 </div>
                                             </div>
                                         </div>

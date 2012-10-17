@@ -178,7 +178,7 @@ class Agora(models.Model):
     MEMBERSHIP_TYPE = (
         ('ANYONE_CAN_JOIN', _('Anyone can join')),
         ('JOINING_REQUIRES_ADMINS_APPROVAL', _('Joining requires admins approval')),
-        ('INVITATION_ONLY', _('Invitation only by admins')),
+        #('INVITATION_ONLY', _('Invitation only by admins')),
         #('EXTERNAL', _('External url')),
     )
 
@@ -762,7 +762,7 @@ class Election(models.Model):
 
     def get_all_votes(self):
         '''
-        Counts both direct and delegated votes
+        Counts both direct and delegated votes that are counted
         '''
 
         # TODO: When you have first voted directly in a voting and then you
@@ -836,11 +836,20 @@ class Election(models.Model):
         '''
         Returns a brief description of the election
         '''
+
+        if self.agora.membership_policy == Agora.MEMBERSHIP_TYPE[0][0]:
+            desc = _('This election allows everyone to vote. ')
+            desc.__unicode__()
+        elif self.agora.membership_policy == Agora.MEMBERSHIP_TYPE[1][0]:
+            desc = _('This election allows agora members to vote. ')
+            desc.__unicode__()
+
         if self.is_vote_secret:
-            desc = _('This election allows delegation from any party and vote is secret (public for delegates). ')
+            tmp = _('Vote is secret (public for delegates). ')
+            desc += tmp.__unicode__()
         else:
-            desc = _('This election allows delegation from any party and vote is not secret. ')
-        desc = desc.__unicode__()
+            tmp = _('Vote is public. ')
+            desc += tmp.__unicode__()
         now = datetime.datetime.now()
 
         def timesince(dati):
