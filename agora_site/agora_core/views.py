@@ -266,6 +266,10 @@ class ElectionDelegatesView(AjaxListView):
         context = super(ElectionDelegatesView, self).get_context_data(**kwargs)
         context['election'] = self.election
         context['vote_form'] = VoteForm(self.request.POST, self.election)
+
+        if self.request.user.is_authenticated():
+            context['vote_from_user'] = self.election.get_vote_for_voter(
+                self.request.user)
         return context
 
 class ElectionChooseDelegateView(AjaxListView):
