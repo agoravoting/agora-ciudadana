@@ -304,7 +304,7 @@
                                 {% trans "You delegated your vote, and your vote is secret" %}
                             {% endif %}
 
-                            {% if election.ballot_is_open %}
+                            {% if election.ballot_is_open and vote_from_user.is_direct %}
                                 <a class="btn" data-toggle="modal" href="#cancelVoteConfirmModalDialog">
                                     {% trans "Cancel direct vote" %}
                                 </a>
