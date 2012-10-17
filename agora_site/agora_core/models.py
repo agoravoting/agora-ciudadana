@@ -403,7 +403,7 @@ class Agora(models.Model):
             return self.membership_policy == Agora.MEMBERSHIP_TYPE[0][0] and\
                 not user in self.members.all()
         elif permission_name == 'request_membership':
-            return requires_membership_approval and not user in self.members.all() and\
+            return not user.is_anonymous() and  requires_membership_approval and not user in self.members.all() and\
                 'requested_membership' not in opc.get_perms(self)
         elif permission_name == "cancel_membership_request":
             return requires_membership_approval and not user in self.members.all() and\

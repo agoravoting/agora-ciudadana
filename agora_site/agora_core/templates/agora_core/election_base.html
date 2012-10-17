@@ -239,7 +239,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                {% elif not user.is_anonymous and user not in election.members.all and 'request_membership' in agora_perms %}
+                                {% elif 'request_membership' in agora_perms %}
                                     <div class="button-vote">
                                         <a class="btn btn-success" data-toggle="modal"
                                             href="{% url agora-action-join election.agora.creator.username election.agora.name %}">
