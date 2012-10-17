@@ -857,10 +857,10 @@ class Election(models.Model):
             desc = _('This election allows everyone to vote. ')
             desc = desc.__unicode__()
         elif self.agora.membership_policy == Agora.MEMBERSHIP_TYPE[1][0]:
-            desc = _('This election only allows agora members to vote. ')
+            desc = _('This election only allows agora members to vote, but any delegate can emit their position. ')
             desc = desc.__unicode__()
         elif self.agora.membership_policy == Agora.MEMBERSHIP_TYPE[2][0]:
-            desc = _('This election only allows agora members to vote, but any delegate can emit their position. ')
+            desc = _('This election only allows agora members to vote. ')
             desc = desc.__unicode__()
 
         if self.is_vote_secret:

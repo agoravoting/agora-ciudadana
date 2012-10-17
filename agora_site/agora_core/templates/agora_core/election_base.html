@@ -239,13 +239,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                {% elif 'request_membership' in agora_perms %}
-                                    <div class="button-vote">
-                                        <a class="btn btn-success" data-toggle="modal"
-                                            href="{% url agora-action-join election.agora.creator.username election.agora.name %}">
-                                            {% trans "Request agora membership" %}
-                                        </a>
-                                    </div>
+                                {% elif 'cancel_membership_request' in agora_perms %}
+                                    <strong>{% trans "Your membership request in this election's agora is pending" %}</strong>
                                 {% endif %}
                             {% else %}
                                 {% if "approve_election" in permissions %}
