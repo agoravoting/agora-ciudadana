@@ -851,16 +851,17 @@ class Election(models.Model):
         '''
         Returns a brief description of the election
         '''
+        desc = ''
 
         if self.agora.membership_policy == Agora.MEMBERSHIP_TYPE[0][0]:
             desc = _('This election allows everyone to vote. ')
-            desc.__unicode__()
+            desc = desc.__unicode__()
         elif self.agora.membership_policy == Agora.MEMBERSHIP_TYPE[1][0]:
             desc = _('This election only allows agora members to vote. ')
-            desc.__unicode__()
+            desc = desc.__unicode__()
         elif self.agora.membership_policy == Agora.MEMBERSHIP_TYPE[2][0]:
             desc = _('This election only allows agora members to vote, but any delegate can emit their position. ')
-            desc.__unicode__()
+            desc = desc.__unicode__()
 
         if self.is_vote_secret:
             tmp = _('Vote is secret (public for delegates). ')
