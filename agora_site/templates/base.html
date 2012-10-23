@@ -20,18 +20,27 @@
     <script type="text/javascript">
     jQuery(document).ready(function() {
         jQuery.timeago.settings.allowFuture = true;
-        jQuery("time.timeago").timeago();
+
+        /**
+         * Update the javascript hooks, timeago, POST forms etc
+         */
+        function js_update() {
+            jQuery("time.timeago").timeago();
+            $("a.action-form-link").click(function(event) {
+                event.preventDefault();
+                var url = $(this).attr('href');
+                $("#post-action-form").attr('action', url);
+                $("#post-action-form").submit();
+            });
+        }
 
         // execute timeago always after an ajax request
         $(document).ajaxStop(function() {
-            jQuery("time.timeago").timeago();;
+            js_update();
         });
-        $("a.action-form-link").click(function(event) {
-            event.preventDefault();
-            var url = $(this).attr('href');
-            $("#post-action-form").attr('action', url);
-            $("#post-action-form").submit();
-        });
+
+        // And also on document ready
+        js_update();
     });
     </script>
     {% dajaxice_js_import %}
