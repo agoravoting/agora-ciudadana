@@ -962,7 +962,7 @@ class Election(models.Model):
 
         # These are all the direct votes, even from those who are not elegible
         # to vote in this election
-        nodes = self.cast_votes.filter(is_direct=True, invalidated_at_date=None)
+        nodes = self.cast_votes.filter(is_direct=True, is_counted=True, invalidated_at_date=None)
 
         # These are all the delegation votes, i.e. those that point to a delegate
         edges = self.agora.delegation_election.cast_votes.filter(is_direct=False, invalidated_at_date=None)
@@ -1061,7 +1061,7 @@ class Election(models.Model):
             path_for_user = get_path_for_user(voter.id)
 
             # Found the user in a known path
-            if path_for_user and not path_for_user['is_closed_loop']:
+            if path_for_user and not path_for_user['is_broken_loop']:
                 # found a path to which the user belongs
 
                 # update delegation counts
@@ -1076,7 +1076,8 @@ class Election(models.Model):
             elif edges.filter(voter__id=voter.id).count() == 1:
                 path = dict(
                     user_ids=[voter.id],
-                    answers=[]
+                    answers=[],
+                    is_broken_loop=False
                 )
 
                 current_edge = edges.filter(voter__id=voter.id)[0]
@@ -1090,7 +1091,7 @@ class Election(models.Model):
                         path['is_broken_loop'] = True
                         paths += [path]
                         loop = False
-                    elif path_for_user and not path_for_user['is_closed_loop']:
+                    elif path_for_user and not path_for_user['is_broken_loop']:
                         # extend the found path and count a new vote
                         path_for_user['user_ids'] += path['user_ids']
 
@@ -1103,6 +1104,7 @@ class Election(models.Model):
                         # The delegate voted directly, add the path and count
                         # the vote
                         vote = nodes.filter(voter__id=delegate.id)[0]
+                        path["answers"]=vote.data['answers']
                         paths += [path]
                         add_vote(vote.data['answers'], is_delegated=True)
                         update_delegation_counts(vote)
