@@ -28,21 +28,21 @@ from django.views.generic import ListView
 
 class SignUpCompleteView(TemplateView):
     def get(self, request, username):
-        messages.add_message(request, messages.SUCCESS, _('Registration ' +
+        messages.add_message(request, settings.SUCCESS_MODAL, _('Registration ' +
             'successful! We have sent the activation link to your email ' +
             'address, look it up.'))
         return redirect('/')
 
 class PasswordResetDoneView(TemplateView):
     def get(self, request):
-        messages.add_message(request, messages.SUCCESS, _('An e-mail has been '
+        messages.add_message(request, settings.SUCCESS_MODAL, _('An e-mail has been '
             + 'send to you which explains how to reset your password'))
         return redirect('/')
 
 
 class PasswordResetCompleteView(TemplateView):
     def get(self, request):
-        messages.add_message(request, messages.SUCCESS, _('Your password has '
+        messages.add_message(request, settings.SUCCESS_MODAL, _('Your password has '
             + 'been reset, you can now <a href="%(url)s">login</a> with your '
             + 'new password') % dict(url=reverse('userena_signin')))
         return redirect('/')

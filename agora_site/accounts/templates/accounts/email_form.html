@@ -3,7 +3,7 @@
 
 {% block content_title %}<h2>{% blocktrans with user.username as username %}Account &raquo; {{ username }}{% endblocktrans %}</h2>{% endblock %}
 
-{% block content %}
+{% block content_board %}
 <form action="" method="post">
   <ul id="box-nav">
     <li class="first"><a href="{% url userena_profile_detail user.username %}"><span>{% trans 'View profile' %}</span></a></li>

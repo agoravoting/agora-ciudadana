@@ -2,8 +2,16 @@
 {% load i18n %}
 
 {% block title %}{% trans "Disabled account" %}{% endblock %}
-{% block content_title %}<h2>{% trans "Your account has been disabled" %}</h2>{% endblock %}
-{% block content %}
-<p>{% trans "It seems your account has been disabled." %}</p>
-<p>{% trans "If you feel that injustice has been done to you, feel free to contact the administrators to find out why" %}</p>
+{% block content_title %}<h2>{% trans "Account not active (yet?)" %}</h2>{% endblock %}
+{% block content_board %}
+<p>{% trans "It seems your account has been disabled or is not yet active." %} </p>
+
+<h2>{% trans "Why?" %}</h2>
+
+<p>{% trans "Most probably you have just registered and what you need to do is to <strong>check your email for the activation link we have sent you</strong>. If you don't see the email in your inbox, <strong>check the spam folder</strong>, sometimes the spam filter gets it wrong." %}</p>
+
+<h2>{% trans "Contact" %}</h2>
+
+<p>{% trans "If you have any further questions, please don't hesitate to <a href=\"/contact\">contact us</a>." %}</p>
+
 {% endblock %} 
