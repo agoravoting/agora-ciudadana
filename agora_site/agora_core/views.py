@@ -286,10 +286,9 @@ class ElectionChooseDelegateView(AjaxListView):
 
     def get(self, request, *args, **kwargs):
 
-        # if election is closed, show the delegate view for the agora
-        # instead. Also, you cannot delegate to yourself
+        #  you cannot delegate to yourself
         delegate_username = self.kwargs["delegate_username"]
-        if not self.election.ballot_is_open() or delegate_username == request.user.username:
+        if delegate_username == request.user.username:
             return http.HttpResponseRedirect(reverse('user-view',
                 kwargs=dict(username=delegate_username)))
 
@@ -875,8 +874,8 @@ class AgoraActionChooseDelegateView(FormActionView):
             old_vote.invalidated_at_date = datetime.datetime.now()
             old_vote.save()
 
+        # Forge the delegation vote
         vote = CastVote()
-
         vote.data = {
             "a": "delegated-vote",
             "answers": [
@@ -904,6 +903,7 @@ class AgoraActionChooseDelegateView(FormActionView):
         vote.create_hash()
         vote.save()
 
+        # Create the delegation action
         action.send(self.request.user, verb='delegated', action_object=vote,
             target=agora, ipaddr=request.META.get('REMOTE_ADDR'),
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
@@ -912,7 +912,38 @@ class AgoraActionChooseDelegateView(FormActionView):
             verb='delegated', action_object_object_id=vote.id,
             target_object_id=agora.id).order_by('-timestamp').all()[0].id
 
-        # TODO: send an email to the user
+
+        # Send the email to the voter (and maybe to the delegate too!)
+        context = get_base_email_context(self.request)
+        context.update(dict(
+            agora=agora,
+            delegate=delegate,
+            vote=vote
+        ))
+        # Mail to the voter
+        if vote.voter.get_profile().has_perms('receive_email_updates'):
+            context['to'] = vote.voter
+
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - You delegated your vote in %(agora)s') %\
+                    dict(
+                        site=Site.objects.get_current().domain,
+                        agora=agora.get_full_name()
+                    ),
+                body=render_to_string('agora_core/emails/user_delegated.txt',
+                    context),
+                to=[vote.voter.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/user_delegated.html',
+                    context), "text/html")
+            email.send()
+
+        # TODO: Mail to the delegate, only if it's a public delegation
+        #if vote.is_public and delegate.get_profile().has_perms('receive_email_updates'):
+            #context['to'] = delegate
+
+
         messages.add_message(self.request, messages.SUCCESS, _('You delegated '
             'your vote in %(agora)s to %(username)s! Now you could share this '
             'in Facebook, Google Plus, Twitter, etc.') % dict(

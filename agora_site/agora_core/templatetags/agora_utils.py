@@ -66,7 +66,6 @@ def get_delegate_in_agora(user, agora):
 def get_vote_in_election(user, election):
     return user.get_profile().get_vote_in_election(election)
 
-
 @register.tag
 def functioncall():
     """

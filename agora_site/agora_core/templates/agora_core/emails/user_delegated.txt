@@ -1,0 +1,20 @@
+{% load i18n %}{% load agora_utils %}{% autoescape off %}{% if vote.is_public %}
+{% blocktrans with to_username=to.username agora_full_name=agora.get_full_name agora_url=agora.get_link site_domain=site.domain delegate_name=delegate.username delegate_url=delegate.get_profile.get_link %}Hello {{ to_username }},
+
+We have recorded your delegation at agora {{ agora_full_name }} to {{ delegate_name }}. This means that in future elections of this agora, if you don't directly vote in them, {{ delegate_name }} will vote for you. You may change your delegation or cancel it at any time. We advise to delegate only in a someone you trust, and to actively review his vote record  frequently.
+
+Agora URL: {{ protocol }}://{{ site_domain }}{{ agora_url }}
+
+Delegate URL: {{ protocol }}://{{ site_domain }}{{ delegate_url }}
+
+{% endblocktrans %}{% else %}
+{% blocktrans with to_username=to.username agora_full_name=agora.get_full_name agora_url=agora.get_link site_domain=site.domain %}Hello {{ to_username }},
+
+We have recorded your delegation at agora {{ agora_full_name }} and your delegation is secret. This means that in future elections of this agora, if you don't directly vote in them, your delegate will vote for you. You may change your delegation or cancel it at any time. We advise to delegate only in a someone you trust, and to actively review his vote record  frequently.
+
+Agora URL: {{ protocol }}://{{ site_domain }}{{ agora_url }}
+
+{% endblocktrans %}{% endif %}
+--
+{% blocktrans with to_email=to.username site_name=site.name site_domain=site.domain %}This message was sent to {{ to_email }}. If you want to stop receiving these message from {{ site_name }}, please click here: {{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}
+{% endblocktrans %}{% endautoescape %}

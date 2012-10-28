@@ -21,6 +21,7 @@ import hashlib
 import simplejson
 
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -60,6 +61,15 @@ class Profile(UserenaLanguageBaseProfile):
             return self.user.first_name
         else:
             return self.user.username
+
+    def has_perms(self, permission_name):
+        '''
+        Return whether a given user has a given permission name
+        '''
+        if permission_name == 'receive_email_updates':
+            return self.user.email and self.email_updates
+        else:
+            return False
 
     short_description = models.CharField(_('Short Description'), max_length=140)
 
@@ -154,6 +164,9 @@ class Profile(UserenaLanguageBaseProfile):
                 return None
 
             return votes[0]
+
+    def get_link(self):
+        return reverse('user-view', kwargs=dict(username=self.user.username))
 
 from django.db.models.signals import post_save
 
@@ -437,6 +450,39 @@ class Agora(models.Model):
             'cancel_membership_request', 'request_admin_membership',
             'cancel_admin_membership_request', 'leave', 'leave_admin',
             'admin') if self.has_perms(perm, user)]
+
+    def get_link(self):
+        return reverse('agora-view', kwargs=dict(username=self.creator.username,
+            agoraname=self.name))
+
+    def get_full_name(self, mode="plain"):
+        '''
+        Returns the name of the agora, for example "edulix/pdi-testing"
+
+        mode can be:
+         * "plain" : something like: edulix/pdi-testing
+         * "link": something like: <a href="/edulix/pdi-testing">edulix / pdi-testing</a>
+         * "link-agora": something like: edulix / <a href="/edulix/pdi-testing">pdi-testing</a>
+         * "link-creator": something like: <a href="/user/edulix">edulix</a> / pdi-testing
+        '''
+        if mode == "plain":
+            return self.creator.username + "/" + self.name
+        elif mode == "link":
+            return '<a href="%(url)s">%(username)s / %(agoraname)s</a>' % dict(
+                url=self.get_link(), username=self.creator.username,
+                agoraname=self.name
+            )
+        elif mode == "link-agora":
+            return '%(username)s / <a href="%(url)s">%(agoraname)s</a>' % dict(
+                url=self.get_link(), username=self.creator.username,
+                agoraname=self.name
+            )
+        elif mode == "link":
+            return '<a href="%(url)s">%(username)s</a> / %(agoraname)s' % dict(
+                url=reverse('user-view', kwargs=dict(username=self.creator.username)),
+                username=self.creator.username,
+                agoraname=self.name
+            )
 
 
 class Election(models.Model):
