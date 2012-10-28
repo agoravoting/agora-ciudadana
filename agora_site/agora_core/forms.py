@@ -138,12 +138,12 @@ class UserSettingsForm(django_forms.ModelForm):
             )
         else:
             self.helper.layout = Layout(
+                Fieldset(_('Security'), 'old_password'),
                 Fieldset(_('Profile'), 'avatar', 'delete_avatar',
                     'first_name', 'last_name',
                     'short_description', 'biography', 'email_updates'),
                 Fieldset(_('Change email'), 'email'),
-                Fieldset(_('Change password'), 'password1', 'password2'),
-                Fieldset(_('Security'), 'old_password')
+                Fieldset(_('Change password'), 'password1', 'password2')
             )
         self.helper.add_input(Submit('submit', _('Save settings'), css_class='btn btn-success btn-large'))
 
