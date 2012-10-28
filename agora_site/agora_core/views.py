@@ -285,6 +285,14 @@ class ElectionChooseDelegateView(AjaxListView):
         return self.election.get_votes_from_delegates().all()
 
     def get(self, request, *args, **kwargs):
+
+        # if election is closed, show the delegate view for the agora
+        # instead. Also, you cannot delegate to yourself
+        delegate_username = self.kwargs["delegate_username"]
+        if not self.election.ballot_is_open() or delegate_username == request.user.username:
+            return http.HttpResponseRedirect(reverse('user-view',
+                kwargs=dict(username=delegate_username)))
+
         return super(ElectionChooseDelegateView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -307,13 +315,6 @@ class ElectionChooseDelegateView(AjaxListView):
         self.election = get_object_or_404(Election,
             name=electionname, agora__name=agoraname,
             agora__creator__username=username)
-
-        # TODO: if election is closed, show the delegate view for the agora
-        # instead. Also, you cannot delegate to yourself
-        #if not self.election.ballot_is_open()\
-            #or delegation_username == self.request.username:
-            #return http.HttpResponseRedirect(reverse('agora-delegate',
-                #username, agoraname, delegate_username))
 
         self.delegate = get_object_or_404(User, username=delegate_username)
         self.vote = get_object_or_404(CastVote, is_counted=True,
