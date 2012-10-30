@@ -119,6 +119,8 @@ def getvote(action):
 
 @register.filter
 def pretty_date(date):
+    if not date:
+        return ''
     return date.strftime(_('Internationalized format for a date, see python '
         'documentation for strftime for more details.', '%B %d'))
 
