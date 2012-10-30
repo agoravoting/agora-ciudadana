@@ -1026,6 +1026,11 @@ class AgoraActionJoinView(FormActionView):
             context.update(dict(
                 agora=agora,
                 other_user=request.user,
+                notification_text=_('%(username)s has requested membership at '
+                    '%(agora)s. Please review this pending request') % dict(
+                        username=request.user.username,
+                        agora=agora.get_full_name()
+                    )
             ))
             for admin in agora.admins.all():
                 if not admin.get_profile().has_perms('receive_email_updates'):
@@ -1039,12 +1044,12 @@ class AgoraActionJoinView(FormActionView):
                             site=Site.objects.get_current().domain,
                             agora=agora.get_full_name()
                         ),
-                    body=render_to_string('agora_core/emails/membership_request.txt',
+                    body=render_to_string('agora_core/emails/agora_notification.txt',
                         context),
                     to=[admin.email])
 
                 email.attach_alternative(
-                    render_to_string('agora_core/emails/membership_request.html',
+                    render_to_string('agora_core/emails/agora_notification.html',
                         context), "text/html")
                 email.send()
 
@@ -1085,6 +1090,11 @@ class AgoraActionRequestAdminMembershipView(FormActionView):
         context.update(dict(
             agora=agora,
             other_user=request.user,
+            notification_text=_('%(username)s has requested admin membership '
+                'at %(agora)s. Please review this pending request') % dict(
+                    username=request.user.username,
+                    agora=agora.get_full_name()
+                )
         ))
         for admin in agora.admins.all():
             if not admin.get_profile().has_perms('receive_email_updates'):
@@ -1098,12 +1108,12 @@ class AgoraActionRequestAdminMembershipView(FormActionView):
                         site=Site.objects.get_current().domain,
                         agora=agora.get_full_name()
                     ),
-                body=render_to_string('agora_core/emails/admin_membership_request.txt',
+                body=render_to_string('agora_core/emails/agora_notification.txt',
                     context),
                 to=[admin.email])
 
             email.attach_alternative(
-                render_to_string('agora_core/emails/admin_membership_request.html',
+                render_to_string('agora_core/emails/agora_notification.html',
                     context), "text/html")
             email.send()
 
@@ -1134,10 +1144,43 @@ class AgoraActionCancelAdminMembershipRequestView(FormActionView):
             ipaddr=request.META.get('REMOTE_ADDR'),
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
-        # TODO: send an email to the user
         messages.add_message(request, messages.SUCCESS, _('Your admin '
             'membership in %(agora)s was cancelled.') % dict(
                 agora=agora.creator.username+'/'+agora.name))
+
+        # Mail to the admins
+        context = get_base_email_context(self.request)
+        context.update(dict(
+            agora=agora,
+            other_user=request.user,
+            notification_text=_('%(username)s has cancelled his/her requested '
+                'admin membership at %(agora)s.') % dict(
+                    username=request.user.username,
+                    agora=agora.get_full_name()
+                )
+        ))
+        for admin in agora.admins.all():
+            if not admin.get_profile().has_perms('receive_email_updates'):
+                continue
+
+            context['to'] = admin
+
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - %(username)s cancelled his/her admin '
+                    'membership request at %(agora)s') % dict(
+                            username=request.user.username,
+                            site=Site.objects.get_current().domain,
+                            agora=agora.get_full_name()
+                        ),
+                body=render_to_string('agora_core/emails/agora_notification.txt',
+                    context),
+                to=[admin.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/agora_notification.html',
+                    context), "text/html")
+            email.send()
+
         return self.go_next(request)
 
     @method_decorator(login_required)
@@ -1170,12 +1213,37 @@ class AgoraActionAcceptMembershipRequestView(FormActionView):
             target=user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
-        # TODO: send an email to the user
         messages.add_message(request, messages.SUCCESS, _('You accepted  '
             '%(username)s membership request in %(agora)s.') % dict(
                 username=username2,
                 agora=agora.creator.username+'/'+agora.name))
 
+        # Mail to the user
+        if not user.get_profile().has_perms('receive_email_updates'):
+            context = get_base_email_context(self.request)
+            context.update(dict(
+                agora=agora,
+                other_user=user,
+                notification_text=_('Your membership has been accepted at '
+                    '%(agora)s. Congratulations!') % dict(
+                        agora=agora.get_full_name()
+                    ),
+                to=user
+            ))
+
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - you are now member of %(agora)s') % dict(
+                            site=Site.objects.get_current().domain,
+                            agora=agora.get_full_name()
+                        ),
+                body=render_to_string('agora_core/emails/agora_notification.txt',
+                    context),
+                to=[user.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/agora_notification.html',
+                    context), "text/html")
+            email.send()
 
         return self.go_next(request)
 
@@ -1208,12 +1276,38 @@ class AgoraActionMakeAdminView(FormActionView):
             target=user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
-        # TODO: send an email to the user
         messages.add_message(request, messages.SUCCESS, _('You made admin to '
             '%(username)s admin in %(agora)s.') % dict(
                 username=username2,
                 agora=agora.creator.username+'/'+agora.name))
 
+        # Mail to the user
+        if user.get_profile().has_perms('receive_email_updates'):
+            context = get_base_email_context(self.request)
+            context.update(dict(
+                agora=agora,
+                other_user=user,
+                notification_text=_('You\'ve been promoted to admin at '
+                    '%(agora)s. Congratulations!') % dict(
+                        agora=agora.get_full_name()
+                    ),
+                to=user
+            ))
+
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - you\'ve been promoted to admin at '
+                    '%(agora)s') % dict(
+                        site=Site.objects.get_current().domain,
+                        agora=agora.get_full_name()
+                    ),
+                body=render_to_string('agora_core/emails/agora_notification.txt',
+                    context),
+                to=[user.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/agora_notification.html',
+                    context), "text/html")
+            email.send()
 
         return self.go_next(request)
 
@@ -1247,12 +1341,39 @@ class AgoraActionAcceptAdminMembershipRequestView(FormActionView):
             target=user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
-        # TODO: send an email to the user
         messages.add_message(request, messages.SUCCESS, _('You accepted  '
             '%(username)s admin membership request in %(agora)s.') % dict(
                 username=username2,
                 agora=agora.creator.username+'/'+agora.name))
 
+        # Mail to the user
+        if user.get_profile().has_perms('receive_email_updates'):
+            context = get_base_email_context(self.request)
+            context.update(dict(
+                agora=agora,
+                other_user=user,
+                notification_text=_('Your admin membership has been accepted '
+                    ' so you\'ve been promoted to admin at %(agora)s. '
+                    'Congratulations!') % dict(
+                            agora=agora.get_full_name()
+                        ),
+                to=user
+            ))
+
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - you\'ve been promoted to admin at '
+                    '%(agora)s') % dict(
+                        site=Site.objects.get_current().domain,
+                        agora=agora.get_full_name()
+                    ),
+                body=render_to_string('agora_core/emails/agora_notification.txt',
+                    context),
+                to=[user.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/agora_notification.html',
+                    context), "text/html")
+            email.send()
 
         return self.go_next(request)
 
@@ -1331,12 +1452,38 @@ class AgoraActionDismissMembershipRequestView(FormActionView):
             target=user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
-        # TODO: send an email to the user
         messages.add_message(request, messages.SUCCESS, _('You '
             'dismissed %(username)s membership request at %(agora)s.') % dict(
                 username=username2,
                 agora=agora.creator.username+'/'+agora.name))
 
+        # Mail to the user
+        if user.get_profile().has_perms('receive_email_updates'):
+            context = get_base_email_context(self.request)
+            context.update(dict(
+                agora=agora,
+                other_user=user,
+                notification_text=_('Your membership request at %(agora)s '
+                    'has been dismissed. Sorry about that!') % dict(
+                            agora=agora.get_full_name()
+                        ),
+                to=user
+            ))
+
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - membership request dismissed at '
+                    '%(agora)s') % dict(
+                        site=Site.objects.get_current().domain,
+                        agora=agora.get_full_name()
+                    ),
+                body=render_to_string('agora_core/emails/agora_notification.txt',
+                    context),
+                to=[user.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/agora_notification.html',
+                    context), "text/html")
+            email.send()
 
         if is_following(self.request.user, agora):
             unfollow(self.request.user, agora, request=self.request)
@@ -1371,12 +1518,38 @@ class AgoraActionDismissAdminMembershipRequestView(FormActionView):
             target=user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
-        # TODO: send an email to the user
         messages.add_message(request, messages.SUCCESS, _('You '
             'dismissed %(username)s admin membership request at %(agora)s.') % dict(
                 username=username2,
                 agora=agora.creator.username+'/'+agora.name))
 
+        # Mail to the user
+        if user.get_profile().has_perms('receive_email_updates'):
+            context = get_base_email_context(self.request)
+            context.update(dict(
+                agora=agora,
+                other_user=user,
+                notification_text=_('Your admin membership request at %(agora)s '
+                    ' has been dismissed. Sorry about that!') % dict(
+                            agora=agora.get_full_name()
+                        ),
+                to=user
+            ))
+
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - admin membership request dismissed at '
+                    '%(agora)s') % dict(
+                        site=Site.objects.get_current().domain,
+                        agora=agora.get_full_name()
+                    ),
+                body=render_to_string('agora_core/emails/agora_notification.txt',
+                    context),
+                to=[user.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/agora_notification.html',
+                    context), "text/html")
+            email.send()
 
         if is_following(self.request.user, agora):
             unfollow(self.request.user, agora, request=self.request)
@@ -1412,12 +1585,38 @@ class AgoraActionRemoveMembershipView(FormActionView):
             target=user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
-        # TODO: send an email to the user
         messages.add_message(request, messages.SUCCESS, _('You removed '
             'membership from %(agora)s to %(username)s.') % dict(
                 username=username2,
                 agora=agora.creator.username+'/'+agora.name))
 
+        # Mail to the user
+        if user.get_profile().has_perms('receive_email_updates'):
+            context = get_base_email_context(self.request)
+            context.update(dict(
+                agora=agora,
+                other_user=user,
+                notification_text=_('Your have been removed from membership '
+                    'from %(agora)s . Sorry about that!') % dict(
+                            agora=agora.get_full_name()
+                        ),
+                to=user
+            ))
+
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - membership removed from '
+                    '%(agora)s') % dict(
+                        site=Site.objects.get_current().domain,
+                        agora=agora.get_full_name()
+                    ),
+                body=render_to_string('agora_core/emails/agora_notification.txt',
+                    context),
+                to=[user.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/agora_notification.html',
+                    context), "text/html")
+            email.send()
 
         if is_following(self.request.user, agora):
             unfollow(self.request.user, agora, request=self.request)
@@ -1481,11 +1680,38 @@ class AgoraActionRemoveAdminMembershipView(FormActionView):
             target=user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
-        # TODO: send an email to the user
         messages.add_message(request, messages.SUCCESS, _('You removed  '
             'admin membership from %(agora)s to %(username)s.') % dict(
                 username=username2,
                 agora=agora.creator.username+'/'+agora.name))
+
+        # Mail to the user
+        if user.get_profile().has_perms('receive_email_updates'):
+            context = get_base_email_context(self.request)
+            context.update(dict(
+                agora=agora,
+                other_user=user,
+                notification_text=_('Your have been removed from admin '
+                    'membership from %(agora)s . Sorry about that!') % dict(
+                            agora=agora.get_full_name()
+                        ),
+                to=user
+            ))
+
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - admin membership removed from '
+                    '%(agora)s') % dict(
+                        site=Site.objects.get_current().domain,
+                        agora=agora.get_full_name()
+                    ),
+                body=render_to_string('agora_core/emails/agora_notification.txt',
+                    context),
+                to=[user.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/agora_notification.html',
+                    context), "text/html")
+            email.send()        
 
         return self.go_next(request)
 

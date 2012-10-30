@@ -1,7 +1,7 @@
 {% load i18n %}{% load agora_utils %}{% autoescape off %}
 {% blocktrans with to_username=to.username agora_full_name=agora.get_full_name agora_url=agora.get_link site_domain=site.domain other_user_name=other_user.username other_user_url=other_user.get_profile.get_link %}Hello {{ to_username }},
 
-{{ other_user_name }} has requested admin membership at agora {{ agora_full_name }}. Please review this pending request.
+{{ notification_text }}.
 
 Agora URL: {{ protocol }}://{{ site_domain }}{{ agora_url }}
 
