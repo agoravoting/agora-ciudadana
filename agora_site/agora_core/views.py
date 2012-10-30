@@ -715,6 +715,14 @@ class ArchiveElectionView(FormActionView):
             return self.go_next(request)
 
         election.archived_at_date = datetime.datetime.now()
+
+        if election.has_started() and not election.has_ended():
+            election.voting_ends_at_date = election.archived_at_date
+            election.voting_extended_until_date = election.archived_at_date
+
+        if not election.is_frozen():
+            election.frozen_at_date = election.archived_at_date
+
         election.save()
 
         context = get_base_email_context(self.request)
