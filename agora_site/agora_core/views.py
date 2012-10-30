@@ -920,6 +920,7 @@ class AgoraActionChooseDelegateView(FormActionView):
             delegate=delegate,
             vote=vote
         ))
+
         # Mail to the voter
         if vote.voter.get_profile().has_perms('receive_email_updates'):
             context['to'] = vote.voter
@@ -939,10 +940,23 @@ class AgoraActionChooseDelegateView(FormActionView):
                     context), "text/html")
             email.send()
 
-        # TODO: Mail to the delegate, only if it's a public delegation
-        #if vote.is_public and delegate.get_profile().has_perms('receive_email_updates'):
-            #context['to'] = delegate
+        if vote.is_public and delegate.get_profile().has_perms('receive_email_updates'):
+            context['to'] = delegate
 
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - You have a new delegation in %(agora)s') %\
+                    dict(
+                        site=Site.objects.get_current().domain,
+                        agora=agora.get_full_name()
+                    ),
+                body=render_to_string('agora_core/emails/new_delegation.txt',
+                    context),
+                to=[delegate.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/new_delegation.html',
+                    context), "text/html")
+            email.send()
 
         messages.add_message(self.request, messages.SUCCESS, _('You delegated '
             'your vote in %(agora)s to %(username)s! Now you could share this '
