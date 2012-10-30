@@ -1016,11 +1016,38 @@ class AgoraActionJoinView(FormActionView):
                 ipaddr=request.META.get('REMOTE_ADDR'),
                 geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
-            # TODO: send an email to the user
             messages.add_message(request, messages.SUCCESS, _('You requested '
                 'membership in %(agora)s. Soon the admins of this agora will '
                 'decide on your request.') % dict(
                     agora=agora.creator.username+'/'+agora.name))
+
+            context = get_base_email_context(self.request)
+            context.update(dict(
+                agora=agora,
+                other_user=request.user,
+            ))
+
+            # Mail to the admins
+            for admin in agora.admins.all():
+                if not admin.get_profile().has_perms('receive_email_updates'):
+                    continue
+
+                context['to'] = admin
+
+                email = EmailMultiAlternatives(
+                    subject=_('%(site)s - New membership request at %(agora)s') %\
+                        dict(
+                            site=Site.objects.get_current().domain,
+                            agora=agora.get_full_name()
+                        ),
+                    body=render_to_string('agora_core/emails/membership_request.txt',
+                        context),
+                    to=[admin.email])
+
+                email.attach_alternative(
+                    render_to_string('agora_core/emails/membership_request.html',
+                        context), "text/html")
+                email.send()
 
             if not is_following(request.user, agora):
                 follow(request.user, agora, actor_only=False, request=request)

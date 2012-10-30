@@ -1,0 +1,13 @@
+{% load i18n %}{% load agora_utils %}{% autoescape off %}
+{% blocktrans with to_username=to.username agora_full_name=agora.get_full_name agora_url=agora.get_link site_domain=site.domain other_user_name=other_user.username other_user_url=other_user.get_profile.get_link %}Hello {{ to_username }},
+
+{{ other_user_name }} has  requested membership at agora {{ agora_full_name }}. Please review this pending request.
+
+Agora URL: {{ protocol }}://{{ site_domain }}{{ agora_url }}
+
+User URL: {{ protocol }}://{{ site_domain }}{{ other_user_url }}
+
+{% endblocktrans %}
+--
+{% blocktrans with to_email=to.username site_name=site.name site_domain=site.domain %}This message was sent to {{ to_email }}. If you want to stop receiving these message from {{ site_name }}, please click here: {{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}
+{% endblocktrans %}{% endautoescape %}
