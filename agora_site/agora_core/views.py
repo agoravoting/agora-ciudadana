@@ -1021,13 +1021,12 @@ class AgoraActionJoinView(FormActionView):
                 'decide on your request.') % dict(
                     agora=agora.creator.username+'/'+agora.name))
 
+            # Mail to the admins
             context = get_base_email_context(self.request)
             context.update(dict(
                 agora=agora,
                 other_user=request.user,
             ))
-
-            # Mail to the admins
             for admin in agora.admins.all():
                 if not admin.get_profile().has_perms('receive_email_updates'):
                     continue
@@ -1081,7 +1080,33 @@ class AgoraActionRequestAdminMembershipView(FormActionView):
             ipaddr=request.META.get('REMOTE_ADDR'),
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
-        # TODO: send an email to the user
+        # Mail to the admins
+        context = get_base_email_context(self.request)
+        context.update(dict(
+            agora=agora,
+            other_user=request.user,
+        ))
+        for admin in agora.admins.all():
+            if not admin.get_profile().has_perms('receive_email_updates'):
+                continue
+
+            context['to'] = admin
+
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - New admin membership request at %(agora)s') %\
+                    dict(
+                        site=Site.objects.get_current().domain,
+                        agora=agora.get_full_name()
+                    ),
+                body=render_to_string('agora_core/emails/admin_membership_request.txt',
+                    context),
+                to=[admin.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/admin_membership_request.html',
+                    context), "text/html")
+            email.send()
+
         messages.add_message(request, messages.SUCCESS, _('You requested '
             'admin membership in %(agora)s. Soon the admins of this agora will '
             'decide on your request.') % dict(
