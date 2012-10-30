@@ -1219,7 +1219,7 @@ class AgoraActionAcceptMembershipRequestView(FormActionView):
                 agora=agora.creator.username+'/'+agora.name))
 
         # Mail to the user
-        if not user.get_profile().has_perms('receive_email_updates'):
+        if user.get_profile().has_perms('receive_email_updates'):
             context = get_base_email_context(self.request)
             context.update(dict(
                 agora=agora,
