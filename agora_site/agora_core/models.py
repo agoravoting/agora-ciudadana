@@ -283,7 +283,8 @@ class Agora(models.Model):
                 '-voting_extended_until_date')
 
     # Stablishes a default option for elections
-    is_vote_secret = models.BooleanField(_('Is Vote Secret'), default=False)
+    is_vote_secret = models.BooleanField(_('Is delegation secret'), default=False,
+        help_text=_('if activated, when you delegate to someone, nobody will know who you delegated to'))
 
     # Stablishes a default option for elections
     #use_voter_aliases = models.BooleanField(_('Use Voter Aliases'), default=False)
