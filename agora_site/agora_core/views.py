@@ -1038,7 +1038,25 @@ class AgoraActionJoinView(FormActionView):
                     '%(agora)s. Please review this pending request') % dict(
                         username=request.user.username,
                         agora=agora.get_full_name()
+                    ),
+                extra_urls=(
+                    (_('Accept membership request'),
+                    reverse('agora-action-accept-membership-request',
+                        kwargs=dict(
+                            username=agora.creator,
+                            agoraname=agora.name,
+                            username2=self.request.user.username
+                        ))
+                    ),
+                    (_('Dismiss membership request'),
+                    reverse('agora-action-dismiss-membership-request',
+                        kwargs=dict(
+                            username=agora.creator,
+                            agoraname=agora.name,
+                            username2=self.request.user.username
+                        ))
                     )
+                ),
             ))
             for admin in agora.admins.all():
                 if not admin.get_profile().has_perms('receive_email_updates'):
@@ -1102,7 +1120,25 @@ class AgoraActionRequestAdminMembershipView(FormActionView):
                 'at %(agora)s. Please review this pending request') % dict(
                     username=request.user.username,
                     agora=agora.get_full_name()
+                ),
+            extra_urls=(
+                (_('Accept admin membership request'),
+                reverse('agora-action-accept-admin-membership-request',
+                    kwargs=dict(
+                        username=agora.creator,
+                        agoraname=agora.name,
+                        username2=self.request.user.username
+                    ))
+                ),
+                (_('Dismiss admin  membership request'),
+                reverse('agora-action-dismiss-admin-membership-request',
+                    kwargs=dict(
+                        username=agora.creator,
+                        agoraname=agora.name,
+                        username2=self.request.user.username
+                    ))
                 )
+            ),
         ))
         for admin in agora.admins.all():
             if not admin.get_profile().has_perms('receive_email_updates'):
