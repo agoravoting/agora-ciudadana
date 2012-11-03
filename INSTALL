@@ -65,7 +65,7 @@ with:
 And then for celery to actually process the tasks sent to it (for example start
 or stop an election), you need to run it as a daemon:
 
-    $ ./manage.py celeryd -l INFO
+    $ ./manage.py celeryd -l INFO -B -S djcelery.schedulers.DatabaseScheduler
 
 That's it! Start the webserver with:
 

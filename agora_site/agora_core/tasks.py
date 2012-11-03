@@ -172,3 +172,8 @@ def end_election(election_id, is_secure, site_id, remote_addr, user_id):
         target=election.agora, ipaddr=remote_addr,
         geolocation=json.dumps(geolocate_ip(remote_addr)))
 
+
+@task(ignore_result=True)
+def clean_expired_users():
+    from userena.models import UserenaSignup
+    UserenaSignup.objects.delete_expired_users()
