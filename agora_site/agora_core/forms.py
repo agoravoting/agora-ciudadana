@@ -703,9 +703,10 @@ class ContactForm(django_forms.Form):
             name = self.cleaned_data['name']
             email = self.cleaned_data['email']
 
-        message = _("Message from %(name)s <%(email)s>: \n\n %(msg)s") % dict(
+        message = _("[%(site)s] Message from %(name)s <%(email)s>: \n\n %(msg)s") % dict(
             msg=self.cleaned_data['message'],
             email=email,
+            site=Site.objects.get_current().name,
             name=name)
 
         from django.core.mail import mail_admins
