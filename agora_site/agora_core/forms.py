@@ -206,14 +206,16 @@ class AgoraAdminForm(django_forms.ModelForm):
         super(AgoraAdminForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.request = request
-        self.helper.layout = Layout(Fieldset(_('General settings'), 'pretty_name', 'short_description', 'biography', 'is_vote_secret', 'membership_policy'))
+        self.helper.layout = Layout(Fieldset(_('General settings'), 'pretty_name', 'short_description', 'biography', 'is_vote_secret', 'membership_policy', 'comments_policy'))
         self.helper.add_input(Submit('submit', _('Save settings'), css_class='btn btn-success btn-large'))
 
     class Meta:
         model = Agora
-        fields = ('pretty_name', 'short_description', 'is_vote_secret', 'biography', 'membership_policy')
+        fields = ('pretty_name', 'short_description', 'is_vote_secret',
+            'biography', 'membership_policy', 'comments_policy')
         widgets = {
-            'membership_policy': django_forms.RadioSelect
+            'membership_policy': django_forms.RadioSelect,
+            'comments_policy': django_forms.RadioSelect
         }
 
 class CreateElectionForm(django_forms.ModelForm):
@@ -288,6 +290,7 @@ class CreateElectionForm(django_forms.ModelForm):
             kwargs=dict(username=election.agora.creator.username, agoraname=election.agora.name,
                 electionname=election.name)))
         election.election_type = Agora.ELECTION_TYPES[0][0] # ONE CHOICE
+        election.comments_policy = self.agora.comments_policy
 
         if ("from_date" in self.cleaned_data) and ("to_date" in self.cleaned_data):
             from_date = self.cleaned_data["from_date"]
@@ -372,7 +375,7 @@ class ElectionEditForm(django_forms.ModelForm):
             self.fields['from_date'].initial = instance.voting_starts_at_date.strftime('%m/%d/%Y %H:%M')
             self.fields['to_date'].initial = instance.voting_ends_at_date.strftime('%m/%d/%Y %H:%M')
 
-        self.helper.layout = Layout(Fieldset(_('General settings'), 'pretty_name', 'description', 'question', 'answers', 'is_vote_secret'))
+        self.helper.layout = Layout(Fieldset(_('General settings'), 'pretty_name', 'description', 'question', 'answers', 'is_vote_secret', 'comments_policy'))
         self.helper.add_input(Submit('submit', _('Save settings'), css_class='btn btn-success btn-large'))
 
     def clean(self, *args, **kwargs):
@@ -446,7 +449,10 @@ class ElectionEditForm(django_forms.ModelForm):
 
     class Meta:
         model = Election
-        fields = ('pretty_name', 'description', 'is_vote_secret')
+        fields = ('pretty_name', 'description', 'is_vote_secret', 'comments_policy')
+        widgets = {
+            'comments_policy': django_forms.RadioSelect
+        }
 
 
 class VoteForm(django_forms.ModelForm):

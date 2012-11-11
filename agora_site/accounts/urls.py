@@ -29,7 +29,7 @@ from agora_site.accounts.forms import (AccountSignupForm, AcccountAuthForm,
 from agora_site.accounts import views as accounts_views
 
 urlpatterns = patterns('',
-    # User-View TODO
+    # User-View
     url(r'^(?P<username>[\.\w]+)/view/$',
        TemplateView.as_view(template_name='base.html'),
        name='user-view'),

@@ -10,8 +10,10 @@
 {% block content-wrapper-class %}comments{% endblock %}
 
 {% block agora_content %}
-{% if request.user.is_authenticated %}
+{% if request.user.is_authenticated and "comment" in agora|get_perms:request.user %}
     {% crispy form %}
+{% else %}
+    <div class="clear"></div>
 {% endif %}
 
 {{ block.super }}

@@ -1900,6 +1900,15 @@ class AgoraPostCommentView(RequestCreateView):
             kwargs=dict(username=self.agora.creator.username,
                 agoraname=self.agora.name))
 
+    def post(self, request, *args, **kwargs):
+        if not self.agora.has_perms('comment', self.request.user):
+            messages.add_message(self.request, messages.ERROR, _('Sorry, but '
+            'you don\'t have comment permissions on %(agora)s.') %\
+                dict(agora=self.agora.get_full_name('link')))
+            return http.HttpResponseRedirect(agora.get_link())
+
+        return super(AgoraPostCommentView, self).post(request, *args, **kwargs)
+
     def dispatch(self, *args, **kwargs):
         self.kwargs = kwargs
 
