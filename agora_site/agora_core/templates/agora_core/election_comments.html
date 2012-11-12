@@ -13,7 +13,7 @@
 {% block election_content %}
 
 {% with permissions=election|get_perms:user %}
-{% if "comment_election" in permissions %}
+{% if form and "comment_election" in permissions %}
     {% crispy form %}
 {% endif %}
 {% endwith %}
