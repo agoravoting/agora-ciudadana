@@ -1183,7 +1183,7 @@ msgstr "Para delegar antes ten que formar parte da ágora."
 #, python-format
 msgid "%(site)s - You delegated your vote in %(agora)s"
 msgstr ""
-"%(site)s — Delegou o seu voto na ágora «%(agora)s» en «%(username)s». "
+"%(site)s — Delegou o seu voto na ágora «%(agora)s». "
 "Compártao en "
 "Facebook, Google Plus, Twitter, etc"
 
@@ -1191,7 +1191,7 @@ msgstr ""
 #, python-format
 msgid "%(site)s - You have a new delegation in %(agora)s"
 msgstr ""
-"%(site)s — Ten unha nova delegación na ágora «%(agora)s» en «%(username)s». "
+"%(site)s — Ten unha nova delegación na ágora «%(agora)s». "
 "Compártao en "
 "Facebook, Google Plus, Twitter, etc"
 
