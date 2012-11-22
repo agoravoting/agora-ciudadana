@@ -716,7 +716,10 @@ class VoteForm(django_forms.ModelForm):
         vote.election = self.election
         vote.is_counted = self.request.user in self.election.agora.members.all()
         vote.is_direct = True
-        if 'submit-secret' in self.request.POST:
+
+        if self.election.is_vote_secret and ('submit-secret' in self.request.POST) and\
+            (self.request.user in self.election.agora.members.all() or\
+                self.election.agora.has_perms('join', self.request.user)):
             vote.is_public = False
             vote.reason = None
         else:
