@@ -25,9 +25,9 @@ http://docs.djangoproject.com/en/dev/topics/install/
 
 First we need to create  the virtual environment where dependencies will
 be installed:
-
+'''
     $ ./virtualenv.py --system-site-packages env
-
+'''
 Now everytime  we want to  use the installed  virtualenv, we can  do the
 following within the directory containing the env/ subdirectory:
 
