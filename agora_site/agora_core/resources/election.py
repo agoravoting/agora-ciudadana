@@ -1,4 +1,5 @@
 from agora_site.agora_core.models import Election
+from agora_site.agora_core.models import CastVote
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.agora_core.resources.user import UserResource
 from agora_site.agora_core.resources.agora import AgoraResource
@@ -7,6 +8,22 @@ from tastypie import fields
 
 
 DELEGATION_URL = "http://example.com/delegation/has/no/url/"
+CAST_VOTE_RESOURCE = 'agora_site.agora_core.resources.castvote.CastVoteResource'
+
+
+def all_votes(bundle):
+    # bundle.obj is an Election
+    return bundle.obj.get_all_votes()
+
+
+def votes_from_delegates(bundle):
+    # bundle.obj is an Election
+    return bundle.obj.get_votes_from_delegates()
+
+
+def direct_votes(bundle):
+    # bundle.obj is an Election
+    return bundle.obj.get_direct_votes()
 
 
 class ElectionResource(GenericResource):
@@ -15,12 +32,20 @@ class ElectionResource(GenericResource):
     agora = fields.ForeignKey(AgoraResource, 'agora')
     parent_election = fields.ForeignKey('self',
                                 'parent_election', null=True)
-    delegated_votes = fields.ManyToManyField('agora_site.agora_core.resources.castvote.CastVoteResource',
+    delegated_votes = fields.ManyToManyField(CAST_VOTE_RESOURCE,
                                              'delegated_votes',
                                              full=True)
-    cast_votes = fields.ToManyField('agora_site.agora_core.resources.castvote.CastVoteResource',
-                                             'cast_votes',
-                                             full=True)
+    cast_votes = fields.ToManyField(CAST_VOTE_RESOURCE,
+                                             'cast_votes')
+    all_votes = fields.ToManyField(CAST_VOTE_RESOURCE,
+                                    attribute=all_votes, full=True)
+    votes_from_delegates = fields.ToManyField(CAST_VOTE_RESOURCE,
+                                    attribute=votes_from_delegates,
+                                    full=True)
+    direct_votes = fields.ToManyField(CAST_VOTE_RESOURCE,
+                                    attribute=direct_votes,
+                                    full=True)
+    percentage_of_participation = fields.IntegerField()
 
     class Meta:
         queryset = Election.objects\
@@ -31,3 +56,6 @@ class ElectionResource(GenericResource):
         detail_allowed_methods = ['get']
 
         excludes = ['PROHIBITED_ELECTION_NAMES']
+
+    def dehydrate_percentage_of_participation(self, bundle):
+        return bundle.obj.percentage_of_participation()
