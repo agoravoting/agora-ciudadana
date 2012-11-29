@@ -1,5 +1,6 @@
-from agora_site.misc.generic_resource import GenericResource, GenericMeta
+from tastypie.resources import ALL
 
+from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from actstream.models import Follow, Action
 
 
@@ -8,7 +9,11 @@ class FollowResource(GenericResource):
         queryset = Follow.objects.all()
 
 
-
 class ActionResource(GenericResource):
     class Meta(GenericMeta):
         queryset = Action.objects.all()
+        filtering = {
+                        'action_object': ALL,
+                        'actor': ALL,
+                        'target': ALL
+                    }
