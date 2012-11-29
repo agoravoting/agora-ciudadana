@@ -59,10 +59,6 @@ After that, we need to configure the database (we use sqlite by default):
 $ ./manage.py syncdb --migrate --noinput
 ```
 
-```sh
-$ ./manage.py migrate
-```
-
 If you get an error saying something about xapin not installed, you need
 to install  the package python-xapian.  In ubuntu it comes  installed by
 default,
@@ -114,12 +110,12 @@ using a web server like cherokee, lighthttpd or apache configured to use
 fast-cgi  and django,  and  a more  powerful  database like  postgresql.
 Django documentation explains how to do that:
 
-    [Django Install](http://docs.djangoproject.com/en/dev/topics/install/)
+[Django Install](http://docs.djangoproject.com/en/dev/topics/install/)
 
 We also refer  to celery documentation for more details  on how to setup
 them correctly in your server:
 
-    [Celery Documentation](http://docs.celeryproject.org/en/latest/getting-started/brokers/rabbitmq.html)
+[Celery Documentation](http://docs.celeryproject.org/en/latest/getting-started/brokers/rabbitmq.html)
 
 
 ### Translations
@@ -166,7 +162,7 @@ like to add to the project. Please send them to us.
 If you find  a bug or would like  to request a feature you may  do so at
 the issue tracker for this project:
 
-    [Issues](https://github.com/agoraciudadana/agora-ciudadana/issues/new)
+[Issues](https://github.com/agoraciudadana/agora-ciudadana/issues/new)
 
 Note that you don't  need to be a developer to be  able to contribute to
 Agora: You can also help  us adding or maintaining translations, testing
@@ -177,7 +173,7 @@ We use Trello for managing the  work in the project, using the following
 board where  all the  work we are  doing and planning  to do  for future
 releases can be seen at a glance:
 
-    [Trello](https://trello.com/board/agora-ciudadana/5054e9e060d5bc9a08196b96)
+[Trello](https://trello.com/board/agora-ciudadana/5054e9e060d5bc9a08196b96)
 
 
 ### Contact
@@ -186,6 +182,6 @@ Should  you have  any  doubt or  problem please  contact  us sending  an
 email to agora-ciudadana-devel@googlegroups.com which is the development
 mailing list of the project. The url of the google group is:
 
-   [Agora Ciudadana Dev](https://groups.google.com/group/agora-ciudadana-devel)
+[Agora Ciudadana Dev](https://groups.google.com/group/agora-ciudadana-devel)
 
 That's all!
