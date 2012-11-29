@@ -21,3 +21,4 @@ pygeoip
 django-dajaxice
 celery
 django-celery
+django-tastypie
