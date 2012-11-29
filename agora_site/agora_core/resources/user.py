@@ -1,6 +1,5 @@
 import json
 
-from django.conf.urls.defaults import *
 from django.contrib.auth.models import User
 from django.conf.urls.defaults import url
 
@@ -26,7 +25,7 @@ class UserResource(GenericResource):
             #url(r"^(?P<resource_name>%s)/register%s$" % (self._meta.resource_name, trailing_slash()),
                                                          #self.wrap_view('register'), name="api_user_register"),
             url(r"^(?P<resource_name>%s)/username_available%s$" \
-                % (self._meta.resource_name, trailing_slash()), 
+                % (self._meta.resource_name, trailing_slash()),
                 self.wrap_form(form_class=UsernameAvailableForm, method="GET"), name="api_username_available"),
             #url(r"^(?P<resource_name>%s)/forgot_password%s$" % (self._meta.resource_name, trailing_slash()),
                                                                 #self.wrap_view('forgot_password'),
@@ -36,6 +35,9 @@ class UserResource(GenericResource):
                                                                #name="api_reset_password"),
             #url(r"^(?P<resource_name>%s)/disable%s$" % (self._meta.resource_name, trailing_slash()),
                                                          #self.wrap_view('user_disable'), name="api_user_disable"),
+            url(r"^(?P<resource_name>%s)/set_username/(?P<user_list>\w[\w/;-]*)%s$" % (self._meta.resource_name, trailing_slash()),
+                                                                                       self.wrap_view('user_set_by_username'),
+                                                                                       name="api_user_set_by_username")
         ]
 
     def user_settings(self, request, **kwargs):
@@ -52,3 +54,19 @@ class UserResource(GenericResource):
         elif request.method == 'PUT':
             # TODO
             pass
+
+    def user_set_by_username(self, request, **kwargs):
+        user_list = kwargs['user_list'].split(';')
+        users = User.objects.filter(username__in=user_list)
+        objects = []
+
+        for user in users:
+            bundle = self.build_bundle(obj=user, request=request)
+            bundle = self.full_dehydrate(bundle)
+            objects.append(bundle)
+
+        object_list = {
+                        'objects': objects
+                      }
+
+        return self.create_response(request, object_list)
