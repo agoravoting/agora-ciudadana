@@ -52,6 +52,13 @@ class CreateAgoraForm(django_forms.ModelForm):
         self.helper.layout = Layout(Fieldset(_('Create Agora'), 'pretty_name', 'short_description', 'is_vote_secret'))
         self.helper.add_input(Submit('submit', _('Create Agora'), css_class='btn btn-success btn-large'))
 
+
+    def clean_pretty_name(self):
+        """ Validate that the email is not already registered with another user """
+        if User.objects.filter(email__iexact=self.cleaned_data['email']).exclude(email__iexact=self.user.email):
+            raise django_forms.ValidationError(_(u'This email is already in use. Please supply a different email.'))
+        return self.cleaned_data['email']
+
     def save(self, *args, **kwargs):
         agora = super(CreateAgoraForm, self).save(commit=False)
         agora.create_name(self.request.user)
