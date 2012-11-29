@@ -1,3 +1,4 @@
+from django.conf.urls.defaults import *
 from django.contrib.auth.models import User
 from tastypie.utils import trailing_slash
 
@@ -9,6 +10,11 @@ class UserResource(GenericResource):
         queryset = User.objects.all()
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get']
+
+    def override_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)/(?P<username>[\w\d_.-]+)/$" % self._meta.resource_name, self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
+        ]
 
     def prepend_urls(self):
         return [
