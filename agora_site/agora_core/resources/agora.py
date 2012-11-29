@@ -16,10 +16,3 @@ class AgoraResource(GenericResource):
         #authentication = SessionAuthentication()
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get']
-
-    class Meta:
-
-        queryset = Agora.objects.all()
-        #authentication = SessionAuthentication()
-        list_allowed_methods = ['get', 'post']
-        detail_allowed_methods = ['get']
