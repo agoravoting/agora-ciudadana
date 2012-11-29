@@ -7,6 +7,15 @@ from tastypie import fields
 
 class AgoraResource(GenericResource):
     creator = fields.ForeignKey(UserResource, 'creator')
+    members = fields.ManyToManyField(UserResource, 'members')
+    admins = fields.ManyToManyField(UserResource, 'admins')
+
+    class Meta:
+
+        queryset = Agora.objects.all()
+        #authentication = SessionAuthentication()
+        list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get']
 
     class Meta:
 
