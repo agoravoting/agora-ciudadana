@@ -2,7 +2,6 @@ from agora_site.agora_core.models import Election
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.agora_core.resources.user import UserResource
 from agora_site.agora_core.resources.agora import AgoraResource
-#from agora_site.agora_core.resources.cast_vote import CastVoteResource
 
 from tastypie import fields
 
@@ -16,8 +15,12 @@ class ElectionResource(GenericResource):
     agora = fields.ForeignKey(AgoraResource, 'agora')
     parent_election = fields.ForeignKey('self',
                                 'parent_election', null=True)
-    # delegated votes = fields.ManyToManyField(CastVoteResource,
-    #                                          'delegated_votes')
+    delegated_votes = fields.ManyToManyField('agora_site.agora_core.resources.castvote.CastVoteResource',
+                                             'delegated_votes',
+                                             full=True)
+    cast_votes = fields.ToManyField('agora_site.agora_core.resources.castvote.CastVoteResource',
+                                             'cast_votes',
+                                             full=True)
 
     class Meta:
         queryset = Election.objects\
