@@ -6,9 +6,9 @@ from tastypie import fields
 
 
 class AgoraResource(GenericResource):
-    creator = fields.ForeignKey(UserResource, 'creator')
-    members = fields.ManyToManyField(UserResource, 'members')
-    admins = fields.ManyToManyField(UserResource, 'admins')
+    creator = fields.ForeignKey(UserResource, 'creator', full=True)
+    members = fields.ManyToManyField(UserResource, 'members', full=True)
+    admins = fields.ManyToManyField(UserResource, 'admins', full=True)
 
     class Meta:
 
