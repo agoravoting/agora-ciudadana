@@ -59,23 +59,12 @@ class CreateAgoraForm(django_forms.ModelForm):
         agora.url = self.request.build_absolute_uri(reverse('agora-view',
             kwargs=dict(username=agora.creator.username, agoraname=agora.name)))
 
-        election = Election()
+        # we need to save before add members
         agora.save()
-        election.agora = agora
-        election.creator = self.request.user
-        election.name = "delegation"
-        # Delegation elections do not actually need an url
-        election.url = "http://example.com/delegation/has/no/url/" + str(uuid.uuid4())
-        election.description = election.short_description = "voting used for delegation"
-        election.election_type = Agora.ELECTION_TYPES[1][0] # simple delegation
-        election.uuid = str(uuid.uuid4())
-        election.created_at_date = datetime.datetime.now()
-        election.create_hash()
-        election.save()
-        agora.delegation_election = election
+
         agora.members.add(self.request.user)
         agora.admins.add(self.request.user)
-        agora.save()
+
         return agora
 
     class Meta:
