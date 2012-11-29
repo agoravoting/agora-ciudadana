@@ -52,8 +52,7 @@ class UserResource(GenericResource):
 
             return self.create_response(request, bundle)
         elif request.method == 'PUT':
-            # TODO
-            pass
+            return self.put_detail(request)
 
     def user_set_by_username(self, request, **kwargs):
         user_list = kwargs['user_list'].split(';')
