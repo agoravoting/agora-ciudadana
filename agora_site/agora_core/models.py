@@ -514,6 +514,28 @@ class Agora(models.Model):
                 agoraname=self.name
             )
 
+def create_delegation_election(sender, instance, created, **kwargs):
+    if not created:
+        return
+
+    election = Election()
+    election.agora = instance
+    election.creator = instance.creator
+    election.name = "delegation"
+    # Delegation elections do not actually need an url
+    election.url = "http://example.com/delegation/has/no/url/" + str(uuid.uuid4())
+    election.description = election.short_description = "voting used for delegation"
+    election.election_type = Agora.ELECTION_TYPES[1][0] # simple delegation
+    election.uuid = str(uuid.uuid4())
+    election.created_at_date = datetime.datetime.now()
+    election.create_hash()
+    election.save()
+
+    instance.delegation_election = election
+    instance.save()
+
+post_save.connect(create_delegation_election, sender=Agora)
+
 
 class Election(models.Model):
     '''
