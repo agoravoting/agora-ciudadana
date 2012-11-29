@@ -4,15 +4,13 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Q
-from django.shortcuts import redirect, get_object_or_404
-from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save
 
 from userena.models import UserenaLanguageBaseProfile
 from guardian.shortcuts import *
 
-from agora_site.misc.utils import JSONField, get_users_with_perm
+from agora_site.misc.utils import JSONField
 from agora import Agora
 from election import Election
 from castvote import CastVote
