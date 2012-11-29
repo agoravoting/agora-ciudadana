@@ -23,12 +23,17 @@ from endless_pagination.views import AjaxListView
 
 from agora_site.agora_core.views import *
 from agora_site.misc.utils import RequestCreateView
-
+from .api import v1
 
 if 'rosetta' in settings.INSTALLED_APPS:
     urlpatterns = patterns('',
         url(r'^rosetta/', include('rosetta.urls')),
     )
+
+# The Agora REST v API
+urlpatterns += patterns('',
+    url(r'^api/', include(v1.urls)),
+)
 
 urlpatterns += patterns('',
     url(r'^$', HomeView.as_view(), name='home'),
