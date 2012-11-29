@@ -4,3 +4,4 @@ env/*
 custom_settings.py
 *.kdev4*
 *.mo
+*.sw?
