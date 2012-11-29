@@ -1,11 +1,10 @@
-from tastypie.resources import ModelResource
-from tastypie.authorization import Authorization
-
 from django.contrib.auth.models import User
 
-class UserResource(ModelResource):
-    class Meta:
+from agora_site.misc.generic_resource import GenericResource, GenericMeta
+
+
+class UserResource(GenericResource):
+    class Meta(GenericMeta):
         queryset = User.objects.all()
-        authorization = Authorization()
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get']
