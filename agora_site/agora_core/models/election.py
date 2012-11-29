@@ -377,6 +377,8 @@ class Election(models.Model):
         Counts both direct and delegated votes that are counted
         '''
 
+        from agora_site.agora_core.models import CastVote
+
         # TODO: When you have first voted directly in a voting and then you
         # delegate your vote in the agora, it's currently not counted
         if self.ballot_is_open():
@@ -527,6 +529,8 @@ class Election(models.Model):
         '''
         Computes the result of the election
         '''
+
+        from agora_site.agora_core.models import CastVote
 
         # Query with the direct votes in this election
         q=self.cast_votes.filter(
