@@ -200,18 +200,18 @@ class UserTest(RootTestCase):
         self.assertEqual(data['status'], 'success')
         data = self.getAndParse('user/settings/')        
         self.assertEqual(data['id'], '-1')
-        
+
     # argless call error causes this test to fail
-    def test_username_available(self):        
-        data = self.getAndParse('user/username_available/')
-        data = self.getAndParse('user/username_available?username=asdasd')        
+    def test_username_available(self):
+        data = self.getAndParse('user/username_available/?username=asdasd')
         self.assertEqual(data['status'], 'success')
-        data = self.getAndParse('user/username_available?username=david')
-        self.assertEqual(data['status'], 'failure')        
-                
+        data = self.getAndParse('user/username_available/?username=david')
+        self.assertEqual(data['status'], 'failed')
+
+
 class MiscTest(RootTestCase):    
     def test_login(self):    
         "Test that the django test client log in works"
         self.login('david', 'david')
         data = self.getAndParse('user/settings/')        
-        self.assertEqual(data['username'], 'david')        
+        self.assertEqual(data['username'], 'david')
