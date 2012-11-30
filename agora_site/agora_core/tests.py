@@ -159,19 +159,26 @@ class UserTest(RootTestCase):
             
     # register api call throws error causing this test to fail
     def test_register(self):
+        from django.core.management import call_command
+
+        # creates permissions tables needed by userna to create users
+        # for more info look at
+        # http://docs.django-userena.org/en/latest/faq.html#i-get-a-permission-matching-query-does-not-exist-exception
+        call_command('check_permissions', verbosity=0, interactive=False)
+
         # test 2^4 combinations
         ps = self.powerset([{'email': 'hohoho@hoho.com'}, {'password1': 'hello'}, {'password2': 'hello'}, {'username': 'username'}])
         for i in ps:
             params = {}
-            if(len(i) > 0):        
-                params = reduce(self.merge, i)          
-            
-            data = self.postAndParse('user/register/', params)                                               
-            if(len(i) == 4):                                                
-                self.assertEqual(data['status'], 'success')                            
-            else:            
+            if(len(i) > 0):
+                params = reduce(self.merge, i)
+
+            data = self.postAndParse('user/register/', params)
+            if(len(i) == 4):
+                self.assertEqual(data['status'], 'success')
+            else:
                 self.assertEqual(data['status'], 'failed')
-                
+
         # bad email
         data = self.postAndParse('user/register/', {'email': 'hoho.com', 'password1': 'hello', 'password1': 'hello2', 'username': 'username'})        
         self.assertEqual(data['status'], 'failed')
