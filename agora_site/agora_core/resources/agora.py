@@ -17,6 +17,12 @@ class CreateAgoraForm(ModelForm):
         model = Agora
         fields = ('pretty_name', 'short_description', 'is_vote_secret')
 
+class AgoraAdminForm(ModelForm):
+    class Meta:
+        model = Agora
+        fields = ('pretty_name', 'short_description', 'is_vote_secret',
+            'biography', 'membership_policy', 'comments_policy')
+
 
 class AgoraValidation(Validation):
     def is_valid(self, bundle, request=None):
@@ -31,8 +37,8 @@ class AgoraValidation(Validation):
         return {}
 
     def validate_put(self, bundle, request):
-        # TODO, validate PUT data
-        return {}
+        form = CleanedDataFormValidation(form_class=AgoraAdminForm)
+        return form.is_valid(bundle, request)
 
     def validate_post(self, bundle, request):
         form = CleanedDataFormValidation(form_class=CreateAgoraForm)
@@ -80,7 +86,7 @@ class AgoraResource(GenericResource):
     class Meta(GenericMeta):
         queryset = Agora.objects.all()
         list_allowed_methods = ['get', 'post']
-        detail_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post', 'put', 'delete']
         validation = AgoraValidation()
 
     def obj_create(self, bundle, request=None, **kwargs):
@@ -101,6 +107,16 @@ class AgoraResource(GenericResource):
 
         agora.members.add(request.user)
         agora.admins.add(request.user)
+
+        bundle = self.build_bundle(obj=agora, request=request)
+        bundle = self.full_dehydrate(bundle)
+        return bundle
+
+    def obj_update(self, bundle, request=None, **kwargs):
+        agora = Agora.objects.get(**kwargs)
+        for k, v in bundle.data.items():
+            setattr(agora, k, v)
+        agora.save()
 
         bundle = self.build_bundle(obj=agora, request=request)
         bundle = self.full_dehydrate(bundle)
