@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.utils import unittest
 from django.test import TestCase
 from django.test.client import Client
@@ -54,8 +53,8 @@ class AgoraTest(RootTestCase):
     def test_agora(self):
         # all
         data = self.getAndParse('agora/')                       
-        users = data['objects']                
-        self.assertEqual(len(users), 2)
+        agoras = data['objects']                
+        self.assertEqual(len(agoras), 2)
         
         # find
         data = self.getAndParse('agora/1/')
@@ -64,7 +63,7 @@ class AgoraTest(RootTestCase):
         data = self.getAndParse('agora/2/')
         self.assertEquals(data['name'], 'agoratwo')        
         
-        data = self.get('user/200/', 404)
+        data = self.get('agora/200/', 404)
         
         # TODO set
         
@@ -135,7 +134,7 @@ class UserTest(RootTestCase):
         # TODO, testing via PUT, not yet implemented in user.py
         
     def test_user_set_username(self):        
-        data = self.getAndParse('user/set_username/', 404)
+        data = self.get('user/set_username/', 404)
         data = self.getAndParse('user/set_username/david;user1/')
         self.assertEqual(len(data['objects']), 2)
         self.assertEquals(data['objects'][0]['username'], 'david')

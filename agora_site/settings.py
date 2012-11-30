@@ -178,8 +178,7 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
     'debug_toolbar',
     'reversion',
-    'south',
-    'guardian',
+    'south',    
     'easy_thumbnails',
     'userena',
     'rosetta',
@@ -191,7 +190,8 @@ INSTALLED_APPS = (
     'endless_pagination',
     'haystack',
     'dajaxice',
-    'djcelery'
+    'djcelery',
+    'guardian'
 )
 
 # A list the models that you want to enable actions for. Models must be in the
