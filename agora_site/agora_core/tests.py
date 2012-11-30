@@ -4,6 +4,8 @@ from django.test.client import Client
 from django.contrib.auth.models import User
 from django.utils import simplejson
 from itertools import *
+import json
+
 
 # FIXME better url treatment
 # FIXME relying on ordering when doing api set calls
@@ -37,17 +39,42 @@ class RootTestCase(TestCase):
 
         return data
 
-    def post(self, url, data = {}, code = 200):
-        response = self.client.post(API_ROOT + url, data)
+    def post(self, url, data = {}, code = 200, **kwargs):
+        response = self.client.post(API_ROOT + url, data, **kwargs)
         self.assertEqual(response.status_code, code)
 
         return response.content
 
-    def postAndParse(self, url, data = {}, code = 200):
-        json = self.post(url, data, code)
+    def postAndParse(self, url, data = {}, code = 200, **kwargs):
+        json = self.post(url, data, code, **kwargs)
         data = simplejson.loads(json)
 
         return data
+
+    def delete(self, url, data = {}, code = 200, **kwargs):
+        response = self.client.delete(API_ROOT + url, data, **kwargs)
+        self.assertEqual(response.status_code, code)
+
+        return response.content
+
+    def deleteAndParse(self, url, data = {}, code = 200, **kwargs):
+        json = self.delete(url, data, code, **kwargs)
+        data = simplejson.loads(json)
+
+        return data
+
+    def put(self, url, data = {}, code = 200, **kwargs):
+        response = self.client.put(API_ROOT + url, data, **kwargs)
+        self.assertEqual(response.status_code, code)
+
+        return response.content
+
+    def putAndParse(self, url, data = {}, code = 200, **kwargs):
+        json = self.put(url, data, code, **kwargs)
+        data = simplejson.loads(json)
+
+        return data
+
 
 class AgoraTest(RootTestCase):
     def test_agora(self):
@@ -56,6 +83,7 @@ class AgoraTest(RootTestCase):
         agoras = data['objects']
         self.assertEqual(len(agoras), 2)
 
+    def test_agora_find(self):
         # find
         data = self.getAndParse('agora/1/')
         self.assertEquals(data['name'], 'agoraone')
@@ -65,7 +93,52 @@ class AgoraTest(RootTestCase):
 
         data = self.get('agora/200/', 404)
 
-        # TODO set
+    def test_agora_creation(self):
+        # creating agora
+        self.login('david', 'david')
+        orig_data = {'pretty_name': 'created agora',
+                     'short_description': 'created agora description',
+                     'is_vote_secret': False}
+        data = self.postAndParse('agora/', json.dumps(orig_data), 201,
+                                 content_type='application/json')
+        self.assertEqual(data['pretty_name'], 'created agora')
+
+        data = self.getAndParse('agora/%s/' % data['id'])
+        for k, v in orig_data.items():
+            self.assertEquals(data[k], v)
+
+    def test_agora_deletion(self):
+        # TODO check permissions
+        self.login('david', 'david')
+        data = self.getAndParse('agora/')
+        agoras = data['objects']
+        self.assertEqual(len(agoras), 2)
+
+        self.delete('agora/1/', {}, 204)
+
+        data = self.getAndParse('agora/')
+        agoras = data['objects']
+        self.assertEqual(len(agoras), 1)
+
+        self.delete('agora/1/', {}, 404)
+        self.delete('agora/200/', {}, 404)
+
+    def test_agora_update(self):
+        # TODO check permissions
+        self.login('david', 'david')
+        orig_data = {'pretty_name': "updated name",
+                     'short_description': "new desc",
+                     'is_vote_secret': False,
+                     'biography': "bio",
+                     'membership_policy': 'ANYONE_CAN_JOIN',
+                     'comments_policy': 'ANYONE_CAN_COMMENT'}
+        data = self.putAndParse('agora/1/', json.dumps(orig_data), 202,
+                                 content_type='application/json')
+
+        data = self.getAndParse('agora/1/')
+        for k, v in orig_data.items():
+            self.assertEquals(data[k], v)
+
 
 class CastVoteTest(RootTestCase):
     # TODO
