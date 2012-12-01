@@ -1,13 +1,13 @@
-from agora_site.agora_core.models import Agora
-from agora_site.misc.generic_resource import GenericResource, GenericMeta
-from agora_site.agora_core.resources.user import UserResource
-
 from django.forms import ModelForm
 from django.core.urlresolvers import reverse
 
 from tastypie import fields
 from tastypie.validation import Validation, CleanedDataFormValidation
 
+from agora_site.agora_core.models import Agora
+from agora_site.misc.generic_resource import GenericResource, GenericMeta
+from agora_site.agora_core.resources.user import UserResource
+from agora_site.misc.decorators import permission_required
 
 ELECTION_RESOURCE = 'agora_site.agora_core.resources.election.ElectionResource'
 
@@ -89,6 +89,7 @@ class AgoraResource(GenericResource):
         detail_allowed_methods = ['get', 'post', 'put', 'delete']
         validation = AgoraValidation()
 
+    @permission_required('create', check_static=Agora)
     def obj_create(self, bundle, request=None, **kwargs):
         pretty_name = bundle.data['pretty_name']
         short_description = bundle.data['short_description']
