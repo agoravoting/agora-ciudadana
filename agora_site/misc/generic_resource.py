@@ -1,7 +1,7 @@
 from tastypie.authorization import Authorization
 from tastypie.resources import ModelResource
-from tastypie import fields
-from tastypie.exceptions import NotFound, BadRequest, InvalidFilterError, HydrationError, InvalidSortError, ImmediateHttpResponse
+from tastypie import fields, http
+from tastypie.exceptions import NotFound, BadRequest, InvalidFilterError, HydrationError, InvalidSortError, ImmediateHttpResponse, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, ValidationError
 from django.conf import settings
 
@@ -12,12 +12,15 @@ from django.utils import simplejson
 class GenericResource(ModelResource):
     def determine_format(self, request):
         """
-           Necessary to avoid the format=json
-           attribute in the urli
+           Necessary to avoid the format=json attribute in the urli
         """
         return 'application/json'
 
     def wrap_form(self, form_class, method="POST"):
+        """
+            Creates a view for a given form class, which calls to is_valid() 
+             and save() when needed
+        """
         @csrf_exempt
         def wrapper(request, *args, **kwargs):
             try:
@@ -28,18 +31,21 @@ class GenericResource(ModelResource):
                 response_data = {}
                 form = form_class(data=data)
                 form.request = request
+                response_class= HttpResponse
 
                 if not form.is_valid():
                     context = RequestContext(request, {})
                     context['form'] = form
                     errors = dict([(k, form.error_class.as_text(v)) for k, v in form.errors.items()])
-                    response_data['status'] = 'failed'
                     response_data['errors'] = errors
+
+                    desired_format = self.determine_format(request)
+                    serialized = self.serialize(request, response_data, desired_format)
+                    return http.HttpBadRequest(serialized)
 
                 else:
                     if hasattr(form, "save"):
                         form.save()
-                    response_data['status'] = 'success'
 
                 # Our response can vary based on a number of factors, use
                 # the cache class to determine what we should ``Vary`` on so
@@ -61,7 +67,8 @@ class GenericResource(ModelResource):
                     # See http://www.enhanceie.com/ie/bugs.asp for details.
                     patch_cache_control(response, no_cache=True)
 
-                return self.create_response(request, response_data)
+                return self.create_response(request, response_data,
+                    response_class)
             except (BadRequest, fields.ApiFieldError), e:
                 return http.HttpBadRequest(e.args[0])
             except ValidationError, e:
