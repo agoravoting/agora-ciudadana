@@ -245,7 +245,7 @@ class Agora(models.Model):
     def static_has_perms(permission_name, user):
         if permission_name == 'create':
             if settings.AGORA_CREATION_PERMISSIONS == 'any-user':
-                return True
+                return not user.is_anonymous()
             elif settings.AGORA_CREATION_PERMISSIONS == 'superusers-only':
                 return user.is_superuser
             else:
