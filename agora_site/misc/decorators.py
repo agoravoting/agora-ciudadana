@@ -60,10 +60,9 @@ def permission_required(perm, lookup_variables=None, **kwargs):
             # if more than one parameter is passed to the decorator we try to
             # fetch object for which check would be made
             obj = None
-            request = kwargs.pop('request', None)
-
-            # request must be in args then
-            if not request:
+            if 'request' in kwargs:
+                request = kwargs['request']
+            else:
                 for arg in args:
                     if isinstance(arg, HttpRequest):
                         request = arg
