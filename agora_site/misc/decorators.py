@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from guardian.exceptions import GuardianError
 
 from tastypie import http
+from django.http import HttpRequest
 from tastypie.exceptions import ImmediateHttpResponse
 
 
@@ -60,6 +61,14 @@ def permission_required(perm, lookup_variables=None, **kwargs):
             # fetch object for which check would be made
             obj = None
             request = kwargs.pop('request', None)
+
+            # request must be in args then
+            if not request:
+                for arg in args:
+                    if isinstance(arg, HttpRequest):
+                        request = arg
+                        break
+
             if lookup_variables:
                 model, lookups = lookup_variables[0], lookup_variables[1:]
                 # Parse model
@@ -96,6 +105,7 @@ def permission_required(perm, lookup_variables=None, **kwargs):
 
             if not has_perms:
                 raise ImmediateHttpResponse(response=http.HttpForbidden())
-            return view_func(request, *args, **kwargs)
+
+            return view_func(*args, **kwargs)
         return wraps(view_func)(wrapped)
     return decorator

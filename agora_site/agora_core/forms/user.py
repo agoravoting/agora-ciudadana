@@ -17,6 +17,10 @@ class UsernameAvailableForm(django_forms.Form, FormRequestMixin):
         fields = ('username')
 
 class LoginForm(userena_forms.AuthenticationForm):
+    def __init__(self, request, data):
+        self.request = request
+        return super(LoginForm, self).__init__(data=data)
+
     def is_valid(self):
         if super(LoginForm, self).is_valid():
             identification, password, remember_me = (self.cleaned_data['identification'],
@@ -33,3 +37,10 @@ class LoginForm(userena_forms.AuthenticationForm):
                 return False
         else:
             return False
+
+    @staticmethod
+    def static_get_form_kwargs(request, data, *args, **kwargs):
+        '''
+        Returns the parameters that will be sent to the constructor
+        '''
+        return dict(request=request, data=data)

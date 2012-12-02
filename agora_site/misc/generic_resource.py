@@ -3,6 +3,7 @@ from tastypie.resources import ModelResource
 from tastypie import fields, http
 from tastypie.exceptions import NotFound, BadRequest, InvalidFilterError, HydrationError, InvalidSortError, ImmediateHttpResponse, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, ValidationError
+from tastypie.utils.mime import build_content_type
 from django.conf import settings
 
 from django.views.decorators.csrf import csrf_exempt
@@ -12,26 +13,32 @@ from django.utils import simplejson
 class GenericResource(ModelResource):
     def determine_format(self, request):
         """
-           Necessary to avoid the format=json attribute in the urli
+        Necessary to avoid the format=json attribute in the urli
         """
         return 'application/json'
 
     def wrap_form(self, form_class, method="POST"):
         """
-            Creates a view for a given form class, which calls to is_valid() 
-             and save() when needed
+        Creates a view for a given form class, which calls to is_valid()
+        and save() when needed. You can get the form args reimplementing
+        static_get_form_kwargs(request, data, *args, **kwargs) in your
+        form.
         """
         @csrf_exempt
         def wrapper(request, *args, **kwargs):
             try:
                 if method == "POST":
-                    data = request.POST
+                    data = self.deserialize(request, request.raw_post_data,
+                        self.determine_format(request))
                 elif method == "GET":
                     data = request.GET
                 response_data = {}
-                form = form_class(data=data)
-                form.request = request
-                response_class= HttpResponse
+                if hasattr(form_class, "static_get_form_kwargs"):
+                    kwargs = form_class.static_get_form_kwargs(request, data, 
+                        *args, **kwargs)
+                    form = form_class(**kwargs)
+                else:
+                    form = form_class(data=data)
 
                 if not form.is_valid():
                     context = RequestContext(request, {})
@@ -41,14 +48,14 @@ class GenericResource(ModelResource):
 
                     desired_format = self.determine_format(request)
                     serialized = self.serialize(request, response_data, desired_format)
-                    return http.HttpBadRequest(serialized)
+                    return http.HttpBadRequest(serialized,
+                        content_type=build_content_type(desired_format))
 
                 else:
                     if hasattr(form, "save"):
                         form.save()
 
-                return self.create_response(request, response_data,
-                    response_class)
+                return self.create_response(request, response_data)
             except (BadRequest, fields.ApiFieldError), e:
                 return http.HttpBadRequest(e.args[0])
             except ValidationError, e:
