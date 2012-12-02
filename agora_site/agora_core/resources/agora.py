@@ -113,6 +113,11 @@ class AgoraResource(GenericResource):
         bundle = self.full_dehydrate(bundle)
         return bundle
 
+    @permission_required('delete', (Agora, 'id', 'pk'))
+    def obj_delete(self, request=None, **kwargs):
+        return super(AgoraResource, self).obj_delete(request, **kwargs)
+
+    @permission_required('admin', (Agora, 'id', 'pk'))
     def obj_update(self, bundle, request=None, **kwargs):
         agora = Agora.objects.get(**kwargs)
         for k, v in bundle.data.items():

@@ -25,6 +25,7 @@ HTTP_CREATED = 201
 HTTP_ACCEPTED = 202
 HTTP_NO_CONTENT = 204
 HTTP_BAD_REQUEST = 400
+HTTP_FORBIDDEN = 403
 HTTP_NOT_FOUND = 404
 
 class RootTestCase(TestCase):
@@ -63,29 +64,28 @@ class RootTestCase(TestCase):
 
         return data
 
-    def delete(self, url, data = {}, code=HTTP_OK, **kwargs):
+    def delete(self, url, data = {}, code=HTTP_NO_CONTENT, **kwargs):
         response = self.client.delete(API_ROOT + url, data,
             **kwargs)
         self.assertEqual(response.status_code, code)
 
         return response.content
 
-    def deleteAndParse(self, url, data = {}, code=HTTP_OK, **kwargs):
+    def deleteAndParse(self, url, data = {}, code=HTTP_NO_CONTENT, **kwargs):
         json = self.delete(url, data, code, **kwargs)
         data = simplejson.loads(json)
 
         return data
 
-    def put(self, url, data = {}, code=HTTP_OK, content_type='application/json',
+    def put(self, url, data = {}, code=HTTP_ACCEPTED, content_type='application/json',
         **kwargs):
-
         response = self.client.put(API_ROOT + url, simplejson.dumps(data),
             content_type=content_type, **kwargs)
         self.assertEqual(response.status_code, code)
 
         return response.content
 
-    def putAndParse(self, url, data = {}, code=HTTP_OK, **kwargs):
+    def putAndParse(self, url, data = {}, code=HTTP_ACCEPTED, **kwargs):
         json = self.put(url, data, code, **kwargs)
         data = simplejson.loads(json)
 
@@ -123,7 +123,6 @@ class AgoraTest(RootTestCase):
             self.assertEquals(data[k], v)
 
     def test_agora_deletion(self):
-        # TODO check permissions
         self.login('david', 'david')
         data = self.getAndParse('agora/')
         agoras = data['objects']
@@ -135,19 +134,33 @@ class AgoraTest(RootTestCase):
         agoras = data['objects']
         self.assertEqual(len(agoras), 1)
 
+        # check permissions
+        self.login('user1', '123')
+        self.delete('agora/2/', code=HTTP_FORBIDDEN)
+        self.login('david', 'david')
+        self.delete('agora/2/', code=HTTP_NO_CONTENT)
+        self.delete('agora/2/', {}, code=HTTP_NOT_FOUND)
+
+        data = self.getAndParse('agora/')
+        agoras = data['objects']
+        self.assertEqual(len(agoras), 0)
+
         self.delete('agora/1/', {}, code=HTTP_NOT_FOUND)
         self.delete('agora/200/', {}, code=HTTP_NOT_FOUND)
 
     def test_agora_update(self):
         # TODO check permissions
-        self.login('david', 'david')
+        self.login('user1', '123')
         orig_data = {'pretty_name': "updated name",
                      'short_description': "new desc",
                      'is_vote_secret': False,
                      'biography': "bio",
                      'membership_policy': 'ANYONE_CAN_JOIN',
                      'comments_policy': 'ANYONE_CAN_COMMENT'}
-        data = self.putAndParse('agora/1/', orig_data,
+        data = self.put('agora/1/', data=orig_data,
+            code=HTTP_FORBIDDEN, content_type='application/json')
+        self.login('david', 'david')
+        data = self.put('agora/1/', data=orig_data,
             code=HTTP_ACCEPTED, content_type='application/json')
 
         data = self.getAndParse('agora/1/')
