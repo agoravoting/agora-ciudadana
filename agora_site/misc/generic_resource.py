@@ -47,26 +47,6 @@ class GenericResource(ModelResource):
                     if hasattr(form, "save"):
                         form.save()
 
-                # Our response can vary based on a number of factors, use
-                # the cache class to determine what we should ``Vary`` on so
-                # caches won't return the wrong (cached) version.
-                varies = getattr(self._meta.cache, "varies", [])
-
-                if varies:
-                    patch_vary_headers(response, varies)
-
-                if hasattr(self._meta.cache, "cacheable") and self._meta.cache.cacheable(request, response):
-                    if self._meta.cache.cache_control():
-                        # If the request is cacheable and we have a
-                        # ``Cache-Control`` available then patch the header.
-                        patch_cache_control(response, **self._meta.cache.cache_control())
-
-                if request.is_ajax() and not response.has_header("Cache-Control"):
-                    # IE excessively caches XMLHttpRequests, so we're disabling
-                    # the browser cache here.
-                    # See http://www.enhanceie.com/ie/bugs.asp for details.
-                    patch_cache_control(response, no_cache=True)
-
                 return self.create_response(request, response_data,
                     response_class)
             except (BadRequest, fields.ApiFieldError), e:
