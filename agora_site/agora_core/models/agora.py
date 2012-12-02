@@ -265,6 +265,10 @@ class Agora(models.Model):
         also in the state of the election.
         '''
 
+        isanon = user.is_anonymous()
+        if isanon:
+            return False
+
         is_superuser = user.is_superuser
         user.is_superuser = False
 
@@ -274,6 +278,7 @@ class Agora(models.Model):
 
         isarchived = self.is_archived()
 
+
         requires_membership_approval = (
             self.membership_policy == Agora.MEMBERSHIP_TYPE[1][0] or\
             self.membership_policy == Agora.MEMBERSHIP_TYPE[2][0]
@@ -282,27 +287,36 @@ class Agora(models.Model):
         if permission_name == 'join':
             return self.membership_policy == Agora.MEMBERSHIP_TYPE[0][0] and\
                 not user in self.members.all() and not isarchived
+
         elif permission_name == 'request_membership':
-            return not user.is_anonymous() and  requires_membership_approval and\
+            return requires_membership_approval and\
                 not user in self.members.all() and not isarchived and\
                 'requested_membership' not in opc_perms
+
         elif permission_name == "cancel_membership_request":
             return requires_membership_approval and not user in self.members.all() and\
                 'requested_membership' in opc_perms
-        if permission_name == 'request_admin_membership':
+
+        elif permission_name == 'request_admin_membership':
             return user in self.members.all() and user not in self.admins.all() and\
-                'requested_admin_membership' not in opc_perms and not isarchived
+                'requested_admin_membership' not in opc_perms and\
+                not isarchived
+
         elif permission_name == "cancel_admin_membership_request":
             return user in self.members.all() and user not in self.admins.all() and\
                 'requested_admin_membership' in opc_perms
+
         elif permission_name == 'leave':
             return self.creator != user and user in self.members.all() and\
                 user not in self.admins.all()
+
         elif permission_name == 'admin':
             return self.creator == user or user in self.admins.all() and\
                 not isarchived
+
         elif permission_name == 'leave_admin':
             return self.creator != user and user in self.admins.all()
+
         elif permission_name == 'comment':
             if self.comments_policy == Agora.COMMENTS_PERMS[0][0]:
                 return not isarchived

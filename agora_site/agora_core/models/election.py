@@ -286,6 +286,10 @@ class Election(models.Model):
         Return whether a given user has a given permission name, depending on
         also in the state of the election.
         '''
+        isanon = user.is_anonymous()
+        if isanon:
+            return False
+
         isadmin = self.agora.admins.filter(id=user.id).exists()
         isadminorcreator = (self.creator == user or isadmin)
         isarchived = self.is_archived()
@@ -306,7 +310,7 @@ class Election(models.Model):
                 isadmin and not isarchived
         elif permission_name == 'archive_election':
             return isadminorcreator and not isarchived
-        elif permission_name == 'comment_election':
+        elif permission_name == 'comment':
             if self.comments_policy == Agora.COMMENTS_PERMS[0][0]:
                 return not isarchived
             elif self.comments_policy == Agora.COMMENTS_PERMS[1][0]:
@@ -332,7 +336,7 @@ class Election(models.Model):
         '''
         return [perm for perm in ('edit_details', 'approve_election',
             'begin_election', 'freeze_election', 'end_election',
-            'archive_election', 'comment_election', 'emit_direct_vote',
+            'archive_election', 'comment', 'emit_direct_vote',
             'emit_delegate_vote', 'vote_counts') if self.has_perms(perm, user)]
 
     def ballot_is_open(self):

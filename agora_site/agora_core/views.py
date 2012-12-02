@@ -1822,7 +1822,7 @@ class ElectionPostCommentView(RequestCreateView):
                 electionname=self.election.name))
 
     def post(self, request, *args, **kwargs):
-        if not self.election.has_perms('comment_election', self.request.user):
+        if not self.election.has_perms('comment', self.request.user):
             messages.add_message(self.request, messages.ERROR, _('Sorry, but '
             'you don\'t have comment permissions on <em>%(electionname)s</em>.') %\
                 dict(electionname=self.election.pretty_name))
