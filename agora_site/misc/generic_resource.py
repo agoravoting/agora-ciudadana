@@ -1,14 +1,17 @@
+
+from simplejson.decoder import JSONDecodeError
+
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.template import RequestContext
+from django.utils import simplejson
+
 from tastypie.authorization import Authorization
 from tastypie.resources import ModelResource
 from tastypie import fields, http
 from tastypie.exceptions import NotFound, BadRequest, InvalidFilterError, HydrationError, InvalidSortError, ImmediateHttpResponse, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, ValidationError
 from tastypie.utils.mime import build_content_type
-from django.conf import settings
-
-from django.views.decorators.csrf import csrf_exempt
-from django.template import RequestContext
-from django.utils import simplejson
 
 class GenericResource(ModelResource):
     def determine_format(self, request):
@@ -26,7 +29,9 @@ class GenericResource(ModelResource):
         """
         @csrf_exempt
         def wrapper(request, *args, **kwargs):
+
             try:
+                desired_format = self.determine_format(request)
                 if method == "POST":
                     data = self.deserialize(request, request.raw_post_data,
                         self.determine_format(request))
@@ -46,7 +51,6 @@ class GenericResource(ModelResource):
                     errors = dict([(k, form.error_class.as_text(v)) for k, v in form.errors.items()])
                     response_data['errors'] = errors
 
-                    desired_format = self.determine_format(request)
                     serialized = self.serialize(request, response_data, desired_format)
                     return http.HttpBadRequest(serialized,
                         content_type=build_content_type(desired_format))
@@ -56,10 +60,21 @@ class GenericResource(ModelResource):
                         form.save()
 
                 return self.create_response(request, response_data)
+            except JSONDecodeError, e:
+                data = dict(errors=e.message)
+                serialized = self.serialize(request, data, desired_format)
+                return http.HttpBadRequest(serialized,
+                        content_type=build_content_type(desired_format))
             except (BadRequest, fields.ApiFieldError), e:
-                return http.HttpBadRequest(e.args[0])
+                data = dict(errors=e.args[0])
+                serialized = self.serialize(request, data, desired_format)
+                return http.HttpBadRequest(serialized,
+                        content_type=build_content_type(desired_format))
             except ValidationError, e:
-                return http.HttpBadRequest(', '.join(e.messages))
+                data = dict(errors=', '.join(e.messages))
+                serialized = self.serialize(request, data, desired_format)
+                return http.HttpBadRequest(serialized,
+                        content_type=build_content_type(desired_format))
             except Exception, e:
                 if hasattr(e, 'response'):
                     return e.response
