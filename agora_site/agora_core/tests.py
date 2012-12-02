@@ -49,7 +49,7 @@ class RootTestCase(TestCase):
     def post(self, url, data = {}, code=HTTP_OK,
         content_type='application/json', **kwargs):
 
-        response = self.client.post(API_ROOT + url, data,
+        response = self.client.post(API_ROOT + url, simplejson.dumps(data),
             content_type=content_type, **kwargs)
         self.assertEqual(response.status_code, code)
 
@@ -64,7 +64,8 @@ class RootTestCase(TestCase):
         return data
 
     def delete(self, url, data = {}, code=HTTP_OK, **kwargs):
-        response = self.client.delete(API_ROOT + url, data, **kwargs)
+        response = self.client.delete(API_ROOT + url, data,
+            **kwargs)
         self.assertEqual(response.status_code, code)
 
         return response.content
@@ -78,7 +79,7 @@ class RootTestCase(TestCase):
     def put(self, url, data = {}, code=HTTP_OK, content_type='application/json',
         **kwargs):
 
-        response = self.client.put(API_ROOT + url, data,
+        response = self.client.put(API_ROOT + url, simplejson.dumps(data),
             content_type=content_type, **kwargs)
         self.assertEqual(response.status_code, code)
 
@@ -114,9 +115,8 @@ class AgoraTest(RootTestCase):
         orig_data = {'pretty_name': 'created agora',
                      'short_description': 'created agora description',
                      'is_vote_secret': False}
-        data = self.postAndParse('agora/', simplejson.dumps(orig_data),
+        data = self.postAndParse('agora/', orig_data,
             code=HTTP_CREATED, content_type='application/json')
-        self.assertEqual(data['pretty_name'], 'created agora')
 
         data = self.getAndParse('agora/%s/' % data['id'])
         for k, v in orig_data.items():
@@ -129,7 +129,7 @@ class AgoraTest(RootTestCase):
         agoras = data['objects']
         self.assertEqual(len(agoras), 2)
 
-        self.delete('agora/1/', {}, code=HTTP_NO_CONTENT)
+        self.delete('agora/1/', code=HTTP_NO_CONTENT)
 
         data = self.getAndParse('agora/')
         agoras = data['objects']
@@ -147,7 +147,7 @@ class AgoraTest(RootTestCase):
                      'biography': "bio",
                      'membership_policy': 'ANYONE_CAN_JOIN',
                      'comments_policy': 'ANYONE_CAN_COMMENT'}
-        data = self.putAndParse('agora/1/', simplejson.dumps(orig_data),
+        data = self.putAndParse('agora/1/', orig_data,
             code=HTTP_ACCEPTED, content_type='application/json')
 
         data = self.getAndParse('agora/1/')
@@ -292,7 +292,8 @@ class UserTest(RootTestCase):
 
         data = self.getAndParse('user/settings/')
         self.assertEqual(data['id'], '-1')
-        data = self.postAndParse('user/login/', {'identification': 'david', 'password': 'david'})
+        data = self.postAndParse('user/login/',
+            {'identification': 'david', 'password': 'david'})
 
         data = self.getAndParse('user/settings/')
         self.assertEqual(data['username'], 'david')
@@ -303,7 +304,8 @@ class UserTest(RootTestCase):
         """
         data = self.getAndParse('user/settings/')
         self.assertEqual(data['id'], '-1')
-        data = self.postAndParse('user/login/', {'identification': 'david', 'password': 'david'})
+        data = self.post('user/login/',
+            {'identification': 'david', 'password': 'david'})
         data = self.getAndParse('user/settings/')
         self.assertEqual(data['username'], 'david')
 
@@ -321,7 +323,9 @@ class UserTest(RootTestCase):
 
 class MiscTest(RootTestCase):
     def test_login(self):
-        "Test that the django test client log in works"
+        """
+        Test that the django test client log in works
+        """
         self.login('david', 'david')
         data = self.getAndParse('user/settings/')
         self.assertEqual(data['username'], 'david')
