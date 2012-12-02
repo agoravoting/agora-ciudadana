@@ -20,6 +20,13 @@ def suite():
 
 API_ROOT = '/api/v1/'
 
+HTTP_OK = 200
+HTTP_CREATED = 201
+HTTP_ACCEPTED = 202
+HTTP_NO_CONTENT = 204
+HTTP_BAD_REQUEST = 400
+HTTP_NOT_FOUND = 404
+
 class RootTestCase(TestCase):
     fixtures = ['test_users.json', 'test_agoras.json']
 
@@ -27,49 +34,57 @@ class RootTestCase(TestCase):
         loggedIn = self.client.login(username=user, password=passw)
         self.assertTrue(loggedIn)
 
-    def get(self, url, code = 200):
+    def get(self, url, code=HTTP_OK):
         response = self.client.get(API_ROOT + url)
         self.assertEqual(response.status_code, code)
 
         return response.content
 
-    def getAndParse(self, url, code = 200):
+    def getAndParse(self, url, code=HTTP_OK):
         json = self.get(url, code)
         data = simplejson.loads(json)
 
         return data
 
-    def post(self, url, data = {}, code = 200, **kwargs):
-        response = self.client.post(API_ROOT + url, data, **kwargs)
+    def post(self, url, data = {}, code=HTTP_OK,
+        content_type='application/json', **kwargs):
+
+        response = self.client.post(API_ROOT + url, data,
+            content_type=content_type, **kwargs)
         self.assertEqual(response.status_code, code)
 
         return response.content
 
-    def postAndParse(self, url, data = {}, code = 200, **kwargs):
-        json = self.post(url, data, code, **kwargs)
+    def postAndParse(self, url, data = {}, code=HTTP_OK,
+        content_type='application/json', **kwargs):
+
+        json = self.post(url, data, code, content_type=content_type, **kwargs)
         data = simplejson.loads(json)
 
         return data
 
-    def delete(self, url, data = {}, code = 200, **kwargs):
+    def delete(self, url, data = {}, code=HTTP_OK, **kwargs):
         response = self.client.delete(API_ROOT + url, data, **kwargs)
         self.assertEqual(response.status_code, code)
 
         return response.content
 
-    def deleteAndParse(self, url, data = {}, code = 200, **kwargs):
+    def deleteAndParse(self, url, data = {}, code=HTTP_OK, **kwargs):
         json = self.delete(url, data, code, **kwargs)
         data = simplejson.loads(json)
 
         return data
 
-    def put(self, url, data = {}, code = 200, **kwargs):
-        response = self.client.put(API_ROOT + url, data, **kwargs)
+    def put(self, url, data = {}, code=HTTP_OK, content_type='application/json',
+        **kwargs):
+
+        response = self.client.put(API_ROOT + url, data,
+            content_type=content_type, **kwargs)
         self.assertEqual(response.status_code, code)
 
         return response.content
 
-    def putAndParse(self, url, data = {}, code = 200, **kwargs):
+    def putAndParse(self, url, data = {}, code=HTTP_OK, **kwargs):
         json = self.put(url, data, code, **kwargs)
         data = simplejson.loads(json)
 
@@ -91,7 +106,7 @@ class AgoraTest(RootTestCase):
         data = self.getAndParse('agora/2/')
         self.assertEquals(data['name'], 'agoratwo')
 
-        data = self.get('agora/200/', 404)
+        data = self.get('agora/200/', code=HTTP_NOT_FOUND)
 
     def test_agora_creation(self):
         # creating agora
@@ -99,8 +114,8 @@ class AgoraTest(RootTestCase):
         orig_data = {'pretty_name': 'created agora',
                      'short_description': 'created agora description',
                      'is_vote_secret': False}
-        data = self.postAndParse('agora/', json.dumps(orig_data), 201,
-                                 content_type='application/json')
+        data = self.postAndParse('agora/', simplejson.dumps(orig_data),
+            code=HTTP_CREATED, content_type='application/json')
         self.assertEqual(data['pretty_name'], 'created agora')
 
         data = self.getAndParse('agora/%s/' % data['id'])
@@ -114,14 +129,14 @@ class AgoraTest(RootTestCase):
         agoras = data['objects']
         self.assertEqual(len(agoras), 2)
 
-        self.delete('agora/1/', {}, 204)
+        self.delete('agora/1/', {}, code=HTTP_NO_CONTENT)
 
         data = self.getAndParse('agora/')
         agoras = data['objects']
         self.assertEqual(len(agoras), 1)
 
-        self.delete('agora/1/', {}, 404)
-        self.delete('agora/200/', {}, 404)
+        self.delete('agora/1/', {}, code=HTTP_NOT_FOUND)
+        self.delete('agora/200/', {}, code=HTTP_NOT_FOUND)
 
     def test_agora_update(self):
         # TODO check permissions
@@ -132,8 +147,8 @@ class AgoraTest(RootTestCase):
                      'biography': "bio",
                      'membership_policy': 'ANYONE_CAN_JOIN',
                      'comments_policy': 'ANYONE_CAN_COMMENT'}
-        data = self.putAndParse('agora/1/', json.dumps(orig_data), 202,
-                                 content_type='application/json')
+        data = self.putAndParse('agora/1/', simplejson.dumps(orig_data),
+            code=HTTP_ACCEPTED, content_type='application/json')
 
         data = self.getAndParse('agora/1/')
         for k, v in orig_data.items():
@@ -179,7 +194,7 @@ class UserTest(RootTestCase):
         self.assertEquals(data['username'], 'user1')
         self.assertEquals(data['first_name'], 'Juana Molero')
 
-        data = self.get('user/200/', 404)
+        data = self.get('user/200/', code=HTTP_NOT_FOUND)
 
         # set
         data = self.getAndParse('user/set/1;3/')
@@ -197,7 +212,7 @@ class UserTest(RootTestCase):
         self.assertEqual(data['not_found'][1], '300')
         self.assertEqual(len(data['objects']), 0)
 
-        data = self.get('user/set/', 404)
+        data = self.get('user/set/', code=HTTP_NOT_FOUND)
 
     def test_user_settings(self):
         self.login('david', 'david')
@@ -207,7 +222,7 @@ class UserTest(RootTestCase):
         # TODO, testing via PUT, not yet implemented in user.py
 
     def test_user_set_username(self):
-        data = self.get('user/set_username/', 404)
+        data = self.get('user/set_username/', code=HTTP_NOT_FOUND)
         data = self.getAndParse('user/set_username/david;user1/')
         self.assertEqual(len(data['objects']), 2)
         self.assertEquals(data['objects'][0]['username'], 'david')
@@ -217,17 +232,15 @@ class UserTest(RootTestCase):
         self.assertEqual(len(data['objects']), 1)
         self.assertEquals(data['objects'][0]['username'], 'david')
 
-        data = self.get('user/set_username/', 404)
+        data = self.get('user/set_username/', code=HTTP_NOT_FOUND)
 
     def test_password_reset(self):
-        data = self.postAndParse('user/password_reset/')
-        self.assertEqual(data['status'], 'failed')
-        data = self.postAndParse('user/password_reset/', {'email': 'hohoho'})
-        self.assertEqual(data['status'], 'failed')
-        data = self.postAndParse('user/password_reset/', {'email': 'hohoho@hohoho.com'})
-        self.assertEqual(data['status'], 'failed')
+        data = self.postAndParse('user/password_reset/', code=HTTP_BAD_REQUEST)
+        data = self.postAndParse('user/password_reset/', {'email': 'hohoho'},
+            code=HTTP_BAD_REQUEST)
+        data = self.postAndParse('user/password_reset/',
+        {'email': 'hohoho@hohoho.com'}, code=HTTP_BAD_REQUEST)
         data = self.postAndParse('user/password_reset/', {'email': 'david@david.com'})
-        self.assertEqual(data['status'], 'success')
         # TODO can we test that the operation worked?
 
     # register api call throws error causing this test to fail
@@ -246,47 +259,64 @@ class UserTest(RootTestCase):
             if(len(i) > 0):
                 params = reduce(self.merge, i)
 
-            data = self.postAndParse('user/register/', params)
             if(len(i) == 4):
-                self.assertEqual(data['status'], 'success')
+                data = self.postAndParse('user/register/', params, code=HTTP_OK)
             else:
-                self.assertEqual(data['status'], 'failed')
+                data = self.postAndParse('user/register/', params,
+                    code=HTTP_BAD_REQUEST)
 
         # bad email
-        data = self.postAndParse('user/register/', {'email': 'hoho.com', 'password1': 'hello', 'password1': 'hello2', 'username': 'username'})
-        self.assertEqual(data['status'], 'failed')
+        data = self.postAndParse('user/register/',
+            {
+                'email': 'hoho.com',
+                'password1': 'hello',
+                'password1': 'hello2',
+                'username': 'username'
+            }, code=HTTP_BAD_REQUEST)
+
+
         # password mismatch
-        data = self.postAndParse('user/register/', {'email': 'hohoho@hoho.com', 'password1': 'hello', 'password2': 'hello2', 'username': 'username'})
-        self.assertEqual(data['status'], 'failed')
+        data = self.postAndParse('user/register/',
+            {
+                'email': 'hohoho@hoho.com',
+                'password1': 'hello',
+                'password2': 'hello2',
+                'username': 'username'
+            }, code=HTTP_BAD_REQUEST)
+
 
     def test_login(self):
-        "Test that the api call login works"
+        """
+        Test that the api call login works
+        """
+
         data = self.getAndParse('user/settings/')
         self.assertEqual(data['id'], '-1')
         data = self.postAndParse('user/login/', {'identification': 'david', 'password': 'david'})
-        self.assertEqual(data['status'], 'success')
+
         data = self.getAndParse('user/settings/')
         self.assertEqual(data['username'], 'david')
 
     def test_logout(self):
-        "Test that the api call logout works"
+        """
+        Test that the api call logout works
+        """
         data = self.getAndParse('user/settings/')
         self.assertEqual(data['id'], '-1')
         data = self.postAndParse('user/login/', {'identification': 'david', 'password': 'david'})
-        self.assertEqual(data['status'], 'success')
         data = self.getAndParse('user/settings/')
         self.assertEqual(data['username'], 'david')
+
         data = self.postAndParse('user/logout/')
-        self.assertEqual(data['status'], 'success')
+
         data = self.getAndParse('user/settings/')
         self.assertEqual(data['id'], '-1')
 
     # argless call error causes this test to fail
     def test_username_available(self):
         data = self.getAndParse('user/username_available/?username=asdasd')
-        self.assertEqual(data['status'], 'success')
-        data = self.getAndParse('user/username_available/?username=david')
-        self.assertEqual(data['status'], 'failed')
+        data = self.getAndParse('user/username_available/?username=david',
+            code=HTTP_BAD_REQUEST);
 
 
 class MiscTest(RootTestCase):
