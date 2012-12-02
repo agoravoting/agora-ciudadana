@@ -3,6 +3,7 @@ from django.db.models import Model, get_model
 from django.db.models.base import ModelBase
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404
+from django.http import Http404
 
 from guardian.exceptions import GuardianError
 
@@ -95,7 +96,10 @@ def permission_required(perm, lookup_variables=None, **kwargs):
                     lookup_dict[lookup] = kwargs[view_arg]
 
                 if not check_static:
-                    obj = get_object_or_404(model, **lookup_dict)
+                    try:
+                        obj = get_object_or_404(model, **lookup_dict)
+                    except Http404:
+                        raise ImmediateHttpResponse(response=http.HttpNotFound())
 
             if check_static:
                 has_perms = model.static_has_perms(perm, request.user)

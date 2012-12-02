@@ -327,6 +327,9 @@ class Agora(models.Model):
             else:
                 return False
 
+        elif permission_name == 'delete':
+            return self.creator == user
+
     def get_perms(self, user):
         '''
         Returns a list of permissions for a given user calling to self.has_perms()
