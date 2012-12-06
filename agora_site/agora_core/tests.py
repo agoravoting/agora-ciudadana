@@ -14,6 +14,7 @@ import json
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(AgoraTest))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(ElectionTest))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(UserTest))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(MiscTest))
     return suite
@@ -29,7 +30,9 @@ HTTP_FORBIDDEN = 403
 HTTP_NOT_FOUND = 404
 
 class RootTestCase(TestCase):
-    fixtures = ['test_users.json', 'test_agoras.json']
+    fixtures = ['test_users.json',
+                'test_agoras.json',
+                'test_elections.json']
 
     def login(self, user, passw):
         loggedIn = self.client.login(username=user, password=passw)
@@ -173,8 +176,21 @@ class CastVoteTest(RootTestCase):
     pass
 
 class ElectionTest(RootTestCase):
-    # TODO
-    pass
+    def test_election(self):
+        # all
+        data = self.getAndParse('election/')
+        elections = data['objects']
+        self.assertEqual(len(elections), 3)
+
+    def test_election_find(self):
+        # find
+        data = self.getAndParse('election/3/')
+        self.assertEquals(data['name'], 'electionone')
+
+        data = self.getAndParse('election/4/')
+        self.assertEquals(data['name'], 'electiontwo')
+
+        data = self.get('election/200/', code=HTTP_NOT_FOUND)
 
 class FollowTest(RootTestCase):
     # TODO
