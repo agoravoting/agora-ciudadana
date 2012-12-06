@@ -38,13 +38,14 @@ class ElectionResource(GenericResource):
     cast_votes = fields.ToManyField(CAST_VOTE_RESOURCE,
                                              'cast_votes')
     all_votes = fields.ToManyField(CAST_VOTE_RESOURCE,
-                                    attribute=all_votes, full=True)
+                                    attribute=all_votes, full=True,
+                                    null=True)
     votes_from_delegates = fields.ToManyField(CAST_VOTE_RESOURCE,
                                     attribute=votes_from_delegates,
-                                    full=True)
+                                    full=True, null=True)
     direct_votes = fields.ToManyField(CAST_VOTE_RESOURCE,
                                     attribute=direct_votes,
-                                    full=True)
+                                    full=True, null=True)
     percentage_of_participation = fields.IntegerField()
 
     class Meta:
