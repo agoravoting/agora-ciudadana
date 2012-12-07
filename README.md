@@ -18,6 +18,16 @@ https://groups.google.com/group/agora-ciudadana-devel
 
 The INSTALL file contains the detailed installation instructions
 
-### Continuous Integration
+### Test instructions
 
-[![Build Status](https://travis-ci.org/agoraciudadana/agora-ciudadana.png)](https://travis-ci.org/agoraciudadana/agora-ciudadana)
+To test the aplication you can use default django test system:
+
+$ python manage.py test agora\_core
+
+To test only one test case you can call:
+
+$ python manage.py test agora\_core.AgoraTest
+
+Or if you want to test only one test you can call:
+
+$ python manage.py test agora\_core.AgoraTest.test\_agora
