@@ -14,6 +14,14 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, 
 from tastypie.utils.mime import build_content_type
 
 class GenericResource(ModelResource):
+    def deserialize_post_data(self, request):
+        '''
+        Useful for get deserialized data
+        '''
+        return self.deserialize(request,
+                                request.raw_post_data,
+                                format=request.META.get('CONTENT_TYPE', 'application/json'))
+
     def determine_format(self, request):
         """
         Necessary to avoid the format=json attribute in the urli
