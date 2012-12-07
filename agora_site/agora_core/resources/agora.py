@@ -1,13 +1,20 @@
 from django.forms import ModelForm
 from django.core.urlresolvers import reverse
+from django.conf.urls.defaults import url
 
 from tastypie import fields
 from tastypie.validation import Validation, CleanedDataFormValidation
+from tastypie.utils import trailing_slash
+from tastypie import http
+from tastypie.exceptions import ImmediateHttpResponse
+from tastypie.constants import ALL
 
 from agora_site.agora_core.models import Agora
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.agora_core.resources.user import UserResource
 from agora_site.misc.decorators import permission_required
+
+from agora_site.agora_core.views import AgoraActionJoinView
 
 ELECTION_RESOURCE = 'agora_site.agora_core.resources.election.ElectionResource'
 
@@ -88,6 +95,7 @@ class AgoraResource(GenericResource):
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post', 'put', 'delete']
         validation = AgoraValidation()
+        filtering = { "name": ALL, }
 
     @permission_required('create', check_static=Agora)
     def obj_create(self, bundle, request=None, **kwargs):
@@ -127,3 +135,71 @@ class AgoraResource(GenericResource):
         bundle = self.build_bundle(obj=agora, request=request)
         bundle = self.full_dehydrate(bundle)
         return bundle
+
+    def override_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/action%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('action'), name="api_agora_action"),
+            ]
+
+    def action(self, request, **kwargs):
+        '''
+        Requests an action on this agora
+
+        actions:
+            DONE
+            * request_membership
+            TODO
+            * accept_membership
+            * deny_membership
+            * add_membership
+            * remove_membership
+            * archive_agora
+        '''
+
+        actions = {
+            'request_membership': self.request_membership_action,
+            'test': self.test_action,
+        }
+
+        if request.method != "POST":
+            raise ImmediateHttpResponse(response=http.HttpResponseNotAllowed())
+
+        data = self.deserialize_post_data(request)
+
+        agora = None
+        agoraid = kwargs.get('agoraid', -1)
+        try:
+            agora = Agora.objects.get(id=agoraid)
+        except:
+            raise ImmediateHttpResponse(response=http.HttpNotFound())
+
+        action = data.get("action", False)
+        if not action or not action in actions:
+            raise ImmediateHttpResponse(response=http.HttpNotFound())
+
+        kwargs.update(data)
+        return actions[action](request, agora, **kwargs)
+
+    def request_membership_action(self, request, agora, **kwargs):
+        '''
+        Requests membership from authenticated user to an agora
+        '''
+
+        view = AgoraActionJoinView()
+        view.request = request
+        ret = view.post(request, agora.creator.username, agora.name)
+
+        return self.create_response(request, dict(status="success"))
+
+    def test_action(self, request, agora, param1=None, param2=None, **kwargs):
+        '''
+        In:
+            param1 or param2
+        '''
+
+        if not (param1 or param2):
+            raise ImmediateHttpResponse(response=http.HttpBadRequest())
+
+        return self.create_response(request, dict(status="success"))

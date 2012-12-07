@@ -84,4 +84,40 @@ class AgoraTest(RootTestCase):
         for k, v in orig_data.items():
             self.assertEquals(data[k], v)
 
+    def test_agora_request_membership(self):
+        self.login('user1', '123')
+        orig_data = {'action': "request_membership", }
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK)
 
+        data = self.getAndParse('agora/1/')
+        # check if user1 is in members as an inactive
+        found = False
+        for member in data['members']:
+            if member['username'] == 'user1':
+                found = True
+        self.assertEqual(found, True)
+
+        # setting restricted joining policy
+        self.login('david', 'david')
+        orig_data = {'pretty_name': "updated name",
+                     'short_description': "new desc",
+                     'is_vote_secret': False,
+                     'biography': "bio",
+                     'membership_policy': 'JOINING_REQUIRES_ADMINS_APPROVAL',
+                     'comments_policy': 'ANYONE_CAN_COMMENT'}
+        data = self.put('agora/1/', data=orig_data,
+            code=HTTP_ACCEPTED, content_type='application/json')
+
+        self.login('user2', '123')
+        orig_data = {'action': "request_membership", }
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK)
+
+        data = self.getAndParse('agora/1/')
+        # check if user1 is in members as an inactive
+        found = False
+        for member in data['members']:
+            if member['username'] == 'user2':
+                found = True
+        self.assertEqual(found, False)
