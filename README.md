@@ -17,3 +17,17 @@ https://groups.google.com/group/agora-ciudadana-devel
 ### Installation instructions
 
 The INSTALL file contains the detailed installation instructions
+
+### Test instructions
+
+To test the aplication you can use default django test system:
+
+$ python manage.py test agora\_core
+
+To test only one test case you can call:
+
+$ python manage.py test agora\_core.AgoraTest
+
+Or if you want to test only one test you can call:
+
+$ python manage.py test agora\_core.AgoraTest.test\_agora
