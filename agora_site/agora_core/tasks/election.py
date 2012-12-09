@@ -15,15 +15,6 @@ from celery import task
 
 import datetime
 
-def get_base_email_context(is_secure, site_id):
-    '''
-    Returns a basic email context
-    '''
-    return dict(
-            cancel_emails_url=reverse('cancel-email-updates'),
-            site=Site.objects.get(pk=site_id),
-            protocol=is_secure and 'https' or 'http'
-        )
 
 @task(ignore_result=True)
 def start_election(election_id, is_secure, site_id, remote_addr):
@@ -48,7 +39,7 @@ def start_election(election_id, is_secure, site_id, remote_addr):
         election.extra_data["started"]=True
     election.save()
 
-    context = get_base_email_context(is_secure, site_id)
+    context = get_base_email_context_task(is_secure, site_id)
 
     context.update(dict(
         election=election,
@@ -130,7 +121,7 @@ def end_election(election_id, is_secure, site_id, remote_addr, user_id):
     election.save()
     election.compute_result()
 
-    context = get_base_email_context(is_secure, site_id)
+    context = get_base_email_context_task(is_secure, site_id)
 
     context.update(dict(
         election=election,
