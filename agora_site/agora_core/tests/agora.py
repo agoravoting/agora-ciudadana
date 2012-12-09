@@ -7,7 +7,8 @@ from common import (HTTP_OK,
                     HTTP_NOT_FOUND)
 
 from common import RootTestCase
-
+from agora_site.agora_core.tasks.agora import send_request_membership_mails
+from django.contrib.sites.models import Site
 
 class AgoraTest(RootTestCase):
     def test_agora(self):
@@ -66,7 +67,6 @@ class AgoraTest(RootTestCase):
         self.delete('agora/200/', {}, code=HTTP_NOT_FOUND)
 
     def test_agora_update(self):
-        # TODO check permissions
         self.login('user1', '123')
         orig_data = {'pretty_name': "updated name",
                      'short_description': "new desc",
@@ -115,3 +115,16 @@ class AgoraTest(RootTestCase):
         data = self.post('agora/1/action/', data=orig_data,
             code=HTTP_FORBIDDEN, content_type='application/json')
 
+    def test_send_request_membership_mails(self):
+        '''
+        test the celery send_request_membership_mails function
+        '''
+        kwargs=dict(
+            agora_id=1,
+            user_id=1,
+            is_secure=True,
+            site_id=Site.objects.all()[0].id,
+            remote_addr='127.0.0.1'
+        )
+        result = send_request_membership_mails.apply_async(kwargs=kwargs)
+        self.assertTrue(result.successful())

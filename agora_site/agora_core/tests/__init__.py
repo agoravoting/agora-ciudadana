@@ -1,4 +1,5 @@
 from django.utils import unittest
+from django.conf import settings
 
 from agora import AgoraTest
 from election import ElectionTest
@@ -10,6 +11,10 @@ from misc import MiscTest
 # FIXME relying on ordering when doing api set calls
 # FIXME should construct data through posts
 
+
+# This allows to test celery tasks
+settings.CELERY_ALWAYS_EAGER = True
+settings.BROKER_BACKEND = 'memory'
 
 def suite():
     suite = unittest.TestSuite()
