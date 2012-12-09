@@ -6,7 +6,8 @@ from agora_site.agora_core.templatetags.agora_utils import get_delegate_in_agora
 from actstream.signals import action
 
 from django.contrib.auth.models import User
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
+from django.utils import translation
 from django.template.loader import render_to_string
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
@@ -50,6 +51,8 @@ def send_request_membership_mails(agora_id, user_id, is_secure, site_id, remote_
         ),
     ))
     for admin in agora.admins.all():
+        translation.activate(admin.get_profile().lang_code)
+
         if not admin.get_profile().has_perms('receive_email_updates'):
             continue
 
@@ -69,3 +72,5 @@ def send_request_membership_mails(agora_id, user_id, is_secure, site_id, remote_
             render_to_string('agora_core/emails/agora_notification.html',
                 context), "text/html")
         email.send()
+
+    translation.deactivate()
