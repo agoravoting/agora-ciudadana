@@ -230,7 +230,7 @@ class AgoraResource(GenericResource):
 
         return self.create_response(request, dict(status="success"))
 
-    @permission_required('join', (Agora, 'id', 'agora__id'))
+    @permission_required('join', (Agora, 'id', 'agoraid'))
     def join_action(self, request, agora, **kwargs):
         '''
         Requests membership from authenticated user to an agora
