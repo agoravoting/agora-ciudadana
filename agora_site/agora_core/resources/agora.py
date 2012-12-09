@@ -86,8 +86,6 @@ def active_delegates(bundle):
 
 class AgoraResource(GenericResource):
     creator = fields.ForeignKey(UserResource, 'creator', full=True)
-    members = fields.ManyToManyField(UserResource, 'members', full=True)
-    admins = fields.ManyToManyField(UserResource, 'admins', full=True)
 
     open_elections = fields.ToManyField(ELECTION_RESOURCE,
                                         attribute=open_elections,
@@ -156,7 +154,59 @@ class AgoraResource(GenericResource):
             url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/action%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('action'), name="api_agora_action"),
-            ]
+
+            url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/members%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_member_list'), name="api_agora_member_list"),
+
+            url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/admins%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_member_list'), name="api_agora_admin_list"),
+        ]
+
+    def get_admin_list(self, request, **kwargs):
+        '''
+        List members
+        '''
+        agora = None
+        agoraid = kwargs.get('agoraid', -1)
+        try:
+            agora = Agora.objects.get(id=agoraid)
+        except:
+            raise ImmediateHttpResponse(response=http.HttpNotFound())
+
+        url_args = dict(
+            resource_name=self._meta.resource_name,
+            api_name=self._meta.api_name,
+            agoraid=agoraid
+        )
+        list_url  = self._build_reverse_url( "api_agora_admin_list",
+            kwargs=url_args)
+
+        return UserResource().get_custom_list(request=request, kwargs=kwargs,
+            list_url=list_url, queryset=agora.admins.all())
+
+    def get_member_list(self, request, **kwargs):
+        '''
+        List members
+        '''
+        agora = None
+        agoraid = kwargs.get('agoraid', -1)
+        try:
+            agora = Agora.objects.get(id=agoraid)
+        except:
+            raise ImmediateHttpResponse(response=http.HttpNotFound())
+
+        url_args = dict(
+            resource_name=self._meta.resource_name,
+            api_name=self._meta.api_name,
+            agoraid=agoraid
+        )
+        list_url  = self._build_reverse_url( "api_agora_member_list",
+            kwargs=url_args)
+
+        return UserResource().get_custom_list(request=request, kwargs=kwargs,
+            list_url=list_url, queryset=agora.members.all())
 
     def action(self, request, **kwargs):
         '''
