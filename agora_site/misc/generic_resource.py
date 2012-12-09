@@ -105,6 +105,40 @@ class GenericResource(ModelResource):
 
         return wrapper
 
+    def get_custom_list(self, request, list_url, queryset, kwargs):
+        '''
+        Generic function to list some object actions
+        '''
+        self.list_url = list_url
+        self.queryset = queryset
+
+        # Call to this generic internal tastypie function that does all the
+        # heavy duty work
+        out = self.get_list(request, **kwargs)
+        delattr(self, 'list_url')
+        delattr(self, 'queryset')
+
+        return out
+
+    def get_object_list(self, request):
+        '''
+        Called by get_list, see get_custom_list
+        '''
+        if not hasattr(self, 'queryset'):
+            return self.Meta.queryset
+        else:
+            return self.queryset
+
+    def get_resource_list_uri(self):
+        '''
+        Generates the URI for the resource list
+        '''
+        if hasattr(self, 'list_url'):
+            return self.list_url
+        else:
+            return super(ActionResource, self).get_resource_list_uri()
+
+
 class GenericMeta:
     list_allowed_methods = ['get', 'post']
     detail_allowed_methods = ['get', 'post', 'put', 'delete']
