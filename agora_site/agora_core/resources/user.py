@@ -5,6 +5,9 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout as auth_logout
 
 from tastypie.utils import trailing_slash
+from tastypie import http
+from tastypie.exceptions import ImmediateHttpResponse
+
 from userena import forms as userena_forms
 
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
@@ -66,7 +69,7 @@ class UserResource(GenericResource):
         Log out the currently authenticated user
         '''
         if request.user.is_anonymous():
-            return self.create_response(request, dict(status="failed"))
+            raise ImmediateHttpResponse(response=http.HttpResponseNotAllowed())
 
         request.user.is_active = False
         auth_logout(request)
@@ -80,7 +83,7 @@ class UserResource(GenericResource):
             auth_logout(request)
             return self.create_response(request, dict(status="success"))
         except Exception, e:
-            return self.create_response(request, dict(status="failed"))
+            raise ImmediateHttpResponse(response=http.HttpResponseBadRequest())
 
     def user_settings(self, request, **kwargs):
         '''

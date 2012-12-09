@@ -87,16 +87,9 @@ class AgoraTest(RootTestCase):
     def test_agora_request_membership(self):
         self.login('user1', '123')
         orig_data = {'action': "request_membership", }
+        # User cannot request membership; he can directly join instead
         data = self.post('agora/1/action/', data=orig_data,
-            code=HTTP_OK)
-
-        data = self.getAndParse('agora/1/')
-        # check if user1 is in members as an inactive
-        found = False
-        for member in data['members']:
-            if member['username'] == 'user1':
-                found = True
-        self.assertEqual(found, True)
+            code=HTTP_FORBIDDEN, content_type='application/json')
 
         # setting restricted joining policy
         self.login('david', 'david')
@@ -109,15 +102,16 @@ class AgoraTest(RootTestCase):
         data = self.put('agora/1/', data=orig_data,
             code=HTTP_ACCEPTED, content_type='application/json')
 
-        self.login('user2', '123')
         orig_data = {'action': "request_membership", }
+        # user is already a member of this agora
         data = self.post('agora/1/action/', data=orig_data,
-            code=HTTP_OK)
+            code=HTTP_FORBIDDEN, content_type='application/json')
 
-        data = self.getAndParse('agora/1/')
-        # check if user1 is in members as an inactive
-        found = False
-        for member in data['members']:
-            if member['username'] == 'user2':
-                found = True
-        self.assertEqual(found, False)
+        self.login('user2', '123')
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # user already requested membership
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_FORBIDDEN, content_type='application/json')
+

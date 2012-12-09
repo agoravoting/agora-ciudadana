@@ -148,6 +148,17 @@ def get_base_email_context(request):
             protocol=get_protocol(request)
         )
 
+
+def get_base_email_context_task(is_secure, site_id):
+    '''
+    Returns a basic email context for tasks
+    '''
+    return dict(
+            cancel_emails_url=reverse('cancel-email-updates'),
+            site=Site.objects.get(pk=site_id),
+            protocol=is_secure and 'https' or 'http'
+        )
+
 def send_mass_html_mail(datatuple, fail_silently=True, user=None, password=None,
                         connection=None):
     """

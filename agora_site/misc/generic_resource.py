@@ -42,7 +42,7 @@ class GenericResource(ModelResource):
                 desired_format = self.determine_format(request)
                 if method == "POST":
                     data = self.deserialize(request, request.raw_post_data,
-                        self.determine_format(request))
+                        desired_format)
                 elif method == "GET":
                     data = request.GET
                 response_data = {}
