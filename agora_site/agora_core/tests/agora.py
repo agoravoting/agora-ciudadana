@@ -91,6 +91,10 @@ class AgoraTest(RootTestCase):
         data = self.post('agora/1/action/', data=orig_data,
             code=HTTP_FORBIDDEN, content_type='application/json')
 
+        orig_data = {'action': "join", }
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
         # setting restricted joining policy
         self.login('david', 'david')
         orig_data = {'pretty_name': "updated name",
