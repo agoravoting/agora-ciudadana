@@ -161,7 +161,7 @@ class AgoraResource(GenericResource):
 
             url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/admins%s$" \
                 % (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('get_member_list'), name="api_agora_admin_list"),
+                self.wrap_view('get_admin_list'), name="api_agora_admin_list"),
         ]
 
     def get_admin_list(self, request, **kwargs):
