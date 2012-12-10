@@ -1,4 +1,4 @@
-
+from django.contrib.auth.models import User
 from django.contrib import messages
 from django.forms import ModelForm
 from django.core.urlresolvers import reverse
@@ -162,6 +162,10 @@ class AgoraResource(GenericResource):
             url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/admins%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_admin_list'), name="api_agora_admin_list"),
+
+            url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/requests%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_request_list'), name="api_agora_resquest_list"),
         ]
 
     def get_admin_list(self, request, **kwargs):
@@ -207,6 +211,35 @@ class AgoraResource(GenericResource):
 
         return UserResource().get_custom_list(request=request, kwargs=kwargs,
             list_url=list_url, queryset=agora.members.all())
+
+    def get_request_list(self, request, **kwargs):
+        '''
+        List agora membership requests
+        '''
+        agora = None
+        agoraid = kwargs.get('agoraid', -1)
+        try:
+            agora = Agora.objects.get(id=agoraid)
+        except:
+            raise ImmediateHttpResponse(response=http.HttpNotFound())
+
+        url_args = dict(
+            resource_name=self._meta.resource_name,
+            api_name=self._meta.api_name,
+            agoraid=agoraid
+        )
+        list_url  = self._build_reverse_url( "api_agora_resquest_list",
+            kwargs=url_args)
+
+        from guardian.shortcuts import get_users_with_perms
+
+        users = get_users_with_perms(agora, attach_perms=True)
+        users = [k.username for k, v in users.items() if "requested_membership" in v]
+
+        queryset = User.objects.filter(username__in=users)
+
+        return UserResource().get_custom_list(request=request, kwargs=kwargs,
+            list_url=list_url, queryset=queryset)
 
     def action(self, request, **kwargs):
         '''
