@@ -111,6 +111,11 @@ class AgoraTest(RootTestCase):
         data = self.post('agora/1/action/', data=orig_data,
             code=HTTP_FORBIDDEN, content_type='application/json')
 
+        # Noone is requesting
+        data = self.postAndParse('agora/1/requests/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertEquals(data['meta']['total_count'], 0)
+
         self.login('user2', '123')
         data = self.post('agora/1/action/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
@@ -118,6 +123,12 @@ class AgoraTest(RootTestCase):
         # user already requested membership
         data = self.post('agora/1/action/', data=orig_data,
             code=HTTP_FORBIDDEN, content_type='application/json')
+
+        # user2 is requesting
+        data = self.postAndParse('agora/1/requests/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertEquals(data['meta']['total_count'], 1)
+        self.assertEquals(data['objects'][0]['username'], 'user2')
 
     def test_send_request_membership_mails(self):
         '''
