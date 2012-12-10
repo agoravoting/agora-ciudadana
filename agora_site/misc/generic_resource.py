@@ -13,6 +13,7 @@ from tastypie.exceptions import NotFound, BadRequest, InvalidFilterError, Hydrat
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, ValidationError
 from tastypie.utils.mime import build_content_type
 
+
 class GenericResource(ModelResource):
     def deserialize_post_data(self, request):
         '''
@@ -136,7 +137,7 @@ class GenericResource(ModelResource):
         if hasattr(self, 'list_url'):
             return self.list_url
         else:
-            return super(ActionResource, self).get_resource_list_uri()
+            return super(GenericResource, self).get_resource_list_uri()
 
 
 class GenericMeta:
