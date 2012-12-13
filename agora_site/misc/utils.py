@@ -182,3 +182,12 @@ def get_users_with_perm(obj, perm_codename):
         userobjectpermission__permission__codename=perm_codename,
         userobjectpermission__permission__content_type=ctype,)
     return User.objects.filter(qset).distinct()
+
+def random_password(chars=8):
+    '''
+    Returns a random string that can be used as a good password
+    '''
+    import string
+    import random
+    char_set = string.ascii_uppercase + string.digits + string.ascii_lowercase
+    return ''.join(random.sample(char_set, chars))

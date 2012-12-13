@@ -3,7 +3,7 @@
 
 {{ notification_text }}.{% endblocktrans %}
 
-{% if extra_urls %}{% for url_title, url in extra_urls %}{{ url_title }}: {{ protocol }}://{{ site_domain }}{{ url }}
+{% if extra_urls %}{% for url_title, url in extra_urls %}{{ url_title }}: {{ protocol }}://{{ site.domain }}{{ url }}
 
 {%endfor%}{%endif%}{% blocktrans with agora_url=agora.get_link site_domain=site.domain other_user_url=other_user.get_profile.get_link %}Agora URL: {{ protocol }}://{{ site_domain }}{{ agora_url }}
 

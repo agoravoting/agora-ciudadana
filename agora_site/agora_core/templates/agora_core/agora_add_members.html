@@ -1,0 +1,25 @@
+{% extends 'agora_core/agora_view.html' %}
+{% load i18n %}
+{% load agora_utils %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ agora.creator.username }}/{{ agora.name }} / {% trans "Admin" %}{% endblock %}
+
+{% block agora-navigation %}{% activetab "agora-nav" "members" %}{{ block.super }}{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="span7 agora-left-side">
+            <div class="form-data admin-form">
+            {% crispy form %}
+            </div>
+        </div>
+
+        <div class="span3 form-info" id="agora_new_form_info">
+        <h1>+</h1>
+        <h2>{% trans "Add agora members" %}</h2>
+        <p>{% trans "The users will be directly added to this agora, created if needed and will receive a welcome email. Please note that spam is against our rules." %}</p>
+    </div>
+    </div>
+{% endblock %}

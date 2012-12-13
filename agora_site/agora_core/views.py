@@ -2090,7 +2090,63 @@ class UserElectionsView(AjaxListView):
         return context
 
 
+class AgoraAddMembersView(UpdateView):
+    '''
+    Allows admins to add members to an agora
+    '''
+    template_name = 'agora_core/agora_add_members.html'
+    form_class = AgoraAddMembersForm
+    model = Agora
 
+    def post(self, request, *args, **kwargs):
+        if not self.agora.has_perms('admin', self.request.user):
+            messages.add_message(self.request, messages.ERROR, _('Sorry, but '
+            'you don\'t have admin permissions on %(agoraname)s.') %\
+                dict(agoraname=self.agora.name))
+
+            url = reverse('agora-view',
+                kwargs=dict(username=agora.creator.username, agoraname=agora.name))
+            return http.HttpResponseRedirect(url)
+        return super(AgoraAddMembersView, self).post(request, *args, **kwargs)
+
+
+    def get(self, request, *args, **kwargs):
+        if not self.agora.has_perms('admin', self.request.user):
+            messages.add_message(self.request, messages.ERROR, _('Sorry, but '
+            'you don\'t have admin permissions on %(agoraname)s.') %\
+                dict(agoraname=self.agora.name))
+
+            url = reverse('agora-view',
+                kwargs=dict(username=self.agora.creator.username, agoraname=self.agora.name))
+            return http.HttpResponseRedirect(url)
+        return super(AgoraAddMembersView, self).get(request, *args, **kwargs)
+
+    def get_success_url(self):
+        '''
+        After creating the agora, show it
+        '''
+        agora = self.object
+        messages.add_message(self.request, messages.SUCCESS, _('The people you entered have been added successfully to the agora %(agora)s.') % dict(agora=self.agora.get_link()))
+
+        return reverse('agora-view',
+            kwargs=dict(username=agora.creator.username, agoraname=agora.name))
+
+    def get_object(self):
+        return self.agora
+
+    def get_form_kwargs(self):
+        kwargs = super(AgoraAddMembersView, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        username = kwargs['username']
+        agoraname = kwargs['agoraname']
+        self.agora = get_object_or_404(Agora, name=agoraname,
+            creator__username=username)
+
+        return super(AgoraAddMembersView, self).dispatch(*args, **kwargs)
 
 class AgoraAdminView(UpdateView):
     '''

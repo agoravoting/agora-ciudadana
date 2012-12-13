@@ -84,6 +84,9 @@ urlpatterns += patterns('',
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/members/(?P<members_filter>members|admins|delegates|requested_membership|requested_admin_membership)/?$',
         AgoraMembersView.as_view(), name='agora-members'),
 
+    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/members/add/?$',
+        AgoraAddMembersView.as_view(), name='agora-add-members'),
+
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/comments/?$',
         AgoraCommentsView.as_view(), name='agora-comments'),
 

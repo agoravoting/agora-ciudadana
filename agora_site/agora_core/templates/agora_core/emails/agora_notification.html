@@ -10,7 +10,7 @@
 
 {% if extra_urls %}
     {% for url_title, url in extra_urls %}
-        <p>{{ url_title }}: <a href="{{ protocol }}://{{ site_domain }}{{ url }}">{{ protocol }}://{{ site_domain }}{{ url }}</a></p>
+        <p>{{ url_title }}: <a href="{{ protocol }}://{{ site.domain }}{{ url }}">{{ protocol }}://{{ site.domain }}{{ url }}</a></p>
     {% endfor %}
 {% endif %}
 
