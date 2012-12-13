@@ -169,30 +169,16 @@ class AgoraResource(GenericResource):
         ]
 
     def get_admin_list(self, request, **kwargs):
-        '''
-        List members
-        '''
-        agora = None
-        agoraid = kwargs.get('agoraid', -1)
-        try:
-            agora = Agora.objects.get(id=agoraid)
-        except:
-            raise ImmediateHttpResponse(response=http.HttpNotFound())
-
-        url_args = dict(
-            resource_name=self._meta.resource_name,
-            api_name=self._meta.api_name,
-            agoraid=agoraid
-        )
-        list_url  = self._build_reverse_url( "api_agora_admin_list",
-            kwargs=url_args)
-
-        return UserResource().get_custom_list(request=request, kwargs=kwargs,
-            list_url=list_url, queryset=agora.admins.all())
+        return self.get_user_list(request, url_name="api_agora_admin_list",
+            queryfunc=lambda agora: agora.admins.all(), **kwargs)
 
     def get_member_list(self, request, **kwargs):
+        return self.get_user_list(request, url_name="api_agora_member_list",
+            queryfunc=lambda agora: agora.members.all(), **kwargs)
+
+    def get_user_list(self, request, url_name, queryfunc, **kwargs):
         '''
-        List members
+        List users
         '''
         agora = None
         agoraid = kwargs.get('agoraid', -1)
@@ -206,11 +192,10 @@ class AgoraResource(GenericResource):
             api_name=self._meta.api_name,
             agoraid=agoraid
         )
-        list_url  = self._build_reverse_url( "api_agora_member_list",
-            kwargs=url_args)
+        list_url  = self._build_reverse_url(url_name, kwargs=url_args)
 
         return UserResource().get_custom_list(request=request, kwargs=kwargs,
-            list_url=list_url, queryset=agora.members.all())
+            list_url=list_url, queryset=queryfunc(agora))
 
     def get_request_list(self, request, **kwargs):
         '''
