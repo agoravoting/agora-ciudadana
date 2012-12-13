@@ -540,8 +540,8 @@ class EditElectionView(UpdateView):
                 dict(electionname=self.election.pretty_name))
 
             url = reverse('election-view',
-                kwargs=dict(username=election.agora.creator.username,
-                    agoraname=election.agora.name, electionname=election.name))
+                kwargs=dict(username=self.election.agora.creator.username,
+                    agoraname=self.election.agora.name, electionname=self.election.name))
             return http.HttpResponseRedirect(url)
         return super(EditElectionView, self).get(request, *args, **kwargs)
 
