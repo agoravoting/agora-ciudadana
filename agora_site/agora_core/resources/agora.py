@@ -99,10 +99,6 @@ class AgoraResource(GenericResource):
                                        attribute=all_elections,
                                        null=True)
 
-    active_delegates = fields.ToManyField(UserResource,
-                                        attribute=active_delegates,
-                                        null=True)
-
     class Meta(GenericMeta):
         queryset = Agora.objects.all()
         list_allowed_methods = ['get', 'post']
@@ -165,18 +161,44 @@ class AgoraResource(GenericResource):
 
             url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/requests%s$" \
                 % (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('get_request_list'), name="api_agora_resquest_list"),
+                self.wrap_view('get_request_list'), name="api_agora_request_list"),
+
+            url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/active_delegates%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_active_delegates_list'), name="api_agora_active_delegate_list"),
         ]
 
     def get_admin_list(self, request, **kwargs):
-        return self.get_user_list(request, url_name="api_agora_admin_list",
-            queryfunc=lambda agora: agora.admins.all(), **kwargs)
+        return self.get_custom_resource_list(request, url_name="api_agora_admin_list",
+            queryfunc=lambda agora: agora.admins.all(), resource=UserResource,
+            **kwargs)
 
     def get_member_list(self, request, **kwargs):
-        return self.get_user_list(request, url_name="api_agora_member_list",
-            queryfunc=lambda agora: agora.members.all(), **kwargs)
+        return self.get_custom_resource_list(request, url_name="api_agora_member_list",
+            queryfunc=lambda agora: agora.members.all(), resource=UserResource,
+            **kwargs)
 
-    def get_user_list(self, request, url_name, queryfunc, **kwargs):
+    def get_active_delegates_list(self, request, **kwargs):
+        return self.get_custom_resource_list(request, url_name="api_agora_active_delegate_list",
+            queryfunc=lambda agora: agora.active_delegates(), resource=UserResource,
+            **kwargs)
+
+    def get_request_list(self, request, **kwargs):
+        '''
+        List agora membership requests
+        '''
+
+        def get_queryset(agora):
+            from guardian.shortcuts import get_users_with_perms
+            users = get_users_with_perms(agora, attach_perms=True)
+            users = [k.username for k, v in users.items() if "requested_membership" in v]
+            queryset = User.objects.filter(username__in=users)
+            return queryset
+
+        return self.get_custom_resource_list(request,queryfunc=get_queryset,
+            url_name="api_agora_request_list", resource=UserResource, **kwargs)
+
+    def get_custom_resource_list(self, request, url_name, queryfunc, resource, **kwargs):
         '''
         List users
         '''
@@ -194,37 +216,8 @@ class AgoraResource(GenericResource):
         )
         list_url  = self._build_reverse_url(url_name, kwargs=url_args)
 
-        return UserResource().get_custom_list(request=request, kwargs=kwargs,
+        return resource().get_custom_list(request=request, kwargs=kwargs,
             list_url=list_url, queryset=queryfunc(agora))
-
-    def get_request_list(self, request, **kwargs):
-        '''
-        List agora membership requests
-        '''
-        agora = None
-        agoraid = kwargs.get('agoraid', -1)
-        try:
-            agora = Agora.objects.get(id=agoraid)
-        except:
-            raise ImmediateHttpResponse(response=http.HttpNotFound())
-
-        url_args = dict(
-            resource_name=self._meta.resource_name,
-            api_name=self._meta.api_name,
-            agoraid=agoraid
-        )
-        list_url  = self._build_reverse_url( "api_agora_resquest_list",
-            kwargs=url_args)
-
-        from guardian.shortcuts import get_users_with_perms
-
-        users = get_users_with_perms(agora, attach_perms=True)
-        users = [k.username for k, v in users.items() if "requested_membership" in v]
-
-        queryset = User.objects.filter(username__in=users)
-
-        return UserResource().get_custom_list(request=request, kwargs=kwargs,
-            list_url=list_url, queryset=queryset)
 
     def action(self, request, **kwargs):
         '''
