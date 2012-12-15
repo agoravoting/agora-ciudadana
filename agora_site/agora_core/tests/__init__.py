@@ -5,6 +5,7 @@ from agora import AgoraTest
 from election import ElectionTest
 from user import UserTest
 from misc import MiscTest
+from action import ActionTest
 
 
 # FIXME better url treatment
@@ -22,6 +23,7 @@ def suite():
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(ElectionTest))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(UserTest))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(MiscTest))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(ActionTest))
     return suite
 
 
@@ -36,6 +38,3 @@ class FollowTest(RootTestCase):
     # TODO
     pass
 
-class ActionTest(RootTestCase):
-    # TODO
-    pass

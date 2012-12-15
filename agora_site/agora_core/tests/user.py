@@ -131,7 +131,7 @@ class UserTest(RootTestCase):
         """
 
         data = self.getAndParse('user/settings/')
-        self.assertEqual(data['id'], '-1')
+        self.assertEqual(data['id'], -1)
         data = self.postAndParse('user/login/',
             {'identification': 'david', 'password': 'david'})
 
@@ -143,7 +143,7 @@ class UserTest(RootTestCase):
         Test that the api call logout works
         """
         data = self.getAndParse('user/settings/')
-        self.assertEqual(data['id'], '-1')
+        self.assertEqual(data['id'], -1)
         data = self.post('user/login/',
             {'identification': 'david', 'password': 'david'})
         data = self.getAndParse('user/settings/')
@@ -152,7 +152,7 @@ class UserTest(RootTestCase):
         data = self.postAndParse('user/logout/')
 
         data = self.getAndParse('user/settings/')
-        self.assertEqual(data['id'], '-1')
+        self.assertEqual(data['id'], -1)
 
     # argless call error causes this test to fail
     def test_username_available(self):

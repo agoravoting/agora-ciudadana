@@ -1,6 +1,8 @@
 from tastypie.resources import ALL
 from tastypie.utils import trailing_slash
 from tastypie.paginator import Paginator
+from tastypie.resources import ModelResource
+from tastypie import fields
 
 from actstream.models import user_stream, object_stream
 from actstream.models import Follow, Action
@@ -9,22 +11,64 @@ from django.contrib.auth.models import User
 from django.conf.urls.defaults import url
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.comments.models import Comment
 
-
+from agora_site.misc.utils import GenericForeignKeyField
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.misc.decorators import permission_required
 from agora_site.agora_core.models import Agora, Election
 from agora_site.agora_core.forms import PostCommentForm
+
 
 class FollowResource(GenericResource):
     class Meta(GenericMeta):
         queryset = Follow.objects.all()
 
 
+class TinyUserResource(GenericResource):
+    content_type = fields.CharField(default="user")
+    class Meta(GenericMeta):
+        queryset = User.objects.all()
+        fields = ["username", "first_name", "id"]
+
+class TinyCommentResource(GenericResource):
+    content_type = fields.CharField(default="comment")
+    class Meta(GenericMeta):
+        queryset = Comment.objects.all()
+        fields = ["comment", "id"]
+
+class TinyAgoraResource(GenericResource):
+    content_type = fields.CharField(default="agora")
+    class Meta(GenericMeta):
+        queryset = Agora.objects.all()
+        fields = ['name', 'pretty_name', 'id', 'short_description']
+
+class TinyElectionResource(GenericResource):
+    content_type = fields.CharField(default="election")
+    class Meta(GenericMeta):
+        queryset = Election.objects.all()
+        fields = ['name', 'pretty_name', 'id', 'short_description']
+
 class ActionResource(GenericResource):
     '''
     Resource for actions
     '''
+    action_object = GenericForeignKeyField({
+        Comment: TinyCommentResource,
+        Agora: TinyAgoraResource,
+        Election: TinyElectionResource,
+    }, 'action_object', null=True, full=True)
+
+    actor = GenericForeignKeyField({
+        User: TinyUserResource,
+    }, 'actor', full=True)
+
+
+    target = GenericForeignKeyField({
+        Agora: TinyAgoraResource,
+        Election: TinyElectionResource,
+    }, 'target', null=True, full=True)
+
     class Meta(GenericMeta):
         queryset = Action.objects.filter(public=True)
         filtering = {
@@ -32,8 +76,13 @@ class ActionResource(GenericResource):
                         'actor': ALL,
                         'target': ALL
                     }
+        excludes = [
+            "action_object_object_id",
+            "actor_object_id",
+            "target_object_id"
+        ]
 
-    def override_urls(self):
+    def prepend_urls(self):
         return [
             url(r"^(?P<resource_name>%s)/user/(?P<user>[\w\d_.-]+)%s$" \
                 % (self._meta.resource_name, trailing_slash()),
@@ -47,9 +96,9 @@ class ActionResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_election_list'), name="api_action_election_list"),
 
-            url(r"^(?P<resource_name>%s)/user/(?P<user>[\w\d_.-]+)/add_comment%s$" \
-                % (self._meta.resource_name, trailing_slash()),
-                self.wrap_form(PostCommentForm), name="api_user_add_comment"),
+            #url(r"^(?P<resource_name>%s)/user/(?P<user>[\w\d_.-]+)/add_comment%s$" \
+                #% (self._meta.resource_name, trailing_slash()),
+                #self.wrap_view(PostCommentForm), name="api_user_add_comment"),
 
             url(r"^(?P<resource_name>%s)/agora/(?P<agora>[0-9]+)/add_comment%s$" \
                 % (self._meta.resource_name, trailing_slash()),
