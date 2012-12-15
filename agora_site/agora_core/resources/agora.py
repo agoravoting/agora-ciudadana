@@ -66,38 +66,8 @@ class AgoraValidation(Validation):
         form = CleanedDataFormValidation(form_class=CreateAgoraForm)
         return form.is_valid(bundle, request)
 
-
-def open_elections(bundle):
-    # bundle.obj is an Agora
-    return bundle.obj.get_open_elections()
-
-
-def tallied_elections(bundle):
-    return bundle.obj.get_tallied_elections()
-
-
-def all_elections(bundle):
-    return bundle.obj.all_elections()
-
-
-def active_delegates(bundle):
-    return bundle.obj.active_delegates()
-
-
 class AgoraResource(GenericResource):
     creator = fields.ForeignKey(UserResource, 'creator', full=True)
-
-    open_elections = fields.ToManyField(ELECTION_RESOURCE,
-                                        attribute=open_elections,
-                                        null=True)
-
-    tallied_elections = fields.ToManyField(ELECTION_RESOURCE,
-                                        attribute=tallied_elections,
-                                        null=True)
-
-    all_elections = fields.ToManyField(ELECTION_RESOURCE,
-                                       attribute=all_elections,
-                                       null=True)
 
     class Meta(GenericMeta):
         queryset = Agora.objects.all()
@@ -166,22 +136,75 @@ class AgoraResource(GenericResource):
             url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/active_delegates%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_active_delegates_list'), name="api_agora_active_delegate_list"),
+
+            url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/all_elections%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_all_elections_list'), name="api_agora_all_elections_list"),
+
+            url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/tallied_elections%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_tallied_elections_list'), name="api_agora_tallied_elections_list"),
+
+            url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/open_elections%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_open_elections_list'), name="api_agora_open_elections_list"),
         ]
 
     def get_admin_list(self, request, **kwargs):
-        return self.get_custom_resource_list(request, url_name="api_agora_admin_list",
+        '''
+        List admin members of this agora
+        '''
+        return self.get_custom_resource_list(request,
+            url_name="api_agora_admin_list",
             queryfunc=lambda agora: agora.admins.all(), resource=UserResource,
             **kwargs)
 
     def get_member_list(self, request, **kwargs):
+        '''
+        List the members of this agora
+        '''
         return self.get_custom_resource_list(request, url_name="api_agora_member_list",
             queryfunc=lambda agora: agora.members.all(), resource=UserResource,
             **kwargs)
 
     def get_active_delegates_list(self, request, **kwargs):
-        return self.get_custom_resource_list(request, url_name="api_agora_active_delegate_list",
+        '''
+        List currently active delegates in this agora
+        '''
+        return self.get_custom_resource_list(request,
+            url_name="api_agora_active_delegate_list",
             queryfunc=lambda agora: agora.active_delegates(), resource=UserResource,
             **kwargs)
+
+    def get_all_elections_list(self, request, **kwargs):
+        '''
+        List all elections in an agora
+        '''
+        from agora_site.agora_core.resources.election import ElectionResource
+        return self.get_custom_resource_list(request,
+            url_name="api_agora_all_elections_list",
+            queryfunc=lambda agora: agora.all_elections(), resource=ElectionResource,
+            **kwargs)
+
+    def get_tallied_elections_list(self, request, **kwargs):
+        '''
+        List elections that have been already tallied in an agora
+        '''
+        from agora_site.agora_core.resources.election import ElectionResource
+        return self.get_custom_resource_list(request,
+            url_name="api_agora_tallied_elections_list",
+            queryfunc=lambda agora: agora.get_tallied_elections(),
+            resource=ElectionResource, **kwargs)
+
+    def get_open_elections_list(self, request, **kwargs):
+        '''
+        List the elections that are currently opened in an agora
+        '''
+        from agora_site.agora_core.resources.election import ElectionResource
+        return self.get_custom_resource_list(request,
+            url_name="api_agora_open_elections_list",
+            queryfunc=lambda agora: agora.get_open_elections(),
+            resource=ElectionResource, **kwargs)
 
     def get_request_list(self, request, **kwargs):
         '''
