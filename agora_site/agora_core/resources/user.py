@@ -19,7 +19,7 @@ class UserResource(GenericResource):
         queryset = User.objects.all()
         list_allowed_methods = ['get']
         detail_allowed_methods = ['get', 'put']
-        excludes = ['password', 'is_staff', 'is_superuser']
+        excludes = ['password', 'is_staff', 'is_superuser', 'email']
 
     def prepend_urls(self):
         return [
