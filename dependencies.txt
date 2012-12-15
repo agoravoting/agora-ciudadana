@@ -6,7 +6,6 @@ south
 django-rosetta
 py-bcrypt
 django-guardian
-django-reversion
 django-activity-stream
 django-social-auth>=0.7.7
 django-crispy-forms
@@ -21,4 +20,4 @@ pygeoip
 django-dajaxice
 celery
 django-celery
-django-tastypie
+git+https://github.com/toastdriven/django-tastypie.git
