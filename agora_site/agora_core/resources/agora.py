@@ -149,7 +149,7 @@ class AgoraResource(GenericResource):
         bundle = self.full_dehydrate(bundle)
         return bundle
 
-    def override_urls(self):
+    def prepend_urls(self):
         return [
             url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/action%s$" \
                 % (self._meta.resource_name, trailing_slash()),

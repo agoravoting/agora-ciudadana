@@ -21,7 +21,7 @@ class UserResource(GenericResource):
         detail_allowed_methods = ['get', 'put']
         excludes = ['password', 'is_staff', 'is_superuser']
 
-    def override_urls(self):
+    def prepend_urls(self):
         return [
             url(r"^(?P<resource_name>%s)/username/(?P<username>[\w\d_.-]+)%s$" \
                 % (self._meta.resource_name, trailing_slash()),
