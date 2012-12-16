@@ -4,7 +4,8 @@ from common import (HTTP_OK,
                     HTTP_NO_CONTENT,
                     HTTP_BAD_REQUEST,
                     HTTP_FORBIDDEN,
-                    HTTP_NOT_FOUND)
+                    HTTP_NOT_FOUND,
+                    HTTP_METHOD_NOT_ALLOWED)
 
 from common import RootTestCase
 from agora_site.agora_core.tasks.agora import send_request_membership_mails
@@ -112,7 +113,7 @@ class AgoraTest(RootTestCase):
             code=HTTP_FORBIDDEN, content_type='application/json')
 
         # Noone is requesting
-        data = self.postAndParse('agora/1/requests/', data=orig_data,
+        data = self.postAndParse('agora/1/membership_requests/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
         self.assertEquals(data['meta']['total_count'], 0)
 
@@ -125,10 +126,171 @@ class AgoraTest(RootTestCase):
             code=HTTP_FORBIDDEN, content_type='application/json')
 
         # user2 is requesting
-        data = self.postAndParse('agora/1/requests/', data=orig_data,
+        data = self.postAndParse('agora/1/membership_requests/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
         self.assertEquals(data['meta']['total_count'], 1)
         self.assertEquals(data['objects'][0]['username'], 'user2')
+
+    def test_agora_accept_membership_request(self):
+        '''
+        Test that an admin can accept a membership request
+        '''
+
+        # setting restricted joining policy
+        self.login('david', 'david')
+        orig_data = {'pretty_name': "updated name",
+                     'short_description': "new desc",
+                     'is_vote_secret': False,
+                     'biography': "bio",
+                     'membership_policy': 'JOINING_REQUIRES_ADMINS_APPROVAL',
+                     'comments_policy': 'ANYONE_CAN_COMMENT'}
+        data = self.put('agora/1/', data=orig_data,
+            code=HTTP_ACCEPTED, content_type='application/json')
+
+        # requesting membership
+        self.login('user2', '123')
+        orig_data = dict(action='request_membership')
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # trying to accept membership with an user with no permissions,
+        # should fail
+        self.login('user1', '123')
+        orig_data = dict(action='accept_membership', username='user2')
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_FORBIDDEN, content_type='application/json')
+
+        # user2 is still requesting
+        data = self.postAndParse('agora/1/membership_requests/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertEquals(data['meta']['total_count'], 1)
+        self.assertEquals(data['objects'][0]['username'], 'user2')
+
+        # and user2 is not a member
+        data = self.postAndParse('agora/1/members/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertEquals(data['meta']['total_count'], 1)
+        self.assertEquals(data['objects'][0]['username'], 'david')
+
+        # accept membership properly, should succeed
+        self.login('david', 'david')
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # user2 is not requesting any more
+        data = self.postAndParse('agora/1/membership_requests/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertEquals(data['meta']['total_count'], 0)
+
+        # user2 is a member now
+        data = self.postAndParse('agora/1/members/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertEquals(data['meta']['total_count'], 2)
+        self.assertEquals(data['objects'][1]['username'], 'user2')
+
+    def test_agora_deny_membership_request(self):
+        '''
+        Test that an admin can accept a membership request
+        '''
+
+        # setting restricted joining policy
+        self.login('david', 'david')
+        orig_data = {'pretty_name': "updated name",
+                     'short_description': "new desc",
+                     'is_vote_secret': False,
+                     'biography': "bio",
+                     'membership_policy': 'JOINING_REQUIRES_ADMINS_APPROVAL',
+                     'comments_policy': 'ANYONE_CAN_COMMENT'}
+        data = self.put('agora/1/', data=orig_data,
+            code=HTTP_ACCEPTED, content_type='application/json')
+
+        # requesting membership
+        self.login('user2', '123')
+        orig_data = dict(action='request_membership')
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # trying to deny membership with an user with no permissions,
+        # should fail
+        self.login('user1', '123')
+        orig_data = dict(action='deny_membership', username='user2')
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_FORBIDDEN, content_type='application/json')
+
+        # user2 is still requesting
+        data = self.postAndParse('agora/1/membership_requests/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertEquals(data['meta']['total_count'], 1)
+        self.assertEquals(data['objects'][0]['username'], 'user2')
+
+        # and user2 is not a member
+        data = self.postAndParse('agora/1/members/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertEquals(data['meta']['total_count'], 1)
+        self.assertEquals(data['objects'][0]['username'], 'david')
+
+        # deny membership properly, should succeed
+        self.login('david', 'david')
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # user2 is not requesting any more
+        data = self.postAndParse('agora/1/membership_requests/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertEquals(data['meta']['total_count'], 0)
+
+        # and user2 is not a member
+        data = self.postAndParse('agora/1/members/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertEquals(data['meta']['total_count'], 1)
+        self.assertEquals(data['objects'][0]['username'], 'david')
+
+    def test_agora_test_action(self):
+        '''
+        Basic tests on agora actions
+        '''
+        # method must be post so this fails
+        data = self.get('agora/1/action/', code=HTTP_METHOD_NOT_ALLOWED)
+
+        # no action provided so this fails
+        data = self.post('agora/1/action/', data=dict(),
+            code=HTTP_NOT_FOUND, content_type='application/json')
+
+        # non existant action provided so this fails
+        data = self.post('agora/1/action/', data=dict(action="3gt3g3gerr"),
+            code=HTTP_NOT_FOUND, content_type='application/json')
+
+        # test action correctly, so this succeeds
+        orig_data = dict(action="test", param1="blah")
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # now test action but with a inexistant agora, should fail
+        data = self.post('agora/4454/action/', data=orig_data,
+            code=HTTP_NOT_FOUND, content_type='application/json')
+
+    def test_agora_get_perms(self):
+        '''
+        tests on agora get permissions
+        '''
+        orig_data = dict(action="get_permissions")
+
+        # anonymous user has no special permissions
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertEquals(data, dict(permissions=[]))
+
+        # david user should have admin permissions
+        self.login('david', 'david')
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertEquals(data, dict(permissions=['admin', 'comment']))
+
+        # user2 should have some permissions
+        self.login('user2', '123')
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertEquals(data, dict(permissions=['join', 'comment']))
 
     def test_send_request_membership_mails(self):
         '''
