@@ -115,6 +115,15 @@ class CastVote(models.Model):
         return CastVote.objects.filter(election=self.election, voter=self.voter,
             casted_at_date__lt=self.casted_at_date).count() > 0
 
+    def get_public_data(self):
+        '''
+        Returns self.data without showing vote answer if the vote is not public
+        '''
+        if self.is_public:
+            return self.data
+        else:
+            return dict()
+
     class Meta:
         '''
         A voter can vote multiple times in an election, but only last vote will
