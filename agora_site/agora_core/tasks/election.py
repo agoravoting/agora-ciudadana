@@ -60,7 +60,7 @@ def start_election(election_id, is_secure, site_id, remote_addr):
     # agora members' list
     for voter in election.agora.members.all():
 
-        if not voter.email or not voter.get_profile().email_updates:
+        if not voter.get_profile().has_perms('receive_email_updates'):
             continue
 
         context['to'] = voter
@@ -80,7 +80,7 @@ def start_election(election_id, is_secure, site_id, remote_addr):
     # Also notify third party delegates
     for voter in election.agora.active_nonmembers_delegates():
 
-        if not voter.email or not voter.get_profile().email_updates:
+        if not voter.get_profile().has_perms('receive_email_updates'):
             continue
 
         context['to'] = voter
@@ -140,7 +140,7 @@ def end_election(election_id, is_secure, site_id, remote_addr, user_id):
 
     for vote in election.get_all_votes():
 
-        if not vote.voter.email or not vote.voter.get_profile().email_updates:
+        if not vote.voter.get_profile().has_perms('receive_email_updates'):
             continue
 
         context['to'] = vote.voter

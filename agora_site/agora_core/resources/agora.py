@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.forms import ModelForm
@@ -5,6 +7,8 @@ from django.core.urlresolvers import reverse
 from django.conf.urls.defaults import url
 from django.contrib.sites.models import Site
 from django.core.mail import EmailMultiAlternatives, EmailMessage, send_mass_mail
+from django.template.loader import render_to_string
+from django.shortcuts import redirect, get_object_or_404, render_to_response
 from django.utils.translation import ugettext as _
 from django.utils import simplejson as json
 
@@ -20,7 +24,7 @@ from actstream.models import (object_stream, election_stream, Action,
     user_stream, actor_stream)
 from actstream.signals import action
 
-from guardian.shortcuts import assign
+from guardian.shortcuts import assign, remove_perm
 
 from agora_site.agora_core.models import Agora
 from agora_site.agora_core.tasks.agora import send_request_membership_mails
@@ -29,7 +33,7 @@ from agora_site.agora_core.resources.user import UserResource
 from agora_site.misc.decorators import permission_required
 
 from agora_site.agora_core.views import AgoraActionJoinView
-from agora_site.misc.utils import geolocate_ip
+from agora_site.misc.utils import geolocate_ip, get_base_email_context
 
 ELECTION_RESOURCE = 'agora_site.agora_core.resources.election.ElectionResource'
 
@@ -129,7 +133,7 @@ class AgoraResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_admin_list'), name="api_agora_admin_list"),
 
-            url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/requests%s$" \
+            url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/membership_requests%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_request_list'), name="api_agora_request_list"),
 
@@ -249,24 +253,35 @@ class AgoraResource(GenericResource):
         actions:
             DONE
             * request_membership
-            * join
-            TODO
-            * get_permissions
             * accept_membership
             * deny_membership
+            * join
+            * get_permissions
+
+            TODO
             * add_membership
             * remove_membership
+
+            * request_admin_membership
+            * accept_admin_membership
+            * deny_admin_membership
+            * add_admin_membership
+            * remove_admin_membership
+
             * archive_agora
         '''
 
         actions = {
             'request_membership': self.request_membership_action,
+            'accept_membership': self.accept_membership_action,
+            'deny_membership': self.deny_membership_action,
+            'get_permissions': self.get_permissions_action,
             'join': self.join_action,
             'test': self.test_action,
         }
 
         if request.method != "POST":
-            raise ImmediateHttpResponse(response=http.HttpResponseNotAllowed())
+            raise ImmediateHttpResponse(response=http.HttpMethodNotAllowed())
 
         data = self.deserialize_post_data(request)
 
@@ -317,7 +332,7 @@ class AgoraResource(GenericResource):
     @permission_required('join', (Agora, 'id', 'agoraid'))
     def join_action(self, request, agora, **kwargs):
         '''
-        Requests membership from authenticated user to an agora
+        Action that an user can execute to join an agora if it has permissions
         '''
         agora.members.add(request.user)
         agora.save()
@@ -334,6 +349,132 @@ class AgoraResource(GenericResource):
             follow(request.user, agora, actor_only=False, request=request)
 
         return self.create_response(request, dict(status="success"))
+
+
+    @permission_required('admin', (Agora, 'id', 'agoraid'))
+    def accept_membership_action(self, request, agora, username, **kwargs):
+        '''
+        Accept a membership request from the given username user in an agora
+        '''
+        if not re.match("^[a-zA-Z0-9_]+$", username):
+            raise ImmediateHttpResponse(response=http.HttpBadRequest())
+        user = get_object_or_404(User, username=username)
+
+        # One can only accept membership if it can cancel it
+        if not agora.has_perms('cancel_membership_request', user):
+            raise ImmediateHttpResponse(response=http.HttpForbidden())
+
+        # remve the request membership status and add user to the agora
+        remove_perm('requested_membership', user, agora)
+        agora.members.add(user)
+        agora.save()
+
+        # create an action for the event
+        action.send(request.user, verb='accepted membership request',
+            action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            target=user,
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        # and a message for the admin
+        messages.add_message(request, messages.SUCCESS, _('You accepted  '
+            '%(username)s membership request in %(agora)s.') % dict(
+                username=username,
+                agora=agora.get_full_name("link")))
+
+        # Mail to the user
+        if user.get_profile().has_perms('receive_email_updates'):
+            context = get_base_email_context(request)
+            context.update(dict(
+                agora=agora,
+                other_user=user,
+                notification_text=_('Your membership has been accepted at '
+                    '%(agora)s. Congratulations!') % dict(
+                        agora=agora.get_full_name()
+                    ),
+                to=user
+            ))
+
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - you are now member of %(agora)s') % dict(
+                            site=Site.objects.get_current().domain,
+                            agora=agora.get_full_name()
+                        ),
+                body=render_to_string('agora_core/emails/agora_notification.txt',
+                    context),
+                to=[user.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/agora_notification.html',
+                    context), "text/html")
+            email.send()
+
+        return self.create_response(request, dict(status="success"))
+
+    @permission_required('admin', (Agora, 'id', 'agoraid'))
+    def deny_membership_action(self, request, agora, username, **kwargs):
+        '''
+        Deny a membership request from the given username user in an agora
+        '''
+        if not re.match("^[a-zA-Z0-9_]+$", username):
+            raise ImmediateHttpResponse(response=http.HttpBadRequest())
+        user = get_object_or_404(User, username=username)
+
+        # One can only accept membership if it can cancel it
+        if not agora.has_perms('cancel_membership_request', user):
+            raise ImmediateHttpResponse(response=http.HttpForbidden())
+
+        # remve the request membership status and add user to the agora
+        remove_perm('requested_membership', user, agora)
+
+        # create an action for the event
+        action.send(request.user, verb='denied membership request',
+            action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            target=user,
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        # and a message for the admin
+        messages.add_message(request, messages.SUCCESS, _('You denied  '
+            '%(username)s membership request in %(agora)s.') % dict(
+                username=username,
+                agora=agora.get_full_name("link")))
+
+        # Mail to the user
+        if user.get_profile().has_perms('receive_email_updates'):
+            context = get_base_email_context(request)
+            context.update(dict(
+                agora=agora,
+                other_user=user,
+                notification_text=_('Your membership request at %(agora)s '
+                    'has been denied. Sorry about that!') % dict(
+                        agora=agora.get_full_name()
+                    ),
+                to=user
+            ))
+
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - membership request denied at '
+                    '%(agora)s') % dict(
+                            site=Site.objects.get_current().domain,
+                            agora=agora.get_full_name()
+                        ),
+                body=render_to_string('agora_core/emails/agora_notification.txt',
+                    context),
+                to=[user.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/agora_notification.html',
+                    context), "text/html")
+            email.send()
+
+        return self.create_response(request, dict(status="success"))
+
+    def get_permissions_action(self, request, agora, **kwargs):
+        '''
+        Returns the permissions the user that requested it has
+        '''
+        return self.create_response(request,
+            dict(permissions=agora.get_perms(request.user)))
+
 
     def test_action(self, request, agora, param1=None, param2=None, **kwargs):
         '''
