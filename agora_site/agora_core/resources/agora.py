@@ -281,8 +281,6 @@ class AgoraResource(GenericResource):
             * add_admin_membership
             * remove_admin_membership
             * leave_admin_membership
-
-            * archive_agora
         '''
 
         actions = {

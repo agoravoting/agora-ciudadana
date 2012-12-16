@@ -473,7 +473,7 @@ class AgoraTest(RootTestCase):
         self.login('david', 'david')
         data = self.postAndParse('agora/1/action/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
-        self.assertEquals(data, dict(permissions=['admin', 'comment']))
+        self.assertEquals(data, dict(permissions=['admin', 'comment', 'delete']))
 
         # user2 should have some permissions
         self.login('user2', '123')

@@ -339,7 +339,7 @@ class Agora(models.Model):
         return [perm for perm in ('join', 'request_membership',
             'cancel_membership_request', 'request_admin_membership',
             'cancel_admin_membership_request', 'leave', 'leave_admin',
-            'admin', 'comment') if self.has_perms(perm, user)]
+            'admin', 'comment', 'delete') if self.has_perms(perm, user)]
 
     def get_link(self):
         return reverse('agora-view', kwargs=dict(username=self.creator.username,
