@@ -339,10 +339,6 @@ class AgoraResource(GenericResource):
         if not is_following(request.user, agora):
             follow(request.user, agora, actor_only=False, request=request)
 
-        messages.add_message(request, messages.SUCCESS, _('You requested '
-            'membership in %(agora)s. Soon the admins of this agora will '
-            'decide on your request.') % dict(agora=agora.get_link()))
-
         kwargs=dict(
             agora_id=agora.id,
             user_id=request.user.id,
@@ -365,10 +361,6 @@ class AgoraResource(GenericResource):
         action.send(request.user, verb='joined', action_object=agora,
             ipaddr=request.META.get('REMOTE_ADDR'),
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
-
-        messages.add_message(request, messages.SUCCESS, _('You joined '
-            '%(agora)s. Now you could take a look at what elections are '
-            'available at this agora') % dict(agora=agora.get_link()))
 
         if not is_following(request.user, agora):
             follow(request.user, agora, actor_only=False, request=request)
@@ -399,12 +391,6 @@ class AgoraResource(GenericResource):
             action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
             target=user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
-
-        # and a message for the admin
-        messages.add_message(request, messages.SUCCESS, _('You accepted  '
-            '%(username)s membership request in %(agora)s.') % dict(
-                username=username,
-                agora=agora.get_full_name("link")))
 
         # Mail to the user
         if user.get_profile().has_perms('receive_email_updates'):
@@ -457,12 +443,6 @@ class AgoraResource(GenericResource):
             target=user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
-        # and a message for the admin
-        messages.add_message(request, messages.SUCCESS, _('You denied  '
-            '%(username)s membership request in %(agora)s.') % dict(
-                username=username,
-                agora=agora.get_full_name("link")))
-
         # Mail to the user
         if user.get_profile().has_perms('receive_email_updates'):
             context = get_base_email_context(request)
@@ -513,12 +493,6 @@ class AgoraResource(GenericResource):
             action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
             target=user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
-
-        # and a message for the admin
-        messages.add_message(request, messages.SUCCESS, _('You added'
-            '%(username)s as a member to %(agora)s.') % dict(
-                username=username,
-                agora=agora.get_full_name("link")))
 
         # Mail to the user
         if user.get_profile().has_perms('receive_email_updates'):
@@ -577,12 +551,6 @@ class AgoraResource(GenericResource):
             target=user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
-        # and a message for the admin
-        messages.add_message(request, messages.SUCCESS, _('You removed '
-            'membership from %(agora)s to %(username)s.') % dict(
-                username=username,
-                agora=agora.get_full_name("link")))
-
         # Mail to the user
         if user.get_profile().has_perms('receive_email_updates'):
             context = get_base_email_context(request)
@@ -631,12 +599,6 @@ class AgoraResource(GenericResource):
         action.send(request.user, verb='left',
             action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
-
-        # and a message for the admin
-        messages.add_message(request, messages.SUCCESS, _('You remove your '
-            'membership from %(agora)s.') % dict(
-                username=request.user.username,
-                agora=agora.get_full_name("link")))
 
         # Mail to the user
         if request.user.get_profile().has_perms('receive_email_updates'):
