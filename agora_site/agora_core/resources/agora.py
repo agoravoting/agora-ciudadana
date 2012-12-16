@@ -28,11 +28,11 @@ from guardian.shortcuts import assign, remove_perm
 
 from agora_site.agora_core.models import Agora
 from agora_site.agora_core.tasks.agora import send_request_membership_mails
-from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.agora_core.resources.user import UserResource
-from agora_site.misc.decorators import permission_required
-
+from agora_site.agora_core.forms import PostCommentForm
 from agora_site.agora_core.views import AgoraActionJoinView
+from agora_site.misc.generic_resource import GenericResource, GenericMeta
+from agora_site.misc.decorators import permission_required
 from agora_site.misc.utils import geolocate_ip, get_base_email_context
 
 ELECTION_RESOURCE = 'agora_site.agora_core.resources.election.ElectionResource'
@@ -152,7 +152,18 @@ class AgoraResource(GenericResource):
             url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/open_elections%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_open_elections_list'), name="api_agora_open_elections_list"),
+
+            url(r"^(?P<resource_name>%s)/(?P<agora>\d+)/add_comment%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('add_comment'), name="api_agora_add_comment"),
         ]
+
+    @permission_required('comment', (Agora, 'id', 'agora'))
+    def add_comment(self, request, **kwargs):
+        '''
+        Form to add comments
+        '''
+        return self.wrap_form(PostCommentForm)(request, **kwargs)
 
     def get_admin_list(self, request, **kwargs):
         '''
@@ -667,4 +678,3 @@ class AgoraResource(GenericResource):
             raise ImmediateHttpResponse(response=http.HttpBadRequest())
 
         return self.create_response(request, dict(status="success"))
-

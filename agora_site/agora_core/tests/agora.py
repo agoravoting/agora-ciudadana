@@ -494,3 +494,138 @@ class AgoraTest(RootTestCase):
         )
         result = send_request_membership_mails.apply_async(kwargs=kwargs)
         self.assertTrue(result.successful())
+
+    def test_add_comment1(self):
+        '''
+        Tests adding a comment in the agora
+        '''
+        # get activity - its empty
+        data = self.getAndParse('action/agora/1/')
+        agoras = data['objects']
+        self.assertEqual(len(agoras), 0)
+
+        # add a comment as anonymous - fails, forbidden
+        orig_data = dict(comment='blah blah blah blah.')
+        data = self.post('agora/1/add_comment/', orig_data,
+            code=HTTP_FORBIDDEN, content_type='application/json')
+
+        # still no activity
+        data = self.getAndParse('action/agora/1/')
+        agoras = data['objects']
+        self.assertEqual(len(agoras), 0)
+
+        # add a comment as a logged in user that is a member of the agora
+        self.login('david', 'david')
+        data = self.postAndParse('agora/1/add_comment/', orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # now the comment is there
+        data = self.getAndParse('action/agora/1/')
+        objects = data['objects']
+        self.assertEqual(len(objects), 1)
+        self.assertEqual(objects[0]['actor']['content_type'], 'user')
+        self.assertEqual(objects[0]['actor']['username'], 'david')
+        self.assertEqual(objects[0]['action_object']['content_type'], 'comment')
+        self.assertEqual(objects[0]['action_object']['comment'], orig_data['comment'])
+
+    def test_add_comment2(self):
+        '''
+        Tests adding a comment in the agora
+        '''
+        # no activity
+        data = self.getAndParse('action/agora/1/')
+        objects = data['objects']
+        self.assertEqual(len(objects), 0)
+
+        # set comment policy to only members
+        self.login('david', 'david')
+        orig_data = dict(comments_policy='ONLY_MEMBERS_CAN_COMMENT')
+        data = self.put('agora/1/', data=orig_data,
+            code=HTTP_ACCEPTED, content_type='application/json')
+
+        # add a comment as a non member - fails
+        self.login('user1', '123')
+        orig_data = dict(comment='blah blah blah blah.')
+        data = self.post('agora/1/add_comment/', orig_data,
+            code=HTTP_FORBIDDEN, content_type='application/json')
+
+        # still no activity
+        data = self.getAndParse('action/agora/1/')
+        objects = data['objects']
+        self.assertEqual(len(objects), 0)
+
+        # user1 joins the agora
+        orig_data = dict(action="join")
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # this generates "joined" and "started following" actions
+        data = self.getAndParse('action/agora/1/')
+        objects = data['objects']
+        self.assertEqual(len(objects), 2)
+
+        # add a comment as a member - succeeds
+        orig_data = dict(comment='blah blah blah blah 2 yeahh pirata.')
+        data = self.post('agora/1/add_comment/', orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # now the comment is there
+        data = self.getAndParse('action/agora/1/')
+        objects = data['objects']
+        self.assertEqual(len(objects), 3)
+        self.assertEqual(objects[0]['actor']['content_type'], 'user')
+        self.assertEqual(objects[0]['actor']['username'], 'user1')
+        self.assertEqual(objects[0]['action_object']['content_type'], 'comment')
+        self.assertEqual(objects[0]['action_object']['comment'], orig_data['comment'])
+
+    def test_add_comment3(self):
+        '''
+        Tests adding a comment in the agora
+        '''
+        # set comment policy to only admins
+        self.login('david', 'david')
+        orig_data = dict(comments_policy='ONLY_ADMINS_CAN_COMMENT')
+        data = self.put('agora/1/', data=orig_data,
+            code=HTTP_ACCEPTED, content_type='application/json')
+
+        # try to post a comment as member - fails
+        self.login('user1', '123')
+        orig_data = dict(comment='blah blah blah blah 2 yeahh pirata.')
+        data = self.post('agora/1/add_comment/', orig_data,
+            code=HTTP_FORBIDDEN, content_type='application/json')
+
+        # the comment is not there
+        data = self.getAndParse('action/agora/1/')
+        objects = data['objects']
+        self.assertEqual(len(objects), 0)
+
+        # post the comment as agora admin
+        self.login('david', 'david')
+        orig_data = dict(comment='blah blah blah blah 2 yeahh pirata.')
+        data = self.post('agora/1/add_comment/', orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # now the comment is there
+        data = self.getAndParse('action/agora/1/')
+        objects = data['objects']
+        self.assertEqual(len(objects), 1)
+
+    def test_add_comment4(self):
+        '''
+        Tests adding a comment in the agora
+        '''
+        # set comment policy to no comments
+        self.login('david', 'david')
+        orig_data = dict(comments_policy='NO_COMMENTS')
+        data = self.put('agora/1/', data=orig_data,
+            code=HTTP_ACCEPTED, content_type='application/json')
+
+        # post the comment as agora admin - fails, not even admins can post
+        orig_data = dict(comment='blah blah blah blah 2 yeahh pirata.')
+        data = self.post('agora/1/add_comment/', orig_data,
+            code=HTTP_FORBIDDEN, content_type='application/json')
+
+        # the comment is not there
+        data = self.getAndParse('action/agora/1/')
+        objects = data['objects']
+        self.assertEqual(len(objects), 0)

@@ -100,10 +100,6 @@ class ActionResource(GenericResource):
                 #% (self._meta.resource_name, trailing_slash()),
                 #self.wrap_view(PostCommentForm), name="api_user_add_comment"),
 
-            url(r"^(?P<resource_name>%s)/agora/(?P<agora>[0-9]+)/add_comment%s$" \
-                % (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('agora_add_comment'), name="api_agora_add_comment"),
-
             url(r"^(?P<resource_name>%s)/election/(?P<election>[0-9]+)/add_comment%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('election_add_comment'), name="api_election_add_comment"),
@@ -165,10 +161,6 @@ class ActionResource(GenericResource):
         return self.get_custom_list(request=request, kwargs=kwargs,
             list_url=list_url, queryset=object_stream(election)
         )
-
-    @permission_required('comment', (Agora, 'id', 'agora'))
-    def agora_add_comment(self, request, **kwargs):
-        return self.wrap_form(PostCommentForm)(request, **kwargs)
 
     @permission_required('comment', (Election, 'id', 'election'))
     def election_add_comment(self, request, **kwargs):
