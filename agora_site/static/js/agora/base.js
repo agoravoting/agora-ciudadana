@@ -2,6 +2,16 @@
     var Agora = this.Agora = {};
     var app = this.app = {};
 
+    Agora.TopView = Backbone.View.extend({
+        el: "#top-bar",
+
+        events: {},
+
+        initialize: function() {
+            _.bindAll(this);
+        }
+    });
+
     Agora.MainView = Backbone.View.extend({
         el: "body",
 
@@ -11,11 +21,11 @@
 
         initialize: function() {
             _.bindAll(this);
-            this.updateUi();
-        },
 
-        setupAjaxStop: function() {
             $(document).ajaxStop(this.updateUi);
+            this.updateUi();
+
+            this.topBar = new Agora.TopView();
         },
 
         updateUi: function() {
