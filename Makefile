@@ -17,5 +17,7 @@ mainjs:
 					      agora_site/static/js/libs/jquery-ui-timepicker-addon.js \
 					      agora_site/static/js/libs/jquery.timeago.js \
 					      agora_site/static/js/libs/jsrender.js \
+					      agora_site/static/js/libs/endless_pagination/endless.js \
+					      agora_site/static/js/libs/endless_pagination/endless_on_scroll.js \
 					      agora_site/static/js/libs/d3.v2.min.js \
 					      	-o agora_site/static/js/min/main.min.js
