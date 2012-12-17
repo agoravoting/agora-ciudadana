@@ -20,7 +20,7 @@ class Agora(models.Model):
     Represents an Agora, formed by a group of people which can vote and delegate
     '''
     ELECTION_TYPES = (
-        ('ONCE_CHOICE', _('Simple one choice result type of election')),
+        ('ONE_CHOICE', _('Simple one choice result type of election')),
         ('SIMPLE_DELEGATION', _('Simple election for delegates where only one delegate can be chosen')),
     )
 
