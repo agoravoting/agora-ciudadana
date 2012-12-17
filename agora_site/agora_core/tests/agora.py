@@ -128,8 +128,7 @@ class AgoraTest(RootTestCase):
             code=HTTP_FORBIDDEN, content_type='application/json')
 
         # Noone is requesting
-        data = self.postAndParse('agora/1/membership_requests/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/membership_requests/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 0)
 
         self.login('user2', '123')
@@ -141,8 +140,7 @@ class AgoraTest(RootTestCase):
             code=HTTP_FORBIDDEN, content_type='application/json')
 
         # user2 is requesting
-        data = self.postAndParse('agora/1/membership_requests/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/membership_requests/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 1)
         self.assertEquals(data['objects'][0]['username'], 'user2')
 
@@ -181,8 +179,7 @@ class AgoraTest(RootTestCase):
         self.assertEquals(data['objects'][0]['username'], 'user2')
 
         # and user2 is not a member
-        data = self.getAndParse('agora/1/members/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/members/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 1)
         self.assertEquals(data['objects'][0]['username'], 'david')
 
@@ -192,13 +189,11 @@ class AgoraTest(RootTestCase):
             code=HTTP_OK, content_type='application/json')
 
         # user2 is not requesting any more
-        data = self.getAndParse('agora/1/membership_requests/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/membership_requests/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 0)
 
         # user2 is a member now
-        data = self.getAndParse('agora/1/members/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/members/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 2)
         self.assertEquals(data['objects'][1]['username'], 'user2')
 
@@ -232,14 +227,12 @@ class AgoraTest(RootTestCase):
             code=HTTP_FORBIDDEN, content_type='application/json')
 
         # user2 is still requesting
-        data = self.postAndParse('agora/1/membership_requests/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/membership_requests/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 1)
         self.assertEquals(data['objects'][0]['username'], 'user2')
 
         # and user2 is not a member
-        data = self.postAndParse('agora/1/members/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/members/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 1)
         self.assertEquals(data['objects'][0]['username'], 'david')
 
@@ -249,13 +242,11 @@ class AgoraTest(RootTestCase):
             code=HTTP_OK, content_type='application/json')
 
         # user2 is not requesting any more
-        data = self.postAndParse('agora/1/membership_requests/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/membership_requests/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 0)
 
         # and user2 is not a member
-        data = self.postAndParse('agora/1/members/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/members/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 1)
         self.assertEquals(data['objects'][0]['username'], 'david')
 
@@ -290,14 +281,12 @@ class AgoraTest(RootTestCase):
             code=HTTP_FORBIDDEN, content_type='application/json')
 
         # user2 is still requesting
-        data = self.postAndParse('agora/1/membership_requests/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/membership_requests/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 1)
         self.assertEquals(data['objects'][0]['username'], 'user2')
 
         # and user2 is not a member
-        data = self.postAndParse('agora/1/members/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/members/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 1)
         self.assertEquals(data['objects'][0]['username'], 'david')
 
@@ -307,13 +296,11 @@ class AgoraTest(RootTestCase):
             code=HTTP_OK, content_type='application/json')
 
         # user2 is not requesting any more
-        data = self.postAndParse('agora/1/membership_requests/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/membership_requests/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 0)
 
         # user2 is a member now
-        data = self.postAndParse('agora/1/members/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/members/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 2)
         self.assertEquals(data['objects'][1]['username'], 'user2')
 
@@ -340,8 +327,7 @@ class AgoraTest(RootTestCase):
             code=HTTP_OK, content_type='application/json')
 
         # user1 is a member now
-        data = self.postAndParse('agora/1/members/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/members/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 2)
         self.assertEquals(data['objects'][1]['username'], 'user1')
 
@@ -368,8 +354,7 @@ class AgoraTest(RootTestCase):
             code=HTTP_OK, content_type='application/json')
 
         # user1 is a member now
-        data = self.postAndParse('agora/1/members/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/members/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 2)
         self.assertEquals(data['objects'][1]['username'], 'user1')
 
@@ -382,8 +367,7 @@ class AgoraTest(RootTestCase):
             code=HTTP_FORBIDDEN, content_type='application/json')
 
         # user1 is still a member
-        data = self.postAndParse('agora/1/members/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/members/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 2)
         self.assertEquals(data['objects'][1]['username'], 'user1')
 
@@ -393,8 +377,7 @@ class AgoraTest(RootTestCase):
             code=HTTP_OK, content_type='application/json')
 
         # user1 is not a member anymore
-        data = self.postAndParse('agora/1/members/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/members/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 1)
         self.assertEquals(data['objects'][0]['username'], 'david')
 
@@ -416,8 +399,7 @@ class AgoraTest(RootTestCase):
             code=HTTP_OK, content_type='application/json')
 
         # user1 is a member now
-        data = self.postAndParse('agora/1/members/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/members/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 2)
         self.assertEquals(data['objects'][1]['username'], 'user1')
 
@@ -427,8 +409,7 @@ class AgoraTest(RootTestCase):
             code=HTTP_OK, content_type='application/json')
 
         # user1 is not a member anymore
-        data = self.postAndParse('agora/1/members/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/members/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 1)
         self.assertEquals(data['objects'][0]['username'], 'david')
 
@@ -443,8 +424,7 @@ class AgoraTest(RootTestCase):
             code=HTTP_FORBIDDEN, content_type='application/json')
 
         # owner is still a member
-        data = self.postAndParse('agora/1/members/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/members/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 1)
         self.assertEquals(data['objects'][0]['username'], 'david')
 
