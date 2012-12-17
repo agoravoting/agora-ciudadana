@@ -1,51 +1,29 @@
+from django.conf.urls.defaults import url
+
+from tastypie import fields, http
+from tastypie.exceptions import ImmediateHttpResponse
+from tastypie.utils import trailing_slash
+
 from agora_site.agora_core.models import Election
 from agora_site.agora_core.models import CastVote
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.agora_core.resources.user import UserResource
 from agora_site.agora_core.resources.agora import AgoraResource
-
-from tastypie import fields
+from agora_site.agora_core.resources.castvote import CastVoteResource
 
 
 DELEGATION_URL = "http://example.com/delegation/has/no/url/"
 CAST_VOTE_RESOURCE = 'agora_site.agora_core.resources.castvote.CastVoteResource'
 
-
-def all_votes(bundle):
-    # bundle.obj is an Election
-    return bundle.obj.get_all_votes()
-
-
-def votes_from_delegates(bundle):
-    # bundle.obj is an Election
-    return bundle.obj.get_votes_from_delegates()
-
-
-def direct_votes(bundle):
-    # bundle.obj is an Election
-    return bundle.obj.get_direct_votes()
-
-
 class ElectionResource(GenericResource):
     creator = fields.ForeignKey(UserResource, 'creator')
+
     electorate = fields.ManyToManyField(UserResource, 'electorate')
+
     agora = fields.ForeignKey(AgoraResource, 'agora')
-    parent_election = fields.ForeignKey('self',
-                                'parent_election', null=True)
-    delegated_votes = fields.ManyToManyField(CAST_VOTE_RESOURCE,
-                                             'delegated_votes',
-                                             full=True)
-    cast_votes = fields.ToManyField(CAST_VOTE_RESOURCE,
-                                             'cast_votes')
-    all_votes = fields.ToManyField(CAST_VOTE_RESOURCE,
-                                    attribute=all_votes, full=True,
-                                    null=True)
-    votes_from_delegates = fields.ToManyField(CAST_VOTE_RESOURCE,
-                                    attribute=votes_from_delegates,
-                                    full=True, null=True)
-    direct_votes = fields.ToManyField(CAST_VOTE_RESOURCE,
-                                    attribute=direct_votes,
-                                    full=True, null=True)
+
+    parent_election = fields.ForeignKey('self', 'parent_election', null=True)
+
     percentage_of_participation = fields.IntegerField()
 
     class Meta:
@@ -57,6 +35,91 @@ class ElectionResource(GenericResource):
         detail_allowed_methods = ['get']
 
         excludes = ['PROHIBITED_ELECTION_NAMES']
+
+    def prepend_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)/(?P<electionid>\d+)/all_votes%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_all_votes'), name="api_election_all_votes"),
+
+            url(r"^(?P<resource_name>%s)/(?P<electionid>\d+)/cast_votes%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_cast_votes'), name="api_election_cast_votes"),
+
+            url(r"^(?P<resource_name>%s)/(?P<electionid>\d+)/delegated_votes%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_delegated_votes'), name="api_election_delegated_votes"),
+
+            url(r"^(?P<resource_name>%s)/(?P<electionid>\d+)/votes_from_delegates%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_votes_from_delegates'), name="api_election_votes_from_delegates"),
+
+            url(r"^(?P<resource_name>%s)/(?P<electionid>\d+)/direct_votes%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_direct_votes'), name="api_election_direct_votes"),
+        ]
+
+    def get_all_votes(self, request, **kwargs):
+        '''
+        List all the votes in this agora
+        '''
+        return self.get_custom_resource_list(request, url_name="api_election_all_votes",
+            queryfunc=lambda election: election.get_all_votes(),
+            resource=CastVoteResource, **kwargs)
+
+    def get_cast_votes(self, request, **kwargs):
+        '''
+        List votes in this agora
+        '''
+        return self.get_custom_resource_list(request, url_name="api_election_cast_votes",
+            queryfunc=lambda election: election.cast_votes.all(),
+            resource=CastVoteResource, **kwargs)
+
+    def get_delegated_votes(self, request, **kwargs):
+        '''
+        List votes in this agora
+        '''
+        return self.get_custom_resource_list(request, url_name="api_election_delegated_votes",
+            queryfunc=lambda election: election.delegated_votes.all(),
+            resource=CastVoteResource, **kwargs)
+
+    def get_votes_from_delegates(self, request, **kwargs):
+        '''
+        List votes in this agora
+        '''
+        return self.get_custom_resource_list(request, url_name="api_election_votes_from_delegates",
+            queryfunc=lambda election: election.get_votes_from_delegates(),
+            resource=CastVoteResource, **kwargs)
+
+    def get_direct_votes(self, request, **kwargs):
+        '''
+        List votes in this agora
+        '''
+        return self.get_custom_resource_list(request, url_name="api_election_direct_votes",
+            queryfunc=lambda election: election.get_direct_votes(),
+            resource=CastVoteResource, **kwargs)
+
+    def get_custom_resource_list(self, request, url_name, queryfunc, resource, **kwargs):
+        '''
+        List custom resources (mostly used for votes)
+        '''
+        election = None
+        electionid = kwargs.get('electionid', -1)
+        try:
+            election = Election.objects.get(id=election)
+        except:
+            raise ImmediateHttpResponse(response=http.HttpNotFound())
+
+        url_args = dict(
+            resource_name=self._meta.resource_name,
+            api_name=self._meta.api_name,
+            electionid=electionid
+        )
+        list_url = self._build_reverse_url(url_name, kwargs=url_args)
+
+        return resource().get_custom_list(request=request, kwargs=kwargs,
+            list_url=list_url, queryset=queryfunc(election))
+
 
     def dehydrate_percentage_of_participation(self, bundle):
         return bundle.obj.percentage_of_participation()

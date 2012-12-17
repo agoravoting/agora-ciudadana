@@ -153,6 +153,8 @@ class AgoraResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_open_elections_list'), name="api_agora_open_elections_list"),
 
+            # TODO: add requested elections and deal with them (accept, deny)
+
             url(r"^(?P<resource_name>%s)/(?P<agora>\d+)/add_comment%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('add_comment'), name="api_agora_add_comment"),
