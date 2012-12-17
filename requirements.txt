@@ -1,8 +1,7 @@
-Django==1.4
+Django==1.4.3
 ipdb
 ipython
-wsgiref
-south
+south==0.7.6
 django-rosetta
 py-bcrypt
 django-guardian
@@ -18,7 +17,7 @@ textile
 simplejson
 pygeoip
 django-dajaxice
-celery
-django-celery
+celery==3.0.12
+django-celery==3.0.11
 git+https://github.com/toastdriven/django-tastypie.git
 whoosh
