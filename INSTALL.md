@@ -9,14 +9,15 @@ direct vote or by delegating the vote.
 * It Has only been tested in Linux so far.
 
 * Python 2.x >= 2.7
-* python-virtualenv
+* python virtualenvwrapper
 * rabbitmq-server
 
-* Development files por python are required to compile some later dependencies. In Ubuntu/Debian you can do this:
+* Development files por python are required to compile some later dependencies.
+  In Ubuntu/Debian you can do this:
 
     $ sudo apt-get install python2.7-dev
     
-Other dependencies will be installed with virtualenv, later.
+Other dependencies will be installed with virtualenv.
 
 
 ### First installation
@@ -28,12 +29,12 @@ http://docs.djangoproject.com/en/dev/topics/install/
 First we need to create the virtual environment where dependencies will be
 installed:
 
-    $ virtualenv env
+    $ mkvirtualenv agora-ciudadana
 
 Now everytime we want to use the installed virtualenv, we can do the
-following within the directory containing the env/ subdirectory:
+following:
 
-    $ source env/bin/activate
+    $ workon agora-ciudadana
 
 Now we will install the dependencies:
 
@@ -41,7 +42,12 @@ Now we will install the dependencies:
 
 After that, we need to configure the database (we use sqlite by default):
 
-    $ ./manage.py syncdb --migrate
+    $ ./manage.py syncdb --all
+    
+And mark all migration scripts as applied (because we have created the database
+with --all option):
+
+    $ ./manage.py migrate --fake
 
 We use django haystack for searching, so we need to create the initial index:
 
