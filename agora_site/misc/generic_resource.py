@@ -110,6 +110,8 @@ class GenericResource(ModelResource):
         '''
         Generic function to list some object actions
         '''
+        self.method_check(request, allowed=['get'])
+        self.throttle_check(request)
         self.list_url = list_url
         self.queryset = queryset
 
