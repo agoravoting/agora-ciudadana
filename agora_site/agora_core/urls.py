@@ -51,8 +51,6 @@ urlpatterns += patterns('',
 
     url(r'^agora/new/?$', CreateAgoraView.as_view(), name='agora-new'),
 
-    url(r'^agoras/list/?$', SearchView.as_view(searchmodel="agoras"), name='agora-list'),
-
     url(r'^elections/list/?$', SearchView.as_view(searchmodel="elections"), name='election-list'),
 
     url(r'^user/list/?$', SearchView.as_view(searchmodel="profiles"), name='user-list'),
