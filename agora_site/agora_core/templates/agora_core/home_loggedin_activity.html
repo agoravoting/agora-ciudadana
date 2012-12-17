@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% load i18n endless agora_utils %}
+{% load static from staticfiles %}
 
 {% block content-wrapper-class %}home{% endblock %}
+
 {% block running-board-wrapper-class %}home-loggedin{% endblock %}
 
-{% block running-board  %}
+{% block running-board %}
 <div class="span3">
     <div>
         {% if can_create_agoras %}
@@ -90,7 +92,7 @@
         {% show_more %}
     </div>
     <div class="span4 agora-right-side">
-        <div class="row-fluid right-widget agora-calendar">
+        <div class="row-fluid right-widget agora-calendar" id="agora-calendar">
             <div class="right-widget-header">
                 <h4>{% trans "Calendar" %} <span>({{ user.get_profile.get_open_elections.count }})</span></h4>
                 <div class="btn-group">
@@ -122,7 +124,7 @@
             </div>
         </div>
 
-        <div class="row-fluid right-widget right-widget-grey agora-list">
+        <div class="row-fluid right-widget right-widget-grey agora-list" id="agora-list">
             <div class="right-widget-header">
                 <h4>{% trans "Agoras" %} <span>({{ user.agoras.count }})</span></h4>
                 {% if can_create_agoras %}
@@ -153,46 +155,8 @@
 {% block script-block %}
 <script>var endless_on_scroll_margin = 300;</script>
 
-<script id="agoraTemplate" type="text/x-jsrender">
-    <li>
-        <a href="{% templatetag openvariable%}>url{% templatetag closevariable%}">
-        <span class="agora">{% templatetag openvariable%}>username{% templatetag closevariable%}/<strong>{% templatetag openvariable%}>name{% templatetag closevariable%}</strong>
-        </span>
-        <i class="icon-arrow-right"></i>
-        </a>
-    </li>
-</script>
+{% include "agora_core/include-js-template-election.html" %}
+{% include "agora_core/include-js-template-agora.html" %}
 
-<script id="electionTemplateRoot" type="text/x-jsrender">
-<li>
-    <time datetime="{% templatetag openvariable%}>date{% templatetag closevariable%}">{% templatetag openvariable%}>pretty_date{% templatetag closevariable%}</time>
-    <ul>
-        {% templatetag openvariable%}for elections tmpl="#electionTemplate"/{% templatetag closevariable%}
-    </ul>
-</li>
-</script>
-
-<script id="electionTemplate" type="text/x-jsrender">
-<li>
-    <a href="{% templatetag openvariable%}>url{% templatetag closevariable%}">
-        <img src="{{ STATIC_URL }}img/small-icon-envelope.png" />
-        {% templatetag openvariable %}>pretty_name{% templatetag closevariable%}
-    </a>
-    {% raw %}
-        {{if has_user_voted}}
-    {% endraw %}
-        <img src="{{ STATIC_URL }}img/small-icon-ok.png" />
-    {% raw %}
-        {{/if}}
-    {% endraw %}
-
-    {% raw %}
-        {{if has_user_voted_via_a_delegate}}
-    {% endraw %}
-        <img src="{{ STATIC_URL }}img/small-icon-delegate.png" />
-    {% raw %}
-        {{/if}}
-    {% endraw %}
-</li>
-</script>
+<script>app.currentView = new Agora.HomeView();</script>
 {% endblock %}

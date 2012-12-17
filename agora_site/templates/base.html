@@ -15,12 +15,12 @@
     <link rel="stylesheet" href="{% static 'less/agora.css' %}" type="text/css" />
     {% endif %}
 </head>
-<body>
+<body data-userid="{{ user.pk }}">
     <!-- used to execute actions via a secure form -->
     <form style="display: none;" action="" method="POST" id="post-action-form">
         {% csrf_token %}
     </form>
-    <div class="container-fluid top-bar">
+    <div class="container-fluid top-bar" id="top-bar">
         <div class="container">
             <div class="row" id="headerbar">
                 <div class="span7">
@@ -233,10 +233,11 @@
             {% endblock %}
         </div>
     </div>
+
     {% block footer %}
     <div class="container-fluid {% block footer-wrapper-class %}{% endblock %}" id="footer-wrapper">
         <div class="container">
-        <div class="row-fluid">
+            <div class="row-fluid">
                 <div class="span3" id="footer-discover">
                     <h3>{% trans "Discover" %}</h3>
                     <ul>
@@ -297,7 +298,6 @@
             </div>
         </div>
     </div>
-
     <div class="container-fluid footer-end"></div>
     {% endblock %}
 
@@ -306,10 +306,14 @@
     <!-- Development -->
     {% if DEBUG %}
     <script src="{% static 'js/agora/base.js' %}"></script>
+    <script src="{% static 'js/agora/views/generic.js' %}"></script>
+    <script src="{% static 'js/agora/views/home.js' %}"></script>
+    <script src="{% static 'js/agora/views/agora.js' %}"></script>
     {% else %}
     <script src="{% static 'js/min/agora.min.js' %}"></script>
     {% endif %}
 
+    <!-- DEPRECATED -->
     {% block script-block %}{% endblock %}
 </body>
 </html>
