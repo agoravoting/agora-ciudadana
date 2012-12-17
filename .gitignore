@@ -5,3 +5,4 @@ custom_settings.py
 *.kdev4*
 *.mo
 *.sw?
+agora_site/whoosh_index/*
