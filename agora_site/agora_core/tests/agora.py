@@ -41,6 +41,12 @@ class AgoraTest(RootTestCase):
         for k, v in orig_data.items():
             self.assertEquals(data[k], v)
 
+        # validation error
+        orig_data = {'short_description': 'created agora description',
+                     'is_vote_secret': False}
+        data = self.postAndParse('agora/', orig_data,
+            code=HTTP_BAD_REQUEST, content_type='application/json')
+
     def test_agora_deletion(self):
         self.login('david', 'david')
         data = self.getAndParse('agora/')
@@ -84,6 +90,15 @@ class AgoraTest(RootTestCase):
         data = self.getAndParse('agora/1/')
         for k, v in orig_data.items():
             self.assertEquals(data[k], v)
+
+        # testing validation
+        orig_data = {'short_description': "new desc",
+                     'is_vote_secret': False,
+                     'biography': "bio",
+                     'membership_policy': 'ANYONE_CAN_JOIN',
+                     'comments_policy': 'ANYONE_CAN_COMMENT'}
+        data = self.put('agora/1/', data=orig_data,
+            code=HTTP_BAD_REQUEST, content_type='application/json')
 
     def test_agora_request_membership(self):
         self.login('user1', '123')

@@ -82,6 +82,10 @@ class AgoraResource(GenericResource):
 
     @permission_required('create', check_static=Agora)
     def obj_create(self, bundle, request=None, **kwargs):
+        self.is_valid(bundle, request)
+        if bundle.errors:
+            self.error_response(bundle.errors, request)
+
         pretty_name = bundle.data['pretty_name']
         short_description = bundle.data['short_description']
         is_vote_secret = bundle.data['is_vote_secret']
@@ -110,6 +114,10 @@ class AgoraResource(GenericResource):
 
     @permission_required('admin', (Agora, 'id', 'pk'))
     def obj_update(self, bundle, request=None, **kwargs):
+        self.is_valid(bundle, request)
+        if bundle.errors:
+            self.error_response(bundle.errors, request)
+
         agora = Agora.objects.get(**kwargs)
         for k, v in bundle.data.items():
             setattr(agora, k, v)
