@@ -1,149 +1,30 @@
 {% extends "base.html" %}
-{% load i18n %}
-{% load endless %}
-{% load agora_utils %}
+{% load i18n endless agora_utils %}
 
-{% block script-block %}
-<script type="text/javascript" charset="utf-8">
-    var endless_on_scroll_margin = 300;
-</script>
-
-<script type="text/javascript" charset="utf-8">
-    Agora.hla = (function () {
-        var module = {};
-
-        module.onAgoraSearch = function (response) {
-            if(response.error == 0) {
-                if(response.data.length > 0) {
-                    $( "#agoraList" ).html($( "#agoraTemplate" ).render( response.data ) );
-                }
-                else {
-                    $( "#agoraList" ).html($("#no-agoras").html());
-                }
-            }
-            else {
-                // FIXME error handling (error returned by server)
-            }
-        };
-
-    		module.onElectionSearch = function (response) {
-            if(response.error == 0) {
-                if(response.data.length > 0) {
-                    $( "#electionList" ).html($( "#electionTemplateRoot" ).render( response.data ) );
-                }
-                else {
-                    $( "#electionList" ).html($("#no-elections").html());
-                }
-            }
-            else {
-                // FIXME error handling (error returned by server)
-            }
-        };
-
-        module.agoraError = function() {
-            // FIXME error handling (ajax error)
-        }
-    		module.electionError = function() {
-            // FIXME error handling (ajax error)
-        }
-
-        return module;
-    }());
-
-
-    $(document).ready(function() {
-        var userid = {{ user.id }};
-        var searchAgora = $('.agora-search-query').val();
-        var searchElection = $('.election-search-query').val();
-
-        // render results for no filter
-        Dajaxice.agora_site.agora_core.searchAgoras(Agora.hla.onAgoraSearch, {'userid': userid, 'search': ''}, {'error_callback': Agora.hla.agoraError});
-        Dajaxice.agora_site.agora_core.searchElectionsForUser(Agora.hla.onElectionSearch, {'userid': userid, 'search': ''}, {'error_callback': Agora.hla.electionError});
-
-        $('.agora-search-query').keyup(function(event) {
-            var tmp = $('.agora-search-query').val();
-            if(searchAgora != tmp) {
-                searchAgora = tmp;
-                Dajaxice.agora_site.agora_core.searchAgoras(Agora.hla.onAgoraSearch, {'userid': userid, 'search': searchAgora}, {'error_callback': Agora.hla.agoraError});
-            }
-        });
-
-    		$('.election-search-query').keyup(function(event) {
-            var tmp = $('.election-search-query').val();
-            if(searchElection != tmp) {
-                searchElection = tmp;
-                Dajaxice.agora_site.agora_core.searchElectionsForUser(Agora.hla.onElectionSearch, {'userid': userid, 'search': searchElection}, {'error_callback': Agora.hla.electionError});
-            }
-        });
-    });
-</script>
-
-<script id="agoraTemplate" type="text/x-jsrender">
-    <li>
-        <a href="{% templatetag openvariable%}>url{% templatetag closevariable%}">
-        <span class="agora">{% templatetag openvariable%}>username{% templatetag closevariable%}/<strong>{% templatetag openvariable%}>name{% templatetag closevariable%}</strong>
-        </span>
-        <i class="icon-arrow-right"></i>
-        </a>
-    </li>
-</script>
-
-<script id="electionTemplateRoot" type="text/x-jsrender">
-<li>
-    <time datetime="{% templatetag openvariable%}>date{% templatetag closevariable%}">{% templatetag openvariable%}>pretty_date{% templatetag closevariable%}</time>
-    <ul>
-        {% templatetag openvariable%}for elections tmpl="#electionTemplate"/{% templatetag closevariable%}
-    </ul>
-</li>
-</script>
-
-<script id="electionTemplate" type="text/x-jsrender">
-    <li>
-        <a href="{% templatetag openvariable%}>url{% templatetag closevariable%}">
-            <img src="{{ STATIC_URL }}img/small-icon-envelope.png" />
-            {% templatetag openvariable%}>pretty_name{% templatetag closevariable%}
-        </a>
-        {% raw %}
-            {{if has_user_voted}}
-        {% endraw %}
-            <img src="{{ STATIC_URL }}img/small-icon-ok.png" />
-        {% raw %}
-            {{/if}}
-        {% endraw %}
-
-        {% raw %}
-            {{if has_user_voted_via_a_delegate}}
-        {% endraw %}
-            <img src="{{ STATIC_URL }}img/small-icon-delegate.png" />
-        {% raw %}
-            {{/if}}
-        {% endraw %}
-    </li>
-</script>
-{% endblock %}
-
+{% block content-wrapper-class %}home{% endblock %}
 {% block running-board-wrapper-class %}home-loggedin{% endblock %}
 
 {% block running-board  %}
 <div class="span3">
     <div>
         {% if can_create_agoras %}
-            <a href="{% url agora-new %}" title="Create a new agora">
-                <img src="{{ STATIC_URL }}img/home_step1.png" id="home_step1_img" />
-                <h2>1</h2>
-                <h3>{% trans "Create a new agora" %}</h3>
-                <p>{% trans "Create the place where the votings of your group will be held." %}</p>
-            </a>
+        <a href="{% url agora-new %}" title="Create a new agora">
+            <img src="{{ STATIC_URL }}img/home_step1.png" id="home_step1_img" />
+            <h2>1</h2>
+            <h3>{% trans "Create a new agora" %}</h3>
+            <p>{% trans "Create the place where the votings of your group will be held." %}</p>
+        </a>
         {% else %}
-            <a href="{% url agora-list %}" title="Join an agora">
-                <img src="{{ STATIC_URL }}img/home_step1.png" id="home_step1_img" />
-                <h2>1</h2>
-                <h3>{% trans "Join an agora" %}</h3>
-                <p>{% trans "Join to one of the communities where votings will be held." %}</p>
-            </a>
+        <a href="{% url agora-list %}" title="Join an agora">
+            <img src="{{ STATIC_URL }}img/home_step1.png" id="home_step1_img" />
+            <h2>1</h2>
+            <h3>{% trans "Join an agora" %}</h3>
+            <p>{% trans "Join to one of the communities where votings will be held." %}</p>
+        </a>
         {% endif %}
     </div>
 </div>
+
 <div class="span3">
     <div>
     <a href="{% url agora-list %}" title="Create a new election">
@@ -154,6 +35,7 @@
     </a>
     </div>
 </div>
+
 <div class="span3">
     <div>
         <a href="{% url election-list %}" title="Delegate and vote">
@@ -164,6 +46,7 @@
         </a>
     </div>
 </div>
+
 <div class="span3">
     <div class="last">
         <a data-toggle="modal" href="#be-social-modal-dialog" title="Be social">
@@ -194,7 +77,6 @@
 </div>
 {% endblock %}
 
-{% block content-wrapper-class %}home{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -266,4 +148,51 @@
         <!-- here goes: following right-boxes -->
     </div>
 </div>
+{% endblock %}
+
+{% block script-block %}
+<script>var endless_on_scroll_margin = 300;</script>
+
+<script id="agoraTemplate" type="text/x-jsrender">
+    <li>
+        <a href="{% templatetag openvariable%}>url{% templatetag closevariable%}">
+        <span class="agora">{% templatetag openvariable%}>username{% templatetag closevariable%}/<strong>{% templatetag openvariable%}>name{% templatetag closevariable%}</strong>
+        </span>
+        <i class="icon-arrow-right"></i>
+        </a>
+    </li>
+</script>
+
+<script id="electionTemplateRoot" type="text/x-jsrender">
+<li>
+    <time datetime="{% templatetag openvariable%}>date{% templatetag closevariable%}">{% templatetag openvariable%}>pretty_date{% templatetag closevariable%}</time>
+    <ul>
+        {% templatetag openvariable%}for elections tmpl="#electionTemplate"/{% templatetag closevariable%}
+    </ul>
+</li>
+</script>
+
+<script id="electionTemplate" type="text/x-jsrender">
+<li>
+    <a href="{% templatetag openvariable%}>url{% templatetag closevariable%}">
+        <img src="{{ STATIC_URL }}img/small-icon-envelope.png" />
+        {% templatetag openvariable %}>pretty_name{% templatetag closevariable%}
+    </a>
+    {% raw %}
+        {{if has_user_voted}}
+    {% endraw %}
+        <img src="{{ STATIC_URL }}img/small-icon-ok.png" />
+    {% raw %}
+        {{/if}}
+    {% endraw %}
+
+    {% raw %}
+        {{if has_user_voted_via_a_delegate}}
+    {% endraw %}
+        <img src="{{ STATIC_URL }}img/small-icon-delegate.png" />
+    {% raw %}
+        {{/if}}
+    {% endraw %}
+</li>
+</script>
 {% endblock %}
