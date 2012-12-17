@@ -6,13 +6,17 @@ direct vote or by delegating the vote.
 
 ### Dependencies
 
+* It Has only been tested in Linux so far.
+
 * Python 2.x >= 2.7
 * python-virtualenv
-* python-celery (install with pip system-wide)
 * rabbitmq-server
-* Has only been tested in Linux so far
 
-Other dependencies can be installed with virtualenv.
+* Development files por python are required to compile some later dependencies. In Ubuntu/Debian you can do this:
+
+    $ sudo apt-get install python2.7-dev
+    
+Other dependencies will be installed with virtualenv, later.
 
 
 ### First installation
@@ -24,7 +28,7 @@ http://docs.djangoproject.com/en/dev/topics/install/
 First we need to create the virtual environment where dependencies will be
 installed:
 
-    $ ./virtualenv.py --system-site-packages env
+    $ virtualenv env
 
 Now everytime we want to use the installed virtualenv, we can do the
 following within the directory containing the env/ subdirectory:
@@ -35,19 +39,9 @@ Now we will install the dependencies:
 
     $ pip install -r dependencies.txt --upgrade
 
-In this step you might get the error "fatal error: Python.h: No such file or
-directory". This happens for example in ubuntu. To fix that, you need to install
-python2.7-dev package. In Ubuntu/Debian you can do that:
-
-    $ sudo apt-get install python2.7-dev
-
 After that, we need to configure the database (we use sqlite by default):
 
     $ ./manage.py syncdb --migrate
-
-If you get an error saying something about xapin not installed, you need to
-install the package python-xapian. In ubuntu it comes installed by default,
-in openSUSE you can install it by executing "sudo zypper install python-xapian".
 
 We use django haystack for searching, so we need to create the initial index:
 
