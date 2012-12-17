@@ -330,6 +330,11 @@ CELERYBEAT_SCHEDULE = {
 
 ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
 
+# Django debug toolbar settings
+
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': False,
+}
 
 # Project settings
 
