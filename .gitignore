@@ -6,3 +6,5 @@ custom_settings.py
 *.mo
 *.sw?
 agora_site/whoosh_index/*
+celerybeat-schedule
+djcelery.schedulers.DatabaseScheduler
