@@ -1,0 +1,21 @@
+{% load static from staticfiles %}
+<script id="template-election" type="text/underscore-template">
+<li>
+    <time datetime="<%= date %>"><%= pretty_date %></time>
+    <ul>
+        <% _.each(elections, function(item) { %>
+        <li>
+            <a href="<%= item.url %>"><img src="{% static 'img/small-icon-envelope.png' %}" /> <%= item.pretty_name %></a>
+
+            <% if (item.has_user_voted) { %>
+                <img src="{% static 'img/small-icon-ok.png' %}" />
+            <% } %>
+
+            <% if (item.has_user_voted_via_a_delegate) { %>
+                <img src="{% static 'img/small-icon-delegate.png' %}" />
+            <% } %>
+        </li>
+        <% }); %>
+    </ul>
+</li>
+</script>
