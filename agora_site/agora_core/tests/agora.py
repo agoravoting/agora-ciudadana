@@ -176,13 +176,12 @@ class AgoraTest(RootTestCase):
             code=HTTP_FORBIDDEN, content_type='application/json')
 
         # user2 is still requesting
-        data = self.postAndParse('agora/1/membership_requests/', data=orig_data,
-            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('agora/1/membership_requests/', code=HTTP_OK)
         self.assertEquals(data['meta']['total_count'], 1)
         self.assertEquals(data['objects'][0]['username'], 'user2')
 
         # and user2 is not a member
-        data = self.postAndParse('agora/1/members/', data=orig_data,
+        data = self.getAndParse('agora/1/members/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
         self.assertEquals(data['meta']['total_count'], 1)
         self.assertEquals(data['objects'][0]['username'], 'david')
@@ -193,12 +192,12 @@ class AgoraTest(RootTestCase):
             code=HTTP_OK, content_type='application/json')
 
         # user2 is not requesting any more
-        data = self.postAndParse('agora/1/membership_requests/', data=orig_data,
+        data = self.getAndParse('agora/1/membership_requests/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
         self.assertEquals(data['meta']['total_count'], 0)
 
         # user2 is a member now
-        data = self.postAndParse('agora/1/members/', data=orig_data,
+        data = self.getAndParse('agora/1/members/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
         self.assertEquals(data['meta']['total_count'], 2)
         self.assertEquals(data['objects'][1]['username'], 'user2')
@@ -554,7 +553,12 @@ class AgoraTest(RootTestCase):
 
         # set comment policy to only members
         self.login('david', 'david')
-        orig_data = dict(comments_policy='ONLY_MEMBERS_CAN_COMMENT')
+        orig_data = {'pretty_name': "updated name",
+                     'short_description': "new desc",
+                     'is_vote_secret': False,
+                     'biography': "bio",
+                     'membership_policy': 'ANYONE_CAN_JOIN',
+                     'comments_policy': 'ONLY_MEMBERS_CAN_COMMENT'}
         data = self.put('agora/1/', data=orig_data,
             code=HTTP_ACCEPTED, content_type='application/json')
 
@@ -599,20 +603,32 @@ class AgoraTest(RootTestCase):
         '''
         # set comment policy to only admins
         self.login('david', 'david')
-        orig_data = dict(comments_policy='ONLY_ADMINS_CAN_COMMENT')
+        orig_data = {
+            'pretty_name': "updated name",
+            'short_description': "new desc",
+            'is_vote_secret': False,
+            'biography': "bio",
+            'membership_policy': 'ANYONE_CAN_JOIN',
+            'comments_policy': 'ONLY_ADMINS_CAN_COMMENT'
+        }
         data = self.put('agora/1/', data=orig_data,
             code=HTTP_ACCEPTED, content_type='application/json')
 
-        # try to post a comment as member - fails
+        # user1 joins the agora
         self.login('user1', '123')
+        orig_data = dict(action="join")
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # try to post a comment as member - fails
         orig_data = dict(comment='blah blah blah blah 2 yeahh pirata.')
         data = self.post('agora/1/add_comment/', orig_data,
             code=HTTP_FORBIDDEN, content_type='application/json')
 
-        # the comment is not there
+        # the comment is not there, user joined and follows
         data = self.getAndParse('action/agora/1/')
         objects = data['objects']
-        self.assertEqual(len(objects), 0)
+        self.assertEqual(len(objects), 2) 
 
         # post the comment as agora admin
         self.login('david', 'david')
@@ -623,7 +639,7 @@ class AgoraTest(RootTestCase):
         # now the comment is there
         data = self.getAndParse('action/agora/1/')
         objects = data['objects']
-        self.assertEqual(len(objects), 1)
+        self.assertEqual(len(objects), 3)
 
     def test_add_comment4(self):
         '''
@@ -631,7 +647,14 @@ class AgoraTest(RootTestCase):
         '''
         # set comment policy to no comments
         self.login('david', 'david')
-        orig_data = dict(comments_policy='NO_COMMENTS')
+        orig_data = {
+            'pretty_name': "updated name",
+            'short_description': "new desc",
+            'is_vote_secret': False,
+            'biography': "bio",
+            'membership_policy': 'JOINING_REQUIRES_ADMINS_APPROVAL',
+            'comments_policy': 'NO_COMMENTS'
+        }
         data = self.put('agora/1/', data=orig_data,
             code=HTTP_ACCEPTED, content_type='application/json')
 
