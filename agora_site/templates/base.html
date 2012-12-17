@@ -304,15 +304,11 @@
     <script src="{% static 'js/min/main.min.js' %}"></script>
 
     <!-- Development -->
+    {% if DEBUG %}
     <script src="{% static 'js/agora/base.js' %}"></script>
-
-    <!-- Production
+    {% else %}
     <script src="{% static 'js/min/agora.min.js' %}"></script>
-    -->
-
-    <!-- Deprecated -->
-    <script type="text/javascript">var Agora = window.Agora || {};</script>
-    {% dajaxice_js_import %}
+    {% endif %}
 
     {% block script-block %}{% endblock %}
 </body>
