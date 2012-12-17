@@ -21,3 +21,4 @@ django-dajaxice
 celery
 django-celery
 git+https://github.com/toastdriven/django-tastypie.git
+whoosh

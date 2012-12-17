@@ -272,8 +272,8 @@ CRISPY_FAIL_SILENTLY = not DEBUG
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.xapian_backend.XapianEngine',
-        'PATH': os.path.join(ROOT_PATH, 'xapian_index'),
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(ROOT_PATH, 'whoosh_index'),
     },
 }
 
