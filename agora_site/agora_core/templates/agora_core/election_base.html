@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load l10n %}
 {% load endless %}
 {% load crispy_forms_tags %}
 {% load agora_utils %}
@@ -331,7 +332,7 @@
                                             <li>
                                                 {{ answer|getitem:'value' }} <em>({% blocktrans with count=answer|getitem:'total_count'|floatformat:"-2" %}{{ count }} votes{% endblocktrans %})</em>
                                                 <div class="progress progress-large progress-success">
-                                                    <div class="bar" style="width: {{ answer|getitem:'total_count_percentage' }}%">
+                                                    <div class="bar" style="width: {{ answer|getitem:'total_count_percentage'|unlocalize }}%">
                                                     {{ answer|getitem:'total_count_percentage'|floatformat }}%
                                                     </div>
                                                 </div>
