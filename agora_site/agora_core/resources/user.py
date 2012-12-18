@@ -16,7 +16,7 @@ from agora_site.agora_core.forms.user import *
 
 class UserResource(GenericResource):
     class Meta(GenericMeta):
-        queryset = User.objects.all()
+        queryset = User.objects.filter(id__gt=0)
         list_allowed_methods = ['get']
         detail_allowed_methods = ['get', 'put']
         excludes = ['password', 'is_staff', 'is_superuser', 'email']
