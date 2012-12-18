@@ -12,13 +12,10 @@ mainjs:
 					      agora_site/static/js/libs/backbone-min.js \
 					      agora_site/static/js/libs/underscore.string.min.js \
 					      agora_site/static/js/libs/bootstrap.min.js \
-					      agora_site/static/js/libs/handlebars-1.0.rc.1.js \
 					      agora_site/static/js/libs/jquery-ui-1.8.23.custom.min.js \
 					      agora_site/static/js/libs/jquery-ui-timepicker-addon.js \
 					      agora_site/static/js/libs/jquery.timeago.js \
 					      agora_site/static/js/libs/jsrender.js \
-					      agora_site/static/js/libs/endless_pagination/endless.js \
-					      agora_site/static/js/libs/endless_pagination/endless_on_scroll.js \
 					      agora_site/static/js/libs/d3.v2.min.js \
 					      	-o agora_site/static/js/min/main.min.js
 agorajs:
