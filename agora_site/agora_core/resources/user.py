@@ -59,6 +59,10 @@ class UserResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view("disable"), name="api_user_disable"),
 
+            url(r"^(?P<resource_name>%s)/agoras%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view("agoras"), name="api_user_agoras"),
+
             url(r"^(?P<resource_name>%s)/set_username/(?P<user_list>\w[\w/;-]*)%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('user_set_by_username'), name="api_user_set_by_username")
@@ -114,3 +118,13 @@ class UserResource(GenericResource):
                       }
 
         return self.create_response(request, object_list)
+
+    def agoras(self, request, **kwargs):
+        '''
+        Lists the agoras of the current user
+        '''
+        from .agora import AgoraResource
+        if request.user.is_anonymous():
+            raise ImmediateHttpResponse(response=http.HttpForbidden())
+
+        return AgoraResource().get_custom_list(request=request, queryset=request.user.agoras.all())

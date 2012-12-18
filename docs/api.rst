@@ -747,6 +747,150 @@ Check username is available
     Vary: Accept, Accept-Language, Cookie
     Content-Type: application/json; charset=utf-8
 
+List current user agoras
+------------------------
+
+.. http:get:: /user/agoras/
+
+   List authenticated user's agoras. Requires an user to be authenticated.
+
+   :query offset: offset number. default is 0
+   :query limit: limit number. default is 20
+   :statuscode 200 OK: no error
+   :statuscode 403 FORBIDDEN: when the user is not authenticated
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/user/agoras/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+       "meta":
+       {
+           "limit": 20,
+           "offset": 0,
+           "total_count": 4
+       },
+       "objects":
+       [
+           {
+               "archived_at_date": null,
+               "biography": "",
+               "comments_policy": "aaaaaaa",
+               "created_at_date": "2012-12-16T18:10:25.583006",
+               "creator":
+               {
+                   "date_joined": "2012-06-16T17:04:15.016445",
+                   "first_name": "edulix",
+                   "id": 2,
+                   "is_active": true,
+                   "last_login": "2012-12-16T18:08:04.271163",
+                   "last_name": "Robles Elvira",
+                   "username": "edulix"
+               },
+               "election_type": "ONCE_CHOICE",
+               "eligibility": "",
+               "extra_data": "",
+               "id": 2,
+               "image_url": "",
+               "is_vote_secret": false,
+               "membership_policy": "ANYONE_CAN_JOIN",
+               "name": "blahblah",
+               "pretty_name": " blahblah",
+               "short_description": "blahblah"
+           },
+           {
+               "archived_at_date": null,
+               "biography": "",
+               "comments_policy": "ANYONE_CAN_COMMENT",
+               "created_at_date": "2012-10-10T01:15:04.603246",
+               "creator":
+               {
+                   "date_joined": "2012-09-05T17:45:40.223602",
+                   "first_name": "Juana Molero",
+                   "id": 12,
+                   "is_active": true,
+                   "last_login": "2012-10-10T00:06:47.741392",
+                   "last_name": "",
+                   "username": "user10"
+               },
+               "election_type": "ONCE_CHOICE",
+               "eligibility": "",
+               "extra_data": "",
+               "id": 3,
+               "image_url": "",
+               "is_vote_secret": true,
+               "membership_policy": "JOINING_REQUIRES_ADMINS_APPROVAL",
+               "name": "testagora",
+               "pretty_name": "testagora",
+               "short_description": "yeahhhhhh"
+           },
+           {
+               "archived_at_date": null,
+               "biography": "",
+               "comments_policy": "ONLY_MEMBERS_CAN_COMMENT",
+               "created_at_date": "2012-12-13T14:12:03.711985",
+               "creator":
+               {
+                   "date_joined": "2012-09-05T17:45:48.390074",
+                   "first_name": "Victoria Ariza",
+                   "id": 22,
+                   "is_active": true,
+                   "last_login": "2012-12-18T10:35:07.444961",
+                   "last_name": "",
+                   "username": "user20"
+               },
+               "election_type": "ONCE_CHOICE",
+               "eligibility": "",
+               "extra_data": "",
+               "id": 4,
+               "image_url": "",
+               "is_vote_secret": false,
+               "membership_policy": "JOINING_REQUIRES_ADMINS_APPROVAL",
+               "name": "testagora",
+               "pretty_name": "testagora",
+               "short_description": "tesagora yeah"
+           },
+           {
+               "archived_at_date": null,
+               "biography": "",
+               "comments_policy": "ANYONE_CAN_COMMENT",
+               "created_at_date": "2012-12-02T16:35:52.110729",
+               "creator":
+               {
+                   "date_joined": "2012-06-14T14:13:48.850044",
+                   "first_name": "",
+                   "id": 1,
+                   "is_active": true,
+                   "last_login": "2012-12-16T18:06:25.185835",
+                   "last_name": "",
+                   "username": "admin"
+               },
+               "election_type": "ONCE_CHOICE",
+               "eligibility": "",
+               "extra_data": "",
+               "id": 5,
+               "image_url": "",
+               "is_vote_secret": false,
+               "membership_policy": "ANYONE_CAN_JOIN",
+               "name": "created-agora",
+               "pretty_name": "created agora",
+               "short_description": "created agora description"
+           }
+       ]
+    }
+
 
 Resource: Election
 ==================
