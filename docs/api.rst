@@ -455,6 +455,146 @@ Resource: User
        ]
     }
 
+.. http:get:: /user/settings/
+
+   Shows authenticated user information
+
+   :statuscode 200 OK: no error
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    POST /api/v1/user/settings/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "date_joined": "2012-11-29T15:07:55.727000",
+        "first_name": "David",
+        "id": 0,
+        "is_active": true,
+        "last_login": "2012-11-29T15:07:55.727000",
+        "last_name": "",
+        "username": "david"
+    }
+
+.. http:post:: /user/register/
+
+   Registers a new user.
+
+   :form email: New user email address. Required.
+   :form password1: New user password. Required.
+   :form password2: New user password again. It must be equal to passwors1. Required.
+   :form username: The new user identifier, It should be unique in the application. Required.
+   :status 200 OK: when the user is registered correctly
+   :status 400 BAD REQUEST: when the form parameters are invalid
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    POST /api/v1/user/register/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+    {
+        "username": "danigm",
+        "password1": "my super secret password",
+        "password2": "my super secret password",
+        "email": "danigm@wadobo.com"
+    }
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+.. http:post:: /user/login/
+
+   Login in the application.
+
+   :form identification: The user username to login. Required.
+   :form password: The user password. Required.
+   :status 200 OK: when the user is loged in correctly
+   :status 400 BAD REQUEST: when the form parameters are invalid
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    POST /api/v1/user/login/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+    {
+        "identification": "danigm",
+        "password": "my super secret password"
+    }
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+.. http:post:: /user/logout/
+
+   Logout in the application.
+
+   :status 200 OK: when the user is loged in correctly
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    POST /api/v1/user/logout/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+.. http:get:: /user/username_available/
+
+   Checks if a username is avaliable
+
+   :status 200 OK: when the username is available
+   :status 400 BAD REQUEST: when the username isn't available
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    POST /api/v1/user/username_available/?username=danigm HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
 
 
 Resource: Election
