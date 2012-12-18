@@ -339,6 +339,22 @@ Resource: Agora
     Vary: Accept, Accept-Language, Cookie
     Content-Type: application/json; charset=utf-8
 
+
+.. http:put:: /agora/
+
+   Modifies an agora (`agora_id`). Requires the authenticated user to be an
+   administrator of the agora.
+
+   :form pretty_name: readable agora name. Required.
+   :form short_description: short description text. Required.
+   :form is_vote_secret: whether the vote is secret in this agora. Optional. False by default.
+   :form biography: longer description text. Optional. Empty by default.
+   :form membership_policy: membership policy. Optional. Possible values are: ``ANYONE_CAN_JOIN``, ``JOINING_REQUIRES_ADMINS_APPROVAL_ANY_DELEGATE``, ``JOINING_REQUIRES_ADMINS_APPROVAL``. ``ANYONE_CAN_JOIN`` by default.
+   :form comments_policy: comments policy. Optional. Possible values are: ``ANYONE_CAN_COMMENT``, ``ONLY_MEMBERS_CAN_COMMENT``, ``ONLY_ADMINS_CAN_COMMENT``, ``NO_COMMENTS``. ``ANYONE_CAN_COMMENT`` by default.
+   :status 202 CREATED: when agora is modified correctly
+   :status 403 FORBIDDEN: when the user has no agora administration permissions
+   :status 400 BAD REQUEST: when the form parameters are invalid
+
    .. sourcecode:: http
 
     PUT /api/v1/agora/5/ HTTP/1.1
@@ -348,7 +364,10 @@ Resource: Agora
     {
         "pretty_name": "agora name",
         "short_description": "some fancydescription",
-        "is_vote_secret": true
+        "is_vote_secret": true,
+        "comments_policy": "ANYONE_CAN_COMMENT",
+        "membership_policy": "ANYONE_CAN_JOIN",
+        "biography": "",
     }
 
    **Example response**:
