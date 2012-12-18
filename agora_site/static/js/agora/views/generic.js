@@ -15,7 +15,7 @@
 
         initialize: function() {
             _.bindAll(this);
-            this.agoraTemplate = _.template($("#template-agora").html());
+            this.electionTemplate = _.template($("#template-election").html());
         },
 
         onSearchChange: function(event) {
@@ -25,19 +25,56 @@
     });
 
     /*
-     * Right side widget with small search.
-     * Show a list of agoras.
+     * Agoras list widget scope.
     */
 
-    Agora.AgoraListView = Backbone.View.extend({
-        // el: ".agora-list"
-        el: "#agora-list",
+    (function() {
+        var AgoraModel = Backbone.Model.extend({});
+        var AgoraCollection = Backbone.Collection.extend({
+            model: AgoraModel
+        });
 
-        initialize: function() {
-            _.bindAll(this);
-            this.electionTemplate = _.template($("#template-election").html());
-        }
-    });
+        Agora.AgoraListView = Backbone.View.extend({
+            el: "#agora-list",
+
+            initialize: function() {
+                _.bindAll(this);
+                this.agoraTemplate = _.template($("#template-agora").html());
+                this.agorasCollection = new AgoraCollection();
+                this.agorasCollection.on('reset', this.resetAgorasCollection);
+
+                var ajax = new Ajax();
+                ajax.on("success", this.initializeSuccess);
+                ajax.get(this.$el.data('url'));
+            },
+
+            initializeSuccess: function(xhr) {
+                if (xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    console.log(data);
+                    this.agorasCollection.reset(data.objects);
+                }
+            },
+
+            resetAgorasCollection: function(collection) {
+                this.$(".last-agoras .list-container").empty();
+                if (collection.length === 0) {
+                    var emptyItem = this.make('ul', {'id':'no-agoras'}, gettext('No agoras found'));
+                    this.this.$(".last-agoras .list-container").append(emptyItem);
+                } else {
+                    collection.each(this.addAgoraItem);
+                }
+            },
+
+            addAgoraItem: function(model) {
+                var obj = model.toJSON();
+                obj['url'] = '/TODO';
+
+                var dom = this.agoraTemplate(obj);
+                this.$(".last-agoras .list-container").append(dom);
+            }
+        });
+    }).call(this);
 
     /*
      * Generic view for all infinite scroll lists.

@@ -128,50 +128,50 @@
                 <div class="span10">
                     <ul class="nav nav-pills">
                         {% if user and user.agoras.count > 0 %}
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    {% trans "Agoras" %}
-                                    <b class="caret"></b>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                    {% for agora in user.agoras.all %}
-                                        <li><a href="{% url agora-view agora.creator.username agora.name %}">{{ agora.creator.username }}/{{ agora.name }}</a></li>
-                                    {% endfor %}
-                                    <li class="divider"></li>
-                                    <li><a href="{% url agora-list %}">{% trans "Explore other agoras" %}</a></li>
-                                    </ul>
-                            </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                {% trans "Agoras" %}
+                                <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                {% for agora in user.agoras.all %}
+                                    <li><a href="{% url agora-view agora.creator.username agora.name %}">{{ agora.creator.username }}/{{ agora.name }}</a></li>
+                                {% endfor %}
+                                <li class="divider"></li>
+                                <li><a href="{% url agora-list %}">{% trans "Explore other agoras" %}</a></li>
+                                </ul>
+                        </li>
                         {% else %}
-                            <li>
-                                <a href="{% url agora-list %}">{% trans "Agoras" %}</a>
-                            </li>
+                        <li>
+                            <a href="{% url agora-list %}">{% trans "Agoras" %}</a>
+                        </li>
                         {% endif %}
                         {% if user.profile.get_open_elections.count > 0 or user.profile.get_requested_elections.count > 0 %}
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    {% trans "Elections" %}
-                                    <b class="caret"></b>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        {% if user.profile.get_requested_elections.count > 0 %}
-                                            {% for election in user.profile.get_requested_elections.all %}
-                                                <li><a href="{% url election-view election.agora.creator.username election.agora.name election.name %}">{{ election.pretty_name }}</a></li>
-                                            {% endfor %}
-                                            {% if user.profile.get_open_elections.count > 0 %}
-                                                <li class="divider"></li>
-                                            {% endif %}
-                                        {% endif %}
-                                        {% for election in user.profile.get_open_elections.all %}
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                {% trans "Elections" %}
+                                <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    {% if user.profile.get_requested_elections.count > 0 %}
+                                        {% for election in user.profile.get_requested_elections.all %}
                                             <li><a href="{% url election-view election.agora.creator.username election.agora.name election.name %}">{{ election.pretty_name }}</a></li>
                                         {% endfor %}
-                                        <li class="divider"></li>
-                                        <li><a href="{% url election-list %}">{% trans "Explore other elections" %}</a></li>
-                                    </ul>
-                            </li>
+                                        {% if user.profile.get_open_elections.count > 0 %}
+                                            <li class="divider"></li>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% for election in user.profile.get_open_elections.all %}
+                                        <li><a href="{% url election-view election.agora.creator.username election.agora.name election.name %}">{{ election.pretty_name }}</a></li>
+                                    {% endfor %}
+                                    <li class="divider"></li>
+                                    <li><a href="{% url election-list %}">{% trans "Explore other elections" %}</a></li>
+                                </ul>
+                        </li>
                         {% else %}
-                            <li>
-                                <a href="{% url election-list %}">{% trans "Elections" %}</a>
-                            </li>
+                        <li>
+                            <a href="{% url election-list %}">{% trans "Elections" %}</a>
+                        </li>
                         {% endif %}
                         <li>
                             <a href="{% url user-list %}">{% trans "People" %}</a>
