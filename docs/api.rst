@@ -418,10 +418,113 @@ Modify agora
         "pretty_name": "agora name",
         "short_description": "some fancydescription"
     }
+.. http:get:: /user/
+
+   List users
+
+   :query offset: offset number. default is 0
+   :query limit: limit number. default is 20
+   :statuscode 200 OK: no error
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/user/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+       "meta":
+       {
+           "limit": 20,
+           "next": null,
+           "offset": 0,
+           "previous": null,
+           "total_count": 3
+       },
+       "objects":
+       [
+           {
+               "date_joined": "2012-06-14T14:13:48.850044",
+               "first_name": "",
+               "id": 1,
+               "is_active": true,
+               "last_login": "2012-12-16T18:06:25.185835",
+               "last_name": "",
+               "username": "admin"
+           },
+           {
+               "date_joined": "2012-06-16T17:04:15.016445",
+               "first_name": "edulix",
+               "id": 2,
+               "is_active": true,
+               "last_login": "2012-12-16T18:08:04.271163",
+               "last_name": "Robles Elvira",
+               "username": "edulix"
+           },
+           {
+               "date_joined": "2012-09-05T17:45:32.215085",
+               "first_name": "Maria Robles",
+               "id": 3,
+               "is_active": true,
+               "last_login": "2012-10-07T15:38:16.076439",
+               "last_name": "",
+               "username": "user1"
+           }
+       ]
+    }
+
+
+List agora members
+------------------
+ 
+.. http:get:: /user/settings/
+
+   List agora members
+
+   :statuscode 200 OK: no error
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    POST /api/v1/user/settings/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "date_joined": "2012-11-29T15:07:55.727000",
+        "first_name": "David",
+        "id": 0,
+        "is_active": true,
+        "last_login": "2012-11-29T15:07:55.727000",
+        "last_name": "",
+        "username": "david"
+    }
 
 
 Resource: User
 ==============
+
+List users
+----------
 
 .. http:get:: /user/
 
@@ -488,6 +591,9 @@ Resource: User
        ]
     }
 
+User settings
+-------------
+
 .. http:get:: /user/settings/
 
    Shows authenticated user information
@@ -519,6 +625,9 @@ Resource: User
         "last_name": "",
         "username": "david"
     }
+
+User register
+-------------
 
 .. http:post:: /user/register/
 
@@ -554,6 +663,9 @@ Resource: User
     Vary: Accept, Accept-Language, Cookie
     Content-Type: application/json; charset=utf-8
 
+User login
+----------
+
 .. http:post:: /user/login/
 
    Login in the application.
@@ -584,6 +696,9 @@ Resource: User
     Vary: Accept, Accept-Language, Cookie
     Content-Type: application/json; charset=utf-8
 
+User logout
+-----------
+
 .. http:post:: /user/logout/
 
    Logout in the application.
@@ -605,6 +720,9 @@ Resource: User
     HTTP/1.1 200 OK
     Vary: Accept, Accept-Language, Cookie
     Content-Type: application/json; charset=utf-8
+
+Check username is available
+---------------------------
 
 .. http:get:: /user/username_available/
 
