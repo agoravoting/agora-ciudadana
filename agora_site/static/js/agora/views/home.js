@@ -9,7 +9,7 @@
             _.bindAll(this);
             this.calendarView = new Agora.CalendarView();
             this.agoralistView = new Agora.AgoraListView();
-            this.activityListView = new Agora.ActivityListView();
+            this.activityListView = new Agora.InfiniteScrollListView();
         }
     });
 }).call(this)

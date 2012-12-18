@@ -40,11 +40,10 @@
     });
 
     /*
-     * Activity list block (Generic View).
-     * Used on home and agora page.
+     * Generic view for all infinite scroll lists.
     */
 
-    Agora.ActivityListView = Backbone.View.extend({
+    Agora.InfiniteScrollListView = Backbone.View.extend({
         el: "#activity-list",
 
         events: {
@@ -85,6 +84,19 @@
             var data = xhr.responseText;
             ctx.target.closest('.endless_container').before(data);
             ctx.target.closest('.endless_container').remove();
+        }
+    });
+
+    /*
+     * Generic view for all search pages.
+    */
+
+    Agora.GenericSearchView = Backbone.View.extend({
+        el: "div.search",
+
+        initialize: function() {
+            _.bindAll(this);
+            this.activityListView = new Agora.InfiniteScrollListView();
         }
     });
 }).call(this);

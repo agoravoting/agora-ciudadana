@@ -3,7 +3,7 @@
         app = this.app;
 
     Agora.AgoraView = Backbone.View.extend({
-        el: "div.home",
+        el: "div.agora",
 
         initialize: function() {
             _.bindAll(this);
@@ -11,7 +11,7 @@
 
             // Only initialize on correct section of page exists.
             if (this.$("#activity-list").length > 0) {
-                this.activityListView = new Agora.ActivityListView();
+                this.activityListView = new Agora.InfiniteScrollListView();
             }
         }
     });
