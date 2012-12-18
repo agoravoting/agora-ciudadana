@@ -89,43 +89,40 @@
         </div>
         <div class="container">
             <div class="row">
-                <script type="text/javascript">
-                    jQuery(document).ready(function() {
-                        $('#flash-messages .modal').modal('show');
-                    });
-                </script>
-                {% if messages %}
+                <div class="messages-box" id="messages-box">
+                    {% if messages %}
                     <ul id="flash-messages">
                         {% for message in messages %}
                             {% if message.tags != "alert-success-modal" %}
-                                <div class="alert {{ message.tags }}">
-                                    <a class="close" data-dismiss="alert">×</a>
-                                    <strong>
+                            <div class="alert {{ message.tags }}">
+                                <a class="close" data-dismiss="alert">×</a>
+                                <strong>
                                     {% if message.tags == 'alert-info' %}{% trans "Heads Up!" %}
                                     {% elif message.tags == 'alert-success' %}{% trans "Well done!" %}
                                     {% elif message.tags == 'alert-warning' %}{% trans "Be aware!" %}
                                     {% elif message.tags == 'alert-error' %}{% trans "Oh snap!" %}
                                     {% endif %}
-                                    </strong>
-                                    {{ message|safe }}
-                                </div>
+                                </strong>
+                                {{ message|safe }}
+                            </div>
                             {% else %}
-                                <div class="modal hide fade">
-                                    <div class="modal-header">
-                                        <a class="close" data-dismiss="modal">×</a>
-                                        <h3>{% trans "Heads up!" %}</h3>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>{{ message|safe }}</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                    <a data-dismiss="modal" class="btn close btn-success">{% trans "Close" %}</a>
-                                    </div>
+                            <div class="modal hide fade">
+                                <div class="modal-header">
+                                    <a class="close" data-dismiss="modal">×</a>
+                                    <h3>{% trans "Heads up!" %}</h3>
                                 </div>
+                                <div class="modal-body">
+                                    <p>{{ message|safe }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a data-dismiss="modal" class="btn close btn-success">{% trans "Close" %}</a>
+                                </div>
+                            </div>
                             {% endif %}
                         {% endfor %}
                     </ul>
-                {% endif %}
+                    {% endif %}
+                </div>
             </div>
             <div class="rows" id="sections-wrapper">
                 <div class="span10">
