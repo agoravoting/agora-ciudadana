@@ -10,6 +10,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext_lazy as _, ungettext
 
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+
 from actstream.models import Action
 from actstream.signals import action
 
@@ -28,9 +31,13 @@ class PostCommentForm(django_forms.Form):
             attrs=dict(placeholder=_('Post a comment here...'))))
 
     def __init__(self, request, target_object, *args, **kwargs):
+        # removing instance from kwargs because it isn't a ModelForm
+        kwargs.pop("instance", None)
+        super(PostCommentForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
         self.request = request
         self.target_object = target_object
-        return super(PostCommentForm, self).__init__(*args, **kwargs)
+        self.helper.add_input(Submit('submit', _('send comment'), css_class='btn btn-success btn-large'))
 
     def save(self):
         obj = self.get_comment_object()
