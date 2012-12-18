@@ -83,13 +83,15 @@
 {% block content %}
 <div class="row">
     <div class="span8 agora-left-side">
-        {% paginate object_list %}
-        {% for action in object_list %}
-            {% include "agora_core/action_item.html" %}
-        {% empty %}
-            {% trans "Here your activity will be shown, but you didn't generate any yet." %}
-        {% endfor %}
-        {% show_more %}
+        <div class="activity-list" id="activity-list" data-endless-smargin="300">
+            {% paginate 2 object_list %}
+            {% for action in object_list %}
+                {% include "agora_core/action_item.html" %}
+            {% empty %}
+                {% trans "Here your activity will be shown, but you didn't generate any yet." %}
+            {% endfor %}
+            {% show_more %}
+        </div>
     </div>
     <div class="span4 agora-right-side">
         <div class="row-fluid right-widget agora-calendar" id="agora-calendar">
@@ -153,8 +155,6 @@
 {% endblock %}
 
 {% block script-block %}
-<script>var endless_on_scroll_margin = 300;</script>
-
 {% include "agora_core/include-js-template-election.html" %}
 {% include "agora_core/include-js-template-agora.html" %}
 
