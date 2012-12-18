@@ -2,7 +2,7 @@
 from simplejson.decoder import JSONDecodeError
 
 from django.conf import settings
-from django.core.paginator import Paginator, InvalidPage
+from django.core.paginator import InvalidPage
 from django.http import Http404
 from django.template import RequestContext
 from django.utils import simplejson
@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from tastypie.authorization import Authorization
 from tastypie.resources import ModelResource
+from tastypie.paginator import Paginator
 from tastypie import fields, http
 from tastypie.exceptions import NotFound, BadRequest, InvalidFilterError, HydrationError, InvalidSortError, ImmediateHttpResponse, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, ValidationError
@@ -108,7 +109,7 @@ class GenericResource(ModelResource):
 
         return wrapper
 
-    def get_custom_list(self, request, queryset, items_per_page=20):
+    def get_custom_list(self, request, queryset):
         '''
         Generic function to paginate a queryset with a set of items per page.
         '''
@@ -116,30 +117,33 @@ class GenericResource(ModelResource):
         self.throttle_check(request)
 
         # Do the query.
-        paginator = Paginator(queryset, items_per_page)
+        offset = int(request.GET.get('offset', 0))
+        limit = min(int(request.GET.get('limit', 20)), 1000)
+        paginator = Paginator(request.GET, queryset)
 
         try:
-            page = paginator.page(int(request.GET.get('page', 1)))
+            object_list = paginator.get_slice(limit, offset)
         except InvalidPage:
             raise Http404("Sorry, no results on that page.")
 
         objects = []
 
-        for result in page.object_list:
+        for result in object_list:
             bundle = self.build_bundle(obj=result, request=request)
             bundle = self.full_dehydrate(bundle)
             objects.append(bundle)
 
-        object_list = {
+        page = {
             "meta": {
-                "limit": items_per_page,
+                "limit": limit,
+                "offset": offset,
                 "total_count": queryset.count()
             },
             'objects': objects,
         }
 
         self.log_throttled_access(request)
-        return self.create_response(request, object_list)
+        return self.create_response(request, page)
 
 
 class GenericMeta:
