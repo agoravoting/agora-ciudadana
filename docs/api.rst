@@ -891,6 +891,93 @@ List current user agoras
        ]
     }
 
+List elections this user can vote in
+------------------------------------
+
+.. http:get:: /user/open_elections/
+
+   List elections the authenticated  user can vote in. These are the elections
+   that are open in the agoras in which this user is a member. Requires an user
+   to be authenticated.
+
+   :query offset: offset number. default is 0
+   :query limit: limit number. default is 20
+   :query q: search string, not required. filters in the election name and description
+   :statuscode 200 OK: no error
+   :statuscode 403 FORBIDDEN: when the user is not authenticated
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/user/open_elections/?q=vota HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+
+    {
+       "meta":
+       {
+           "limit": 20,
+           "offset": 0,
+           "total_count": 1
+       },
+       "objects":
+       [
+           {
+               "agora": "/api/v1/agora/4/",
+               "approved_at_date": null,
+               "archived_at_date": null,
+               "comments_policy": "ANYONE_CAN_COMMENT",
+               "created_at_date": "2012-10-28T09:36:30.951957",
+               "creator": "/api/v1/user/22/",
+               "delegated_votes_frozen_at_date": null,
+               "delegated_votes_result": "",
+               "description": "blah",
+               "election_type": "ONCE_CHOICE",
+               "electorate":
+               [
+               ],
+               "eligibility": "",
+               "extra_data": "{u'started': True}",
+               "frozen_at_date": "2012-10-28T09:36:44.106801",
+               "has_user_voted": true,
+               "has_user_voted_via_a_delegate": false,
+               "hash": "057e6e4a31ca99089ae5d5826723f29e6ee119f9a4f9066a560c5e39e9f58500",
+               "id": 27,
+               "is_approved": true,
+               "is_vote_secret": true,
+               "last_modified_at_date": "2012-10-28T09:36:30.962801",
+               "name": "votacion-de-prueba",
+               "parent_election": null,
+               "percentage_of_participation": 22.22222222222222,
+               "pretty_name": "Votación de prueba",
+               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'\xbfEs molona la votaci\xf3n?', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'S\xed'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'No'}], u'randomize_answer_order': True}]",
+               "resource_uri": "",
+               "result": "",
+               "result_tallied_at_date": null,
+               "short_description": "blah",
+               "tiny_hash": null,
+               "url": "http://local.dev:8000/user20/testagora/election/votacion-de-prueba",
+               "uuid": "3c4b6bbc-24ca-4d82-832e-27e049d9cc85",
+               "voters_frozen_at_date": null,
+               "voting_ends_at_date": null,
+               "voting_extended_until_date": null,
+               "voting_starts_at_date": "2012-11-03T08:39:49.019238"
+           }
+       ]
+    }
+
+
+
 
 Resource: Election
 ==================
