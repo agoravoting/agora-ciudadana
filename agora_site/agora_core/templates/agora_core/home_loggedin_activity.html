@@ -94,7 +94,7 @@
         </div>
     </div>
     <div class="span4 agora-right-side">
-        <div class="row-fluid right-widget agora-calendar" id="agora-calendar">
+        <div class="row-fluid right-widget agora-calendar" id="agora-calendar" data-url="/api/v1/user/open_elections/">
             <div class="right-widget-header">
                 <h4>{% trans "Calendar" %} <span>({{ user.get_profile.get_open_elections.count }})</span></h4>
                 <div class="btn-group">
@@ -115,9 +115,7 @@
                 <input type="text" class="input-medium election-search-query search-query" autocomplete="off" value="" placeholder="{% trans "Search..." %}" name="q" />
             </div>
             <div class="row-fluid agora-dates">
-                <ul>
-                    <div id="electionList"></div>
-                </ul>
+                <ul class="list-container"></ul>
                 <div style="display:none">
                     <li id="no-elections" class="empty">
                         {% trans "No elections found in the calendar" %}

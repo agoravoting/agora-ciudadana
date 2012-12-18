@@ -3,26 +3,64 @@
         app = this.app;
 
     /*
-     * Calendar widget with search features.
+     * Agora calendar widget scope
     */
 
-    Agora.CalendarView = Backbone.View.extend({
-        el: "#agora-calendar",
+    (function() {
+        var ElectionModel = Backbone.Model.extend({});
+        var ElectionsCollection = Backbone.Collection.extend({
+            model: ElectionModel
+        });
 
-        events: {
-            "keyup .election-search-query": "onSearchChange"
-        },
+        Agora.CalendarView = Backbone.View.extend({
+            el: "#agora-calendar",
 
-        initialize: function() {
-            _.bindAll(this);
-            this.electionTemplate = _.template($("#template-election").html());
-        },
+            events: {
+                "keyup .election-search-query": "onSearchChange"
+            },
 
-        onSearchChange: function(event) {
-            var target = $(event.currentTarget);
-            console.log("onSearchChange: " + target.val());
-        }
-    });
+            initialize: function() {
+                _.bindAll(this);
+                this.electionTemplate = _.template($("#template-election").html());
+                this.electionsCollection = new ElectionsCollection();
+                this.electionsCollection.on('reset', this.resetElectionsCollection);
+
+                var ajax = new Ajax();
+                ajax.on('success', this.initializeSuccess);
+                ajax.get(this.$el.data('url'));
+
+                // Debouncing
+                this.onSearchChange = _.debounce(this.onSearchChange, 400);
+            },
+
+            initializeSuccess: function(xhr) {
+                if (xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    this.electionsCollection.reset(data.objects);
+                }
+            },
+
+            onSearchChange: function(event) {
+                var target = $(event.currentTarget);
+                var data = {"q": target.val()};
+
+                var ajax = new Ajax();
+                ajax.on('success', this.initializeSuccess);
+                ajax.get(this.$el.data('url'), data);
+                console.log("onSearchChange: " + target.val());
+            },
+
+            resetElectionsCollection: function(collection) {
+                this.$(".list-container").empty();
+                collection.each(this.addElectionItem);
+            },
+
+            addElectionItem: function(model) {
+                var dom = this.electionTemplate(model.toJSON());
+                this.$(".list-container").append(dom);
+            }
+        });
+    }).call(this);
 
     /*
      * Agoras list widget scope.
@@ -30,7 +68,7 @@
 
     (function() {
         var AgoraModel = Backbone.Model.extend({});
-        var AgoraCollection = Backbone.Collection.extend({
+        var AgorasCollection = Backbone.Collection.extend({
             model: AgoraModel
         });
 
@@ -40,7 +78,7 @@
             initialize: function() {
                 _.bindAll(this);
                 this.agoraTemplate = _.template($("#template-agora").html());
-                this.agorasCollection = new AgoraCollection();
+                this.agorasCollection = new AgorasCollection();
                 this.agorasCollection.on('reset', this.resetAgorasCollection);
 
                 var ajax = new Ajax();
@@ -51,7 +89,6 @@
             initializeSuccess: function(xhr) {
                 if (xhr.status === 200) {
                     var data = JSON.parse(xhr.responseText);
-                    console.log(data);
                     this.agorasCollection.reset(data.objects);
                 }
             },
@@ -60,17 +97,14 @@
                 this.$(".last-agoras .list-container").empty();
                 if (collection.length === 0) {
                     var emptyItem = this.make('ul', {'id':'no-agoras'}, gettext('No agoras found'));
-                    this.this.$(".last-agoras .list-container").append(emptyItem);
+                    this.$(".last-agoras .list-container").append(emptyItem);
                 } else {
                     collection.each(this.addAgoraItem);
                 }
             },
 
             addAgoraItem: function(model) {
-                var obj = model.toJSON();
-                obj['url'] = '/TODO';
-
-                var dom = this.agoraTemplate(obj);
+                var dom = this.agoraTemplate(model.toJSON());
                 this.$(".last-agoras .list-container").append(dom);
             }
         });
