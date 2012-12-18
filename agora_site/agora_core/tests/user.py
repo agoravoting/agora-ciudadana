@@ -161,6 +161,10 @@ class UserTest(RootTestCase):
             code=HTTP_BAD_REQUEST);
 
     def test_agoras(self):
+        '''
+        Test the listing of the agoras in which the user is a member
+        '''
+
         # not logged in, needs to be logged in to get agoras
         self.get('user/agoras/', code=HTTP_FORBIDDEN)
 
@@ -170,4 +174,15 @@ class UserTest(RootTestCase):
 
         self.login('user1', '123')
         data = self.getAndParse('user/agoras/')
+        self.assertEqual(len(data["objects"]), 0)
+
+    def test_open_elections(self):
+        '''
+        Test the listing of the open elections in which the user can participate
+        '''
+        # not logged in, needs to be logged in to get agoras
+        self.get('user/open_elections/', code=HTTP_FORBIDDEN)
+
+        self.login('david', 'david')
+        data = self.getAndParse('user/open_elections/')
         self.assertEqual(len(data["objects"]), 0)
