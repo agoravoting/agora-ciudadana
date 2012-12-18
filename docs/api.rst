@@ -52,6 +52,9 @@ Filter fields sometimes are said to support django field lookups. In this case i
 Resource: Agora
 ===============
 
+List Agoras
+-----------
+
 .. http:get:: /agora/
 
    List agoras
@@ -195,6 +198,9 @@ Resource: Agora
        ]
     }
 
+Retrieve an agora
+-----------------
+
 .. http:get:: /agora/(int:agora_id)
 
    Retrieves an agora (`agora_id`).
@@ -246,6 +252,9 @@ Resource: Agora
         "pretty_name": "agora name",
         "short_description": "some fancydescription"
     }
+
+Create a new agora
+------------------
 
 .. http:post:: /agora/
 
@@ -313,6 +322,9 @@ Resource: Agora
         "short_description": "some fancydescription"
     }
 
+Delete an agora
+---------------
+
 .. http:delete:: /agora/(int:agora_id)
 
    Deletes the agora (`agora_id`). Requires to be authentication with the user
@@ -339,6 +351,8 @@ Resource: Agora
     Vary: Accept, Accept-Language, Cookie
     Content-Type: application/json; charset=utf-8
 
+Modify agora
+------------
 
 .. http:put:: /agora/
 
@@ -618,3 +632,5 @@ Resource: User
 
 Resource: Election
 ==================
+
+
