@@ -63,41 +63,36 @@ class ElectionResource(GenericResource):
         '''
         List all the votes in this agora
         '''
-        return self.get_custom_resource_list(request, url_name="api_election_all_votes",
-            queryfunc=lambda election: election.get_all_votes(),
-            resource=CastVoteResource, **kwargs)
+        return self.get_custom_resource_list(request, resource=CastVoteResource,
+            queryfunc=lambda election: election.get_all_votes(), **kwargs)
 
     def get_cast_votes(self, request, **kwargs):
         '''
         List votes in this agora
         '''
-        return self.get_custom_resource_list(request, url_name="api_election_cast_votes",
-            queryfunc=lambda election: election.cast_votes.all(),
-            resource=CastVoteResource, **kwargs)
+        return self.get_custom_resource_list(request, resource=CastVoteResource,
+            queryfunc=lambda election: election.cast_votes.all(), **kwargs)
 
     def get_delegated_votes(self, request, **kwargs):
         '''
         List votes in this agora
         '''
-        return self.get_custom_resource_list(request, url_name="api_election_delegated_votes",
-            queryfunc=lambda election: election.delegated_votes.all(),
-            resource=CastVoteResource, **kwargs)
+        return self.get_custom_resource_list(request, resource=CastVoteResource,
+            queryfunc=lambda election: election.delegated_votes.all(), **kwargs)
 
     def get_votes_from_delegates(self, request, **kwargs):
         '''
         List votes in this agora
         '''
-        return self.get_custom_resource_list(request, url_name="api_election_votes_from_delegates",
-            queryfunc=lambda election: election.get_votes_from_delegates(),
-            resource=CastVoteResource, **kwargs)
+        return self.get_custom_resource_list(request, resource=CastVoteResource,
+            queryfunc=lambda election: election.get_votes_from_delegates(), **kwargs)
 
     def get_direct_votes(self, request, **kwargs):
         '''
         List votes in this agora
         '''
-        return self.get_custom_resource_list(request, url_name="api_election_direct_votes",
-            queryfunc=lambda election: election.get_direct_votes(),
-            resource=CastVoteResource, **kwargs)
+        return self.get_custom_resource_list(request, resource=CastVoteResource, 
+            queryfunc=lambda election: election.get_direct_votes(), **kwargs)
 
     def get_custom_resource_list(self, request, url_name, queryfunc, resource, **kwargs):
         '''
@@ -110,15 +105,8 @@ class ElectionResource(GenericResource):
         except:
             raise ImmediateHttpResponse(response=http.HttpNotFound())
 
-        url_args = dict(
-            resource_name=self._meta.resource_name,
-            api_name=self._meta.api_name,
-            electionid=electionid
-        )
-        list_url = self._build_reverse_url(url_name, kwargs=url_args)
-
         return resource().get_custom_list(request=request, kwargs=kwargs,
-            list_url=list_url, queryset=queryfunc(election))
+            queryset=queryfunc(election))
 
 
     def dehydrate_percentage_of_participation(self, bundle):

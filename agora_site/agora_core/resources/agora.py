@@ -179,57 +179,46 @@ class AgoraResource(GenericResource):
         '''
         List admin members of this agora
         '''
-        return self.get_custom_resource_list(request,
-            url_name="api_agora_admin_list",
-            queryfunc=lambda agora: agora.admins.all(), resource=UserResource,
-            **kwargs)
+        return self.get_custom_resource_list(request, resource=UserResource,
+            queryfunc=lambda agora: agora.admins.all(), **kwargs)
 
     def get_member_list(self, request, **kwargs):
         '''
         List the members of this agora
         '''
-        return self.get_custom_resource_list(request, url_name="api_agora_member_list",
-            queryfunc=lambda agora: agora.members.all(), resource=UserResource,
-            **kwargs)
+        return self.get_custom_resource_list(request, resource=UserResource,
+            queryfunc=lambda agora: agora.members.all(), **kwargs)
 
     def get_active_delegates_list(self, request, **kwargs):
         '''
         List currently active delegates in this agora
         '''
-        return self.get_custom_resource_list(request,
-            url_name="api_agora_active_delegate_list",
-            queryfunc=lambda agora: agora.active_delegates(), resource=UserResource,
-            **kwargs)
+        return self.get_custom_resource_list(request, resource=UserResource,
+            queryfunc=lambda agora: agora.active_delegates(), **kwargs)
 
     def get_all_elections_list(self, request, **kwargs):
         '''
         List all elections in an agora
         '''
         from agora_site.agora_core.resources.election import ElectionResource
-        return self.get_custom_resource_list(request,
-            url_name="api_agora_all_elections_list",
-            queryfunc=lambda agora: agora.all_elections(), resource=ElectionResource,
-            **kwargs)
+        return self.get_custom_resource_list(request, resource=ElectionResource,
+            queryfunc=lambda agora: agora.all_elections(), **kwargs)
 
     def get_tallied_elections_list(self, request, **kwargs):
         '''
         List elections that have been already tallied in an agora
         '''
         from agora_site.agora_core.resources.election import ElectionResource
-        return self.get_custom_resource_list(request,
-            url_name="api_agora_tallied_elections_list",
-            queryfunc=lambda agora: agora.get_tallied_elections(),
-            resource=ElectionResource, **kwargs)
+        return self.get_custom_resource_list(request, resource=ElectionResource,
+            queryfunc=lambda agora: agora.get_tallied_elections(), **kwargs)
 
     def get_open_elections_list(self, request, **kwargs):
         '''
         List the elections that are currently opened in an agora
         '''
         from agora_site.agora_core.resources.election import ElectionResource
-        return self.get_custom_resource_list(request,
-            url_name="api_agora_open_elections_list",
-            queryfunc=lambda agora: agora.get_open_elections(),
-            resource=ElectionResource, **kwargs)
+        return self.get_custom_resource_list(request, resource=ElectionResource,
+            queryfunc=lambda agora: agora.get_open_elections(), **kwargs)
 
     def get_request_list(self, request, **kwargs):
         '''
@@ -243,10 +232,10 @@ class AgoraResource(GenericResource):
             queryset = User.objects.filter(username__in=users)
             return queryset
 
-        return self.get_custom_resource_list(request,queryfunc=get_queryset,
-            url_name="api_agora_request_list", resource=UserResource, **kwargs)
+        return self.get_custom_resource_list(request, queryfunc=get_queryset,
+            resource=UserResource, **kwargs)
 
-    def get_custom_resource_list(self, request, url_name, queryfunc, resource, **kwargs):
+    def get_custom_resource_list(self, request, queryfunc, resource, **kwargs):
         '''
         List users
         '''
@@ -257,15 +246,8 @@ class AgoraResource(GenericResource):
         except:
             raise ImmediateHttpResponse(response=http.HttpNotFound())
 
-        url_args = dict(
-            resource_name=self._meta.resource_name,
-            api_name=self._meta.api_name,
-            agoraid=agoraid
-        )
-        list_url  = self._build_reverse_url(url_name, kwargs=url_args)
-
-        return resource().get_custom_list(request=request, kwargs=kwargs,
-            list_url=list_url, queryset=queryfunc(agora))
+        return resource().get_custom_list(request=request,
+            queryset=queryfunc(agora))
 
     def action(self, request, **kwargs):
         '''
