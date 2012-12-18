@@ -34,10 +34,13 @@ class PostCommentForm(django_forms.Form):
         # removing instance from kwargs because it isn't a ModelForm
         kwargs.pop("instance", None)
         super(PostCommentForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
         self.request = request
         self.target_object = target_object
-        self.helper.add_input(Submit('submit', _('send comment'), css_class='btn btn-success btn-large'))
+
+        self.helper = FormHelper()
+        self.helper.form_id = "post-comment"
+        self.helper.form_class = "form-inline"
+        self.helper.add_input(Submit('submit', _('Send'), css_class='btn btn-success btn-large'))
 
     def save(self):
         obj = self.get_comment_object()
