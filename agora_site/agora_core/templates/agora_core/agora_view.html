@@ -161,7 +161,7 @@
 <div class="row">
     <div class="span8 agora-left-side">
         {% block agora_content %}
-        <div class="activity-list" id="activity-list">
+        <div class="activity-list" id="activity-list" data-endless-smargin="300">
             {% if agora.biograpy|length > 0 and agora.biography != agora.short_description and agora.biography %}
             <div class="main-description">
                 {{ election.biograpy|textile|truncatewords_html:130 }}

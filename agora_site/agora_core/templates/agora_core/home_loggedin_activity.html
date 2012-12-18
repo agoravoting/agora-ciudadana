@@ -84,7 +84,7 @@
 <div class="row">
     <div class="span8 agora-left-side">
         <div class="activity-list" id="activity-list" data-endless-smargin="300">
-            {% paginate 2 object_list %}
+            {% paginate object_list %}
             {% for action in object_list %}
                 {% include "agora_core/action_item.html" %}
             {% empty %}
