@@ -207,7 +207,7 @@ Retrieve an agora
 
    :param agora_id: agora's unique id
    :type agora_id: int
-   :status 200 OK: when agora is retrieved correctly
+   :status 200 OK: no error
    :status 404 NOT FOUND: when the agora is not found
 
    **Example request**:
@@ -418,19 +418,24 @@ Modify agora
         "pretty_name": "agora name",
         "short_description": "some fancydescription"
     }
-.. http:get:: /user/
 
-   List users
+Retrieve agora members
+----------------------
 
-   :query offset: offset number. default is 0
-   :query limit: limit number. default is 20
-   :statuscode 200 OK: no error
+.. http:get:: /agora/(int:agora_id)/members
+
+   Retrieves all the users that are members of agora (`agora_id`).
+
+   :param agora_id: agora's unique id
+   :type agora_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the agora is not found
 
    **Example request**:
 
    .. sourcecode:: http
 
-    GET /api/v1/user/ HTTP/1.1
+    GET /api/v1/agora/1/members/ HTTP/1.1
     Host: example.com
     Accept: application/json, text/javascript
 
@@ -446,58 +451,49 @@ Modify agora
        "meta":
        {
            "limit": 20,
-           "next": null,
            "offset": 0,
-           "previous": null,
-           "total_count": 3
+           "total_count": 2
        },
        "objects":
        [
            {
-               "date_joined": "2012-06-14T14:13:48.850044",
-               "first_name": "",
-               "id": 1,
-               "is_active": true,
-               "last_login": "2012-12-16T18:06:25.185835",
-               "last_name": "",
-               "username": "admin"
-           },
-           {
-               "date_joined": "2012-06-16T17:04:15.016445",
-               "first_name": "edulix",
+               "date_joined": "2012-12-18T15:46:35.590347",
+               "first_name": "Isabel Romero",
                "id": 2,
                "is_active": true,
-               "last_login": "2012-12-16T18:08:04.271163",
-               "last_name": "Robles Elvira",
-               "username": "edulix"
-           },
-           {
-               "date_joined": "2012-09-05T17:45:32.215085",
-               "first_name": "Maria Robles",
-               "id": 3,
-               "is_active": true,
-               "last_login": "2012-10-07T15:38:16.076439",
+               "last_login": "2012-12-18T15:47:35.109371",
                "last_name": "",
                "username": "user1"
+           },
+           {
+               "date_joined": "2012-12-18T15:46:37.644236",
+               "first_name": "Maria Moreno",
+               "id": 5,
+               "is_active": true,
+               "last_login": "2012-12-18T15:55:12.833627",
+               "last_name": "",
+               "username": "user4"
            }
        ]
     }
 
+Retrieve agora administrators
+-----------------------------
 
-List agora members
-------------------
- 
-.. http:get:: /user/settings/
+.. http:get:: /agora/(int:agora_id)/admins
 
-   List agora members
+   Retrieves the users that are admin members of agora (`agora_id`).
 
-   :statuscode 200 OK: no error
+   :param agora_id: agora's unique id
+   :type agora_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the agora is not found
 
    **Example request**:
 
    .. sourcecode:: http
 
-    POST /api/v1/user/settings/ HTTP/1.1
+    GET /api/v1/agora/1/admins/ HTTP/1.1
     Host: example.com
     Accept: application/json, text/javascript
 
@@ -510,14 +506,366 @@ List agora members
     Content-Type: application/json; charset=utf-8
 
     {
-        "date_joined": "2012-11-29T15:07:55.727000",
-        "first_name": "David",
-        "id": 0,
-        "is_active": true,
-        "last_login": "2012-11-29T15:07:55.727000",
-        "last_name": "",
-        "username": "david"
+       "meta":
+       {
+           "limit": 20,
+           "offset": 0,
+           "total_count": 1
+       },
+       "objects":
+       [
+           {
+               "date_joined": "2012-12-18T15:46:35.590347",
+               "first_name": "Isabel Romero",
+               "id": 2,
+               "is_active": true,
+               "last_login": "2012-12-18T15:47:35.109371",
+               "last_name": "",
+               "username": "user1"
+           }
+       ]
     }
+
+Retrieve agora membership requests
+----------------------------------
+
+.. http:get:: /agora/(int:agora_id)/membership_requests
+
+   Retrieves the users that have pending requests to become members of agora (`agora_id`).
+
+   :param agora_id: agora's unique id
+   :type agora_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the agora is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/agora/1/membership_requests/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+       "meta":
+       {
+           "limit": 20,
+           "offset": 0,
+           "total_count": 1
+       },
+       "objects":
+       [
+           {
+               "date_joined": "2012-12-18T15:46:38.968369",
+               "first_name": "Monica Moreno",
+               "id": 7,
+               "is_active": true,
+               "last_login": "2012-12-18T16:31:32.390732",
+               "last_name": "",
+               "username": "user6"
+           }
+       ]
+    }
+
+Retrieve agora active delegates
+-------------------------------
+
+.. http:get:: /agora/(int:agora_id)/active_delegates
+
+   Retrieves active delegates of agora (`agora_id`): users that have emitted any valid
+   and public vote in any election of this agora.
+
+   :param agora_id: agora's unique id
+   :type agora_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the agora is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/agora/1/active_delegates/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+       "meta":
+       {
+           "limit": 20,
+           "offset": 0,
+           "total_count": 1
+       },
+       "objects":
+       [
+           {
+               "date_joined": "2012-12-18T15:46:37.041147",
+               "first_name": "Juana Garcia",
+               "id": 4,
+               "is_active": true,
+               "last_login": "2012-12-18T15:46:37.041112",
+               "last_name": "",
+               "username": "user3"
+           }
+       ]
+    }
+
+Retrieve all agora elections
+----------------------------
+
+.. http:get:: /agora/(int:agora_id)/all_elections
+
+   Retrieves all elections in agora (`agora_id`).
+
+   :param agora_id: agora's unique id
+   :type agora_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the agora is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/agora/1/all_elections/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+       "meta":
+       {
+           "limit": 20,
+           "offset": 0,
+           "total_count": 1
+       },
+       "objects":
+       [
+           {
+               "agora": "/api/v1/agora/1/",
+               "approved_at_date": null,
+               "archived_at_date": null,
+               "comments_policy": "ANYONE_CAN_COMMENT",
+               "created_at_date": "2012-12-18T15:53:05.265843",
+               "creator": "/api/v1/user/2/",
+               "delegated_votes_frozen_at_date": null,
+               "delegated_votes_result": "",
+               "description": "this is election 2",
+               "election_type": "ONE_CHOICE",
+               "electorate":
+               [
+               ],
+               "eligibility": "",
+               "extra_data": "{u'started': True}",
+               "frozen_at_date": "2012-12-18T15:53:24.071076",
+               "hash": "b05bc33717cacc1557ff47bffdbfecbf10d3a1a52baba603b5b7b8e10c6db9fa",
+               "id": 4,
+               "is_approved": true,
+               "is_vote_secret": false,
+               "last_modified_at_date": "2012-12-18T15:53:05.275983",
+               "name": "election-2",
+               "parent_election": null,
+               "percentage_of_participation": 50,
+               "pretty_name": "election 2",
+               "questions": "[{u'a': u'ballot/question', u'min': 0, u'max': 1, u'tally_type': u'simple', u'question': u'question of election 2', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'yes'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'no'}], u'randomize_answer_order': True}]",
+               "resource_uri": "/api/v1/election/4/",
+               "result": "",
+               "result_tallied_at_date": null,
+               "short_description": "this is election 2",
+               "tiny_hash": null,
+               "url": "http://localhost:8000/user1/agora1/election/election-2",
+               "uuid": "318707f0-fd82-4d1a-b70a-9ee25c77000b",
+               "voters_frozen_at_date": null,
+               "voting_ends_at_date": null,
+               "voting_extended_until_date": null,
+               "voting_starts_at_date": "2012-12-18T15:58:12.728550"
+           }
+       ]
+    }
+
+Retrieve tallied agora elections
+--------------------------------
+
+.. http:get:: /agora/(int:agora_id)/tallied_elections
+
+   Retrieves tallied elections in agora (`agora_id`): past elections that are
+   closed and with a result.
+
+   :param agora_id: agora's unique id
+   :type agora_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the agora is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/agora/1/tallied_elections/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+       "meta":
+       {
+           "limit": 20,
+           "offset": 0,
+           "total_count": 1
+       },
+       "objects":
+       [
+           {
+               "agora": "/api/v1/agora/2/",
+               "approved_at_date": null,
+               "archived_at_date": null,
+               "comments_policy": "ANYONE_CAN_COMMENT",
+               "created_at_date": "2012-12-18T15:54:17.742549",
+               "creator": "/api/v1/user/2/",
+               "delegated_votes_frozen_at_date": "2012-12-18T17:15:40.772925",
+               "delegated_votes_result": "{u'delegation_counts': [], u'a': u'result', u'election_counts': [[0, 0, 0]]}",
+               "description": "this is election 3",
+               "election_type": "ONE_CHOICE",
+               "electorate":
+               [
+                   "/api/v1/user/2/",
+                   "/api/v1/user/5/"
+               ],
+               "eligibility": "",
+               "extra_data": "{u'started': True, u'ended': True}",
+               "frozen_at_date": "2012-12-18T15:54:22.296002",
+               "hash": "e707a91d4657e9f0c2dabeb72c6c4598b468159b409844f87160457aa9de1dc4",
+               "id": 5,
+               "is_approved": true,
+               "is_vote_secret": false,
+               "last_modified_at_date": "2012-12-18T15:54:17.758384",
+               "name": "election-3",
+               "parent_election": null,
+               "percentage_of_participation": 100,
+               "pretty_name": "election 3",
+               "questions": "[{u'a': u'ballot/question', u'min': 0, u'max': 1, u'tally_type': u'simple', u'question': u'question of election 3', u'answers': [{u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 0, u'value': u'a', u'details': u''}, {u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 1, u'value': u'b', u'details': u''}, {u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 1, u'value': u'c', u'details': u''}], u'randomize_answer_order': True}]",
+               "resource_uri": "/api/v1/election/5/",
+               "result": "[{u'a': u'ballot/question', u'min': 0, u'max': 1, u'tally_type': u'simple', u'question': u'question of election 3', u'answers': [{u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 0, u'value': u'a', u'details': u''}, {u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 1, u'value': u'b', u'details': u''}, {u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 1, u'value': u'c', u'details': u''}], u'randomize_answer_order': True}]",
+               "result_tallied_at_date": "2012-12-18T17:15:40.772925",
+               "short_description": "this is election 3",
+               "tiny_hash": null,
+               "url": "http://localhost:8000/user1/agora2/election/election-3",
+               "uuid": "9dffc9c2-a2a2-4837-a8c5-3e20cb06f965",
+               "voters_frozen_at_date": "2012-12-18T17:15:40.772925",
+               "voting_ends_at_date": "2012-12-18T17:15:40.188654",
+               "voting_extended_until_date": "2012-12-18T17:15:40.434542",
+               "voting_starts_at_date": "2012-12-18T15:54:28.043188"
+           }
+       ]
+    }
+
+Retrieve open agora elections
+--------------------------------
+
+.. http:get:: /agora/(int:agora_id)/open_elections
+
+   Retrieves tallied elections in agora (`agora_id`): current or future elections that
+   will or are taking place in the agora.
+
+   :param agora_id: agora's unique id
+   :type agora_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the agora is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/agora/1/open_elections/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+       "meta":
+       {
+           "limit": 20,
+           "offset": 0,
+           "total_count": 1
+       },
+       "objects":
+       [
+           {
+               "agora": "/api/v1/agora/2/",
+               "approved_at_date": null,
+               "archived_at_date": null,
+               "comments_policy": "ANYONE_CAN_COMMENT",
+               "created_at_date": "2012-12-18T15:50:48.576146",
+               "creator": "/api/v1/user/2/",
+               "delegated_votes_frozen_at_date": null,
+               "delegated_votes_result": "",
+               "description": "this is election 1",
+               "election_type": "ONE_CHOICE",
+               "electorate":
+               [
+               ],
+               "eligibility": "",
+               "extra_data": "{u'started': True}",
+               "frozen_at_date": "2012-12-18T15:51:05.405218",
+               "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
+               "id": 3,
+               "is_approved": true,
+               "is_vote_secret": true,
+               "last_modified_at_date": "2012-12-18T15:50:48.588385",
+               "name": "election-1",
+               "parent_election": null,
+               "percentage_of_participation": 50,
+               "pretty_name": "election 1",
+               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
+               "resource_uri": "/api/v1/election/3/",
+               "result": "",
+               "result_tallied_at_date": null,
+               "short_description": "this is election 1",
+               "tiny_hash": null,
+               "url": "http://localhost:8000/user1/agora2/election/election-1",
+               "uuid": "c2ad36c2-b67e-499c-8100-59becd538549",
+               "voters_frozen_at_date": null,
+               "voting_ends_at_date": "2012-12-20T00:00:00",
+               "voting_extended_until_date": "2012-12-20T00:00:00",
+               "voting_starts_at_date": "2012-12-18T16:51:00.018431"
+           }
+       ]
+    }
+
 
 
 Resource: User
