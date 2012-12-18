@@ -295,7 +295,7 @@ USERENA_FORBIDDEN_USERNAMES = (
     'signup', 'signout', 'signin', 'activate', 'me', 'password', 'admin',
     'agora', 'staff', 'agoraciudadana', 'agoravoting', 'root', 'administrator',
     'adminstrador', 'hostmaster', 'info', 'ssladmin', 'sysadmin', 'webmaster',
-    'no-reply', 'mail', 'email', 'accounts', 'misc', 'api', 'search', 
+    'no-reply', 'mail', 'email', 'accounts', 'misc', 'api', 'search',
     'settings', 'edit'
 )
 
@@ -314,7 +314,7 @@ import djcelery
 djcelery.setup_loader()
 
 BROKER_URL = 'amqp://guest:guest@localhost:5672/'
-
+CELERY_RESULT_BACKEND = "amqp://guest:guest@localhost:5672/"
 CELERY_DISABLE_RATE_LIMITS = True
 
 from celery.schedules import crontab
@@ -327,7 +327,6 @@ CELERYBEAT_SCHEDULE = {
 }
 
 # Rosetta settings
-
 ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
 
 # Django debug toolbar settings

@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
-{% load i18n %}
-{% load crispy_forms_tags %}
-
+{% load i18n crispy_forms_tags %}
+{% load static from staticfiles %}
 
 {% block title %}{% trans "Create Election" %}{% endblock %}
 {% block footer-wrapper-class %}short{% endblock %}
@@ -10,13 +9,10 @@
 {% block running-board  %}
 
 <div class="row top-form">
-    <div class="span7 form-data">
-    {% crispy form %}
-    </div>
-
+    <div class="span7 form-data">{% crispy form %}</div>
 
     <div class="span3 form-info" id="agora_new_form_info">
-        <img src="{{ STATIC_URL }}img/election_new_form_info.png" alt="{% trans "Create an Election" %}" />
+        <img src="{% static 'img/election_new_form_info.png' %}" alt="{% trans "Create an Election" %}" />
         <h1>1</h1>
         <h2>{% trans "Create an Election" %}</h2>
         <p>
