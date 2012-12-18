@@ -41,4 +41,21 @@
     });
 
     app.main = new Agora.MainView();
+
+    /*
+     * Top messages block.
+    */
+
+    Agora.MessagesBox = Backbone.View.extend({
+        el: "#messages-box",
+
+        initialize: function() {
+            var modal = this.$(".modal");
+            if (modal.length > 0) {
+                this.$('.modal').modal('show');
+            }
+        }
+    });
+
+    app.messages = new Agora.MessagesBox();
 }).call(this);
