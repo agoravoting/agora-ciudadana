@@ -1,382 +1,368 @@
 {% extends 'base.html' %}
-{% load i18n %}
-{% load l10n %}
-{% load endless %}
-{% load crispy_forms_tags %}
-{% load agora_utils %}
-{% load comments %}
-{% load markup %}
+{% load i18n l10n endless crispy_forms_tags agora_utils comments markup %}
 
-{% block script-block %}
-    <script src="{{ STATIC_URL }}js/endless_pagination/endless.js" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ STATIC_URL }}js/endless_pagination/endless_on_scroll.js" type="text/javascript" charset="utf-8"></script>
-
-    <script type="text/javascript" charset="utf-8">
-        var endless_on_scroll_margin = 300;
-    </script>
-{% endblock %}
-
+{% block content-wrapper-class %}elections{% endblock %}
 {% block title %}{{ election.pretty_name }} - {{ election.agora.creator.username }}/{{ election.agora.name }}{% endblock %}
-
 {% block running-board-wrapper-class %}agora-running-board election-running-board{% endblock %}
 {% block background-wrapper-class %}background-wrapper-no-bottom-shadow{% endblock %}
 
 {% block running-board  %}
+<img class="agora-logo" src="{{ election.get_mugshot_url }}" alt="{% blocktrans with name=election.name %}{{ name }} logo{% endblocktrans %}" />
+<div class="item-detail">
+    <h1>{{ election.pretty_name }}</h1>
+    <strong>
+        {% url agora-view election.agora.creator.username election.agora.name as agora_view_url %}
+        {% if election.is_approved %}
+            {% url user-view election.creator.username as user_url %}
+            {% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}
+            Election created by <a href="{{ user_url }}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
+            {% endblocktrans %}
+        {% else %}
+            {% url user-view election.creator.username as user_url %}
+            {% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}
+            Election proposed by <a href="{{ user_url }}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
+            {% endblocktrans %}
+        {% endif %}
+    </strong>
+</div>
 
-    <img class="agora-logo" src="{{ election.get_mugshot_url }}" alt="{% blocktrans with name=election.name %}{{ name }} logo{% endblocktrans %}" />
-    <div class="item-detail">
-        <h1>{{ election.pretty_name }}</h1>
-        <strong>
-            {% url agora-view election.agora.creator.username election.agora.name as agora_view_url %}
-            {% if election.is_approved %}
-                {% url user-view election.creator.username as user_url %}
-                {% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}
-                Election created by <a href="{{ user_url }}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
-                {% endblocktrans %}
-            {% else %}
-                {% url user-view election.creator.username as user_url %}
-                {% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}
-                Election proposed by <a href="{{ user_url }}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
-                {% endblocktrans %}
+<div class="upper-right-corner">
+    {% if user in election.agora.admins.all or user == election.creator %}
+    <div class="btn-group">
+        <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
+            <i class="icon-user"></i>
+                {% trans "Quick actions" %}
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            {% if "approve_election" in permissions %}
+                <li>
+                    <a class="action-form-link" href="{% url election-action-approve election.agora.creator.username election.agora.name election.name %}">
+                        <i class="icon-ok"></i>
+                        {% trans "Approve election" %}
+                    </a>
+                </li>
             {% endif %}
-        </strong>
+            {% if "freeze_election" in permissions %}
+                <li>
+                    <a class="action-form-link" href="{% url election-action-freeze election.agora.creator.username election.agora.name election.name %}">
+                        <i class="icon-ok-circle"></i>
+                        {% trans "Freeze election" %}
+                    </a>
+                </li>
+            {% endif %}
+            {% if "begin_election" in permissions %}
+                <li>
+                    <a class="action-form-link" href="{% url election-action-start election.agora.creator.username election.agora.name election.name %}">
+                        <i class="icon-play"></i>
+                        {% trans "Start voting period" %}
+                    </a>
+                </li>
+            {% endif %}
+            {% if "end_election" in permissions %}
+                <li>
+                    <a class="action-form-link" href="{% url election-action-stop election.agora.creator.username election.agora.name election.name %}">
+                        <i class="icon-stop"></i>
+                        {% trans "Stop voting period and publish results" %}
+                    </a>
+                </li>
+            {% endif %}
+            {% if "archive_election" in permissions %}
+                <li>
+                    <a class="action-form-link" href="{% url election-action-archive election.agora.creator.username election.agora.name election.name %}">
+                        <i class="icon-folder-open"></i>
+                        {% trans "Dismiss and archive election" %}
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
     </div>
+    {% elif user not in election.members.all %}
+    <a class="btn btn-success action-form-link" href="{% url agora-action-join agora.creator.username agora.name %}">
+        <i class="icon-heart icon-white"></i>
+        {% trans "Join this agora now" %}
+    </a>
+    {% endif %}
+</div>
 
-    <div class="upper-right-corner">
-        {% if user in election.agora.admins.all or user == election.creator %}
-            <div class="btn-group">
-                <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
-                    <i class="icon-user"></i>
-                        {% trans "Quick actions" %}
-                    <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                    {% if "approve_election" in permissions %}
-                        <li>
-                            <a class="action-form-link" href="{% url election-action-approve election.agora.creator.username election.agora.name election.name %}">
-                                <i class="icon-ok"></i>
-                                {% trans "Approve election" %}
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if "freeze_election" in permissions %}
-                        <li>
-                            <a class="action-form-link" href="{% url election-action-freeze election.agora.creator.username election.agora.name election.name %}">
-                                <i class="icon-ok-circle"></i>
-                                {% trans "Freeze election" %}
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if "begin_election" in permissions %}
-                        <li>
-                            <a class="action-form-link" href="{% url election-action-start election.agora.creator.username election.agora.name election.name %}">
-                                <i class="icon-play"></i>
-                                {% trans "Start voting period" %}
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if "end_election" in permissions %}
-                        <li>
-                            <a class="action-form-link" href="{% url election-action-stop election.agora.creator.username election.agora.name election.name %}">
-                                <i class="icon-stop"></i>
-                                {% trans "Stop voting period and publish results" %}
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if "archive_election" in permissions %}
-                        <li>
-                            <a class="action-form-link" href="{% url election-action-archive election.agora.creator.username election.agora.name election.name %}">
-                                <i class="icon-folder-open"></i>
-                                {% trans "Dismiss and archive election" %}
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-        {% elif user not in election.members.all %}
-            <a class="btn btn-success action-form-link" href="{% url agora-action-join agora.creator.username agora.name %}">
-                <i class="icon-heart icon-white"></i>
-                {% trans "Join this agora now" %}
-            </a>
-        {% endif %}
-    </div>
+<p>{{ election.short_description|truncatechars:139 }}</p>
 
-    <p>{{ election.short_description|truncatechars:139 }}</p>
-
-    <ul class="nav nav-tabs">
-        {% block election-navigation %}
-        {% block election-navigation-base %}
-        <li {% ifactivetab "election-nav" "activity" %}class="active"{% endifactivetab %}>
-            <a href="{% url election-view election.agora.creator.username election.agora.name election.name %}">{% trans "Activity" %}</a>
-        </li>
-        <li {% ifactivetab "election-nav" "votes" %}class="active"{% endifactivetab %}>
-            <a href="{% url election-votes election.agora.creator.username election.agora.name election.name %}">{% trans "Votes" %}
-            <span class="badge badge-info">{{ election.get_all_votes.count }}</span></a>
-        </li>
-        <li {% ifactivetab "election-nav" "comments" %}class="active"{% endifactivetab %}>
-            <a href="{% url election-comments election.agora.creator.username election.agora.name election.name %}">{% trans "Comments" %}
-            {% get_comment_count for election as comment_count %}
-            <span class="badge badge-info">{{ comment_count }}</span></a>
-        </li>
-        <li {% ifactivetab "election-nav" "delegates" %}class="active"{% endifactivetab %}>
-            <a href="{% url election-delegates election.agora.creator.username election.agora.name election.name %}">{% trans "Delegates" %}
-            <span class="badge badge-info">{{ election.get_votes_from_delegates.count }}</span></a>
-        </li>
-        {% if "edit_details" in permissions %}
-        <li {% ifactivetab "election-nav" "edit" %}class="active"{% endifactivetab %}>
-            <a href="{% url election-edit election.agora.creator.username election.agora.name election.name %}">{% trans "Edit" %}</a>
-        </li>
-        {% endif %}
-        {% endblock %}
-        {% endblock %}
-    </ul>
+<ul class="nav nav-tabs">
+    {% block election-navigation %}
+    {% block election-navigation-base %}
+    <li {% ifactivetab "election-nav" "activity" %}class="active"{% endifactivetab %}>
+        <a href="{% url election-view election.agora.creator.username election.agora.name election.name %}">{% trans "Activity" %}</a>
+    </li>
+    <li {% ifactivetab "election-nav" "votes" %}class="active"{% endifactivetab %}>
+        <a href="{% url election-votes election.agora.creator.username election.agora.name election.name %}">{% trans "Votes" %}
+        <span class="badge badge-info">{{ election.get_all_votes.count }}</span></a>
+    </li>
+    <li {% ifactivetab "election-nav" "comments" %}class="active"{% endifactivetab %}>
+        <a href="{% url election-comments election.agora.creator.username election.agora.name election.name %}">{% trans "Comments" %}
+        {% get_comment_count for election as comment_count %}
+        <span class="badge badge-info">{{ comment_count }}</span></a>
+    </li>
+    <li {% ifactivetab "election-nav" "delegates" %}class="active"{% endifactivetab %}>
+        <a href="{% url election-delegates election.agora.creator.username election.agora.name election.name %}">{% trans "Delegates" %}
+        <span class="badge badge-info">{{ election.get_votes_from_delegates.count }}</span></a>
+    </li>
+    {% if "edit_details" in permissions %}
+    <li {% ifactivetab "election-nav" "edit" %}class="active"{% endifactivetab %}>
+        <a href="{% url election-edit election.agora.creator.username election.agora.name election.name %}">{% trans "Edit" %}</a>
+    </li>
+    {% endif %}
+    {% endblock %}
+    {% endblock %}
+</ul>
 {% endblock %}
 
 {% block content %}
-        <div class="row election-content-row">
-            <div class="content">
-                {% block election_content %}
-                    {% if election.description != election.short_description %}
-                        <div class="main-description">
-                            {{ election.description|textile }}
+<div class="row election-content-row">
+    <div class="content">
+        {% block election_content %}
+        <div class="activity-list" id="activity-list" data-endless-smargin="300">
+            {% if election.description != election.short_description %}
+            <div class="main-description">
+                {{ election.description|textile }}
+            </div>
+            {% endif %}
+
+            {% paginate object_list %}
+            {% for action in object_list %}
+                {% include "agora_core/action_item.html" %}
+            {% empty %}
+                {% trans "No activity yet." %}
+            {% endfor %}
+            {% show_more %}
+        </div>
+        {% endblock %}
+    </div>
+    <div class="sidebar">
+        <div class="row-fluid right-widget election-widget">
+            <strong class="counter">
+                <span>{{ election.get_all_votes.count }}</span>
+                {% blocktrans with participation=election.percentage_of_participation|floatformat:"-2" %}
+                VOTES ({{ participation }}% of the electorate)
+                {% endblocktrans %}
+            </strong>
+            <div class="highlight-sidebar">
+                <span class="highlight-top-left"></span>
+                <span class="highlight-top-right"></span>
+                {{ election.get_brief_description|safe }}
+            </div>
+            <div class="sidebar-body">
+                {% block vote-block %}
+                    {% if "request_membership" in agora_perms %}
+                    <div class="button-vote">
+                        <a class="btn btn-warning btn-medium action-form-link"
+                            href="{% url agora-action-join election.agora.creator.username election.agora.name %}">
+                            {% trans "Request agora membership" %}
+                        </a>
+                    </div>
+                    {% endif %}
+                    {% if election.ballot_is_open %}
+                        {% if not user or not user.is_authenticated %}
+                        <div class="button-vote">
+                            <a class="btn btn-success" href="{% url userena_signin %}">{% trans "Vote" %}</a>
+                        </div>
+                        {% elif "vote_counts" in permissions or "emit_delegate_vote" in permissions %}
+                        <div class="button-vote">
+                            {% if "vote_counts" in permissions %}
+                                <a class="btn btn-success" data-toggle="modal" href="#vote-modal-dialog" >
+                                {% if vote_from_user and vote_from_user.is_direct %}
+                                    {% trans "Change my vote" %}
+                                {% else %}
+                                    {% trans "Vote" %}
+                                {% endif %}
+                            {% else %}
+                                <a class="btn btn-success btn-medium" data-toggle="modal" href="#vote-modal-dialog" >
+                                {% if vote_from_user and vote_from_user.is_direct %}
+                                    {% trans "Change my position as non-member delegate" %}
+                                {% else %}
+                                    {% trans "Stablish my position as non-member delegate" %}
+                                {% endif %}
+                            {% endif %}
+                            </a>
+                        </div>
+                        <div class="modal fade {% block voting-form-class %}hide{% endblock %}" id="vote-modal-dialog">
+                            <div class="modal-header">
+                                <a class="close" data-dismiss="modal">×</a>
+                                <h3>{{ election.pretty_name }}</h3>
+                                <p>
+                                {% url user-view election.creator.username as user_url %}
+                                {% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}
+                                    Election created by <a href="{{ user_url }}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
+                                {% endblocktrans %}</p>
+                                <em>{{ election.short_description|truncatechars:139 }}</em>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row-fluid">
+                                    <div class="span8">
+                                        {% crispy vote_form %}
+                                    </div>
+                                    <div class="span4">
+                                        <div>
+                                        {% if user in election.agora.members.all or 'join' in agora_perms %}
+                                            <strong>{% trans "Who represents you?" %}</strong>
+                                            <p>{% trans "If you don't know what to vote or you'd rather not have to be aware of all the elections of this Agora, you can delegate your vote to someone you trust." %}</p>
+                                            <a href="{% url election-delegates election.agora.creator.username election.agora.name election.name %}"
+                                                class="btn btn-primary btn-large">{% trans "Delegate" %}</a>
+                                        </div>
+                                        {% elif 'join' not in agora_perms %}
+                                                <strong>{% trans "What's a non-member delegate?" %}</strong>
+                                                <p>{% trans "You're not a member in this agora and <b>your vote won't be counted</b>. But if you vote as a delegate, even if your vote is not counted, others will be able to delegate in you and their vote will count." %}</p>
+                                                {% if 'request_membership' in agora_perms %}
+                                                    <a class="btn btn-success action-form-link"
+                                                        href="{% url agora-action-join election.agora.creator.username election.agora.name %}">
+                                                        {% trans "Request agora membership" %}
+                                                    </a>
+                                                {% elif 'cancel_membership_request' in agora_perms %}
+                                                    {% trans "Your agora membership request is pending" %}
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% elif 'cancel_membership_request' in agora_perms %}
+                        <strong>{% trans "Your membership request in this election's agora is pending" %}</strong>
+                        {% endif %}
+                    {% else %}
+                        {% if "approve_election" in permissions %}
+                        <div class="button-vote">
+                            <a class="btn btn-success action-form-link"
+                            href="{% url election-action-approve election.agora.creator.username election.agora.name election.name %}">
+                            {% trans "Approve election" %}</a>
+                        </div>
+                        {% elif "freeze_election" in permissions %}
+                        <div class="button-vote">
+                            <a class="btn btn-success action-form-link"
+                            href="{% url election-action-freeze election.agora.creator.username election.agora.name election.name %}">
+                            {% trans "Freeze election" %}</a>
+                        </div>
+                        {% elif "begin_election" in permissions %}
+                        <div class="button-vote">
+                            <a class="btn btn-success action-form-link"
+                            href="{% url election-action-start election.agora.creator.username election.agora.name election.name %}">
+                            {% trans "Start voting period" %}</a>
+                        </div>
+                        {% elif "end_election" in permissions %}
+                        <div class="button-vote">
+                            <a class="btn btn-success action-form-link"
+                            href="{% url election-action-stop election.agora.creator.username election.agora.name election.name %}">
+                            {% trans "Stop voting period and publish results" %}</a>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                {% endblock %}
+
+                {% if vote_from_user %}
+                    {% if vote_from_user.is_public %}
+                    <h3>{% trans "Your vote" %}</h3>
+                    {% endif %}
+
+                    {% if vote_from_user.is_direct %}
+                        {% if vote_from_user.is_public %}
+                            {% blocktrans with question=vote_from_user.get_first_pretty_answer|getitem:'question' answer=vote_from_user.get_first_pretty_answer|getitem:'answer' %}
+                            <p class="answer">You answered <strong>{{ answer }}</strong> to <em>{{ question }}</em></p>
+                            {% endblocktrans %}
+                        {% endif %}
+                    {% elif vote_from_user.is_public %}
+                        {% with delegate=vote_from_user.get_delegate chained_answer=vote_from_user|get_chained_first_pretty_answer:election %}
+                            {% if chained_answer %}
+                                {% blocktrans with delegate_username=delegate.username question=chained_answer|getitem:'question' answer=chained_answer|getitem:'answer' %}
+                                You delegated to <a href="{{delegate_url}}">{{delegate_username}}</a> who answered
+                                <strong>{{ answer }}</strong> to <em>{{ question }}</em></p>
+                                {% endblocktrans %}
+                            {% else %}
+                                {% blocktrans with delegate_username=delegate.username %}
+                                You delegated to <a href="{{delegate_url}}">{{delegate_username}}</a> who didn't participate in this election yet.
+                                {% endblocktrans %}
+                            {% endif %}
+                        {% endwith %}
+                    {% else %}
+                        {% trans "You delegated your vote, and your vote is secret" %}
+                    {% endif %}
+
+                    {% if election.ballot_is_open and vote_from_user.is_direct %}
+                        <a class="btn" data-toggle="modal" href="#cancelVoteConfirmModalDialog">
+                            {% trans "Cancel direct vote" %}
+                        </a>
+                        <div class="modal hide" id="cancelVoteConfirmModalDialog">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">×</button>
+                                <h3>{% trans "Cancel vote?" %}</h3>
+                            </div>
+                            <div class="modal-body">
+                                <p>{% trans "Do you really want to cancel your vote in this election?" %}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+                                <a class="btn btn-danger action-form-link" href="{% url election-cancel-vote election.agora.creator.username election.agora.name election.name %}">{% trans "Cancel direct vote" %}</a>
+                            </div>
                         </div>
                     {% endif %}
 
-                    {% paginate object_list %}
-                    {% for action in object_list %}
-                        {% include "agora_core/action_item.html" %}
-                    {% empty %}
-                        {% trans "No activity yet." %}
+                {% endif%}
+
+                {% if election.result_tallied_at_date %}
+                    <h3>{% trans "Results" %}</h3>
+                    {% for question in election.get_result_pretty %}
+                    <div class="election-results">
+                        <h4>{{ question|getitem:'question' }}</h4>
+                        <ul>
+                            {% for answer in question|getitem:'answers' %}
+                                <li>
+                                    {{ answer|getitem:'value' }} <em>({% blocktrans with count=answer|getitem:'total_count'|floatformat:"-2" %}{{ count }} votes{% endblocktrans %})</em>
+                                    <div class="progress progress-large progress-success">
+                                        <div class="bar" style="width: {{ answer|getitem:'total_count_percentage'|unlocalize }}%">
+                                        {{ answer|getitem:'total_count_percentage'|floatformat }}%
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                     {% endfor %}
-                    {% show_more %}
-                {% endblock %}
-
-            </div>
-            <div class="sidebar">
-                <div class="row-fluid right-widget election-widget">
-                    <strong class="counter">
-                        <span>{{ election.get_all_votes.count }}</span>
-                        {% blocktrans with participation=election.percentage_of_participation|floatformat:"-2" %}
-                            VOTES ({{ participation }}% of the electorate)
-                        {% endblocktrans %}
-                    </strong>
-                    <div class="highlight-sidebar">
-                        <span class="highlight-top-left"></span>
-                        <span class="highlight-top-right"></span>
-                        {{ election.get_brief_description|safe }}
-                    </div>
-                    <div class="sidebar-body">
-                        {% block vote-block %}
-                            {% if "request_membership" in agora_perms %}
-                                <div class="button-vote">
-                                    <a class="btn btn-warning btn-medium action-form-link"
-                                        href="{% url agora-action-join election.agora.creator.username election.agora.name %}">
-                                        {% trans "Request agora membership" %}
-                                    </a>
-                                </div>
-                            {% endif %}
-                            {% if election.ballot_is_open %}
-                                {% if not user or not user.is_authenticated %}
-                                    <div class="button-vote">
-                                        <a class="btn btn-success" href="{% url userena_signin %}">{% trans "Vote" %}</a>
-                                    </div>
-                                {% elif "vote_counts" in permissions or "emit_delegate_vote" in permissions %}
-                                    <div class="button-vote">
-                                        {% if "vote_counts" in permissions %}
-                                            <a class="btn btn-success" data-toggle="modal" href="#vote-modal-dialog" >
-                                            {% if vote_from_user and vote_from_user.is_direct %}
-                                                {% trans "Change my vote" %}
-                                            {% else %}
-                                                {% trans "Vote" %}
-                                            {% endif %}
-                                        {% else %}
-                                            <a class="btn btn-success btn-medium" data-toggle="modal" href="#vote-modal-dialog" >
-                                            {% if vote_from_user and vote_from_user.is_direct %}
-                                                {% trans "Change my position as non-member delegate" %}
-                                            {% else %}
-                                                {% trans "Stablish my position as non-member delegate" %}
-                                            {% endif %}
-                                        {% endif %}
-                                        </a>
-                                    </div>
-                                    <div class="modal fade {% block voting-form-class %}hide{% endblock %}" id="vote-modal-dialog">
-                                        <div class="modal-header">
-                                            <a class="close" data-dismiss="modal">×</a>
-                                            <h3>{{ election.pretty_name }}</h3>
-                                            <p>
-                                            {% url user-view election.creator.username as user_url %}
-                                            {% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}
-                                                Election created by <a href="{{ user_url }}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
-                                            {% endblocktrans %}</p>
-                                            <em>{{ election.short_description|truncatechars:139 }}</em>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row-fluid">
-                                                <div class="span8">
-                                                    {% crispy vote_form %}
-                                                </div>
-                                                <div class="span4">
-                                                    <div>
-                                                    {% if user in election.agora.members.all or 'join' in agora_perms %}
-                                                        <strong>{% trans "Who represents you?" %}</strong>
-                                                        <p>{% trans "If you don't know what to vote or you'd rather not have to be aware of all the elections of this Agora, you can delegate your vote to someone you trust." %}</p>
-                                                        <a href="{% url election-delegates election.agora.creator.username election.agora.name election.name %}"
-                                                            class="btn btn-primary btn-large">{% trans "Delegate" %}</a>
-                                                    </div>
-                                                    {% elif 'join' not in agora_perms %}
-                                                            <strong>{% trans "What's a non-member delegate?" %}</strong>
-                                                            <p>{% trans "You're not a member in this agora and <b>your vote won't be counted</b>. But if you vote as a delegate, even if your vote is not counted, others will be able to delegate in you and their vote will count." %}</p>
-                                                            {% if 'request_membership' in agora_perms %}
-                                                                <a class="btn btn-success action-form-link"
-                                                                    href="{% url agora-action-join election.agora.creator.username election.agora.name %}">
-                                                                    {% trans "Request agora membership" %}
-                                                                </a>
-                                                            {% elif 'cancel_membership_request' in agora_perms %}
-                                                                {% trans "Your agora membership request is pending" %}
-                                                            {% endif %}
-                                                        </div>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% elif 'cancel_membership_request' in agora_perms %}
-                                    <strong>{% trans "Your membership request in this election's agora is pending" %}</strong>
-                                {% endif %}
-                            {% else %}
-                                {% if "approve_election" in permissions %}
-                                    <div class="button-vote">
-                                        <a class="btn btn-success action-form-link"
-                                        href="{% url election-action-approve election.agora.creator.username election.agora.name election.name %}">
-                                        {% trans "Approve election" %}</a>
-                                    </div>
-                                {% elif "freeze_election" in permissions %}
-                                    <div class="button-vote">
-                                        <a class="btn btn-success action-form-link"
-                                        href="{% url election-action-freeze election.agora.creator.username election.agora.name election.name %}">
-                                        {% trans "Freeze election" %}</a>
-                                    </div>
-                                {% elif "begin_election" in permissions %}
-                                    <div class="button-vote">
-                                        <a class="btn btn-success action-form-link"
-                                        href="{% url election-action-start election.agora.creator.username election.agora.name election.name %}">
-                                        {% trans "Start voting period" %}</a>
-                                    </div>
-                                {% elif "end_election" in permissions %}
-                                    <div class="button-vote">
-                                        <a class="btn btn-success action-form-link"
-                                        href="{% url election-action-stop election.agora.creator.username election.agora.name election.name %}">
-                                        {% trans "Stop voting period and publish results" %}</a>
-                                    </div>
-                                {% endif %}
-                            {% endif %}
-                        {% endblock %}
-
-                        {% if vote_from_user %}
-                            {% if vote_from_user.is_public %}
-                                <h3>{% trans "Your vote" %}</h3>
-                            {% endif %}
-
-                            {% if vote_from_user.is_direct %}
-                                {% if vote_from_user.is_public %}
-                                    {% blocktrans with question=vote_from_user.get_first_pretty_answer|getitem:'question' answer=vote_from_user.get_first_pretty_answer|getitem:'answer' %}
-                                    <p class="answer">You answered <strong>{{ answer }}</strong> to <em>{{ question }}</em></p>
-                                    {% endblocktrans %}
-                                {% endif %}
-                            {% elif vote_from_user.is_public %}
-                                {% with delegate=vote_from_user.get_delegate chained_answer=vote_from_user|get_chained_first_pretty_answer:election %}
-                                    {% if chained_answer %}
-                                        {% blocktrans with delegate_username=delegate.username question=chained_answer|getitem:'question' answer=chained_answer|getitem:'answer' %}
-                                        You delegated to <a href="{{delegate_url}}">{{delegate_username}}</a> who answered
-                                        <strong>{{ answer }}</strong> to <em>{{ question }}</em></p>
-                                        {% endblocktrans %}
-                                    {% else %}
-                                        {% blocktrans with delegate_username=delegate.username %}
-                                        You delegated to <a href="{{delegate_url}}">{{delegate_username}}</a> who didn't participate in this election yet.
-                                        {% endblocktrans %}
-                                    {% endif %}
-                                {% endwith %}
-                            {% else %}
-                                {% trans "You delegated your vote, and your vote is secret" %}
-                            {% endif %}
-
-                            {% if election.ballot_is_open and vote_from_user.is_direct %}
-                                <a class="btn" data-toggle="modal" href="#cancelVoteConfirmModalDialog">
-                                    {% trans "Cancel direct vote" %}
-                                </a>
-                                <div class="modal hide" id="cancelVoteConfirmModalDialog">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">×</button>
-                                        <h3>{% trans "Cancel vote?" %}</h3>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>{% trans "Do you really want to cancel your vote in this election?" %}</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
-                                        <a class="btn btn-danger action-form-link" href="{% url election-cancel-vote election.agora.creator.username election.agora.name election.name %}">{% trans "Cancel direct vote" %}</a>
-                                    </div>
-                                </div>
-                            {% endif %}
-
-                        {% endif%}
-
-                        {% if election.result_tallied_at_date %}
-                            <h3>{% trans "Results" %}
-                            </h3>
-                            {% for question in election.get_result_pretty %}
-                                <div class="election-results">
-                                    <h4>{{ question|getitem:'question' }}</h4>
-                                    <ul>
-                                        {% for answer in question|getitem:'answers' %}
-                                            <li>
-                                                {{ answer|getitem:'value' }} <em>({% blocktrans with count=answer|getitem:'total_count'|floatformat:"-2" %}{{ count }} votes{% endblocktrans %})</em>
-                                                <div class="progress progress-large progress-success">
-                                                    <div class="bar" style="width: {{ answer|getitem:'total_count_percentage'|unlocalize }}%">
-                                                    {{ answer|getitem:'total_count_percentage'|floatformat }}%
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            <h3>{% trans "Questions" %}</h3>
-                            {% for question in election.questions %}
-                                <div class="election-question">
-                                    <h4>{{ question|getitem:'question' }}</h4>
-                                    <ul>
-                                        {% for answer in question|getitem:'answers' %}
-                                            <li>
-                                                {{ answer|getitem:'value' }}
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                    </div>
-
-                    <div class="row-fluid social-icons">
-                        <div class="span12">
-                            <a href="https://twitter.com/share" class="twitter-share-button" data-text="{% blocktrans with electionname=election.pretty_name %}Participate in {{ electionname }}{% endblocktrans %}" data-lang="es" data-related="agoraciudadana">
-                                <img src="{{ STATIC_URL }}img/twitter-small-logo.png" alt="{% trans "Share on Twitter" %}" />
-                            </a>
-                            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-                            <!--<a href="{ % url share-agora-on-facebook agora.creator.username agora.name %}">
-                                <img src="{{ STATIC_URL }}img/facebook-small-logo.png" alt="{% trans "Share on Facebook" %}" />
-                            </a>-->
-                            <a href="http://identi.ca/index.php?action=newnotice&status_textarea={% blocktrans with electionname=election.pretty_name %}Participate in {{ electionname }} at Agora Ciudadana{% endblocktrans %}">
-                                <img src="{{ STATIC_URL }}img/identica-small-logo.png" alt="{% trans "Share on Identica" %}" />
-                            </a>
-                            <!--<a href="{ % url share-agora-on-googleplus agora.creator.username agora.name %}">
-                                <img src="{{ STATIC_URL }}img/googleplus-small-logo.png" alt="{% trans "Share on Google Plus" %}" />
-                            </a>-->
+                {% else %}
+                    <h3>{% trans "Questions" %}</h3>
+                    {% for question in election.questions %}
+                        <div class="election-question">
+                            <h4>{{ question|getitem:'question' }}</h4>
+                            <ul>
+                                {% for answer in question|getitem:'answers' %}
+                                    <li>
+                                        {{ answer|getitem:'value' }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         </div>
-                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="row-fluid social-icons">
+                <div class="span12">
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-text="{% blocktrans with electionname=election.pretty_name %}Participate in {{ electionname }}{% endblocktrans %}" data-lang="es" data-related="agoraciudadana">
+                        <img src="{{ STATIC_URL }}img/twitter-small-logo.png" alt="{% trans "Share on Twitter" %}" />
+                    </a>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                    <!--<a href="{ % url share-agora-on-facebook agora.creator.username agora.name %}">
+                        <img src="{{ STATIC_URL }}img/facebook-small-logo.png" alt="{% trans "Share on Facebook" %}" />
+                    </a>-->
+                    <a href="http://identi.ca/index.php?action=newnotice&status_textarea={% blocktrans with electionname=election.pretty_name %}Participate in {{ electionname }} at Agora Ciudadana{% endblocktrans %}">
+                        <img src="{{ STATIC_URL }}img/identica-small-logo.png" alt="{% trans "Share on Identica" %}" />
+                    </a>
+                    <!--<a href="{ % url share-agora-on-googleplus agora.creator.username agora.name %}">
+                        <img src="{{ STATIC_URL }}img/googleplus-small-logo.png" alt="{% trans "Share on Google Plus" %}" />
+                    </a>-->
                 </div>
             </div>
         </div>
+    </div>
+</div>
 {% endblock %}
 
+{% block script-block %}
+{% endblock %}

@@ -3,50 +3,48 @@
 {% load endless %}
 {% load agora_utils %}
 
-{% block script-block %}
-    <script src="{{ STATIC_URL }}js/endless_pagination/endless.js" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ STATIC_URL }}js/endless_pagination/endless_on_scroll.js" type="text/javascript" charset="utf-8"></script>
 
-    <script type="text/javascript" charset="utf-8">
-        var endless_on_scroll_margin = 300;
-    </script>
-{% endblock %}
-
+{% block content-wrapper-class %}search{% endblock %}
 {% block running-board-wrapper-class %}search{% endblock %}
 
-{% block running-board  %}
-    <div class="row search">
-        <div class="span8 agora-left-side">
-            <h3>{% trans "Search" %}</h3>
-            <h4>
-            {% if query %}
-                {% blocktrans %}{{ num_results }} matches for '{{ query }}'{% endblocktrans %}
-            {% else %}
-                {% blocktrans %}{{ num_results }} matches{% endblocktrans %}
-            {% endif %}
-            </h4>
-        </div>
+{% block running-board %}
+<div class="row search">
+    <div class="span8 agora-left-side">
+        <h3>{% trans "Search" %}</h3>
+        <h4>
+        {% if query %}
+            {% blocktrans %}{{ num_results }} matches for '{{ query }}'{% endblocktrans %}
+        {% else %}
+            {% blocktrans %}{{ num_results }} matches{% endblocktrans %}
+        {% endif %}
+        </h4>
     </div>
+</div>
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="span8 agora-left-side">
-            {% paginate object_list %}
-            {% for result in object_list %}
-                {% if query %}
-                    {% with result=result.object %}
-                        {% include "search/search_item.html" %}
-                    {% endwith %}
-                {% else %}
+<div class="row">
+    <div class="span8 agora-left-side">
+        <div class="activity-list" id="activity-list" data-endless-smargin="300">
+        {% paginate 2 object_list %}
+        {% for result in object_list %}
+            {% if query %}
+                {% with result=result.object %}
                     {% include "search/search_item.html" %}
-                {% endif %}
-            {% empty %}
-                <p>{% trans "No search results found." %}</p>
-            {% endfor %}
-            {% show_more %}
-        </div>
-        <div class="span4 agora-right-side">
+                {% endwith %}
+            {% else %}
+                {% include "search/search_item.html" %}
+            {% endif %}
+        {% empty %}
+            <p>{% trans "No search results found." %}</p>
+        {% endfor %}
+        {% show_more %}
         </div>
     </div>
+    <div class="span4 agora-right-side"></div>
+</div>
+{% endblock %}
+
+{% block script-block %}
+<script>app.currentView = new Agora.GenericSearchView();</script>
 {% endblock %}
