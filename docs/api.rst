@@ -37,6 +37,17 @@ user token is returned, and you must supply it in the Authorization header in al
     # Format is ''Authorization: ApiKey <username>:<api_key>''
     Authorization: ApiKey daniel:204db7bcfafb2deb7506b89eb3b9b715b09905c8
 
+**Status reporting**
+
+API calls use the standard HTTP codes for status reporting (200 OK, 404 Not Found, 403 Forbidden, etc.). In case of
+error, the returned data may have fields with additional info (see each individual call for more explanations).
+
+Lists, Pagination and filtering
+===============================
+
+When a list of resources is needed, Agora API always paginates the results. One can set a specific offset and limit the number of items. Also some listings allow filtering by some fields, for example a list of users might filter by username.
+
+Filter fields sometimes are said to support django field lookups. In this case if this happens when filtering by username, you can also do a more advanced filtering by filtering only usernames that start with a given string with `username__startswith` parameter. See the different django field lookups available in https://docs.djangoproject.com/en/dev/ref/models/querysets/
 
 Resource: Agora
 ===============
@@ -47,6 +58,7 @@ Resource: Agora
 
    :query offset: offset number. default is 0
    :query limit: limit number. default is 20
+   :query name: filter by `name` of the agora. It allows all django filter types.
    :statuscode 200 OK: no error
 
    **Example request**:
@@ -183,19 +195,73 @@ Resource: Agora
        ]
     }
 
+.. http:get:: /agora/(int:agora_id)
+
+   Retrieves an agora (`agora_id`).
+
+   :param agora_id: agora's unique id
+   :type agora_id: int
+   :status 200 OK: when agora is retrieved correctly
+   :status 404 NOT FOUND: when the agora is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/agora/5/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "archived_at_date": null,
+        "biography": "",
+        "comments_policy": "ANYONE_CAN_COMMENT",
+        "created_at_date": "2012-12-02T16:35:52.110729",
+        "creator":
+        {
+            "date_joined": "2012-06-14T14:13:48.850044",
+            "first_name": "",
+            "id": 1,
+            "is_active": true,
+            "last_login": "2012-12-16T18:06:25.185835",
+            "last_name": "",
+            "username": "admin"
+        },
+        "election_type": "ONCE_CHOICE",
+        "eligibility": "",
+        "extra_data": "",
+        "id": 5,
+        "image_url": "",
+        "is_vote_secret": true,
+        "membership_policy": "ANYONE_CAN_JOIN",
+        "name": "agora-name",
+        "pretty_name": "agora name",
+        "short_description": "some fancydescription"
+    }
 
 .. http:post:: /agora/
 
-   Create a new agora. Requires authentication.
+   Create a new agora. Requires agora creation permissions.
+
+   Agora creation permissions are specified in ``settings.py`` with the
+   ``AGORA_CREATION_PERMISSIONS`` setting. By default it's set to ``any-user``
+   which means any authenticated user can create a new agora. But it can also
+   be set to ``superusers-only`` which means only site admins can create new
+   agoras.
 
    :form pretty_name: readable agora name. Required.
    :form short_description: short description text. Required.
    :form is_vote_secret: whether the vote is secret in this agora. Optional. False by default.
-   :form biography: longer description text. Optional. Empty by default.
-   :form membership_policy: membership policy. Optional. Possible values are: ``ANYONE_CAN_JOIN``, ``JOINING_REQUIRES_ADMINS_APPROVAL_ANY_DELEGATE``, ``JOINING_REQUIRES_ADMINS_APPROVAL``. ``ANYONE_CAN_JOIN`` by default.
-   :form comments_policy: comments policy. Optional. Possible values are: ``ANYONE_CAN_COMMENT``, ``ONLY_MEMBERS_CAN_COMMENT``, ``ONLY_ADMINS_CAN_COMMENT``, ``NO_COMMENTS``. ``ANYONE_CAN_COMMENT`` by default.
    :status 201 CREATED: when agora is created correctly
-   :status 403 FORBIDDEN: when the user is not authenticated
+   :status 403 FORBIDDEN: when the user has no agora creation permissions
    :status 400 BAD REQUEST: when the form parameters are invalid
 
    **Example request**:
@@ -217,6 +283,79 @@ Resource: Agora
    .. sourcecode:: http
 
     HTTP/1.1 201 CREATED
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "archived_at_date": null,
+        "biography": "",
+        "comments_policy": "ANYONE_CAN_COMMENT",
+        "created_at_date": "2012-12-02T16:35:52.110729",
+        "creator":
+        {
+            "date_joined": "2012-06-14T14:13:48.850044",
+            "first_name": "",
+            "id": 1,
+            "is_active": true,
+            "last_login": "2012-12-16T18:06:25.185835",
+            "last_name": "",
+            "username": "admin"
+        },
+        "election_type": "ONCE_CHOICE",
+        "eligibility": "",
+        "extra_data": "",
+        "id": 5,
+        "image_url": "",
+        "is_vote_secret": true,
+        "membership_policy": "ANYONE_CAN_JOIN",
+        "name": "agora-name",
+        "pretty_name": "agora name",
+        "short_description": "some fancydescription"
+    }
+
+.. http:delete:: /agora/(int:agora_id)
+
+   Deletes the agora (`agora_id`). Requires to be authentication with the user
+   that created that agora.
+
+   :param agora_id: agora's unique id
+   :type agora_id: int
+   :statuscode 204 HTTP_NO_CONTENT: agora was deleted
+   :status 403 FORBIDDEN: when the user has no agora delete permissions
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    DELETE /api/v1/agora/39/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 204 NO CONTENT
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+   .. sourcecode:: http
+
+    PUT /api/v1/agora/5/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+    {
+        "pretty_name": "agora name",
+        "short_description": "some fancydescription",
+        "is_vote_secret": true
+    }
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 202 ACCEPTED
     Vary: Accept, Accept-Language, Cookie
     Content-Type: application/json; charset=utf-8
 
