@@ -1,0 +1,157 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>API &mdash; agora-ciudadana 2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="agora-ciudadana 2.0 documentation" href="index.html" />
+    <link rel="prev" title="Welcome to agora-ciudadana’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to agora-ciudadana’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">agora-ciudadana 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<p>Agora ciudadana exports an API REST with full access to the data model and user actions.</p>
+<div class="section" id="format">
+<h2>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
+<p>Access to /api/v1/xxxx to use the API resources, using the corresponding HTTP methods (GET, POST, PUT, DELETE...).</p>
+<p>Requests and answers may use any of the standard formats: xml, json or yaml. The format may be specified via &#8220;Accept&#8221;
+HTTP headers or with ?format=json (or xml or yaml) parameter in the URL.</p>
+</div>
+<div class="section" id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
+<p>The API accepts two modes of authentication:</p>
+<p><strong>Session authentication</strong></p>
+<p>The session cookie used in the normal login is accepted and identifies the user that is using the API. This is useful
+mainly for the javascript embedded in the own Agora pages.</p>
+<p><strong>Token authentication</strong></p>
+<p>For access the API with an external application, you need the token auth. When you call the login API function, the
+user token is returned, and you must supply it in the Authorization header in all next HTTP calls:</p>
+<div class="highlight-console"><div class="highlight"><pre><span class="gp">#</span> As a header
+<span class="gp">#</span> Format is <span class="s1">&#39;&#39;</span>Authorization: ApiKey &lt;username&gt;:&lt;api_key&gt;<span class="s1">&#39;&#39;</span>
+<span class="go">Authorization: ApiKey daniel:204db7bcfafb2deb7506b89eb3b9b715b09905c8</span>
+</pre></div>
+</div>
+<p><strong>Status reporting</strong></p>
+<p>API calls use the standard HTTP codes for status reporting (200 OK, 404 Not Found, 403 Forbidden, etc.). In case of
+error, the returned data may have fields with additional info (see each individual call for more explanations).</p>
+<div class="section" id="login">
+<h3>1 Login<a class="headerlink" href="#login" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Descripción: autentica al usuario</li>
+<li>URL: /front/login/</li>
+<li>Método: POST</li>
+<li>Formato de petición:</li>
+</ul>
+<div class="highlight-console"><div class="highlight"><pre><span class="go">{username:&quot;XXXXXXXX&quot;, password:&quot;YYYYYYY&quot;}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Ejemplo de respuesta:</li>
+</ul>
+<div class="highlight-console"><div class="highlight"><pre><span class="go">{success, auth_token: &quot;XXXXXXXXXXXXXXXXXX&quot;}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">API</a><ul>
+<li><a class="reference internal" href="#format">Format</a></li>
+<li><a class="reference internal" href="#authentication">Authentication</a><ul>
+<li><a class="reference internal" href="#login">1 Login</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to agora-ciudadana&#8217;s documentation!</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/api.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to agora-ciudadana’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">agora-ciudadana 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Agora Ciudadana.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
