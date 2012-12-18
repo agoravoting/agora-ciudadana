@@ -159,3 +159,15 @@ class UserTest(RootTestCase):
         data = self.getAndParse('user/username_available/?username=asdasd')
         data = self.getAndParse('user/username_available/?username=david',
             code=HTTP_BAD_REQUEST);
+
+    def test_agoras(self):
+        # not logged in, needs to be logged in to get agoras
+        self.get('user/agoras/', code=HTTP_FORBIDDEN)
+
+        self.login('david', 'david')
+        data = self.getAndParse('user/agoras/')
+        self.assertEqual(len(data["objects"]), 2)
+
+        self.login('user1', '123')
+        data = self.getAndParse('user/agoras/')
+        self.assertEqual(len(data["objects"]), 0)
