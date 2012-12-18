@@ -170,13 +170,14 @@ class Agora(models.Model):
 
     def active_delegates(self):
         '''
-        Returns the QuerySet with the active delegates
+        Returns active delegates of this agora: users that have emitted any valid
+        and public vote in any election of this agora.
         '''
 
         from agora_site.agora_core.models import CastVote
 
         return User.objects.filter(
-            id__in=CastVote.objects.filter(is_counted=True, is_direct=True,
+            id__in=CastVote.objects.filter(is_counted=True, is_direct=True, is_public=True,
                 invalidated_at_date=None, election__agora__id=self.id).values('id').query)
 
     def active_nonmembers_delegates(self):
@@ -188,7 +189,7 @@ class Agora(models.Model):
         from agora_site.agora_core.models import CastVote
 
         return User.objects.filter(
-            id__in=CastVote.objects.filter(is_counted=True, is_direct=True,
+            id__in=CastVote.objects.filter(is_counted=True, is_direct=True, is_public=True,
                 invalidated_at_date=None, election__agora__id=self.id)
             )\
             .exclude(id__in=self.members.values('id').query)
