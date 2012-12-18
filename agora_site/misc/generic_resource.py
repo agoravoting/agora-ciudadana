@@ -2,9 +2,11 @@
 from simplejson.decoder import JSONDecodeError
 
 from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator, InvalidPage
+from django.http import Http404
 from django.template import RequestContext
 from django.utils import simplejson
+from django.views.decorators.csrf import csrf_exempt
 
 from tastypie.authorization import Authorization
 from tastypie.resources import ModelResource
@@ -106,40 +108,38 @@ class GenericResource(ModelResource):
 
         return wrapper
 
-    def get_custom_list(self, request, list_url, queryset, kwargs):
+    def get_custom_list(self, request, queryset, items_per_page=20):
         '''
-        Generic function to list some object actions
+        Generic function to paginate a queryset with a set of items per page.
         '''
         self.method_check(request, allowed=['get'])
         self.throttle_check(request)
-        self.list_url = list_url
-        self.queryset = queryset
 
-        # Call to this generic internal tastypie function that does all the
-        # heavy duty work
-        out = self.get_list(request, **kwargs)
-        delattr(self, 'list_url')
-        delattr(self, 'queryset')
+        # Do the query.
+        paginator = Paginator(queryset, items_per_page)
 
-        return out
+        try:
+            page = paginator.page(int(request.GET.get('page', 1)))
+        except InvalidPage:
+            raise Http404("Sorry, no results on that page.")
 
-    def get_object_list(self, request):
-        '''
-        Called by get_list, see get_custom_list
-        '''
-        if not hasattr(self, 'queryset'):
-            return self.Meta.queryset
-        else:
-            return self.queryset
+        objects = []
 
-    def get_resource_list_uri(self):
-        '''
-        Generates the URI for the resource list
-        '''
-        if hasattr(self, 'list_url'):
-            return self.list_url
-        else:
-            return super(GenericResource, self).get_resource_list_uri()
+        for result in page.object_list:
+            bundle = self.build_bundle(obj=result, request=request)
+            bundle = self.full_dehydrate(bundle)
+            objects.append(bundle)
+
+        object_list = {
+            "meta": {
+                "limit": items_per_page,
+                "total_count": queryset.count()
+            },
+            'objects': objects,
+        }
+
+        self.log_throttled_access(request)
+        return self.create_response(request, object_list)
 
 
 class GenericMeta:
