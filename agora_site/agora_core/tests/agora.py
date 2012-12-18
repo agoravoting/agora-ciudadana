@@ -18,6 +18,13 @@ class AgoraTest(RootTestCase):
         agoras = data['objects']
         self.assertEqual(len(agoras), 2)
 
+    def test_agora_url(self):
+        '''
+        Test that an agora has an url
+        '''
+        data = self.getAndParse('agora/1/')
+        self.assertEquals(data['url'], '/david/agoraone')
+
     def test_agora_find(self):
         # find
         data = self.getAndParse('agora/1/')

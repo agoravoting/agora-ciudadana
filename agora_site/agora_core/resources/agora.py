@@ -72,6 +72,7 @@ class AgoraValidation(Validation):
 
 class AgoraResource(GenericResource):
     creator = fields.ForeignKey(UserResource, 'creator', full=True)
+    url = fields.CharField()
 
     class Meta(GenericMeta):
         queryset = Agora.objects.all()
@@ -79,6 +80,11 @@ class AgoraResource(GenericResource):
         detail_allowed_methods = ['get', 'post', 'put', 'delete']
         validation = AgoraValidation()
         filtering = { "name": ALL, }
+
+    def dehydrate_url(self, bundle):
+        agora = bundle.obj
+        return reverse("agora-view",
+            kwargs=dict(username=agora.creator.username, agoraname=agora.name))
 
     @permission_required('create', check_static=Agora)
     def obj_create(self, bundle, request=None, **kwargs):
