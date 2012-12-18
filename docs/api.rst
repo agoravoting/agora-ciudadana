@@ -2,7 +2,7 @@
 API
 =======
 
-Agora ciudadana exports an API REST with full access to the data model and user actions.
+Agora ciudadana exports a REST API with full access to the data model and user actions.
 
 Format
 ======
@@ -25,7 +25,7 @@ mainly for the javascript embedded in the own Agora pages.
 
 **Token authentication**
 
-For access the API with an external application, you need the token auth. When you call the login API function, the
+For access the API with an external application, you need the auth token. When you call the login API function, the
 user token is returned, and you must supply it in the Authorization header in all next HTTP calls:
 
 .. code-block:: console
@@ -71,3 +71,76 @@ Resource: Agora
 
     {success, auth_token: "XXXXXXXXXXXXXXXXXX"}
 
+
+Resource: User
+==============
+
+ http:get:: /user/
+
+   List users
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /user/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+       "meta":
+       {
+           "limit": 20,
+           "next": null,
+           "offset": 0,
+           "previous": null,
+           "total_count": 3
+       },
+       "objects":
+       [
+           {
+               "date_joined": "2012-06-14T14:13:48.850044",
+               "first_name": "",
+               "id": 1,
+               "is_active": true,
+               "last_login": "2012-12-16T18:06:25.185835",
+               "last_name": "",
+               "username": "admin"
+           },
+           {
+               "date_joined": "2012-06-16T17:04:15.016445",
+               "first_name": "edulix",
+               "id": 2,
+               "is_active": true,
+               "last_login": "2012-12-16T18:08:04.271163",
+               "last_name": "Robles Elvira",
+               "username": "edulix"
+           },
+           {
+               "date_joined": "2012-09-05T17:45:32.215085",
+               "first_name": "Maria Robles",
+               "id": 3,
+               "is_active": true,
+               "last_login": "2012-10-07T15:38:16.076439",
+               "last_name": "",
+               "username": "user1"
+           }
+       ]
+    }
+
+   :query offset: offset number. default is 0
+   :query limit: limit number. default is 20
+   :statuscode 200: no error
+
+
+
+Resource: Election
+==================
