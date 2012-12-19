@@ -40,6 +40,7 @@ class TinyUserResource(GenericResource):
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_profile().get_mugshot_url()
 
+
 class TinyProfileResource(GenericResource):
     '''
     Tiny Resource representing profiles.
@@ -54,6 +55,9 @@ class TinyProfileResource(GenericResource):
     user_id = fields.IntegerField()
     url = fields.CharField()
     mugshot_url = fields.CharField()
+    full_name = fields.CharField()
+    num_agoras = fields.IntegerField()
+    num_votes = fields.IntegerField()
 
     class Meta(GenericMeta):
         queryset = Profile.objects.all()
@@ -74,6 +78,14 @@ class TinyProfileResource(GenericResource):
 
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_mugshot_url()
+    def dehydrate_full_name(self, bundle):
+        return bundle.obj.user.get_full_name()
+
+    def dehydrate_num_agoras(self, bundle):
+        return bundle.obj.user.agoras.count()
+
+    def dehydrate_num_votes(self, bundle):
+        return bundle.obj.count_direct_votes()
 
 
 class UserResource(GenericResource):

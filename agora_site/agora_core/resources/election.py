@@ -25,9 +25,9 @@ class TinyElectionResource(GenericResource):
     '''
 
     content_type = fields.CharField(default="election")
+    agora = fields.ForeignKey(TinyAgoraResource, 'agora', full=True)
     url = fields.CharField()
     mugshot_url = fields.CharField()
-    agora = fields.ForeignKey(TinyAgoraResource, 'agora', full=True)
 
     class Meta(GenericMeta):
         queryset = Election.objects.all()
@@ -36,11 +36,9 @@ class TinyElectionResource(GenericResource):
     def dehydrate_url(self, bundle):
         return bundle.obj.get_link()
 
-    def dehydrate_full_name(self, bundle):
-        return bundle.obj.get_full_name()
-
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_mugshot_url()
+
 
 class ElectionResource(GenericResource):
     '''
