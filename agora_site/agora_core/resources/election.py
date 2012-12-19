@@ -8,7 +8,7 @@ from agora_site.agora_core.models import Election
 from agora_site.agora_core.models import CastVote
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.agora_core.resources.user import UserResource
-from agora_site.agora_core.resources.agora import AgoraResource
+from agora_site.agora_core.resources.agora import AgoraResource, TinyAgoraResource
 from agora_site.agora_core.resources.castvote import CastVoteResource
 
 
@@ -26,6 +26,8 @@ class TinyElectionResource(GenericResource):
 
     content_type = fields.CharField(default="election")
     url = fields.CharField()
+    mugshot_url = fields.CharField()
+    agora = fields.ForeignKey(TinyAgoraResource, 'agora', full=True)
 
     class Meta(GenericMeta):
         queryset = Election.objects.all()
@@ -33,6 +35,12 @@ class TinyElectionResource(GenericResource):
 
     def dehydrate_url(self, bundle):
         return bundle.obj.get_link()
+
+    def dehydrate_full_name(self, bundle):
+        return bundle.obj.get_full_name()
+
+    def dehydrate_mugshot_url(self, bundle):
+        return bundle.obj.get_mugshot_url()
 
 class ElectionResource(GenericResource):
     '''
@@ -51,6 +59,8 @@ class ElectionResource(GenericResource):
 
     url = fields.CharField()
 
+    mugshot_url = fields.CharField()
+
     class Meta:
         queryset = Election.objects\
                     .exclude(url__startswith=DELEGATION_URL)\
@@ -63,6 +73,9 @@ class ElectionResource(GenericResource):
 
     def dehydrate_url(self, bundle):
         return bundle.obj.get_link()
+
+    def dehydrate_mugshot_url(self, bundle):
+        return bundle.obj.get_mugshot_url()
 
     def prepend_urls(self):
         return [

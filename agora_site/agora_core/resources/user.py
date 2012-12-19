@@ -27,6 +27,7 @@ class TinyUserResource(GenericResource):
 
     content_type = fields.CharField(default="user")
     url = fields.CharField()
+    mugshot_url = fields.CharField()
 
     class Meta(GenericMeta):
         queryset = User.objects.all()
@@ -35,6 +36,9 @@ class TinyUserResource(GenericResource):
     def dehydrate_url(self, bundle):
         return reverse("user-view",
             kwargs=dict(username=bundle.obj.username))
+
+    def dehydrate_mugshot_url(self, bundle):
+        return bundle.obj.get_profile().get_mugshot_url()
 
 class TinyProfileResource(GenericResource):
     '''
@@ -49,6 +53,7 @@ class TinyProfileResource(GenericResource):
     first_name = fields.CharField()
     user_id = fields.IntegerField()
     url = fields.CharField()
+    mugshot_url = fields.CharField()
 
     class Meta(GenericMeta):
         queryset = Profile.objects.all()
@@ -66,6 +71,9 @@ class TinyProfileResource(GenericResource):
     def dehydrate_url(self, bundle):
         return reverse("user-view",
             kwargs=dict(username=bundle.obj.user.username))
+
+    def dehydrate_mugshot_url(self, bundle):
+        return bundle.obj.get_mugshot_url()
 
 
 class UserResource(GenericResource):

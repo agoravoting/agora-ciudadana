@@ -61,6 +61,9 @@ class ActionResource(GenericResource):
         Election: TinyElectionResource,
     }, 'target', null=True, full=True)
 
+    # used to easily distinguish different kind of actions
+    type_name = fields.CharField()
+
     class Meta(GenericMeta):
         queryset = Action.objects.filter(public=True)
         filtering = {
@@ -71,8 +74,22 @@ class ActionResource(GenericResource):
         excludes = [
             "action_object_object_id",
             "actor_object_id",
-            "target_object_id"
+            "target_object_id",
+            "ipaddr"
         ]
+
+    def dehydrate_type_name(self, bundle):
+        if bundle.obj.action_object and bundle.obj.action_object_content_type.name == "election":
+            return "action_object_election"
+
+        elif bundle.obj.action_object and bundle.obj.action_object_content_type.name == "agora":
+            return "action_object_agora"
+
+        elif bundle.obj.target and bundle.obj.target_content_type.name == "agora":
+            return "target_agora"
+
+        else:
+            return "unknown"
 
     def prepend_urls(self):
         return [

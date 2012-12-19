@@ -48,6 +48,8 @@ class TinyAgoraResource(GenericResource):
 
     content_type = fields.CharField(default="agora")
     url = fields.CharField()
+    full_name = fields.CharField()
+    mugshot_url = fields.CharField()
 
     class Meta(GenericMeta):
         queryset = Agora.objects.all()
@@ -55,6 +57,12 @@ class TinyAgoraResource(GenericResource):
 
     def dehydrate_url(self, bundle):
         return bundle.obj.get_link()
+
+    def dehydrate_full_name(self, bundle):
+        return bundle.obj.get_full_name()
+
+    def dehydrate_mugshot_url(self, bundle):
+        return bundle.obj.get_mugshot_url()
 
 class CreateAgoraForm(ModelForm):
     '''
@@ -105,6 +113,8 @@ class AgoraResource(GenericResource):
     '''
     creator = fields.ForeignKey(UserResource, 'creator', full=True)
     url = fields.CharField()
+    full_name = fields.CharField()
+    mugshot_url = fields.CharField()
 
     class Meta(GenericMeta):
         queryset = Agora.objects.all()
@@ -115,6 +125,12 @@ class AgoraResource(GenericResource):
 
     def dehydrate_url(self, bundle):
         return bundle.obj.get_link()
+
+    def dehydrate_full_name(self, bundle):
+        return bundle.obj.get_full_name()
+
+    def dehydrate_mugshot_url(self, bundle):
+        return bundle.obj.get_mugshot_url()
 
     @permission_required('create', check_static=Agora)
     def obj_create(self, bundle, request=None, **kwargs):
