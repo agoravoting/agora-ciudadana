@@ -103,7 +103,7 @@ List Agoras
                    "last_name": "Robles Elvira",
                    "username": "edulix"
                },
-               "election_type": "ONCE_CHOICE",
+               "election_type": "ONE_CHOICE",
                "eligibility": "",
                "extra_data": "",
                "id": 2,
@@ -129,7 +129,7 @@ List Agoras
                    "last_name": "",
                    "username": "user10"
                },
-               "election_type": "ONCE_CHOICE",
+               "election_type": "ONE_CHOICE",
                "eligibility": "",
                "extra_data": "",
                "id": 3,
@@ -155,7 +155,7 @@ List Agoras
                    "last_name": "",
                    "username": "user20"
                },
-               "election_type": "ONCE_CHOICE",
+               "election_type": "ONE_CHOICE",
                "eligibility": "",
                "extra_data": "",
                "id": 4,
@@ -181,7 +181,7 @@ List Agoras
                    "last_name": "",
                    "username": "admin"
                },
-               "election_type": "ONCE_CHOICE",
+               "election_type": "ONE_CHOICE",
                "eligibility": "",
                "extra_data": "",
                "id": 5,
@@ -238,7 +238,7 @@ Retrieve an agora
             "last_name": "",
             "username": "admin"
         },
-        "election_type": "ONCE_CHOICE",
+        "election_type": "ONE_CHOICE",
         "eligibility": "",
         "extra_data": "",
         "id": 5,
@@ -307,7 +307,7 @@ Create a new agora
             "last_name": "",
             "username": "admin"
         },
-        "election_type": "ONCE_CHOICE",
+        "election_type": "ONE_CHOICE",
         "eligibility": "",
         "extra_data": "",
         "id": 5,
@@ -404,7 +404,7 @@ Modify agora
             "last_name": "",
             "username": "admin"
         },
-        "election_type": "ONCE_CHOICE",
+        "election_type": "ONE_CHOICE",
         "eligibility": "",
         "extra_data": "",
         "id": 5,
@@ -1144,7 +1144,7 @@ List current user agoras
                    "last_name": "Robles Elvira",
                    "username": "edulix"
                },
-               "election_type": "ONCE_CHOICE",
+               "election_type": "ONE_CHOICE",
                "eligibility": "",
                "extra_data": "",
                "id": 2,
@@ -1170,7 +1170,7 @@ List current user agoras
                    "last_name": "",
                    "username": "user10"
                },
-               "election_type": "ONCE_CHOICE",
+               "election_type": "ONE_CHOICE",
                "eligibility": "",
                "extra_data": "",
                "id": 3,
@@ -1196,7 +1196,7 @@ List current user agoras
                    "last_name": "",
                    "username": "user20"
                },
-               "election_type": "ONCE_CHOICE",
+               "election_type": "ONE_CHOICE",
                "eligibility": "",
                "extra_data": "",
                "id": 4,
@@ -1222,7 +1222,7 @@ List current user agoras
                    "last_name": "",
                    "username": "admin"
                },
-               "election_type": "ONCE_CHOICE",
+               "election_type": "ONE_CHOICE",
                "eligibility": "",
                "extra_data": "",
                "id": 5,
@@ -1287,7 +1287,7 @@ List elections this user can vote in
                "delegated_votes_frozen_at_date": null,
                "delegated_votes_result": "",
                "description": "blah",
-               "election_type": "ONCE_CHOICE",
+               "election_type": "ONE_CHOICE",
                "electorate":
                [
                ],
