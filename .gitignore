@@ -9,3 +9,4 @@ agora_site/whoosh_index/*
 celerybeat-schedule
 djcelery.schedulers.DatabaseScheduler
 docs/_build/
+agora_site/media/data/
