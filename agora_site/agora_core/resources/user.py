@@ -34,7 +34,7 @@ class UserResource(GenericResource):
     '''
 
     class Meta(GenericMeta):
-        queryset = User.objects.filter(id__gt=0)
+        queryset = User.objects.filter(id__gt=-1)
         list_allowed_methods = ['get']
         detail_allowed_methods = ['get', 'put']
         excludes = ['password', 'is_staff', 'is_superuser', 'email']
