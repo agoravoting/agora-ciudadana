@@ -15,7 +15,25 @@ from agora_site.agora_core.resources.castvote import CastVoteResource
 DELEGATION_URL = "http://example.com/delegation/has/no/url/"
 CAST_VOTE_RESOURCE = 'agora_site.agora_core.resources.castvote.CastVoteResource'
 
+
+class TinyElectionResource(GenericResource):
+    '''
+    Tiny Resource representing elections.
+
+    Typically used to include the critical election information in other
+    resources, as in ActionResource for example.
+    '''
+
+    content_type = fields.CharField(default="election")
+    class Meta(GenericMeta):
+        queryset = Election.objects.all()
+        fields = ['name', 'pretty_name', 'id', 'short_description']
+
 class ElectionResource(GenericResource):
+    '''
+    Resource representing elections.
+    '''
+
     creator = fields.ForeignKey(UserResource, 'creator')
 
     electorate = fields.ManyToManyField(UserResource, 'electorate')
