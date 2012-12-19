@@ -17,7 +17,7 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, 
 from tastypie.utils.mime import build_content_type
 
 
-class GenericResource(ModelResource):
+class GenericResourceMixin:
     def deserialize_post_data(self, request):
         '''
         Useful for get deserialized data
@@ -144,6 +144,9 @@ class GenericResource(ModelResource):
 
         self.log_throttled_access(request)
         return self.create_response(request, page)
+
+class GenericResource(ModelResource, GenericResourceMixin):
+    pass
 
 
 class GenericMeta:

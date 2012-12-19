@@ -25,9 +25,14 @@ class TinyElectionResource(GenericResource):
     '''
 
     content_type = fields.CharField(default="election")
+    url = fields.CharField()
+
     class Meta(GenericMeta):
         queryset = Election.objects.all()
         fields = ['name', 'pretty_name', 'id', 'short_description']
+
+    def dehydrate_url(self, bundle):
+        return bundle.obj.get_link()
 
 class ElectionResource(GenericResource):
     '''
@@ -44,6 +49,8 @@ class ElectionResource(GenericResource):
 
     percentage_of_participation = fields.IntegerField()
 
+    url = fields.CharField()
+
     class Meta:
         queryset = Election.objects\
                     .exclude(url__startswith=DELEGATION_URL)\
@@ -53,6 +60,9 @@ class ElectionResource(GenericResource):
         detail_allowed_methods = ['get']
 
         excludes = ['PROHIBITED_ELECTION_NAMES']
+
+    def dehydrate_url(self, bundle):
+        return bundle.obj.get_link()
 
     def prepend_urls(self):
         return [

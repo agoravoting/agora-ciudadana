@@ -5,6 +5,7 @@ import simplejson
 
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
 from django.template.defaultfilters import slugify
@@ -36,6 +37,11 @@ class Election(models.Model):
 
     def task_id(self, task):
         return "election_task_" + str(self.id) + task.name
+
+    def get_link(self):
+        return reverse("election-view",
+            kwargs=dict(username=self.agora.creator.username,
+                agoraname=self.agora.name, electionname=self.name))
 
     def get_serializable_data(self):
         data = {
