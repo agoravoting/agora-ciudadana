@@ -23,8 +23,8 @@ class UserTest(RootTestCase):
         # all
         data = self.getAndParse('user/')
         users = data['objects']
-        # 7 = 5 test users, + admin + anonymous
-        self.assertEqual(len(users), 7)
+        # 6 = 5 test users + admin
+        self.assertEqual(len(users), 6)
 
         # find
         data = self.getAndParse('user/0/')
