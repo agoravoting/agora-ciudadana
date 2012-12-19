@@ -47,10 +47,14 @@ class TinyAgoraResource(GenericResource):
     '''
 
     content_type = fields.CharField(default="agora")
+    url = fields.CharField()
 
     class Meta(GenericMeta):
         queryset = Agora.objects.all()
         fields = ['name', 'pretty_name', 'id', 'short_description']
+
+    def dehydrate_url(self, bundle):
+        return bundle.obj.get_link()
 
 class CreateAgoraForm(ModelForm):
     '''
@@ -110,9 +114,7 @@ class AgoraResource(GenericResource):
         filtering = { "name": ALL, }
 
     def dehydrate_url(self, bundle):
-        agora = bundle.obj
-        return reverse("agora-view",
-            kwargs=dict(username=agora.creator.username, agoraname=agora.name))
+        return bundle.obj.get_link()
 
     @permission_required('create', check_static=Agora)
     def obj_create(self, bundle, request=None, **kwargs):
@@ -129,8 +131,7 @@ class AgoraResource(GenericResource):
                       is_vote_secret=is_vote_secret)
         agora.create_name(request.user)
         agora.creator = request.user
-        agora.url = request.build_absolute_uri(reverse('agora-view',
-            kwargs=dict(username=agora.creator.username, agoraname=agora.name)))
+        agora.url = request.build_absolute_uri(agora.get_link())
 
         # we need to save before add members
         agora.save()

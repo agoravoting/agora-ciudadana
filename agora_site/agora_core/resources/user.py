@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.conf.urls.defaults import url
+from django.core.urlresolvers import reverse
 from django.contrib.auth import forms as auth_forms
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout as auth_logout
@@ -13,6 +14,7 @@ from userena import forms as userena_forms
 
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.agora_core.forms.user import *
+from agora_site.agora_core.models import Profile
 
 
 class TinyUserResource(GenericResource):
@@ -24,20 +26,62 @@ class TinyUserResource(GenericResource):
     '''
 
     content_type = fields.CharField(default="user")
+    url = fields.CharField()
+
     class Meta(GenericMeta):
         queryset = User.objects.all()
         fields = ["username", "first_name", "id"]
+
+    def dehydrate_url(self, bundle):
+        return reverse("user-view",
+            kwargs=dict(username=bundle.obj.username))
+
+class TinyProfileResource(GenericResource):
+    '''
+    Tiny Resource representing profiles.
+
+    Typically used to include the critical user information in other
+    resources, as in ActionResource for example.
+    '''
+
+    content_type = fields.CharField()
+    username = fields.CharField()
+    user_id = fields.IntegerField()
+    url = fields.CharField()
+
+    class Meta(GenericMeta):
+        queryset = Profile.objects.all()
+        fields = ["id"]
+
+    def dehydrate_first_name(self, bundle):
+        return bundle.obj.user.first_name
+
+    def dehydrate_first_name(self, bundle):
+        return bundle.obj.user.first_name
+
+    def dehydrate_user_id(self, bundle):
+        return bundle.obj.user.id
+
+    def dehydrate_url(self, bundle):
+        return reverse("user-view",
+            kwargs=dict(username=bundle.obj.user.username))
+
 
 class UserResource(GenericResource):
     '''
     Resource representing users.
     '''
+    url = fields.CharField()
 
     class Meta(GenericMeta):
         queryset = User.objects.filter(id__gt=-1)
         list_allowed_methods = ['get']
         detail_allowed_methods = ['get', 'put']
         excludes = ['password', 'is_staff', 'is_superuser', 'email']
+
+    def dehydrate_url(self, bundle):
+        return reverse("user-view",
+            kwargs=dict(username=bundle.obj.username))
 
     def prepend_urls(self):
         return [
