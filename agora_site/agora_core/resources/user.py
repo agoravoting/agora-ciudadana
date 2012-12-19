@@ -44,8 +44,9 @@ class TinyProfileResource(GenericResource):
     resources, as in ActionResource for example.
     '''
 
-    content_type = fields.CharField()
+    content_type = fields.CharField(default="profile")
     username = fields.CharField()
+    first_name = fields.CharField()
     user_id = fields.IntegerField()
     url = fields.CharField()
 
@@ -53,8 +54,8 @@ class TinyProfileResource(GenericResource):
         queryset = Profile.objects.all()
         fields = ["id"]
 
-    def dehydrate_first_name(self, bundle):
-        return bundle.obj.user.first_name
+    def dehydrate_username(self, bundle):
+        return bundle.obj.user.username
 
     def dehydrate_first_name(self, bundle):
         return bundle.obj.user.first_name

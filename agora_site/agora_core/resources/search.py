@@ -19,8 +19,13 @@ from agora_site.agora_core.resources.user import TinyProfileResource
 
 class SearchResource(GenericResourceMixin, Resource):
     '''
-    Resource representing users.
+    Resource used for general search, internally uses Haystack.
+
+    It allows searching using the GET param "q". I.e. /search/?q=foobar
+
+    Loosely based on http://django-tastypie.readthedocs.org/en/latest/non_orm_data_sources.html
     '''
+
     obj = GenericForeignKeyField({
         Agora: TinyAgoraResource,
         Election: TinyElectionResource,
@@ -33,8 +38,14 @@ class SearchResource(GenericResourceMixin, Resource):
 
 
     def detail_uri_kwargs(self, bundle_or_obj):
+        '''
+        processes kwargs for detail uris. TastyPie's Resource class requires
+        an implementation of this function to work.
+        '''
         kwargs = {}
 
+        # We save object id in kwargs so that def obj_get can use it, as in
+        # tastypie documentation example
         if isinstance(bundle_or_obj, Bundle):
             kwargs['id'] = bundle_or_obj.obj.object.id
         else:
@@ -43,9 +54,16 @@ class SearchResource(GenericResourceMixin, Resource):
         return kwargs
 
     def get_object_list(self, request):
+        '''
+        By default search lists all objects in haystack
+        '''
         return SearchQuerySet()
 
     def obj_get_list(self, request=None, **kwargs):
+        '''
+        Returns a filtered object lists. Allows filtering using a query string
+        using the GET param "q"
+        '''
         query = request.GET.get("q", None)
         if query:
             return SearchQuerySet().auto_query(query)
@@ -53,4 +71,7 @@ class SearchResource(GenericResourceMixin, Resource):
         return self.get_object_list(request)
 
     def obj_get(self, request=None, **kwargs):
+        '''
+        Retrieves a detailed search item
+        '''
         return SearchQuerySet().filter(id=kwargs['id'])[0]

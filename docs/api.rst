@@ -1327,7 +1327,138 @@ List elections this user can vote in
 
 
 
-Resource: Election
-==================
+Resource: Search
+================
+
+This resource allows searches, using Haystack
+
+
+.. http:get:: /search/
+
+   Searches objects using haystack. It can return agoras, elections and profiles.
+
+   :query offset: offset number. default is 0
+   :query limit: limit number. default is 20
+   :query q: search string, not required
+   :statuscode 200 OK: no error
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/search/?q=vota HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+       "meta":
+       {
+           "limit": 20,
+           "next": null,
+           "offset": 0,
+           "previous": null,
+           "total_count": 8
+       },
+       "objects":
+       [
+           {
+               "obj":
+               {
+                   "content_type": "profile",
+                   "first_name": "edulix",
+                   "id": 3,
+                   "url": "/user/edulix",
+                   "user_id": 2,
+                   "username": "edulix"
+               }
+           },
+           {
+               "obj":
+               {
+                   "content_type": "election",
+                   "id": 23,
+                   "name": "me-aprobara-rock-neurotico-esta-votacion",
+                   "pretty_name": "¿Me aprobará rock neurótico ésta votación?",
+                   "short_description": "aaaaaa",
+                   "url": "/edulix/blahblah/election/me-aprobara-rock-neurotico-esta-votacion"
+               }
+           },
+           {
+               "obj":
+               {
+                   "content_type": "profile",
+                   "first_name": "",
+                   "id": 1,
+                   "url": "/user/admin",
+                   "user_id": 1,
+                   "username": "admin"
+               }
+           },
+           {
+               "obj":
+               {
+                   "content_type": "agora",
+                   "id": 2,
+                   "name": "blahblah",
+                   "pretty_name": " blahblah",
+                   "short_description": "blahblah",
+                   "url": "/edulix/blahblah"
+               }
+           },
+           {
+               "obj":
+               {
+                   "content_type": "profile",
+                   "first_name": "probando1",
+                   "id": 55,
+                   "url": "/user/probando1",
+                   "user_id": 54,
+                   "username": "probando1"
+               }
+           },
+           {
+               "obj":
+               {
+                   "content_type": "profile",
+                   "first_name": "probando2",
+                   "id": 56,
+                   "url": "/user/probando2",
+                   "user_id": 55,
+                   "username": "probando2"
+               }
+           },
+           {
+               "obj":
+               {
+                   "content_type": "profile",
+                   "first_name": "probando3",
+                   "id": 57,
+                   "url": "/user/probando3",
+                   "user_id": 56,
+                   "username": "probando3"
+               }
+           },
+           {
+               "obj":
+               {
+                   "content_type": "election",
+                   "id": 4,
+                   "name": "delegation",
+                   "pretty_name": "",
+                   "short_description": "voting used for delegation",
+                   "url": "/edulix/blahblah/election/delegation"
+               }
+           }
+       ]
+    }
+
 
 
