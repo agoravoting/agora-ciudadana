@@ -24,24 +24,30 @@ admin.autodiscover()
 from dajaxice.core import dajaxice_autodiscover, dajaxice_config
 dajaxice_autodiscover()
 
+
+js_info_dict = {
+    'packages': ('agora_site',)
+}
+
 urlpatterns = patterns('',
     # Uncomment the admin/doc line below to enable admin documentation:
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
-    
+
     # dajaxice ajax endpoint urls
     url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
 
     (r'^accounts/', include('agora_site.accounts.urls')),
 
     (r'^comments/', include('django.contrib.comments.urls')),
+    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
+
 
     (r'', include('social_auth.urls')),
 
     (r'', include('agora_site.agora_core.urls')),
 )
 
-if settings.DEBUG == True:
-    urlpatterns += staticfiles_urlpatterns()
+urlpatterns += staticfiles_urlpatterns()

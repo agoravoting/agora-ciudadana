@@ -1,3 +1,9 @@
+if (window.gettext === undefined) {
+    window.gettext = function(text) {
+        return text;
+    };
+}
+
 (function() {
     var Agora = this.Agora = {};
     var app = this.app = {};
