@@ -15,7 +15,24 @@ from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.agora_core.forms.user import *
 
 
+class TinyUserResource(GenericResource):
+    '''
+    Tiny Resource representing users.
+
+    Typically used to include the critical user information in other
+    resources, as in ActionResource for example.
+    '''
+
+    content_type = fields.CharField(default="user")
+    class Meta(GenericMeta):
+        queryset = User.objects.all()
+        fields = ["username", "first_name", "id"]
+
 class UserResource(GenericResource):
+    '''
+    Resource representing users.
+    '''
+
     class Meta(GenericMeta):
         queryset = User.objects.filter(id__gt=0)
         list_allowed_methods = ['get']

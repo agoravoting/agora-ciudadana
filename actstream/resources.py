@@ -18,6 +18,9 @@ from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.misc.decorators import permission_required
 from agora_site.agora_core.models import Agora, Election
 from agora_site.agora_core.forms import PostCommentForm
+from agora_site.agora_core.resources.agora import TinyAgoraResource
+from agora_site.agora_core.resources.election import TinyElectionResource
+from agora_site.agora_core.resources.user import TinyUserResource
 
 
 class FollowResource(GenericResource):
@@ -25,34 +28,23 @@ class FollowResource(GenericResource):
         queryset = Follow.objects.all()
 
 
-class TinyUserResource(GenericResource):
-    content_type = fields.CharField(default="user")
-    class Meta(GenericMeta):
-        queryset = User.objects.all()
-        fields = ["username", "first_name", "id"]
-
 class TinyCommentResource(GenericResource):
+    '''
+    Tiny Resource representing comments.
+
+    Typically used to include the critical comment information in other
+    resources, as in ActionResource for example.
+    '''
     content_type = fields.CharField(default="comment")
     class Meta(GenericMeta):
         queryset = Comment.objects.all()
         fields = ["comment", "id"]
 
-class TinyAgoraResource(GenericResource):
-    content_type = fields.CharField(default="agora")
-    class Meta(GenericMeta):
-        queryset = Agora.objects.all()
-        fields = ['name', 'pretty_name', 'id', 'short_description']
-
-class TinyElectionResource(GenericResource):
-    content_type = fields.CharField(default="election")
-    class Meta(GenericMeta):
-        queryset = Election.objects.all()
-        fields = ['name', 'pretty_name', 'id', 'short_description']
-
 class ActionResource(GenericResource):
     '''
     Resource for actions
     '''
+
     action_object = GenericForeignKeyField({
         Comment: TinyCommentResource,
         Agora: TinyAgoraResource,

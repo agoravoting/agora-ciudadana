@@ -38,12 +38,33 @@ from agora_site.misc.utils import geolocate_ip, get_base_email_context
 ELECTION_RESOURCE = 'agora_site.agora_core.resources.election.ElectionResource'
 
 
+class TinyAgoraResource(GenericResource):
+    '''
+    Tiny Resource representing agoras.
+
+    Typically used to include the critical agora information in other
+    resources, as in ActionResource for example.
+    '''
+
+    content_type = fields.CharField(default="agora")
+
+    class Meta(GenericMeta):
+        queryset = Agora.objects.all()
+        fields = ['name', 'pretty_name', 'id', 'short_description']
+
 class CreateAgoraForm(ModelForm):
+    '''
+    Form used to validate the user information in the
+    agora creation.
+    '''
     class Meta:
         model = Agora
         fields = ('pretty_name', 'short_description', 'is_vote_secret')
 
 class AgoraAdminForm(ModelForm):
+    '''
+    Form used to validate agora administration details.
+    '''
     class Meta:
         model = Agora
         fields = ('pretty_name', 'short_description', 'is_vote_secret',
@@ -51,6 +72,10 @@ class AgoraAdminForm(ModelForm):
 
 
 class AgoraValidation(Validation):
+    '''
+    Validation class that uses some django forms to validate PUT and POST
+    methods.
+    '''
     def is_valid(self, bundle, request=None):
         if not bundle.data:
             return {'__all__': 'Not quite what I had in mind.'}
@@ -71,6 +96,9 @@ class AgoraValidation(Validation):
         return form.is_valid(bundle, request)
 
 class AgoraResource(GenericResource):
+    '''
+    Resource for representing agoras.
+    '''
     creator = fields.ForeignKey(UserResource, 'creator', full=True)
     url = fields.CharField()
 
