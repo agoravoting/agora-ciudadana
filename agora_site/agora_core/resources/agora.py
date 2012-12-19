@@ -64,6 +64,7 @@ class TinyAgoraResource(GenericResource):
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_mugshot_url()
 
+
 class CreateAgoraForm(ModelForm):
     '''
     Form used to validate the user information in the
