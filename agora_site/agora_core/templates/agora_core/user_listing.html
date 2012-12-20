@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load endless %}
+{% load agora_utils %}
+
+{% block title %}{% trans "User list" %}{% endblock %}
+
+{% block content-wrapper-class %}search{% endblock %}
+{% block running-board-wrapper-class %}search{% endblock %}
+
+{% block running-board %}
+<div class="row search">
+    <div class="span8 agora-left-side">
+        <h3>{% trans "User list" %}</h3>
+        <h4>
+            {% blocktrans %}Listing all users{% endblocktrans %}
+        </h4>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="span8 agora-left-side">
+        <div class="activity-list" id="activity-list"
+            data-url="/api/v1/agora/" data-method="get" data-margin="300">
+
+            <div class="endless-container">
+                <a class="endless_more" href="#">{% trans "more" %}</a>
+                <div class="endless_loading hidden">{% trans "Loading..." %}</div>
+            </div>
+        </div>
+    </div>
+    <div class="span4 agora-right-side"></div>
+</div>
+{% endblock %}
+
+{% block script-block %}
+    {% include "search/include-js-template-search-profile.html" %}
+    <script>app.currentView = new Agora.UserListView();</script>
+{% endblock %}
