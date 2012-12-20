@@ -1,5 +1,5 @@
 (function() {
-    var AgoraListView = Agora.GenericListView.extend({
+    var AgoraInfiniteView = Agora.GenericListView.extend({
         el: "#activity-list",
         templateEl: "#template-search-agora-item"
     });
@@ -9,7 +9,7 @@
 
         initialize: function() {
             _.bindAll(this);
-            this.infiniteListView = new AgoraListView();
+            this.infiniteListView = new AgoraInfiniteView();
         }
     });
 }).call(this);
