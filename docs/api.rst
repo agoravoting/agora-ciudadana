@@ -1337,6 +1337,7 @@ This resource allows searches, using Haystack
    :query offset: offset number. default is 0
    :query limit: limit number. default is 20
    :query q: search string, not required
+   :query model: filtering by object type, not required. Possible values are: ``agora``, ``election``, ``castvote``.
    :statuscode 200 OK: no error
 
    **Example request**:
