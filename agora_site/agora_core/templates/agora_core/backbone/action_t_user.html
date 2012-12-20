@@ -5,23 +5,22 @@
         </a>
         <div class="action-body">
             <div class="action-title">
-                <a href="<%= actor.url %>"><strong class="username"><%= actor.username %></strong></a> <strong class="verb"><%= verb %></strong> election
-                <a href="<%= action_object.url %>"><%= action_object.pretty_name %></a> at
-                <a href="<%= action_object.agora.url %>"><%= action_object.agora.full_name %></a>
+                <a href="<%= actor.url %>"><strong class="username"><%= actor.username %></strong></a> <strong class="verb"><%= verb %></strong> to
+                <a href="<%= target.url %>"><%= target.username %></a>
                 <time class="timeago" title="<%= timestamp %>" datetime="<%= timestamp %>"></time>
             </div>
 
             <div class="action-detail">
-                <a href="<%= action_object.url %>" class="mugshot">
-                    <img src="<%= action_object.mugshot_url %>" alt="<%= action_object.full_name %>" />
+                <a href="<%= target.url %>" class="mugshot">
+                    <img src="<%= target.mugshot_url %>" alt="<%= target.username %>" />
                 </a>
                 <div class="detail-body">
                     <strong class="action-title">
-                        <a href="<%= action_object.url %>">
-                            <%= action_object.pretty_name %>
+                        <a href="<%= target.url %>">
+                            <%= target.username %>
                         </a>
                     </strong>
-                    <p><%= action_object.short_description %></p>
+                    <p><%= target.short_description %></p>
                 </div>
             </div>
         </div>

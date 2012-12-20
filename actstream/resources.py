@@ -12,6 +12,7 @@ from django.conf.urls.defaults import url
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.comments.models import Comment
+from django.contrib.markup.templatetags.markup import textile
 
 from agora_site.misc.utils import GenericForeignKeyField
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
@@ -36,9 +37,14 @@ class TinyCommentResource(GenericResource):
     resources, as in ActionResource for example.
     '''
     content_type = fields.CharField(default="comment")
+    comment = fields.CharField()
+
     class Meta(GenericMeta):
         queryset = Comment.objects.all()
         fields = ["comment", "id"]
+
+    def dehydrate_comment(self, bundle):
+        return textile(bundle.obj.comment)
 
 class ActionResource(GenericResource):
     '''
@@ -98,7 +104,13 @@ class ActionResource(GenericResource):
             return "action_object_election"
 
         elif bundle.obj.action_object and bundle.obj.action_object_content_type.name == "agora" and bundle.obj.target and bundle.obj.target_content_type.name == "user":
-            return "action_object_agora_target_agora"
+            return "action_object_agora_target_user"
+
+        elif bundle.obj.action_object and bundle.obj.action_object_content_type.name == "comment" and bundle.obj.target and bundle.obj.target_content_type.name == "agora":
+            return "target_agora_action_object_comment"
+
+        elif bundle.obj.action_object and bundle.obj.action_object_content_type.name == "comment" and bundle.obj.target and bundle.obj.target_content_type.name == "election":
+            return "target_election_action_object_comment"
 
         elif bundle.obj.action_object and bundle.obj.action_object_content_type.name == "agora":
             return "action_object_agora"
