@@ -36,7 +36,6 @@
             initializeSuccess: function(xhr) {
                 if (xhr.status === 200) {
                     var data = JSON.parse(xhr.responseText);
-                    console.log(data);
                     this.collection.reset(data.objects);
                 }
             },
@@ -53,12 +52,23 @@
 
             resetCollection: function(collection) {
                 this.$(".list-container").empty();
-                collection.each(this.addItem);
-            },
 
-            addItem: function(model) {
-                var dom = this.template(model.toJSON());
-                this.$(".list-container").append(dom);
+                var data = collection.groupBy(function(item) {
+                    var date = item.get('voting_extended_until_date');
+                    if (date) {
+                        return date.split("T")[0];
+                    } else {
+                        return null;
+                    }
+                });
+
+                _.each(_.pairs(data), function(item) {
+                    var key = item[0],
+                        val = item[1];
+
+                    var dom = this.template({"datetime":key, "items": val});
+                    this.$(".list-container").append(dom);
+                }, this);
             }
         });
     }).call(this);
