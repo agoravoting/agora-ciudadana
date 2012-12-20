@@ -8,11 +8,14 @@
     (function() {
         var SearchInfiniteView = Agora.GenericListView.extend({
             el: "#activity-list",
+            
             templateEl: "#template-search-item",
-            initialize: function() {
+            
+            setup: function() {
+                Agora.GenericListView.prototype.setup.apply(this);
                 this.params = {q: this.$el.data('query')};
-                Agora.GenericListView.prototype.initialize.apply(this);
             },
+            
             renderItem: function(model) {
                 var templateEl = this.templateEl;
                 var ctype = model.get('obj').content_type;
@@ -27,7 +30,7 @@
                 var template = _.template($(templateEl).html());
                 var ret = template(model.toJSON().obj);
                 return ret;
-            },
+            }
         });
 
         Agora.SearchListView = Backbone.View.extend({
