@@ -122,6 +122,7 @@
 
     /*
      * Generic view for all infinite scroll lists.
+     * DEPRECATED
     */
 
     Agora.InfiniteScrollListView = Backbone.View.extend({
