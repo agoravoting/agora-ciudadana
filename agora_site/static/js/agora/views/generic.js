@@ -200,6 +200,7 @@
             initialize: function() {
                 _.bindAll(this);
                 this.firstLoadSuccess = false;
+                this.finished = false;
 
                 this.collection = new ItemCollection();
                 this.collection.on('reset', this.collectionReset);
@@ -217,22 +218,24 @@
             },
 
             requestObjects: function() {
-                var ajax = new Ajax();
-                ajax.on('success', this.requestSuccess);
+                if (!this.finished) {
+                    var ajax = new Ajax();
+                    ajax.on('success', this.requestSuccess);
 
-                var params = _.extend({}, {limit:this.limit, offset: this.offset},
+                    var params = _.extend({}, {limit:this.limit, offset: this.offset},
                                                                 this.params || {});
-                this.offset += this.limit;
+                    this.offset += this.limit;
 
-                if (this.method === 'get') {
-                    ajax.get(this.url, params);
-                } else if (this.method === 'post') {
-                    ajax.post(this.url, params);
+                    if (this.method === 'get') {
+                        ajax.get(this.url, params);
+                    } else if (this.method === 'post') {
+                        ajax.post(this.url, params);
+                    }
                 }
             },
 
             setEndlesFinishDom: function() {
-                this.endlessDom.find("a.endles_more").replaceWith("<span>No more results</span>");
+                this.endlessDom.find("a.endless_more").replaceWith("<span>No more results</span>");
             },
 
             requestSuccess: function(xhr) {
@@ -240,7 +243,8 @@
                     var data = JSON.parse(xhr.responseText);
 
                     if (data.objects.length === 0) {
-
+                        this.setEndlesFinishDom();
+                        this.finished = true;
                     } else {
                         if (!this.firstLoadSuccess) {
                             this.firstLoadSuccess = true;
