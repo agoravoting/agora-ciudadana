@@ -7,7 +7,7 @@
 
         initialize: function() {
             _.bindAll(this);
-            this.calendarView = new Agora.CalendarView();
+            this.calendarView = new Agora.CalendarWidgetView();
 
             // Only initialize on correct section of page exists.
             if (this.$("#activity-list").length > 0) {

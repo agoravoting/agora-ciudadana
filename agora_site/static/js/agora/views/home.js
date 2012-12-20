@@ -55,7 +55,7 @@
 
         initialize: function() {
             _.bindAll(this);
-            this.calendarView = new Agora.CalendarView();
+            this.calendarView = new Agora.CalendarWidgetView();
             this.agoralistView = new Agora.AgoraWidgetListView();
             this.activityListView = new Agora.InfiniteScrollListView();
         }
