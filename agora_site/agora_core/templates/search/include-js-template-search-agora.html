@@ -1,13 +1,13 @@
-<script id="template-agora" type="text/underscore-template">
+<script id="template-search-agora-item" type="text/underscore-template">
     <div class="result-item agora-result">
-        <a href="<%= obj.url %>">
+        <a href="<%= url %>">
             <div class="row">
                 <div class="span2">
-                    <img src="<%= obj.mughsot_url %>" />
+                    <img src="<%= mugshot_url %>" />
                 </div>
                 <div class="span6">
-                    <strong><%= obj.full_name %></strong>
-                    <p><%= obj.short_description %></p>
+                    <strong><%= full_name %></strong>
+                    <p><%= short_description %></p>
                 </div>
             </div>
         </a>
