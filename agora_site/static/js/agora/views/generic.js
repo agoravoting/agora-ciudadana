@@ -296,17 +296,17 @@
 
 
     (function() {
-        var AgoraSearchListView = Agora.GenericListView.extend({
+        var AgoraListView = Agora.GenericListView.extend({
             el: "#activity-list",
             templateEl: "#template-search-agora-item"
         });
 
-        Agora.AgoraSearchView = Backbone.View.extend({
+        Agora.AgoraListView = Backbone.View.extend({
             el: "div.search",
 
             initialize: function() {
                 _.bindAll(this);
-                this.infiniteListView = new AgoraSearchListView();
+                this.infiniteListView = new AgoraListView();
             }
         });
     }).call(this);

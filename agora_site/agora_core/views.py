@@ -2152,6 +2152,11 @@ class AgoraAdminView(UpdateView):
 
         return super(AgoraAdminView, self).dispatch(*args, **kwargs)
 
+class AgoraListView(TemplateView):
+    '''
+    Lists all agoras
+    '''
+    template_name = 'agora_core/agora_list.html'
 
 class SearchView(AjaxListView, HaystackSearchView):
     '''
