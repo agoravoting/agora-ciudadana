@@ -25,20 +25,13 @@
 {% block content %}
 <div class="row">
     <div class="span8 agora-left-side">
-        <div class="activity-list" id="activity-list" data-endless-smargin="300">
-        {% paginate 2 object_list %}
-        {% for result in object_list %}
-            {% if query %}
-                {% with result=result.object %}
-                    {% include "search/search_item.html" %}
-                {% endwith %}
-            {% else %}
-                {% include "search/search_item.html" %}
-            {% endif %}
-        {% empty %}
-            <p>{% trans "No search results found." %}</p>
-        {% endfor %}
-        {% show_more %}
+        <div class="activity-list" id="activity-list"
+            data-url="/api/v1/agora/" data-method="get" data-margin="300">
+
+            <div class="endless-container">
+                <a class="endless_more" href="#">{% trans "more" %}</a>
+                <div class="endless_loading hidden">{% trans "Loading..." %}</div>
+            </div>
         </div>
     </div>
     <div class="span4 agora-right-side"></div>
@@ -46,5 +39,6 @@
 {% endblock %}
 
 {% block script-block %}
-<script>app.currentView = new Agora.GenericSearchView();</script>
+    {% include "search/include-js-template-search-agora.html" %}
+    <script>app.currentView = new Agora.AgoraSearchView();</script>
 {% endblock %}

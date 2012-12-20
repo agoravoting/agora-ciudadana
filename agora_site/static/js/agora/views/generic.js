@@ -62,6 +62,16 @@
         });
     }).call(this);
 
+    // Deprecated
+    Agora.GenericSearchView = Backbone.View.extend({
+        el: "div.search",
+
+        initialize: function() {
+            _.bindAll(this);
+            this.activityListView = new Agora.InfiniteScrollListView();
+        }
+    });
+
     /*
      * Agoras list widget scope.
     */
@@ -162,12 +172,138 @@
      * Generic view for all search pages.
     */
 
-    Agora.GenericSearchView = Backbone.View.extend({
-        el: "div.search",
+    (function() {
+        var ItemModel = Backbone.Model.extend({});
 
-        initialize: function() {
-            _.bindAll(this);
-            this.activityListView = new Agora.InfiniteScrollListView();
-        }
-    });
+        var ItemCollection = Backbone.Collection.extend({
+            model: ItemModel
+        });
+
+        Agora.GenericListView = Backbone.View.extend({
+            el: "#activity-list",
+
+            events: {
+                "click a.endless_more": "onMoreClicked"
+            },
+
+            setup: function() {
+                this.url = this.$el.data('url');
+                this.method = this.$el.data('method') || 'get';
+            },
+
+            setupTemplates: function() {
+                if (this.templateEl !== undefined) {
+                    this.template = _.template($(this.templateEl).html());
+                }
+            },
+
+            initialize: function() {
+                _.bindAll(this);
+                this.firstLoadSuccess = false;
+
+                this.collection = new ItemCollection();
+                this.collection.on('reset', this.collectionReset);
+                this.collection.on('add', this.addItem);
+                this.endlessDom = this.$(".endless-container");
+
+                this.offset = 0;
+                this.limit = 2;
+
+                this.setup();
+                this.setupTemplates();
+                this.requestObjects();
+
+                $(window).scroll(this.infiniteScroll);
+            },
+
+            requestObjects: function() {
+                var ajax = new Ajax();
+                ajax.on('success', this.requestSuccess);
+
+                var params = _.extend({}, {limit:this.limit, offset: this.offset},
+                                                                this.params || {});
+                this.offset += this.limit;
+
+                if (this.method === 'get') {
+                    ajax.get(this.url, params);
+                } else if (this.method === 'post') {
+                    ajax.post(this.url, params);
+                }
+            },
+
+            setEndlesFinishDom: function() {
+                this.endlessDom.find("a.endles_more").replaceWith("<span>No more results</span>");
+            },
+
+            requestSuccess: function(xhr) {
+                if (xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+
+                    if (data.objects.length === 0) {
+
+                    } else {
+                        if (!this.firstLoadSuccess) {
+                            this.firstLoadSuccess = true;
+                            this.collection.reset(data.objects);
+                        } else {
+                            _.each(data.objects, function(item) {
+                                this.collection.add(item);
+                            }, this);
+                        }
+
+                        this.endlessDom.appendTo(this.$el);
+                    }
+                }
+            },
+
+            collectionReset: function(collection) {
+                this.$el.empty();
+                collection.each(this.addItem);
+            },
+
+            renderItem: function(model) {
+                if (this.template !== undefined) {
+                    return this.template(model.toJSON());
+                } else {
+                    return "<div>REIMPLEMENT THIS</div>";
+                }
+            },
+
+            addItem: function(model) {
+                var html = this.renderItem(model);
+                this.$el.append(html);
+            },
+
+            infiniteScroll: function() {
+                var doc = $(document), win = $(window);
+                var margin = this.$el.data('margin') || 300;
+
+                if ((doc.height() - win.height() - win.scrollTop()) <= margin) {
+                    this.$("a.endless_more").click();
+                }
+            },
+
+            onMoreClicked: function(event) {
+                event.preventDefault();
+                this.requestObjects();
+            }
+        });
+    }).call(this);
+
+
+    (function() {
+        var AgoraSearchListView = Agora.GenericListView.extend({
+            el: "#activity-list",
+            templateEl: "#template-search-agora-item"
+        });
+
+        Agora.AgoraSearchView = Backbone.View.extend({
+            el: "div.search",
+
+            initialize: function() {
+                _.bindAll(this);
+                this.infiniteListView = new AgoraSearchListView();
+            }
+        });
+    }).call(this);
 }).call(this);
