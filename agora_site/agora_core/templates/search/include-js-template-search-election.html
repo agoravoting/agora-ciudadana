@@ -8,10 +8,11 @@
                 <div class="span6">
                     <strong>
                         <!-- TODO: mover este gettext a la vista backbone y pasar aquí el resultado en una variable -->
-                        <%= gettext('%(electionname)s at %(agora_full_name)s') {
+                        <%= gettext('%(electionname)s at %(agora_full_name)s') %>
+                        <!-- {
                             'electionname': pretty_name,
                             'agora_full_name': agora.full_name
-                        } %>
+                        } -->
                     </strong>
                     <p><%= short_description %></p>
                 </div>
