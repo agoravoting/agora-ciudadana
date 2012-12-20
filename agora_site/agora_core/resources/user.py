@@ -61,7 +61,7 @@ class TinyProfileResource(GenericResource):
 
     class Meta(GenericMeta):
         queryset = Profile.objects.all()
-        fields = ["id"]
+        fields = ["id", "short_description"]
 
     def dehydrate_username(self, bundle):
         return bundle.obj.user.username
@@ -93,6 +93,7 @@ class UserResource(GenericResource):
     Resource representing users.
     '''
     url = fields.CharField()
+    short_description = fields.CharField()
 
     class Meta(GenericMeta):
         queryset = User.objects.filter(id__gt=-1)
@@ -103,6 +104,9 @@ class UserResource(GenericResource):
     def dehydrate_url(self, bundle):
         return reverse("user-view",
             kwargs=dict(username=bundle.obj.username))
+
+    def dehydrate_short_description(self, bundle):
+        return bundle.obj.get_profile().short_description
 
     def prepend_urls(self):
         return [
