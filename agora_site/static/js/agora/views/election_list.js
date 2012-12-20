@@ -1,5 +1,5 @@
 (function() {
-    var ElectionListView = Agora.GenericListView.extend({
+    var ElectionInfinteView = Agora.GenericListView.extend({
         el: "#activity-list",
         templateEl: "#template-search-election-item"
     });
@@ -9,7 +9,7 @@
 
         initialize: function() {
             _.bindAll(this);
-            this.infiniteListView = new ElectionListView();
+            this.infiniteListView = new ElectionInfinteView();
         }
     });
 }).call(this);
