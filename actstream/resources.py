@@ -16,7 +16,7 @@ from django.contrib.comments.models import Comment
 from agora_site.misc.utils import GenericForeignKeyField
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.misc.decorators import permission_required
-from agora_site.agora_core.models import Agora, Election
+from agora_site.agora_core.models import Agora, Election, CastVote
 from agora_site.agora_core.forms import PostCommentForm
 from agora_site.agora_core.resources.agora import TinyAgoraResource
 from agora_site.agora_core.resources.election import TinyElectionResource
@@ -64,6 +64,8 @@ class ActionResource(GenericResource):
     # used to easily distinguish different kind of actions
     type_name = fields.CharField()
 
+    vote = fields.DictField()
+
     class Meta(GenericMeta):
         queryset = Action.objects.filter(public=True)
         filtering = {
@@ -79,7 +81,10 @@ class ActionResource(GenericResource):
         ]
 
     def dehydrate_type_name(self, bundle):
-        if bundle.obj.action_object and bundle.obj.action_object_content_type.name == "election":
+        if bundle.obj.verb == "voted" and bundle.obj.action_object_content_type.name == "election":
+            return "action_object_election_verb_voted"
+
+        elif bundle.obj.action_object and bundle.obj.action_object_content_type.name == "election":
             return "action_object_election"
 
         elif bundle.obj.action_object and bundle.obj.action_object_content_type.name == "agora":
@@ -90,6 +95,18 @@ class ActionResource(GenericResource):
 
         else:
             return "unknown"
+
+    def dehydrate_vote(self, bundle):
+        if bundle.obj.verb == "voted" and bundle.obj.action_object_content_type.name == "election":
+            from agora_site.agora_core.resources.castvote import CastVoteResource
+            vote = CastVote.objects.get(action_id=bundle.obj.id)
+
+            cvr = CastVoteResource()
+            bundle = cvr.build_bundle(obj=vote, request=bundle.request)
+            bundle = cvr.full_dehydrate(bundle)
+            return bundle
+        else:
+            return dict()
 
     def prepend_urls(self):
         return [
