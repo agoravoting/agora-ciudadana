@@ -22,12 +22,12 @@ The INSTALL file contains the detailed installation instructions
 
 To test the aplication you can use default django test system:
 
-$ python manage.py test agora\_core
+$ python manage.py test agora\_core --settings=agora\_site.test\_settings
 
 To test only one test case you can call:
 
-$ python manage.py test agora\_core.AgoraTest
+$ python manage.py test agora\_core.AgoraTest --settings=agora\_site.test\_settings
 
 Or if you want to test only one test you can call:
 
-$ python manage.py test agora\_core.AgoraTest.test\_agora
+$ python manage.py test agora\_core.AgoraTest.test\_agora --settings=agora\_site.test\_settings

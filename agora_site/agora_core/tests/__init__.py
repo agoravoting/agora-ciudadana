@@ -6,6 +6,7 @@ from election import ElectionTest
 from user import UserTest
 from misc import MiscTest
 from action import ActionTest
+from search import SearchTest
 
 
 # FIXME better url treatment
@@ -24,6 +25,7 @@ def suite():
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(UserTest))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(MiscTest))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(ActionTest))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(SearchTest))
     return suite
 
 

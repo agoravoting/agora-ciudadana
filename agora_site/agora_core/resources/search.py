@@ -12,6 +12,7 @@ from agora_site.misc.generic_resource import (GenericResource,
     GenericResourceMixin, GenericMeta)
 from agora_site.agora_core.models.agora import Agora
 from agora_site.agora_core.models.election import Election
+from agora_site.agora_core.models.castvote import CastVote
 from agora_site.agora_core.models import Profile
 from agora_site.agora_core.resources.agora import TinyAgoraResource
 from agora_site.agora_core.resources.election import TinyElectionResource
@@ -53,20 +54,35 @@ class SearchResource(GenericResourceMixin, Resource):
 
         return kwargs
 
+    def get_search_query_set(self, request):
+        model = request.GET.get("model", None)
+        models = {'agora': Agora,
+                  'castvote': CastVote,
+                  'election': Election
+                 }
+        if model and model in models:
+            return SearchQuerySet().models(models[model])
+
+        return SearchQuerySet()
+
     def get_object_list(self, request):
         '''
         By default search lists all objects in haystack
         '''
-        return SearchQuerySet()
+        return self.get_search_query_set(request)
 
     def obj_get_list(self, request=None, **kwargs):
         '''
         Returns a filtered object lists. Allows filtering using a query string
         using the GET param "q"
         '''
+
         query = request.GET.get("q", None)
+
         if query:
-            return SearchQuerySet().auto_query(query)
+            q = self.get_search_query_set(request)
+            q = q.auto_query(query)
+            return q
 
         return self.get_object_list(request)
 
