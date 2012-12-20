@@ -81,11 +81,24 @@ class ActionResource(GenericResource):
         ]
 
     def dehydrate_type_name(self, bundle):
+        '''
+        Handly field used to discriminate the type of action
+        '''
         if bundle.obj.verb == "voted" and bundle.obj.action_object_content_type.name == "election":
-            return "action_object_election_verb_voted"
+            vote = CastVote.objects.get(action_id=bundle.obj.id)
+            if vote.is_public and vote.is_direct and vote.is_plaintext():
+                if vote.reason:
+                    return "action_object_election_verb_voted_public_reason"
+                else:
+                    return "action_object_election_verb_voted_public"
+            else:
+                return "action_object_election_verb_voted"
 
         elif bundle.obj.action_object and bundle.obj.action_object_content_type.name == "election":
             return "action_object_election"
+
+        elif bundle.obj.action_object and bundle.obj.action_object_content_type.name == "agora" and bundle.obj.target and bundle.obj.target_content_type.name == "user":
+            return "action_object_agora_target_agora"
 
         elif bundle.obj.action_object and bundle.obj.action_object_content_type.name == "agora":
             return "action_object_agora"
@@ -93,13 +106,45 @@ class ActionResource(GenericResource):
         elif bundle.obj.target and bundle.obj.target_content_type.name == "agora":
             return "target_agora"
 
+        elif bundle.obj.target and bundle.obj.target_content_type.name == "user":
+            return "target_user"
+
         else:
             return "unknown"
 
     def dehydrate_vote(self, bundle):
+        '''
+        Shows the vote related to the action, if any
+        '''
         if bundle.obj.verb == "voted" and bundle.obj.action_object_content_type.name == "election":
-            from agora_site.agora_core.resources.castvote import CastVoteResource
             vote = CastVote.objects.get(action_id=bundle.obj.id)
+
+            class CastVoteResource(GenericResource):
+                is_changed = fields.BooleanField()
+                question = fields.DictField()
+                user_info = fields.DictField()
+
+                class Meta:
+                    queryset = CastVote.objects.all()
+                    list_allowed_methods = []
+                    detail_allowed_methods = ['get']
+                    fields = ['is_public', 'is_direct', 'id', 'resource_uri', 'reason']
+
+                def dehydrate_is_changed(self, bundle):
+                    return bundle.obj.is_changed_vote()
+
+                def dehydrate_question(self, bundle):
+                    if bundle.obj.is_direct and bundle.obj.is_public and bundle.obj.is_plaintext():
+                        return bundle.obj.get_first_pretty_answer()
+                    else:
+                        return dict()
+
+                def dehydrate_user_info(self, bundle):
+                    return dict(
+                        short_description=bundle.obj.voter.get_profile().short_description,
+                        num_agoras=bundle.obj.voter.agoras.count(),
+                        num_votes=bundle.obj.voter.get_profile().count_direct_votes()
+                    )
 
             cvr = CastVoteResource()
             bundle = cvr.build_bundle(obj=vote, request=bundle.request)
