@@ -2220,6 +2220,12 @@ class ElectionListView(TemplateView):
     '''
     template_name = 'agora_core/election_list.html'
 
+class UserListView(TemplateView):
+    '''
+    Lists all elections
+    '''
+    template_name = 'agora_core/user_listing.html'
+
 class SearchView(AjaxListView, HaystackSearchView):
     '''
     Generic search view for all kinds of indexed objects

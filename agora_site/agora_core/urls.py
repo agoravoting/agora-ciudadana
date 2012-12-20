@@ -53,7 +53,7 @@ urlpatterns += patterns('',
 
     url(r'^elections/list/?$', ElectionListView.as_view(), name='election-list'),
 
-    url(r'^user/list/?$', SearchView.as_view(searchmodel="profiles"), name='user-list'),
+    url(r'^user/list/?$', UserListView.as_view(), name='user-list'),
 
     url(r'^agora/list/?$', AgoraListView.as_view(), name='agora-list'),
 

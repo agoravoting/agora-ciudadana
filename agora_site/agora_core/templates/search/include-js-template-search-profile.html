@@ -1,4 +1,4 @@
-<script id="template-agora" type="text/underscore-template">
+<script id="template-search-profile-item" type="text/underscore-template">
     <div class="result-item user-result">
         <a href="<%= obj.url %>">
             <div class="row">
@@ -6,16 +6,16 @@
                     <img src="{{ result.get_mugshot_url }}" />
                 </div>
                 <div class="span6">
-                    <strong><%= obj.username %><% if (obj.full_name && obj.full_name != obj.username) {%> <%= obj.full_name %><%}%></strong>
+                    <strong><%= obj.username %><% if (obj.full_name && obj.full_name != obj.username) { %> <%= obj.full_name %> <% } %></strong>
                     <p>
                         <% if (obj.short_description) { %>
                             <%= obj.short_description %>
                         <% } else { %>
                             <!-- TODO: mover este gettext a la vista backbone y pasar aquí el resultado en una variable -->
-                            <%= gettext('Is a member of %(num_agoras)d agoras and has emitted %(num_votes)d direct votes.', {
+                            <%= gettext('Is a member of %(num_agoras)d agoras and has emitted %(num_votes)d direct votes.') %> <!-- {
                                 'num_agoras': obj.num_agoras,
                                 'num_votes': obj.num_votes
-                            } %>
+                            } -->
                         <% } %>
                     </p>
                 </div>
