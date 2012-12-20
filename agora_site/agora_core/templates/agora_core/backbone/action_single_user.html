@@ -1,0 +1,13 @@
+<script id="template-agora" type="text/underscore-template">
+    <div class="activity-action" geodata="<%= action.geolocation %>">
+        <a href="<%= actor.url %>" class="mugshot">
+            <img src="<%= actor.mugshot_url %>" alt="<%= actor.username %>" />
+        </a>
+        <div class="action-body">
+            <div class="action-title">
+                <a href="<%= actor.url %>"><strong class="username"><%= actor.username %></strong></a> <strong class="verb"><%= verb %></strong>
+                <time class="timeago" title="<%= timestamp %>" datetime="<%= timestamp %>"></time>
+            </div>
+        </div>
+    </div>
+</script>

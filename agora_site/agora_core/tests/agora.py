@@ -8,8 +8,9 @@ from common import (HTTP_OK,
                     HTTP_METHOD_NOT_ALLOWED)
 
 from common import RootTestCase
-from agora_site.agora_core.tasks.agora import send_request_membership_mails
 from django.contrib.sites.models import Site
+from django.contrib.markup.templatetags.markup import textile
+from agora_site.agora_core.tasks.agora import send_request_membership_mails
 
 class AgoraTest(RootTestCase):
     def test_agora(self):
@@ -527,7 +528,7 @@ class AgoraTest(RootTestCase):
         self.assertEqual(objects[0]['actor']['content_type'], 'user')
         self.assertEqual(objects[0]['actor']['username'], 'david')
         self.assertEqual(objects[0]['action_object']['content_type'], 'comment')
-        self.assertEqual(objects[0]['action_object']['comment'], orig_data['comment'])
+        self.assertEqual(objects[0]['action_object']['comment'], textile(orig_data['comment']))
 
     def test_add_comment2(self):
         '''
@@ -582,7 +583,7 @@ class AgoraTest(RootTestCase):
         self.assertEqual(objects[0]['actor']['content_type'], 'user')
         self.assertEqual(objects[0]['actor']['username'], 'user1')
         self.assertEqual(objects[0]['action_object']['content_type'], 'comment')
-        self.assertEqual(objects[0]['action_object']['comment'], orig_data['comment'])
+        self.assertEqual(objects[0]['action_object']['comment'], textile(orig_data['comment']))
 
     def test_add_comment3(self):
         '''
