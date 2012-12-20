@@ -12,7 +12,7 @@
             model: ElectionModel
         });
 
-        Agora.CalendarView = Backbone.View.extend({
+        Agora.CalendarWidgetView = Backbone.View.extend({
             el: "#agora-calendar",
 
             events: {
@@ -21,9 +21,9 @@
 
             initialize: function() {
                 _.bindAll(this);
-                this.electionTemplate = _.template($("#template-election").html());
-                this.electionsCollection = new ElectionsCollection();
-                this.electionsCollection.on('reset', this.resetElectionsCollection);
+                this.template = _.template($("#template-election").html());
+                this.collection = new ElectionsCollection();
+                this.collection.on('reset', this.resetCollection);
 
                 var ajax = new Ajax();
                 ajax.on('success', this.initializeSuccess);
@@ -36,7 +36,8 @@
             initializeSuccess: function(xhr) {
                 if (xhr.status === 200) {
                     var data = JSON.parse(xhr.responseText);
-                    this.electionsCollection.reset(data.objects);
+                    console.log(data);
+                    this.collection.reset(data.objects);
                 }
             },
 
@@ -50,27 +51,17 @@
                 console.log("onSearchChange: " + target.val());
             },
 
-            resetElectionsCollection: function(collection) {
+            resetCollection: function(collection) {
                 this.$(".list-container").empty();
-                collection.each(this.addElectionItem);
+                collection.each(this.addItem);
             },
 
-            addElectionItem: function(model) {
-                var dom = this.electionTemplate(model.toJSON());
+            addItem: function(model) {
+                var dom = this.template(model.toJSON());
                 this.$(".list-container").append(dom);
             }
         });
     }).call(this);
-
-    // Deprecated
-    Agora.GenericSearchView = Backbone.View.extend({
-        el: "div.search",
-
-        initialize: function() {
-            _.bindAll(this);
-            this.activityListView = new Agora.InfiniteScrollListView();
-        }
-    });
 
     /*
      * Generic view for all infinite scroll lists.
