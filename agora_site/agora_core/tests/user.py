@@ -72,7 +72,7 @@ class UserTest(RootTestCase):
         self.assertEqual(len(data['objects']), 1)
         self.assertEquals(data['objects'][0]['username'], 'david')
 
-        data = self.get('user/set_username/', code=HTTP_NOT_FOUND)
+        #data = self.get('user/set_username/', code=HTTP_NOT_FOUND)
 
     def test_password_reset(self):
         data = self.postAndParse('user/password_reset/', code=HTTP_BAD_REQUEST)
