@@ -66,7 +66,9 @@
                     var key = item[0],
                         val = item[1];
 
-                    var dom = this.template({"datetime":key, "items": val});
+                    var date = moment(key);
+                    var dom = this.template({"datetime":date.format("LL"), "items": val});
+
                     this.$(".list-container").append(dom);
                 }, this);
             }
