@@ -4,7 +4,12 @@
     <span><%= datetime %></span>
     <ul>
         <% _.each(items, function(item) { %>
-        <li><a href=""><%= item.get('pretty_name') %></a></li>
+        <li>
+            <a href="<%= item.get('url') %>">
+                <img src="{% static 'img/small-icon-envelope.png' %}" />
+                <%= item.get('pretty_name') %>
+            </a>
+        </li>
         <% }); %>
     </ul>
 </li>
