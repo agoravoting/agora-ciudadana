@@ -1,14 +1,7 @@
-# blacklist
-  branches:
-  except:
-    - legacy
-    - experimental
-
 # whitelist
 branches:
-  only:
-    - master
-    - stable
+    only:
+        - v2
 
 language: python
 python:

@@ -17,3 +17,8 @@ https://groups.google.com/group/agora-ciudadana-devel
 ### Installation instructions
 
 The INSTALL file contains the detailed installation instructions
+
+### Continuous Integration
+
+https://api.travis-ci.org/agoraciudadana/agora-ciudadana.png
+[![Build Status](https://travis-ci.org/agoraciudadana/agora-ciudadana.png)](https://travis-ci.org/agoraciudadana/agora-ciudadana)
