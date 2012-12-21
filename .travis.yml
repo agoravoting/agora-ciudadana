@@ -1,3 +1,15 @@
+# blacklist
+  branches:
+  except:
+    - legacy
+    - experimental
+
+# whitelist
+branches:
+  only:
+    - master
+    - stable
+
 language: python
 python:
     - "2.7"
