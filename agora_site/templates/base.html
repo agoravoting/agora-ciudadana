@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{% static 'less/agora.css' %}" type="text/css" />
     {% endif %}
 </head>
-<body data-userid="{{ user.pk }}">
+<body data-userid="{{ user.pk }}" data-lang="{{ LANGUAGE_CODE }}">
     <!-- used to execute actions via a secure form -->
     <form style="display: none;" action="" method="POST" id="post-action-form">
         {% csrf_token %}

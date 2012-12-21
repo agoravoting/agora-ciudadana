@@ -29,13 +29,19 @@ if (window.gettext === undefined) {
             _.bindAll(this);
 
             $(document).ajaxStop(this.updateUi);
+
             this.updateUi();
+            this.setMomentLang();
 
             this.topBar = new Agora.TopView();
         },
 
         updateUi: function() {
             this.$("time.timeago").timeago();
+        },
+
+        setMomentLang: function() {
+            moment.lang(this.$el.data('lang'));
         },
 
         onActionFormLinkClicked: function(event) {

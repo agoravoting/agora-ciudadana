@@ -1,4 +1,4 @@
-all:
+all: mainjs agorajs
 
 dependences:
 	npm install uglify-js less jshint
@@ -17,6 +17,9 @@ mainjs:
 					      agora_site/static/js/libs/jquery.timeago.js \
 					      agora_site/static/js/libs/jsrender.js \
 					      agora_site/static/js/libs/d3.v2.min.js \
+					      agora_site/static/js/libs/moment.min.js \
+					      agora_site/static/js/libs/moment-lang/gl.js \
+					      agora_site/static/js/libs/moment-lang/es.js \
 					      	-o agora_site/static/js/min/main.min.js
 agorajs:
 	./node_modules/uglify-js/bin/uglifyjs \
