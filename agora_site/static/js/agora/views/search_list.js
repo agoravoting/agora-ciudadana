@@ -8,26 +8,24 @@
     (function() {
         var SearchInfiniteView = Agora.GenericListView.extend({
             el: "#activity-list",
-            
             templateEl: "#template-search-item",
-            
+
             setup: function() {
                 Agora.GenericListView.prototype.setup.apply(this);
                 this.params = {q: this.$el.data('query')};
+
+                this.templates = {}
+                ctypes = ["agora", "election", "profile"];
+                for (var i = 0; i < ctypes.length; i++) {
+                    var templateEl = "#template-search-"+ ctypes[i] +"-item";
+                    this.templates[ctypes[i]] = _.template($(templateEl).html());
+                }
             },
-            
+
             renderItem: function(model) {
                 var templateEl = this.templateEl;
                 var ctype = model.get('obj').content_type;
-                console.log("CTYPE: " + ctype);
-                if (ctype === "agora") {
-                    templateEl = "#template-search-agora-item";
-                } else if (ctype === "election") {
-                    templateEl = "#template-search-election-item";
-                } else if (ctype === "profile") {
-                    templateEl = "#template-search-profile-item";
-                }
-                var template = _.template($(templateEl).html());
+                var template = this.templates[ctype];
                 var ret = template(model.toJSON().obj);
                 return ret;
             }
