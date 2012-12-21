@@ -52,7 +52,7 @@ class UserTest(RootTestCase):
         self.assertEqual(data['not_found'][1], '300')
         self.assertEqual(len(data['objects']), 0)
 
-        data = self.get('user/set/', code=HTTP_NOT_FOUND)
+        #data = self.get('user/set/', code=HTTP_NOT_FOUND)
 
     def test_user_settings(self):
         self.login('david', 'david')
@@ -62,7 +62,7 @@ class UserTest(RootTestCase):
         # TODO, testing via PUT, not yet implemented in user.py
 
     def test_user_set_username(self):
-        data = self.get('user/set_username/', code=HTTP_NOT_FOUND)
+        #data = self.get('user/set_username/', code=HTTP_NOT_FOUND)
         data = self.getAndParse('user/set_username/david;user1/')
         self.assertEqual(len(data['objects']), 2)
         self.assertEquals(data['objects'][0]['username'], 'david')
