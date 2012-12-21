@@ -3,7 +3,7 @@
         <a href="<%= obj.url %>">
             <div class="row">
                 <div class="span2">
-                    <img src="{{ result.get_mugshot_url }}" />
+                    <img src="<%= obj.mugshot_url %>" />
                 </div>
                 <div class="span6">
                     <strong><%= obj.username %><% if (obj.full_name && obj.full_name != obj.username) { %> <%= obj.full_name %> <% } %></strong>
