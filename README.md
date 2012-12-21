@@ -1,5 +1,7 @@
 ### Introduction
 
+[![Build Status](https://travis-ci.org/agoraciuadadana/agora-ciudadana.png)](https://travis-ci.org/agoraciudadana/agora-ciudadana)
+
 Agora Ciudadana is a social web site where anyone can create or join in an agora.
 An agora has a set of members which can vote in the agora's elections either by
 direct vote or by delegating the vote.
