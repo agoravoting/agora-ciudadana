@@ -94,6 +94,7 @@ class UserResource(GenericResource):
     '''
     url = fields.CharField()
     short_description = fields.CharField()
+    mugshot_url = fields.CharField()
 
     class Meta(GenericMeta):
         queryset = User.objects.filter(id__gt=-1)
@@ -107,6 +108,9 @@ class UserResource(GenericResource):
 
     def dehydrate_short_description(self, bundle):
         return bundle.obj.get_profile().short_description
+
+    def dehydrate_mugshot_url(self, bundle):
+        return bundle.obj.get_profile().get_mugshot_url()
 
     def prepend_urls(self):
         return [
