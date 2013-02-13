@@ -163,7 +163,7 @@
                 this.endlessDom = this.$(".endless-container");
 
                 this.offset = 0;
-                this.limit = 2;
+                this.limit = 20;
 
                 this.setup();
                 this.setupTemplates();
@@ -189,7 +189,7 @@
                 }
             },
 
-            setEndlesFinishDom: function() {
+            setEndlessFinishDom: function() {
                 this.endlessDom.find("a.endless_more").replaceWith("<span>No more results</span>");
             },
 
@@ -198,7 +198,7 @@
                     var data = JSON.parse(xhr.responseText);
 
                     if (data.objects.length === 0) {
-                        this.setEndlesFinishDom();
+                        this.setEndlessFinishDom();
                         this.finished = true;
                     } else {
                         if (!this.firstLoadSuccess) {

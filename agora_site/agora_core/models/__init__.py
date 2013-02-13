@@ -40,6 +40,18 @@ class Profile(UserenaLanguageBaseProfile):
         else:
             return self.user.first_name
 
+    def get_short_description(self):
+        '''
+        Returns a short description of the user
+        '''
+        if self.short_description:
+            return self.short_description
+        else:
+            return _('Is a member of %(num_agoras)d agoras and has emitted '
+                ' %(num_votes)d direct votes.') % dict(
+                    num_agoras=self.user.agoras.count(),
+                    num_votes=self.count_direct_votes())
+
     def get_first_name_or_nick(self):
         if self.user.first_name:
             return self.user.first_name
