@@ -107,7 +107,7 @@ class UserResource(GenericResource):
             kwargs=dict(username=bundle.obj.username))
 
     def dehydrate_short_description(self, bundle):
-        return bundle.obj.get_profile().short_description
+        return bundle.obj.get_profile().get_short_description()
 
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_profile().get_mugshot_url()

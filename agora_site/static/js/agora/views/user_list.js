@@ -1,6 +1,6 @@
 (function() {
     var UserInfiniteView = Agora.GenericListView.extend({
-        el: "#activity-list",
+        el: "#user-list",
         templateEl: "#template-search-profile-item"
     });
 
