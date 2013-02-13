@@ -49,7 +49,7 @@ class ElectionResource(GenericResource):
 
     electorate = fields.ManyToManyField(UserResource, 'electorate')
 
-    agora = fields.ForeignKey(AgoraResource, 'agora')
+    agora = fields.ForeignKey(TinyAgoraResource, 'agora', full=True)
 
     parent_election = fields.ForeignKey('self', 'parent_election', null=True)
 
