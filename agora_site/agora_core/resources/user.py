@@ -68,7 +68,7 @@ class TinyProfileResource(GenericResource):
         return bundle.obj.user.username
 
     def dehydrate_short_description(self, bundle):
-        return bundle.obj.get_profile().get_short_description()
+        return bundle.obj.get_short_description()
 
     def dehydrate_first_name(self, bundle):
         return bundle.obj.user.first_name
