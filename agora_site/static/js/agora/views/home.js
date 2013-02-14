@@ -57,7 +57,7 @@
             _.bindAll(this);
             this.calendarView = new Agora.CalendarWidgetView();
             this.agoralistView = new Agora.AgoraWidgetListView();
-            this.activityListView = new Agora.InfiniteScrollListView();
+            this.activityListView = new Agora.ActivityListView();
         }
     });
 }).call(this)

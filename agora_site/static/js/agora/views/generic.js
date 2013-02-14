@@ -247,5 +247,26 @@
                 this.requestObjects();
             }
         });
+        Agora.ActivityListView = Agora.GenericListView.extend({
+            el: "#activity-list",
+
+            setup: function() {
+                this.url = this.$el.data('url');
+                this.method = this.$el.data('method') || 'get';
+                this.templates = {}
+            },
+
+            renderItem: function(model) {
+                var json = model.toJSON();
+                if (!this.templates[json.type_name]) {
+                    this.templates[json.type_name] = _.template(
+                        $('#template-action_' + json.type_name).html()
+                            || '<#template-action_' + json.type_name
+                            + ' not found>'
+                    );
+                }
+                return this.templates[json.type_name](json);
+            }
+        });
     }).call(this);
 }).call(this);

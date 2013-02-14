@@ -1,5 +1,5 @@
-<script id="template-agora" type="text/underscore-template">
-    <div class="activity-action" geodata="<%= action.geolocation %>">
+<script id="template-action_action_object_election_vote_verb_public_reason" type="text/underscore-template">
+    <div class="activity-action" geodata="<%= geolocation %>">
         <a href="<%= actor.url %>" class="mugshot">
             <img src="<%= actor.mugshot_url %>" alt="<%= actor.username %>" />
         </a>
@@ -14,7 +14,7 @@
                 <div class="detail-body vote">
                     <strong class="action-title"><%= vote.question.question %></strong>
                     <p>
-                        {% trans "Answered:" %}
+                        <%= gettext("Answered:") %>
                         <a href="#">
                             <%= question.answer %>
                         </a>
