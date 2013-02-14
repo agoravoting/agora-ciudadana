@@ -3,134 +3,6 @@
 {% load endless %}
 {% load agora_utils %}
 
-{% block script-block %}
-    <script src="{{ STATIC_URL }}js/endless_pagination/endless.js" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ STATIC_URL }}js/endless_pagination/endless_on_scroll.js" type="text/javascript" charset="utf-8"></script>
-
-    <script type="text/javascript" charset="utf-8">
-        var endless_on_scroll_margin = 300;
-    </script>
-    
-    <script type="text/javascript" charset="utf-8">
-        Agora.uv = (function () {
-            var module = {};
-            
-            module.onAgoraSearch = function (response) {
-                if(response.error == 0) {
-                    if(response.data.length > 0) {
-                        $( "#agoraList" ).html($( "#agoraTemplate" ).render( response.data ) );
-                    }
-                    else {
-                        $( "#agoraList" ).html($("#no-agoras").html());
-                    }
-                }
-                else {
-                    // FIXME error handling (error returned by server)
-                }
-            };
-			
-			module.onElectionSearch = function (response) {
-                if(response.error == 0) {
-                    if(response.data.length > 0) {
-                        $( "#electionList" ).html($( "#electionTemplate" ).render( response.data ) );
-                    }
-                    else {
-                        $( "#electionList" ).html($("#no-elections").html());
-                    }
-                }
-                else {
-                    // FIXME error handling (error returned by server)
-                }
-            };
-            
-            module.agoraError = function() {
-                // FIXME error handling (ajax error)
-            }
-			module.electionError = function() {
-                // FIXME error handling (ajax error)
-            }
-        
-            return module;
-        }());
-        
-        
-        $(document).ready(function() {
-            var userid = {{ user_shown.id }};
-            var searchAgora = $('.agora-search-query').val();
-            var searchElection = $('.election-search-query').val();
-            
-            // render results for no filter
-            Dajaxice.agora_site.agora_core.searchAgoras(Agora.uv.onAgoraSearch, {'userid': userid, 'search': ''}, {'error_callback': Agora.uv.agoraError});
-            Dajaxice.agora_site.agora_core.searchElectionsForUserPage(Agora.uv.onElectionSearch, {'userid': userid, 'search': ''}, {'error_callback': Agora.uv.electionError});
-			
-            $('.agora-search-query').keyup(function(event) {
-                var tmp = $('.agora-search-query').val();
-                if(searchAgora != tmp) {
-                    searchAgora = tmp;
-                    Dajaxice.agora_site.agora_core.searchAgoras(Agora.uv.onAgoraSearch, {'userid': userid, 'search': searchAgora}, {'error_callback': Agora.uv.agoraError});
-                }
-            });
-			
-			$('.election-search-query').keyup(function(event) {
-                var tmp = $('.election-search-query').val();
-                if(searchElection != tmp) {
-                    searchElection = tmp;
-                    Dajaxice.agora_site.agora_core.searchElectionsForUserPage(Agora.uv.onElectionSearch, {'userid': userid, 'search': searchElection}, {'error_callback': Agora.uv.electionError});
-                }
-            });
-        });
-    </script>
-    
-    <script id="agoraTemplate" type="text/x-jsrender">
-        <li>
-            <a href="{% templatetag openvariable%}>url{% templatetag closevariable%}">
-            <span class="agora">{% templatetag openvariable%}>username{% templatetag closevariable%}/<strong>{% templatetag openvariable%}>name{% templatetag closevariable%}</strong>
-            </span>
-            <i class="icon-arrow-right"></i>
-            </a>
-        </li>
-    </script>
-	
-	<script id="electionTemplate" type="text/x-jsrender">
-         <li>
-            <a href="{% templatetag openvariable%}>election.url{% templatetag closevariable%}" class="election election-result">
-                <strong>{% templatetag openvariable%}>election.pretty_name{% templatetag closevariable%}</strong>
-                
-                <time datetime="{% templatetag openvariable%}election.tallied_date{% templatetag closevariable%}">
-                    {% templatetag openvariable%}>election.tallied_date_pretty{% templatetag closevariable%}
-                </time>
-                
-                <span>{% templatetag openvariable%}>election.winner{% templatetag closevariable%}</span>
-                <small> ({% templatetag openvariable%}>election.votes{% templatetag closevariable%} {% blocktrans %} votes){% endblocktrans %}</small>
-
-                <div class="progress progress-success progress-small">
-                    <div class="bar" style="width: {% templatetag openvariable%}>election.bar_width{% templatetag closevariable%}%;">
-                        {% templatetag openvariable%}>election.bar_width{% templatetag closevariable%}%
-                    </div>
-                </div>
-
-
-                {% raw %}
-                {{if is_public}}
-                {% endraw %}
-                    <span>{% templatetag openvariable%}>shown_user{% templatetag closevariable%} {% blocktrans %}answered {% endblocktrans %}{% templatetag openvariable%}>pretty_answer.answer{% templatetag closevariable%}
-                    </span>
-                    <small class="reason">{% templatetag openvariable%}>pretty_answer.reason{% templatetag closevariable%}</small>
-                {% raw %}
-                {{else}}
-                {% endraw %}
-                <span>{% blocktrans %}Vote is secret{% endblocktrans %}</span>
-                {% raw %}
-                {{/if}}
-                {% endraw %}
-            </a>
-        </li>
-    </script>
-    
-{% endblock %}
-
-
-
 {% block title %}{{ user_shown.username }}{% endblock %}
 
 {% block running-board-wrapper-class %}agora-running-board election-running-board{% endblock %}
@@ -175,13 +47,13 @@
     <div class="row">
         <div class="span8 agora-left-side">
             {% block user-content %}
-                {% paginate object_list %}
-                {% for action in object_list %}
-                    {% include "agora_core/action_item.html" %}
-                {% empty %}
-                    {% trans "Here your activity will be shown, but you didn't generate any yet." %}
-                {% endfor %}
-                {% show_more %}
+                <div class="activity-list" id="activity-list"
+                    data-url="/api/v1/action/user/{{ user.username }}/">
+                    <div class="endless-container">
+                        <a class="endless_more" href="#">{% trans "more" %}</a>
+                        <div class="endless_loading hidden">{% trans "Loading..." %}</div>
+                    </div>
+                </div>
             {% endblock %}
         </div>
         <div class="span4 agora-right-side">
@@ -233,4 +105,126 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block script-block %}
+
+    {% include "agora_core/client/all_actions.html" %}
+    <script>app.currentView = new Agora.UserView();</script>
+<!--
+    <script type="text/javascript" charset="utf-8">
+        Agora.uv = (function () {
+            var module = {};
+
+            module.onAgoraSearch = function (response) {
+                if(response.error == 0) {
+                    if(response.data.length > 0) {
+                        $( "#agoraList" ).html($( "#agoraTemplate" ).render( response.data ) );
+                    }
+                    else {
+                        $( "#agoraList" ).html($("#no-agoras").html());
+                    }
+                }
+                else {
+                    // FIXME error handling (error returned by server)
+                }
+            };
+
+            module.onElectionSearch = function (response) {
+                if(response.error == 0) {
+                    if(response.data.length > 0) {
+                        $( "#electionList" ).html($( "#electionTemplate" ).render( response.data ) );
+                    }
+                    else {
+                        $( "#electionList" ).html($("#no-elections").html());
+                    }
+                }
+                else {
+                    // FIXME error handling (error returned by server)
+                }
+            };
+
+            module.agoraError = function() {
+                // FIXME error handling (ajax error)
+            }
+            module.electionError = function() {
+                // FIXME error handling (ajax error)
+            }
+
+            return module;
+        }());
+
+
+        $(document).ready(function() {
+            var userid = {{ user_shown.id }};
+            var searchAgora = $('.agora-search-query').val();
+            var searchElection = $('.election-search-query').val();
+
+            // render results for no filter
+            Dajaxice.agora_site.agora_core.searchAgoras(Agora.uv.onAgoraSearch, {'userid': userid, 'search': ''}, {'error_callback': Agora.uv.agoraError});
+            Dajaxice.agora_site.agora_core.searchElectionsForUserPage(Agora.uv.onElectionSearch, {'userid': userid, 'search': ''}, {'error_callback': Agora.uv.electionError});
+
+            $('.agora-search-query').keyup(function(event) {
+                var tmp = $('.agora-search-query').val();
+                if(searchAgora != tmp) {
+                    searchAgora = tmp;
+                    Dajaxice.agora_site.agora_core.searchAgoras(Agora.uv.onAgoraSearch, {'userid': userid, 'search': searchAgora}, {'error_callback': Agora.uv.agoraError});
+                }
+            });
+            
+            $('.election-search-query').keyup(function(event) {
+                var tmp = $('.election-search-query').val();
+                if(searchElection != tmp) {
+                    searchElection = tmp;
+                    Dajaxice.agora_site.agora_core.searchElectionsForUserPage(Agora.uv.onElectionSearch, {'userid': userid, 'search': searchElection}, {'error_callback': Agora.uv.electionError});
+                }
+            });
+        });
+    </script>
+
+    <script id="agoraTemplate" type="text/x-jsrender">
+        <li>
+            <a href="{% templatetag openvariable%}>url{% templatetag closevariable%}">
+            <span class="agora">{% templatetag openvariable%}>username{% templatetag closevariable%}/<strong>{% templatetag openvariable%}>name{% templatetag closevariable%}</strong>
+            </span>
+            <i class="icon-arrow-right"></i>
+            </a>
+        </li>
+    </script>
+
+    <script id="electionTemplate" type="text/x-jsrender">
+         <li>
+            <a href="{% templatetag openvariable%}>election.url{% templatetag closevariable%}" class="election election-result">
+                <strong>{% templatetag openvariable%}>election.pretty_name{% templatetag closevariable%}</strong>
+
+                <time datetime="{% templatetag openvariable%}election.tallied_date{% templatetag closevariable%}">
+                    {% templatetag openvariable%}>election.tallied_date_pretty{% templatetag closevariable%}
+                </time>
+
+                <span>{% templatetag openvariable%}>election.winner{% templatetag closevariable%}</span>
+                <small> ({% templatetag openvariable%}>election.votes{% templatetag closevariable%} {% blocktrans %} votes){% endblocktrans %}</small>
+
+                <div class="progress progress-success progress-small">
+                    <div class="bar" style="width: {% templatetag openvariable%}>election.bar_width{% templatetag closevariable%}%;">
+                        {% templatetag openvariable%}>election.bar_width{% templatetag closevariable%}%
+                    </div>
+                </div>
+
+
+                {% raw %}
+                {{if is_public}}
+                {% endraw %}
+                    <span>{% templatetag openvariable%}>shown_user{% templatetag closevariable%} {% blocktrans %}answered {% endblocktrans %}{% templatetag openvariable%}>pretty_answer.answer{% templatetag closevariable%}
+                    </span>
+                    <small class="reason">{% templatetag openvariable%}>pretty_answer.reason{% templatetag closevariable%}</small>
+                {% raw %}
+                {{else}}
+                {% endraw %}
+                <span>{% blocktrans %}Vote is secret{% endblocktrans %}</span>
+                {% raw %}
+                {{/if}}
+                {% endraw %}
+            </a>
+        </li>
+    </script>-->
 {% endblock %}
