@@ -161,17 +161,17 @@
 <div class="row">
     <div class="span8 agora-left-side">
         {% block agora_content %}
-        <div class="activity-list" id="activity-list" data-endless-smargin="300">
+        <div class="activity-list" id="activity-list"
+        data-url="/api/v1/action/agora/{{ agora.id }}/">
             {% if agora.biograpy|length > 0 and agora.biography != agora.short_description and agora.biography %}
             <div class="main-description">
-                {{ election.biograpy|textile|truncatewords_html:130 }}
+                {{ agora.biograpy|textile|truncatewords_html:130 }}
             </div>
             {% endif %}
-            {% paginate object_list %}
-            {% for action in object_list %}
-                {% include "agora_core/action_item.html" %}
-            {% endfor %}
-            {% show_more %}
+            <div class="endless-container">
+                <a class="endless_more" href="#">{% trans "more" %}</a>
+                <div class="endless_loading hidden">{% trans "Loading..." %}</div>
+            </div>
         </div>
         {% endblock %}
     </div>
@@ -293,6 +293,7 @@
 {% block script-block %}
 {% include "agora_core/include-js-template-election.html" %}
 {% include "agora_core/include-js-template-agora.html" %}
+{% include "agora_core/client/all_actions.html" %}
 <script>app.currentView = new Agora.AgoraView();</script>
 {% endblock %}
 {% block footer %} {% endblock %}
