@@ -327,14 +327,17 @@ class Election(models.Model):
                 return False
         elif permission_name == 'emit_direct_vote':
             return user in self.agora.members.all() or\
-                self.agora.has_perms('join', user)
+                self.agora.has_perms('join', user) and not isarchived and\
+                isfrozen and self.has_started() and not self.has_ended()
         elif permission_name == 'vote_counts':
             return user in self.agora.members.all() or\
                 self.agora.has_perms('join', user)
         elif permission_name == 'emit_delegate_vote':
-            return user in self.agora.members.all() or\
+            can_emit = user in self.agora.members.all() or\
                 self.agora.has_perms('join', user) or\
                 self.agora.membership_policy == Agora.MEMBERSHIP_TYPE[1][0]
+            return can_emit and not isarchived and isfrozen and\
+                self.has_started() and not self.has_ended()
 
     def get_perms(self, user):
         '''

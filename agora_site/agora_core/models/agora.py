@@ -333,14 +333,18 @@ class Agora(models.Model):
         elif permission_name == 'delete':
             return self.creator == user
 
+        # any user can request to create an election, for now
+        elif permission_name == 'create_election':
+            return not isanon
+
     def get_perms(self, user):
         '''
         Returns a list of permissions for a given user calling to self.has_perms()
         '''
-        return [perm for perm in ('join', 'request_membership',
-            'cancel_membership_request', 'request_admin_membership',
+        return [perm for perm in ('join', 'request_membership', 'admin',
+            'cancel_membership_request', 'request_admin_membership', 'delete',
             'cancel_admin_membership_request', 'leave', 'leave_admin',
-            'admin', 'comment', 'delete') if self.has_perms(perm, user)]
+            'comment', 'create_election') if self.has_perms(perm, user)]
 
     def get_link(self):
         return reverse('agora-view', kwargs=dict(username=self.creator.username,

@@ -475,13 +475,13 @@ class AgoraTest(RootTestCase):
         self.login('david', 'david')
         data = self.postAndParse('agora/1/action/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
-        self.assertEquals(data, dict(permissions=['admin', 'comment', 'delete']))
+        self.assertEquals(data, dict(permissions=['admin', 'delete', 'comment', 'create_election']))
 
         # user2 should have some permissions
         self.login('user2', '123')
         data = self.postAndParse('agora/1/action/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
-        self.assertEquals(data, dict(permissions=['join', 'comment']))
+        self.assertEquals(data, dict(permissions=['join', 'comment', 'create_election']))
 
     def test_send_request_membership_mails(self):
         '''
@@ -778,3 +778,20 @@ class AgoraTest(RootTestCase):
         data = self.postAndParse('agora/1/action/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
         self.assertTrue('admin' not in data['permissions'])
+
+    def test_create_election(self):
+        self.login('user1', '123')
+        # user1 creates an election, but remains in requested status as it's not
+        # an admin
+        orig_data = {
+            'action': "create_election",
+            'pretty_name': "foo bar",
+            'description': "foo bar foo bar",
+            'question': "Do you prefer foo or bar?",
+            'answers': "foo\nbar",
+            'is_vote_secret': True,
+            'from_date': '',
+            'to_date': '',
+        }
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
