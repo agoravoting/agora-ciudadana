@@ -69,7 +69,12 @@ class GenericResourceMixin:
 
                 else:
                     if hasattr(form, "save"):
-                        form.save()
+                        obj = form.save()
+                        if obj:
+                            if hasattr(form, "bundle_obj"):
+                                response_data = form.bundle_obj(obj, request)
+                            else:
+                                response_data = obj
 
                 return self.create_response(request, response_data)
             except JSONDecodeError, e:

@@ -22,6 +22,7 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from django.contrib.comments.forms import CommentSecurityForm
 from django.contrib.comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
@@ -223,8 +224,10 @@ class CreateElectionForm(django_forms.ModelForm):
         widget=django_forms.TextInput(attrs={'class': 'datetimepicker'}),
         input_formats=('%m/%d/%Y %H:%M',))
 
-    def __init__(self, request, agora, *args, **kwargs):
-        super(CreateElectionForm, self).__init__(*args, **kwargs)
+    def __init__(self, request, agora, data, from_api=False, *args, **kwargs):
+        if from_api:
+            self.answers = JSONField(_("Answers"))
+        super(CreateElectionForm, self).__init__(data=data)
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
         self.request = request
@@ -234,6 +237,14 @@ class CreateElectionForm(django_forms.ModelForm):
             'pretty_name', 'description', 'question', 'answers', 'is_vote_secret', 'from_date', 'to_date'))
         self.helper.add_input(Submit('submit', _('Create Election'),
             css_class='btn btn-success btn-large'))
+
+    @staticmethod
+    def static_get_form_kwargs(request, data, *args, **kwargs):
+        '''
+        Returns the parameters that will be sent to the constructor
+        '''
+        agora = get_object_or_404(Agora, pk=kwargs["agoraid"])
+        return dict(request=request, agora=agora, data=data, from_api=True)
 
     def clean(self, *args, **kwargs):
         cleaned_data = super(CreateElectionForm, self).clean()
@@ -258,16 +269,32 @@ class CreateElectionForm(django_forms.ModelForm):
         return cleaned_data
 
     def clean_answers(self, *args, **kwargs):
-        data = self.cleaned_data["answers"]
+        answers = self.cleaned_data["answers"]
 
-        answers = [answer_value.strip()
-            for answer_value in self.cleaned_data["answers"].splitlines()
-                if answer_value.strip()]
+        if type(answers) != list:
+            self.answers = [answer_value.strip()
+                for answer_value in self.cleaned_data["answers"].splitlines()
+                    if answer_value.strip()]
+        else:
+            for answer in answers:
+                if type(answer) != str or type(answer) != unicode:
+                    raise django_forms.ValidationError(_('Invalid answers, not a string'))
+            self.answers = answers
 
-        if len(answers) < 2:
+        if len(self.answers) < 2:
             raise django_forms.ValidationError(_('You need to provide at least two '
                 'possible answers'))
-        return data
+        return answers
+
+    def bundle_obj(self, obj, request):
+        '''
+        Bundles the object for the api
+        '''
+        from agora_site.agora_core.resources.election import ElectionResource
+        er = ElectionResource()
+        bundle = er.build_bundle(obj=obj, request=request)
+        bundle = er.full_dehydrate(bundle)
+        return bundle
 
     def save(self, *args, **kwargs):
         election = super(CreateElectionForm, self).save(commit=False)
@@ -299,11 +326,11 @@ class CreateElectionForm(django_forms.ModelForm):
 
         # Questions/answers have a special formatting
         answers = []
-        for answer_value in self.cleaned_data["answers"].splitlines():
-            if answer_value.strip():
+        for answer in self.answers:
+            if answer:
                 answers += [{
                     "a": "ballot/answer",
-                    "value": answer_value.strip(),
+                    "value": answer,
                     "url": "",
                     "details": "",
                 }]

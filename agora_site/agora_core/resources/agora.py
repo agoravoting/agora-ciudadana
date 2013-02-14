@@ -30,7 +30,7 @@ from agora_site.agora_core.models import Agora
 from agora_site.agora_core.tasks.agora import (send_request_membership_mails,
     send_request_admin_membership_mails)
 from agora_site.agora_core.resources.user import UserResource
-from agora_site.agora_core.forms import PostCommentForm
+from agora_site.agora_core.forms import PostCommentForm, CreateElectionForm
 from agora_site.agora_core.views import AgoraActionJoinView
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.misc.decorators import permission_required
@@ -337,6 +337,7 @@ class AgoraResource(GenericResource):
             * deny_membership
             * add_membership
             * remove_membership
+
             * request_admin_membership
             * accept_admin_membership
             * deny_admin_membership
@@ -344,6 +345,7 @@ class AgoraResource(GenericResource):
             * remove_admin_membership
             * leave_admin_membership
 
+            * create_election
         '''
 
         actions = {
@@ -364,6 +366,8 @@ class AgoraResource(GenericResource):
             'add_admin_membership': self.add_admin_membership_action,
             'remove_admin_membership': self.remove_admin_membership_action,
             'leave_admin_membership': self.leave_admin_action,
+
+            'create_election': self.create_election_action,
         }
 
         if request.method != "POST":
@@ -978,6 +982,14 @@ class AgoraResource(GenericResource):
             email.send()
 
         return self.create_response(request, dict(status="success"))
+
+
+    @permission_required('create_election', (Agora, 'id', 'agoraid'))
+    def create_election_action(self, request, agora, **kwargs):
+        '''
+        Form to create election
+        '''
+        return self.wrap_form(CreateElectionForm)(request, **kwargs)
 
 
     def test_action(self, request, agora, param1=None, param2=None, **kwargs):
