@@ -1,27 +1,27 @@
-<script id="template-agora" type="text/underscore-template">
-    <div class="activity-action" geodata="<%= action.geolocation %>">
+<script id="template-action_action_object_election" type="text/underscore-template">
+    <div class="activity-action" geodata="<%= geolocation %>">
         <a href="<%= actor.url %>" class="mugshot">
             <img src="<%= actor.mugshot_url %>" alt="<%= actor.username %>" />
         </a>
         <div class="action-body">
             <div class="action-title">
-                <a href="<%= actor.url %>"><strong class="username"><%= actor.username %></strong></a> <strong class="verb"><%= verb %></strong>
-                to
-                <a href="<%= target.url %>"><%= target.username %></a>
+                <a href="<%= actor.url %>"><strong class="username"><%= actor.username %></strong></a> <strong class="verb"><%= verb %></strong> election
+                <a href="<%= action_object.url %>"><%= action_object.pretty_name %></a> at
+                <a href="<%= action_object.agora.url %>"><%= action_object.agora.full_name %></a>
                 <time class="timeago" title="<%= timestamp %>" datetime="<%= timestamp %>"></time>
             </div>
 
             <div class="action-detail">
-                <a href="<%= target.url %>" class="mugshot">
-                    <img src="<%= target.mugshot_url %>" alt="<%= target.username %>" />
+                <a href="<%= action_object.url %>" class="mugshot">
+                    <img src="<%= action_object.mugshot_url %>" alt="<%= action_object.username %>" />
                 </a>
                 <div class="detail-body">
                     <strong class="action-title">
-                        <a href="<%= target.url %>">
-                            <%= target.username %>
+                        <a href="<%= action_object.url %>">
+                            <%= action_object.username %>
                         </a>
                     </strong>
-                    <p><%= target.short_description %></p>
+                    <p><%= action_object.short_description %></p>
                 </div>
             </div>
         </div>

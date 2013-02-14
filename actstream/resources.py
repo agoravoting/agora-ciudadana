@@ -121,6 +121,9 @@ class ActionResource(GenericResource):
         elif bundle.obj.target and bundle.obj.target_content_type.name == "user":
             return "target_user"
 
+        elif bundle.obj.target and bundle.obj.target_content_type.name == "election":
+            return "target_election"
+
         else:
             return "unknown"
 
@@ -153,7 +156,7 @@ class ActionResource(GenericResource):
 
                 def dehydrate_user_info(self, bundle):
                     return dict(
-                        short_description=bundle.obj.voter.get_profile().short_description,
+                        short_description=bundle.obj.voter.get_profile().get_short_description(),
                         num_agoras=bundle.obj.voter.agoras.count(),
                         num_votes=bundle.obj.voter.get_profile().count_direct_votes()
                     )

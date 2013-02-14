@@ -51,6 +51,7 @@ class TinyProfileResource(GenericResource):
 
     content_type = fields.CharField(default="profile")
     username = fields.CharField()
+    short_description = fields.CharField()
     first_name = fields.CharField()
     user_id = fields.IntegerField()
     url = fields.CharField()
@@ -61,10 +62,13 @@ class TinyProfileResource(GenericResource):
 
     class Meta(GenericMeta):
         queryset = Profile.objects.all()
-        fields = ["id", "short_description"]
+        fields = ["id"]
 
     def dehydrate_username(self, bundle):
         return bundle.obj.user.username
+
+    def dehydrate_short_description(self, bundle):
+        return bundle.obj.get_profile().get_short_description()
 
     def dehydrate_first_name(self, bundle):
         return bundle.obj.user.first_name
