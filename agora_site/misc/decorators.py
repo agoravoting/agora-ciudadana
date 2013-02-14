@@ -61,6 +61,7 @@ def permission_required(perm, lookup_variables=None, **kwargs):
             # if more than one parameter is passed to the decorator we try to
             # fetch object for which check would be made
             obj = None
+            request = None
             if 'request' in kwargs:
                 request = kwargs['request']
             else:
@@ -101,10 +102,12 @@ def permission_required(perm, lookup_variables=None, **kwargs):
                     except Http404:
                         raise ImmediateHttpResponse(response=http.HttpNotFound())
 
-            if check_static:
-                has_perms = model.static_has_perms(perm, request.user)
-            else:
-                has_perms = obj.has_perms(perm, request.user)
+            has_perms = False
+            if request:
+                if check_static:
+                    has_perms = model.static_has_perms(perm, request.user)
+                else:
+                    has_perms = obj.has_perms(perm, request.user)
 
             if not has_perms:
                 raise ImmediateHttpResponse(response=http.HttpForbidden())
