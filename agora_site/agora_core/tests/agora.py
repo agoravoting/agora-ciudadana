@@ -655,3 +655,126 @@ class AgoraTest(RootTestCase):
         data = self.getAndParse('action/agora/1/')
         objects = data['objects']
         self.assertEqual(len(objects), 0)
+
+    def test_agora_request_admin_membership(self):
+        self.login('user1', '123')
+        # user1 joins the agora
+        orig_data = {'action': "join", }
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # user1 cannot check admin membership requests
+        data = self.get('agora/1/admin_membership_requests/', code=HTTP_FORBIDDEN)
+
+        orig_data = {'action': "request_admin_membership", }
+        # user1 can request admin membership
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # user1 has already requested admin membership
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_FORBIDDEN, content_type='application/json')
+
+        # check user1 is not yet admin
+        orig_data = dict(action="get_permissions")
+        # anonymous user has no special permissions
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertTrue('admin' not in data['permissions'])
+
+        # check user1 is requesting permissions
+        self.login('david', 'david')
+        data = self.getAndParse('agora/1/admin_membership_requests/', code=HTTP_OK)
+        self.assertEquals(data['meta']['total_count'], 1)
+        self.assertEquals(data['objects'][0]['username'], 'user1')
+
+        # accept admin membership
+        orig_data = dict(action='accept_admin_membership', username='user1')
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # now user1 is not requesting admin permissions
+        data = self.getAndParse('agora/1/admin_membership_requests/', code=HTTP_OK)
+        self.assertEquals(data['meta']['total_count'], 0)
+
+        # check user1 is admin
+        self.login('user1', '123')
+        orig_data = dict(action="get_permissions")
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertTrue('admin' in data['permissions'])
+
+        # now it's user2 who request to be made admin, but can't because it 
+        # is not a member
+        self.login('user2', '123')
+        orig_data = {'action': "request_admin_membership", }
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_FORBIDDEN, content_type='application/json')
+
+        # user2 joins the agora
+        orig_data = {'action': "join", }
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # now request again, this time successfully, agora admin membership
+        orig_data = {'action': "request_admin_membership", }
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # user1 rejects the admin membership of user2. Remember user1 has admin
+        # status, so he can do it
+        self.login('user1', '123')
+        orig_data = dict(action='deny_admin_membership', username='user2')
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # check user2 is not admin
+        self.login('user2', '123')
+        orig_data = dict(action="get_permissions")
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertTrue('admin' not in data['permissions'])
+
+        # check user1 is not requesting membership anymore
+        self.login('user1', '123')
+        data = self.getAndParse('agora/1/admin_membership_requests/', code=HTTP_OK)
+        self.assertEquals(data['meta']['total_count'], 0)
+
+        # user1 makes user2 admin directly
+        orig_data = dict(action='add_admin_membership', username='user2',
+            welcome_message="hola!")
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # check user2 is admin now
+        self.login('user2', '123')
+        orig_data = dict(action="get_permissions")
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertTrue('admin' in data['permissions'])
+
+        # user2 removes user1 from admin membership
+        orig_data = dict(action='remove_admin_membership', username='user1',
+            goodbye_message="adios con el corazon")
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # user1 cannot be removed from admin any more, since it's not an admin
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_FORBIDDEN, content_type='application/json')
+
+        # user2 leaves admin
+        orig_data = dict(action='leave_admin_membership')
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # you cannot leave admin twice
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_FORBIDDEN, content_type='application/json')
+
+        # check user2 is not admin in permissions
+        self.login('user2', '123')
+        orig_data = dict(action="get_permissions")
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertTrue('admin' not in data['permissions'])
