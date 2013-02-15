@@ -469,19 +469,19 @@ class AgoraTest(RootTestCase):
         # anonymous user has no special permissions
         data = self.postAndParse('agora/1/action/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
-        self.assertEquals(data, dict(permissions=[]))
+        self.assertEquals(set(data["permissions"]), set([]))
 
         # david user should have admin permissions
         self.login('david', 'david')
         data = self.postAndParse('agora/1/action/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
-        self.assertEquals(data, dict(permissions=['admin', 'delete', 'comment', 'create_election']))
+        self.assertEquals(set(data["permissions"]), set(['admin', 'delete', 'comment', 'create_election']))
 
         # user2 should have some permissions
         self.login('user2', '123')
         data = self.postAndParse('agora/1/action/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
-        self.assertEquals(data, dict(permissions=['join', 'comment', 'create_election']))
+        self.assertEquals(set(data["permissions"]), set(['join', 'comment', 'create_election']))
 
     def test_send_request_membership_mails(self):
         '''
@@ -788,10 +788,19 @@ class AgoraTest(RootTestCase):
             'pretty_name': "foo bar",
             'description': "foo bar foo bar",
             'question': "Do you prefer foo or bar?",
-            'answers': "foo\nbar",
+            'answers': ["fo\"o", "bar"],
             'is_vote_secret': True,
             'from_date': '',
             'to_date': '',
         }
-        data = self.post('agora/1/action/', data=orig_data,
+        data = self.postAndParse('agora/1/action/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
+
+        orig_data = dict(
+            pretty_name=orig_data['pretty_name'],
+            description=orig_data['description'],
+            is_vote_secret=orig_data['is_vote_secret'],
+        )
+
+        self.assertTrue('id' in data)
+        self.assertDictContains(data, orig_data)
