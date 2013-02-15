@@ -76,3 +76,10 @@ class RootTestCase(TestCase):
         data = simplejson.loads(json)
 
         return data
+
+    def assertDictContains(self, a, b):
+        '''
+        Assert true when a contains b and both are dicts
+        '''
+        for k, v in b.iteritems():
+            assert k in a and v == b[k]

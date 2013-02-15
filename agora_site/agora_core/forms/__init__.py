@@ -225,9 +225,9 @@ class CreateElectionForm(django_forms.ModelForm):
         input_formats=('%m/%d/%Y %H:%M',))
 
     def __init__(self, request, agora, data, from_api=False, *args, **kwargs):
-        if from_api:
-            self.answers = JSONField(_("Answers"))
         super(CreateElectionForm, self).__init__(data=data)
+        self.data = data
+        self.from_api = from_api
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
         self.request = request
@@ -271,17 +271,17 @@ class CreateElectionForm(django_forms.ModelForm):
     def clean_answers(self, *args, **kwargs):
         answers = self.cleaned_data["answers"]
 
-        if type(answers) != list:
-            self.answers = [answer_value.strip()
+        if not self.from_api:
+            answers = [answer_value.strip()
                 for answer_value in self.cleaned_data["answers"].splitlines()
                     if answer_value.strip()]
         else:
+            answers = self.data["answers"]
             for answer in answers:
-                if type(answer) != str or type(answer) != unicode:
+                if type(answer) != str and type(answer) != unicode:
                     raise django_forms.ValidationError(_('Invalid answers, not a string'))
-            self.answers = answers
 
-        if len(self.answers) < 2:
+        if len(answers) < 2:
             raise django_forms.ValidationError(_('You need to provide at least two '
                 'possible answers'))
         return answers
@@ -326,7 +326,7 @@ class CreateElectionForm(django_forms.ModelForm):
 
         # Questions/answers have a special formatting
         answers = []
-        for answer in self.answers:
+        for answer in self.cleaned_data["answers"]:
             if answer:
                 answers += [{
                     "a": "ballot/answer",
