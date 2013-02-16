@@ -495,6 +495,7 @@ class CreateElectionForm(django_forms.ModelForm):
         # admin, it must be approved
         if election.creator in election.agora.admins.all():
             election.is_approved = True
+            election.approved_at_date = datetime.datetime.now()
         else:
             election.is_approved = False
 

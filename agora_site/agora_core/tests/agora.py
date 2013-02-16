@@ -780,6 +780,10 @@ class AgoraTest(RootTestCase):
         self.assertTrue('admin' not in data['permissions'])
 
     def test_create_election(self):
+        # check no election is listed as requested
+        data = self.getAndParse('agora/1/requested_elections/', code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 0)
+
         self.login('user1', '123')
         # user1 creates an election, but remains in requested status as it's not
         # an admin
@@ -796,11 +800,41 @@ class AgoraTest(RootTestCase):
         data = self.postAndParse('agora/1/action/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
 
-        orig_data = dict(
+        orig_data_compare = dict(
             pretty_name=orig_data['pretty_name'],
             description=orig_data['description'],
             is_vote_secret=orig_data['is_vote_secret'],
         )
 
         self.assertTrue('id' in data)
-        self.assertDictContains(data, orig_data)
+        self.assertDictContains(data, orig_data_compare)
+
+        self.assertTrue('is_approved' in data)
+        self.assertEquals(data['is_approved'], False)
+        election_id = data['id']
+
+        # check election is listed as requested
+        data = self.getAndParse('agora/1/requested_elections/', code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 1)
+        self.assertEqual(data['objects'][0]['id'], election_id)
+
+        # save the current number of this agora's elections
+        data = self.getAndParse('agora/1/all_elections/', code=HTTP_OK)
+        num_elections = len(data['objects'])
+
+        # now create an election as an admin user, that should automatically be
+        # approved
+        self.login('david', 'david')
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertTrue('id' in data)
+        self.assertTrue('is_approved' in data)
+        self.assertEquals(data['is_approved'], True)
+
+        # number of approved election remains the same
+        data = self.getAndParse('agora/1/requested_elections/', code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 1)
+
+        # but all elections contains it, there's a new one =)
+        data = self.getAndParse('agora/1/all_elections/', code=HTTP_OK)
+        self.assertEqual(len(data['objects']), num_elections + 1)
