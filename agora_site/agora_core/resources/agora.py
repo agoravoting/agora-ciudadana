@@ -218,6 +218,10 @@ class AgoraResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_open_elections_list'), name="api_agora_open_elections_list"),
 
+            url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/requested_elections%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_requested_elections_list'), name="api_agora_requested_elections_list"),
+
             # TODO: add requested elections and deal with them (accept, deny)
 
             url(r"^(?P<resource_name>%s)/(?P<agora>\d+)/add_comment%s$" \
@@ -276,6 +280,14 @@ class AgoraResource(GenericResource):
         from agora_site.agora_core.resources.election import ElectionResource
         return self.get_custom_resource_list(request, resource=ElectionResource,
             queryfunc=lambda agora: agora.get_open_elections(), **kwargs)
+
+    def get_requested_elections_list(self, request, **kwargs):
+        '''
+        List the elections that are currently opened in an agora
+        '''
+        from agora_site.agora_core.resources.election import ElectionResource
+        return self.get_custom_resource_list(request, resource=ElectionResource,
+            queryfunc=lambda agora: agora.requested_elections(), **kwargs)
 
     def get_request_list(self, request, **kwargs):
         '''
