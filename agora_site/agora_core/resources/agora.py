@@ -11,6 +11,7 @@ from django.template.loader import render_to_string
 from django.shortcuts import redirect, get_object_or_404, render_to_response
 from django.utils.translation import ugettext as _
 from django.utils import simplejson as json
+from django.utils import translation
 
 from tastypie import fields
 from tastypie.validation import Validation, CleanedDataFormValidation
@@ -28,7 +29,7 @@ from guardian.shortcuts import assign, remove_perm
 
 from agora_site.agora_core.models import Agora
 from agora_site.agora_core.tasks.agora import (send_request_membership_mails,
-    send_request_admin_membership_mails)
+    send_request_admin_membership_mails, )
 from agora_site.agora_core.resources.user import UserResource
 from agora_site.agora_core.forms import PostCommentForm, CreateElectionForm
 from agora_site.agora_core.views import AgoraActionJoinView
@@ -478,6 +479,7 @@ class AgoraResource(GenericResource):
 
         # Mail to the user
         if user.get_profile().has_perms('receive_email_updates'):
+            translation.activate(user.get_profile().lang_code)
             context = get_base_email_context(request)
             context.update(dict(
                 agora=agora,
@@ -502,6 +504,7 @@ class AgoraResource(GenericResource):
                 render_to_string('agora_core/emails/agora_notification.html',
                     context), "text/html")
             email.send()
+            translation.deactivate()
 
         return self.create_response(request, dict(status="success"))
 
@@ -529,6 +532,7 @@ class AgoraResource(GenericResource):
 
         # Mail to the user
         if user.get_profile().has_perms('receive_email_updates'):
+            translation.activate(user.get_profile().lang_code)
             context = get_base_email_context(request)
             context.update(dict(
                 agora=agora,
@@ -554,6 +558,7 @@ class AgoraResource(GenericResource):
                 render_to_string('agora_core/emails/agora_notification.html',
                     context), "text/html")
             email.send()
+            translation.deactivate()
 
         return self.create_response(request, dict(status="success"))
 
@@ -580,6 +585,7 @@ class AgoraResource(GenericResource):
 
         # Mail to the user
         if user.get_profile().has_perms('receive_email_updates'):
+            translation.activate(user.get_profile().lang_code)
             context = get_base_email_context(request)
             context.update(dict(
                 agora=agora,
@@ -608,6 +614,7 @@ class AgoraResource(GenericResource):
                 render_to_string('agora_core/emails/agora_notification.html',
                     context), "text/html")
             email.send()
+            translation.deactivate()
 
         return self.create_response(request, dict(status="success"))
 
@@ -638,6 +645,7 @@ class AgoraResource(GenericResource):
 
         # Mail to the user
         if user.get_profile().has_perms('receive_email_updates'):
+            translation.activate(user.get_profile().lang_code)
             context = get_base_email_context(request)
             context.update(dict(
                 agora=agora,
@@ -663,6 +671,7 @@ class AgoraResource(GenericResource):
                 render_to_string('agora_core/emails/agora_notification.html',
                     context), "text/html")
             email.send()
+            translation.deactivate()
 
         return self.create_response(request, dict(status="success"))
 
@@ -705,6 +714,7 @@ class AgoraResource(GenericResource):
 
         # Mail to the user
         if request.user.get_profile().has_perms('receive_email_updates'):
+            translation.activate(request.user.get_profile().lang_code)
             context = get_base_email_context(request)
             context.update(dict(
                 agora=agora,
@@ -730,6 +740,7 @@ class AgoraResource(GenericResource):
                 render_to_string('agora_core/emails/agora_notification.html',
                     context), "text/html")
             email.send()
+            translation.deactivate()
 
         return self.create_response(request, dict(status="success"))
 
@@ -760,6 +771,7 @@ class AgoraResource(GenericResource):
 
         # Mail to the user
         if user.get_profile().has_perms('receive_email_updates'):
+            translation.activate(user.get_profile().lang_code)
             context = get_base_email_context(request)
             context.update(dict(
                 agora=agora,
@@ -784,6 +796,7 @@ class AgoraResource(GenericResource):
                 render_to_string('agora_core/emails/agora_notification.html',
                     context), "text/html")
             email.send()
+            translation.deactivate()
 
         return self.create_response(request, dict(status="success"))
 
@@ -813,6 +826,7 @@ class AgoraResource(GenericResource):
 
         # Mail to the user
         if user.get_profile().has_perms('receive_email_updates'):
+            translation.activate(user.get_profile().lang_code)
             context = get_base_email_context(request)
             context.update(dict(
                 agora=agora,
@@ -838,6 +852,7 @@ class AgoraResource(GenericResource):
                 render_to_string('agora_core/emails/agora_notification.html',
                     context), "text/html")
             email.send()
+            translation.deactivate()
 
         return self.create_response(request, dict(status="success"))
 
@@ -865,6 +880,7 @@ class AgoraResource(GenericResource):
 
         # Mail to the user
         if user.get_profile().has_perms('receive_email_updates'):
+            translation.activate(user.get_profile().lang_code)
             context = get_base_email_context(request)
             context.update(dict(
                 agora=agora,
@@ -893,6 +909,7 @@ class AgoraResource(GenericResource):
                 render_to_string('agora_core/emails/agora_notification.html',
                     context), "text/html")
             email.send()
+            translation.deactivate()
 
         return self.create_response(request, dict(status="success"))
 
@@ -923,6 +940,7 @@ class AgoraResource(GenericResource):
 
         # Mail to the user
         if user.get_profile().has_perms('receive_email_updates'):
+            translation.activate(user.get_profile().lang_code)
             context = get_base_email_context(request)
             context.update(dict(
                 agora=agora,
@@ -948,6 +966,7 @@ class AgoraResource(GenericResource):
                 render_to_string('agora_core/emails/agora_notification.html',
                     context), "text/html")
             email.send()
+            translation.deactivate()
 
         return self.create_response(request, dict(status="success"))
 
@@ -967,6 +986,7 @@ class AgoraResource(GenericResource):
 
         # Mail to the user
         if request.user.get_profile().has_perms('receive_email_updates'):
+            translation.activate(request.user.get_profile().lang_code)
             context = get_base_email_context(request)
             context.update(dict(
                 agora=agora,
@@ -992,6 +1012,7 @@ class AgoraResource(GenericResource):
                 render_to_string('agora_core/emails/agora_notification.html',
                     context), "text/html")
             email.send()
+            translation.deactivate()
 
         return self.create_response(request, dict(status="success"))
 
