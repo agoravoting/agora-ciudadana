@@ -8,6 +8,7 @@ from django.http import Http404
 from guardian.exceptions import GuardianError
 
 from tastypie import http
+from tastypie.bundle import Bundle
 from django.http import HttpRequest
 from tastypie.exceptions import ImmediateHttpResponse
 
@@ -64,10 +65,15 @@ def permission_required(perm, lookup_variables=None, **kwargs):
             request = None
             if 'request' in kwargs:
                 request = kwargs['request']
+            elif 'bundle' in kwargs:
+                request = kwargs['bundle'].request
             else:
                 for arg in args:
                     if isinstance(arg, HttpRequest):
                         request = arg
+                        break
+                    elif isinstance(arg, Bundle) and isinstance(arg.request, HttpRequest):
+                        request = arg.request
                         break
 
             if lookup_variables:

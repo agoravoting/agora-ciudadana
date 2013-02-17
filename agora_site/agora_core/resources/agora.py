@@ -91,7 +91,7 @@ class AgoraValidation(Validation):
     Validation class that uses some django forms to validate PUT and POST
     methods.
     '''
-    def is_valid(self, bundle, request=None):
+    def is_valid(self, bundle, request):
         if not bundle.data:
             return {'__all__': 'Not quite what I had in mind.'}
 
@@ -136,10 +136,11 @@ class AgoraResource(GenericResource):
         return bundle.obj.get_mugshot_url()
 
     @permission_required('create', check_static=Agora)
-    def obj_create(self, bundle, request=None, **kwargs):
-        self.is_valid(bundle, request)
+    def obj_create(self, bundle, **kwargs):
+        self.is_valid(bundle)
         if bundle.errors:
-            self.error_response(bundle.errors, request)
+            raise ImmediateHttpResponse(response=self.error_response(
+                bundle.request, bundle.errors))
 
         pretty_name = bundle.data['pretty_name']
         short_description = bundle.data['short_description']
@@ -148,36 +149,37 @@ class AgoraResource(GenericResource):
         agora = Agora(pretty_name=pretty_name,
                       short_description=short_description,
                       is_vote_secret=is_vote_secret)
-        agora.create_name(request.user)
-        agora.creator = request.user
-        agora.url = request.build_absolute_uri(agora.get_link())
+        agora.create_name(bundle.request.user)
+        agora.creator = bundle.request.user
+        agora.url = bundle.request.build_absolute_uri(agora.get_link())
 
         # we need to save before add members
         agora.save()
 
-        agora.members.add(request.user)
-        agora.admins.add(request.user)
+        agora.members.add(bundle.request.user)
+        agora.admins.add(bundle.request.user)
 
-        bundle = self.build_bundle(obj=agora, request=request)
+        bundle = self.build_bundle(obj=agora, request=bundle.request)
         bundle = self.full_dehydrate(bundle)
         return bundle
 
     @permission_required('delete', (Agora, 'id', 'pk'))
-    def obj_delete(self, request=None, **kwargs):
-        return super(AgoraResource, self).obj_delete(request, **kwargs)
+    def obj_delete(self, bundle, **kwargs):
+        return super(AgoraResource, self).obj_delete(bundle, **kwargs)
 
     @permission_required('admin', (Agora, 'id', 'pk'))
-    def obj_update(self, bundle, request=None, **kwargs):
-        self.is_valid(bundle, request)
+    def obj_update(self, bundle, **kwargs):
+        self.is_valid(bundle)
         if bundle.errors:
-            self.error_response(bundle.errors, request)
+            raise ImmediateHttpResponse(response=self.error_response(
+                bundle.request, bundle.errors))
 
         agora = Agora.objects.get(**kwargs)
         for k, v in bundle.data.items():
             setattr(agora, k, v)
         agora.save()
 
-        bundle = self.build_bundle(obj=agora, request=request)
+        bundle = self.build_bundle(obj=agora, request=bundle.request)
         bundle = self.full_dehydrate(bundle)
         return bundle
 

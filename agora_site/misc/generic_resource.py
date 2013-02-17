@@ -4,6 +4,7 @@ from simplejson.decoder import JSONDecodeError
 from django.conf import settings
 from django.core.paginator import InvalidPage
 from django.http import Http404
+
 from django.template import RequestContext
 from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
@@ -41,7 +42,6 @@ class GenericResourceMixin:
         """
         @csrf_exempt
         def wrapper(request, *args, **kwargs):
-
             try:
                 desired_format = self.determine_format(request)
                 if method == "POST":

@@ -4,6 +4,7 @@ from tastypie import http
 from tastypie import fields
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.resources import Resource
+from tastypie.bundle import Bundle
 
 from haystack.query import SearchQuerySet
 
@@ -54,6 +55,23 @@ class SearchResource(GenericResourceMixin, Resource):
 
         return kwargs
 
+    def build_bundle(self, obj=None, data=None, request=None, objects_saved=None):
+        """
+        Reimplemented so that it uses always and directly obj even if it's none
+        otherwise tastypie would try to instance object_class which is not
+        defined.
+
+        It also saves the request for later usage in obj_get_list.
+        """
+        self.request = request
+
+        return Bundle(
+            obj=obj,
+            data=data,
+            request=request,
+            objects_saved=objects_saved
+        )
+
     def get_search_query_set(self, request):
         model = request.GET.get("model", None)
         models = {'agora': Agora,
@@ -71,23 +89,23 @@ class SearchResource(GenericResourceMixin, Resource):
         '''
         return self.get_search_query_set(request)
 
-    def obj_get_list(self, request=None, **kwargs):
+    def obj_get_list(self, **kwargs):
         '''
         Returns a filtered object lists. Allows filtering using a query string
         using the GET param "q"
         '''
-
-        query = request.GET.get("q", None)
+        query = self.request.GET.get("q", None)
 
         if query:
-            q = self.get_search_query_set(request)
+            q = self.get_search_query_set(self.request)
             q = q.auto_query(query)
             return q
 
-        return self.get_object_list(request)
+        return self.get_object_list(self.request)
 
     def obj_get(self, request=None, **kwargs):
         '''
         Retrieves a detailed search item
         '''
+        import ipdb; ipdb.set_trace()
         return SearchQuerySet().filter(id=kwargs['id'])[0]
