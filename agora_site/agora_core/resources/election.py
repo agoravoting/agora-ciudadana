@@ -1,8 +1,16 @@
 from django.conf.urls.defaults import url
+from django.contrib.sites.models import Site
+from django.core.mail import EmailMultiAlternatives, EmailMessage, send_mass_mail
+from django.template.loader import render_to_string
+from django.utils.translation import ugettext as _
+from django.utils import simplejson as json
+from django.utils import translation
 
 from tastypie import fields, http
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.utils import trailing_slash
+
+from actstream.signals import action
 
 from agora_site.agora_core.models import Election
 from agora_site.agora_core.models import CastVote
@@ -10,6 +18,8 @@ from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.agora_core.resources.user import UserResource
 from agora_site.agora_core.resources.agora import AgoraResource, TinyAgoraResource
 from agora_site.agora_core.resources.castvote import CastVoteResource
+from agora_site.misc.utils import geolocate_ip, get_base_email_context
+from agora_site.misc.decorators import permission_required
 
 
 DELEGATION_URL = "http://example.com/delegation/has/no/url/"
@@ -123,6 +133,7 @@ class ElectionResource(GenericResource):
 
         actions = {
             'get_permissions': self.get_permissions_action,
+            'approve': self.approve_action,
         }
 
         if request.method != "POST":
@@ -145,12 +156,63 @@ class ElectionResource(GenericResource):
         kwargs.update(data)
         return actions[action](request, election, **kwargs)
 
+
     def get_permissions_action(self, request, election, **kwargs):
         '''
         Returns the permissions the user that requested it has
         '''
         return self.create_response(request,
             dict(permissions=election.get_perms(request.user)))
+
+
+    @permission_required('approve_election', (Election, 'id', 'electionid'))
+    def approve_action(self, request, election, **kwargs):
+        '''
+        Requests membership from authenticated user to an agora
+        '''
+        election.is_approved = True
+        election.save()
+
+        action.send(request.user, verb='approved', action_object=election,
+            target=election.agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        # Mail to the user
+        if request.user.get_profile().has_perms('receive_email_updates'):
+            translation.activate(request.user.get_profile().lang_code)
+            context = get_base_email_context(request)
+            context.update(dict(
+                agora=election.agora,
+                other_user=request.user,
+                notification_text=_('Election %(election)s approved at agora '
+                    '%(agora)s. Congratulations!') % dict(
+                        agora=election.agora.get_full_name(),
+                        election=election.pretty_name
+                    ),
+                to=request.user,
+                extra_urls=[dict(
+                    url_title=_("Election URL"),
+                    url=election.get_link()
+                )]
+            ))
+
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - Election %(election)s approved') % dict(
+                            site=Site.objects.get_current().domain,
+                            election=election.pretty_name
+                        ),
+                body=render_to_string('agora_core/emails/agora_notification.txt',
+                    context),
+                to=[request.user.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/agora_notification.html',
+                    context), "text/html")
+            email.send()
+            translation.deactivate()
+
+        return self.create_response(request, dict(status="success"))
+
 
     def get_all_votes(self, request, **kwargs):
         '''
