@@ -40,7 +40,8 @@ from userena.models import UserenaSignup
 from userena import settings as userena_settings
 
 from agora_site.agora_core.models import Agora, Election, CastVote
-from agora_site.agora_core.tasks import *
+from agora_site.agora_core.tasks.election import (start_election, end_election,
+    send_election_created_mails)
 from agora_site.misc.utils import *
 
 from .comment import *
@@ -346,14 +347,20 @@ class CreateElectionForm(django_forms.ModelForm):
             },]
         election.save()
 
+        # used for tasks
+        kwargs=dict(
+            election_id=election.id,
+            is_secure=self.request.is_secure(),
+            site_id=Site.objects.get_current().id,
+            remote_addr=self.request.META.get('REMOTE_ADDR')
+        )
 
+        # send email to admins
+        send_election_created_mails.apply_async(kwargs=kwargs, task_id=election.task_id(send_election_created_mails))
+
+        # schedule start and end of the election. note that if election is not
+        # approved, the start and end of the election won't really happen
         if from_date and to_date:
-            kwargs=dict(
-                election_id=election.id,
-                is_secure=self.request.is_secure(),
-                site_id=Site.objects.get_current().id,
-                remote_addr=self.request.META.get('REMOTE_ADDR')
-            )
             start_election.apply_async(kwargs=kwargs, task_id=election.task_id(start_election),
                 eta=election.voting_starts_at_date)
             kwargs["user_id"] = self.request.user.id
