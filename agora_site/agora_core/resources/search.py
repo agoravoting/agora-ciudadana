@@ -107,5 +107,4 @@ class SearchResource(GenericResourceMixin, Resource):
         '''
         Retrieves a detailed search item
         '''
-        import ipdb; ipdb.set_trace()
         return SearchQuerySet().filter(id=kwargs['id'])[0]
