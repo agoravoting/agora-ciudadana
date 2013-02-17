@@ -96,7 +96,61 @@ class ElectionResource(GenericResource):
             url(r"^(?P<resource_name>%s)/(?P<electionid>\d+)/direct_votes%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_direct_votes'), name="api_election_direct_votes"),
+
+            url(r"^(?P<resource_name>%s)/(?P<electionid>\d+)/action%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('action'), name="api_election_action"),
         ]
+
+
+    def action(self, request, **kwargs):
+        '''
+        Requests an action on this election
+
+        actions:
+            DONE
+            * get_permissions
+
+            TODO
+            * approve
+            * freeze
+            * start
+            * stop
+            * archive
+            * vote
+            * cancel_vote
+        '''
+
+        actions = {
+            'get_permissions': self.get_permissions_action,
+        }
+
+        if request.method != "POST":
+            raise ImmediateHttpResponse(response=http.HttpMethodNotAllowed())
+
+        data = self.deserialize_post_data(request)
+
+        election = None
+        electionid = kwargs.get('electionid', -1)
+        try:
+            election = Election.objects.get(id=electionid)
+        except:
+            raise ImmediateHttpResponse(response=http.HttpNotFound())
+
+        action = data.get("action", False)
+
+        if not action or not action in actions:
+            raise ImmediateHttpResponse(response=http.HttpNotFound())
+
+        kwargs.update(data)
+        return actions[action](request, election, **kwargs)
+
+    def get_permissions_action(self, request, election, **kwargs):
+        '''
+        Returns the permissions the user that requested it has
+        '''
+        return self.create_response(request,
+            dict(permissions=election.get_perms(request.user)))
 
     def get_all_votes(self, request, **kwargs):
         '''
