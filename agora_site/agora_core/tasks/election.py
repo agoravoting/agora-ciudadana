@@ -8,6 +8,7 @@ from actstream.signals import action
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
+from django.utils import translation
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 
@@ -63,6 +64,7 @@ def start_election(election_id, is_secure, site_id, remote_addr):
         if not voter.get_profile().has_perms('receive_email_updates'):
             continue
 
+        translation.activate(voter.get_profile().lang_code)
         context['to'] = voter
         try:
             context['delegate'] = get_delegate_in_agora(voter, election.agora)
@@ -83,6 +85,7 @@ def start_election(election_id, is_secure, site_id, remote_addr):
         if not voter.get_profile().has_perms('receive_email_updates'):
             continue
 
+        translation.activate(voter.get_profile().lang_code)
         context['to'] = voter
         datatuples.append((
             _('Vote in election %s') % election.pretty_name,
@@ -92,6 +95,8 @@ def start_election(election_id, is_secure, site_id, remote_addr):
                 context),
             None,
             [voter.email]))
+
+    translation.deactivate()
 
     send_mass_html_mail(datatuples)
 
@@ -143,6 +148,7 @@ def end_election(election_id, is_secure, site_id, remote_addr, user_id):
         if not vote.voter.get_profile().has_perms('receive_email_updates'):
             continue
 
+        translation.activate(vote.voter.get_profile().lang_code)
         context['to'] = vote.voter
         try:
             context['delegate'] = get_delegate_in_agora(vote.voter, election.agora)
@@ -157,11 +163,53 @@ def end_election(election_id, is_secure, site_id, remote_addr, user_id):
             None,
             [vote.voter.email]))
 
+    translation.deactivate()
+
     send_mass_html_mail(datatuples)
 
     action.send(user, verb='published results', action_object=election,
         target=election.agora, ipaddr=remote_addr,
         geolocation=json.dumps(geolocate_ip(remote_addr)))
+
+
+@task(ignore_result=True)
+def send_election_created_mails(election_id, is_secure, site_id, remote_addr, user_id):
+    election = Election.objects.get(pk=election_id)
+    if not election or election.is_archived():
+        return
+
+    user = User.objects.get(pk=user_id)
+    context = get_base_email_context_task(is_secure, site_id)
+    context.update(dict(
+        election=election,
+        action_user_url='/%s' % election.creator.username,
+    ))
+
+    # List of emails to send. tuples are of format:
+    #
+    # (subject, text, html, from_email, recipient)
+    datatuples = []
+
+    for admin in election.agora.admins.all():
+
+        if not admin.get_profile().has_perms('receive_email_updates'):
+            continue
+
+        translation.activate(admin.get_profile().lang_code)
+        context['to'] = admin
+        datatuples.append((
+            _('Election %s created') % election.pretty_name,
+            render_to_string('agora_core/emails/election_created.txt',
+                context),
+            render_to_string('agora_core/emails/election_created.html',
+                context),
+            None,
+            [admin.email]))
+
+    translation.deactivate()
+
+    send_mass_html_mail(datatuples)
+
 
 
 @task(ignore_result=True)
