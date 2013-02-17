@@ -19,7 +19,7 @@ pygeoip
 django-dajaxice
 celery==3.0.12
 django-celery==3.0.11
-git+https://github.com/toastdriven/django-tastypie.git
+django-tastypie==0.9.12
 whoosh
 sphinx
 sphinxcontrib-httpdomain
