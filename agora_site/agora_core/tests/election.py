@@ -7,6 +7,7 @@ from common import (HTTP_OK,
                     HTTP_NOT_FOUND)
 
 from common import RootTestCase
+from datetime import datetime
 
 
 class ElectionTest(RootTestCase):
@@ -49,6 +50,55 @@ class ElectionTest(RootTestCase):
             code=HTTP_OK, content_type='application/json')
         self.assertEquals(set(data["permissions"]),
             set(['admin', 'delete', 'comment', 'create_election']))
+
+
+    def test_change_election(self):
+        self.login('user1', '123')
+        # user1 creates an election, but remains in requested status
+        orig_data = {
+            'action': "create_election",
+            'pretty_name': "foo bar",
+            'description': "foo bar foo bar",
+            'question': "Do you prefer foo or bar?",
+            'answers': ["fo\"o", "bar"],
+            'is_vote_secret': True,
+            'from_date': '',
+            'to_date': '',
+        }
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        election_id = data['id']
+        self.assertEquals(data['pretty_name'], orig_data['pretty_name'])
+
+        # change pretty_name
+        orig_data = {
+            'pretty_name': "fooooooooooooooo bar"
+        }
+        data = self.putAndParse('election/%d/' % election_id, data=orig_data,
+            content_type='application/json')
+        self.assertEquals(data['pretty_name'], orig_data['pretty_name'])
+
+        # change answers
+        orig_data = {
+            'answers': ["uno", "dos", "o tres"]
+        }
+        data = self.putAndParse('election/%d/' % election_id, data=orig_data,
+            content_type='application/json')
+
+        # change answers with one answer > fail
+        orig_data = {
+            'answers': ["uno"]
+        }
+        data = self.putAndParse('election/%d/' % election_id, data=orig_data,
+            code=HTTP_BAD_REQUEST, content_type='application/json')
+
+        # set start date
+        orig_data = {
+            'from_date': '2020-02-18 20:13:00'
+        }
+        data = self.putAndParse('election/%d/' % election_id, data=orig_data,
+            content_type='application/json')
+        self.assertEquals(orig_data['from_date'], str(datetime.strptime(data['voting_starts_at_date'], "%Y-%m-%dT%H:%M:%S")))
 
     def test_approve_election(self):
         self.login('user1', '123')

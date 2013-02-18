@@ -165,6 +165,7 @@ class AgoraResource(GenericResource):
 
     @permission_required('delete', (Agora, 'id', 'pk'))
     def obj_delete(self, bundle, **kwargs):
+        # TODO: remove associated objects: elections, actions, etc
         return super(AgoraResource, self).obj_delete(bundle, **kwargs)
 
     @permission_required('admin', (Agora, 'id', 'pk'))
