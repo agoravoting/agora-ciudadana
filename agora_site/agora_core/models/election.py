@@ -95,7 +95,7 @@ class Election(models.Model):
     # because it's dynamic (changes).
     # Usually the electorate is set when election is frozen
     electorate = models.ManyToManyField(User, related_name='elections',
-        verbose_name=_('Electorate'))
+        verbose_name=_('Electorate'), null=True, blank=True)
 
     parent_election = models.ForeignKey('self', related_name='children_elections',
         verbose_name=_('Parent Election'), default=None, null=True)
@@ -111,9 +111,9 @@ class Election(models.Model):
 
     last_modified_at_date = models.DateTimeField(_(u'Last Modified at Date'), auto_now_add=True, editable=True)
 
-    voting_starts_at_date = models.DateTimeField(_(u'Voting Starts Date'), auto_now_add=False, default=None, null=True)
+    voting_starts_at_date = models.DateTimeField(_(u'Voting Starts Date'), auto_now_add=False, default=None, blank=True, null=True)
 
-    voting_ends_at_date = models.DateTimeField(_(u'Voting Ends Date'), auto_now_add=False, default=None, null=True)
+    voting_ends_at_date = models.DateTimeField(_(u'Voting Ends Date'), auto_now_add=False, default=None, blank=True, null=True)
 
     voting_extended_until_date = models.DateTimeField(_(u'Voting Extended until Date'), auto_now_add=False, default=None, null=True)
 
