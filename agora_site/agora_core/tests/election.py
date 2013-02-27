@@ -7,7 +7,7 @@ from common import (HTTP_OK,
                     HTTP_NOT_FOUND)
 
 from common import RootTestCase
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class ElectionTest(RootTestCase):
@@ -153,6 +153,53 @@ class ElectionTest(RootTestCase):
         # check that election is not in requested elections
         data = self.getAndParse('agora/1/requested_elections/', code=HTTP_OK)
         self.assertEqual(len(data['objects']), 0)
+
+    def test_approve_election2(self):
+        self.login('user1', '123')
+        # user1 creates an election, but remains in requested status as it's not
+        # an admin
+        date_format = "%Y-%m-%dT%H:%M:%S"
+        now = (datetime.now() + timedelta(seconds=1)).strftime(date_format)
+        later = (datetime.now() + timedelta(hours=2)).strftime(date_format)
+        orig_data = {
+            'action': "create_election",
+            'pretty_name': "foo bar",
+            'description': "foo bar foo bar",
+            'question': "Do you prefer foo or bar?",
+            'answers': ["fo\"o", "bar"],
+            'is_vote_secret': True,
+            'from_date': now,
+            'to_date': later,
+        }
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        self.assertTrue('is_approved' in data)
+        self.assertEquals(data['is_approved'], False)
+        election_id = data['id']
+        election_start_date = data['voting_starts_at_date']
+
+        # election can be approved
+        self.login('david', 'david')
+        orig_data = dict(action='get_permissions')
+        data = self.postAndParse('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertTrue('approve_election' in data["permissions"])
+
+        # sleep for a second
+        from time import sleep
+        sleep(2)
+
+        # election can still be approved
+        orig_data = dict(action='get_permissions')
+        data = self.postAndParse('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertTrue('approve_election' in data["permissions"])
+
+        # because start date has been reset
+        data = self.getAndParse('election/%s/' % election_id, code=HTTP_OK)
+        self.assertEqual(data['voting_starts_at_date'], None)
+        self.assertEqual(data['voting_ends_at_date'], None)
 
     def test_start_election(self):
         # create election as admin
