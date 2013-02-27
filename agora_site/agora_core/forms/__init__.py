@@ -219,11 +219,11 @@ class CreateElectionForm(django_forms.ModelForm):
     from_date = django_forms.DateTimeField(label=_('Start voting'), required=False,
         help_text=_("Not required, you can choose to start the voting period manually"),
         widget=django_forms.TextInput(attrs={'class': 'datetimepicker'}),
-        input_formats=('%m/%d/%Y %H:%M',))
+        input_formats=('%m/%d/%Y %H:%M','%Y-%m-%dT%H:%M:%S'))
     to_date = django_forms.DateTimeField(label=_('End voting'), required=False,
         help_text=_("Not required, you can choose to end the voting period manually"),
         widget=django_forms.TextInput(attrs={'class': 'datetimepicker'}),
-        input_formats=('%m/%d/%Y %H:%M',))
+        input_formats=('%m/%d/%Y %H:%M', '%Y-%m-%dT%H:%M:%S'))
 
     def __init__(self, request, agora, data, from_api=False, *args, **kwargs):
         super(CreateElectionForm, self).__init__(data=data)
