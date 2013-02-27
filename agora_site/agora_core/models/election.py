@@ -307,7 +307,8 @@ class Election(models.Model):
         elif permission_name == 'freeze_election':
             return not isfrozen and isadminorcreator and not isarchived
         elif permission_name == 'approve_election':
-            return not self.is_approved and isadmin and not isarchived
+            return not self.is_approved and isadmin and not isarchived and\
+                not self.has_started()
         elif permission_name == 'begin_election':
             return not self.voting_starts_at_date and isadmin and not isarchived and\
                 self.is_approved
@@ -326,8 +327,9 @@ class Election(models.Model):
             else:
                 return False
         elif permission_name == 'emit_direct_vote':
-            return user in self.agora.members.all() or\
-                self.agora.has_perms('join', user) and not isarchived and\
+            canemit = user in self.agora.members.all() or\
+                self.agora.has_perms('join', user)
+            return canemit and not isarchived and\
                 isfrozen and self.has_started() and not self.has_ended()
         elif permission_name == 'vote_counts':
             return user in self.agora.members.all() or\
