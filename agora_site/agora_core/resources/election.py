@@ -285,6 +285,8 @@ class ElectionResource(GenericResource):
         actions = {
             'get_permissions': self.get_permissions_action,
             'approve': self.approve_action,
+            'start': self.start_action,
+            'stop': self.stop_action,
         }
 
         if request.method != "POST":
@@ -364,6 +366,51 @@ class ElectionResource(GenericResource):
 
         return self.create_response(request, dict(status="success"))
 
+    @permission_required('begin_election', (Election, 'id', 'electionid'))
+    def start_action(self, request, election, **kwargs):
+        '''
+        Starts an election
+        '''
+
+        tkwargs=dict(
+            election_id=election.id,
+            is_secure=request.is_secure(),
+            site_id=Site.objects.get_current().id,
+            remote_addr=request.META.get('REMOTE_ADDR')
+        )
+
+        election.last_modified_at_date = datetime.datetime.now()
+        election.voting_starts_at_date = election.last_modified_at_date
+        if not election.frozen_at_date:
+            election.frozen_at_date = election.last_modified_at_date
+        election.save()
+        transaction.commit()
+
+        start_election.apply_async(kwargs=tkwargs, task_id=election.task_id(start_election))
+        return self.create_response(request, dict(status="success"))
+
+    @permission_required('end_election', (Election, 'id', 'electionid'))
+    def stop_action(self, request, election, **kwargs):
+        '''
+        Ends an election
+        '''
+        election.last_modified_at_date = datetime.datetime.now()
+
+        tkwargs=dict(
+            election_id=election.id,
+            is_secure=request.is_secure(),
+            site_id=Site.objects.get_current().id,
+            remote_addr=request.META.get('REMOTE_ADDR'),
+            user_id=request.user.id
+        )
+
+        election.voting_ends_at_date = datetime.datetime.now()
+        election.voting_extended_until_date = election.voting_ends_at_date
+        election.save()
+        transaction.commit()
+
+        end_election.apply_async(kwargs=tkwargs, task_id=election.task_id(end_election))
+        return self.create_response(request, dict(status="success"))
 
     def get_all_votes(self, request, **kwargs):
         '''
