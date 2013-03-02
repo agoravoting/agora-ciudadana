@@ -476,6 +476,12 @@ class ElectionTest(RootTestCase):
         self.assertEqual(len(data['objects']), 1)
         self.assertEqual(data['objects'][0]['id'], second_vote_id)
 
+        # vote appears in votes_from_delegates because it's public
+        data = self.getAndParse('election/%d/votes_from_delegates/' %  election_id,
+            code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 1)
+        self.assertEqual(data['objects'][0]['id'], second_vote_id)
+
         # now user1 votes - he is not a member of the agora, so his vote
         # doesn't count. but he can vote, if his vote is public so he acts
         # as a delegate
@@ -502,3 +508,14 @@ class ElectionTest(RootTestCase):
         self.assertEqual(data["is_counted"], False)
         self.assertEqual(data["reason"], vote_data['reason'])
         vote3_id = data['id']
+
+        # vote doesn't appear in direct valid votes
+        data = self.getAndParse('election/%d/direct_votes/' %  election_id,
+            code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 1)
+
+        # but appears in delegate votes because it's public
+        data = self.getAndParse('election/%d/votes_from_delegates/' %  election_id,
+            code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 2)
+        self.assertEqual(data['objects'][1]['id'], vote3_id)
