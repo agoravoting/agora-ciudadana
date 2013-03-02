@@ -1,9 +1,11 @@
 from agora_site.agora_core.models import Election, CastVote
-from agora_site.agora_core.tasks.election import start_election, end_election
+from agora_site.agora_core.tasks.election import (start_election, end_election,
+    archive_election)
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.agora_core.resources.user import UserResource
 from agora_site.agora_core.resources.agora import AgoraResource, TinyAgoraResource
 from agora_site.agora_core.resources.castvote import CastVoteResource
+from agora_site.agora_core.forms.election import VoteForm as ElectionVoteForm
 from agora_site.misc.utils import geolocate_ip, get_base_email_context
 from agora_site.misc.decorators import permission_required
 
@@ -239,22 +241,27 @@ class ElectionResource(GenericResource):
 
     def prepend_urls(self):
         return [
+            # all counting votes
             url(r"^(?P<resource_name>%s)/(?P<electionid>\d+)/all_votes%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_all_votes'), name="api_election_all_votes"),
 
+            # all votes, valid and invalid, counting or not
             url(r"^(?P<resource_name>%s)/(?P<electionid>\d+)/cast_votes%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_cast_votes'), name="api_election_cast_votes"),
 
+            # all indirect votes that are valid - only available when election is tallied
             url(r"^(?P<resource_name>%s)/(?P<electionid>\d+)/delegated_votes%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_delegated_votes'), name="api_election_delegated_votes"),
 
+            # all countable direct votes that are public
             url(r"^(?P<resource_name>%s)/(?P<electionid>\d+)/votes_from_delegates%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_votes_from_delegates'), name="api_election_votes_from_delegates"),
 
+            # all countable direct votes
             url(r"^(?P<resource_name>%s)/(?P<electionid>\d+)/direct_votes%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_direct_votes'), name="api_election_direct_votes"),
@@ -273,12 +280,12 @@ class ElectionResource(GenericResource):
             DONE
             * get_permissions
             * approve
-
-            TODO
             * start
             * stop
             * archive
             * vote
+
+            TODO
             * cancel_vote
         '''
 
@@ -287,6 +294,8 @@ class ElectionResource(GenericResource):
             'approve': self.approve_action,
             'start': self.start_action,
             'stop': self.stop_action,
+            'archive': self.archive_action,
+            'vote': self.vote_action,
         }
 
         if request.method != "POST":
@@ -412,6 +421,42 @@ class ElectionResource(GenericResource):
         end_election.apply_async(kwargs=tkwargs, task_id=election.task_id(end_election))
         return self.create_response(request, dict(status="success"))
 
+    @permission_required('archive_election', (Election, 'id', 'electionid'))
+    def archive_action(self, request, election, **kwargs):
+        '''
+        Ends an election
+        '''
+        election.archived_at_date = datetime.datetime.now()
+        election.last_modified_at_date = election.archived_at_date
+
+        if election.has_started() and not election.has_ended():
+            election.voting_ends_at_date = election.archived_at_date
+            election.voting_extended_until_date = election.archived_at_date
+
+        if not election.is_frozen():
+            election.frozen_at_date = election.archived_at_date
+
+        election.save()
+        transaction.commit()
+
+        tkwargs=dict(
+            election_id=election.id,
+            is_secure=request.is_secure(),
+            site_id=Site.objects.get_current().id,
+            remote_addr=request.META.get('REMOTE_ADDR'),
+            user_id=request.user.id
+        )
+
+        archive_election.apply_async(kwargs=tkwargs, task_id=election.task_id(archive_election))
+        return self.create_response(request, dict(status="success"))
+
+    @permission_required('emit_direct_vote', (Election, 'id', 'electionid'))
+    def vote_action(self, request, election, **kwargs):
+        '''
+        Form for voting
+        '''
+        return self.wrap_form(ElectionVoteForm)(request, election, **kwargs)
+
     def get_all_votes(self, request, **kwargs):
         '''
         List all the votes in this agora
@@ -447,18 +492,18 @@ class ElectionResource(GenericResource):
         return self.get_custom_resource_list(request, resource=CastVoteResource, 
             queryfunc=lambda election: election.get_direct_votes(), **kwargs)
 
-    def get_custom_resource_list(self, request, url_name, queryfunc, resource, **kwargs):
+    def get_custom_resource_list(self, request, queryfunc, resource, **kwargs):
         '''
         List custom resources (mostly used for votes)
         '''
         election = None
         electionid = kwargs.get('electionid', -1)
         try:
-            election = Election.objects.get(id=election)
+            election = Election.objects.get(id=electionid)
         except:
             raise ImmediateHttpResponse(response=http.HttpNotFound())
 
-        return resource().get_custom_list(request=request, kwargs=kwargs,
+        return resource().get_custom_list(request=request,
             queryset=queryfunc(election))
 
 
