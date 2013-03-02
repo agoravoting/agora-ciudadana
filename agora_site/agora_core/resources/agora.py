@@ -453,6 +453,34 @@ class AgoraResource(GenericResource):
         if not is_following(request.user, agora):
             follow(request.user, agora, actor_only=False, request=request)
 
+        # Mail to the user
+        user = request.user
+        if user.get_profile().has_perms('receive_email_updates'):
+            translation.activate(user.get_profile().lang_code)
+            context = get_base_email_context(request)
+            context.update(dict(
+                agora=agora,
+                other_user=user,
+                notification_text=_('You just joined %(agora)s. '
+                    'Congratulations!') % dict(agora=agora.get_full_name()),
+                to=user
+            ))
+
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - you are now member of %(agora)s') % dict(
+                            site=Site.objects.get_current().domain,
+                            agora=agora.get_full_name()
+                        ),
+                body=render_to_string('agora_core/emails/agora_notification.txt',
+                    context),
+                to=[user.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/agora_notification.html',
+                    context), "text/html")
+            email.send()
+            translation.deactivate()
+
         return self.create_response(request, dict(status="success"))
 
 

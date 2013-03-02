@@ -332,8 +332,7 @@ class Election(models.Model):
             return canemit and not isarchived and\
                 isfrozen and self.has_started() and not self.has_ended()
         elif permission_name == 'vote_counts':
-            return user in self.agora.members.all() or\
-                self.agora.has_perms('join', user)
+            return user in self.agora.members.all()
         elif permission_name == 'emit_delegate_vote':
             can_emit = user in self.agora.members.all() or\
                 self.agora.has_perms('join', user) or\

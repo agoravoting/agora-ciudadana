@@ -175,6 +175,54 @@ def end_election(election_id, is_secure, site_id, remote_addr, user_id):
 
 
 @task(ignore_result=True)
+def archive_election(election_id, is_secure, site_id, remote_addr, user_id):
+    election = Election.objects.get(pk=election_id)
+    if not election.is_archived():
+        return
+
+    context = get_base_email_context_task(is_secure, site_id)
+
+    context.update(dict(
+        election=election,
+        election_url=reverse('election-view',
+            kwargs=dict(username=election.agora.creator.username,
+                agoraname=election.agora.name, electionname=election.name)),
+        agora_url=reverse('agora-view',
+            kwargs=dict(username=election.agora.creator.username,
+                agoraname=election.agora.name)),
+    ))
+
+    # List of emails to send. tuples are of format:
+    #
+    # (subject, text, html, from_email, recipient)
+    datatuples = []
+
+    for vote in election.get_all_votes():
+
+        if not vote.voter.get_profile().has_perms('receive_email_updates'):
+            continue
+
+        translation.activate(vote.voter.get_profile().lang_code)
+        context['to'] = vote.voter
+        datatuples.append((
+            _('Election results for %s') % election.pretty_name,
+            render_to_string('agora_core/emails/election_archived.txt',
+                context),
+            render_to_string('agora_core/emails/election_archived.html',
+                context),
+            None,
+            [vote.voter.email]))
+
+    translation.deactivate()
+
+    send_mass_html_mail(datatuples)
+
+    action.send(user, verb='archived', action_object=election,
+        target=election.agora, ipaddr=remote_addr,
+        geolocation=json.dumps(geolocate_ip(remote_addr)))
+
+
+@task(ignore_result=True)
 def send_election_created_mails(election_id, is_secure, site_id, remote_addr, user_id):
     election = Election.objects.get(pk=election_id)
     if not election or election.is_archived():

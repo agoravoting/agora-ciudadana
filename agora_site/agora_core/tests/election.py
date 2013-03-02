@@ -337,3 +337,168 @@ class ElectionTest(RootTestCase):
         self.assertTrue('begin_election' not in data["permissions"])
         self.assertTrue('end_election' not in data["permissions"])
         self.assertTrue('emit_direct_vote' not in data["permissions"])
+
+
+    def test_archive_election(self):
+        # create election as admin
+        self.login('david', 'david')
+        orig_data = {
+            'action': "create_election",
+            'pretty_name': "foo bar",
+            'description': "foo bar foo bar",
+            'question': "Do you prefer foo or bar?",
+            'answers': ["fo\"o", "bar"],
+            'is_vote_secret': True,
+            'from_date': '',
+            'to_date': '',
+        }
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        election_id = data['id']
+
+        # check it can archive the election
+        orig_data = dict(action='get_permissions')
+        data = self.postAndParse('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertTrue('archive_election' in data["permissions"])
+
+        # archive the election
+        orig_data = dict(action='archive')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # check it cannot archive the election anymore
+        orig_data = dict(action='get_permissions')
+        data = self.postAndParse('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertTrue('archive_election' not in data["permissions"])
+
+        # because start date has been reset
+        data = self.getAndParse('election/%s/' % election_id, code=HTTP_OK)
+        self.assertEqual(data['voting_starts_at_date'], None)
+
+    def test_vote_on_election(self):
+        # create election as admin
+        self.login('david', 'david')
+        orig_data = {
+            'action': "create_election",
+            'pretty_name': "foo bar",
+            'description': "foo bar foo bar",
+            'question': "Do you prefer foo or bar?",
+            'answers': ["fo\"o", "bar"],
+            'is_vote_secret': True,
+            'from_date': '',
+            'to_date': '',
+        }
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        election_id = data['id']
+
+        # david tries to vote but can't, because voting has not started
+        vote_data = {
+            'is_vote_secret': True,
+            'question0': "fo\"o",
+            'action': 'vote'
+        }
+        data = self.post('election/%d/action/' % election_id,
+            data=vote_data, code=HTTP_FORBIDDEN, content_type='application/json')
+
+        # start election
+        orig_data = dict(action='start')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # david tries to vote, but can't - invalid answer
+        vote_data['question0'] = 'muahjajaja'
+        data = self.post('election/%d/action/' % election_id,
+            data=vote_data, code=HTTP_BAD_REQUEST, content_type='application/json')
+
+        # david votes correctly
+        vote_data['question0'] = 'fo\"o'
+        data = self.postAndParse('election/%d/action/' % election_id,
+            data=vote_data, code=HTTP_OK, content_type='application/json')
+        self.assertTrue('id' in data)
+        self.assertEqual(data["is_public"], False)
+        self.assertEqual(data["is_direct"], True)
+        self.assertEqual(data["is_counted"], True)
+        self.assertEqual(data["invalidated_at_date"], None)
+        self.assertEqual(data["public_data"], dict())
+        first_vote_id = data['id']
+
+        # vote is in cast_votes
+        data = self.getAndParse('election/%d/cast_votes/' %  election_id,
+            code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 1)
+        self.assertEqual(data['objects'][0]['id'], first_vote_id)
+
+        # and in direct votes
+        data = self.getAndParse('election/%d/direct_votes/' %  election_id,
+            code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 1)
+        self.assertEqual(data['objects'][0]['id'], first_vote_id)
+
+        # david revotes, but making the vote and reason public this time
+        vote_data = {
+            'is_vote_secret': False,
+            'question0': "fo\"o",
+            'action': 'vote',
+            'reason': "Zy not ye?"
+        }
+        data = self.postAndParse('election/%d/action/' % election_id,
+            data=vote_data, code=HTTP_OK, content_type='application/json')
+        self.assertEqual(data["is_public"], True)
+        self.assertEqual(data["is_direct"], True)
+        self.assertEqual(data["is_counted"], True)
+        self.assertEqual(data["reason"], vote_data['reason'])
+        self.assertEqual(data["public_data"]['a'], 'vote')
+        self.assertEqual(data["public_data"]['answers'],
+            [{'a': 'plaintext-answer', 'choices': ['fo"o']}])
+
+        second_vote_id = data['id']
+
+        # old vote is invalidated
+        data = self.getAndParse('castvote/%d/' % first_vote_id, code=HTTP_OK)
+        self.assertEqual(data["is_public"], False)
+        self.assertEqual(data["is_direct"], True)
+        self.assertEqual(data["is_counted"], False)
+        self.assertTrue(data["invalidated_at_date"] is not None)
+        self.assertEqual(data["public_data"], dict())
+
+        # new vote is in cast_votes 
+        data = self.getAndParse('election/%d/cast_votes/' %  election_id,
+            code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 2)
+        self.assertEqual(data['objects'][1]['id'], second_vote_id)
+
+        # and in direct votes (and old vote is not because it was invalidated)
+        data = self.getAndParse('election/%d/direct_votes/' %  election_id,
+            code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 1)
+        self.assertEqual(data['objects'][0]['id'], second_vote_id)
+
+        # now user1 votes - he is not a member of the agora, so his vote
+        # doesn't count. but he can vote, if his vote is public so he acts
+        # as a delegate
+        self.login('user1', '123')
+        vote_data = {
+            'is_vote_secret': True,
+            'question0': "bar",
+            'action': 'vote'
+        }
+        data = self.postAndParse('election/%d/action/' % election_id,
+            data=vote_data, code=HTTP_BAD_REQUEST, content_type='application/json')
+
+        # now try to vote it public - that should work
+        vote_data = {
+            'is_vote_secret': False,
+            'question0': "bar",
+            'action': 'vote',
+            'reason': "becuase of .. yes"
+        }
+        data = self.postAndParse('election/%d/action/' % election_id,
+            data=vote_data, code=HTTP_OK, content_type='application/json')
+        self.assertEqual(data["is_public"], True)
+        self.assertEqual(data["is_direct"], True)
+        self.assertEqual(data["is_counted"], False)
+        self.assertEqual(data["reason"], vote_data['reason'])
+        vote3_id = data['id']
