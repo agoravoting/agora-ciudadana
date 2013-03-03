@@ -852,6 +852,7 @@ class AgoraTest(RootTestCase):
         self.assertEqual(data["reason"], '')
         self.assertEqual(data["invalidated_at_date"], None)
         self.assertEqual(data["public_data"]['a'], 'delegated-vote')
+        self.assertEqual(data["public_data"]['answers'], [{'a': 'plaintext-delegate', 'choices': [{'username': 'user1', 'user_name': 'Juana Molero', 'user_id': 1}]}])
         delegate_vote_id = data['id']
 
         # admin creates a new election
