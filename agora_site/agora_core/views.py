@@ -370,12 +370,6 @@ class CreateAgoraView(RequestCreateView):
             'Agora %(agoraname)s successful! Now start to configure and use '
             'it.') % dict(agoraname=agora.name))
 
-        action.send(self.request.user, verb='created', action_object=agora,
-            ipaddr=self.request.META.get('REMOTE_ADDR'),
-            geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
-
-        follow(self.request.user, agora, actor_only=False, request=self.request)
-
         return reverse('agora-view',
             kwargs=dict(username=agora.creator.username, agoraname=agora.name))
 

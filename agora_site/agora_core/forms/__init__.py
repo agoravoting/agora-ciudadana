@@ -72,6 +72,12 @@ class CreateAgoraForm(django_forms.ModelForm):
         agora.members.add(self.request.user)
         agora.admins.add(self.request.user)
 
+        action.send(self.request.user, verb='created', action_object=agora,
+            ipaddr=self.request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
+
+        follow(self.request.user, agora, actor_only=False, request=self.request)
+
         return agora
 
     class Meta:
