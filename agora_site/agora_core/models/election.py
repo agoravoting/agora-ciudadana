@@ -393,8 +393,10 @@ class Election(models.Model):
 
         from agora_site.agora_core.models import CastVote
 
-        # TODO: When you have first voted directly in a voting and then you
-        # delegate your vote in the agora, it's currently not counted
+        # NOTE: When you have first voted directly in a voting and then you
+        # delegate your vote in the agora, it's currently not counted. It makes
+        # sense because you voted directly - cancel your direct vote if you
+        # want your delegation to be active in that case
         if self.ballot_is_open():
             q=self.cast_votes.filter(is_counted=True, is_direct=True, invalidated_at_date=None).values('voter__id').query
 
@@ -421,7 +423,34 @@ class Election(models.Model):
                     invalidated_at_date=None)
                 # delegated votes from people who delegated for this election
                 | Q(id__in=self.delegated_votes.values('id').query))
-            return self.cast_votes.filter(is_counted=True, invalidated_at_date=None)
+            #return self.cast_votes.filter(is_counted=True, invalidated_at_date=None)
+
+    def get_delegated_votes(self):
+        '''
+        Delegated votes.
+
+        NOTE that if your delegation is effective or not does
+        not matter: even if your delegate didn't vote, your delegated vote will
+        appear listed here when the election is running and has not been
+        tallied.
+        '''
+        from agora_site.agora_core.models import CastVote
+        if self.ballot_is_open():
+            # valid direct votes
+            q=self.cast_votes.filter(is_counted=True, is_direct=True,
+                invalidated_at_date=None).values('voter__id').query
+
+            return CastVote.objects.filter(
+                # indirect votes from people who have an active delegation in
+                # this agora:
+                election=self.agora.delegation_election,
+                is_direct=False, is_counted=True, invalidated_at_date=None
+
+                # This is to avoid duplicates. If you voted directly, that's what
+                # counts:
+            ).exclude(is_direct=False, voter__id__in=q).order_by('-casted_at_date')
+        else:
+            return self.delegated_votes.all()
 
     def percentage_of_participation(self):
         '''

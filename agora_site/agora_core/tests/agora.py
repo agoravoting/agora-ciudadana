@@ -475,7 +475,8 @@ class AgoraTest(RootTestCase):
         self.login('david', 'david')
         data = self.postAndParse('agora/1/action/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
-        self.assertEquals(set(data["permissions"]), set(['admin', 'delete', 'comment', 'create_election']))
+        self.assertEquals(set(data["permissions"]),
+            set(['admin', 'delete', 'comment', 'create_election', 'delegate']))
 
         # user2 should have some permissions
         self.login('user2', '123')
@@ -838,3 +839,44 @@ class AgoraTest(RootTestCase):
         # but all elections contains it, there's a new one =)
         data = self.getAndParse('agora/1/all_elections/', code=HTTP_OK)
         self.assertEqual(len(data['objects']), num_elections + 1)
+
+    def test_delegate_vote(self):
+        # david delegates into user1, which has userid 1
+        self.login('david', 'david')
+        orig_data = dict(action='delegate_vote', user_id=1)
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertEqual(data["is_public"], True)
+        self.assertEqual(data["is_direct"], False)
+        self.assertEqual(data["is_counted"], True)
+        self.assertEqual(data["reason"], '')
+        self.assertEqual(data["invalidated_at_date"], None)
+        self.assertEqual(data["public_data"]['a'], 'delegated-vote')
+        delegate_vote_id = data['id']
+
+        # admin creates a new election
+        orig_data = {
+            'action': "create_election",
+            'pretty_name': "foo bar",
+            'description': "foo bar foo bar",
+            'question': "Do you prefer foo or bar?",
+            'answers': ["fo\"o", "bar"],
+            'is_vote_secret': True,
+            'from_date': '',
+            'to_date': '',
+        }
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        election_id = data['id']
+
+        # admin starts the election
+        orig_data = dict(action='start')
+        data = self.postAndParse('election/%d/action/' % election_id,
+            data=orig_data, code=HTTP_OK, content_type='application/json')
+
+        # david delegated vote should already be there in delegated_votes,
+        # even though user1 didn't vote yet
+        data = self.getAndParse('election/%d/delegated_votes/' %  election_id,
+            code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 1)
+        self.assertEqual(data['objects'][0]['id'], delegate_vote_id)
