@@ -16,11 +16,9 @@
 import uuid
 import datetime
 import random
-import re
 
 from django import forms as django_forms
 from django.core.urlresolvers import reverse
-from django.core.mail import EmailMultiAlternatives, EmailMessage, send_mass_mail
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -28,17 +26,18 @@ from django.shortcuts import get_object_or_404
 from django.contrib.comments.forms import CommentSecurityForm
 from django.contrib.comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
-from django.shortcuts import redirect, get_object_or_404, render_to_response
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_unicode
 from django.utils import simplejson as json
+from django.utils import translation
 from django.contrib.sites.models import Site
 from django.db import transaction
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Hidden, Layout, Fieldset
 from actstream.models import Action
+from actstream.actions import follow, unfollow, is_following
 from actstream.signals import action as actstream_action
 from userena.models import UserenaSignup
 from userena import settings as userena_settings
@@ -198,176 +197,6 @@ class UserSettingsForm(django_forms.ModelForm):
         fields = ('first_name', 'last_name')
 
 
-class AgoraAddMembersForm(django_forms.ModelForm):
-    new_members = django_forms.CharField(_("New members"), required=True,
-        help_text=_("Each member must be in a new line. Format per line: "
-            "&lt;existing_username&gt;|&lt;new_username&gt; &lt;email_address&gt;."),
-            widget=django_forms.Textarea)
-    welcome = django_forms.CharField(_("Welcome message"), required=True,
-        help_text=_("Welcome message that these members will receive."),
-            widget=django_forms.Textarea)
-
-    def clean_new_members(self):
-        """ Validate that the email is not already registered with another user """
-        data = self.cleaned_data['new_members']
-        agora = self.instance
-
-        username_re = re.compile(r'^(?P<username>[\.\w]+)$')
-        new_user_re = re.compile(r'^(?P<username>[\.\w]+) (?P<email>[^@]+@[^@]+\.[^@]+)$')
-
-
-        self.adding_users = []
-        self.new_users = []
-
-        for line in data.splitlines():
-            line = line.strip()
-            match_username = username_re.match(line)
-            match_new_user = new_user_re.match(line)
-
-            if match_username:
-                # it's only an existing username, try to add it
-
-                # first check if the user exists
-                username = line
-                try:
-                    user = get_object_or_404(User, username=username, is_active=True)
-                except Exception, e:
-                    raise django_forms.ValidationError(_(u'User %(username)s '
-                        'does not exist.') % dict(username=username))
-
-                # then check if the user is already a member
-                if agora.members.filter(username=username).exists():
-                    raise django_forms.ValidationError(_(u'User %(username)s '
-                        'is already a member in this agora.')  %\
-                            dict(username=username))
-
-                self.adding_users += [user]
-
-            elif match_new_user:
-                new_username, email = match_new_user.groups()
-
-                if User.objects.filter(username=new_username).exists():
-                    raise django_forms.ValidationError(_(u'User %(username)s '
-                        'already exists.') % dict(username=new_username))
-                elif User.objects.filter(email=email).exists():
-                    raise django_forms.ValidationError(_(u'User with email '
-                        '%(email)s already exists.') % dict(email=email))
-
-                self.new_users += [ (new_username, email) ]
-
-        return self.cleaned_data['new_members']
-
-    def save(self, *args, **kwargs):
-        agora = self.instance
-
-        # add existing users
-        for user in self.adding_users:
-            # adding to the agora
-            agora.members.add(user)
-            agora.save()
-
-            # creating join action
-            action.send(user, verb='joined', action_object=agora,
-                ipaddr=self.request.META.get('REMOTE_ADDR'),
-                geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
-
-            # sending email
-            if not user.email or not user.get_profile().email_updates:
-                continue
-
-            context = get_base_email_context(self.request)
-
-            context.update(dict(
-                agora=agora,
-                to=user,
-                other_user=self.request.user,
-                notification_text=_('An administrator of the %(agora)s agora, %(user)s, has '
-                    'added you to this agora. You can leave the agora at any time. If you '
-                    'think this user is spamming you, please, contact us.\n\n') % dict(
-                        agora=agora.get_full_name(),
-                        user=self.request.user.username
-                    ) + self.cleaned_data['welcome']
-            ))
-            email = EmailMultiAlternatives(
-                subject=_('%(site)s - Added as member to %(agora)s') %\
-                    dict(
-                        site=Site.objects.get_current().domain,
-                        agora=agora.get_full_name()
-                    ),
-                body=render_to_string('agora_core/emails/agora_notification.txt',
-                    context),
-                to=[user.email])
-
-            email.attach_alternative(
-                render_to_string('agora_core/emails/agora_notification.html',
-                    context), "text/html")
-            email.send()
-
-        # adding new users
-        for new_username, email in self.new_users:
-            # creating user
-            new_user = User(email=email, username=new_username, first_name=new_username)
-            new_password = random_password()
-            new_user.set_password(new_password)
-            new_user.save()
-
-            # creating join action
-            action.send(new_user, verb='joined', action_object=agora,
-                ipaddr=self.request.META.get('REMOTE_ADDR'),
-                geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
-
-            # adding the user to the agora
-            agora.members.add(new_user)
-            agora.save()
-
-            # sending welcome email
-            context = get_base_email_context(self.request)
-
-            context.update(dict(
-                agora=agora,
-                to=new_user,
-                other_user=self.request.user,
-                notification_text=_('An administrator of the %(agora)s agora, %(user)s, has '
-                    'created an user account for you on our website, and has made you a '
-                    'member of %(agora)s. If you think this user is spamming you, please '
-                    'contact us.\n\nYour new username is \'%(username)s\', and your '
-                    'password is \'%(password)s\'. You can now log in using these '
-                    'credentials.\n\n') % dict(
-                        agora=agora.get_full_name(),
-                        user=self.request.user.username,
-                        username=new_username,
-                        password=new_password
-                    ) + self.cleaned_data['welcome'],
-                extra_urls=((_('Login url'),reverse('userena_signin')),)
-            ))
-            email = EmailMultiAlternatives(
-                subject=_('%(site)s - Welcome as new member to %(agora)s') %\
-                    dict(
-                        site=Site.objects.get_current().domain,
-                        agora=agora.get_full_name()
-                    ),
-                body=render_to_string('agora_core/emails/agora_notification.txt',
-                    context),
-                to=[new_user.email])
-
-            email.attach_alternative(
-                render_to_string('agora_core/emails/agora_notification.html',
-                    context), "text/html")
-            email.send()
-
-        return agora
-
-    def __init__(self, request, *args, **kwargs):
-        super(AgoraAddMembersForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.request = request
-        self.helper.layout = Layout(Fieldset(_('Add members'), 'new_members'))
-        self.helper.add_input(Submit('submit', _('Add members'), css_class='btn btn-success btn-large'))
-
-    class Meta:
-        model = Agora
-        fields = ()
-
 class AgoraAdminForm(django_forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super(AgoraAdminForm, self).__init__(*args, **kwargs)
@@ -520,6 +349,41 @@ class CreateElectionForm(django_forms.ModelForm):
                 "tally_type": "simple"
             },]
         election.save()
+
+        # create related action
+        verb = 'created' if election.is_approved else 'proposed'
+        actstream_action.send(self.request.user, verb=verb, action_object=election,
+            target=election.agora, ipaddr=self.request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
+
+        # send email to admins
+        context = get_base_email_context(self.request)
+        context.update(dict(
+            election=election,
+            action_user_url='/%s' % election.creator.username,
+        ))
+
+        for admin in election.agora.admins.all():
+            context['to'] = admin
+
+            if not admin.has_perms('receive_email_updates'):
+                continue
+
+            translation.activate(admin.get_profile().lang_code)
+
+            email = EmailMultiAlternatives(
+                subject=_('Election %s created') % election.pretty_name,
+                body=render_to_string('agora_core/emails/election_created.txt',
+                    context),
+                to=[admin.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/election_created.html',
+                    context), "text/html")
+            email.send()
+            translation.deactivate()
+
+        follow(self.request.user, election, actor_only=False, request=self.request)
 
         # used for tasks
         kwargs=dict(

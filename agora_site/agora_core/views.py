@@ -406,59 +406,19 @@ class CreateElectionView(RequestCreateView):
         election = self.object
 
         extra_data = dict(electionname=election.pretty_name,
-            username=election.agora.creator.username,
-            agoraname=election.agora.name,
-            election_url=election.url,
-            agora_url=reverse('agora-view', kwargs=dict(
-                username=election.agora.creator.username,
-                agoraname=election.agora.name))
+            election_url=election.get_link(),
+            agora_url=agora.get_full_name('link')
         )
 
         if election.is_approved:
             messages.add_message(self.request, messages.SUCCESS, _('Creation of '
                 'Election <a href="%(election_url)s">%(electionname)s</a> in '
-                '<a href="%(agora_url)s">%(username)s/%(agoraname)s</a> '
-                'successful!') % extra_data)
-
-            action.send(self.request.user, verb='created', action_object=election,
-                target=election.agora, ipaddr=self.request.META.get('REMOTE_ADDR'),
-            geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
+                '%(agora_url)s successful!') % extra_data)
         else:
             messages.add_message(self.request, messages.SUCCESS, _('Creation of '
                 'Election <a href="%(election_url)s">%(electionname)s</a> in '
-                '<a href="%(agora_url)s">%(username)s/%(agoraname)s</a> '
-                'successful! Now it <strong>awaits the agora administrators '
-                'approval</strong>.') % extra_data)
-
-            action.send(self.request.user, verb='proposed', action_object=election,
-                target=election.agora, ipaddr=self.request.META.get('REMOTE_ADDR'),
-            geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
-
-        context = get_base_email_context(self.request)
-
-        context.update(dict(
-            election=election,
-            action_user_url='/%s' % election.creator.username,
-        ))
-
-        for admin in election.agora.admins.all():
-            context['to'] = admin
-
-            if not admin.email or not admin.get_profile().email_updates:
-                continue
-
-            email = EmailMultiAlternatives(
-                subject=_('Election %s created') % election.pretty_name,
-                body=render_to_string('agora_core/emails/election_created.txt',
-                    context),
-                to=[admin.email])
-
-            email.attach_alternative(
-                render_to_string('agora_core/emails/election_created.html',
-                    context), "text/html")
-            email.send()
-
-        follow(self.request.user, election, actor_only=False, request=self.request)
+                '%(agora_url)s successful! Now it <strong>awaits the agora '
+                'administrators approval</strong>.') % extra_data)
 
         return reverse('election-view',
             kwargs=dict(username=election.agora.creator.username,

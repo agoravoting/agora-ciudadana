@@ -81,6 +81,16 @@ class Agora(models.Model):
 
     image_url = models.URLField(_('Image Url'), default='', blank=True)
 
+    def delete(self, *args, **kwargs):
+        '''
+        Delete reimplemented to remove elections and actions related to the agora
+        '''
+        from actstream.models import Action
+        self.delegation_election.delete()
+        self.elections.all().delete()
+        Action.objects.object_actions(self).all().delete()
+        super(Agora, self).delete(*args, **kwargs)
+
     def get_mugshot_url(self):
         '''
         Either returns image_url or a default image
@@ -387,7 +397,7 @@ class Agora(models.Model):
                 url=self.get_link(), username=self.creator.username,
                 agoraname=self.name
             )
-        elif mode == "link":
+        elif mode == "link-user":
             return '<a href="%(url)s">%(username)s</a> / %(agoraname)s' % dict(
                 url=reverse('user-view', kwargs=dict(username=self.creator.username)),
                 username=self.creator.username,
