@@ -29,7 +29,7 @@ agorajs:
 					      agora_site/static/js/agora/views/election.js \
 					      agora_site/static/js/agora/views/election_list.js \
 					      agora_site/static/js/agora/views/generic.js \
-					      agora_site/static/js/agora/views/home_anonnymous.js \
+					      agora_site/static/js/agora/views/home_anonymous.js \
 					      agora_site/static/js/agora/views/home.js \
 					      agora_site/static/js/agora/views/search_list.js \
 					      agora_site/static/js/agora/views/user.js \
