@@ -284,8 +284,6 @@ class ElectionResource(GenericResource):
             * stop
             * archive
             * vote
-
-            TODO
             * cancel_vote
         '''
 
@@ -296,6 +294,7 @@ class ElectionResource(GenericResource):
             'stop': self.stop_action,
             'archive': self.archive_action,
             'vote': self.vote_action,
+            'cancel_vote': self.cancel_vote_action,
         }
 
         if request.method != "POST":
@@ -424,7 +423,7 @@ class ElectionResource(GenericResource):
     @permission_required('archive_election', (Election, 'id', 'electionid'))
     def archive_action(self, request, election, **kwargs):
         '''
-        Ends an election
+        Archives an election
         '''
         election.archived_at_date = datetime.datetime.now()
         election.last_modified_at_date = election.archived_at_date
@@ -456,6 +455,58 @@ class ElectionResource(GenericResource):
         Form for voting
         '''
         return self.wrap_form(ElectionVoteForm)(request, election, **kwargs)
+
+
+
+    @permission_required('emit_direct_vote', (Election, 'id', 'electionid'))
+    def cancel_vote_action(self, request, election, **kwargs):
+        '''
+        Cancels a vote
+        '''
+
+        election_url=election.get_link()
+        vote = election.get_vote_for_voter(request.user)
+
+        if not vote or not vote.is_direct:
+            data = dict(errors=_('You didn\'t participate in this election.'))
+            return self.raise_error(request, http.HttpBadRequest, data)
+
+        vote.invalidated_at_date = datetime.datetime.now()
+        vote.is_counted = False
+        vote.save()
+
+        context = get_base_email_context(request)
+        context.update(dict(
+            election=election,
+            election_url=election_url,
+            to=vote.voter,
+            agora_url=election.agora.get_link()
+        ))
+
+        try:
+            context['delegate'] = get_delegate_in_agora(vote.voter, election.agora)
+        except:
+            pass
+
+        if request.user.get_profile().has_perms('receive_email_updates'):
+            translation.activate(request.user.get_profile().lang_code)
+            email = EmailMultiAlternatives(
+                subject=_('Vote cancelled for election %s') % election.pretty_name,
+                body=render_to_string('agora_core/emails/vote_cancelled.txt',
+                    context),
+                to=[vote.voter.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/vote_cancelled.html',
+                    context), "text/html")
+            email.send()
+            translation.deactivate()
+
+        action.send(request.user, verb='vote cancelled', action_object=election,
+            target=election.agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        return self.create_response(request, dict(status="success"))
 
     def get_all_votes(self, request, **kwargs):
         '''
