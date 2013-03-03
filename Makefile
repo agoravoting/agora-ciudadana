@@ -24,6 +24,7 @@ mainjs:
 agorajs:
 	./node_modules/uglify-js/bin/uglifyjs \
 					      agora_site/static/js/agora/base.js \
+					      agora_site/static/js/agora/ajax.js \
 					      agora_site/static/js/agora/views/agora.js \
 					      agora_site/static/js/agora/views/agora_list.js \
 					      agora_site/static/js/agora/views/election.js \
