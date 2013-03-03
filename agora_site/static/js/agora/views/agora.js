@@ -2,7 +2,7 @@
     var Agora = this.Agora,
         app = this.app;
 
-    Agora.ElectionView = Backbone.View.extend({
+    Agora.AgoraView = Backbone.View.extend({
         el: "div.agora",
 
         initialize: function() {
