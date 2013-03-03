@@ -350,6 +350,17 @@ class Agora(models.Model):
             'cancel_admin_membership_request', 'leave', 'leave_admin',
             'comment', 'create_election', 'delegate') if self.has_perms(perm, user)]
 
+    def get_delegated_vote_for_user(self, user):
+        '''
+        If the given user has delegated the vote, return this delegated vote
+        '''
+        votes = self.delegation_election.cast_votes.filter(is_direct=False,
+            invalidated_at_date=None, voter__id=user.id)
+        if votes.count() == 0:
+            return None
+        else:
+            return votes[0]
+
     def get_link(self):
         return reverse('agora-view', kwargs=dict(username=self.creator.username,
             agoraname=self.name))
