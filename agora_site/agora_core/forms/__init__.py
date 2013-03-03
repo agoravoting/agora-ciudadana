@@ -234,9 +234,9 @@ class CreateElectionForm(django_forms.ModelForm):
         widget=django_forms.TextInput(attrs={'class': 'datetimepicker'}),
         input_formats=('%m/%d/%Y %H:%M', '%Y-%m-%dT%H:%M:%S'))
 
-    def __init__(self, request, agora, data, from_api=False, *args, **kwargs):
-        super(CreateElectionForm, self).__init__(data=data)
-        self.data = data
+    def __init__(self, request, agora, from_api=False, *args, **kwargs):
+        super(CreateElectionForm, self).__init__(**kwargs)
+        self.data = kwargs.get('data', dict())
         self.from_api = from_api
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
