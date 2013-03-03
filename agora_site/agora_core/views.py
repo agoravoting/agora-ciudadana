@@ -401,7 +401,7 @@ class CreateElectionView(RequestCreateView):
 
         extra_data = dict(electionname=election.pretty_name,
             election_url=election.get_link(),
-            agora_url=agora.get_full_name('link')
+            agora_url=election.agora.get_full_name('link')
         )
 
         if election.is_approved:
