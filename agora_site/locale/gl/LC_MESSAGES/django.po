@@ -1,13 +1,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Adrián Chaves Fernández <adriyetichaves@gmail.com>, 2012.
+# Adrián Chaves Fernández <adriyetichaves@gmail.com>, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-13 16:02+0100\n"
-"PO-Revision-Date: 2012-11-20 18:58+0100\n"
+"POT-Creation-Date: 2013-03-03 20:16+0100\n"
+"PO-Revision-Date: 2013-03-03 20:16+0100\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: gl\n"
@@ -602,86 +602,95 @@ msgid "The two password fields didn't match."
 msgstr "Os contrasinais non coincidían."
 
 #: agora_core/forms.py:209
-#, fuzzy
 msgid "New members"
-msgstr "Membros"
+msgstr "Novos membros"
 
 #: agora_core/forms.py:210
 msgid ""
 "Each member must be in a new line. Format per line: &lt;"
 "existing_username&gt;|&lt;new_username&gt; &lt;email_address&gt;."
 msgstr ""
+"Cada membro debe aparecer nunha liña de seu. Cada liña debe axustarse ao "
+"seguinte formato: &lt;nome de usuario existente&gt;|&lt;novo nome de "
+"usuario&gt; &lt;enderezo de correo electrónico&gt;."
 
 #: agora_core/forms.py:213
-#, fuzzy
 msgid "Welcome message"
-msgstr "Enviar a mensaxe"
+msgstr "Mensaxe de benvida"
 
 #: agora_core/forms.py:214
 msgid "Welcome message that these members will receive."
-msgstr ""
+msgstr "Mensaxe de benvida que se enviará a estes membros."
 
 #: agora_core/forms.py:242
-#, fuzzy, python-format
+#, python-format
 msgid "User %(username)s does not exist."
-msgstr "Perfil de %(username)s"
+msgstr "Non existe ninguén co nome de usuario %(username)s."
 
 #: agora_core/forms.py:247
-#, fuzzy, python-format
+#, python-format
 msgid "User %(username)s is already a member in this agora."
-msgstr ""
-"%(username)s cancelou a súa solicitude do status de administrador na ágora "
-"%(agora)s."
+msgstr "O usuario %(username)s xa forma parte desta ágora."
 
 #: agora_core/forms.py:257
 #, python-format
 msgid "User %(username)s already exists."
-msgstr ""
+msgstr "O usuario %(username)s xa existe."
 
 #: agora_core/forms.py:260
 #, python-format
 msgid "User with email %(email)s already exists."
-msgstr ""
+msgstr "Xa hai un usuario co enderezo %(email)s."
 
 #: agora_core/forms.py:291
 #, python-format
 msgid ""
-"As administrator of %(agora)s, %(user)s has added himself to you to this "
-"agora. You can remove your membership at anytime, and if you think he is "
-"spamming you please contact with this website administrators.\n"
+"An administrator of the %(agora)s agora, %(user)s, has added you to this "
+"agora. You can leave the agora at any time. If you think this user is "
+"spamming you, please, contact us.\n"
 "\n"
 msgstr ""
+"Como administrador da ágora «%(agora)s», %(user)s engadiuno a vostede á "
+"ágora. Pode darse de baixa da ágora cando queira. Se cre que este usuario "
+"non debeu engadilo á ágora, non dubide en poñerse en contacto connosco.\n"
+"\n"
 
-#: agora_core/forms.py:300
-#, fuzzy, python-format
+#: agora_core/forms.py:299
+#, python-format
 msgid "%(site)s - Added as member to %(agora)s"
-msgstr "%(site)s — Xa forma parte da ágora «%(agora)s»"
+msgstr "%(site)s — Engadírono como membro da ágora «%(agora)s»"
 
-#: agora_core/forms.py:338
+#: agora_core/forms.py:337
 #, python-format
 msgid ""
-"As administrator of %(agora)s, %(user)s has created an user for you and "
-"added himself to you to this website. If you think he is spamming you please "
-"contact with this website  administrators.\n"
+"An administrator of the %(agora)s agora, %(user)s, has created an user "
+"account for you on our website, and has made you a member of %(agora)s. If "
+"you think this user is spamming you, please contact us.\n"
 "\n"
-"Your credentials are username '%(username)s' and password '%(password)s', "
-"please login now.\n"
+"Your new username is '%(username)s', and your password is '%(password)s'. "
+"You can now log in using these credentials.\n"
 "\n"
 msgstr ""
+"Como administrador da ágora «%(agora)s», %(user)s creoulle unha conta no "
+"noso sitio web e engadiuno a vostede a esa ágora. Se cre que este usuario "
+"non debeu engadilo á ágora, non dubide en poñerse en contacto connosco.\n"
+"\n"
+"O seu novo nome de usuario é «%(username)s», e o contrasinal é "
+"«%(password)s». Use estes datos para acceder á súa nova conta.\n"
+"\n"
 
 #: agora_core/forms.py:348
 msgid "Login url"
-msgstr ""
+msgstr "URL de acceso"
 
 #: agora_core/forms.py:351
-#, fuzzy, python-format
+#, python-format
 msgid "%(site)s - Welcome as new member to %(agora)s"
-msgstr "%(site)s — Xa forma parte da ágora «%(agora)s»"
+msgstr "%(site)s — Benvido á ágora «%(agora)s»"
 
 #: agora_core/forms.py:371 agora_core/forms.py:372
-#, fuzzy
 msgid "Add members"
-msgstr "Membros"
+msgstr "Engadir membros"
 
 #: agora_core/forms.py:383 agora_core/forms.py:552
 msgid "General settings"
@@ -1617,7 +1626,7 @@ msgstr "Non ten permisos de administrador na ágora «%(agoraname)s»."
 #, python-format
 msgid ""
 "The people you entered have been added successfully to the agora %(agora)s."
-msgstr ""
+msgstr "Engadiuse a xente indicada á ágora «%(agora)s»."
 
 #: agora_core/views.py:2188
 #, python-format
@@ -2179,15 +2188,19 @@ msgid "Admin"
 msgstr "Administrador"
 
 #: agora_core/templates/agora_core/agora_add_members.html:21
-#, fuzzy
 msgid "Add agora members"
-msgstr "Solicitar unirse á ágora"
+msgstr "Engadir xente á ágora"
 
 #: agora_core/templates/agora_core/agora_add_members.html:22
 msgid ""
 "The users will be directly added to this agora, created if needed and will "
 "receive a welcome email. Please note that spam is against our rules."
 msgstr ""
+"Os usuarios engadiranse directamente á ágora, e recibirán unha mensaxe de "
+"benvida nas súas contas de correo electrónico. Ás persoas que non teñan unha "
+"conta no sitio web, crearáselles unha, e pasarán tamén a formar parte da "
+"ágora de inmediato. Rogámoslle teña en conta que o envío de mensaxes non "
+"solicitadas está expresamente condenada nas nosas regras."
 
 #: agora_core/templates/agora_core/agora_bio.html:14
 #, python-format
@@ -2267,7 +2280,7 @@ msgstr "A lista de membros desta ágora está baleira."
 
 #: agora_core/templates/agora_core/agora_members.html:30
 msgid "Add members manually"
-msgstr ""
+msgstr "Engadir membros manualmente"
 
 #: agora_core/templates/agora_core/agora_members.html:41
 msgid "Admins"
