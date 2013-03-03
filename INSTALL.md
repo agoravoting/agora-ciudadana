@@ -38,7 +38,7 @@ following:
 
 Now we will install the dependencies:
 
-    $ pip install -r dependencies.txt --upgrade
+    $ pip install -r requirements.txt --upgrade
 
 After that, we need to configure the database (we use sqlite by default):
 
