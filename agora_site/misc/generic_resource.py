@@ -33,6 +33,15 @@ class GenericResourceMixin:
         """
         return 'application/json'
 
+    def raise_error(self, request, http_method, data):
+        '''
+        Shortcut to return an error
+        '''
+        desired_format = self.determine_format(request)
+        serialized = self.serialize(request, data, desired_format)
+        return http_method(serialized,
+            content_type=build_content_type(desired_format))
+
     def wrap_form(self, form_class, method="POST"):
         """
         Creates a view for a given form class, which calls to is_valid()
