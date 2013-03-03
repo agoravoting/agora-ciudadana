@@ -881,3 +881,47 @@ class AgoraTest(RootTestCase):
             code=HTTP_OK)
         self.assertEqual(len(data['objects']), 1)
         self.assertEqual(data['objects'][0]['id'], delegate_vote_id)
+
+        # david cancel his vote delegation
+        orig_data = dict(action='cancel_vote_delegation')
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # his delegated vote doesn't appear in election delegated votes, because
+        # it was invalidated
+        data = self.getAndParse('election/%d/delegated_votes/' %  election_id,
+            code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 0)
+
+        # david tries again to cancel his vote delegation - error, vote is not
+        # currently delegated
+        orig_data = dict(action='cancel_vote_delegation')
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_BAD_REQUEST, content_type='application/json')
+
+        # david tries to delegate into an inexistant user - error
+        # david cancel his vote delegation
+        orig_data = dict(action='delegate_vote', user_id=13232)
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_NOT_FOUND, content_type='application/json')
+
+        # david tries to delegate without specifying the user id - error
+        orig_data = dict(action='delegate_vote')
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_BAD_REQUEST, content_type='application/json')
+
+        # user1 tries to delegate his vote - error, not an agora member
+        self.login('user1', '123')
+        orig_data = dict(action='delegate_vote', user_id=2)
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_FORBIDDEN, content_type='application/json')
+
+        # user1 joins the agora
+        orig_data = dict(action='join')
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # user1 tries to delegate into himself - error, you can't do that
+        orig_data = dict(action='delegate_vote', user_id=1)
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_BAD_REQUEST, content_type='application/json')

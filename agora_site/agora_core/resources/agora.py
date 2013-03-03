@@ -1,4 +1,5 @@
 import re
+import datetime
 
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -365,6 +366,7 @@ class AgoraResource(GenericResource):
             * create_election
 
             * delegate_vote
+            * cancel_vote_delegation
         '''
 
         actions = {
@@ -389,6 +391,7 @@ class AgoraResource(GenericResource):
             'create_election': self.create_election_action,
 
             'delegate_vote': self.delegate_vote_action,
+            'cancel_vote_delegation': self.cancel_vote_delegation,
         }
 
         if request.method != "POST":
@@ -1068,6 +1071,60 @@ class AgoraResource(GenericResource):
         '''
         return self.wrap_form(DelegateVoteForm)(request, **kwargs)
 
+
+    @permission_required('delegate', (Agora, 'id', 'agoraid'))
+    def cancel_vote_delegation(self, request, agora, **kwargs):
+        '''
+        Cancel a delegated vote
+        '''
+
+        # get the delegated vote, if any
+        vote = agora.get_delegated_vote_for_user(request.user)
+        if not vote:
+            data = dict(errors=_('Your vote is not currently delegated.'))
+            return self.raise_error(request, http.HttpBadRequest, data)
+
+        # invalidate the vote
+        vote.invalidated_at_date = datetime.datetime.now()
+        vote.is_counted = False
+        vote.save()
+
+        # create an action for the event
+        action.send(request.user, verb='cancelled vote delegation',
+            action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        # Mail to the user
+        if request.user.get_profile().has_perms('receive_email_updates'):
+            translation.activate(request.user.get_profile().lang_code)
+            context = get_base_email_context(request)
+            context.update(dict(
+                agora=agora,
+                other_user=request.user,
+                notification_text=_('Your hav removed your vote delegation '
+                    'from %(agora)s') % dict(
+                            agora=agora.get_full_name()
+                        ),
+                to=request.user
+            ))
+
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - admin permissions removed from '
+                    '%(agora)s') % dict(
+                        site=Site.objects.get_current().domain,
+                        agora=agora.get_full_name()
+                    ),
+                body=render_to_string('agora_core/emails/agora_notification.txt',
+                    context),
+                to=[request.user.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/agora_notification.html',
+                    context), "text/html")
+            email.send()
+            translation.deactivate()
+
+        return self.create_response(request, dict(status="success"))
 
     def test_action(self, request, agora, param1=None, param2=None, **kwargs):
         '''
