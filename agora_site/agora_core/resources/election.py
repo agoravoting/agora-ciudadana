@@ -527,7 +527,7 @@ class ElectionResource(GenericResource):
         List votes in this agora
         '''
         return self.get_custom_resource_list(request, resource=CastVoteResource,
-            queryfunc=lambda election: election.delegated_votes.all(), **kwargs)
+            queryfunc=lambda election: election.get_delegated_votes(), **kwargs)
 
     def get_votes_from_delegates(self, request, **kwargs):
         '''

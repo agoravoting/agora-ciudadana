@@ -294,11 +294,11 @@ class Agora(models.Model):
         elif permission_name == 'request_membership':
             return requires_membership_approval and\
                 not user in self.members.all() and not isarchived and\
-                'requested_membership' not in opc_perms
+                'requested_membership' not in opc_perms and not isarchived
 
         elif permission_name == "cancel_membership_request":
             return requires_membership_approval and not user in self.members.all() and\
-                'requested_membership' in opc_perms
+                'requested_membership' in opc_perms and not isarchived
 
         elif permission_name == 'request_admin_membership':
             return user in self.members.all() and user not in self.admins.all() and\
@@ -307,18 +307,19 @@ class Agora(models.Model):
 
         elif permission_name == "cancel_admin_membership_request":
             return user in self.members.all() and user not in self.admins.all() and\
-                'requested_admin_membership' in opc_perms
+                'requested_admin_membership' in opc_perms and not isarchived
 
         elif permission_name == 'leave':
             return self.creator != user and user in self.members.all() and\
-                user not in self.admins.all()
+                user not in self.admins.all() and not isarchived
 
         elif permission_name == 'admin':
             return self.creator == user or user in self.admins.all() and\
                 not isarchived
 
         elif permission_name == 'leave_admin':
-            return self.creator != user and user in self.admins.all()
+            return self.creator != user and user in self.admins.all() and\
+                not isarchived
 
         elif permission_name == 'comment':
             if self.comments_policy == Agora.COMMENTS_PERMS[0][0]:
@@ -331,11 +332,14 @@ class Agora(models.Model):
                 return False
 
         elif permission_name == 'delete':
-            return self.creator == user
+            return self.creator == user and not isarchived
 
         # any user can request to create an election, for now
         elif permission_name == 'create_election':
-            return not isanon
+            return not isanon and not isarchived
+
+        elif permission_name == 'delegate':
+            return user in self.members.all() and not isarchived
 
     def get_perms(self, user):
         '''
@@ -344,7 +348,7 @@ class Agora(models.Model):
         return [perm for perm in ('join', 'request_membership', 'admin',
             'cancel_membership_request', 'request_admin_membership', 'delete',
             'cancel_admin_membership_request', 'leave', 'leave_admin',
-            'comment', 'create_election') if self.has_perms(perm, user)]
+            'comment', 'create_election', 'delegate') if self.has_perms(perm, user)]
 
     def get_link(self):
         return reverse('agora-view', kwargs=dict(username=self.creator.username,

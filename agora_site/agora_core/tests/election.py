@@ -49,7 +49,7 @@ class ElectionTest(RootTestCase):
         data = self.postAndParse('agora/1/action/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
         self.assertEquals(set(data["permissions"]),
-            set(['admin', 'delete', 'comment', 'create_election']))
+            set(['admin', 'delete', 'comment', 'create_election', 'delegate']))
 
 
     def test_change_election(self):
