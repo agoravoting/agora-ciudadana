@@ -88,6 +88,18 @@ you need to compile the translation (.po) files:
 
     $ ./manage.py compilemessages
 
+### Production server
+
+To deploy agora in a production server, you need do some changes. First, you
+need to choose a web server: we have tested agora with apache, nginx and
+cherokee.
+
+You need to edit settings (custom_settings.py) and set DEBUG=False. You also
+need to compile the javascript code into one single file, which is done for
+optimization only for production:
+
+    $ make dependencies && make all
+
 ### Settings configuration
 
 The settings.py file contains the default configuration for the project. You
