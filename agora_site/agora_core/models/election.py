@@ -43,6 +43,15 @@ class Election(models.Model):
             kwargs=dict(username=self.agora.creator.username,
                 agoraname=self.agora.name, electionname=self.name))
 
+    def delete(self, *args, **kwargs):
+        '''
+        Delete reimplemented to remove votes and actions related to the election
+        '''
+        from actstream.models import Action
+        self.cast_votes.all().delete()
+        Action.objects.object_actions(self).all().delete()
+        super(Election, self).delete(*args, **kwargs)
+
     def get_serializable_data(self):
         data = {
             'creator_username': self.creator.username,

@@ -55,7 +55,7 @@ class AgoraTest(RootTestCase):
         data = self.postAndParse('agora/', orig_data,
             code=HTTP_BAD_REQUEST, content_type='application/json')
 
-    def test_agora_deletion(self):
+    def test_agora_removal(self):
         self.login('david', 'david')
         data = self.getAndParse('agora/')
         agoras = data['objects']
@@ -80,6 +80,79 @@ class AgoraTest(RootTestCase):
 
         self.delete('agora/1/', {}, code=HTTP_NOT_FOUND)
         self.delete('agora/200/', {}, code=HTTP_NOT_FOUND)
+
+    def test_agora_removal2(self):
+        self.login('david', 'david')
+        # admin creates a new election
+        orig_data = {
+            'action': "create_election",
+            'pretty_name': "foo bar",
+            'description': "foo bar foo bar",
+            'question': "Do you prefer foo or bar?",
+            'answers': ["fo\"o", "bar"],
+            'is_vote_secret': True,
+            'from_date': '',
+            'to_date': '',
+        }
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        election_id = data['id']
+
+        # admin starts the election
+        orig_data = dict(action='start')
+        data = self.postAndParse('election/%d/action/' % election_id,
+            data=orig_data, code=HTTP_OK, content_type='application/json')
+
+        orig_data = dict(action='delegate_vote', user_id=1)
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        delegated_vote_id = data['id']
+
+        # agora has one actions
+        data = self.getAndParse('action/agora/1/')
+        self.assertEqual(len(data['objects']), 2)
+        action0_id = data['objects'][0]['id']
+        action1_id = data['objects'][1]['id']
+
+        # election has two actions
+        data = self.getAndParse('action/election/%d/' % election_id)
+        self.assertEqual(len(data['objects']), 2)
+        action2_id = data['objects'][0]['id']
+        action3_id = data['objects'][1]['id']
+
+        # get agora - ok
+        self.get('agora/1/', code=HTTP_OK)
+
+        # get delegated_vote - ok
+        self.get('castvote/%d/' % delegated_vote_id, code=HTTP_OK)
+
+        # get election - ok
+        self.get('election/%d/' % election_id, code=HTTP_OK)
+
+        # get actions - ok
+        self.get('action/%d/' % action0_id, code=HTTP_OK)
+        self.get('action/%d/' % action1_id, code=HTTP_OK)
+        self.get('action/%d/' % action2_id, code=HTTP_OK)
+        self.get('action/%d/' % action3_id, code=HTTP_OK)
+
+        # delete agora
+        self.delete('agora/1/', {}, code=HTTP_NO_CONTENT)
+
+        # get agora - not found
+        self.get('agora/1/', code=HTTP_NOT_FOUND)
+
+        # get delegated_vote - not found
+        self.get('castvote/%d/' % delegated_vote_id, code=HTTP_NOT_FOUND)
+
+        # get election - not found
+        self.get('election/%d/' % election_id, code=HTTP_NOT_FOUND)
+
+        # get actions - not found
+        self.get('action/%d/' % action0_id, code=HTTP_NOT_FOUND)
+        self.get('action/%d/' % action1_id, code=HTTP_NOT_FOUND)
+        self.get('action/%d/' % action2_id, code=HTTP_NOT_FOUND)
+        self.get('action/%d/' % action3_id, code=HTTP_NOT_FOUND)
+
 
     def test_agora_update(self):
         self.login('user1', '123')

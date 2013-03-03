@@ -26,15 +26,18 @@ from django.shortcuts import get_object_or_404
 from django.contrib.comments.forms import CommentSecurityForm
 from django.contrib.comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
+from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_unicode
 from django.utils import simplejson as json
+from django.utils import translation
 from django.contrib.sites.models import Site
 from django.db import transaction
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Hidden, Layout, Fieldset
 from actstream.models import Action
+from actstream.actions import follow, unfollow, is_following
 from actstream.signals import action as actstream_action
 from userena.models import UserenaSignup
 from userena import settings as userena_settings
@@ -346,6 +349,41 @@ class CreateElectionForm(django_forms.ModelForm):
                 "tally_type": "simple"
             },]
         election.save()
+
+        # create related action
+        verb = 'created' if election.is_approved else 'proposed'
+        actstream_action.send(self.request.user, verb=verb, action_object=election,
+            target=election.agora, ipaddr=self.request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
+
+        # send email to admins
+        context = get_base_email_context(self.request)
+        context.update(dict(
+            election=election,
+            action_user_url='/%s' % election.creator.username,
+        ))
+
+        for admin in election.agora.admins.all():
+            context['to'] = admin
+
+            if not admin.has_perms('receive_email_updates'):
+                continue
+
+            translation.activate(admin.get_profile().lang_code)
+
+            email = EmailMultiAlternatives(
+                subject=_('Election %s created') % election.pretty_name,
+                body=render_to_string('agora_core/emails/election_created.txt',
+                    context),
+                to=[admin.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/election_created.html',
+                    context), "text/html")
+            email.send()
+            translation.deactivate()
+
+        follow(self.request.user, election, actor_only=False, request=self.request)
 
         # used for tasks
         kwargs=dict(

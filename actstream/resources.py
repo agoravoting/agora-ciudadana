@@ -197,7 +197,7 @@ class ActionResource(GenericResource):
         except:
             raise ImmediateHttpResponse(response=http.HttpNotFound())
 
-        return self.get_custom_list(request=request, queryset=user_stream(user))
+        return self.get_custom_list(request=request, queryset=object_stream(user))
 
     def get_agora_list(self, request, **kwargs):
         '''
