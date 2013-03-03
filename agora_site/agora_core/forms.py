@@ -288,10 +288,9 @@ class AgoraAddMembersForm(django_forms.ModelForm):
                 agora=agora,
                 to=user,
                 other_user=self.request.user,
-                notification_text=_('As administrator of %(agora)s, %(user)s has '
-                    'added himself to you to this agora. You can remove your '
-                    'membership at anytime, and if you think he is spamming '
-                    'you please contact with this website administrators.\n\n') % dict(
+                notification_text=_('An administrator of the %(agora)s agora, %(user)s, has '
+                    'added you to this agora. You can leave the agora at any time. If you '
+                    'think this user is spamming you, please, contact us.\n\n') % dict(
                         agora=agora.get_full_name(),
                         user=self.request.user.username
                     ) + self.cleaned_data['welcome']
@@ -335,11 +334,12 @@ class AgoraAddMembersForm(django_forms.ModelForm):
                 agora=agora,
                 to=new_user,
                 other_user=self.request.user,
-                notification_text=_('As administrator of %(agora)s, %(user)s has '
-                    'created an user for you and added himself to you to this website. '
-                    'If you think he is spamming you please contact with this website '
-                    ' administrators.\n\nYour credentials are username \'%(username)s\' '
-                    'and password \'%(password)s\', please login now.\n\n') % dict(
+                notification_text=_('An administrator of the %(agora)s agora, %(user)s, has '
+                    'created an user account for you on our website, and has made you a '
+                    'member of %(agora)s. If you think this user is spamming you, please '
+                    'contact us.\n\nYour new username is \'%(username)s\', and your '
+                    'password is \'%(password)s\'. You can now log in using these '
+                    'credentials.\n\n') % dict(
                         agora=agora.get_full_name(),
                         user=self.request.user.username,
                         username=new_username,
