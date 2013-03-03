@@ -216,6 +216,11 @@ class ElectionResource(GenericResource):
 
     percentage_of_participation = fields.IntegerField()
 
+    direct_votes_count = fields.IntegerField()
+
+    # this will be only indicative when election has not been tallied
+    delegated_votes_count = fields.IntegerField()
+
     url = fields.CharField()
 
     mugshot_url = fields.CharField()
@@ -238,6 +243,12 @@ class ElectionResource(GenericResource):
 
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_mugshot_url()
+
+    def dehydrate_direct_votes_count(self, bundle):
+        return bundle.obj.get_direct_votes().count()
+
+    def dehydrate_delegated_votes_count(self, bundle):
+        return bundle.obj.get_delegated_votes().count()
 
     def prepend_urls(self):
         return [
