@@ -1,0 +1,67 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-03-10 10:54+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: agora_core/templates/agora_core/client/action_ao_agora.html:8
+#: agora_core/templates/agora_core/client/action_t_agora.html:9
+#: agora_core/templates/agora_core/client/action_t_agora_ao_comment.html:9
+msgctxt "<verb> agora <agora>"
+msgid "agora"
+msgstr ""
+
+#: agora_core/templates/agora_core/client/action_ao_agora_t_user.html:8
+msgctxt "at agora <agora>"
+msgid "at agora"
+msgstr ""
+
+#: agora_core/templates/agora_core/client/action_ao_election.html:8
+msgctxt "election <election>"
+msgid "election"
+msgstr ""
+
+#: agora_core/templates/agora_core/client/action_ao_election.html:9
+#: agora_core/templates/agora_core/client/action_ao_election_v_voted.html:11
+#: agora_core/templates/agora_core/client/action_ao_election_v_voted_public.html:11
+#: agora_core/templates/agora_core/client/action_ao_election_v_voted_public_reason.html:11
+msgctxt "<election> at <agora>"
+msgid "at"
+msgstr ""
+
+#: agora_core/templates/agora_core/client/action_ao_election_v_voted.html:9
+#: agora_core/templates/agora_core/client/action_ao_election_v_voted_public.html:9
+#: agora_core/templates/agora_core/client/action_ao_election_v_voted_public_reason.html:9
+msgctxt "<verb> on election <election>"
+msgid "on election"
+msgstr ""
+
+#: agora_core/templates/agora_core/client/action_ao_election_v_voted_public.html:19
+#: agora_core/templates/agora_core/client/action_ao_election_v_voted_public_reason.html:19
+msgid "Answered:"
+msgstr ""
+
+#: agora_core/templates/agora_core/client/action_t_election_ao_comment.html:9
+#: agora_core/templates/agora_core/client/action_t_user.html:9
+msgctxt "<verb> election <election>"
+msgid "election"
+msgstr ""
+
+#: agora_core/templates/agora_core/client/action_t_election_ao_comment.html:11
+#: agora_core/templates/agora_core/client/action_t_user.html:11
+msgctxt "<election> at agora <agora>"
+msgid "at agora"
+msgstr ""
