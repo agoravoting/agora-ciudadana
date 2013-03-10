@@ -159,7 +159,6 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    "dajaxice.finders.DajaxiceFinder"
 )
 
 INSTALLED_APPS = (
@@ -187,10 +186,20 @@ INSTALLED_APPS = (
     'agora_site.accounts',
     'endless_pagination',
     'haystack',
-    'dajaxice',
     'djcelery',
-    'guardian'
+    'guardian',
+    'djsgettext'
 )
+
+# Cache settings
+
+# No caching by default for development
+#if DEBUG:
+    #CACHES = {
+        #'default': {
+            #'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        #}
+    #}
 
 # A list the models that you want to enable actions for. Models must be in the
 # format app_label.model_name . In the background, django-activity-stream sets

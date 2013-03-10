@@ -1,5 +1,6 @@
-{% load i18n agora_utils string_tags dajaxice_templatetags %}
+{% load i18n agora_utils string_tags %}
 {% load static from staticfiles %}
+{% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -298,7 +299,7 @@
     <div class="container-fluid footer-end"></div>
     {% endblock %}
 
-    <script type="text/javascript" src="{% url django.views.i18n.javascript_catalog %}"></script>
+    <script type="text/javascript" src="{% url jsgettext %}?language={{ LANGUAGE_CODE }}"></script>
     <script src="{% static 'js/min/main.min.js' %}"></script>
 
     <!-- Development -->
