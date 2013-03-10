@@ -176,55 +176,19 @@
         {% endblock %}
     </div>
     <div class="span4 agora-right-side">
-        <div class="row-fluid right-widget agora-calendar" id="agora-calendar">
+        <div class="row-fluid right-widget agora-calendar" id="agora-calendar" data-url="/api/v1/agora/{{ agora.id }}/open_elections/">
             <div class="right-widget-header">
                 <h4>{% trans "Calendar" %} <span>({{ agora.get_open_elections.count }})</span></h4>
                 <a class="btn btn-primary" href="{% url election-new agora.creator.username agora.name %}">{% trans "Create election" %}</a>
                 <input type="text" class="input-medium election-search-query search-query" autocomplete="off" value="" placeholder="{% trans "Search..." %}" name="q" />
             </div>
             <div class="row-fluid agora-dates">
-                <!-- ul>
-                    {% with election_groups=agora.get_open_elections|elections_grouped_by_date %}
-                        {% for elections_date, elections in election_groups.items %}
-                            <li>
-                                <time datetime="{{ elections_date.isoformat }}">{{ elections_date|pretty_date }}</time>
-                                <ul>
-                                    {% for election in elections %}
-                                        {% if forloop.counter < 5 %}
-                                            <li>
-                                                <a href="{% url election-view agora.creator.username agora.name election.name %}">
-                                                    <img src="{{ STATIC_URL }}img/small-icon-envelope.png" />
-                                                    {{ election.pretty_name|truncatechars:40 }}
-                                                </a>
-                                                {# TODO: create templatefilter to check if user voted in an election #}
-                                                <img src="{{ STATIC_URL }}img/small-icon-ok.png" />
-                                            </li>
-                                        {% elif forloop.counter == 5 %}
-                                            <li>
-                                                <a class="remaining" href="{% url agora-elections agora.creator.username agora.name elections_date "open" %}">
-                                                {% blocktrans with remaining=forloop.revcounter0 %}
-                                                    ... and {{ remaning }} more elections
-                                                {% endblocktrans %}
-                                                </a>
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                        {% empty %}
-                            <li class="empty">
-                                {% trans "No elections yet, perhaps you want to create one?" %}
-                            </li>
-                        {% endfor %}
-                    {% endwith %}
-                </ul-->
-
                 <ul>
-                    <div id="electionList"></div>
+                    <div class="list-container"></div>
                 </ul>
                 <div style="display:none">
                     <li id="no-elections" class="empty">
-                        {% trans "No elections found" %}
+                        {% trans "No elections yet, perhaps you want to create one?" %}
                     </li>
                 </div>
             </div>

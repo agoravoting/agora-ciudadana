@@ -396,7 +396,7 @@ class CreateElectionForm(django_forms.ModelForm):
             election_id=election.id,
             is_secure=self.request.is_secure(),
             site_id=Site.objects.get_current().id,
-            remote_addr=self.request.META.get('REMOTE_ADDR')
+            remote_addr=self.request.META.get('REMOTE_ADDR'),
         )
 
         # send email to admins

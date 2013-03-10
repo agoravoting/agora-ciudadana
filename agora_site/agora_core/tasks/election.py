@@ -102,6 +102,10 @@ def start_election(election_id, is_secure, site_id, remote_addr):
 
     send_mass_html_mail(datatuples)
 
+    action.send(user, verb='started voting period', action_object=election,
+        target=election.agora, ipaddr=remote_addr,
+        geolocation=json.dumps(geolocate_ip(remote_addr)))
+
 
 @task(ignore_result=True)
 def end_election(election_id, is_secure, site_id, remote_addr, user_id):
@@ -223,12 +227,11 @@ def archive_election(election_id, is_secure, site_id, remote_addr, user_id):
 
 
 @task(ignore_result=True)
-def send_election_created_mails(election_id, is_secure, site_id, remote_addr, user_id):
+def send_election_created_mails(election_id, is_secure, site_id, remote_addr):
     election = Election.objects.get(pk=election_id)
     if not election or election.is_archived():
         return
 
-    user = User.objects.get(pk=user_id)
     context = get_base_email_context_task(is_secure, site_id)
     context.update(dict(
         election=election,
