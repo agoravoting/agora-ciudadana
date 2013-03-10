@@ -5,8 +5,10 @@
         </a>
         <div class="action-body">
             <div class="action-title">
-                <a href="<%= actor.url %>"><strong class="username"><%= actor.username %></strong></a> <strong class="verb"><%= verb %></strong> on election
-                <a href="<%= action_object.url %>"><%= action_object.pretty_name %></a> at
+                <a href="<%= actor.url %>"><strong class="username"><%= actor.username %></strong></a> <strong class="verb"><%= gettext(verb) %></strong> 
+                <%= pgettext("<verb> on election <election>", "on election") %>
+                <a href="<%= action_object.url %>"><%= action_object.pretty_name %></a>
+                <%= pgettext("<election> at <agora>", "at") %>
                 <a href="<%= action_object.agora.url %>"><%= action_object.agora.full_name %></a>
                 <time class="timeago" title="<%= timestamp %>" datetime="<%= timestamp %>"></time>
             </div>
