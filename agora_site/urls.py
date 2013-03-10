@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from djsgettext.views import I18n
+
 from django.conf.urls.defaults import *
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
@@ -21,13 +23,6 @@ from django.contrib import admin
 
 admin.autodiscover()
 
-from dajaxice.core import dajaxice_autodiscover, dajaxice_config
-dajaxice_autodiscover()
-
-
-js_info_dict = {
-    'packages': ('agora_site',)
-}
 
 urlpatterns = patterns('',
     # Uncomment the admin/doc line below to enable admin documentation:
@@ -36,14 +31,11 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
 
-    # dajaxice ajax endpoint urls
-    url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
-
     (r'^accounts/', include('agora_site.accounts.urls')),
 
     (r'^comments/', include('django.contrib.comments.urls')),
-    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
 
+    url(r'^js-gettext/$', I18n.as_view(), name="jsgettext"),
 
     (r'', include('social_auth.urls')),
 

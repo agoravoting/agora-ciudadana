@@ -16,10 +16,10 @@ django-debug-toolbar
 textile
 simplejson
 pygeoip
-django-dajaxice
 celery==3.0.12
 django-celery==3.0.11
 django-tastypie==0.9.12
 whoosh
 sphinx
+git+https://github.com/edulix/django-jsgettext.git
 sphinxcontrib-httpdomain
