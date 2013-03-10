@@ -15,8 +15,7 @@
 
 
 from agora_site.agora_core.models import Agora, Election, CastVote
-from agora_site.agora_core.tasks.election import (start_election, end_election,
-    send_election_created_mails)
+from agora_site.agora_core.tasks.election import (start_election, end_election)
 from agora_site.misc.utils import *
 
 from crispy_forms.helper import FormHelper

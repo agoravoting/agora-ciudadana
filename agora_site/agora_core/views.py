@@ -105,7 +105,7 @@ class SetLanguageView(FormActionView):
         return response
 
 
-class HomeView(AjaxListView):
+class HomeView(TemplateView):
     '''
     Shows main page. It's different for non-logged in users and logged in users:
     for the former, we show a carousel of news nicely geolocated in a map; for
@@ -114,26 +114,19 @@ class HomeView(AjaxListView):
     '''
     template_name = 'agora_core/home_activity.html'
     template_name_logged_in = 'agora_core/home_loggedin_activity.html'
-    page_template = 'agora_core/action_items_page.html'
 
-    def get_queryset(self):
-        if self.request.user.is_authenticated() and not self.request.user.is_anonymous():
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated() and not request.user.is_anonymous():
             # change template
             self.template_name = self.template_name_logged_in
-            return actor_stream(self.request.user)
-        else:
-            return Action.objects.public()[:10]
+        return super(HomeView, self).get(request, *args, **kwargs)
 
 
-class AgoraView(AjaxListView):
+class AgoraView(TemplateView):
     '''
     Shows an agora main page
     '''
     template_name = 'agora_core/agora_activity.html'
-    page_template = 'agora_core/action_items_page.html'
-
-    def get_queryset(self):
-        return object_stream(self.agora)
 
     def get_context_data(self, **kwargs):
         context = super(AgoraView, self).get_context_data(**kwargs)

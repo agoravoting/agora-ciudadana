@@ -73,6 +73,10 @@
 
                     this.$(".list-container").append(dom);
                 }, this);
+
+                if (collection.length === 0) {
+                    this.$(".list-container").append(this.$("#no-elections"));
+                }
             }
         });
     }).call(this);
@@ -145,7 +149,7 @@
             },
 
             setEndlessFinishDom: function() {
-                this.endlessDom.find("a.endless_more").replaceWith("<span>No more results</span>");
+                this.endlessDom.find("a.endless_more").replaceWith(gettext("<span>No more results</span>"));
                 this.endlessDom.find("div.endless_loading").hide();
             },
 
@@ -158,6 +162,8 @@
                         this.setEndlessFinishDom();
                         this.finished = true;
                     } else {
+                        var doc = $(document), win = $(window);
+
                         if (!this.firstLoadSuccess) {
                             this.firstLoadSuccess = true;
                             this.collection.reset(data.objects);
@@ -169,6 +175,23 @@
                         }
 
                         this.endlessDom.appendTo(this.$el);
+
+                        // if received less than the limit per page, it means
+                        // there are no more items
+                        if (data.objects.length < this.limit) {
+                            this.setEndlessFinishDom();
+                            this.finished = true;
+
+                        // if received the limit per page, but the doc is still
+                        // the same height as the window and scrollTop is 0,
+                        // it means the window admits more elements and more
+                        // elements can be fetch, so fetch those
+                        } else if (doc.height() == win.height() &&
+                            win.scrollTop() == 0) {
+                            this.$("a.endless_more").click();
+                            this.$("a.endless_more").hide();
+                            this.endlessDom.find("div.endless_loading").show();
+                        }
                     }
                 }
             },
