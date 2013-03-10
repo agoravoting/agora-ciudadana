@@ -10,19 +10,14 @@
 {% block content %}
     <div class="row">
         <div class="span8 agora-left-side">
-            {% paginate object_list %}
-            {% for object in object_list %}
-                <!-- {% cycle "left" "right" as row %} -->
-                {% include "agora_core/user_item.html" %}
-                {% if forloop.last and row == "left" %}
-                        <div class="span6 span6-right">
-                        </div>
-                    </div>
-                {% endif %}
-            {% empty %}
-                {% trans "Sorry, this list of agora members is empty." %}
-            {% endfor %}
-            {% show_more %}
+            <div class="activity-list" id="user-list"
+                data-url="/api/v1/agora/{{ agora.id }}/{{filter}}" data-method="get" data-margin="300">
+
+                <div class="endless-container">
+                    <a class="endless_more" href="#">{% trans "more" %}</a>
+                    <div class="endless_loading hidden">{% trans "Loading..." %}</div>
+                </div>
+            </div>
         </div>
         <div class="span4 agora-right-side">
             {% if agora|is_agora_admin:user %}
@@ -41,19 +36,19 @@
                         {% trans "Admins" %} ({{ agora.admins.count }})
                     </a>
                 </li>
-                <li{% ifequal filter 'delegates' %} class="active"{% endifequal %}>
-                    <a href="{% url agora-members agora.creator.username agora.name 'delegates' %}">
+                <li{% ifequal filter 'active_delegates' %} class="active"{% endifequal %}>
+                    <a href="{% url agora-members agora.creator.username agora.name 'active_delegates' %}">
                         {% trans "Delegates" %} ({{ agora.active_delegates.count }})
                     </a>
                 </li>
                 {% if agora|is_agora_admin:user %}
-                    <li{% ifequal filter 'requested_membership' %} class="active"{% endifequal %}>
-                        <a href="{% url agora-members agora.creator.username agora.name 'requested_membership' %}">
+                    <li{% ifequal filter 'membership_requests' %} class="active"{% endifequal %}>
+                        <a href="{% url agora-members agora.creator.username agora.name 'membership_requests' %}">
                             {% trans "Requested membership" %} ({{ agora.users_who_requested_membership.count }})
                         </a>
                     </li>
-                    <li{% ifequal filter 'requested_admin_membership' %} class="active"{% endifequal %}>
-                        <a href="{% url agora-members agora.creator.username agora.name 'requested_admin_membership' %}">
+                    <li{% ifequal filter 'admin_membership_requests' %} class="active"{% endifequal %}>
+                        <a href="{% url agora-members agora.creator.username agora.name 'admin_membership_requests' %}">
                             {% trans "Requested admin membership" %} ({{ agora.users_who_requested_admin_membership.count }})
                         </a>
                     </li>
@@ -61,4 +56,10 @@
             </ul>
         </div>
     </div>
+{% endblock %}
+
+
+{% block script-block %}
+    {% include "search/include-js-template-search-profile.html" %}
+    <script>app.currentView = new Agora.UserListView();</script>
 {% endblock %}

@@ -161,16 +161,12 @@ class AgoraElectionsView(TemplateView):
     '''
     template_name = 'agora_core/agora_elections.html'
 
-    def get(self, request, *args, **kwargs):
-        return super(AgoraElectionsView, self).get(request, *args, **kwargs)
-
     def get_context_data(self, *args, **kwargs):
         context = super(AgoraElectionsView, self).get_context_data(**kwargs)
         self.kwargs = kwargs
 
         username = self.kwargs["username"]
         agoraname = self.kwargs["agoraname"]
-        election_filter = self.kwargs.get("election_filter", "open")
 
         self.agora = get_object_or_404(Agora, name=agoraname,
             creator__username=username)
@@ -180,40 +176,21 @@ class AgoraElectionsView(TemplateView):
         return context
 
 
-class AgoraMembersView(AjaxListView):
+class AgoraMembersView(TemplateView):
     '''
     Shows the biography of an agora
     '''
     template_name = 'agora_core/agora_members.html'
-    page_template = 'agora_core/user_list_page.html'
 
-    def get_queryset(self):
+    def get_context_data(self, **kwargs):
+        context = super(AgoraMembersView, self).get_context_data(**kwargs)
+        self.kwargs = kwargs
+
         username = self.kwargs["username"]
         agoraname = self.kwargs["agoraname"]
 
         self.agora = get_object_or_404(Agora, name=agoraname,
             creator__username=username)
-
-        member_list = self.agora.members.all()
-        if self.kwargs['members_filter'] == 'delegates':
-            member_list = self.agora.active_delegates()
-        elif self.kwargs['members_filter'] == 'admins':
-            member_list = self.agora.admins.all()
-        elif self.kwargs['members_filter'] == 'requested_membership' and\
-            self.agora.has_perms('admin', self.request.user):
-            member_list = self.agora.users_who_requested_membership()
-        elif self.kwargs['members_filter'] == 'requested_admin_membership' and\
-            self.agora.has_perms('admin', self.request.user):
-            member_list = self.agora.users_who_requested_admin_membership()
-        return member_list
-
-    def get(self, request, *args, **kwargs):
-        self.kwargs = kwargs
-        self.request = request
-        return super(AgoraMembersView, self).get(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(AgoraMembersView, self).get_context_data(**kwargs)
         context['agora'] = self.agora
         context['filter'] = self.kwargs["members_filter"]
 
