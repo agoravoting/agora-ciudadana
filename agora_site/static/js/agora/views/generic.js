@@ -115,6 +115,7 @@
                 this.collection.on('reset', this.collectionReset);
                 this.collection.on('add', this.addItem);
                 this.endlessDom = this.$(".endless-container");
+                this.endlessDom.find("div.endless_loading").hide();
 
                 this.offset = 0;
                 this.limit = 20;
@@ -145,12 +146,14 @@
 
             setEndlessFinishDom: function() {
                 this.endlessDom.find("a.endless_more").replaceWith("<span>No more results</span>");
+                this.endlessDom.find("div.endless_loading").hide();
             },
 
             requestSuccess: function(xhr) {
                 if (xhr.status === 200) {
                     var data = JSON.parse(xhr.responseText);
 
+                    this.endlessDom.find("div.endless_loading").hide();
                     if (data.objects.length === 0) {
                         this.setEndlessFinishDom();
                         this.finished = true;
@@ -159,6 +162,7 @@
                             this.firstLoadSuccess = true;
                             this.collection.reset(data.objects);
                         } else {
+                            this.$("a.endless_more").show();
                             _.each(data.objects, function(item) {
                                 this.collection.add(item);
                             }, this);
@@ -191,8 +195,12 @@
                 var doc = $(document), win = $(window);
                 var margin = this.$el.data('margin') || 300;
 
-                if ((doc.height() - win.height() - win.scrollTop()) <= margin) {
+                if (!this.finished &&
+                    (doc.height() - win.height() - win.scrollTop()) <= margin)
+                {
                     this.$("a.endless_more").click();
+                    this.$("a.endless_more").hide();
+                    this.endlessDom.find("div.endless_loading").show();
                 }
             },
 
