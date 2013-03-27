@@ -14,7 +14,7 @@ class CastVoteResource(GenericResource):
                                  'election')
     public_data = fields.DictField(readonly=True)
 
-    class Meta:
+    class Meta(GenericMeta):
         queryset = CastVote.objects.all()
         #authentication = SessionAuthentication()
         list_allowed_methods = ['get', 'post']

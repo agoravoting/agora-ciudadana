@@ -21,12 +21,6 @@ def permission_required(perm, lookup_variables=None, **kwargs):
     Optionally, instances for which check should be made may be passed as an
     second argument or as a tuple parameters.
 
-    :param accept_global_perms: if set to ``True``, then *object level
-    permission* would be required **only if user does NOT have global
-    permission** for target *model*. If turned on, makes this decorator
-    like an extension over standard
-    ``django.contrib.admin.decorators.permission_required`` as it would
-    check for global permissions first. Defaults to ``False``.
     :param check_static: if set to ``Model``, the permissions will be
     checked in calling to Model.static_has_perms() instead of calling to
     has_perms(). Defaults to ``None``.
@@ -45,7 +39,6 @@ def permission_required(perm, lookup_variables=None, **kwargs):
     return user.get_absolute_url()
 
     """
-    accept_global_perms = kwargs.pop('accept_global_perms', False)
     check_static = kwargs.pop('check_static', None)
 
     if check_static:

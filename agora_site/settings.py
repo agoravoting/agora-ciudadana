@@ -176,6 +176,7 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
     'debug_toolbar',
     'south',
+    'tastypie',
     'easy_thumbnails',
     'userena',
     'rosetta',

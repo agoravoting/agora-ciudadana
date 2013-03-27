@@ -68,7 +68,7 @@ class ElectionAdminForm(ModelForm):
     from_date = django_forms.DateTimeField(label=_('Start voting'), required=False)
     to_date = django_forms.DateTimeField(label=_('End voting'), required=False)
 
-    class Meta:
+    class Meta(GenericMeta):
         model = Election
         fields = ('pretty_name', 'short_description', 'description',
             'is_vote_secret', 'comments_policy')
@@ -225,7 +225,7 @@ class ElectionResource(GenericResource):
 
     mugshot_url = fields.CharField()
 
-    class Meta:
+    class Meta(GenericMeta):
         queryset = Election.objects\
                     .exclude(url__startswith=DELEGATION_URL)\
                     .order_by('-last_modified_at_date')

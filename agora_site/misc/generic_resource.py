@@ -10,6 +10,8 @@ from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
 
 from tastypie.authorization import Authorization
+from tastypie.authentication import (ApiKeyAuthentication, MultiAuthentication,
+                                     SessionAuthentication)
 from tastypie.resources import ModelResource
 from tastypie.paginator import Paginator
 from tastypie import fields, http
@@ -19,6 +21,7 @@ from tastypie.utils.mime import build_content_type
 
 
 class GenericResourceMixin:
+
     def deserialize_post_data(self, request):
         '''
         Useful for get deserialized data
@@ -162,15 +165,25 @@ class GenericResourceMixin:
 class GenericResource(ModelResource, GenericResourceMixin):
     pass
 
+from tastypie.authentication import Authentication
+class ReadOnlyAuthentication(Authentication):
+    '''
+    Authenticates everyone if the request is GET 
+    '''
+
+    def is_authenticated(self, request, **kwargs):
+        if request.method == 'GET':
+            return True
+        return False
+
+
 
 class GenericMeta:
     list_allowed_methods = ['get', 'post']
     detail_allowed_methods = ['get', 'post', 'put', 'delete']
-    # TODO When we have the first version of the API we could
-    # work in the Authorization
-    # authorization = DjangoAuthorization()
     authorization = Authorization()
-    #authentication = SessionAuthentication()
+    authentication = MultiAuthentication(ReadOnlyAuthentication(),
+        SessionAuthentication(), ApiKeyAuthentication())
     always_return_data = True
     include_resource_uri = False
 
