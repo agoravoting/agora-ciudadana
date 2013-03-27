@@ -8,6 +8,7 @@ from actstream.signals import action
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.utils import translation
+from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse

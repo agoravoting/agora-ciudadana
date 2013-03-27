@@ -11,6 +11,7 @@
             if ($("#activity-list").length > 0) {
                 this.activityListView = new Agora.ActivityListView();
             }
+//             this.agoralistView = new Agora.AgoraWidgetListView();
         }
     });
 }).call(this)

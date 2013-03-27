@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import forms as auth_forms
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout as auth_logout
+from django.shortcuts import get_object_or_404
 
 from tastypie.utils import trailing_slash
 from tastypie import http
@@ -158,6 +159,10 @@ class UserResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view("agoras"), name="api_user_agoras"),
 
+            url(r"^(?P<resource_name>%s)/(?P<userid>\d+)/agoras%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view("agoras"), name="api_specific_user_agoras"),
+
             url(r"^(?P<resource_name>%s)/open_elections%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view("open_elections"), name="api_user_open_elections"),
@@ -223,10 +228,14 @@ class UserResource(GenericResource):
         Lists the agoras in which the authenticated user is a member
         '''
         from .agora import AgoraResource
-        if request.user.is_anonymous():
+        if kwargs.has_key('userid'):
+            user = get_object_or_404(User, pk=kwargs['userid'])
+        else:
+            user = request.user
+        if user.is_anonymous():
             raise ImmediateHttpResponse(response=http.HttpForbidden())
 
-        return AgoraResource().get_custom_list(request=request, queryset=request.user.agoras.all())
+        return AgoraResource().get_custom_list(request=request, queryset=user.agoras.all())
 
     def open_elections(self, request, **kwargs):
         '''

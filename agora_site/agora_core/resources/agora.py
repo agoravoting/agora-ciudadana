@@ -74,7 +74,7 @@ class CreateAgoraForm(ModelForm):
     Form used to validate the user information in the
     agora creation.
     '''
-    class Meta:
+    class Meta(GenericMeta):
         model = Agora
         fields = ('pretty_name', 'short_description', 'is_vote_secret')
 
@@ -82,7 +82,7 @@ class AgoraAdminForm(ModelForm):
     '''
     Form used to validate agora administration details.
     '''
-    class Meta:
+    class Meta(GenericMeta):
         model = Agora
         fields = ('pretty_name', 'short_description', 'is_vote_secret',
             'biography', 'membership_policy', 'comments_policy')

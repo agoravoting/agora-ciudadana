@@ -1885,15 +1885,11 @@ class CancelVoteView(FormActionView):
     def dispatch(self, *args, **kwargs):
         return super(CancelVoteView, self).dispatch(*args, **kwargs)
 
-class UserView(AjaxListView):
+class UserView(TemplateView):
     '''
     Shows an user main page
     '''
     template_name = 'agora_core/user_activity.html'
-    page_template = 'agora_core/action_items_page.html'
-
-    def get_queryset(self):
-        return user_stream(self.user_shown)
 
     def get_context_data(self, *args, **kwargs):
         context = super(UserView, self).get_context_data(**kwargs)
