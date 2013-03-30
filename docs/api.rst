@@ -23,6 +23,10 @@ Authentication
 
 The API accepts two modes of authentication:
 
+**Readonly unathenticated queries**
+
+Some read-only queries can be requested with no authentication mechanism at all. For example the listing of agoras supports this. This is useful and handy if you just want to request some generic information.
+
 **Session authentication**
 
 The session cookie used in the normal login is accepted and identifies the user that is using the API. This is useful
@@ -38,6 +42,16 @@ user token is returned, and you must supply it in the Authorization header in al
     # As a header
     # Format is ''Authorization: ApiKey <username>:<api_key>''
     Authorization: ApiKey daniel:204db7bcfafb2deb7506b89eb3b9b715b09905c8
+
+Currently the user token is currently only accesible through administrators that can access to the django shell:
+
+.. code-block:: python
+    In [1]: from tastypie.models import ApiKey
+
+    In [2]: ApiKey.objects.get(user__username="user1")
+    Out[2]: <ApiKey: b133b30b2348d7ba8ac6cb63b7aefb382c0804d2 for user1>
+
+
 
 Lists, Pagination and filtering
 ===============================
@@ -250,8 +264,8 @@ Retrieve an agora
         "short_description": "some fancydescription"
     }
 
-Create a new agora
-------------------
+Create new agora
+----------------
 
 .. http:post:: /agora/
 
@@ -396,7 +410,7 @@ Modify agora
         "created_at_date": "2012-12-02T16:35:52.110729",
         "creator":
         {
-            "date_joined": "2012-06-14T14:13:48.850044",
+1            "date_joined": "2012-06-14T14:13:48.850044",
             "first_name": "",
             "id": 1,
             "is_active": true,
@@ -414,6 +428,120 @@ Modify agora
         "name": "agora-name",
         "pretty_name": "agora name",
         "short_description": "some fancydescription"
+    }
+
+Execute an action
+-----------------
+
+.. http:post:: /agora/(int:agora_id)/action
+
+   Request to execute an action in the agora (`agora_id`).
+
+   The available actions are:
+
+   **get_permissions**
+
+   Returns a list of the permissions that the authenticated user has over the specified agora.
+
+   **request_membership**
+
+   The authenticated user requests membership in the specified agora. The authenticated user must have the ``request_membership`` permission on the agora to succeed.
+
+   **join**
+
+   The authenticated user joins the specified agora. The authenticated user must have the ``join`` permission on the agora to succeed.
+
+   **leave**
+   The authenticated user leaves the specified agora. The authenticated user must have the ``leave`` permission on the agora to succeed. The creator of an agora can leave it.
+
+   **accept_membership**
+
+   The authenticated user accepts the membership of the specified user (in the field "username") in an agora. The authenticated user must have ``admin`` permission on the agora and the specified user must have a pending membership request to succeed.
+
+   **deny_membership**
+
+   The authenticated user denies the membership of the specified user (in the field "username") in an agora. The authenticated user must have ``admin`` permission on the agora and the specified user must have a pending membership request to succeed.
+
+   **add_membership**
+
+   The authenticated user adds membership to the specified user (in the field "username") in an agora. The authenticated user must have ``admin`` permission on the agora and the specified username must be not a member of the given agora to succeed.
+
+   **remove_membership**
+
+   The authenticated user removes membership to the specified user (in the field "username") in an agora. The authenticated user must have ``admin`` permission on the agora and the specified username must be a member of the given agora to succeed.
+
+   **request_admin_membership**
+
+   The authenticated user requests admin membership in an agora. The authenticated user must have ``request_admin_membership`` permission on the agora to succeed.
+
+   **accept_admin_membership**
+
+   The authenticated user accepts admin membership to the specified user (in the field "username") in an agora. The authenticated user must have ``admin`` permission on the agora and the specified username must have a pending admin membership request in the given agora to succeed.
+
+   **deny_admin_membership**
+
+   The authenticated user denies admin membership to the specified user (in the field "username") in an agora. The authenticated user must have ``admin`` permission on the agora and the specified username must have a pending admin membership request in the given agora to succeed.
+
+   **add_admin_membership**
+
+   The authenticated user adds admin membership to the specified user (in the field "username") in an agora. The authenticated user must have ``admin`` permission on the agora and the specified username must be a member in the given agora to succeed.
+
+   **remove_admin_membership**
+
+   The authenticated user removes admin membership from the specified user (in the field "username") in an agora. The authenticated user must have ``admin`` permission on the agora and the specified username must be a member in the given agora to succeed.
+
+   **leave_admin_membership**
+
+   The authenticated user leaves admin membership in an agora. The authenticated user must have ``admin`` permission on the given agora to succeed.
+
+   **create_election**
+
+   The authenticated creates an election in the given agora, providing the following fields:
+    * **question**: a text with the main question in the election. Required.
+    * **answers**: a list with at least two possible answers to the question. required.
+    * **pretty_name**: A title for the election. Required.
+    * **description**: A description text for the election. It can follow restructured text format and be as large as needed. Required.
+    * **is_vote_secret**: A boolean specifiying if the direct votes must all be secret or not. Required.
+
+   **delegate_vote**
+
+   The authenticated user stablishes the delegation to an user specified in the field "username", cancelling the previous delegation if any from now on. The authenticated user must have  ``delegate`` permission on the agora and the specified username must exists to succeed.
+
+   **cancel_vote_delegation**
+
+   The authenticated user stablishes cancels its delegation on the specified agora from now on. The authenticated user must have  ``delegate`` permission on the agora and have a current delegate on the specified agora to succeed.
+
+   :param agora_id: agora's unique id
+   :type agora_id: int
+   :form action: name of the action. Required.
+   :status 200 OK: no error
+   :statuscode 403 FORBIDDEN: when the user has not the required permissions
+   :status 404 NOT FOUND: when the agora is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    POST /api/v1/agora/1/action/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+    Authorization: ApiKey linus:204db7bcfafb2deb7506b89eb3b9b715b09905c8
+
+    {
+       "action": "add_membership",
+       "username": "foobar"
+    }
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "status": "success"
     }
 
 Retrieve agora members
@@ -474,8 +602,8 @@ Retrieve agora members
        ]
     }
 
-Retrieve agora administrators
------------------------------
+List administrators
+-------------------
 
 .. http:get:: /agora/(int:agora_id)/admins
 
@@ -523,8 +651,8 @@ Retrieve agora administrators
        ]
     }
 
-Retrieve agora membership requests
-----------------------------------
+List membership requests
+------------------------
 
 .. http:get:: /agora/(int:agora_id)/membership_requests
 
@@ -572,8 +700,58 @@ Retrieve agora membership requests
        ]
     }
 
-Retrieve agora active delegates
--------------------------------
+Retrieve agora admin membership requests
+----------------------------------------
+
+.. http:get:: /agora/(int:agora_id)/admin_membership_requests
+
+   Retrieves the users that have pending requests to become admins of agora (`agora_id`). The authenticated user must be an administrator.
+
+   :param agora_id: agora's unique id
+   :type agora_id: int
+   :status 200 OK: no error
+   :status 403 FORBIDDEN: when the user has no admin permissions
+   :status 404 NOT FOUND: when the agora is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/agora/1/admin_membership_requests/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+       "meta":
+       {
+           "limit": 20,
+           "offset": 0,
+           "total_count": 1
+       },
+       "objects":
+       [
+           {
+               "date_joined": "2012-12-18T15:46:38.968369",
+               "first_name": "Monica Moreno",
+               "id": 7,
+               "is_active": true,
+               "last_login": "2012-12-18T16:31:32.390732",
+               "last_name": "",
+               "username": "user6"
+           }
+       ]
+    }
+
+List active delegates
+---------------------
 
 .. http:get:: /agora/(int:agora_id)/active_delegates
 
@@ -622,8 +800,8 @@ Retrieve agora active delegates
        ]
     }
 
-Retrieve all agora elections
-----------------------------
+List all elections
+------------------
 
 .. http:get:: /agora/(int:agora_id)/all_elections
 
@@ -701,8 +879,8 @@ Retrieve all agora elections
        ]
     }
 
-Retrieve tallied agora elections
---------------------------------
+List tallied elections
+----------------------
 
 .. http:get:: /agora/(int:agora_id)/tallied_elections
 
@@ -783,13 +961,13 @@ Retrieve tallied agora elections
        ]
     }
 
-Retrieve open agora elections
---------------------------------
+List open elections
+-------------------
 
 .. http:get:: /agora/(int:agora_id)/open_elections
 
-   Retrieves tallied elections in agora (`agora_id`): current or future elections that
-   will or are taking place in the agora.
+   Retrieves open elections in agora (`agora_id`): elections that are currently
+   taking place in the agora.
 
    :param agora_id: agora's unique id
    :type agora_id: int
@@ -864,6 +1042,246 @@ Retrieve open agora elections
     }
 
 
+List requested elections
+------------------------
+
+.. http:get:: /agora/(int:agora_id)/requested_elections
+
+   Retrieves requested elections in agora (`agora_id`): elections that have
+   been created and requested to take place in the agora but have not been
+   approved yet.
+
+   :param agora_id: agora's unique id
+   :type agora_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the agora is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/agora/1/requested_elections/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+       "meta":
+       {
+           "limit": 20,
+           "offset": 0,
+           "total_count": 1
+       },
+       "objects":
+       [
+           {
+               "agora": "/api/v1/agora/2/",
+               "approved_at_date": null,
+               "archived_at_date": null,
+               "comments_policy": "ANYONE_CAN_COMMENT",
+               "created_at_date": "2012-12-18T15:50:48.576146",
+               "creator": "/api/v1/user/2/",
+               "delegated_votes_frozen_at_date": null,
+               "delegated_votes_result": "",
+               "description": "this is election 1",
+               "election_type": "ONE_CHOICE",
+               "electorate":
+               [
+               ],
+               "eligibility": "",
+               "extra_data": "{u'started': True}",
+               "frozen_at_date": "2012-12-18T15:51:05.405218",
+               "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
+               "id": 3,
+               "is_approved": true,
+               "is_vote_secret": true,
+               "last_modified_at_date": "2012-12-18T15:50:48.588385",
+               "name": "election-1",
+               "parent_election": null,
+               "percentage_of_participation": 50,
+               "pretty_name": "election 1",
+               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
+               "resource_uri": "/api/v1/election/3/",
+               "result": "",
+               "result_tallied_at_date": null,
+               "short_description": "this is election 1",
+               "tiny_hash": null,
+               "url": "http://localhost:8000/user1/agora2/election/election-1",
+               "uuid": "c2ad36c2-b67e-499c-8100-59becd538549",
+               "voters_frozen_at_date": null,
+               "voting_ends_at_date": "2012-12-20T00:00:00",
+               "voting_extended_until_date": "2012-12-20T00:00:00",
+               "voting_starts_at_date": "2012-12-18T16:51:00.018431"
+           }
+       ]
+    }
+
+List archived elections
+-----------------------
+
+.. http:get:: /agora/(int:agora_id)/archived_elections
+
+   Retrieves archived elections in agora (`agora_id`): elections that have
+   been archived/discarded in the agora.
+
+   :param agora_id: agora's unique id
+   :type agora_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the agora is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/agora/1/archived_elections/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+       "meta":
+       {
+           "limit": 20,
+           "offset": 0,
+           "total_count": 1
+       },
+       "objects":
+       [
+           {
+               "agora": "/api/v1/agora/2/",
+               "approved_at_date": null,
+               "archived_at_date": null,
+               "comments_policy": "ANYONE_CAN_COMMENT",
+               "created_at_date": "2012-12-18T15:50:48.576146",
+               "creator": "/api/v1/user/2/",
+               "delegated_votes_frozen_at_date": null,
+               "delegated_votes_result": "",
+               "description": "this is election 1",
+               "election_type": "ONE_CHOICE",
+               "electorate":
+               [
+               ],
+               "eligibility": "",
+               "extra_data": "{u'started': True}",
+               "frozen_at_date": "2012-12-18T15:51:05.405218",
+               "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
+               "id": 3,
+               "is_approved": true,
+               "is_vote_secret": true,
+               "last_modified_at_date": "2012-12-18T15:50:48.588385",
+               "name": "election-1",
+               "parent_election": null,
+               "percentage_of_participation": 50,
+               "pretty_name": "election 1",
+               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
+               "resource_uri": "/api/v1/election/3/",
+               "result": "",
+               "result_tallied_at_date": null,
+               "short_description": "this is election 1",
+               "tiny_hash": null,
+               "url": "http://localhost:8000/user1/agora2/election/election-1",
+               "uuid": "c2ad36c2-b67e-499c-8100-59becd538549",
+               "voters_frozen_at_date": null,
+               "voting_ends_at_date": "2012-12-20T00:00:00",
+               "voting_extended_until_date": "2012-12-20T00:00:00",
+               "voting_starts_at_date": "2012-12-18T16:51:00.018431"
+           }
+       ]
+    }
+
+List approved elections
+-----------------------
+
+.. http:get:: /agora/(int:agora_id)/approved_elections
+
+   Retrieves approved elections in agora (`agora_id`): elections that have
+   administrators' approval to take place in the agora.
+
+   :param agora_id: agora's unique id
+   :type agora_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the agora is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/agora/1/approved_elections/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+       "meta":
+       {
+           "limit": 20,
+           "offset": 0,
+           "total_count": 1
+       },
+       "objects":
+       [
+           {
+               "agora": "/api/v1/agora/2/",
+               "approved_at_date": null,
+               "archived_at_date": null,
+               "comments_policy": "ANYONE_CAN_COMMENT",
+               "created_at_date": "2012-12-18T15:50:48.576146",
+               "creator": "/api/v1/user/2/",
+               "delegated_votes_frozen_at_date": null,
+               "delegated_votes_result": "",
+               "description": "this is election 1",
+               "election_type": "ONE_CHOICE",
+               "electorate":
+               [
+               ],
+               "eligibility": "",
+               "extra_data": "{u'started': True}",
+               "frozen_at_date": "2012-12-18T15:51:05.405218",
+               "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
+               "id": 3,
+               "is_approved": true,
+               "is_vote_secret": true,
+               "last_modified_at_date": "2012-12-18T15:50:48.588385",
+               "name": "election-1",
+               "parent_election": null,
+               "percentage_of_participation": 50,
+               "pretty_name": "election 1",
+               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
+               "resource_uri": "/api/v1/election/3/",
+               "result": "",
+               "result_tallied_at_date": null,
+               "short_description": "this is election 1",
+               "tiny_hash": null,
+               "url": "http://localhost:8000/user1/agora2/election/election-1",
+               "uuid": "c2ad36c2-b67e-499c-8100-59becd538549",
+               "voters_frozen_at_date": null,
+               "voting_ends_at_date": "2012-12-20T00:00:00",
+               "voting_extended_until_date": "2012-12-20T00:00:00",
+               "voting_starts_at_date": "2012-12-18T16:51:00.018431"
+           }
+       ]
+    }
 
 Resource: User
 ==============
