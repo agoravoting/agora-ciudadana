@@ -53,6 +53,11 @@ We use django haystack for searching, so we need to create the initial index:
 
     $ ./manage.py rebuild_index
 
+Sometimes permissions are not created by django correctly. Running the following
+command fixes this problem:
+
+    $ ./manage.py check_permissions
+
 We use celery and rabbitmq for programmed tasks, so you need to setup it correctly
 in your server. Usually you just need to install it and run it as a system daemon
 with:
