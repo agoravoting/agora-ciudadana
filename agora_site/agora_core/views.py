@@ -1700,7 +1700,7 @@ class ElectionPostCommentView(RequestCreateView):
         context['vote_form'] = VoteForm(self.request, self.election)
         context['permissions'] = self.election.get_perms(self.request.user)
         context['agora_perms'] = self.election.agora.get_perms(self.request.user)
-        context['object_list'] = election_stream(self.election, verb='commented')
+        context['object_list'] = object_stream(self.election, verb='commented')
         return context
 
     def get_form_kwargs(self):
