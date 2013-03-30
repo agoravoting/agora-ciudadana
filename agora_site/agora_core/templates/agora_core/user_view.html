@@ -48,7 +48,7 @@
         <div class="span8 agora-left-side">
             {% block user-content %}
                 <div class="activity-list" id="activity-list"
-                    data-url="/api/v1/user/{{ user.id }}/agoras/">
+                    data-url="/api/v1/action/user/{{ user.username }}/">
                     <div class="endless-container">
                         <a class="endless_more" href="#">{% trans "more" %}</a>
                         <div class="endless_loading hidden">{% trans "Loading..." %}</div>
