@@ -232,17 +232,17 @@
                             href="{% url election-action-approve election.agora.creator.username election.agora.name election.name %}">
                             {% trans "Approve election" %}</a>
                         </div>
-                        {% elif "freeze_election" in permissions %}
-                        <div class="button-vote">
-                            <a class="btn btn-success action-form-link"
-                            href="{% url election-action-freeze election.agora.creator.username election.agora.name election.name %}">
-                            {% trans "Freeze election" %}</a>
-                        </div>
                         {% elif "begin_election" in permissions %}
                         <div class="button-vote">
                             <a class="btn btn-success action-form-link"
                             href="{% url election-action-start election.agora.creator.username election.agora.name election.name %}">
                             {% trans "Start voting period" %}</a>
+                        </div>
+                        {% elif "freeze_election" in permissions %}
+                        <div class="button-vote">
+                            <a class="btn btn-success action-form-link"
+                            href="{% url election-action-freeze election.agora.creator.username election.agora.name election.name %}">
+                            {% trans "Freeze election" %}</a>
                         </div>
                         {% elif "end_election" in permissions %}
                         <div class="button-vote">
