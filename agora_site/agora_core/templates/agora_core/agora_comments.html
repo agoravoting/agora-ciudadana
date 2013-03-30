@@ -9,6 +9,8 @@
 {% block agora-navigation %}{% activetab "agora-nav" "comments" %}{{ block.super }}{% endblock %}
 {% block content-wrapper-class %}comments{% endblock %}
 
+{% block agora-activity-url %}/api/v1/agora/{{ agora.id }}/comments/{% endblock %}
+
 {% block agora_content %}
 {% if form and request.user.is_authenticated and "comment" in agora|get_perms:request.user %}
     {% crispy form %}
@@ -18,3 +20,4 @@
 
 {{ block.super }}
 {% endblock %}
+

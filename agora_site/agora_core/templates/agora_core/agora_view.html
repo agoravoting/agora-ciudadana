@@ -162,7 +162,7 @@
     <div class="span8 agora-left-side">
         {% block agora_content %}
         <div class="activity-list" id="activity-list"
-        data-url="/api/v1/action/agora/{{ agora.id }}/">
+        data-url="{% block agora-activity-url %}/api/v1/action/agora/{{ agora.id }}/{% endblock %}">
             {% if agora.biograpy|length > 0 and agora.biography != agora.short_description and agora.biography %}
             <div class="main-description">
                 {{ agora.biograpy|textile|truncatewords_html:130 }}

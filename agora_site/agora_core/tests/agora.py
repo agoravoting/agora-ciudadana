@@ -604,6 +604,31 @@ class AgoraTest(RootTestCase):
         self.assertEqual(objects[0]['action_object']['content_type'], 'comment')
         self.assertEqual(objects[0]['action_object']['comment'], textile(orig_data['comment']))
 
+    def test_list_comments(self):
+        '''
+        Tests adding a comment in the agora and listing it
+        '''
+        # list comments - its empty
+        data = self.getAndParse('agora/1/comments/')
+        comments = data['objects']
+        self.assertEqual(len(comments), 0)
+
+        # add a comment as a logged in user that is a member of the agora
+        self.login('david', 'david')
+        orig_data = dict(comment='blah blah blah blah.')
+        data = self.postAndParse('agora/1/add_comment/', orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # now the comment is there
+        data = self.getAndParse('agora/1/comments/')
+        objects = data['objects']
+        self.assertEqual(len(objects), 1)
+        self.assertEqual(objects[0]['actor']['content_type'], 'user')
+        self.assertEqual(objects[0]['actor']['username'], 'david')
+        self.assertEqual(objects[0]['action_object']['content_type'], 'comment')
+        self.assertEqual(objects[0]['action_object']['comment'], textile(orig_data['comment']))
+
+
     def test_add_comment2(self):
         '''
         Tests adding a comment in the agora

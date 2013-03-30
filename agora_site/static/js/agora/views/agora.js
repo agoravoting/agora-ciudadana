@@ -11,7 +11,7 @@
             this.calendarView = new Agora.CalendarWidgetView();
 
             // Only initialize on correct section of page exists.
-            if (this.$("#activity-list").length > 0) {
+            if ($("#activity-list").length > 0) {
                 this.activityListView = new Agora.ActivityListView();
             }
         }

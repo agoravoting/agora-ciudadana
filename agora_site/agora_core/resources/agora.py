@@ -235,12 +235,22 @@ class AgoraResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_approved_elections_list'), name="api_agora_approved_elections_list"),
 
-            # TODO: add requested elections and deal with them (accept, deny)
+            url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/comments%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_comments'), name="api_agora_comments"),
 
             url(r"^(?P<resource_name>%s)/(?P<agora>\d+)/add_comment%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('add_comment'), name="api_agora_add_comment"),
         ]
+
+    def get_comments(self, request, **kwargs):
+        '''
+        List the comments in this agora
+        '''
+        from actstream.resources import ActionResource
+        return self.get_custom_resource_list(request, resource=ActionResource,
+            queryfunc=lambda agora: object_stream(agora, verb='commented'), **kwargs)
 
     @permission_required('comment', (Agora, 'id', 'agora'))
     def add_comment(self, request, **kwargs):
@@ -390,6 +400,10 @@ class AgoraResource(GenericResource):
 
             * delegate_vote
             * cancel_vote_delegation
+
+            TODO
+            * approve_election
+            * deny_election
         '''
 
         actions = {
