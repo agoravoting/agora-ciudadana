@@ -6,7 +6,8 @@ from common import (HTTP_OK,
                     HTTP_NO_CONTENT,
                     HTTP_BAD_REQUEST,
                     HTTP_FORBIDDEN,
-                    HTTP_NOT_FOUND)
+                    HTTP_NOT_FOUND,
+                    HTTP_METHOD_NOT_ALLOWED)
 
 from common import RootTestCase
 
@@ -82,6 +83,17 @@ class UserTest(RootTestCase):
         {'email': 'hohoho@hohoho.com'}, code=HTTP_BAD_REQUEST)
         data = self.postAndParse('user/password_reset/', {'email': 'david@david.com'})
         # TODO can we test that the operation worked?
+
+
+    def test_disable(self):
+        self.get('user/disable/', code=HTTP_METHOD_NOT_ALLOWED)
+        self.login('david', 'david')
+        self.get('user/disable/')
+        data = self.getAndParse('user/settings/')
+        self.assertEqual(data['id'], -1)
+        self.post('user/login/',
+            {'identification': 'david', 'password': 'david'}, code=HTTP_BAD_REQUEST)
+
 
     # register api call throws error causing this test to fail
     def test_register(self):

@@ -1711,6 +1711,53 @@ Reset Password
         ]
     }
 
+Disable
+--------------
+
+.. http:post:: /user/disable/
+
+   Disables a user.
+
+   :status 200 OK: when everything is ok
+   :status 400 BAD REQUEST: when email given is not one of an existing user
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    POST /api/v1/user/password_reset/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+    {
+        "email": "david@david.com"
+    }
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "objects":[
+            {
+                "username":"david",
+                "first_name":"",
+                "last_name":"",
+                "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
+                "url":"/user/david",
+                "is_active":true,
+                "last_login":"2012-11-29T17:18:46.837000",
+                "short_description":"Is a member of 2 agoras and has emitted  0 direct votes.",
+                "id":0,
+                "date_joined":"2012-11-29T15:08:43.874000"
+            }
+        ]
+    }
+
 List current user agoras
 ------------------------
 
