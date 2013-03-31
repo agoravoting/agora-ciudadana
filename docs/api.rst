@@ -852,7 +852,7 @@ List all elections
                [
                ],
                "eligibility": "",
-               "extra_data": "{u'started': True}",
+               "extra_data": "{u"started": True}",
                "frozen_at_date": "2012-12-18T15:53:24.071076",
                "hash": "b05bc33717cacc1557ff47bffdbfecbf10d3a1a52baba603b5b7b8e10c6db9fa",
                "id": 4,
@@ -863,7 +863,7 @@ List all elections
                "parent_election": null,
                "percentage_of_participation": 50,
                "pretty_name": "election 2",
-               "questions": "[{u'a': u'ballot/question', u'min': 0, u'max': 1, u'tally_type': u'simple', u'question': u'question of election 2', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'yes'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'no'}], u'randomize_answer_order': True}]",
+               "questions": "[{u"a": u"ballot/question", u"min": 0, u"max": 1, u"tally_type": u"simple", u"question": u"question of election 2", u"answers": [{u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"yes"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"no"}], u"randomize_answer_order": True}]",
                "resource_uri": "/api/v1/election/4/",
                "result": "",
                "result_tallied_at_date": null,
@@ -925,7 +925,7 @@ List tallied elections
                "created_at_date": "2012-12-18T15:54:17.742549",
                "creator": "/api/v1/user/2/",
                "delegated_votes_frozen_at_date": "2012-12-18T17:15:40.772925",
-               "delegated_votes_result": "{u'delegation_counts': [], u'a': u'result', u'election_counts': [[0, 0, 0]]}",
+               "delegated_votes_result": "{u"delegation_counts": [], u"a": u"result", u"election_counts": [[0, 0, 0]]}",
                "description": "this is election 3",
                "election_type": "ONE_CHOICE",
                "electorate":
@@ -934,7 +934,7 @@ List tallied elections
                    "/api/v1/user/5/"
                ],
                "eligibility": "",
-               "extra_data": "{u'started': True, u'ended': True}",
+               "extra_data": "{u"started": True, u"ended": True}",
                "frozen_at_date": "2012-12-18T15:54:22.296002",
                "hash": "e707a91d4657e9f0c2dabeb72c6c4598b468159b409844f87160457aa9de1dc4",
                "id": 5,
@@ -945,9 +945,9 @@ List tallied elections
                "parent_election": null,
                "percentage_of_participation": 100,
                "pretty_name": "election 3",
-               "questions": "[{u'a': u'ballot/question', u'min': 0, u'max': 1, u'tally_type': u'simple', u'question': u'question of election 3', u'answers': [{u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 0, u'value': u'a', u'details': u''}, {u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 1, u'value': u'b', u'details': u''}, {u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 1, u'value': u'c', u'details': u''}], u'randomize_answer_order': True}]",
+               "questions": "[{u"a": u"ballot/question", u"min": 0, u"max": 1, u"tally_type": u"simple", u"question": u"question of election 3", u"answers": [{u"a": u"ballot/answer", u"by_delegation_count": 0, u"url": u"", u"by_direct_vote_count": 0, u"value": u"a", u"details": u""}, {u"a": u"ballot/answer", u"by_delegation_count": 0, u"url": u"", u"by_direct_vote_count": 1, u"value": u"b", u"details": u""}, {u"a": u"ballot/answer", u"by_delegation_count": 0, u"url": u"", u"by_direct_vote_count": 1, u"value": u"c", u"details": u""}], u"randomize_answer_order": True}]",
                "resource_uri": "/api/v1/election/5/",
-               "result": "[{u'a': u'ballot/question', u'min': 0, u'max': 1, u'tally_type': u'simple', u'question': u'question of election 3', u'answers': [{u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 0, u'value': u'a', u'details': u''}, {u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 1, u'value': u'b', u'details': u''}, {u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 1, u'value': u'c', u'details': u''}], u'randomize_answer_order': True}]",
+               "result": "[{u"a": u"ballot/question", u"min": 0, u"max": 1, u"tally_type": u"simple", u"question": u"question of election 3", u"answers": [{u"a": u"ballot/answer", u"by_delegation_count": 0, u"url": u"", u"by_direct_vote_count": 0, u"value": u"a", u"details": u""}, {u"a": u"ballot/answer", u"by_delegation_count": 0, u"url": u"", u"by_direct_vote_count": 1, u"value": u"b", u"details": u""}, {u"a": u"ballot/answer", u"by_delegation_count": 0, u"url": u"", u"by_direct_vote_count": 1, u"value": u"c", u"details": u""}], u"randomize_answer_order": True}]",
                "result_tallied_at_date": "2012-12-18T17:15:40.772925",
                "short_description": "this is election 3",
                "tiny_hash": null,
@@ -1014,7 +1014,7 @@ List open elections
                [
                ],
                "eligibility": "",
-               "extra_data": "{u'started': True}",
+               "extra_data": "{u"started": True}",
                "frozen_at_date": "2012-12-18T15:51:05.405218",
                "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
                "id": 3,
@@ -1025,7 +1025,7 @@ List open elections
                "parent_election": null,
                "percentage_of_participation": 50,
                "pretty_name": "election 1",
-               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
+               "questions": "[{u"a": u"ballot/question", u"tally_type": u"simple", u"max": 1, u"min": 0, u"question": u"question of election 1", u"answers": [{u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"one"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"two"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"three"}], u"randomize_answer_order": True}]",
                "resource_uri": "/api/v1/election/3/",
                "result": "",
                "result_tallied_at_date": null,
@@ -1096,7 +1096,7 @@ List requested elections
                [
                ],
                "eligibility": "",
-               "extra_data": "{u'started': True}",
+               "extra_data": "{u"started": True}",
                "frozen_at_date": "2012-12-18T15:51:05.405218",
                "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
                "id": 3,
@@ -1107,7 +1107,7 @@ List requested elections
                "parent_election": null,
                "percentage_of_participation": 50,
                "pretty_name": "election 1",
-               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
+               "questions": "[{u"a": u"ballot/question", u"tally_type": u"simple", u"max": 1, u"min": 0, u"question": u"question of election 1", u"answers": [{u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"one"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"two"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"three"}], u"randomize_answer_order": True}]",
                "resource_uri": "/api/v1/election/3/",
                "result": "",
                "result_tallied_at_date": null,
@@ -1176,7 +1176,7 @@ List archived elections
                [
                ],
                "eligibility": "",
-               "extra_data": "{u'started': True}",
+               "extra_data": "{u"started": True}",
                "frozen_at_date": "2012-12-18T15:51:05.405218",
                "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
                "id": 3,
@@ -1187,7 +1187,7 @@ List archived elections
                "parent_election": null,
                "percentage_of_participation": 50,
                "pretty_name": "election 1",
-               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
+               "questions": "[{u"a": u"ballot/question", u"tally_type": u"simple", u"max": 1, u"min": 0, u"question": u"question of election 1", u"answers": [{u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"one"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"two"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"three"}], u"randomize_answer_order": True}]",
                "resource_uri": "/api/v1/election/3/",
                "result": "",
                "result_tallied_at_date": null,
@@ -1209,7 +1209,7 @@ List approved elections
 .. http:get:: /agora/(int:agora_id)/approved_elections
 
    Retrieves approved elections in agora (`agora_id`): elections that have
-   administrators' approval to take place in the agora.
+   administrators" approval to take place in the agora.
 
    :param agora_id: agora's unique id
    :type agora_id: int
@@ -1256,7 +1256,7 @@ List approved elections
                [
                ],
                "eligibility": "",
-               "extra_data": "{u'started': True}",
+               "extra_data": "{u"started": True}",
                "frozen_at_date": "2012-12-18T15:51:05.405218",
                "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
                "id": 3,
@@ -1267,7 +1267,7 @@ List approved elections
                "parent_election": null,
                "percentage_of_participation": 50,
                "pretty_name": "election 1",
-               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
+               "questions": "[{u"a": u"ballot/question", u"tally_type": u"simple", u"max": 1, u"min": 0, u"question": u"question of election 1", u"answers": [{u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"one"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"two"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"three"}], u"randomize_answer_order": True}]",
                "resource_uri": "/api/v1/election/3/",
                "result": "",
                "result_tallied_at_date": null,
@@ -1281,6 +1281,160 @@ List approved elections
                "voting_starts_at_date": "2012-12-18T16:51:00.018431"
            }
        ]
+    }
+
+
+Comments
+--------
+
+.. http:get:: /agora/(int:agora_id)/comments
+
+   Retrieves comments in agora (`agora_id`)
+
+   :param agora_id: agora's unique id
+   :type agora_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the agora is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/agora/1/comments/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "meta":{
+            "total_count":1,
+            "limit":20,
+            "offset":0
+        },
+        "objects":[
+            {
+                "geolocation":"[0, 0]",
+                "description":"",
+                "timestamp":"2013-03-31T11:15:20.753223",
+                "type_name":"target_agora_action_object_comment",
+                "actor":{
+                    "username":"david",
+                    "first_name":"",
+                    "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
+                    "url":"/user/david",
+                    "content_type":"user",
+                    "id":0
+                },
+                "public":True,
+                "verb":"commented",
+                "vote":{
+
+                },
+                "action_object":{
+                    "comment":"\t<p>blah blah blah blah.</p>",
+                    "id":1,
+                    "content_type":"comment"
+                },
+                "id":1,
+                "target":{
+                    "mugshot_url":"/static/img/agora_default_logo.png",
+                    "name":"agoraone",
+                    "url":"/david/agoraone",
+                    "pretty_name":"AgoraOne",
+                    "content_type":"agora",
+                    "full_name":"david/agoraone",
+                    "short_description":"AgoraOne",
+                    "id":1
+                }
+            }
+        ]
+    }
+
+Add comment
+-----------
+
+.. http:post:: /agora/(int:agora_id)/add_comment
+
+   Adds a new comment in agora (`agora_id`) with the authenticated user. The user must be authenticated and have ``comment`` permission.
+
+   :param agora_id: agora's unique id
+   :type agora_id: int
+   :status 200 OK: no error
+   :status 403 FORBIDDEN: when the user is not authenticated or has not permission
+   :status 404 NOT FOUND: when the agora is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    POST /api/v1/agora/1/add_comment/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+    Authorization: ApiKey daniel:204db7bcfafb2deb7506b89eb3b9b715b09905c8
+
+    {
+        "comment": "foo comment"
+    }
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+
+    {
+        "meta":{
+            "total_count":1,
+            "limit":20,
+            "offset":0
+        },
+        "objects":[
+            {
+                "geolocation":"[0, 0]",
+                "description":"",
+                "timestamp":"2013-03-31T11:15:20.753223",
+                "type_name":"target_agora_action_object_comment",
+                "actor":{
+                    "username":"david",
+                    "first_name":"",
+                    "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
+                    "url":"/user/david",
+                    "content_type":"user",
+                    "id":0
+                },
+                "public":True,
+                "verb":"commented",
+                "vote":{
+
+                },
+                "action_object":{
+                    "comment":"foo comment",
+                    "id":1,
+                    "content_type":"comment"
+                },
+                "id":1,
+                "target":{
+                    "mugshot_url":"/static/img/agora_default_logo.png",
+                    "name":"agoraone",
+                    "url":"/david/agoraone",
+                    "pretty_name":"AgoraOne",
+                    "content_type":"agora",
+                    "full_name":"david/agoraone",
+                    "short_description":"AgoraOne",
+                    "id":1
+                }
+            }
+        ]
     }
 
 Resource: User
@@ -1431,7 +1585,7 @@ User login
 
 .. http:post:: /user/login/
 
-   Login in the application.
+   Login in the application using session. It's only used in web requests.
 
    :form identification: The user username to login. Required.
    :form password: The user password. Required.
@@ -1492,13 +1646,13 @@ Check username is available
    Checks if a username is avaliable
 
    :status 200 OK: when the username is available
-   :status 400 BAD REQUEST: when the username isn't available
+   :status 400 BAD REQUEST: when the username isn"t available
 
    **Example request**:
 
    .. sourcecode:: http
 
-    POST /api/v1/user/username_available/?username=danigm HTTP/1.1
+    GET /api/v1/user/username_available/?username=danigm HTTP/1.1
     Host: example.com
     Accept: application/json, text/javascript
 
@@ -1510,12 +1664,59 @@ Check username is available
     Vary: Accept, Accept-Language, Cookie
     Content-Type: application/json; charset=utf-8
 
+Reset Password 
+--------------
+
+.. http:post:: /user/password_reset/
+
+   Given the email of an user, sends an email with a reset password link to that user.
+
+   :status 200 OK: when everything is ok
+   :status 400 BAD REQUEST: when email given is not one of an existing user
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    POST /api/v1/user/password_reset/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+    {
+        "email": "david@david.com"
+    }
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "objects":[
+            {
+                "username":"david",
+                "first_name":"",
+                "last_name":"",
+                "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
+                "url":"/user/david",
+                "is_active":true,
+                "last_login":"2012-11-29T17:18:46.837000",
+                "short_description":"Is a member of 2 agoras and has emitted  0 direct votes.",
+                "id":0,
+                "date_joined":"2012-11-29T15:08:43.874000"
+            }
+        ]
+    }
+
 List current user agoras
 ------------------------
 
 .. http:get:: /user/agoras/
 
-   List authenticated user's agoras. Requires an user to be authenticated.
+   List authenticated user"s agoras. Requires an user to be authenticated.
 
    :query offset: offset number. default is 0
    :query limit: limit number. default is 20
@@ -1710,7 +1911,7 @@ List elections this user can vote in
                [
                ],
                "eligibility": "",
-               "extra_data": "{u'started': True}",
+               "extra_data": "{u"started": True}",
                "frozen_at_date": "2012-10-28T09:36:44.106801",
                "has_user_voted": true,
                "has_user_voted_via_a_delegate": false,
@@ -1723,7 +1924,7 @@ List elections this user can vote in
                "parent_election": null,
                "percentage_of_participation": 22.22222222222222,
                "pretty_name": "Votación de prueba",
-               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'\xbfEs molona la votaci\xf3n?', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'S\xed'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'No'}], u'randomize_answer_order': True}]",
+               "questions": "[{u"a": u"ballot/question", u"tally_type": u"simple", u"max": 1, u"min": 0, u"question": u"\xbfEs molona la votaci\xf3n?", u"answers": [{u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"S\xed"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"No"}], u"randomize_answer_order": True}]",
                "resource_uri": "",
                "result": "",
                "result_tallied_at_date": null,
