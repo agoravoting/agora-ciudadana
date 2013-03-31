@@ -1724,27 +1724,23 @@ Reset Password
         ]
     }
 
-Disable
---------------
+Disable current user
+--------------------
 
 .. http:post:: /user/disable/
 
-   Disables a user.
+   Disable the currently authenticated user.
 
    :status 200 OK: when everything is ok
-   :status 400 BAD REQUEST: when email given is not one of an existing user
+   :status 400 METHOD NOT ALLOWED: when email given is not one of an existing user
 
    **Example request**:
 
    .. sourcecode:: http
 
-    POST /api/v1/user/password_reset/ HTTP/1.1
+    GET /api/v1/user/disable/ HTTP/1.1
     Host: example.com
     Accept: application/json, text/javascript
-
-    {
-        "email": "david@david.com"
-    }
 
    **Example response**:
 
@@ -1754,29 +1750,12 @@ Disable
     Vary: Accept, Accept-Language, Cookie
     Content-Type: application/json; charset=utf-8
 
-    {
-        "objects":[
-            {
-                "username":"david",
-                "first_name":"",
-                "last_name":"",
-                "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
-                "url":"/user/david",
-                "is_active":true,
-                "last_login":"2012-11-29T17:18:46.837000",
-                "short_description":"Is a member of 2 agoras and has emitted  0 direct votes.",
-                "id":0,
-                "date_joined":"2012-11-29T15:08:43.874000"
-            }
-        ]
-    }
-
 List current user agoras
 ------------------------
 
 .. http:get:: /user/agoras/
 
-   List authenticated user"s agoras. Requires an user to be authenticated.
+   List authenticated user's agoras. Requires an user to be authenticated.
 
    :query offset: offset number. default is 0
    :query limit: limit number. default is 20
@@ -1914,6 +1893,112 @@ List current user agoras
            }
        ]
     }
+
+
+List agoras of a given user
+---------------------------
+
+.. http:get:: /user/(int:userid)/agoras/
+
+   List agoras of the user with (`userid`).
+
+   :query offset: offset number. default is 0
+   :query limit: limit number. default is 20
+   :statuscode 200 OK: no error
+   :statuscode 404 NOT FOUND: the requested user does not exist
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/user/(int:userid)/agoras/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+       "meta":
+       {
+          "total_count":2,
+          "limit":20,
+          "offset":0
+       },
+       "objects":
+       [
+          {
+	     "membership_policy":"ANYONE_CAN_JOIN",
+	     "mugshot_url":"/static/img/agora_default_logo.png",
+	     "name":"agoraone",
+	     "creator":
+             {
+	        "username":"david",
+	        "first_name":"",
+	        "last_name":"",
+	        "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
+	        "url":"/user/david",
+	        "is_active":true,
+	        "last_login":"2012-11-29T17:18:46.837000",
+	        "short_description":"Is a member of 2 agoras and has emitted  0 direct votes.",
+	        "id":0,
+	        "date_joined":"2012-11-29T15:08:43.874000"
+	     },
+	     "eligibility":"",
+	     "comments_policy":"ANYONE_CAN_COMMENT",
+	     "id":1,
+	     "pretty_name":"AgoraOne",
+	     "url":"/david/agoraone",
+	     "created_at_date":"2013-03-31T14:55:15.004828",
+	     "archived_at_date":null,
+	     "full_name":"david/agoraone",
+	     "short_description":"AgoraOne",
+	     "image_url":"",
+	     "extra_data":"",
+	     "is_vote_secret":false,
+	     "election_type":"ONCE_CHOICE",
+	     "biography":""
+          },
+          {
+	     "membership_policy":"ANYONE_CAN_JOIN",
+	     "mugshot_url":"/static/img/agora_default_logo.png",
+	     "name":"agoratwo",
+	     "creator":
+             {
+	        "username":"david",
+	        "first_name":"",
+	        "last_name":"",
+	        "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
+	        "url":"/user/david",
+	        "is_active":true,
+	        "last_login":"2012-11-29T17:18:46.837000",
+	        "short_description":"Is a member of 2 agoras and has emitted  0 direct votes.",
+	        "id":0,
+	        "date_joined":"2012-11-29T15:08:43.874000"
+	     },
+	     "eligibility":"",
+	     "comments_policy":"ANYONE_CAN_COMMENT",
+	     "id":2,
+	     "pretty_name":"AgoraTwo",
+	     "url":"/david/agoratwo",
+	     "created_at_date":"2013-03-31T14:55:15.019918",
+	     "archived_at_date":null,
+	     "full_name":"david/agoratwo",
+	     "short_description":"AgoraTwo",
+	     "image_url":"",
+	     "extra_data":"",
+	     "is_vote_secret":true,
+	     "election_type":"ONCE_CHOICE",
+	     "biography":""
+          }
+       ]
+    }
+
 
 List elections this user can vote in
 ------------------------------------
