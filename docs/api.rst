@@ -366,7 +366,7 @@ Delete an agora
 Modify agora
 ------------
 
-.. http:put:: /agora/
+.. http:put:: /agora/(int:agora_id)
 
    Modifies an agora (`agora_id`). Requires the authenticated user to be an
    administrator of the agora.
@@ -503,6 +503,8 @@ Execute an action
     * **pretty_name**: A title for the election. Required.
     * **description**: A description text for the election. It can follow restructured text format and be as large as needed. Required.
     * **is_vote_secret**: A boolean specifiying if the direct votes must all be secret or not. Required.
+    * **from_date**: A string representing the starting date of the election, in format '%Y-%m-%dT%H:%M:%S'. Optional. 
+    * **to_date**: A string representing the end date of the election, in format '%Y-%m-%dT%H:%M:%S'. Optional. 
 
    **delegate_vote**
 
@@ -2299,6 +2301,93 @@ Retrieve an election
             "id":2
         },
         "voting_starts_at_date":null,
+        "election_type":"ONCE_CHOICE",
+        "archived_at_date":null
+    }
+
+
+Modify election
+---------------
+
+.. http:put:: /agora/(int:election_id)/
+
+   Modifies an election (`election_id`). Requires the authenticated user to be election administrator. All the parameters are optional: you only need to suply the parameters you want to change.
+
+   :form question: a text with the main question in the election. 
+   :form answers: a list with at least two possible answers to the question.
+   :form pretty_name: A title for the election. 
+   :form description: A description text for the election. It can follow restructured text format and be as large as needed. 
+   :form is_vote_secret: A boolean specifiying if the direct votes must all be secret or not. 
+   :form from_date: A string representing the starting date of the election, in format '%Y-%m-%dT%H:%M:%S'.
+   :form to_date: A string representing the end date of the election, in format '%Y-%m-%dT%H:%M:%S'.
+   :status 202 CREATED: when agora is modified correctly
+   :status 403 FORBIDDEN: when the user has no agora administration permissions
+   :status 400 BAD REQUEST: when the form parameters are invalid
+
+   .. sourcecode:: http
+
+    PUT /api/v1/agora/5/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+    {
+        "from_date": "2020-02-18T20:13:00"
+    }
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 202 ACCEPTED
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+
+    {
+        "creator":"/api/v1/user/0/",
+        "comments_policy":"ANYONE_CAN_COMMENT",
+        "result_tallied_at_date":null,
+        "result":"",
+        "mugshot_url":"/static/img/election_new_form_info.png",
+        "id":5,
+        "voting_extended_until_date":null,
+        "is_approved":true,
+        "last_modified_at_date":"2013-03-27T20:17:14.457000",
+        "direct_votes_count":0,
+        "short_description":"election three",
+        "extra_data":"",
+        "questions":"[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question three', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': true}]",
+        "is_vote_secret":false,
+        "voters_frozen_at_date":null,
+        "hash":null,
+        "description":"election three",
+        "frozen_at_date":null,
+        "eligibility":"",
+        "parent_election":null,
+        "pretty_name":"electionthree",
+        "delegated_votes_result":"",
+        "uuid":"a7be018c-2111-419b-b9b8-c78fd0bc9912",
+        "delegated_votes_count":0,
+        "percentage_of_participation":0,
+        "name":"electionthree",
+        "delegated_votes_frozen_at_date":null,
+        "url":"/david/agoratwo/election/electionthree",
+        "voting_ends_at_date":null,
+        "approved_at_date":null,
+        "tiny_hash":null,
+        "created_at_date":"2012-12-06T18:17:14.446000",
+        "agora":
+        {
+            "mugshot_url":"/static/img/agora_default_logo.png",
+            "name":"agoratwo",
+            "url":"/david/agoratwo",
+            "pretty_name":"AgoraTwo",
+            "content_type":"agora",
+            "full_name":"david/agoratwo",
+            "short_description":"AgoraTwo",
+            "id":2
+        },
+        "voting_starts_at_date": "2020-02-18T20:13:00",
         "election_type":"ONCE_CHOICE",
         "archived_at_date":null
     }
