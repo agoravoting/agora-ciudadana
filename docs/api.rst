@@ -2085,6 +2085,63 @@ List elections this user can vote in
     }
 
 
+List of valid usernames
+---------------------
+
+.. http:get:: user/set_username/(string:username1);(string:username2);.../
+
+   List of users from the requested list of usernames (`username1`, `username2`, etc). Only usernames referring to existing users will be listed.
+
+   :statuscode 200 OK: no error
+   :statuscode 403 FORBIDDEN: when the user is not authenticated
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/user/set_username/david;user1/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+    {
+       "objects":
+       [
+          {
+	     "username":"david",
+	     "first_name":"",
+	     "last_name":"",
+	     "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
+	     "url":"/user/david",
+	     "is_active":true,
+	     "last_login":"2012-11-29T17:18:46.837000",
+	     "short_description":"Is a member of 2 agoras and has emitted  0 direct votes.",
+	     "id":0,
+	     "date_joined":"2012-11-29T15:08:43.874000"
+          },
+          {
+	     "username":"user1",
+	     "first_name":"Juana Molero",
+	     "last_name":"",
+	     "mugshot_url":"http://www.gravatar.com/avatar/cc721459f5b77680bc6a8ba6c9681c46?s=50&d=identicon",
+	     "url":"/user/user1",
+	     "is_active":true,
+	     "last_login":"2012-11-29T18:37:36.263000",
+	     "short_description":"ultricies. semper vel et, eu laoreet Quisque odio semper ornare. elementum elementum tristique pretium ornare",
+	     "id":1,
+	     "date_joined":"2012-11-29T18:37:36.263000"
+          }
+       ]
+    }
+
+
+
 
 
 Resource: Search
