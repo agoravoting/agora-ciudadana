@@ -94,11 +94,11 @@ class ElectionTest(RootTestCase):
 
         # set start date
         orig_data = {
-            'from_date': '2020-02-18 20:13:00'
+            'from_date': '2020-02-18T20:13:00'
         }
         data = self.putAndParse('election/%d/' % election_id, data=orig_data,
             content_type='application/json')
-        self.assertEquals(orig_data['from_date'], str(datetime.strptime(data['voting_starts_at_date'], "%Y-%m-%dT%H:%M:%S")))
+        self.assertEquals(orig_data['from_date'], data['voting_starts_at_date'])
 
     def test_approve_election(self):
         self.login('user1', '123')

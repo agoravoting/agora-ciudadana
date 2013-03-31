@@ -65,8 +65,10 @@ class ElectionAdminForm(ModelForm):
     Form used to validate election administration details.
     '''
     answers = django_forms.CharField(_("Answers"), required=False)
-    from_date = django_forms.DateTimeField(label=_('Start voting'), required=False)
-    to_date = django_forms.DateTimeField(label=_('End voting'), required=False)
+    from_date = django_forms.DateTimeField(label=_('Start voting'), required=False,
+        input_formats=('%Y-%m-%dT%H:%M:%S',))
+    to_date = django_forms.DateTimeField(label=_('End voting'), required=False,
+        input_formats=('%Y-%m-%dT%H:%M:%S',))
 
     class Meta(GenericMeta):
         model = Election
