@@ -7,6 +7,7 @@ from common import (HTTP_OK,
                     HTTP_NOT_FOUND)
 
 from common import RootTestCase
+from django.contrib.markup.templatetags.markup import textile
 from datetime import datetime, timedelta
 
 
@@ -50,6 +51,39 @@ class ElectionTest(RootTestCase):
             code=HTTP_OK, content_type='application/json')
         self.assertEquals(set(data["permissions"]),
             set(['admin', 'delete', 'comment', 'create_election', 'delegate']))
+
+    def test_comments(self):
+        '''
+        Tests adding a comment in the agora
+        '''
+        # get activity - its empty
+        data = self.getAndParse('election/3/comments/')
+        comments = data['objects']
+        self.assertEqual(len(comments), 0)
+
+        # add a comment as anonymous - fails, forbidden
+        orig_data = dict(comment='blah blah blah blah.')
+        data = self.post('election/3/add_comment/', orig_data,
+            code=HTTP_FORBIDDEN, content_type='application/json')
+
+        # still no activity
+        data = self.getAndParse('election/3/comments/')
+        comments = data['objects']
+        self.assertEqual(len(comments), 0)
+
+        # add a comment as a logged in user that is a member of the agora
+        self.login('david', 'david')
+        data = self.postAndParse('election/3/add_comment/', orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # now the comment is there
+        data = self.getAndParse('election/3/comments/')
+        objects = data['objects']
+        self.assertEqual(len(objects), 1)
+        self.assertEqual(objects[0]['actor']['content_type'], 'user')
+        self.assertEqual(objects[0]['actor']['username'], 'david')
+        self.assertEqual(objects[0]['action_object']['content_type'], 'comment')
+        self.assertEqual(objects[0]['action_object']['comment'], textile(orig_data['comment']))
 
 
     def test_change_election(self):

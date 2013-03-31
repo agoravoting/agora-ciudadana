@@ -2723,6 +2723,190 @@ Direct votes
     }
 
 
+List comments
+-------------
+
+.. http:get:: /election/(int:election_id)/comments
+
+   Retrieves comments in election (`election_id`)
+
+   :param election_id: election's unique id
+   :type election_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the election is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/election/1/comments/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "meta":{
+            "total_count":1,
+            "limit":20,
+            "offset":0
+        },
+        "objects":[
+            {
+                "geolocation":"[0, 0]",
+                "description":"",
+                "timestamp":"2013-03-31T11:15:20.753223",
+                "type_name":"target_agora_action_object_comment",
+                "actor":
+                {
+                    "username":"david",
+                    "first_name":"",
+                    "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
+                    "url":"/user/david",
+                    "content_type":"user",
+                    "id":0
+                },
+                "public":true,
+                "verb":"commented",
+                "vote":
+                {
+
+                },
+                "action_object":
+                {
+                    "comment":"foo comment",
+                    "id":1,
+                    "content_type":"comment"
+                },
+                "id":1,
+                "target":
+                {
+                    "agora":
+                    {
+                        "content_type":"agora",
+                        "full_name":"admin/muahaha",
+                        "id":7,
+                        "mugshot_url":"/static/img/agora_default_logo.png",
+                        "name":"muahaha",
+                        "pretty_name":"muahaha",
+                        "short_description":"yeah",
+                        "url":"/admin/muahaha"
+                    },
+                    "content_type":"election",
+                    "id":1,
+                    "mugshot_url":"/static/img/election_new_form_info.png",
+                    "name":"aaaaaaaaaaaa",
+                    "pretty_name":"aaaaaaaaaaaa",
+                    "short_description":"aaaaaaaaaaaaaaaa",
+                    "url":"/admin/muahaha/election/aaaaaaaaaaaa"
+                },
+            }
+        ]
+    }
+
+Add comment
+-----------
+
+.. http:post:: /election/(int:election_id)/add_comment
+
+   Adds a new comment in election (`election_id`) with the authenticated user. The user must be authenticated and have ``comment`` permission.
+
+   :param election_id: election's unique id
+   :type election_id: int
+   :status 200 OK: no error
+   :status 403 FORBIDDEN: when the user is not authenticated or has not permission
+   :status 404 NOT FOUND: when the election is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    POST /api/v1/election/1/add_comment/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+    Authorization: ApiKey daniel:204db7bcfafb2deb7506b89eb3b9b715b09905c8
+
+    {
+        "comment": "foo comment"
+    }
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+
+    {
+        "meta":
+        {
+            "total_count":1,
+            "limit":20,
+            "offset":0
+        },
+        "objects":
+        [
+            {
+                "geolocation":"[0, 0]",
+                "description":"",
+                "timestamp":"2013-03-31T11:15:20.753223",
+                "type_name":"target_agora_action_object_comment",
+                "actor":
+                {
+                    "username":"david",
+                    "first_name":"",
+                    "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
+                    "url":"/user/david",
+                    "content_type":"user",
+                    "id":0
+                },
+                "public":true,
+                "verb":"commented",
+                "vote":
+                {
+
+                },
+                "action_object":
+                {
+                    "comment":"foo comment",
+                    "id":1,
+                    "content_type":"comment"
+                },
+                "id":1,
+                "target":
+                {
+                    "agora":
+                    {
+                        "content_type":"agora",
+                        "full_name":"admin/muahaha",
+                        "id":7,
+                        "mugshot_url":"/static/img/agora_default_logo.png",
+                        "name":"muahaha",
+                        "pretty_name":"muahaha",
+                        "short_description":"yeah",
+                        "url":"/admin/muahaha"
+                    },
+                    "content_type":"election",
+                    "id":1,
+                    "mugshot_url":"/static/img/election_new_form_info.png",
+                    "name":"aaaaaaaaaaaa",
+                    "pretty_name":"aaaaaaaaaaaa",
+                    "short_description":"aaaaaaaaaaaaaaaa",
+                    "url":"/admin/muahaha/election/aaaaaaaaaaaa"
+                },
+            }
+        ]
+    }
+
+
 Execute an action
 -----------------
 
