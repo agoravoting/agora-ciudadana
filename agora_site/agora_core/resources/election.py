@@ -5,6 +5,7 @@ from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.agora_core.resources.user import UserResource
 from agora_site.agora_core.resources.agora import AgoraResource, TinyAgoraResource
 from agora_site.agora_core.resources.castvote import CastVoteResource
+from agora_site.agora_core.forms import PostCommentForm
 from agora_site.agora_core.forms.election import VoteForm as ElectionVoteForm
 from agora_site.misc.utils import geolocate_ip, get_base_email_context
 from agora_site.misc.decorators import permission_required
@@ -14,8 +15,9 @@ from tastypie.authorization import Authorization
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.validation import Validation, CleanedDataFormValidation
 from tastypie.utils import trailing_slash
-from actstream.signals import action
 
+from actstream.signals import action
+from actstream.models import object_stream
 
 from django.conf.urls.defaults import url
 from django.contrib.sites.models import Site
@@ -279,11 +281,33 @@ class ElectionResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_direct_votes'), name="api_election_direct_votes"),
 
+            url(r"^(?P<resource_name>%s)/(?P<electionid>\d+)/comments%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_comments'), name="api_election_comments"),
+
+            url(r"^(?P<resource_name>%s)/(?P<election>\d+)/add_comment%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('add_comment'), name="api_election_add_comment"),
+
             url(r"^(?P<resource_name>%s)/(?P<electionid>\d+)/action%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('action'), name="api_election_action"),
         ]
 
+    def get_comments(self, request, **kwargs):
+        '''
+        List the comments in this election
+        '''
+        from actstream.resources import ActionResource
+        return self.get_custom_resource_list(request, resource=ActionResource,
+            queryfunc=lambda election: object_stream(election, verb='commented'), **kwargs)
+
+    @permission_required('comment', (Election, 'id', 'election'))
+    def add_comment(self, request, **kwargs):
+        '''
+        Form to add comments
+        '''
+        return self.wrap_form(PostCommentForm)(request, **kwargs)
 
     def action(self, request, **kwargs):
         '''

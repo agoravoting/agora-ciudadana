@@ -126,7 +126,7 @@
             </div>
             {% endif %}
             <div class="activity-list" id="activity-list"
-            data-url="/api/v1/action/election/{{ election.id }}/">
+            data-url="{% block election-activity-url %}/api/v1/action/election/{{ election.id }}/{% endblock %}">
                 <div class="endless-container">
                     <a class="endless_more" href="#">{% trans "more" %}</a>
                     <div class="endless_loading hidden">{% trans "Loading..." %}</div>

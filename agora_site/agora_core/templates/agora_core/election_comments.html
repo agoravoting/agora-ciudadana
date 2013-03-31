@@ -10,6 +10,8 @@
 {% block election-navigation %}{% activetab "election-nav" "comments" %}{{ block.super }}{% endblock %}
 {% block content-wrapper-class %}comments{% endblock %}
 
+{% block election-activity-url %}/api/v1/election/{{ election.id }}/comments/{% endblock %}
+
 {% block election_content %}
 
 {% with permissions=election|get_perms:user %}
