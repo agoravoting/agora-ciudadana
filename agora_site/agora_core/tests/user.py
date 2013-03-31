@@ -188,6 +188,30 @@ class UserTest(RootTestCase):
         data = self.getAndParse('user/agoras/')
         self.assertEqual(len(data["objects"]), 0)
 
+
+
+    def test_specific_user_agoras(self):
+        '''
+        Test the listing of the agoras in which an specific user is a member
+        '''
+
+        # user does not exist
+        self.get('user/10/agoras/', code=HTTP_NOT_FOUND)
+
+        # user 0 has two agoras
+        data = self.getAndParse('user/0/agoras/')
+        self.assertEqual(len(data["objects"]), 2)
+
+        # user with id 1 (user1) has no agora
+        data = self.getAndParse('user/1/agoras/')
+        self.assertEqual(len(data["objects"]), 0)
+
+        # login doesn't affect the output of the listing
+        self.login('user1', '123')
+        data = self.getAndParse('user/0/agoras/')
+        self.assertEqual(len(data["objects"]), 2)
+
+
     def test_open_elections(self):
         '''
         Test the listing of the open elections in which the user can participate
