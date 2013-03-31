@@ -174,12 +174,13 @@ class UserResource(GenericResource):
 
     def disable(self, request, **kwargs):
         '''
-        Log out the currently authenticated user
+        Disable the currently authenticated user
         '''
         if request.user.is_anonymous():
-            raise ImmediateHttpResponse(response=http.HttpResponseNotAllowed())
+            raise ImmediateHttpResponse(response=http.HttpMethodNotAllowed())
 
         request.user.is_active = False
+        request.user.save()
         auth_logout(request)
         return self.create_response(request, dict(status="success"))
 
@@ -191,7 +192,7 @@ class UserResource(GenericResource):
             auth_logout(request)
             return self.create_response(request, dict(status="success"))
         except Exception, e:
-            raise ImmediateHttpResponse(response=http.HttpResponseBadRequest())
+            raise ImmediateHttpResponse(response=http.HttpBadRequest())
 
     def user_settings(self, request, **kwargs):
         '''
