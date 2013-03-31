@@ -1,0 +1,30 @@
+<script id="template-action_target_election" type="text/underscore-template">
+    <div class="activity-action" geodata="<%= geolocation %>">
+        <a href="<%= actor.url %>" class="mugshot">
+            <img src="<%= actor.mugshot_url %>" alt="<%= actor.username %>" />
+        </a>
+        <div class="action-body">
+            <div class="action-title">
+                <a href="<%= actor.url %>"><strong class="username"><%= actor.username %></strong></a> <strong class="verb"><%= gettext(verb) %></strong> 
+                <%= pgettext("<verb> election <election>", "election") %>
+                <a href="<%= target.url %>"><%= target.username %></a>
+                <%= pgettext("<election> at agora <agora>", "at agora") %>
+                <a href="<%= target.agora.url %>"><%= target.agora.full_name %></a>
+                <time class="timeago" title="<%= timestamp %>" datetime="<%= timestamp %>"></time>
+            </div>
+
+            <div class="action-detail">
+                <a href="<%= target.url %>" class="mugshot">
+                    <img src="<%= target.mugshot_url %>" alt="<%= target.pretty_name %>" />
+                </a>
+                <div class="detail-body">
+                    <strong class="action-title">
+                        <a href="<%= target.url %>">
+                            <%= target.pretty_name %>
+                        </a>
+                    </strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
