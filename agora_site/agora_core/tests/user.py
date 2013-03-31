@@ -63,7 +63,7 @@ class UserTest(RootTestCase):
         # TODO, testing via PUT, not yet implemented in user.py
 
     def test_user_set_username(self):
-        #data = self.get('user/set_username/', code=HTTP_NOT_FOUND)
+	#Gets a list of names and returns the list of users with those names
         data = self.getAndParse('user/set_username/david;user1/')
         self.assertEqual(len(data['objects']), 2)
         self.assertEquals(data['objects'][0]['username'], 'david')
@@ -73,7 +73,8 @@ class UserTest(RootTestCase):
         self.assertEqual(len(data['objects']), 1)
         self.assertEquals(data['objects'][0]['username'], 'david')
 
-        #data = self.get('user/set_username/', code=HTTP_NOT_FOUND)
+        data = self.getAndParse('user/set_username/bogus;bogus2/')
+        self.assertEqual(len(data['objects']), 0)
 
     def test_password_reset(self):
         data = self.postAndParse('user/password_reset/', code=HTTP_BAD_REQUEST)
