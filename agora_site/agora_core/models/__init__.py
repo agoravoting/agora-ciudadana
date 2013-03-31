@@ -14,9 +14,7 @@ from agora_site.misc.utils import JSONField
 from agora import Agora
 from election import Election
 from castvote import CastVote
-from tastypie.models import create_api_key
 
-models.signals.post_save.connect(create_api_key, sender=User)
 
 class Profile(UserenaLanguageBaseProfile):
     '''
