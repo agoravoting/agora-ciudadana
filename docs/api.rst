@@ -46,6 +46,7 @@ user token is returned, and you must supply it in the Authorization header in al
 Currently the user token is currently only accesible through administrators that can access to the django shell:
 
 .. code-block:: python
+
     In [1]: from tastypie.models import ApiKey
 
     In [2]: ApiKey.objects.get(user__username="user1")
@@ -410,7 +411,7 @@ Modify agora
         "created_at_date": "2012-12-02T16:35:52.110729",
         "creator":
         {
-1            "date_joined": "2012-06-14T14:13:48.850044",
+            "date_joined": "2012-06-14T14:13:48.850044",
             "first_name": "",
             "id": 1,
             "is_active": true,
@@ -509,7 +510,7 @@ Execute an action
 
    **cancel_vote_delegation**
 
-   The authenticated user stablishes cancels its delegation on the specified agora from now on. The authenticated user must have  ``delegate`` permission on the agora and have a current delegate on the specified agora to succeed.
+   The authenticated user cancels its delegation on the specified agora from now on. The authenticated user must have  ``delegate`` permission on the agora and have a current delegate on the specified agora to succeed.
 
    :param agora_id: agora's unique id
    :type agora_id: int
@@ -852,7 +853,7 @@ List all elections
                [
                ],
                "eligibility": "",
-               "extra_data": "{u"started": True}",
+               "extra_data": "{u'started': True}",
                "frozen_at_date": "2012-12-18T15:53:24.071076",
                "hash": "b05bc33717cacc1557ff47bffdbfecbf10d3a1a52baba603b5b7b8e10c6db9fa",
                "id": 4,
@@ -863,7 +864,7 @@ List all elections
                "parent_election": null,
                "percentage_of_participation": 50,
                "pretty_name": "election 2",
-               "questions": "[{u"a": u"ballot/question", u"min": 0, u"max": 1, u"tally_type": u"simple", u"question": u"question of election 2", u"answers": [{u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"yes"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"no"}], u"randomize_answer_order": True}]",
+               "questions": "[{u'a': u'ballot/question', u'min': 0, u'max': 1, u'tally_type': u'simple', u'question': u'question of election 2', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'yes'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'no'}], u'randomize_answer_order': True}]",
                "resource_uri": "/api/v1/election/4/",
                "result": "",
                "result_tallied_at_date": null,
@@ -925,7 +926,7 @@ List tallied elections
                "created_at_date": "2012-12-18T15:54:17.742549",
                "creator": "/api/v1/user/2/",
                "delegated_votes_frozen_at_date": "2012-12-18T17:15:40.772925",
-               "delegated_votes_result": "{u"delegation_counts": [], u"a": u"result", u"election_counts": [[0, 0, 0]]}",
+               "delegated_votes_result": "{u'delegation_counts': [], u'a': u'result', u'election_counts': [[0, 0, 0]]}",
                "description": "this is election 3",
                "election_type": "ONE_CHOICE",
                "electorate":
@@ -934,7 +935,7 @@ List tallied elections
                    "/api/v1/user/5/"
                ],
                "eligibility": "",
-               "extra_data": "{u"started": True, u"ended": True}",
+               "extra_data": "{u'started': True, u'ended': True}",
                "frozen_at_date": "2012-12-18T15:54:22.296002",
                "hash": "e707a91d4657e9f0c2dabeb72c6c4598b468159b409844f87160457aa9de1dc4",
                "id": 5,
@@ -945,9 +946,9 @@ List tallied elections
                "parent_election": null,
                "percentage_of_participation": 100,
                "pretty_name": "election 3",
-               "questions": "[{u"a": u"ballot/question", u"min": 0, u"max": 1, u"tally_type": u"simple", u"question": u"question of election 3", u"answers": [{u"a": u"ballot/answer", u"by_delegation_count": 0, u"url": u"", u"by_direct_vote_count": 0, u"value": u"a", u"details": u""}, {u"a": u"ballot/answer", u"by_delegation_count": 0, u"url": u"", u"by_direct_vote_count": 1, u"value": u"b", u"details": u""}, {u"a": u"ballot/answer", u"by_delegation_count": 0, u"url": u"", u"by_direct_vote_count": 1, u"value": u"c", u"details": u""}], u"randomize_answer_order": True}]",
+               "questions": "[{u'a': u'ballot/question', u'min': 0, u'max': 1, u'tally_type': u'simple', u'question': u'question of election 3', u'answers': [{u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 0, u'value': u'a', u'details': u''}, {u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 1, u'value': u'b', u'details': u''}, {u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 1, u'value': u'c', u'details': u''}], u'randomize_answer_order': True}]",
                "resource_uri": "/api/v1/election/5/",
-               "result": "[{u"a": u"ballot/question", u"min": 0, u"max": 1, u"tally_type": u"simple", u"question": u"question of election 3", u"answers": [{u"a": u"ballot/answer", u"by_delegation_count": 0, u"url": u"", u"by_direct_vote_count": 0, u"value": u"a", u"details": u""}, {u"a": u"ballot/answer", u"by_delegation_count": 0, u"url": u"", u"by_direct_vote_count": 1, u"value": u"b", u"details": u""}, {u"a": u"ballot/answer", u"by_delegation_count": 0, u"url": u"", u"by_direct_vote_count": 1, u"value": u"c", u"details": u""}], u"randomize_answer_order": True}]",
+               "result": "[{u'a': u'ballot/question', u'min': 0, u'max': 1, u'tally_type': u'simple', u'question': u'question of election 3', u'answers': [{u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 0, u'value': u'a', u'details': u''}, {u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 1, u'value': u'b', u'details': u''}, {u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 1, u'value': u'c', u'details': u''}], u'randomize_answer_order': True}]",
                "result_tallied_at_date": "2012-12-18T17:15:40.772925",
                "short_description": "this is election 3",
                "tiny_hash": null,
@@ -1014,7 +1015,7 @@ List open elections
                [
                ],
                "eligibility": "",
-               "extra_data": "{u"started": True}",
+               "extra_data": "{u'started': True}",
                "frozen_at_date": "2012-12-18T15:51:05.405218",
                "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
                "id": 3,
@@ -1025,7 +1026,7 @@ List open elections
                "parent_election": null,
                "percentage_of_participation": 50,
                "pretty_name": "election 1",
-               "questions": "[{u"a": u"ballot/question", u"tally_type": u"simple", u"max": 1, u"min": 0, u"question": u"question of election 1", u"answers": [{u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"one"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"two"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"three"}], u"randomize_answer_order": True}]",
+               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
                "resource_uri": "/api/v1/election/3/",
                "result": "",
                "result_tallied_at_date": null,
@@ -1096,7 +1097,7 @@ List requested elections
                [
                ],
                "eligibility": "",
-               "extra_data": "{u"started": True}",
+               "extra_data": "{u'started': True}",
                "frozen_at_date": "2012-12-18T15:51:05.405218",
                "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
                "id": 3,
@@ -1107,7 +1108,7 @@ List requested elections
                "parent_election": null,
                "percentage_of_participation": 50,
                "pretty_name": "election 1",
-               "questions": "[{u"a": u"ballot/question", u"tally_type": u"simple", u"max": 1, u"min": 0, u"question": u"question of election 1", u"answers": [{u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"one"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"two"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"three"}], u"randomize_answer_order": True}]",
+               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
                "resource_uri": "/api/v1/election/3/",
                "result": "",
                "result_tallied_at_date": null,
@@ -1176,7 +1177,7 @@ List archived elections
                [
                ],
                "eligibility": "",
-               "extra_data": "{u"started": True}",
+               "extra_data": "{u'started': True}",
                "frozen_at_date": "2012-12-18T15:51:05.405218",
                "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
                "id": 3,
@@ -1187,7 +1188,7 @@ List archived elections
                "parent_election": null,
                "percentage_of_participation": 50,
                "pretty_name": "election 1",
-               "questions": "[{u"a": u"ballot/question", u"tally_type": u"simple", u"max": 1, u"min": 0, u"question": u"question of election 1", u"answers": [{u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"one"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"two"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"three"}], u"randomize_answer_order": True}]",
+               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
                "resource_uri": "/api/v1/election/3/",
                "result": "",
                "result_tallied_at_date": null,
@@ -1256,7 +1257,7 @@ List approved elections
                [
                ],
                "eligibility": "",
-               "extra_data": "{u"started": True}",
+               "extra_data": "{u'started': True}",
                "frozen_at_date": "2012-12-18T15:51:05.405218",
                "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
                "id": 3,
@@ -1267,7 +1268,7 @@ List approved elections
                "parent_election": null,
                "percentage_of_participation": 50,
                "pretty_name": "election 1",
-               "questions": "[{u"a": u"ballot/question", u"tally_type": u"simple", u"max": 1, u"min": 0, u"question": u"question of election 1", u"answers": [{u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"one"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"two"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"three"}], u"randomize_answer_order": True}]",
+               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
                "resource_uri": "/api/v1/election/3/",
                "result": "",
                "result_tallied_at_date": null,
@@ -1324,7 +1325,8 @@ Comments
                 "description":"",
                 "timestamp":"2013-03-31T11:15:20.753223",
                 "type_name":"target_agora_action_object_comment",
-                "actor":{
+                "actor":
+                {
                     "username":"david",
                     "first_name":"",
                     "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
@@ -1332,18 +1334,21 @@ Comments
                     "content_type":"user",
                     "id":0
                 },
-                "public":True,
+                "public":true,
                 "verb":"commented",
-                "vote":{
+                "vote":
+                {
 
                 },
-                "action_object":{
-                    "comment":"\t<p>blah blah blah blah.</p>",
+                "action_object":
+                {
+                    "comment":"foo comment",
                     "id":1,
                     "content_type":"comment"
                 },
                 "id":1,
-                "target":{
+                "target":
+                {
                     "mugshot_url":"/static/img/agora_default_logo.png",
                     "name":"agoraone",
                     "url":"/david/agoraone",
@@ -1393,18 +1398,21 @@ Add comment
 
 
     {
-        "meta":{
+        "meta":
+        {
             "total_count":1,
             "limit":20,
             "offset":0
         },
-        "objects":[
+        "objects":
+        [
             {
                 "geolocation":"[0, 0]",
                 "description":"",
                 "timestamp":"2013-03-31T11:15:20.753223",
                 "type_name":"target_agora_action_object_comment",
-                "actor":{
+                "actor":
+                {
                     "username":"david",
                     "first_name":"",
                     "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
@@ -1412,18 +1420,21 @@ Add comment
                     "content_type":"user",
                     "id":0
                 },
-                "public":True,
+                "public":true,
                 "verb":"commented",
-                "vote":{
+                "vote":
+                {
 
                 },
-                "action_object":{
+                "action_object":
+                {
                     "comment":"foo comment",
                     "id":1,
                     "content_type":"comment"
                 },
                 "id":1,
-                "target":{
+                "target":
+                {
                     "mugshot_url":"/static/img/agora_default_logo.png",
                     "name":"agoraone",
                     "url":"/david/agoraone",
@@ -1933,7 +1944,6 @@ List elections this user can vote in
     Vary: Accept, Accept-Language, Cookie
     Content-Type: application/json; charset=utf-8
 
-
     {
        "meta":
        {
@@ -1958,7 +1968,7 @@ List elections this user can vote in
                [
                ],
                "eligibility": "",
-               "extra_data": "{u"started": True}",
+               "extra_data": "{u'started': True}",
                "frozen_at_date": "2012-10-28T09:36:44.106801",
                "has_user_voted": true,
                "has_user_voted_via_a_delegate": false,
@@ -1969,9 +1979,9 @@ List elections this user can vote in
                "last_modified_at_date": "2012-10-28T09:36:30.962801",
                "name": "votacion-de-prueba",
                "parent_election": null,
-               "percentage_of_participation": 22.22222222222222,
+               "percentage_of_participation": 22,
                "pretty_name": "Votación de prueba",
-               "questions": "[{u"a": u"ballot/question", u"tally_type": u"simple", u"max": 1, u"min": 0, u"question": u"\xbfEs molona la votaci\xf3n?", u"answers": [{u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"S\xed"}, {u"a": u"ballot/answer", u"url": u"", u"details": u"", u"value": u"No"}], u"randomize_answer_order": True}]",
+               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
                "resource_uri": "",
                "result": "",
                "result_tallied_at_date": null,
@@ -2124,5 +2134,578 @@ This resource allows searches, using Haystack
        ]
     }
 
+Resource: Election
+==================
+
+This resource represents an election
 
 
+.. http:get:: /election/
+
+   Lists elections
+
+   :query offset: offset number. default is 0
+   :query limit: limit number. default is 20
+   :statuscode 200 OK: no error
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/election/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "meta":
+        {
+            "previous":null,
+            "total_count":1,
+            "offset":0,
+            "limit":20,
+            "next":null
+        },
+        "objects":
+        [
+            {
+                "creator":"/api/v1/user/0/",
+                "comments_policy":"ANYONE_CAN_COMMENT",
+                "result_tallied_at_date":null,
+                "result":"",
+                "mugshot_url":"/static/img/election_new_form_info.png",
+                "id":5,
+                "voting_extended_until_date":null,
+                "is_approved":true,
+                "last_modified_at_date":"2012-12-06T18:17:14.457000",
+                "direct_votes_count":0,
+                "short_description":"election three",
+                "extra_data":"",
+                "questions":"[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question three', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': true}]",
+                "is_vote_secret":false,
+                "voters_frozen_at_date":null,
+                "hash":null,
+                "description":"election three",
+                "frozen_at_date":null,
+                "eligibility":"",
+                "parent_election":null,
+                "pretty_name":"electionthree",
+                "delegated_votes_result":"",
+                "uuid":"a7be018c-2111-419b-b9b8-c78fd0bc9912",
+                "delegated_votes_count":0,
+                "percentage_of_participation":0,
+                "name":"electionthree",
+                "delegated_votes_frozen_at_date":null,
+                "url":"/david/agoratwo/election/electionthree",
+                "voting_ends_at_date":null,
+                "approved_at_date":null,
+                "tiny_hash":null,
+                "created_at_date":"2012-12-06T18:17:14.446000",
+                "agora":
+                {
+                    "mugshot_url":"/static/img/agora_default_logo.png",
+                    "name":"agoratwo",
+                    "url":"/david/agoratwo",
+                    "pretty_name":"AgoraTwo",
+                    "content_type":"agora",
+                    "full_name":"david/agoratwo",
+                    "short_description":"AgoraTwo",
+                    "id":2
+                },
+                "voting_starts_at_date":null,
+                "election_type":"ONCE_CHOICE",
+                "archived_at_date":null
+            }
+        ]
+    }
+
+Retrieve an election
+--------------------
+
+.. http:get:: /election/(int:election_id)
+
+   Retrieves an election (`election_id`).
+
+   :param election_id: election's unique id
+   :type election_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the election is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/election/5/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "creator":"/api/v1/user/0/",
+        "comments_policy":"ANYONE_CAN_COMMENT",
+        "result_tallied_at_date":null,
+        "result":"",
+        "mugshot_url":"/static/img/election_new_form_info.png",
+        "id":5,
+        "voting_extended_until_date":null,
+        "is_approved":true,
+        "last_modified_at_date":"2012-12-06T18:17:14.457000",
+        "direct_votes_count":0,
+        "short_description":"election three",
+        "extra_data":"",
+        "questions":"[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question three', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': true}]",
+        "is_vote_secret":false,
+        "voters_frozen_at_date":null,
+        "hash":null,
+        "description":"election three",
+        "frozen_at_date":null,
+        "eligibility":"",
+        "parent_election":null,
+        "pretty_name":"electionthree",
+        "delegated_votes_result":"",
+        "uuid":"a7be018c-2111-419b-b9b8-c78fd0bc9912",
+        "delegated_votes_count":0,
+        "percentage_of_participation":0,
+        "name":"electionthree",
+        "delegated_votes_frozen_at_date":null,
+        "url":"/david/agoratwo/election/electionthree",
+        "voting_ends_at_date":null,
+        "approved_at_date":null,
+        "tiny_hash":null,
+        "created_at_date":"2012-12-06T18:17:14.446000",
+        "agora":
+        {
+            "mugshot_url":"/static/img/agora_default_logo.png",
+            "name":"agoratwo",
+            "url":"/david/agoratwo",
+            "pretty_name":"AgoraTwo",
+            "content_type":"agora",
+            "full_name":"david/agoratwo",
+            "short_description":"AgoraTwo",
+            "id":2
+        },
+        "voting_starts_at_date":null,
+        "election_type":"ONCE_CHOICE",
+        "archived_at_date":null
+    }
+
+List all votes
+--------------
+
+.. http:get:: /election/(int:election_id)/all_votes
+
+   Lists all votes in the election (`election_id`)
+
+   :param election_id: election's unique id
+   :type election_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the election is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/election/5/all_votes/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "meta":{
+            "total_count":1,
+            "limit":20,
+            "offset":0
+        },
+        "objects":[
+            {
+                "voter":{
+                    "username":"david",
+                    "first_name":"",
+                    "last_name":"",
+                    "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
+                    "url":"/user/david",
+                    "is_active":true,
+                    "last_login":"2013-03-31T13:35:46.210302",
+                    "short_description":"Is a member of 2 agoras and has emitted  1 direct votes.",
+                    "id":0,
+                    "date_joined":"2012-11-29T15:08:43.874000"
+                },
+                "hash":"e33826075d8b5a6d2741699604d6ecaf0d3eda02f6ccbf4664ef0a70267f8532",
+                "public_data":{
+
+                },
+                "casted_at_date":"2013-03-31T13:35:46.571346",
+                "is_counted":true,
+                "is_direct":true,
+                "invalidated_at_date":null,
+                "reason":"",
+                "election":"/api/v1/election/6/",
+                "tiny_hash":null,
+                "is_public":false,
+                "id":1,
+                "action_id":3
+            }
+        ]
+    }
+
+List cast votes
+---------------
+
+.. http:get:: /election/(int:election_id)/cast_votes
+
+   Lists cast votes in the election (`election_id`)
+
+   :param election_id: election's unique id
+   :type election_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the election is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/election/5/cast_votes/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "meta":{
+            "total_count":1,
+            "limit":20,
+            "offset":0
+        },
+        "objects":[
+            {
+                "voter":{
+                    "username":"david",
+                    "first_name":"",
+                    "last_name":"",
+                    "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
+                    "url":"/user/david",
+                    "is_active":true,
+                    "last_login":"2013-03-31T13:35:46.210302",
+                    "short_description":"Is a member of 2 agoras and has emitted  1 direct votes.",
+                    "id":0,
+                    "date_joined":"2012-11-29T15:08:43.874000"
+                },
+                "hash":"e33826075d8b5a6d2741699604d6ecaf0d3eda02f6ccbf4664ef0a70267f8532",
+                "public_data":{
+
+                },
+                "casted_at_date":"2013-03-31T13:35:46.571346",
+                "is_counted":true,
+                "is_direct":true,
+                "invalidated_at_date":null,
+                "reason":"",
+                "election":"/api/v1/election/6/",
+                "tiny_hash":null,
+                "is_public":false,
+                "id":1,
+                "action_id":3
+            }
+        ]
+    }
+
+List delegated votes
+--------------------
+
+.. http:get:: /election/(int:election_id)/delegated_votes
+
+   Lists delegated votes in the election (`election_id`)
+
+   :param election_id: election's unique id
+   :type election_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the election is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/election/5/delegated_votes/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "meta":{
+            "total_count":1,
+            "limit":20,
+            "offset":0
+        },
+        "objects":[
+            {
+                "voter":{
+                    "username":"david",
+                    "first_name":"",
+                    "last_name":"",
+                    "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
+                    "url":"/user/david",
+                    "is_active":true,
+                    "last_login":"2013-03-31T13:35:46.210302",
+                    "short_description":"Is a member of 2 agoras and has emitted  1 direct votes.",
+                    "id":0,
+                    "date_joined":"2012-11-29T15:08:43.874000"
+                },
+                "hash":"e33826075d8b5a6d2741699604d6ecaf0d3eda02f6ccbf4664ef0a70267f8532",
+                "public_data":{
+
+                },
+                "casted_at_date":"2013-03-31T13:35:46.571346",
+                "is_counted":true,
+                "is_direct":true,
+                "invalidated_at_date":null,
+                "reason":"",
+                "election":"/api/v1/election/6/",
+                "tiny_hash":null,
+                "is_public":false,
+                "id":1,
+                "action_id":3
+            }
+        ]
+    }
+
+List votes from delegates
+-------------------------
+
+.. http:get:: /election/(int:election_id)/votes_from_delegates
+
+   Lists votes from delegates in the election (`election_id`)
+
+   :param election_id: election's unique id
+   :type election_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the election is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/election/5/votes_from_delegates/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "meta":{
+            "total_count":1,
+            "limit":20,
+            "offset":0
+        },
+        "objects":[
+            {
+                "voter":{
+                    "username":"david",
+                    "first_name":"",
+                    "last_name":"",
+                    "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
+                    "url":"/user/david",
+                    "is_active":true,
+                    "last_login":"2013-03-31T13:35:46.210302",
+                    "short_description":"Is a member of 2 agoras and has emitted  1 direct votes.",
+                    "id":0,
+                    "date_joined":"2012-11-29T15:08:43.874000"
+                },
+                "hash":"e33826075d8b5a6d2741699604d6ecaf0d3eda02f6ccbf4664ef0a70267f8532",
+                "public_data":{
+
+                },
+                "casted_at_date":"2013-03-31T13:35:46.571346",
+                "is_counted":true,
+                "is_direct":true,
+                "invalidated_at_date":null,
+                "reason":"",
+                "election":"/api/v1/election/6/",
+                "tiny_hash":null,
+                "is_public":false,
+                "id":1,
+                "action_id":3
+            }
+        ]
+    }
+
+Direct votes
+------------
+
+.. http:get:: /election/(int:election_id)/direct_votes
+
+   Lists direct votes in the election (`election_id`)
+
+   :param election_id: election's unique id
+   :type election_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the election is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/election/5/direct_votes/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "meta":{
+            "total_count":1,
+            "limit":20,
+            "offset":0
+        },
+        "objects":[
+            {
+                "voter":{
+                    "username":"david",
+                    "first_name":"",
+                    "last_name":"",
+                    "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
+                    "url":"/user/david",
+                    "is_active":true,
+                    "last_login":"2013-03-31T13:35:46.210302",
+                    "short_description":"Is a member of 2 agoras and has emitted  1 direct votes.",
+                    "id":0,
+                    "date_joined":"2012-11-29T15:08:43.874000"
+                },
+                "hash":"e33826075d8b5a6d2741699604d6ecaf0d3eda02f6ccbf4664ef0a70267f8532",
+                "public_data":{
+
+                },
+                "casted_at_date":"2013-03-31T13:35:46.571346",
+                "is_counted":true,
+                "is_direct":true,
+                "invalidated_at_date":null,
+                "reason":"",
+                "election":"/api/v1/election/6/",
+                "tiny_hash":null,
+                "is_public":false,
+                "id":1,
+                "action_id":3
+            }
+        ]
+    }
+
+
+Execute an action
+-----------------
+
+.. http:post:: /election/(int:election_id)/action
+
+   Request to execute an action in the election (`election_id`).
+
+   The available actions are:
+
+   **get_permissions**
+
+   Returns a list of the permissions that the authenticated user has over the specified election.
+
+   **approve**
+
+   Approves the election. The authenticated user must have ``approve_election`` permission on the election and the election must have be pending approval.
+
+   **start**
+
+   Starts the election, so that the electorate can start voting on it. The authenticated user must have ``begin_election`` permission on the election.
+
+   **stop**
+
+   Stops the voting period of the election. The authenticated user must have ``end_election`` permission on the election.
+
+   **archive**
+
+   Archives the election. The authenticated user must have ``archive_election`` permission on the election.
+
+   **vote**
+
+   The authenticated emits a direct vote in this election, providing the following fields:
+    * **is_vote_secret**: boolean indicating if the vote is public (and thus subject to delegation) or not. Required.
+    * **reason**: a reason for the vote. Conditional, used only for public votes.
+    * **question0**: string containing the chosen option for the question. Required.
+ 
+   User must have ``emit_direct_vote`` permission to succeed. A single user can vote multiple times in one election, but only the last vote will remain valid.
+
+   **cancel_vote**
+
+   The authenticated user cancels its direct vote in the election. User must have ``emit_direct_vote`` permission and a valid current vote in the election to succeed.
+
+   :param agora_id: agora's unique id
+   :type agora_id: int
+   :form action: name of the action. Required.
+   :status 200 OK: no error
+   :statuscode 403 FORBIDDEN: when the user has not the required permissions
+   :status 404 NOT FOUND: when the agora is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    POST /api/v1/election/1/action/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+    Authorization: ApiKey linus:204db7bcfafb2deb7506b89eb3b9b715b09905c8
+
+    {
+        "is_vote_secret": true,
+        "question0": "Yay",
+        "action": "vote"
+    }
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "status": "success"
+    }
