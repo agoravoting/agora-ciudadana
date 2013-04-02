@@ -22,7 +22,7 @@ msgstr ""
 #: agora_core/templates/agora_core/client/action_t_agora_ao_comment.html:9
 msgctxt "<verb> agora <agora>"
 msgid "agora"
-msgstr "ágora"
+msgstr "el ágora"
 
 #: agora_core/templates/agora_core/client/action_ao_agora_t_user.html:8
 msgctxt "at agora <agora>"
@@ -32,7 +32,7 @@ msgstr "en el ágora"
 #: agora_core/templates/agora_core/client/action_ao_election.html:8
 msgctxt "election <election>"
 msgid "election"
-msgstr "votación"
+msgstr "la votación"
 
 #: agora_core/templates/agora_core/client/action_ao_election.html:9
 #: agora_core/templates/agora_core/client/action_ao_election_v_voted.html:11
@@ -40,7 +40,7 @@ msgstr "votación"
 #: agora_core/templates/agora_core/client/action_ao_election_v_voted_public_reason.html:11
 msgctxt "<election> at <agora>"
 msgid "at"
-msgstr "en"
+msgstr "en el"
 
 #: agora_core/templates/agora_core/client/action_ao_election_v_voted.html:9
 #: agora_core/templates/agora_core/client/action_ao_election_v_voted_public.html:9
@@ -65,3 +65,139 @@ msgstr "la votación"
 msgctxt "<election> at agora <agora>"
 msgid "at agora"
 msgstr "del ágora"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "changed settings"
+msgstr "cambió las preferencias"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "started following"
+msgstr "comenzó a seguir"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "created"
+msgstr "creó"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "voted"
+msgstr "votó"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "published results"
+msgstr "publicó los resultados de"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "joined"
+msgstr "se unió a"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "delegated"
+msgstr "delegó su voto"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "frozen"
+msgstr "congeló"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "approved"
+msgstr "aprobó"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "proposed"
+msgstr "propuso"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "commented"
+msgstr "comentó"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "vote cancelled"
+msgstr "canceló su voto"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "archived"
+msgstr "archivó"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "requested membership"
+msgstr "solicitó membresía en"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "accepted membership request"
+msgstr "aceptó la petición de membresía"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "denied membership request"
+msgstr "rechazó la petición de membresía"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "added member"
+msgstr "añadió al miembro"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "removed member"
+msgstr "borró al miembro"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "requested admin membership"
+msgstr "solicitó ser administrador"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "left"
+msgstr "dejó"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "accepted admin membership request"
+msgstr "aceptó la petición de para ser administrador"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "denied admin membership request"
+msgstr "rechazó la petición para ser administrador"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "added admin"
+msgstr "hizo administrador"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "removed admin permissions"
+msgstr "quitó los permisos de administración"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "left admin permissions"
+msgstr "dejó de ser administrador"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "cancelled voto delegation"
+msgstr "canceló su delegación de voto"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "edited"
+msgstr "editó"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "cancelled requested admin membership"
+msgstr "canceló su petición para ser administrador"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "cancelled his/her membership request"
+msgstr "canceló su petición de membresía"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "made admin"
+msgstr "hizo administrador"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "dismissed membership request"
+msgstr "rechazó la petición de membresía"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "dismissed admin membership request"
+msgstr "rechazó la petición para ser administrador"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "settings updated"
+msgstr "actualizó las preferencias"
+
+#: agora_core/templates/agora_core/client/actions
+msgid "started voting period"
+msgstr "inició el periodo de votación"
