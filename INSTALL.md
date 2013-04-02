@@ -51,7 +51,7 @@ with --all option):
 
 We use django haystack for searching, so we need to create the initial index:
 
-    $ ./manage.py rebuild_index
+    $ ./manage.py rebuild_index --noinput
 
 Sometimes permissions are not created by django correctly. Running the following
 command fixes this problem:
@@ -124,7 +124,7 @@ cities data base and put it where the settings.py will look it for:
 
     $ cd agora_site/media/ && mkdir -p media/data && cd media/data
     $ wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
-    $ gunzip GeoLiteCity.dat.gz && rm GeoLiteCity.dat.gz
+    $ gunzip GeoLiteCity.dat.gz
 
 ### Contribute
 
