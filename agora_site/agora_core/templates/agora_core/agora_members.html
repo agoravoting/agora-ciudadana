@@ -21,7 +21,7 @@
         </div>
         <div class="span4 agora-right-side">
             {% if agora|is_agora_admin:user %}
-            <a class="btn btn-large btn-block bottom-space" href="{% url agora-add-members agora.creator.username agora.name %}">
+	    <!--<a class="btn btn-large btn-block bottom-space" href="{ % url agora-add-members agora.creator.username agora.name %}">-->
             {% trans "Add members manually" %}
             </a>
             {% endif %}

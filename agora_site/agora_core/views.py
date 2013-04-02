@@ -1990,10 +1990,12 @@ class UserElectionsView(AjaxListView):
         return context
 
 
+'''
+TODO: Activate again later
 class AgoraAddMembersView(UpdateView):
-    '''
+    ' ''
     Allows admins to add members to an agora
-    '''
+    ' ''
     template_name = 'agora_core/agora_add_members.html'
     form_class = AgoraAddMembersForm
     model = Agora
@@ -2022,9 +2024,9 @@ class AgoraAddMembersView(UpdateView):
         return super(AgoraAddMembersView, self).get(request, *args, **kwargs)
 
     def get_success_url(self):
-        '''
+        ' ''
         After creating the agora, show it
-        '''
+        ' ''
         agora = self.object
         messages.add_message(self.request, messages.SUCCESS, _('The people you entered have been added successfully to the agora %(agora)s.') % dict(agora=self.agora.get_link()))
 
@@ -2047,6 +2049,7 @@ class AgoraAddMembersView(UpdateView):
             creator__username=username)
 
         return super(AgoraAddMembersView, self).dispatch(*args, **kwargs)
+'''
 
 class AgoraAdminView(UpdateView):
     '''
