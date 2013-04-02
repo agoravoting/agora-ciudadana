@@ -221,7 +221,7 @@
                     <li>
                         <a href="{% url election-view agora.creator.username agora.name election.name %}" class="election">
                             <strong>{{ election.pretty_name|truncatechars:40 }}</strong>
-                            <time datetime="{{ election.result_tallied_at_date.isoformat }}">
+                            <time datetime="{{ election.result_tallied_at_date.isoformat }}" data-livestamp="{{ election.result_tallied_at_date.isoformat }}">
                                 {{ election.result_tallied_at_date|pretty_date }}
                             </time>
                             <span>{{ election.get_winning_option|getitem:'value' }}</span>

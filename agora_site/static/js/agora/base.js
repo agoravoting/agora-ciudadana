@@ -37,7 +37,6 @@ if (window.gettext === undefined) {
         },
 
         updateUi: function() {
-            this.$("time.timeago").timeago();
         },
 
         setMomentLang: function() {
