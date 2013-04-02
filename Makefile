@@ -1,6 +1,6 @@
 all: mainjs agorajs
 
-dependences:
+dependencies:
 	npm install uglify-js less jshint
 
 
