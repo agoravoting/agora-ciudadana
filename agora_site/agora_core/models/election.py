@@ -523,7 +523,7 @@ class Election(models.Model):
         now = datetime.datetime.now()
 
         def timesince(dati):
-            return ('<time class="timeago" title="%(isotime)s" '
+            return ('<time class="timeago" data-livestamp="%(isotime)s" '
                 'datetime="%(isotime)s"></time>') % dict(isotime=dati.isoformat())
 
         if self.is_approved and self.frozen_at_date:

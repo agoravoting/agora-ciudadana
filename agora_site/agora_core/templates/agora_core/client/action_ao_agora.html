@@ -7,7 +7,7 @@
             <div class="action-title">
                 <a href="<%= actor.url %>"><strong class="username"><%= actor.username %></strong></a> <strong class="verb"><%= gettext(verb) %></strong> <%= pgettext("<verb> agora <agora>", "agora") %>
                 <a href="<%= action_object.url %>"><%= action_object.full_name %></a>
-                <time class="timeago" title="<%= timestamp %>" datetime="<%= timestamp %>"></time>
+                <time class="timeago" data-livestamp="<%= timestamp %>" datetime="<%= timestamp %>"></time>
             </div>
 
             <div class="action-detail">

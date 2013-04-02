@@ -63,15 +63,14 @@ class UserTest(RootTestCase):
         # TODO, testing via PUT, not yet implemented in user.py
 
     def test_user_set_username(self):
-	#Gets a list of names and returns the list of users with those names
+        #Gets a list of names and returns the list of users with those names
         data = self.getAndParse('user/set_username/david;user1/')
         self.assertEqual(len(data['objects']), 2)
         self.assertEquals(data['objects'][0]['username'], 'david')
         self.assertEquals(data['objects'][1]['username'], 'user1')
 
-        data = self.getAndParse('user/set_username/david;bogus/')
-        self.assertEqual(len(data['objects']), 1)
-        self.assertEquals(data['objects'][0]['username'], 'david')
+        data = self.getAndParse('user/set_username/bogus;bogus/')
+        self.assertEqual(len(data['objects']), 0)
 
         data = self.getAndParse('user/set_username/bogus;bogus2/')
         self.assertEqual(len(data['objects']), 0)

@@ -14,12 +14,12 @@ mainjs:
 					      agora_site/static/js/libs/bootstrap.min.js \
 					      agora_site/static/js/libs/jquery-ui-1.8.23.custom.min.js \
 					      agora_site/static/js/libs/jquery-ui-timepicker-addon.js \
-					      agora_site/static/js/libs/jquery.timeago.js \
 					      agora_site/static/js/libs/jsrender.js \
 					      agora_site/static/js/libs/d3.v2.min.js \
 					      agora_site/static/js/libs/moment.min.js \
 					      agora_site/static/js/libs/moment-lang/gl.js \
 					      agora_site/static/js/libs/moment-lang/es.js \
+					      agora_site/static/js/libs/livestamp.min.js \
 					      	-o agora_site/static/js/min/main.min.js
 agorajs:
 	./node_modules/uglify-js/bin/uglifyjs \
