@@ -2086,7 +2086,7 @@ List elections this user can vote in
 
 
 List of valid usernames
----------------------
+-----------------------
 
 .. http:get:: user/set_username/(string:username1);(string:username2);.../
 
@@ -3123,4 +3123,85 @@ Execute an action
 
     {
         "status": "success"
+    }
+
+
+Resource: CastVote
+==================
+
+Represents a vote in an election.
+
+Retrieve a vote
+---------------
+
+.. http:get:: /cast_vote/(int:castvote_id)
+
+   Retrieves a vote (`castvote_id`).
+
+   :param castvote_id: vote's unique id
+   :type castvote_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the vote is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/castvote/1/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "action_id":3,
+        "casted_at_date":"2013-04-02T15:39:04.172499",
+        "election":"/api/v1/election/6/",
+        "hash":"b0ed7c90cd96cb0b15fa50b6a6fd2184c26d74e148a19abb1c3d8ed0ddabe060",
+        "id":1,
+        "invalidated_at_date":"2013-04-02T15:39:04.225578",
+        "is_counted":false,
+        "is_direct":true,
+        "is_public":true,
+        "public_data":
+        {
+            "a":"vote",
+            "answers":
+            [
+                {
+                    "a":"plaintext-answer",
+                    "choices":
+                    [
+                        "Foobar"
+                    ]
+                }
+            ],
+            "election_hash":
+            {
+                "a":"hash/sha256/value",
+                "value":"f9273dd65231e664281cd22880870e0c9cbcfa195e86460816b0fc1ecc97f7d1"
+            },
+            "election_uuid":"9f670e70-73c7-4e08-8ef1-5131bf39b1d5"
+        },
+        "reason":"becuase of .. yes",
+        "tiny_hash":null,
+        "voter":
+        {
+            "date_joined":"2012-11-29T15:08:43.874000",
+            "first_name":"",
+            "id":0,
+            "is_active":true,
+            "last_login":"2013-04-02T15:39:03.729283",
+            "last_name":"",
+            "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
+            "short_description":"Is a member of 2 agoras and has emitted  0 direct votes.",
+            "url":"/user/david",
+            "username":"david"
+        }
     }
