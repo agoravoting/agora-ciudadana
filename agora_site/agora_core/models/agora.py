@@ -188,7 +188,7 @@ class Agora(models.Model):
 
         return User.objects.filter(
             id__in=CastVote.objects.filter(is_counted=True, is_direct=True, is_public=True,
-                invalidated_at_date=None, election__agora__id=self.id).values('id').query)
+                invalidated_at_date=None, election__agora__id=self.id).values('voter').query)
 
     def active_nonmembers_delegates(self):
         '''
@@ -200,7 +200,7 @@ class Agora(models.Model):
 
         return User.objects.filter(
             id__in=CastVote.objects.filter(is_counted=True, is_direct=True, is_public=True,
-                invalidated_at_date=None, election__agora__id=self.id)
+                invalidated_at_date=None, election__agora__id=self.id).values('voter').query
             )\
             .exclude(id__in=self.members.values('id').query)
 
