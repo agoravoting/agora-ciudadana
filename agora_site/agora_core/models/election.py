@@ -15,6 +15,8 @@ from guardian.shortcuts import *
 
 from agora_site.misc.utils import JSONField
 from agora_site.agora_core.models import Agora
+from agora_site.agora_core.models.voting_systems.base import (
+    parse_voting_methods, get_voting_system_by_id)
 
 
 class Election(models.Model):
@@ -698,8 +700,11 @@ class Election(models.Model):
             else:
                 return None
 
-        if self.election_type != Agora.ELECTION_TYPES[0][0]:
+        if self.election_type not in dict(parse_voting_methods()):
             raise Exception('do not know how to count this type of voting')
+
+        voting_system = get_voting_system_by_id(self.election_type)
+        tally = voting_system.create_tally(self)
 
         # result is in the same format as get_result_pretty(). Initialized here
         result = self.questions
@@ -708,20 +713,15 @@ class Election(models.Model):
                 answer['by_direct_vote_count'] = 0
                 answer['by_delegation_count'] = 0
 
+        # prepare the tally
+        tally.pre_tally(result)
+
         def add_vote(user_answers, is_delegated):
             '''
             Given the answers of a vote, update the result
             '''
-            i = 0
-            for question in result:
-                for answer in question['answers']:
-                    if answer['value'] in user_answers[i]["choices"]:
-                        if is_delegated:
-                            answer['by_delegation_count'] += 1
-                        else:
-                            answer['by_direct_vote_count'] += 1
-                        break
-                i += 1
+            tally.add_vote(voter_answers=user_answers, result=result,
+                is_delegated=is_delegated)
 
         # Here we go! for each voter, we try to find it in the paths, or in
         # the proxy vote chain, or in the direct votes pool
@@ -788,6 +788,9 @@ class Election(models.Model):
                         path['is_broken_loop'] = True
                         paths += [path]
                         loop = False
+
+        # post process the tally
+        tally.post_tally(result)
 
         # all votes counted, finish result
         # contains the actual result in JSON format

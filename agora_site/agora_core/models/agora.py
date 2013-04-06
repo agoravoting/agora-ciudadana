@@ -13,14 +13,13 @@ from django.db.models.signals import post_save
 from guardian.shortcuts import *
 
 from agora_site.misc.utils import JSONField, get_users_with_perm
-
+from agora_site.agora_core.models.voting_systems.base import parse_voting_methods
 
 class Agora(models.Model):
     '''
     Represents an Agora, formed by a group of people which can vote and delegate
     '''
-    ELECTION_TYPES = (
-        ('ONE_CHOICE', _('Simple one choice result type of election')),
+    ELECTION_TYPES = parse_voting_methods() + (
         ('SIMPLE_DELEGATION', _('Simple election for delegates where only one delegate can be chosen')),
     )
 
