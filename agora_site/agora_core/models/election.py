@@ -491,10 +491,10 @@ class Election(models.Model):
         # These are all the delegation votes, i.e. those that point to a delegate
         edges = self.agora.delegation_election.cast_votes.filter(is_direct=False, invalidated_at_date=None)
 
-        if nodes.filter(voter__id=voter.id).count() == 1:
-            return nodes.filter(voter__id=voter.id)[0]
-        elif edges.filter(voter__id=voter.id).count() == 1:
-            return edges.filter(voter__id=voter.id)[0]
+        if nodes.filter(voter=voter).count() == 1:
+            return nodes.filter(voter=voter)[0]
+        elif edges.filter(voter=voter).count() == 1:
+            return edges.filter(voter=voter)[0]
         else:
             return None
 
@@ -606,14 +606,19 @@ class Election(models.Model):
         # These are all the people that can vote in this election
         self.electorate = self.agora.members.all()
 
-        # These are all the direct votes, even from those who are not elegible
+        # These are all the direct votes, even from those who are not elegible 
         # to vote in this election
-        nodes = self.cast_votes.filter(is_direct=True, is_counted=True, invalidated_at_date=None)
+        nodes = self.cast_votes.filter(is_direct=True,
+            #is_counted=True, FIXME
+            invalidated_at_date=None)
 
         # These are all the delegation votes, i.e. those that point to a delegate
-        edges = self.agora.delegation_election.cast_votes.filter(is_direct=False, invalidated_at_date=None)
+        #edges = self.agora.delegation_election.cast_votes.filter(
+            #is_direct=False, invalidated_at_date=None)
+        edges = self.delegated_votes
 
-        # list of saved paths
+        # list of saved paths. A path represent a list of users who delegate
+        # into a given vote.
         # A path has the following format:
         #{
             #user_ids: [id1, id2, ...],
@@ -625,10 +630,15 @@ class Election(models.Model):
         # closed (infinite) or does not end in a leaf (=node)
         paths = []
 
-        # a dictionary where the number of delegated voted per delegate is stored
-        # the keys are the user_ids of the delegates, and the keys are the 
-        # number of delegated votes
-        delegation_counts = dict()
+        # A dictionary where the number of delegated voted per delegate is
+        # stored. This dict is used only for recording the number of delegated
+        # votes a delegate has.
+        #
+        # The keys are the user_ids of the delegates, and the values are
+        # the number of delegated votes.
+        # Note that because of chains of delegations, the same vote can be
+        # counted multiple times.
+        delegation_counts = dict() 
 
         def update_delegation_counts(vote):
             '''
@@ -636,9 +646,14 @@ class Election(models.Model):
             it basically goes deep in the delegation chain, updating the count
             for each delegate
             '''
+            # if there is no vote we have nothing to do
+            if not vote:
+                return
+
             def increment_delegate(delegate_id):
                 '''
-                Increments the delegate count or sets it to one if doesn't exist
+                Increments the delegate count or sets it to one if doesn't it
+                exist
                 '''
                 if delegate_id in delegation_counts:
                     delegation_counts[delegate_id] += 1
@@ -647,12 +662,12 @@ class Election(models.Model):
 
             while not vote.is_direct:
                 next_delegate = vote.get_delegate()
-                if nodes.filter(voter__id=voter.id).count() == 1:
+                if nodes.filter(voter=next_delegate).count() == 1:
                     increment_delegate(next_delegate.id)
                     return
-                elif edges.filter(voter__id=voter.id).count() == 1:
+                elif edges.filter(voter=next_delegate).count() == 1:
                     increment_delegate(next_delegate.id)
-                    vote = edges.filter(voter__id=voter.id)[0]
+                    vote = edges.filter(voter=next_delegate)[0]
                 else:
                     raise Exception('Broken delegation chain')
 
@@ -671,10 +686,12 @@ class Election(models.Model):
             Given a voter (an User), returns the vote of the vote of this voter
             on the election. It will be either a proxy or a direct vote
             '''
-            if nodes.filter(voter__id=voter.id).count() == 1:
-                return nodes.filter(voter__id=voter.id)[0]
+            if nodes.filter(voter=voter).count() == 1:
+                return nodes.filter(voter=voter)[0]
+            elif edges.filter(voter=voter) == 1:
+                return edges.filter(voter=voter)[0]
             else:
-                return edges.filter(voter__id=voter.id)[0]
+                return None
 
         if self.election_type != Agora.ELECTION_TYPES[0][0]:
             raise Exception('do not know how to count this type of voting')
@@ -711,22 +728,21 @@ class Election(models.Model):
                 # found a path to which the user belongs
 
                 # update delegation counts
-                update_delegation_counts(self.get_vote_for_voter(voter))
+                update_delegation_counts(get_vote_for_voter(voter))
                 add_vote(path_for_user['answers'], is_delegated=True)
             # found the user in a direct vote
-            elif nodes.filter(voter__id=voter.id).count() == 1:
-                vote = nodes.filter(voter__id=voter.id)[0]
-                update_delegation_counts(vote)
+            elif nodes.filter(voter=voter).count() == 1:
+                vote = nodes.filter(voter=voter)[0]
                 add_vote(vote.data["answers"], is_delegated=False)
             # found the user in an edge (delegated vote), but not yet in a path
-            elif edges.filter(voter__id=voter.id).count() == 1:
+            elif edges.filter(voter=voter).count() == 1:
                 path = dict(
                     user_ids=[voter.id],
                     answers=[],
                     is_broken_loop=False
                 )
 
-                current_edge = edges.filter(voter__id=voter.id)[0]
+                current_edge = edges.filter(voter=voter)[0]
                 loop = True
                 while loop:
                     delegate = current_edge.get_delegate()
@@ -742,21 +758,20 @@ class Election(models.Model):
                         path_for_user['user_ids'] += path['user_ids']
 
                         # Count the vote
-                        i = 0
                         add_vote(path_for_user['answers'], is_delegated=True)
-                        update_delegation_counts(vote)
+                        update_delegation_counts(current_edge)
                         loop = False
-                    elif nodes.filter(voter__id=delegate.id).count() == 1:
+                    elif nodes.filter(voter=delegate).count() == 1:
                         # The delegate voted directly, add the path and count
                         # the vote
-                        vote = nodes.filter(voter__id=delegate.id)[0]
+                        vote = nodes.filter(voter=delegate)[0]
                         path["answers"]=vote.data['answers']
                         paths += [path]
                         add_vote(vote.data['answers'], is_delegated=True)
-                        update_delegation_counts(vote)
+                        update_delegation_counts(current_edge)
                         loop = False
 
-                    elif edges.filter(voter__id=delegate.id).count() == 1:
+                    elif edges.filter(voter=delegate).count() == 1:
                         # the delegate also delegated, so continue looping
                         path['user_ids'] += [delegate.id]
                     else:
@@ -797,23 +812,16 @@ class Election(models.Model):
                     #<QUESTION_2_CANDIDATE_1_COUNT>, <QUESTION_2_CANDIDATE_2_COUNT>
                 #]
             #],
-            # "delegation_counts": [
-                #{
-                    #'delegate_username': '<DELEGATE_1_USERNAME>',
-                    #'count': <DELEGATE_1_COUNT>,
-                #},
-                #{
-                    #'delegate_username': '<DELEGATE_1_USERNAME>',
-                    #'count': <DELEGATE_1_COUNT>,
-                #}
-            # ]
+            # "delegation_counts": {
+                #<DELEGATE_2_USERID>: <DELEGATE_1_COUNT>,
+                #<DELEGATE_2_USERID>: <DELEGATE_2_COUNT>,
+            # }
             #
         #}
         self.delegated_votes_result = dict(
             a= "result",
             election_counts = [],
-            delegation_counts = [dict(delegate_username=key, count=value)
-                for key, value in delegation_counts]
+            delegation_counts = delegation_counts
         )
         i = 0
         for question in result:
