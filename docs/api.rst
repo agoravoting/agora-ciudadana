@@ -855,7 +855,7 @@ List all elections
                [
                ],
                "eligibility": "",
-               "extra_data": "{u'started': True}",
+               "extra_data": {"started": true},
                "frozen_at_date": "2012-12-18T15:53:24.071076",
                "hash": "b05bc33717cacc1557ff47bffdbfecbf10d3a1a52baba603b5b7b8e10c6db9fa",
                "id": 4,
@@ -866,7 +866,32 @@ List all elections
                "parent_election": null,
                "percentage_of_participation": 50,
                "pretty_name": "election 2",
-               "questions": "[{u'a': u'ballot/question', u'min': 0, u'max': 1, u'tally_type': u'simple', u'question': u'question of election 2', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'yes'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'no'}], u'randomize_answer_order': True}]",
+               "questions": 
+               [
+                   {
+                       "a": "ballot/question",
+                       "min": 0,
+                       "max": 1,
+                       "tally_type": "simple",
+                       "question": "question of election 2",
+                       "answers": 
+                       [
+                           {
+                               "a": "ballot/answer",
+                               "url": "",
+                               "details": "",
+                               "value": "yes"
+                           },
+                           {
+                               "a": "ballot/answer",
+                               "url": "",
+                               "details": "",
+                               "value": "no"
+                           }
+                       ],
+                       "randomize_answer_order": true
+                   }
+               ],
                "resource_uri": "/api/v1/election/4/",
                "result": "",
                "result_tallied_at_date": null,
@@ -928,7 +953,7 @@ List tallied elections
                "created_at_date": "2012-12-18T15:54:17.742549",
                "creator": "/api/v1/user/2/",
                "delegated_votes_frozen_at_date": "2012-12-18T17:15:40.772925",
-               "delegated_votes_result": "{u'delegation_counts': [], u'a': u'result', u'election_counts': [[0, 0, 0]]}",
+               "delegated_votes_result": {"delegation_counts": [], "a": "result", "election_counts": [[0, 0, 0]]},
                "description": "this is election 3",
                "election_type": "ONE_CHOICE",
                "electorate":
@@ -937,7 +962,7 @@ List tallied elections
                    "/api/v1/user/5/"
                ],
                "eligibility": "",
-               "extra_data": "{u'started': True, u'ended': True}",
+               "extra_data": {"started": true, "ended": true},
                "frozen_at_date": "2012-12-18T15:54:22.296002",
                "hash": "e707a91d4657e9f0c2dabeb72c6c4598b468159b409844f87160457aa9de1dc4",
                "id": 5,
@@ -948,9 +973,83 @@ List tallied elections
                "parent_election": null,
                "percentage_of_participation": 100,
                "pretty_name": "election 3",
-               "questions": "[{u'a': u'ballot/question', u'min': 0, u'max': 1, u'tally_type': u'simple', u'question': u'question of election 3', u'answers': [{u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 0, u'value': u'a', u'details': u''}, {u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 1, u'value': u'b', u'details': u''}, {u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 1, u'value': u'c', u'details': u''}], u'randomize_answer_order': True}]",
+               "questions":
+               [
+                   {
+                       "a": "ballot/question",
+                       "min": 0,
+                       "max": 1,
+                       "tally_type": "simple",
+                       "question": "question of election 3",
+                       "answers":
+                       [
+                           {
+                               "a": "ballot/answer",
+                               "by_delegation_count": 0,
+                               "url": "",
+                               "by_direct_vote_count": 0,
+                               "value": "a",
+                               "details": ""
+                           },
+                           {
+                               "a": "ballot/answer",
+                               "by_delegation_count": 0,
+                               "url": "",
+                               "by_direct_vote_count": 1,
+                               "value": "b",
+                               "details": ""
+                           },
+                           {
+                               "a": "ballot/answer",
+                               "by_delegation_count": 0,
+                               "url": "",
+                               "by_direct_vote_count": 1,
+                               "value": "c",
+                               "details": ""
+                           }
+                       ],
+                       "randomize_answer_order": true
+                   }
+               ],
                "resource_uri": "/api/v1/election/5/",
-               "result": "[{u'a': u'ballot/question', u'min': 0, u'max': 1, u'tally_type': u'simple', u'question': u'question of election 3', u'answers': [{u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 0, u'value': u'a', u'details': u''}, {u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 1, u'value': u'b', u'details': u''}, {u'a': u'ballot/answer', u'by_delegation_count': 0, u'url': u'', u'by_direct_vote_count': 1, u'value': u'c', u'details': u''}], u'randomize_answer_order': True}]",
+               "result":
+               [
+                   {
+                       "a": "ballot/question",
+                       "min": 0,
+                       "max": 1,
+                       "tally_type": "simple",
+                       "question": "question of election 3",
+                       "answers":
+                       [
+                           {
+                               "a": "ballot/answer",
+                               "by_delegation_count": 0,
+                               "url": "",
+                               "by_direct_vote_count": 0,
+                               "value": "a",
+                               "details": ""
+                           },
+                           {
+                               "a": "ballot/answer",
+                               "by_delegation_count": 0,
+                               "url": "",
+                               "by_direct_vote_count": 1,
+                               "value": "b",
+                               "details": ""
+                           },
+                           {
+                               "a": "ballot/answer",
+                               "by_delegation_count": 0,
+                               "url": "",
+                               "by_direct_vote_count": 1,
+                               "value": "c",
+                               "details": ""
+                           }
+                       ],
+                       "randomize_answer_order": true
+                   }
+               ],
                "result_tallied_at_date": "2012-12-18T17:15:40.772925",
                "short_description": "this is election 3",
                "tiny_hash": null,
@@ -1017,7 +1116,7 @@ List open elections
                [
                ],
                "eligibility": "",
-               "extra_data": "{u'started': True}",
+               "extra_data": "{"started": true}",
                "frozen_at_date": "2012-12-18T15:51:05.405218",
                "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
                "id": 3,
@@ -1028,7 +1127,38 @@ List open elections
                "parent_election": null,
                "percentage_of_participation": 50,
                "pretty_name": "election 1",
-               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
+               "questions": 
+               [
+                   {
+                       "a": "ballot/question",
+                       "tally_type": "simple",
+                       "max": 1,
+                       "min": 0,
+                       "question": "question of election 1",
+                       "answers": 
+                       [
+                           {
+                               "a": "ballot/answer",
+                               "url": "",
+                               "details": "",
+                               "value": "one"
+                           },
+                           {
+                               "a": "ballot/answer",
+                               "url": "",
+                               "details": "",
+                               "value": "two"
+                           },
+                           {
+                               "a": "ballot/answer",
+                               "url": "",
+                               "details": "",
+                               "value": "three"
+                           }
+                       ],
+                       "randomize_answer_order": true
+                   }
+               ],
                "resource_uri": "/api/v1/election/3/",
                "result": "",
                "result_tallied_at_date": null,
@@ -1099,7 +1229,7 @@ List requested elections
                [
                ],
                "eligibility": "",
-               "extra_data": "{u'started': True}",
+               "extra_data": {"started": true},
                "frozen_at_date": "2012-12-18T15:51:05.405218",
                "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
                "id": 3,
@@ -1110,7 +1240,38 @@ List requested elections
                "parent_election": null,
                "percentage_of_participation": 50,
                "pretty_name": "election 1",
-               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
+               "questions": 
+               [
+                   {
+                       "a": "ballot/question",
+                       "tally_type": "simple",
+                       "max": 1,
+                       "min": 0,
+                       "question": "question of election 1",
+                       "answers":
+                       [
+                           {
+                               "a": "ballot/answer",
+                               "url": "",
+                               "details": "",
+                               "value": "one"
+                           },
+                           {
+                               "a": "ballot/answer",
+                               "url": "",
+                               "details": "",
+                               "value": "two"
+                           },
+                           {
+                               "a": "ballot/answer",
+                               "url": "",
+                               "details": "",
+                               "value": "three"
+                           }
+                       ],
+                       "randomize_answer_order": true
+                   }
+               ],
                "resource_uri": "/api/v1/election/3/",
                "result": "",
                "result_tallied_at_date": null,
@@ -1179,7 +1340,7 @@ List archived elections
                [
                ],
                "eligibility": "",
-               "extra_data": "{u'started': True}",
+               "extra_data": {"started": true},
                "frozen_at_date": "2012-12-18T15:51:05.405218",
                "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
                "id": 3,
@@ -1190,7 +1351,38 @@ List archived elections
                "parent_election": null,
                "percentage_of_participation": 50,
                "pretty_name": "election 1",
-               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
+               "questions": 
+               [
+                   {
+                       "a": "ballot/question",
+                       "tally_type": "simple",
+                       "max": 1,
+                       "min": 0,
+                       "question": "question of election 1",
+                       "answers":
+                       [
+                           {
+                               "a": "ballot/answer",
+                               "url": "",
+                               "details": "",
+                               "value": "one"
+                           },
+                           {
+                               "a": "ballot/answer",
+                               "url": "",
+                               "details": "",
+                               "value": "two"
+                           },
+                           {
+                               "a": "ballot/answer",
+                               "url": "",
+                               "details": "",
+                               "value": "three"
+                           }
+                       ],
+                       "randomize_answer_order": true
+                   }
+               ],
                "resource_uri": "/api/v1/election/3/",
                "result": "",
                "result_tallied_at_date": null,
@@ -1259,7 +1451,7 @@ List approved elections
                [
                ],
                "eligibility": "",
-               "extra_data": "{u'started': True}",
+               "extra_data": {"started": true},
                "frozen_at_date": "2012-12-18T15:51:05.405218",
                "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
                "id": 3,
@@ -1270,7 +1462,38 @@ List approved elections
                "parent_election": null,
                "percentage_of_participation": 50,
                "pretty_name": "election 1",
-               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
+               "questions": 
+               [
+                   {
+                       "a": "ballot/question",
+                       "tally_type": "simple",
+                       "max": 1,
+                       "min": 0,
+                       "question": "question of election 1",
+                       "answers": 
+                       [
+                           {
+                               "a": "ballot/answer",
+                               "url": "",
+                               "details": "",
+                               "value": "one"
+                           },
+                           {
+                               "a": "ballot/answer",
+                               "url": "",
+                               "details": "",
+                               "value": "two"
+                           },
+                           {
+                               "a": "ballot/answer",
+                               "url": "",
+                               "details": "",
+                               "value": "three"
+                           }
+                       ],
+                       "randomize_answer_order": true
+                   }
+               ],
                "resource_uri": "/api/v1/election/3/",
                "result": "",
                "result_tallied_at_date": null,
@@ -2055,7 +2278,7 @@ List elections this user can vote in
                [
                ],
                "eligibility": "",
-               "extra_data": "{u'started': True}",
+               "extra_data": {"started": true},
                "frozen_at_date": "2012-10-28T09:36:44.106801",
                "has_user_voted": true,
                "has_user_voted_via_a_delegate": false,
@@ -2068,7 +2291,39 @@ List elections this user can vote in
                "parent_election": null,
                "percentage_of_participation": 22,
                "pretty_name": "Votación de prueba",
-               "questions": "[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question of election 1', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': True}]",
+               "questions":
+               [
+                   {
+                       "a": "ballot/question",
+                       "tally_type": "simple",
+                       "max": 1,
+                       "min": 0,
+                       "question":
+                       "question of election 1",
+                       "answers":
+                       [
+                           {
+                               "a": "ballot/answer",
+                               "url": "",
+                               "details": "",
+                               "value": "one"
+                           },
+                           {
+                               "a": "ballot/answer",
+                               "url": "",
+                               "details": "",
+                               "value": "two"
+                           },
+                           {
+                               "a": "ballot/answer",
+                               "url": "",
+                               "details": "",
+                               "value": "three"
+                           }
+                       ],
+                       "randomize_answer_order": true
+                   }
+               ],
                "resource_uri": "",
                "result": "",
                "result_tallied_at_date": null,
@@ -2332,7 +2587,38 @@ This resource represents an election
                 "direct_votes_count":0,
                 "short_description":"election three",
                 "extra_data":"",
-                "questions":"[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question three', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': true}]",
+                "questions":
+                [
+                    {
+                        "a": "ballot/question",
+                        "tally_type": "simple",
+                        "max": 1,
+                        "min": 0,
+                        "question": "question three",
+                        "answers":
+                        [
+                            {
+                                "a": "ballot/answer",
+                                "url": "",
+                                "details": "",
+                                "value": "one"
+                            },
+                            {
+                                "a": "ballot/answer",
+                                "url": "",
+                                "details": "",
+                                "value": "two"
+                            },
+                            {
+                                "a": "ballot/answer",
+                                "url": "",
+                                "details": "",
+                                "value": "three"
+                            }
+                        ],
+                        "randomize_answer_order": true
+                    }
+                ],
                 "is_vote_secret":false,
                 "voters_frozen_at_date":null,
                 "hash":null,
@@ -2411,7 +2697,37 @@ Retrieve an election
         "direct_votes_count":0,
         "short_description":"election three",
         "extra_data":"",
-        "questions":"[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question three', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': true}]",
+        "questions":
+        [
+            {
+                "a": "ballot/question",
+                "tally_type": "simple",
+                "max": 1, "min": 0,
+                "question": "question three",
+                "answers":
+                [
+                    {
+                        "a": "ballot/answer",
+                        "url": "",
+                        "details": "",
+                        "value": "one"
+                    },
+                    {
+                        "a": "ballot/answer",
+                        "url": "",
+                        "details": "",
+                        "value": "two"
+                    },
+                    {
+                        "a": "ballot/answer",
+                        "url": "",
+                        "details": "",
+                        "value": "three"
+                    }
+                ],
+                "randomize_answer_order": true
+            }
+        ],
         "is_vote_secret":false,
         "voters_frozen_at_date":null,
         "hash":null,
@@ -2498,7 +2814,37 @@ Modify election
         "direct_votes_count":0,
         "short_description":"election three",
         "extra_data":"",
-        "questions":"[{u'a': u'ballot/question', u'tally_type': u'simple', u'max': 1, u'min': 0, u'question': u'question three', u'answers': [{u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'one'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'two'}, {u'a': u'ballot/answer', u'url': u'', u'details': u'', u'value': u'three'}], u'randomize_answer_order': true}]",
+        "questions":
+        [
+            {
+                "a": "ballot/question",
+                "tally_type": "simple",
+                "max": 1,
+                "min": 0,
+                "question": "question three",
+                "answers":
+                [
+                    {
+                        "a": "ballot/answer",
+                        "url": "", "details": "",
+                        "value": "one"
+                    },
+                    {
+                        "a": "ballot/answer",
+                        "url": "",
+                        "details": "",
+                        "value": "two"
+                    },
+                    {
+                        "a": "ballot/answer",
+                        "url": "",
+                        "details": "",
+                        "value": "three"
+                    }
+                ],
+                "randomize_answer_order": true
+            }
+        ],
         "is_vote_secret":false,
         "voters_frozen_at_date":null,
         "hash":null,
