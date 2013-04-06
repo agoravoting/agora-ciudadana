@@ -855,7 +855,10 @@ List all elections
                [
                ],
                "eligibility": "",
-               "extra_data": {"started": true},
+               "extra_data": 
+               {
+                   "started": true
+               },
                "frozen_at_date": "2012-12-18T15:53:24.071076",
                "hash": "b05bc33717cacc1557ff47bffdbfecbf10d3a1a52baba603b5b7b8e10c6db9fa",
                "id": 4,
@@ -953,7 +956,21 @@ List tallied elections
                "created_at_date": "2012-12-18T15:54:17.742549",
                "creator": "/api/v1/user/2/",
                "delegated_votes_frozen_at_date": "2012-12-18T17:15:40.772925",
-               "delegated_votes_result": {"delegation_counts": [], "a": "result", "election_counts": [[0, 0, 0]]},
+               "delegated_votes_result": 
+               {
+                   "delegation_counts": 
+                   [
+                   ],
+                   "a": "result",
+                   "election_counts":
+                   [
+                       [
+                           0,
+                           0,
+                           0
+                       ]
+                   ]
+               },
                "description": "this is election 3",
                "election_type": "ONE_CHOICE",
                "electorate":
@@ -962,7 +979,11 @@ List tallied elections
                    "/api/v1/user/5/"
                ],
                "eligibility": "",
-               "extra_data": {"started": true, "ended": true},
+               "extra_data": 
+               {
+                   "started": true,
+                   "ended": true
+               },
                "frozen_at_date": "2012-12-18T15:54:22.296002",
                "hash": "e707a91d4657e9f0c2dabeb72c6c4598b468159b409844f87160457aa9de1dc4",
                "id": 5,
@@ -1093,72 +1114,75 @@ List open elections
     Content-Type: application/json; charset=utf-8
 
     {
-       "meta":
-       {
-           "limit": 20,
-           "offset": 0,
-           "total_count": 1
-       },
-       "objects":
-       [
-           {
-               "agora": "/api/v1/agora/2/",
-               "approved_at_date": null,
-               "archived_at_date": null,
-               "comments_policy": "ANYONE_CAN_COMMENT",
-               "created_at_date": "2012-12-18T15:50:48.576146",
-               "creator": "/api/v1/user/2/",
-               "delegated_votes_frozen_at_date": null,
-               "delegated_votes_result": "",
-               "description": "this is election 1",
-               "election_type": "ONE_CHOICE",
-               "electorate":
-               [
-               ],
-               "eligibility": "",
-               "extra_data": "{"started": true}",
-               "frozen_at_date": "2012-12-18T15:51:05.405218",
-               "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
-               "id": 3,
-               "is_approved": true,
-               "is_vote_secret": true,
-               "last_modified_at_date": "2012-12-18T15:50:48.588385",
-               "name": "election-1",
-               "parent_election": null,
-               "percentage_of_participation": 50,
-               "pretty_name": "election 1",
-               "questions": 
-               [
-                   {
-                       "a": "ballot/question",
-                       "tally_type": "simple",
-                       "max": 1,
-                       "min": 0,
-                       "question": "question of election 1",
-                       "answers": 
-                       [
-                           {
-                               "a": "ballot/answer",
-                               "url": "",
-                               "details": "",
-                               "value": "one"
-                           },
-                           {
-                               "a": "ballot/answer",
-                               "url": "",
-                               "details": "",
-                               "value": "two"
-                           },
-                           {
-                               "a": "ballot/answer",
-                               "url": "",
-                               "details": "",
-                               "value": "three"
-                           }
-                       ],
-                       "randomize_answer_order": true
-                   }
-               ],
+        "meta":
+        {
+            "limit": 20,
+            "offset": 0,
+            "total_count": 1
+        },
+        "objects":
+        [
+            {
+                "agora": "/api/v1/agora/2/",
+                "approved_at_date": null,
+                "archived_at_date": null,
+                "comments_policy": "ANYONE_CAN_COMMENT",
+                "created_at_date": "2012-12-18T15:50:48.576146",
+                "creator": "/api/v1/user/2/",
+                "delegated_votes_frozen_at_date": null,
+                "delegated_votes_result": "",
+                "description": "this is election 1",
+                "election_type": "ONE_CHOICE",
+                "electorate":
+                [
+                ],
+                "eligibility": "",
+                "extra_data": 
+                {
+                    "started": true
+                },
+                "frozen_at_date": "2012-12-18T15:51:05.405218",
+                "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
+                "id": 3,
+                "is_approved": true,
+                "is_vote_secret": true,
+                "last_modified_at_date": "2012-12-18T15:50:48.588385",
+                "name": "election-1",
+                "parent_election": null,
+                "percentage_of_participation": 50,
+                "pretty_name": "election 1",
+                "questions": 
+                [
+                    {
+                        "a": "ballot/question",
+                        "tally_type": "simple",
+                        "max": 1,
+                        "min": 0,
+                        "question": "question of election 1",
+                        "answers": 
+                        [
+                            {
+                                "a": "ballot/answer",
+                                "url": "",
+                                "details": "",
+                                "value": "one"
+                            },
+                            {
+                                "a": "ballot/answer",
+                                "url": "",
+                                "details": "",
+                                "value": "two"
+                            },
+                            {
+                                "a": "ballot/answer",
+                                "url": "",
+                                "details": "",
+                                "value": "three"
+                            }
+                        ],
+                        "randomize_answer_order": true
+                    }
+                ],
                "resource_uri": "/api/v1/election/3/",
                "result": "",
                "result_tallied_at_date": null,
@@ -1229,7 +1253,10 @@ List requested elections
                [
                ],
                "eligibility": "",
-               "extra_data": {"started": true},
+               "extra_data":
+               {
+                   "started": true
+               },
                "frozen_at_date": "2012-12-18T15:51:05.405218",
                "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
                "id": 3,
@@ -1340,7 +1367,10 @@ List archived elections
                [
                ],
                "eligibility": "",
-               "extra_data": {"started": true},
+               "extra_data":
+               {
+                   "started": true
+               },
                "frozen_at_date": "2012-12-18T15:51:05.405218",
                "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
                "id": 3,
@@ -1451,7 +1481,10 @@ List approved elections
                [
                ],
                "eligibility": "",
-               "extra_data": {"started": true},
+               "extra_data":
+               {
+                   "started": true
+               },
                "frozen_at_date": "2012-12-18T15:51:05.405218",
                "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
                "id": 3,
@@ -1546,7 +1579,11 @@ Comments
         },
         "objects":[
             {
-                "geolocation":"[0, 0]",
+                "geolocation":
+                [
+                    0,
+                    0
+                ],
                 "description":"",
                 "timestamp":"2013-03-31T11:15:20.753223",
                 "type_name":"target_agora_action_object_comment",
@@ -1632,7 +1669,11 @@ Add comment
         "objects":
         [
             {
-                "geolocation":"[0, 0]",
+                "geolocation":
+                [
+                    0,
+                    0
+                ],
                 "description":"",
                 "timestamp":"2013-03-31T11:15:20.753223",
                 "type_name":"target_agora_action_object_comment",
@@ -2278,7 +2319,10 @@ List elections this user can vote in
                [
                ],
                "eligibility": "",
-               "extra_data": {"started": true},
+               "extra_data":
+               {
+                   "started": true
+               },
                "frozen_at_date": "2012-10-28T09:36:44.106801",
                "has_user_voted": true,
                "has_user_voted_via_a_delegate": false,
@@ -2366,33 +2410,33 @@ List of valid usernames
     Vary: Accept, Accept-Language, Cookie
     Content-Type: application/json; charset=utf-8
     {
-       "objects":
-       [
-          {
-	     "username":"david",
-	     "first_name":"",
-	     "last_name":"",
-	     "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
-	     "url":"/user/david",
-	     "is_active":true,
-	     "last_login":"2012-11-29T17:18:46.837000",
-	     "short_description":"Is a member of 2 agoras and has emitted  0 direct votes.",
-	     "id":0,
-	     "date_joined":"2012-11-29T15:08:43.874000"
-          },
-          {
-	     "username":"user1",
-	     "first_name":"Juana Molero",
-	     "last_name":"",
-	     "mugshot_url":"http://www.gravatar.com/avatar/cc721459f5b77680bc6a8ba6c9681c46?s=50&d=identicon",
-	     "url":"/user/user1",
-	     "is_active":true,
-	     "last_login":"2012-11-29T18:37:36.263000",
-	     "short_description":"ultricies. semper vel et, eu laoreet Quisque odio semper ornare. elementum elementum tristique pretium ornare",
-	     "id":1,
-	     "date_joined":"2012-11-29T18:37:36.263000"
-          }
-       ]
+        "objects":
+        [
+            {
+                "username":"david",
+                "first_name":"",
+                "last_name":"",
+                "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
+                "url":"/user/david",
+                "is_active":true,
+                "last_login":"2012-11-29T17:18:46.837000",
+                "short_description":"Is a member of 2 agoras and has emitted  0 direct votes.",
+                "id":0,
+                "date_joined":"2012-11-29T15:08:43.874000"
+            },
+            {
+                "username":"user1",
+                "first_name":"Juana Molero",
+                "last_name":"",
+                "mugshot_url":"http://www.gravatar.com/avatar/cc721459f5b77680bc6a8ba6c9681c46?s=50&d=identicon",
+                "url":"/user/user1",
+                "is_active":true,
+                "last_login":"2012-11-29T18:37:36.263000",
+                "short_description":"ultricies. semper vel et, eu laoreet Quisque odio semper ornare. elementum elementum tristique pretium ornare",
+                "id":1,
+                "date_joined":"2012-11-29T18:37:36.263000"
+             }
+        ]
     }
 
 
@@ -2914,9 +2958,11 @@ List all votes
             "limit":20,
             "offset":0
         },
-        "objects":[
+        "objects":
+        [
             {
-                "voter":{
+                "voter":
+                {
                     "username":"david",
                     "first_name":"",
                     "last_name":"",
@@ -2929,8 +2975,8 @@ List all votes
                     "date_joined":"2012-11-29T15:08:43.874000"
                 },
                 "hash":"e33826075d8b5a6d2741699604d6ecaf0d3eda02f6ccbf4664ef0a70267f8532",
-                "public_data":{
-
+                "public_data":
+                {
                 },
                 "casted_at_date":"2013-03-31T13:35:46.571346",
                 "is_counted":true,
@@ -2975,14 +3021,17 @@ List cast votes
     Content-Type: application/json; charset=utf-8
 
     {
-        "meta":{
+        "meta":
+        {
             "total_count":1,
             "limit":20,
             "offset":0
         },
-        "objects":[
+        "objects":
+        [
             {
-                "voter":{
+                "voter":
+                {
                     "username":"david",
                     "first_name":"",
                     "last_name":"",
@@ -2995,8 +3044,8 @@ List cast votes
                     "date_joined":"2012-11-29T15:08:43.874000"
                 },
                 "hash":"e33826075d8b5a6d2741699604d6ecaf0d3eda02f6ccbf4664ef0a70267f8532",
-                "public_data":{
-
+                "public_data":
+                {
                 },
                 "casted_at_date":"2013-03-31T13:35:46.571346",
                 "is_counted":true,
@@ -3041,14 +3090,17 @@ List delegated votes
     Content-Type: application/json; charset=utf-8
 
     {
-        "meta":{
+        "meta":
+        {
             "total_count":1,
             "limit":20,
             "offset":0
         },
-        "objects":[
+        "objects":
+        [
             {
-                "voter":{
+                "voter":
+                {
                     "username":"david",
                     "first_name":"",
                     "last_name":"",
@@ -3061,8 +3113,8 @@ List delegated votes
                     "date_joined":"2012-11-29T15:08:43.874000"
                 },
                 "hash":"e33826075d8b5a6d2741699604d6ecaf0d3eda02f6ccbf4664ef0a70267f8532",
-                "public_data":{
-
+                "public_data":
+                {
                 },
                 "casted_at_date":"2013-03-31T13:35:46.571346",
                 "is_counted":true,
@@ -3107,14 +3159,17 @@ List votes from delegates
     Content-Type: application/json; charset=utf-8
 
     {
-        "meta":{
+        "meta":
+        {
             "total_count":1,
             "limit":20,
             "offset":0
         },
-        "objects":[
+        "objects":
+        [
             {
-                "voter":{
+                "voter":
+                {
                     "username":"david",
                     "first_name":"",
                     "last_name":"",
@@ -3127,8 +3182,8 @@ List votes from delegates
                     "date_joined":"2012-11-29T15:08:43.874000"
                 },
                 "hash":"e33826075d8b5a6d2741699604d6ecaf0d3eda02f6ccbf4664ef0a70267f8532",
-                "public_data":{
-
+                "public_data":
+                {
                 },
                 "casted_at_date":"2013-03-31T13:35:46.571346",
                 "is_counted":true,
@@ -3173,14 +3228,17 @@ Direct votes
     Content-Type: application/json; charset=utf-8
 
     {
-        "meta":{
+        "meta":
+        {
             "total_count":1,
             "limit":20,
             "offset":0
         },
-        "objects":[
+        "objects":
+        [
             {
-                "voter":{
+                "voter":
+                {
                     "username":"david",
                     "first_name":"",
                     "last_name":"",
@@ -3193,8 +3251,8 @@ Direct votes
                     "date_joined":"2012-11-29T15:08:43.874000"
                 },
                 "hash":"e33826075d8b5a6d2741699604d6ecaf0d3eda02f6ccbf4664ef0a70267f8532",
-                "public_data":{
-
+                "public_data":
+                {
                 },
                 "casted_at_date":"2013-03-31T13:35:46.571346",
                 "is_counted":true,
@@ -3240,14 +3298,20 @@ List comments
     Content-Type: application/json; charset=utf-8
 
     {
-        "meta":{
+        "meta":
+        {
             "total_count":1,
             "limit":20,
             "offset":0
         },
-        "objects":[
+        "objects":
+        [
             {
-                "geolocation":"[0, 0]",
+                "geolocation":
+                [
+                    0,
+                    0
+                ],
                 "description":"",
                 "timestamp":"2013-03-31T11:15:20.753223",
                 "type_name":"target_agora_action_object_comment",
