@@ -19,6 +19,7 @@ from tastypie.exceptions import NotFound, BadRequest, InvalidFilterError, Hydrat
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, ValidationError
 from tastypie.utils.mime import build_content_type
 
+from agora_site.misc.utils import JSONApiField
 
 class GenericResourceMixin:
 
@@ -162,7 +163,24 @@ class GenericResourceMixin:
         self.log_throttled_access(request)
         return self.create_response(request, page)
 
-class GenericResource(ModelResource, GenericResourceMixin):
+    @classmethod
+    def api_field_from_django_field(cls, f, default=fields.CharField):
+        """
+        Returns the field type that would likely be associated with each
+        Django type.
+        """
+        result = default
+        internal_type = f.get_internal_type()
+
+        if internal_type in ('JSONField'):
+            return JSONApiField
+        else:
+            return ModelResource.api_field_from_django_field(f, default)
+
+# NOTE that GenericResourceMixin must take precedence in inheritance so that
+# we can make sure its GenericResourceMixin.api_field_from_django_field is
+# used
+class GenericResource(GenericResourceMixin, ModelResource):
     pass
 
 from tastypie.authentication import Authentication

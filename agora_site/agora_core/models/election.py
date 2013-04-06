@@ -584,6 +584,9 @@ class Election(models.Model):
 
         from agora_site.agora_core.models import CastVote
 
+        # maximum delegation depth, so that we don't enter in near-infinite loops
+        MAX_DELEGATION_DEPTH = 20
+
         # Query with the direct votes in this election
         q=self.cast_votes.filter(
             is_counted=True,
@@ -660,7 +663,9 @@ class Election(models.Model):
                 else:
                     delegation_counts[delegate_id] = 1
 
-            while not vote.is_direct:
+            i = 0
+            while not vote.is_direct and i < MAX_DELEGATION_DEPTH:
+                i += 1
                 next_delegate = vote.get_delegate()
                 if nodes.filter(voter=next_delegate).count() == 1:
                     increment_delegate(next_delegate.id)
@@ -744,16 +749,19 @@ class Election(models.Model):
 
                 current_edge = edges.filter(voter=voter)[0]
                 loop = True
-                while loop:
+                i = 0
+                while loop and i < MAX_DELEGATION_DEPTH:
+                    i += 1
                     delegate = current_edge.get_delegate()
                     path_for_user = get_path_for_user(delegate.id)
+                    check_depth = i < MAX_DELEGATION_DEPTH
 
-                    if delegate in path['user_ids']:
+                    if check_depth and delegate in path['user_ids']:
                         # wrong path! loop found, vote won't be counted
                         path['is_broken_loop'] = True
                         paths += [path]
                         loop = False
-                    elif path_for_user and not path_for_user['is_broken_loop']:
+                    elif check_depth and path_for_user and not path_for_user['is_broken_loop']:
                         # extend the found path and count a new vote
                         path_for_user['user_ids'] += path['user_ids']
 
@@ -761,7 +769,7 @@ class Election(models.Model):
                         add_vote(path_for_user['answers'], is_delegated=True)
                         update_delegation_counts(current_edge)
                         loop = False
-                    elif nodes.filter(voter=delegate).count() == 1:
+                    elif check_depth and nodes.filter(voter=delegate).count() == 1:
                         # The delegate voted directly, add the path and count
                         # the vote
                         vote = nodes.filter(voter=delegate)[0]
@@ -771,9 +779,10 @@ class Election(models.Model):
                         update_delegation_counts(current_edge)
                         loop = False
 
-                    elif edges.filter(voter=delegate).count() == 1:
+                    elif check_depth and edges.filter(voter=delegate).count() == 1:
                         # the delegate also delegated, so continue looping
                         path['user_ids'] += [delegate.id]
+                        current_edge = edges.filter(voter=delegate)[0]
                     else:
                         # broken path! we cannot continue
                         path['is_broken_loop'] = True

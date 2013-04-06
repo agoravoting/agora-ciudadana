@@ -7,6 +7,7 @@ http://www.djangosnippets.org/snippets/377/
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
+from django.utils.datastructures import DictWrapper
 from django.core import mail as django_mail
 from django.core.mail import (EmailMultiAlternatives, EmailMessage, send_mail,
     send_mass_mail, get_connection)
@@ -22,6 +23,8 @@ from django.shortcuts import _get_queryset
 
 import datetime
 import pygeoip
+
+from tastypie.fields import ApiField
 
 from guardian.core import ObjectPermissionChecker
 from guardian.models import UserObjectPermission, GroupObjectPermission
@@ -42,6 +45,17 @@ class FormRequestMixin(object):
 
 class RequestCreateView(FormRequestMixin, CreateView):
     pass
+
+class JSONApiField(ApiField):
+    '''
+    Json Tastypie api field.
+    '''
+    dehydrated_type = 'dict'
+    help_text = "JSON data. Ex: {'prices': [26.73, 34], 'name': 'Daniel'}"
+
+    def dehydrate(self, bundle):
+        return getattr(bundle.obj, self.attribute)
+
 
 class JSONField(models.TextField):
     """
@@ -99,6 +113,36 @@ class JSONField(models.TextField):
 
         return json.dumps(the_dict, cls=DjangoJSONEncoder)
 
+    def get_internal_type(self):
+        return 'JSONField'
+
+    def db_type(self, connection):
+        """
+        Returns the database column data type for this field, for the provided
+        connection.
+        """
+        # The default implementation of this method looks at the
+        # backend-specific DATA_TYPES dictionary, looking up the field by its
+        # "internal type".
+        #
+        # A Field class can implement the get_internal_type() method to specify
+        # which *preexisting* Django Field class it's most similar to -- i.e.,
+        # a custom field might be represented by a TEXT column type, which is
+        # the same as the TextField Django field type, which means the custom
+        # field's get_internal_type() returns 'TextField'.
+        #
+        # But the limitation of the get_internal_type() / data_types approach
+        # is that it cannot handle database column types that aren't already
+        # mapped to one of the built-in Django field types. In this case, you
+        # can implement db_type() instead of get_internal_type() to specify
+        # exactly which wacky database column type you want to use.
+        data = DictWrapper(self.__dict__, connection.ops.quote_name, "qn_")
+        real_internal_type = super(JSONField, self).get_internal_type()
+        try:
+            return (connection.creation.data_types[real_internal_type]
+                    % data)
+        except KeyError:
+            return None
 
     def value_to_string(self, obj):
         value = self._get_val_from_obj(obj)

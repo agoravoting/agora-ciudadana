@@ -19,6 +19,9 @@ from agora_site.agora_core.resources.agora import TinyAgoraResource
 from agora_site.agora_core.resources.election import TinyElectionResource
 from agora_site.agora_core.resources.user import TinyProfileResource
 
+# NOTE that GenericResourceMixin must take precedence in inheritance so that
+# we can make sure its GenericResourceMixin.api_field_from_django_field is
+# used
 class SearchResource(GenericResourceMixin, Resource):
     '''
     Resource used for general search, internally uses Haystack.
