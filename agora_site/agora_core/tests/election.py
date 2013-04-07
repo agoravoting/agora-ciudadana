@@ -476,7 +476,7 @@ class ElectionTest(RootTestCase):
             'counts':[
                 {
                     'a':'question/result/ONE_CHOICE',
-                    'winner':'foo',
+                    'winners': ['foo'],
                     'min':0,
                     'max':1,
                     'tally_type':'ONE_CHOICE',

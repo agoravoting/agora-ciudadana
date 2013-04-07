@@ -116,7 +116,7 @@ class PluralityTally(BaseTally):
                     winner = answer
 
             question['total_votes'] = total_votes
-            question['winner'] = winner['value']
+            question['winners'] = [winner['value']]
 
             for answer in question['answers']:
                 if total_votes > 0:

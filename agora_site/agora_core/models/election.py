@@ -150,7 +150,7 @@ class Election(models.Model):
         #'counts':[
             #{
                 #'a':'question/result/ONE_CHOICE',
-                #'winner':'foo',
+                #'winners': ['foo'],
                 #'min':0,
                 #'max':1,
                 #'tally_type':'ONE_CHOICE',
@@ -265,7 +265,7 @@ class Election(models.Model):
         winner = dict(value='', total_count=0.0, total_count_percentage=0.0)
 
         for answer in self.result['counts'][0]['answers']:
-            if answer['value'] == self.result['counts'][0]['winner']:
+            if answer['value'] == self.result['counts'][0]['winners'][0]:
                 winner = answer
 
         return winner
@@ -739,7 +739,7 @@ class Election(models.Model):
         # setup the initial data common to all voting system
         for question in result:
             question['a'] = "question/result/" + voting_system.get_id()
-            question['winner'] = None
+            question['winners'] = []
             question['total_votes'] = 0
 
             for answer in question['answers']:

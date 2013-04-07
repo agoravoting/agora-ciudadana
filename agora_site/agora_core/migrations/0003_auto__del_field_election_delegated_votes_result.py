@@ -113,6 +113,7 @@ class PluralityTally(object):
                 #"randomize_answer_order": false, # true by default
                 #"short_name": "President", # UNSED ATM
                 #"tally_type": "ONE_CHOICE"
+                #"winners": ["Alice"]
             #},
             #...
         #]
@@ -130,7 +131,7 @@ class PluralityTally(object):
                     winner = answer
 
             question['total_votes'] = total_votes
-            question['winner'] = winner['value']
+            question['winners'] = [winner['value']]
 
             for answer in question['answers']:
                 if total_votes > 0:
@@ -288,7 +289,7 @@ def compute_result(election, orm):
     # setup the initial data common to all voting system
     for question in result:
         question['a'] = "question/result/" + voting_system.get_id()
-        question['winner'] = None
+        question['winners'] = []
         question['tally_type'] = voting_system.get_id()
         question['total_votes'] = 0
 
@@ -381,8 +382,6 @@ def compute_result(election, orm):
         counts = result,
         delegation_counts = delegation_counts,
     )
-    election.delegated_votes_frozen_at_date = election.voters_frozen_at_date =\
-        election.result_tallied_at_date = datetime.datetime.now()
 
     # TODO: update result_hash
     election.save()
