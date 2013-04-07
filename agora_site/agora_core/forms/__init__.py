@@ -352,7 +352,7 @@ class CreateElectionForm(django_forms.ModelForm):
                 "max": 1, "min": 0,
                 "question": self.cleaned_data["question"],
                 "randomize_answer_order": True,
-                "tally_type": "simple"
+                "tally_type": "ONE_CHOICE"
             },]
         election.save()
 
@@ -490,7 +490,7 @@ class ElectionEditForm(django_forms.ModelForm):
                 "max": 1, "min": 0,
                 "question": self.cleaned_data["question"],
                 "randomize_answer_order": True,
-                "tally_type": "simple"
+                "tally_type": "ONE_CHOICE"
             },]
         election.last_modified_at_date = datetime.datetime.now()
         election.save()

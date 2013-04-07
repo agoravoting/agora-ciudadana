@@ -142,37 +142,57 @@ class Election(models.Model):
 
     # contains the actual result in JSON format
     # something like:
-    #[
-        #{
-            #u'a': u'ballot/question',
-            #u'tally_type': u'simple',
-            #u'max': 1,
-            #u'min': 0,
-            #u'question': u"What's the next big thing?",
-            #u'randomize_answer_order': True,
-            #u'answers': [
-                #{
-                    #u'a': u'ballot/answer',
-                    #u'by_delegation_count': 0,
-                    #u'by_direct_vote_count': 1,
-                    #u'url': u'',
-                    #u'value': u'Wadobo',
-                    #u'details': u''
-                #},
-                #{
-                    #u'a': u'ballot/answer',
-                    #u'by_delegation_count': 0,
-                    #u'by_direct_vote_count': 0,
-                    #u'url': u'',
-                    #u'value': u'Agora',
-                    #u'details': u''
-                #},
+    #{
+        #'a':'result',
+        #'delegation_counts':{
+            #'2':1
         #},
-        #...
-    #]
+        #'counts':[
+            #{
+                #'a':'question/result/ONE_CHOICE',
+                #'winner':'foo',
+                #'min':0,
+                #'max':1,
+                #'tally_type':'ONE_CHOICE',
+                #'question':'Do you prefer foo or bar?',
+                #'answers':[
+                    #{
+                        #'a':'answer/result/ONE_CHOICE',
+                        #'by_delegation_count':2,
+                        #'url':u'',
+                        #'total_count':3,
+                        #'by_direct_vote_count':1,
+                        #'value':'foo',
+                        #'details':u'',
+                        #'total_count_percentage':60.0
+                    #},
+                    #{
+                        #'a':'answer/result/ONE_CHOICE',
+                        #'by_delegation_count':0,
+                        #'url':u'',
+                        #'total_count':2,
+                        #'by_direct_vote_count':2,
+                        #'value':'bar',
+                        #'details':u'',
+                        #'total_count_percentage':40.0
+                    #},
+                    #{
+                        #'a':'answer/result/ONE_CHOICE',
+                        #'by_delegation_count':0,
+                        #'url':u'',
+                        #'total_count':0,
+                        #'by_direct_vote_count':0,
+                        #'value':'none',
+                        #'details':u'',
+                        #'total_count_percentage':0.0
+                    #}
+                #],
+                #'randomize_answer_order':True,
+                #'total_votes':5
+            #}
+        #]
+    #}
     result = JSONField(_('Election Result'), null=True)
-
-    delegated_votes_result = JSONField(_('Election Delegation Result'), null=True)
 
     pretty_name = models.CharField(_('Pretty Name'), max_length=140)
 
@@ -201,7 +221,7 @@ class Election(models.Model):
             #"question": "Who Should be President?",
             #"randomize_answer_order": false, # true by default
             #"short_name": "President", # UNSED ATM
-            #"tally_type": "simple" 
+            #"tally_type": "ONE_CHOICE"
         #},
         #...
     #]
@@ -238,14 +258,14 @@ class Election(models.Model):
         '''
         if not self.result:
             raise Exception('Election not tallied yet')
-        elif len(self.result) == 0 or self.result[0]['tally_type'] != 'simple':
-            raise Exception('Unknown election result type: %s' % self.result['type'])
+        elif len(self.result['counts']) == 0 or\
+            not get_voting_system_by_id(self.result['counts'][0]['tally_type']):
+            raise Exception('Unknown election result type: %s' % self.result['counts'][0]['tally_type'])
 
         winner = dict(value='', total_count=0.0, total_count_percentage=0.0)
 
-        result = self.get_result_pretty()
-        for answer in result[0]['answers']:
-            if answer['total_count'] > winner['total_count']:
+        for answer in self.result['counts'][0]['answers']:
+            if answer['value'] == self.result['counts'][0]['winner']:
                 winner = answer
 
         return winner
@@ -297,6 +317,12 @@ class Election(models.Model):
         editted anymore, false otherwise
         '''
         return self.frozen_at_date != None
+
+    def is_tallied(self):
+        '''
+        Returns true if the election has been tallied, false otherwise
+        '''
+        return self.result_tallied_at_date != None
 
     def has_perms(self, permission_name, user):
         '''
@@ -706,12 +732,20 @@ class Election(models.Model):
         voting_system = get_voting_system_by_id(self.election_type)
         tally = voting_system.create_tally(self)
 
+        import copy
         # result is in the same format as get_result_pretty(). Initialized here
-        result = self.questions
+        result = copy.deepcopy(self.questions)
+
+        # setup the initial data common to all voting system
         for question in result:
+            question['a'] = "question/result/" + voting_system.get_id()
+            question['winner'] = None
+            question['total_votes'] = 0
+
             for answer in question['answers']:
-                answer['by_direct_vote_count'] = 0
-                answer['by_delegation_count'] = 0
+                answer['a'] = "answer/result/" + voting_system.get_id()
+                answer['total_count'] = 0
+                answer['total_count_percentage'] = 0
 
         # prepare the tally
         tally.pre_tally(result)
@@ -792,106 +826,14 @@ class Election(models.Model):
         # post process the tally
         tally.post_tally(result)
 
-        # all votes counted, finish result
-        # contains the actual result in JSON format
-        # something like:
-        #{
-            #"a": "result",
-            #"counts": [
-                #[
-                    #<QUESTION_1_CANDIDATE_1_COUNT>, <QUESTION_1_CANDIDATE_2_COUNT>,
-                    #<QUESTION_1_CANDIDATE_3_COUNT>
-                #],
-                #[
-                    #<QUESTION_2_CANDIDATE_1_COUNT>, <QUESTION_2_CANDIDATE_2_COUNT>
-                #]
-            #]
-        #}
         self.result = dict(
             a= "result",
-            counts = []
+            counts = result,
+            delegation_counts = delegation_counts,
         )
-
-
-        #{
-            #"a": "result",
-            #"election_counts": [
-                #[
-                    #<QUESTION_1_CANDIDATE_1_COUNT>, <QUESTION_1_CANDIDATE_2_COUNT>,
-                    #<QUESTION_1_CANDIDATE_3_COUNT>
-                #],
-                #[
-                    #<QUESTION_2_CANDIDATE_1_COUNT>, <QUESTION_2_CANDIDATE_2_COUNT>
-                #]
-            #],
-            # "delegation_counts": {
-                #<DELEGATE_2_USERID>: <DELEGATE_1_COUNT>,
-                #<DELEGATE_2_USERID>: <DELEGATE_2_COUNT>,
-            # }
-            #
-        #}
-        self.delegated_votes_result = dict(
-            a= "result",
-            election_counts = [],
-            delegation_counts = delegation_counts
-        )
-        i = 0
-        for question in result:
-            j = 0
-            question_result = []
-            question_delegation_result = []
-            for answer in question['answers']:
-                question_result += [answer['by_direct_vote_count'] + answer['by_delegation_count']]
-                question_delegation_result += [answer['by_delegation_count']]
-            self.result['counts'] += [question_result]
-            self.delegated_votes_result['election_counts'] += [question_delegation_result]
-
-        self.result = result
         self.delegated_votes_frozen_at_date = self.voters_frozen_at_date =\
             self.result_tallied_at_date = datetime.datetime.now()
 
         # TODO: update result_hash
         self.save()
 
-    def get_result_pretty(self):
-        '''
-        Returns self.result with total_count field. Format:
-
-        #[
-            #{
-                #"a": "ballot/question",
-                #"answers": [
-                    #{
-                        #"a": "ballot/answer",
-                        #"value": "Alice",
-                        #"total_count": 33,
-                        #"by_direct_vote_count": 25,
-                        #"by_delegation_count": 8,
-                        #"url": "<http://alice.com>", # UNUSED ATM
-                        #"details": "Alice is a wonderful person who..." # UNUSED ATM
-                    #},
-                    #...
-                #],
-                #"max": 1, "min": 0,
-                #"question": "Who Should be President?",
-                #"randomize_answer_order": false, # true by default
-                #"short_name": "President", # UNSED ATM
-                #"tally_type": "simple"
-            #},
-            #...
-        #]
-        '''
-        result_pretty = self.result
-        i = 0
-        for question in result_pretty:
-            total_votes = 0
-            for answer in question['answers']:
-                answer['total_count'] = answer['by_direct_vote_count'] + answer['by_delegation_count']
-                total_votes += answer['total_count']
-            question['total_votes'] = total_votes
-            for answer in question['answers']:
-                if total_votes > 0:
-                    answer['total_count_percentage'] = (answer['total_count'] * 100.0) / total_votes
-                else:
-                    answer['total_count_percentage'] = 0
-        return result_pretty

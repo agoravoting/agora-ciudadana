@@ -468,41 +468,56 @@ class ElectionTest(RootTestCase):
 
         # check the tally
         data = self.getAndParse('election/%d/' % election_id)
-        result_should_be = [{
-            'a':'ballot/question',
-            'min':0,
-            'max':1,
-            'tally_type':'simple',
-            'question':'Do you prefer foo or bar?',
-            'answers':
-            [
+        result_should_be = {
+            'a':'result',
+            'delegation_counts':{
+                '2':1
+            },
+            'counts':[
                 {
-                    'a':'ballot/answer',
-                    'by_delegation_count':2,
-                    'url':u'',
-                    'by_direct_vote_count':1,
-                    'value':'foo',
-                    'details':u''
-                },
-                {
-                    'a':'ballot/answer',
-                    'by_delegation_count':0,
-                    'url':u'',
-                    'by_direct_vote_count':2,
-                    'value':'bar',
-                    'details':u''
-                },
-                {
-                    'a':'ballot/answer',
-                    'by_delegation_count':0,
-                    'url':u'',
-                    'by_direct_vote_count':0,
-                    'value':'none',
-                    'details':u''
+                    'a':'question/result/ONE_CHOICE',
+                    'winner':'foo',
+                    'min':0,
+                    'max':1,
+                    'tally_type':'ONE_CHOICE',
+                    'question':'Do you prefer foo or bar?',
+                    'answers':[
+                        {
+                        'a':'answer/result/ONE_CHOICE',
+                        'by_delegation_count':2,
+                        'url':u'',
+                        'total_count':3,
+                        'by_direct_vote_count':1,
+                        'value':'foo',
+                        'details':u'',
+                        'total_count_percentage':60.0
+                        },
+                        {
+                        'a':'answer/result/ONE_CHOICE',
+                        'by_delegation_count':0,
+                        'url':u'',
+                        'total_count':2,
+                        'by_direct_vote_count':2,
+                        'value':'bar',
+                        'details':u'',
+                        'total_count_percentage':40.0
+                        },
+                        {
+                        'a':'answer/result/ONE_CHOICE',
+                        'by_delegation_count':0,
+                        'url':u'',
+                        'total_count':0,
+                        'by_direct_vote_count':0,
+                        'value':'none',
+                        'details':u'',
+                        'total_count_percentage':0.0
+                        }
+                    ],
+                    'randomize_answer_order':True,
+                    'total_votes':5
                 }
-            ],
-            'randomize_answer_order':True
-        }]
+            ]
+        }
         self.assertEqual(data['result'], result_should_be)
 
 

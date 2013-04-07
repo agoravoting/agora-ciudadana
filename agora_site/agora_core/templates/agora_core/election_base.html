@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 {% load i18n l10n endless crispy_forms_tags agora_utils comments markup %}
 
@@ -303,9 +304,9 @@
 
                 {% endif%}
 
-                {% if election.result_tallied_at_date %}
+                {% if election.is_tallied %}
                     <h3>{% trans "Results" %}</h3>
-                    {% for question in election.get_result_pretty %}
+                    {% for question in election.result.counts %}
                     <div class="election-results">
                         <h4>{{ question|getitem:'question' }}</h4>
                         <ul>
