@@ -564,7 +564,8 @@ class StartElectionView(FormActionView):
             election_id=election.id,
             is_secure=self.request.is_secure(),
             site_id=Site.objects.get_current().id,
-            remote_addr=self.request.META.get('REMOTE_ADDR')
+            remote_addr=self.request.META.get('REMOTE_ADDR'),
+            user_id=self.request.user.id
         )
         start_election.apply_async(kwargs=kwargs, task_id=election.task_id(start_election))
 

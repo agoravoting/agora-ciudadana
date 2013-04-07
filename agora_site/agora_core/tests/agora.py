@@ -131,15 +131,14 @@ class AgoraTest(RootTestCase):
             code=HTTP_OK, content_type='application/json')
         delegated_vote_id = data['id']
 
-        # agora has one actions
         data = self.getAndParse('action/agora/1/')
-        self.assertEqual(len(data['objects']), 2)
+        self.assertEqual(len(data['objects']), 3)
         action0_id = data['objects'][0]['id']
         action1_id = data['objects'][1]['id']
 
         # election has two actions
         data = self.getAndParse('action/election/%d/' % election_id)
-        self.assertEqual(len(data['objects']), 2)
+        self.assertEqual(len(data['objects']), 3)
         action2_id = data['objects'][0]['id']
         action3_id = data['objects'][1]['id']
 

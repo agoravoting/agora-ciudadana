@@ -116,7 +116,8 @@ class ElectionAdminForm(ModelForm):
             election_id=election.id,
             is_secure=self.request.is_secure(),
             site_id=Site.objects.get_current().id,
-            remote_addr=self.request.META.get('REMOTE_ADDR')
+            remote_addr=self.request.META.get('REMOTE_ADDR'),
+            user_id=self.request.user.id
         )
 
         if ("from_date" in self.cleaned_data):
@@ -133,7 +134,6 @@ class ElectionAdminForm(ModelForm):
             election.voting_extended_until_date = election.voting_ends_at_date = to_date
             election.save()
             transaction.commit()
-            kwargs["user_id"] = self.request.user.id
             end_election.apply_async(kwargs=kwargs, task_id=election.task_id(end_election),
                 eta=election.voting_ends_at_date)
 
@@ -399,7 +399,8 @@ class ElectionResource(GenericResource):
             election_id=election.id,
             is_secure=request.is_secure(),
             site_id=Site.objects.get_current().id,
-            remote_addr=request.META.get('REMOTE_ADDR')
+            remote_addr=request.META.get('REMOTE_ADDR'),
+            user_id=request.user.id
         )
 
         election.last_modified_at_date = datetime.datetime.now()
