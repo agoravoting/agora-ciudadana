@@ -45,6 +45,8 @@ from userena import settings as userena_settings
 from agora_site.agora_core.models import Agora, Election, CastVote
 from agora_site.agora_core.tasks.election import (start_election, end_election,
     send_election_created_mails)
+from agora_site.agora_core.models.voting_systems.base import (
+    parse_voting_methods, get_voting_system_by_id)
 from agora_site.misc.utils import *
 
 from .comment import *
@@ -194,7 +196,7 @@ class UserSettingsForm(django_forms.ModelForm):
         """
         if 'password' in self.cleaned_data and 'password2' in self.cleaned_data and\
             self.cleaned_data['password1'] != self.cleaned_data['password2']:
-                raise forms.ValidationError(_('The two password fields didn\'t match.'))
+                raise django_forms.ValidationError(_('The two password fields didn\'t match.'))
 
         return self.cleaned_data
 
@@ -220,10 +222,36 @@ class AgoraAdminForm(django_forms.ModelForm):
             'comments_policy': django_forms.RadioSelect
         }
 
+def election_questions_validator(questions):
+    '''
+    Validates a list of questions checking the voting method used, etc
+    '''
+    error = django_forms.ValidationError(_('Invalid questions format'))
+
+    # only one question allowed, for now
+    if not isinstance(questions, list) or len(questions) != 1:
+        raise error
+
+    for question in questions:
+        # check type
+        if not isinstance(question, dict):
+            raise error
+
+        # check it contains the valid elements
+        if not list_contains_all(['a', 'answers', 'max', 'min', 'question',
+            'randomize_answer_order', 'tally_type'], question.keys()):
+            raise error
+
+        # let the voting system check the rest
+        voting_system = get_voting_system_by_id(question['tally_type'])
+        if not voting_system:
+            raise error
+        voting_system.validate_question(question)
+
+
 class CreateElectionForm(django_forms.ModelForm):
-    question = django_forms.CharField(_("Question"), required=True)
-    answers = django_forms.CharField(_("Answers"), required=True,
-        help_text=_("Each choice on separate lines"), widget=django_forms.Textarea)
+    questions = JSONFormField(label=_('Questions'), required=True,
+        validators=[election_questions_validator])
 
     from_date = django_forms.DateTimeField(label=_('Start voting'), required=False,
         help_text=_("Not required, you can choose to start the voting period manually"),
@@ -234,10 +262,9 @@ class CreateElectionForm(django_forms.ModelForm):
         widget=django_forms.TextInput(attrs={'class': 'datetimepicker'}),
         input_formats=('%m/%d/%Y %H:%M', '%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S'))
 
-    def __init__(self, request, agora, from_api=False, *args, **kwargs):
+    def __init__(self, request, agora, *args, **kwargs):
         super(CreateElectionForm, self).__init__(**kwargs)
         self.data = kwargs.get('data', dict())
-        self.from_api = from_api
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
         self.request = request
@@ -254,7 +281,7 @@ class CreateElectionForm(django_forms.ModelForm):
         Returns the parameters that will be sent to the constructor
         '''
         agora = get_object_or_404(Agora, pk=kwargs["agoraid"])
-        return dict(request=request, agora=agora, data=data, from_api=True)
+        return dict(request=request, agora=agora, data=data)
 
     def clean(self, *args, **kwargs):
         cleaned_data = super(CreateElectionForm, self).clean()
@@ -281,15 +308,10 @@ class CreateElectionForm(django_forms.ModelForm):
     def clean_answers(self, *args, **kwargs):
         answers = self.cleaned_data["answers"]
 
-        if not self.from_api:
-            answers = [answer_value.strip()
-                for answer_value in self.cleaned_data["answers"].splitlines()
-                    if answer_value.strip()]
-        else:
-            answers = self.data["answers"]
-            for answer in answers:
-                if type(answer) != str and type(answer) != unicode:
-                    raise django_forms.ValidationError(_('Invalid answers, not a string'))
+        answers = self.data["answers"]
+        for answer in answers:
+            if type(answer) != str and type(answer) != unicode:
+                raise django_forms.ValidationError(_('Invalid answers, not a string'))
 
         if len(answers) < 2:
             raise django_forms.ValidationError(_('You need to provide at least two '
@@ -335,25 +357,7 @@ class CreateElectionForm(django_forms.ModelForm):
         else:
             election.is_approved = False
 
-        # Questions/answers have a special formatting
-        answers = []
-        for answer in self.cleaned_data["answers"]:
-            if answer:
-                answers += [{
-                    "a": "ballot/answer",
-                    "value": answer,
-                    "url": "",
-                    "details": "",
-                }]
-
-        election.questions = [{
-                "a": "ballot/question",
-                "answers": answers,
-                "max": 1, "min": 0,
-                "question": self.cleaned_data["question"],
-                "randomize_answer_order": True,
-                "tally_type": "ONE_CHOICE"
-            },]
+        election.questions = self.cleaned_data['questions']
         election.save()
 
         # create related action
@@ -417,11 +421,8 @@ class CreateElectionForm(django_forms.ModelForm):
         model = Election
         fields = ('pretty_name', 'description', 'is_vote_secret')
 
-
 class ElectionEditForm(django_forms.ModelForm):
-    question = django_forms.CharField(_("Question"), required=True)
-    answers = django_forms.CharField(_("Answers"), required=True,
-        help_text=_("Each choice on separate lines"), widget=django_forms.Textarea)
+    questions = JSONFormField(required=True, validators=[election_questions_validator])
 
     from_date = django_forms.DateTimeField(label=_('Start voting'), required=False,
         help_text=_("Not required, you can choose to start the voting period manually"),
@@ -438,9 +439,6 @@ class ElectionEditForm(django_forms.ModelForm):
         self.request = request
 
         instance = kwargs['instance']
-        self.fields['question'].initial = instance.questions[0]['question']
-        self.fields['answers'].initial = "\n".join(answer['value']
-            for answer in instance.questions[0]['answers'])
         if instance.voting_starts_at_date and instance.voting_ends_at_date:
             self.fields['from_date'].initial = instance.voting_starts_at_date.strftime('%m/%d/%Y %H:%M')
             self.fields['to_date'].initial = instance.voting_ends_at_date.strftime('%m/%d/%Y %H:%M')
@@ -473,26 +471,11 @@ class ElectionEditForm(django_forms.ModelForm):
     def save(self, *args, **kwargs):
         election = super(ElectionEditForm, self).save(*args, **kwargs)
 
-        # Questions/answers have a special formatting
-        answers = []
-        for answer_value in self.cleaned_data["answers"].splitlines():
-            if answer_value.strip():
-                answers += [{
-                    "a": "ballot/answer",
-                    "value": answer_value.strip(),
-                    "url": "",
-                    "details": "",
-                }]
-
-        election.questions = [{
-                "a": "ballot/question",
-                "answers": answers,
-                "max": 1, "min": 0,
-                "question": self.cleaned_data["question"],
-                "randomize_answer_order": True,
-                "tally_type": "ONE_CHOICE"
-            },]
+        election.questions = self.cleaned_data['questions']
         election.last_modified_at_date = datetime.datetime.now()
+
+        # save so that in case a task is triggered, it has the correct questions
+        # and last modified date
         election.save()
 
         if ("from_date" in self.cleaned_data) and ("to_date" in self.cleaned_data):
@@ -573,7 +556,7 @@ class VoteForm(django_forms.ModelForm):
         cleaned_data = super(VoteForm, self).clean()
 
         if not self.election.ballot_is_open():
-            raise forms.ValidationError("Sorry, you cannot vote in this election.")
+            raise django_forms.ValidationError("Sorry, you cannot vote in this election.")
 
         return cleaned_data
 

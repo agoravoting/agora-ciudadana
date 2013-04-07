@@ -9,9 +9,42 @@ from common import (HTTP_OK,
 from common import RootTestCase
 from django.contrib.markup.templatetags.markup import textile
 from datetime import datetime, timedelta
-
+import copy
 
 class ElectionTest(RootTestCase):
+    base_election_data = {
+        'action': "create_election",
+        'pretty_name': "foo bar",
+        'description': "foo bar foo bar",
+        'questions': [
+            {
+                'a': 'ballot/question',
+                'tally_type': 'ONE_CHOICE',
+                'max': 1,
+                'min': 0,
+                'question': 'Do you prefer foo or bar?',
+                'randomize_answer_order': True,
+                'answers': [
+                    {
+                        'a': 'ballot/answer',
+                        'url': '',
+                        'details': '',
+                        'value': 'fo\"o'
+                    },
+                    {
+                        'a': 'ballot/answer',
+                        'url': '',
+                        'details': '',
+                        'value': 'bar'
+                    }
+                ]
+            }
+        ],
+        'is_vote_secret': True,
+        'from_date': '',
+        'to_date': '',
+    }
+
     def test_election(self):
         # all
         data = self.getAndParse('election/')
@@ -89,20 +122,10 @@ class ElectionTest(RootTestCase):
     def test_change_election(self):
         self.login('user1', '123')
         # user1 creates an election, but remains in requested status
-        orig_data = {
-            'action': "create_election",
-            'pretty_name': "foo bar",
-            'description': "foo bar foo bar",
-            'question': "Do you prefer foo or bar?",
-            'answers': ["fo\"o", "bar"],
-            'is_vote_secret': True,
-            'from_date': '',
-            'to_date': '',
-        }
-        data = self.postAndParse('agora/1/action/', data=orig_data,
+        data = self.postAndParse('agora/1/action/', data=self.base_election_data,
             code=HTTP_OK, content_type='application/json')
         election_id = data['id']
-        self.assertEquals(data['pretty_name'], orig_data['pretty_name'])
+        self.assertEquals(data['pretty_name'], self.base_election_data['pretty_name'])
 
         # change pretty_name
         orig_data = {
@@ -114,15 +137,23 @@ class ElectionTest(RootTestCase):
 
         # change answers
         orig_data = {
-            'answers': ["uno", "dos", "o tres"]
+            'questions': copy.deepcopy(self.base_election_data['questions'])
         }
+        orig_data['questions'][0]['answers'][0]['value'] = "one"
+        orig_data['questions'][0]['answers'][1]['value'] = "two"
+        orig_data['questions'][0]['answers'].append({
+            'a': 'ballot/answer',
+            'url': '',
+            'details': '',
+            'value': 'three'
+        })
         data = self.putAndParse('election/%d/' % election_id, data=orig_data,
             content_type='application/json')
 
         # change answers with one answer > fail
-        orig_data = {
-            'answers': ["uno"]
-        }
+        orig_data['questions'][0]['answers'] = [
+            orig_data['questions'][0]['answers'][0]
+        ]
         data = self.putAndParse('election/%d/' % election_id, data=orig_data,
             code=HTTP_BAD_REQUEST, content_type='application/json')
 
@@ -138,17 +169,7 @@ class ElectionTest(RootTestCase):
         self.login('user1', '123')
         # user1 creates an election, but remains in requested status as it's not
         # an admin
-        orig_data = {
-            'action': "create_election",
-            'pretty_name': "foo bar",
-            'description': "foo bar foo bar",
-            'question': "Do you prefer foo or bar?",
-            'answers': ["fo\"o", "bar"],
-            'is_vote_secret': True,
-            'from_date': '',
-            'to_date': '',
-        }
-        data = self.postAndParse('agora/1/action/', data=orig_data,
+        data = self.postAndParse('agora/1/action/', data=self.base_election_data,
             code=HTTP_OK, content_type='application/json')
 
         self.assertTrue('is_approved' in data)
@@ -195,16 +216,9 @@ class ElectionTest(RootTestCase):
         date_format = "%Y-%m-%dT%H:%M:%S"
         now = (datetime.now() + timedelta(seconds=1)).strftime(date_format)
         later = (datetime.now() + timedelta(hours=2)).strftime(date_format)
-        orig_data = {
-            'action': "create_election",
-            'pretty_name': "foo bar",
-            'description': "foo bar foo bar",
-            'question': "Do you prefer foo or bar?",
-            'answers': ["fo\"o", "bar"],
-            'is_vote_secret': True,
-            'from_date': now,
-            'to_date': later,
-        }
+        orig_data = copy.deepcopy(self.base_election_data)
+        orig_data['from_date'] = now
+        orig_data['to_date'] = later
         data = self.postAndParse('agora/1/action/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
 
@@ -238,17 +252,7 @@ class ElectionTest(RootTestCase):
     def test_start_election(self):
         # create election as admin
         self.login('david', 'david')
-        orig_data = {
-            'action': "create_election",
-            'pretty_name': "foo bar",
-            'description': "foo bar foo bar",
-            'question': "Do you prefer foo or bar?",
-            'answers': ["fo\"o", "bar"],
-            'is_vote_secret': True,
-            'from_date': '',
-            'to_date': '',
-        }
-        data = self.postAndParse('agora/1/action/', data=orig_data,
+        data = self.postAndParse('agora/1/action/', data=self.base_election_data,
             code=HTTP_OK, content_type='application/json')
 
         self.assertTrue('is_approved' in data)
@@ -308,17 +312,7 @@ class ElectionTest(RootTestCase):
     def test_stop_election(self):
         # create election as admin
         self.login('david', 'david')
-        orig_data = {
-            'action': "create_election",
-            'pretty_name': "foo bar",
-            'description': "foo bar foo bar",
-            'question': "Do you prefer foo or bar?",
-            'answers': ["fo\"o", "bar"],
-            'is_vote_secret': True,
-            'from_date': '',
-            'to_date': '',
-        }
-        data = self.postAndParse('agora/1/action/', data=orig_data,
+        data = self.postAndParse('agora/1/action/', data=self.base_election_data,
             code=HTTP_OK, content_type='application/json')
         election_id = data['id']
 
@@ -375,16 +369,15 @@ class ElectionTest(RootTestCase):
     def test_tally_election(self):
         # create election as admin
         self.login('david', 'david')
-        orig_data = {
-            'action': "create_election",
-            'pretty_name': "foo bar",
-            'description': "foo bar foo bar",
-            'question': "Do you prefer foo or bar?",
-            'answers': ["foo", "bar", "none"],
-            'is_vote_secret': True,
-            'from_date': '',
-            'to_date': '',
-        }
+        orig_data = copy.deepcopy(self.base_election_data)
+        orig_data['questions'][0]['answers'][0]['value'] = "foo"
+        orig_data['questions'][0]['answers'][1]['value'] = "bar"
+        orig_data['questions'][0]['answers'].append({
+            'a': 'ballot/answer',
+            'url': '',
+            'details': '',
+            'value': 'none'
+        })
         data = self.postAndParse('agora/1/action/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
         election_id = data['id']
@@ -525,17 +518,7 @@ class ElectionTest(RootTestCase):
     def test_archive_election(self):
         # create election as admin
         self.login('david', 'david')
-        orig_data = {
-            'action': "create_election",
-            'pretty_name': "foo bar",
-            'description': "foo bar foo bar",
-            'question': "Do you prefer foo or bar?",
-            'answers': ["fo\"o", "bar"],
-            'is_vote_secret': True,
-            'from_date': '',
-            'to_date': '',
-        }
-        data = self.postAndParse('agora/1/action/', data=orig_data,
+        data = self.postAndParse('agora/1/action/', data=self.base_election_data,
             code=HTTP_OK, content_type='application/json')
         election_id = data['id']
 
@@ -563,17 +546,7 @@ class ElectionTest(RootTestCase):
     def test_vote_on_election(self):
         # create election as admin
         self.login('david', 'david')
-        orig_data = {
-            'action': "create_election",
-            'pretty_name': "foo bar",
-            'description': "foo bar foo bar",
-            'question': "Do you prefer foo or bar?",
-            'answers': ["fo\"o", "bar"],
-            'is_vote_secret': True,
-            'from_date': '',
-            'to_date': '',
-        }
-        data = self.postAndParse('agora/1/action/', data=orig_data,
+        data = self.postAndParse('agora/1/action/', data=self.base_election_data,
             code=HTTP_OK, content_type='application/json')
         election_id = data['id']
 
@@ -706,17 +679,7 @@ class ElectionTest(RootTestCase):
     def test_cancel_vote(self):
         # create election as admin
         self.login('david', 'david')
-        orig_data = {
-            'action': "create_election",
-            'pretty_name': "foo bar",
-            'description': "foo bar foo bar",
-            'question': "Do you prefer foo or bar?",
-            'answers': ["fo\"o", "bar"],
-            'is_vote_secret': True,
-            'from_date': '',
-            'to_date': '',
-        }
-        data = self.postAndParse('agora/1/action/', data=orig_data,
+        data = self.postAndParse('agora/1/action/', data=self.base_election_data,
             code=HTTP_OK, content_type='application/json')
         election_id = data['id']
 

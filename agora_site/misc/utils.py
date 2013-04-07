@@ -20,10 +20,13 @@ from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.shortcuts import _get_queryset
+from django.forms.fields import Field
+from django.forms.util import ValidationError
 
 import datetime
 import pygeoip
 
+from jsonfield import JSONField as JSONField2
 from tastypie.fields import ApiField
 
 from guardian.core import ObjectPermissionChecker
@@ -55,6 +58,22 @@ class JSONApiField(ApiField):
 
     def dehydrate(self, bundle):
         return getattr(bundle.obj, self.attribute)
+
+
+class JSONFormField(Field):
+    def clean(self, value):
+
+        if not value and not self.required:
+            return None
+
+        value = super(JSONFormField, self).clean(value)
+
+        if isinstance(value, basestring):
+            try:
+                json.loads(value)
+            except ValueError:
+                raise ValidationError(_("Enter valid JSON"))
+        return value
 
 
 class JSONField(models.TextField):
@@ -237,6 +256,14 @@ def get_users_with_perm(obj, perm_codename):
         userobjectpermission__permission__content_type=ctype,)
     return User.objects.filter(qset).distinct()
 
+def list_contains_all(l1, l2):
+    '''
+    return True if l2 contains all the elements in l1, False otherwise
+    '''
+    for el in l1:
+        if el not in l2:
+            return False
+    return True
 
 from functools import partial
 from tastypie import fields

@@ -69,6 +69,14 @@ class BaseVotingSystem(object):
         '''
         pass
 
+    @staticmethod
+    def validate_question(question):
+        '''
+        Validates the value of a given question in an election. Raises a
+        django_forms.ValidationError exception if validation fails
+        '''
+        pass
+
 class BaseTally(object):
     '''
     Class oser to tally an election

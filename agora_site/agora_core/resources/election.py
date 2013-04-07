@@ -5,9 +5,10 @@ from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.agora_core.resources.user import UserResource
 from agora_site.agora_core.resources.agora import AgoraResource, TinyAgoraResource
 from agora_site.agora_core.resources.castvote import CastVoteResource
-from agora_site.agora_core.forms import PostCommentForm
+from agora_site.agora_core.forms import PostCommentForm, election_questions_validator
 from agora_site.agora_core.forms.election import VoteForm as ElectionVoteForm
-from agora_site.misc.utils import geolocate_ip, get_base_email_context
+from agora_site.misc.utils import (geolocate_ip, get_base_email_context,
+    JSONFormField)
 from agora_site.misc.decorators import permission_required
 
 from tastypie import fields, http
@@ -66,7 +67,8 @@ class ElectionAdminForm(ModelForm):
     '''
     Form used to validate election administration details.
     '''
-    answers = django_forms.CharField(_("Answers"), required=False)
+    questions = JSONFormField(label=_('Questions'), required=True,
+        validators=[election_questions_validator])
     from_date = django_forms.DateTimeField(label=_('Start voting'), required=False,
         input_formats=('%Y-%m-%dT%H:%M:%S',))
     to_date = django_forms.DateTimeField(label=_('End voting'), required=False,
@@ -102,35 +104,11 @@ class ElectionAdminForm(ModelForm):
 
         return cleaned_data
 
-    def clean_answers(self, *args, **kwargs):
-        if "answers" not in self.cleaned_data or not self.cleaned_data['answers']:
-            return None
-
-        answers = self.data["answers"]
-        for answer in answers:
-            if type(answer) != str and type(answer) != unicode:
-                raise django_forms.ValidationError(_('Invalid answers, not a string'))
-
-        if len(answers) < 2:
-            raise django_forms.ValidationError(_('You need to provide at least two '
-                'possible answers'))
-        return answers
-
     def save(self, *args, **kwargs):
         election = super(ElectionAdminForm, self).save(*args, **kwargs)
 
         # Questions/answers have a special formatting
-        if "answers" in self.cleaned_data and self.cleaned_data['answers']:
-            answers = []
-            for answer_value in self.cleaned_data["answers"]:
-                if answer_value.strip():
-                    answers += [{
-                        "a": "ballot/answer",
-                        "value": answer_value.strip(),
-                        "url": "",
-                        "details": "",
-                    }]
-            election.questions[0]["answers"] = answers
+        election.questions = self.cleaned_data['questions']
         election.last_modified_at_date = datetime.datetime.now()
         election.save()
 

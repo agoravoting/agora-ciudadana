@@ -16,6 +16,7 @@
 
 from agora_site.agora_core.models import Agora, Election, CastVote
 from agora_site.agora_core.tasks.election import (start_election, end_election)
+from agora_site.agora_core.models.voting_systems.base import get_voting_system_by_id
 from agora_site.misc.utils import *
 
 from crispy_forms.helper import FormHelper
@@ -62,12 +63,9 @@ class VoteForm(django_forms.ModelForm):
 
         i = 0
         for question in election.questions:
-            answers = [(answer['value'], answer['value'])
-                for answer in question['answers']]
-            random.shuffle(answers)
-
-            self.fields.insert(0, 'question%d' % i, django_forms.ChoiceField(
-                label=question['question'], choices=answers, required=True))
+            voting_system = get_voting_system_by_id(question['tally_type'])
+            field = voting_system.get_question_field(election, question)
+            self.fields.insert(0, 'question%d' % i, field)
             i += 1
 
     @staticmethod
@@ -126,10 +124,7 @@ class VoteForm(django_forms.ModelForm):
         }
         i = 0
         for question in self.election.questions:
-            data["answers"] += [{
-                "a": "plaintext-answer",
-                "choices": [self.cleaned_data['question%d' % i]],
-            }]
+            data["answers"] += [self.cleaned_data['question%d' % i]]
             i += 1
 
         # fill the vote

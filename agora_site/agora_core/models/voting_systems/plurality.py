@@ -4,6 +4,7 @@ from django import forms as django_forms
 from django.utils.translation import ugettext_lazy as _
 
 from .base import BaseVotingSystem, BaseTally
+from agora_site.misc.utils import *
 
 class Plurality(BaseVotingSystem):
     '''
@@ -20,7 +21,7 @@ class Plurality(BaseVotingSystem):
 
     @staticmethod
     def get_description():
-        return _('Simple one choice result type of election')
+        return _('Choose one option among many - Technical name: Plurality voting system')
 
     @staticmethod
     def create_tally(election):
@@ -38,9 +39,71 @@ class Plurality(BaseVotingSystem):
             for answer in question['answers']]
         random.shuffle(answers)
 
-        return django_forms.ChoiceField(label=question, choices=answers,
-            required=True)
+        return PluralityField(label=question['question'],
+            choices=answers, required=True, election=election)
 
+    @staticmethod
+    def validate_question(question):
+        '''
+        Validates the value of a given question in an election
+        '''
+        error = django_forms.ValidationError(_('Invalid questions format'))
+
+        if question['a'] != 'ballot/question' or\
+            not isinstance(question['min'], int) or question['min'] < 0 or\
+            question['min'] > 1 or\
+            not isinstance(question['max'], int) or question['max'] != 1 or\
+            not isinstance(question['randomize_answer_order'], bool):
+            raise error
+
+        # check there are at least 2 possible answers
+        if not isinstance(question['answers'], list) or\
+            len(question['answers']) < 2:
+            raise error
+
+        # check each answer
+        for answer in question['answers']:
+            if not isinstance(answer, dict):
+                raise error
+
+            # check it contains the valid elements
+            if not list_contains_all(['a', 'value', 'url', 'details'],
+                answer.keys()):
+                raise error
+
+            if answer['a'] != 'ballot/answer' or\
+                not (
+                    isinstance(answer['value'], unicode) or\
+                    isinstance(answer['value'], str)
+                ) or len(answer['value']) < 1:
+                raise error
+
+
+class PluralityField(django_forms.ChoiceField):
+    '''
+    A field that returns a valid answer text
+    '''
+    election = None
+
+    def __init__(self, *args, **kwargs):
+        if 'election' in kwargs:
+            self.election = kwargs['election']
+        del kwargs['election']
+        return super(PluralityField, self).__init__(*args, **kwargs)
+
+    def clean(self, value):
+        """
+        Wraps the choice field the proper way
+        """
+        clean_value = super(PluralityField, self).clean(value)
+
+        # NOTE: in the future, when encryption support is added, this will be
+        # handled differently, probably in a more generic way so that
+        # PluralityField doesn't know anything about plaintext or encryption.
+        return {
+            "a": "plaintext-answer",
+            "choices": [clean_value],
+        }
 
 class PluralityTally(BaseTally):
     '''
