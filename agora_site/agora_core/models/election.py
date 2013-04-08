@@ -609,7 +609,6 @@ class Election(models.Model):
         '''
         Computes the result of the election
         '''
-
         from agora_site.agora_core.models import CastVote
 
         # maximum delegation depth, so that we don't enter in near-infinite loops
@@ -831,6 +830,11 @@ class Election(models.Model):
             counts = result,
             delegation_counts = delegation_counts,
         )
+
+        tally_log = tally.get_log()
+        if tally_log:
+            self.extra_data['tally_log'] = tally_log
+
         self.delegated_votes_frozen_at_date = self.voters_frozen_at_date =\
             self.result_tallied_at_date = datetime.datetime.now()
 

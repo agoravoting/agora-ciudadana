@@ -71,6 +71,12 @@ class Plurality(BaseVotingSystem):
                 answer.keys()):
                 raise error
 
+            for el in ['a', 'value', 'url', 'details']:
+                if not (isinstance(answer[el], unicode) or\
+                    isinstance(answer[el], str)) or\
+                    len(answer[el]) > 500:
+                    raise error
+
             if answer['a'] != 'ballot/answer' or\
                 not (
                     isinstance(answer['value'], unicode) or\
@@ -82,6 +88,7 @@ class Plurality(BaseVotingSystem):
 class PluralityField(django_forms.ChoiceField):
     '''
     A field that returns a valid answer text
+    # TODO: check the vote options
     '''
     election = None
 
@@ -107,7 +114,7 @@ class PluralityField(django_forms.ChoiceField):
 
 class PluralityTally(BaseTally):
     '''
-    Class oser to tally an election
+    Class to tally an election
     '''
 
     def pre_tally(self, result):

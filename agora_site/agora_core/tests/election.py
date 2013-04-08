@@ -769,3 +769,173 @@ class ElectionTest(RootTestCase):
         orig_data = dict(action='cancel_vote')
         data = self.post('election/%d/action/' % election_id, data=orig_data,
             code=HTTP_FORBIDDEN, content_type='application/json')
+
+    def test_wright_stv(self):
+        election_data = {
+            'action': "create_election",
+            'pretty_name': "foo bar",
+            'description': "foo bar foo bar",
+            'questions': [
+                {
+                    'a': 'ballot/question',
+                    'tally_type': 'WRIGHT-STV',
+                    'max': 1,
+                    'min': 0,
+                    'question': 'Who should be the next president?',
+                    'randomize_answer_order': True,
+                    'num_seats': 3,
+                    'answers': [
+                        {
+                            'a': 'ballot/answer',
+                            'url': '',
+                            'details': '',
+                            'value': 'Florentino'
+                        },
+                        {
+                            'a': 'ballot/answer',
+                            'url': '',
+                            'details': '',
+                            'value': 'Jack'
+                        },
+                        {
+                            'a': 'ballot/answer',
+                            'url': '',
+                            'details': '',
+                            'value': 'Marie'
+                        }
+                    ]
+                }
+            ],
+            'is_vote_secret': True,
+            'from_date': '',
+            'to_date': '',
+        }
+
+        # create election as admin
+        self.login('david', 'david')
+        data = self.postAndParse('agora/1/action/', data=election_data,
+            code=HTTP_OK, content_type='application/json')
+        election_id = data['id']
+
+        # start the election
+        orig_data = dict(action='start')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # vote
+        def vote(usernames, orig_data):
+            for username in usernames:
+                self.login(username, '123')
+                # join
+                join_data = {'action': "join"}
+                data = self.post('agora/1/action/', data=join_data,
+                    code=HTTP_OK, content_type='application/json')
+                # vote
+                data = self.post('election/%d/action/' % election_id,
+                    data=orig_data, code=HTTP_OK,
+                    content_type='application/json')
+
+        vote1_data = {
+            'is_vote_secret': False,
+            'question0': ["Florentino", "Jack", "Marie"],
+            'action': 'vote'
+        }
+        vote2_data = {
+            'is_vote_secret': False,
+            'question0': ["Jack", "Marie"],
+            'action': 'vote'
+        }
+        vote(['user1', 'user2', 'user3'], vote1_data)
+        #vote(['user4', 'user5'], vote2_data)
+
+        # count the votes of the empty election
+        self.login('david', 'david')
+        orig_data = dict(action='stop')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        data = self.getAndParse('election/%d/' % election_id)
+        result_should_be = {
+            'a':'result',
+            'delegation_counts':{
+
+            },
+            'counts':[
+                {
+                    'a':'question/result/WRIGHT-STV',
+                    'min':0,
+                    'max':1,
+                    'tally_type':'WRIGHT-STV',
+                    'question':'Who should be the next president?',
+                    'answers':[
+                        {
+                            'a':'answer/result/WRIGHT-STV',
+                            'url':u'',
+                            'total_count':3,
+                            'value':'Florentino',
+                            'elected':True,
+                            'details':u'',
+                            'seat_number':2,
+                            'total_count_percentage':3/7.0
+                        },
+                        {
+                            'a':'answer/result/WRIGHT-STV',
+                            'url':u'',
+                            'total_count':4.0,
+                            'value':'Jack',
+                            'elected':True,
+                            'details':u'',
+                            'seat_number':1,
+                            'total_count_percentage':4/7.0
+                        },
+                        {
+                            'a':'answer/result/WRIGHT-STV',
+                            'url':u'',
+                            'total_count':0,
+                            'value':'Marie',
+                            'elected':False,
+                            'details':u'',
+                            'seat_number':0,
+                            'total_count_percentage':0.0
+                        }
+                    ],
+                    'winners':[
+
+                    ],
+                    'num_seats':3,
+                    'randomize_answer_order':True,
+                    'total_votes':0
+                }
+            ]
+            }
+        self.assertEqual(data['result'], result_should_be)
+
+        tally_log = [
+            {
+                'exhausted':{
+                    'votes':0,
+                    'transferred':1.0
+                },
+                'quota':1,
+                'answers':{
+                    'Marie':{
+                        'status':'contesting',
+                        'received':0,
+                        'votes':0,
+                        'transferred':0
+                    },
+                    'Jack':{
+                        'status':'elected',
+                        'received':2.0,
+                        'votes':1,
+                        'transferred':1.0
+                    },
+                    'Florentino':{
+                        'status':'elected',
+                        'received':0,
+                        'votes':1,
+                        'transferred':2
+                    }
+                }
+            }
+        ]
+        self.assertEqual(data['extra_data']['tally_log'], tally_log)

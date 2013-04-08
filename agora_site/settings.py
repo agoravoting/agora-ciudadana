@@ -365,6 +365,7 @@ AGORA_CREATION_PERMISSIONS="any-user"
 # Active voting methods in this deployment
 VOTING_METHODS = (
     'agora_site.agora_core.models.voting_systems.plurality.Plurality',
+    'agora_site.agora_core.models.voting_systems.wright_stv.WrightSTV',
 )
 
 try:

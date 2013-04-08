@@ -84,7 +84,7 @@ class BaseTally(object):
     election = None
 
     def __init__(self, election):
-        self.election
+        self.election = election
 
     def pre_tally(self, result):
         '''
@@ -103,3 +103,9 @@ class BaseTally(object):
         Once all votes have been added, this function is called once
         '''
         pass
+
+    def get_log(self):
+        '''
+        Returns the tally log. Called after post_tally()
+        '''
+        return None

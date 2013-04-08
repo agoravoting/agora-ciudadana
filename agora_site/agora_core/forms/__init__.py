@@ -305,19 +305,6 @@ class CreateElectionForm(django_forms.ModelForm):
 
         return cleaned_data
 
-    def clean_answers(self, *args, **kwargs):
-        answers = self.cleaned_data["answers"]
-
-        answers = self.data["answers"]
-        for answer in answers:
-            if type(answer) != str and type(answer) != unicode:
-                raise django_forms.ValidationError(_('Invalid answers, not a string'))
-
-        if len(answers) < 2:
-            raise django_forms.ValidationError(_('You need to provide at least two '
-                'possible answers'))
-        return answers
-
     def bundle_obj(self, obj, request):
         '''
         Bundles the object for the api
@@ -339,7 +326,8 @@ class CreateElectionForm(django_forms.ModelForm):
         election.url = self.request.build_absolute_uri(reverse('election-view',
             kwargs=dict(username=election.agora.creator.username, agoraname=election.agora.name,
                 electionname=election.name)))
-        election.election_type = Agora.ELECTION_TYPES[0][0] # ONE CHOICE
+        election.questions = self.cleaned_data['questions']
+        election.election_type = election.questions[0]['tally_type']
         election.comments_policy = self.agora.comments_policy
 
         if ("from_date" in self.cleaned_data) and ("to_date" in self.cleaned_data):
@@ -357,7 +345,6 @@ class CreateElectionForm(django_forms.ModelForm):
         else:
             election.is_approved = False
 
-        election.questions = self.cleaned_data['questions']
         election.save()
 
         # create related action
