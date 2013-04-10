@@ -80,15 +80,6 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
-# Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/home/media/media.lawrence.com/"
-#MEDIA_ROOT = ''
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
-#MEDIA_URL = '/media/'
-
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '_ntqq^5)ii^vd2o6cghis-@h8dy*4)-#()8q=yw*$!#^(8+(fd'
 
@@ -135,6 +126,14 @@ TEMPLATE_DIRS = (
 )
 
 
+# Absolute filesystem path to the directory that will hold user-uploaded files.
+# Example: "/home/media/media.lawrence.com/"
+MEDIA_ROOT = os.path.join(ROOT_PATH, 'media')
+
+# URL that handles the media served from MEDIA_ROOT. Make sure to use a
+# trailing slash if there is a path component (optional in other cases).
+# Examples: "http://media.lawrence.com", "http://example.com/media/"
+MEDIA_URL = '/media/'
 
 LOCALE_PATHS = (
     os.path.join(ROOT_PATH, 'locale'),
@@ -365,7 +364,7 @@ AGORA_CREATION_PERMISSIONS="any-user"
 # Active voting methods in this deployment
 VOTING_METHODS = (
     'agora_site.agora_core.models.voting_systems.plurality.Plurality',
-    'agora_site.agora_core.models.voting_systems.wright_stv.WrightSTV',
+    'agora_site.agora_core.models.voting_systems.meek_stv.MeekSTV',
 )
 
 try:

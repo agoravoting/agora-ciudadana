@@ -24,3 +24,4 @@ sphinx
 git+https://github.com/edulix/django-jsgettext.git
 sphinxcontrib-httpdomain
 jsonfield
+git+https://github.com/OpenTechStrategies/openstv.git

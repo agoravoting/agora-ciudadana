@@ -5,6 +5,7 @@ custom_settings.py
 *.kdev4*
 *.mo
 *.sw?
+*.blt
 agora_site/whoosh_index/*
 celerybeat-schedule
 djcelery.schedulers.DatabaseScheduler

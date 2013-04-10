@@ -770,7 +770,7 @@ class ElectionTest(RootTestCase):
         data = self.post('election/%d/action/' % election_id, data=orig_data,
             code=HTTP_FORBIDDEN, content_type='application/json')
 
-    def test_wright_stv(self):
+    def test_meek_stv(self):
         election_data = {
             'action': "create_election",
             'pretty_name': "foo bar",
@@ -778,12 +778,12 @@ class ElectionTest(RootTestCase):
             'questions': [
                 {
                     'a': 'ballot/question',
-                    'tally_type': 'WRIGHT-STV',
+                    'tally_type': 'MEEK-STV',
                     'max': 1,
                     'min': 0,
                     'question': 'Who should be the next president?',
                     'randomize_answer_order': True,
-                    'num_seats': 3,
+                    'num_seats': 2,
                     'answers': [
                         {
                             'a': 'ballot/answer',
@@ -846,7 +846,7 @@ class ElectionTest(RootTestCase):
             'action': 'vote'
         }
         vote(['user1', 'user2', 'user3'], vote1_data)
-        #vote(['user4', 'user5'], vote2_data)
+        vote(['user4', 'user5'], vote2_data)
 
         # count the votes of the empty election
         self.login('david', 'david')
@@ -854,88 +854,99 @@ class ElectionTest(RootTestCase):
         data = self.post('election/%d/action/' % election_id, data=orig_data,
             code=HTTP_OK, content_type='application/json')
         data = self.getAndParse('election/%d/' % election_id)
-        result_should_be = {
+        results_should_be = {
             'a':'result',
             'delegation_counts':{
 
             },
             'counts':[
                 {
-                    'a':'question/result/WRIGHT-STV',
+                    'a':'question/result/MEEK-STV',
                     'min':0,
                     'max':1,
-                    'tally_type':'WRIGHT-STV',
+                    'tally_type':'MEEK-STV',
                     'question':'Who should be the next president?',
                     'answers':[
-                        {
-                            'a':'answer/result/WRIGHT-STV',
-                            'url':u'',
-                            'total_count':3,
-                            'value':'Florentino',
-                            'elected':True,
-                            'details':u'',
-                            'seat_number':2,
-                            'total_count_percentage':3/7.0
-                        },
-                        {
-                            'a':'answer/result/WRIGHT-STV',
-                            'url':u'',
-                            'total_count':4.0,
-                            'value':'Jack',
-                            'elected':True,
-                            'details':u'',
-                            'seat_number':1,
-                            'total_count_percentage':4/7.0
-                        },
-                        {
-                            'a':'answer/result/WRIGHT-STV',
-                            'url':u'',
-                            'total_count':0,
-                            'value':'Marie',
-                            'elected':False,
-                            'details':u'',
-                            'seat_number':0,
-                            'total_count_percentage':0.0
-                        }
+                    {
+                        'a':'answer/result/MEEK-STV',
+                        'url':u'',
+                        'total_count':0,
+                        'value':'Florentino',
+                        'elected':True,
+                        'details':u'',
+                        'seat_number':1,
+                        'total_count_percentage':0
+                    },
+                    {
+                        'a':'answer/result/MEEK-STV',
+                        'url':u'',
+                        'total_count':0,
+                        'value':'Jack',
+                        'elected':True,
+                        'details':u'',
+                        'seat_number':2,
+                        'total_count_percentage':0
+                    },
+                    {
+                        'a':'answer/result/MEEK-STV',
+                        'url':u'',
+                        'total_count':0,
+                        'value':'Marie',
+                        'elected':False,
+                        'details':u'',
+                        'seat_number':0,
+                        'total_count_percentage':0
+                    }
                     ],
                     'winners':[
-
+                        'Florentino',
+                        'Jack'
                     ],
-                    'num_seats':3,
+                    'num_seats':2,
                     'randomize_answer_order':True,
-                    'total_votes':0
+                    'total_votes':5
                 }
             ]
-            }
-        self.assertEqual(data['result'], result_should_be)
-
-        tally_log = [
-            {
-                'exhausted':{
-                    'votes':0,
-                    'transferred':1.0
-                },
-                'quota':1,
-                'answers':{
-                    'Marie':{
+        }
+        self.assertEqual(results_should_be, data['result'])
+        tally_log_should_be = {
+            'winners':[
+                'Florentino',
+                'Jack'
+            ],
+            'ballots_count':5,
+            'dirty_ballots_count':5,
+            'candidates':[
+                'Florentino',
+                'Jack',
+                'Marie'
+            ],
+            'iterations':[
+                {
+                'exhausted':'0.000000',
+                'round_stage':'1',
+                'candidates':[
+                    {
+                        'count':'3.000000',
+                        'status':'won',
+                        'name':'Florentino',
+                        'transfer':False
+                    },
+                    {
+                        'count':'2.000000',
+                        'status':'won',
+                        'name':'Jack',
+                        'transfer':False
+                    },
+                    {
+                        'count':'0.000000',
                         'status':'contesting',
-                        'received':0,
-                        'votes':0,
-                        'transferred':0
-                    },
-                    'Jack':{
-                        'status':'elected',
-                        'received':2.0,
-                        'votes':1,
-                        'transferred':1.0
-                    },
-                    'Florentino':{
-                        'status':'elected',
-                        'received':0,
-                        'votes':1,
-                        'transferred':2
+                        'name':'Marie',
+                        'transfer':False
                     }
+                ]
                 }
-            }
-        ]
-        self.assertEqual(data['extra_data']['tally_log'], tally_log)
+            ],
+            'num_seats':2
+        }
+        self.assertEqual(tally_log_should_be, data['extra_data']['tally_log'])
