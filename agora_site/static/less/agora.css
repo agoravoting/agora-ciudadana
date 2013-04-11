@@ -4392,6 +4392,9 @@ body {
 .with-user-actions.nav-pills {
   float: right;
 }
+.user-action.group > a {
+  min-width: 100px;
+}
 .background-wrapper-no-bottom-shadow {
   padding-bottom: 0px;
 }
