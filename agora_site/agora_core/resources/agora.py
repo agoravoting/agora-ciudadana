@@ -38,7 +38,8 @@ from agora_site.agora_core.forms.agora import DelegateVoteForm
 from agora_site.agora_core.views import AgoraActionJoinView
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.misc.decorators import permission_required
-from agora_site.misc.utils import geolocate_ip, get_base_email_context
+from agora_site.misc.utils import (geolocate_ip, get_base_email_context,
+    JSONApiField)
 
 ELECTION_RESOURCE = 'agora_site.agora_core.resources.election.ElectionResource'
 
@@ -88,6 +89,27 @@ class AgoraAdminForm(ModelForm):
         fields = ('pretty_name', 'short_description', 'is_vote_secret',
             'biography', 'membership_policy', 'comments_policy')
 
+
+class AgoraUserResource(UserResource):
+    agora_permissions = fields.CharField() # agora permissions
+    agora = None
+    request_user = None
+
+    def dehydrate_agora_permissions(self, bundle):
+        if not self.agora.has_perms('admin', self.request_user):
+            return "[]"
+        return json.dumps(self.agora.get_perms(bundle.obj))
+
+def user_resource_for_agora(agora, request_user):
+    '''
+    Generates a custom user resource that has an agora_permissions property
+    listing the user permissions in the given agora, if the requesting user is
+    an admin
+    '''
+    resource = AgoraUserResource()
+    resource.agora = agora
+    resource.request_user = request_user
+    return resource
 
 class AgoraValidation(Validation):
     '''
@@ -264,21 +286,24 @@ class AgoraResource(GenericResource):
         '''
         List admin members of this agora
         '''
-        return self.get_custom_resource_list(request, resource=UserResource,
+        return self.get_custom_resource_list(request,
+            resourcefunc=user_resource_for_agora,
             queryfunc=lambda agora: agora.admins.all(), **kwargs)
 
     def get_member_list(self, request, **kwargs):
         '''
         List the members of this agora
         '''
-        return self.get_custom_resource_list(request, resource=UserResource,
+        return self.get_custom_resource_list(request,
+            resourcefunc=user_resource_for_agora,
             queryfunc=lambda agora: agora.members.all(), **kwargs)
 
     def get_active_delegates_list(self, request, **kwargs):
         '''
         List currently active delegates in this agora
         '''
-        return self.get_custom_resource_list(request, resource=UserResource,
+        return self.get_custom_resource_list(request,
+            resourcefunc=user_resource_for_agora,
             queryfunc=lambda agora: agora.active_delegates(), **kwargs)
 
     def get_all_elections_list(self, request, **kwargs):
@@ -342,7 +367,7 @@ class AgoraResource(GenericResource):
             return queryset
 
         return self.get_custom_resource_list(request, queryfunc=get_queryset,
-            resource=UserResource, **kwargs)
+            resourcefunc=user_resource_for_agora, **kwargs)
 
     @permission_required('admin', (Agora, 'id', 'agoraid'))
     def get_admin_request_list(self, request, **kwargs):
@@ -358,9 +383,10 @@ class AgoraResource(GenericResource):
             return queryset
 
         return self.get_custom_resource_list(request, queryfunc=get_queryset,
-            resource=UserResource, **kwargs)
+            resourcefunc=user_resource_for_agora, **kwargs)
 
-    def get_custom_resource_list(self, request, queryfunc, resource, **kwargs):
+    def get_custom_resource_list(self, request, queryfunc, resource=None,
+        resourcefunc=None, **kwargs):
         '''
         List users
         '''
@@ -371,7 +397,13 @@ class AgoraResource(GenericResource):
         except:
             raise ImmediateHttpResponse(response=http.HttpNotFound())
 
-        return resource().get_custom_list(request=request,
+
+        if resourcefunc:
+            resource_instance = resourcefunc(agora, request.user)
+        else:
+            resource_instance = resource()
+
+        return resource_instance.get_custom_list(request=request,
             queryset=queryfunc(agora))
 
     def action(self, request, **kwargs):
