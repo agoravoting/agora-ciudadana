@@ -870,3 +870,7 @@ width: 40px !important;
 div.result-item .row {
     padding-bottom: 10px;
 }
+
+.user-action.group > a {
+    min-width: 100px;
+}
