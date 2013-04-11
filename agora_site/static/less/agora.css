@@ -4392,8 +4392,12 @@ body {
 .with-user-actions.nav-pills {
   float: right;
 }
-.user-action.group > a {
+div.result-item .span2 {
+  width: 40px !important;
+}
+.user-action.group > a.username {
   min-width: 100px;
+  text-align: left;
 }
 .background-wrapper-no-bottom-shadow {
   padding-bottom: 0px;
