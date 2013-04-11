@@ -16,9 +16,8 @@ from celery import task
 
 import datetime
 
-
 @task(ignore_result=True)
-def start_election(election_id, is_secure, site_id, remote_addr):
+def start_election(election_id, is_secure, site_id, remote_addr, user_id):
     election = Election.objects.get(pk=election_id)
     if not election.is_approved or election.is_archived():
         election.voting_starts_at_date = None
@@ -101,6 +100,8 @@ def start_election(election_id, is_secure, site_id, remote_addr):
     translation.deactivate()
 
     send_mass_html_mail(datatuples)
+
+    user = User.objects.get(pk=user_id)
 
     action.send(user, verb='started voting period', action_object=election,
         target=election.agora, ipaddr=remote_addr,

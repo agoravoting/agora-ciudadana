@@ -63,7 +63,13 @@ class Profile(UserenaLanguageBaseProfile):
         Return whether a given user has a given permission name
         '''
         if permission_name == 'receive_email_updates':
-            return self.user.email and self.email_updates
+            from django.core.validators import validate_email
+            from django.core.exceptions import ValidationError
+            try:
+                validate_email(self.user.email)
+            except ValidationError:
+                return False
+            return self.email_updates
         else:
             return False
 
