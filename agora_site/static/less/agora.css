@@ -873,4 +873,5 @@ div.result-item .row {
 
 .user-action-group > a.username {
     min-width: 100px;
+    text-align: left;
 }
