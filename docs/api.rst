@@ -591,7 +591,8 @@ Retrieve agora members
                "is_active": true,
                "last_login": "2012-12-18T15:47:35.109371",
                "last_name": "",
-               "username": "user1"
+               "username": "user1",
+               "agora_permissions": []
            },
            {
                "date_joined": "2012-12-18T15:46:37.644236",
@@ -600,7 +601,8 @@ Retrieve agora members
                "is_active": true,
                "last_login": "2012-12-18T15:55:12.833627",
                "last_name": "",
-               "username": "user4"
+               "username": "user4",
+               "agora_permissions": []
            }
        ]
     }
@@ -649,7 +651,8 @@ List administrators
                "is_active": true,
                "last_login": "2012-12-18T15:47:35.109371",
                "last_name": "",
-               "username": "user1"
+               "username": "user1",
+               "agora_permissions": []
            }
        ]
     }
@@ -698,7 +701,8 @@ List membership requests
                "is_active": true,
                "last_login": "2012-12-18T16:31:32.390732",
                "last_name": "",
-               "username": "user6"
+               "username": "user6",
+               "agora_permissions": []
            }
        ]
     }
@@ -748,7 +752,8 @@ Retrieve agora admin membership requests
                "is_active": true,
                "last_login": "2012-12-18T16:31:32.390732",
                "last_name": "",
-               "username": "user6"
+               "username": "user6",
+               "agora_permissions": []
            }
        ]
     }
@@ -798,7 +803,8 @@ List active delegates
                "is_active": true,
                "last_login": "2012-12-18T15:46:37.041112",
                "last_name": "",
-               "username": "user3"
+               "username": "user3",
+               "agora_permissions": []
            }
        ]
     }
