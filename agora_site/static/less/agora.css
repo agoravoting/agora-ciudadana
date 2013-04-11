@@ -871,6 +871,6 @@ div.result-item .row {
     padding-bottom: 10px;
 }
 
-.user-action.group > a {
+.user-action-group > a.username {
     min-width: 100px;
 }
