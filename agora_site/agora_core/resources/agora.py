@@ -38,8 +38,7 @@ from agora_site.agora_core.forms.agora import DelegateVoteForm
 from agora_site.agora_core.views import AgoraActionJoinView
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.misc.decorators import permission_required
-from agora_site.misc.utils import (geolocate_ip, get_base_email_context,
-    JSONApiField)
+from agora_site.misc.utils import (geolocate_ip, get_base_email_context)
 
 ELECTION_RESOURCE = 'agora_site.agora_core.resources.election.ElectionResource'
 
@@ -91,14 +90,14 @@ class AgoraAdminForm(ModelForm):
 
 
 class AgoraUserResource(UserResource):
-    agora_permissions = fields.CharField() # agora permissions
+    agora_permissions = fields.ApiField() # agora permissions
     agora = None
     request_user = None
 
     def dehydrate_agora_permissions(self, bundle):
         if not self.agora.has_perms('admin', self.request_user):
-            return "[]"
-        return json.dumps(self.agora.get_perms(bundle.obj))
+            return []
+        return self.agora.get_perms(bundle.obj)
 
 def user_resource_for_agora(agora, request_user):
     '''

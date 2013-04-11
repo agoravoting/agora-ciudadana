@@ -4389,6 +4389,9 @@ body {
   color: #000000;
   font-size: 14px;
 }
+.with-user-actions.nav-pills {
+  float: right;
+}
 .background-wrapper-no-bottom-shadow {
   padding-bottom: 0px;
 }
