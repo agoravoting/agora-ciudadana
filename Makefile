@@ -35,4 +35,5 @@ agorajs:
 					      agora_site/static/js/agora/views/search_list.js \
 					      agora_site/static/js/agora/views/user.js \
 					      agora_site/static/js/agora/views/user_list.js \
+					      agora_site/static/js/agora/views/agora_user_list.js \
 					      	-c -o agora_site/static/js/min/agora.min.js

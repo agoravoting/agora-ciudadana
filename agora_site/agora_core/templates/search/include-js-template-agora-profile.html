@@ -1,0 +1,88 @@
+<script id="template-agora-profile-item" type="text/underscore-template">
+    <div class="result-item user-result">
+    <% if (agora_permissions.length == 0) { %>
+        <a href="<%= obj.url %>">
+            <div class="row">
+                <div class="span2">
+                    <img src="<%= obj.mugshot_url %>" />
+                </div>
+                <div class="span6">
+                    <strong>
+                        <%= obj.username %><% if (obj.full_name && obj.full_name != obj.username) { %> <%= obj.full_name %> <% } %>
+                    </strong>
+
+                    <p>
+                        <%= obj.short_description %>
+                    </p>
+
+                </div>
+            </div>
+        </a>
+    <% } else { %>
+        <div class="row">
+            <div class="span2">
+                <img src="<%= obj.mugshot_url %>" />
+            </div>
+            <div class="span6">
+                <div class="user-action-group btn-group">
+                    <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i>
+                        <%= obj.username %><% if (obj.full_name && obj.full_name != obj.username) { %> <%= obj.full_name %> <% } %>
+                    </a>
+                    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <% if (_.contains(agora_permissions, "cancel_membership_request")) { %>
+                        <li>
+                            <a href="<%= agora_path %>/action/accept-membership-request/<%= username %>" class="action-form-link">
+                                <i class="icon-ok"></i>
+                                <%= gettext("Accept membership request") %>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<%= agora_path %>/action/dismiss-membership-request/<%= username %>" class="action-form-link">
+                                <i class="icon-ok"></i>
+                                <%= gettext("Dismiss membership request") %>
+                            </a>
+                        </li>
+                        <% } %>
+                        <% if (_.contains(agora_permissions, "cancel_admin_membership_request")) { %>
+                        <li>
+                            <a href="<%= agora_path %>/action/accept-admin-membership-request/<%= username %>" class="action-form-link">
+                                <i class="icon-ok"></i>
+                                <%= gettext("Accept admin membership request") %>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<%= agora_path %>/action/dismiss-admin-membership-request/<%= username %>" class="action-form-link">
+                                <i class="icon-ok"></i>
+                                <%= gettext("Dismiss admin membership request") %>
+                            </a>
+                        </li>
+                        <% } %>
+                        <% if (_.contains(agora_permissions, "leave")) { %>
+                        <li>
+                            <a href="<%= agora_path %>/action/remove-membership/<%= username %>" class="action-form-link">
+                                <i class="icon-ok"></i>
+                                <%= gettext("Remove membership") %>
+                            </a>
+                        </li>
+                        <% } %>
+                        <% if (_.contains(agora_permissions, "leave_admin")) { %>
+                        <li>
+                            <a href="<%= agora_path %>/action/remove-admin-membership/<%= username %>" class="action-form-link">
+                                <i class="icon-ok"></i>
+                                <%= gettext("Accept membership request") %>
+                            </a>
+                        </li>
+                        <% } %>
+                    </ul>
+                </div>
+
+                <p>
+                    <%= obj.short_description %>
+                </p>
+
+            </div>
+        </div>
+    <% } %>
+    </div>
+</script>
