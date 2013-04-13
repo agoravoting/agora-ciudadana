@@ -107,6 +107,11 @@
         <a href="{% url election-delegates election.agora.creator.username election.agora.name election.name %}">{% trans "Delegates" %}
         <span class="badge badge-info">{{ election.get_votes_from_delegates.count }}</span></a>
     </li>
+		<li {% ifactivetab "election-nav" "visual" %}class="active"{% endifactivetab %}>
+        <a href="{% url election-graph election.agora.creator.username election.agora.name election.name %}">{% trans "Visual(experimental)" %}
+        <span class="badge badge-info">{{ election.get_all_votes.count }}</span></a>
+    </li>
+		
     {% if "edit_details" in permissions %}
     <li {% ifactivetab "election-nav" "edit" %}class="active"{% endifactivetab %}>
         <a href="{% url election-edit election.agora.creator.username election.agora.name election.name %}">{% trans "Edit" %}</a>

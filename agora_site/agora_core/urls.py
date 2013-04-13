@@ -168,6 +168,9 @@ urlpatterns += patterns('',
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/votes/?$',
         ElectionVotesView.as_view(), name='election-votes'),
+				
+		url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/graph/?$',
+        ElectionVotesGraphView.as_view(), name='election-graph'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/action/approve/?$',
         ApproveElectionView.as_view(), name='election-action-approve'),
