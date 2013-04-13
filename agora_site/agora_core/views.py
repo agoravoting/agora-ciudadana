@@ -287,6 +287,18 @@ class  ElectionVotesView(ElectionDelegatesView):
             name=electionname, agora__name=agoraname,
             agora__creator__username=username)
         return self.election.get_all_votes().all()
+				
+class  ElectionVotesGraphView(ElectionDelegatesView):
+    template_name = 'agora_core/election_votes_graph.html'
+
+    def get_queryset(self):
+        username = self.kwargs["username"]
+        agoraname = self.kwargs["agoraname"]
+        electionname = self.kwargs["electionname"]
+        self.election = get_object_or_404(Election,
+            name=electionname, agora__name=agoraname,
+            agora__creator__username=username)
+        return self.election.get_all_votes().all()
 
 class CreateAgoraView(RequestCreateView):
     '''

@@ -10,6 +10,10 @@
     <link href="{% static 'favicon.ico' %}" rel="icon" type="image/png" />
 
     <link rel="stylesheet" href="{% static 'less/agora.css' %}" type="text/css" />
+		<!-- DRB added -->
+		<link rel="stylesheet" href="{% static 'css/liquidv.css' %}" type="text/css" />		
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
+		
 </head>
 <body data-userid="{{ user.pk }}" data-lang="{{ LANGUAGE_CODE }}">
     <!-- used to execute actions via a secure form -->
@@ -83,8 +87,8 @@
                 </div>
             </div>
         </div>
-        <div class="container">
-            <div class="row">
+        <div class="container">            
+						<div class="row">
                 <div class="messages-box" id="messages-box">
                     {% if messages %}
                     <ul id="flash-messages">
@@ -221,8 +225,8 @@
         </div>
     </div>
     <div id="content-wrapper" class="{% block content-wrapper-class %}{% endblock %}">
-        <div class="container">
-            {% block content %}
+        <div class="container">            
+						{% block content %}
             {% endblock %}
         </div>
     </div>
@@ -294,8 +298,8 @@
     <div class="container-fluid footer-end"></div>
     {% endblock %}
 
-    <script type="text/javascript" src="{% url jsgettext %}?language={{ LANGUAGE_CODE }}"></script>
-    <script src="{% static 'js/min/main.min.js' %}"></script>
+    <script type="text/javascript" src="{% url jsgettext %}?language={{ LANGUAGE_CODE }}"></script>    
+		<script src="{% static 'js/min/main.min.js' %}"></script>
 
     <!-- Development -->
     {% if DEBUG %}
