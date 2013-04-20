@@ -728,15 +728,22 @@ class Election(models.Model):
         if self.election_type not in dict(parse_voting_methods()):
             raise Exception('do not know how to count this type of voting')
 
-        voting_system = get_voting_system_by_id(self.election_type)
-        tally = voting_system.create_tally(self)
+        voting_systems = []
+        tallies = []
 
         import copy
         # result is in the same format as get_result_pretty(). Initialized here
         result = copy.deepcopy(self.questions)
 
         # setup the initial data common to all voting system
+        i = 0
         for question in result:
+            voting_system = get_voting_system_by_id(self.election_type)
+            tally = voting_system.create_tally(self, i)
+            voting_systems.append(voting_system)
+            tallies.append(tally)
+            i += 1
+
             question['a'] = "question/result/" + voting_system.get_id()
             question['winners'] = []
             question['total_votes'] = 0
@@ -746,15 +753,16 @@ class Election(models.Model):
                 answer['total_count'] = 0
                 answer['total_count_percentage'] = 0
 
-        # prepare the tally
-        tally.pre_tally(result)
+            # prepare the tally
+            tally.pre_tally(result)
 
         def add_vote(user_answers, is_delegated):
             '''
             Given the answers of a vote, update the result
             '''
-            tally.add_vote(voter_answers=user_answers, result=result,
-                is_delegated=is_delegated)
+            for tally in tallies:
+                tally.add_vote(voter_answers=user_answers, result=result,
+                    is_delegated=is_delegated)
 
         # Here we go! for each voter, we try to find it in the paths, or in
         # the proxy vote chain, or in the direct votes pool
@@ -823,7 +831,8 @@ class Election(models.Model):
                         loop = False
 
         # post process the tally
-        tally.post_tally(result)
+        for tally in tallies:
+            tally.post_tally(result)
 
         self.result = dict(
             a= "result",
@@ -831,9 +840,10 @@ class Election(models.Model):
             delegation_counts = delegation_counts,
         )
 
-        tally_log = tally.get_log()
-        if tally_log:
-            self.extra_data['tally_log'] = tally_log
+        tally_log = []
+        for tally in tallies:
+            tally_log.append(tally.get_log())
+        self.extra_data['tally_log'] = tally_log
 
         self.delegated_votes_frozen_at_date = self.voters_frozen_at_date =\
             self.result_tallied_at_date = datetime.datetime.now()

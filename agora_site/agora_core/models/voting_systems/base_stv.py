@@ -29,11 +29,11 @@ class BaseSTV(BaseVotingSystem):
         return _('Multi-seat ranked voting - STV (Single Transferable Vote)')
 
     @staticmethod
-    def create_tally(election):
+    def create_tally(election, question_num):
         '''
         Create object that helps to compute the tally
         '''
-        return BaseSTVTally(election)
+        return BaseSTVTally(election, question_num)
 
     @staticmethod
     def get_question_field(election, question):
@@ -148,11 +148,10 @@ class BaseSTVField(JSONFormField):
             "choices": clean_value,
         }
 
-class BaseSTVTally(object):
+class BaseSTVTally(BaseTally):
     '''
     Class oser to tally an election
     '''
-    election = None
     ballots_file = None
     ballots_path = ""
 
@@ -183,8 +182,7 @@ class BaseSTVTally(object):
     # report object
     report = None
 
-    def __init__(self, election):
-        self.election = election
+    def init(self):
         import os
         import uuid
         self.ballots_path = os.path.join(settings.MEDIA_ROOT, 'elections',
@@ -196,8 +194,7 @@ class BaseSTVTally(object):
         '''
         self.ballots_file = open(self.ballots_path, 'w')
 
-        # assumes one question
-        question = result[0]
+        question = result[self.question_num]
         self.num_seats = question['num_seats']
 
         # fill answer to dict
@@ -232,8 +229,7 @@ class BaseSTVTally(object):
         '''
         Add to the count a vote from a voter
         '''
-        # we assume only one question
-        answers = [self.answer2id(a) for a in voter_answers[0]['choices']]
+        answers = [self.answer2id(a) for a in voter_answers[self.question_num]['choices']]
 
         # we got ourselves an invalid vote, don't count it
         if -1 in answers:
@@ -248,7 +244,7 @@ class BaseSTVTally(object):
 
     def finish_writing_ballots_file(self, result):
         # write the ballots
-        question = result[0]
+        question = result[self.question_num]
         for ballot in self.ballots:
             self.ballots_file.write('%d %s 0\n' % (ballot['votes'],
                 ' '.join([str(a) for a in ballot['answers']])))
@@ -304,7 +300,7 @@ class BaseSTVTally(object):
         json_report = self.report.json
         last_iteration = json_report['iterations'][-1]
 
-        question = result[0]
+        question = result[self.question_num]
         question['total_votes'] = json_report['ballots_count']
         question['winners'] = json_report['winners']
 

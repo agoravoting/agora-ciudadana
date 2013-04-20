@@ -24,11 +24,11 @@ class Plurality(BaseVotingSystem):
         return _('Choose one option among many - Technical name: Plurality voting system')
 
     @staticmethod
-    def create_tally(election):
+    def create_tally(election, question_num):
         '''
         Create object that helps to compute the tally
         '''
-        return PluralityTally(election)
+        return PluralityTally(election, question_num)
 
     @staticmethod
     def get_question_field(election, question):
@@ -88,7 +88,6 @@ class Plurality(BaseVotingSystem):
 class PluralityField(django_forms.ChoiceField):
     '''
     A field that returns a valid answer text
-    # TODO: check the vote options
     '''
     election = None
 
@@ -121,26 +120,24 @@ class PluralityTally(BaseTally):
         '''
         Pre-proccess the tally
         '''
-        for question in result:
-            for answer in question['answers']:
-                answer['by_direct_vote_count'] = 0
-                answer['by_delegation_count'] = 0
+        question = result[self.question_num]
+        for answer in question['answers']:
+            answer['by_direct_vote_count'] = 0
+            answer['by_delegation_count'] = 0
 
     def add_vote(self, voter_answers, result, is_delegated):
         '''
         Add to the count a vote from a voter
         '''
-        i = 0
-        for question in result:
-            for answer in question['answers']:
-                if answer['value'] in voter_answers[i]["choices"]:
-                    answer['total_count'] += 1
-                    if is_delegated:
-                        answer['by_delegation_count'] += 1
-                    else:
-                        answer['by_direct_vote_count'] += 1
-                    break
-            i += 1
+        question = result[self.question_num]
+        for answer in question['answers']:
+            if answer['value'] in voter_answers[self.question_num]["choices"]:
+                answer['total_count'] += 1
+                if is_delegated:
+                    answer['by_delegation_count'] += 1
+                else:
+                    answer['by_direct_vote_count'] += 1
+                break
 
     def post_tally(self, result):
         '''
@@ -173,23 +170,22 @@ class PluralityTally(BaseTally):
             #...
         #]
 
-        i = 0
         # post process the tally adding additional information like total_count
         # in each answer, etc
-        for question in result:
-            total_votes = 0
-            winner = None
+        question = result[self.question_num]
+        total_votes = 0
+        winner = None
 
-            for answer in question['answers']:
-                total_votes += answer['total_count']
-                if not winner or answer['total_count'] > winner['total_count']:
-                    winner = answer
+        for answer in question['answers']:
+            total_votes += answer['total_count']
+            if not winner or answer['total_count'] > winner['total_count']:
+                winner = answer
 
-            question['total_votes'] = total_votes
-            question['winners'] = [winner['value']]
+        question['total_votes'] = total_votes
+        question['winners'] = [winner['value']]
 
-            for answer in question['answers']:
-                if total_votes > 0:
-                    answer['total_count_percentage'] = (answer['total_count'] * 100.0) / total_votes
-                else:
-                    answer['total_count_percentage'] = 0
+        for answer in question['answers']:
+            if total_votes > 0:
+                answer['total_count_percentage'] = (answer['total_count'] * 100.0) / total_votes
+            else:
+                answer['total_count_percentage'] = 0

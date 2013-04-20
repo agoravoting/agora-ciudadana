@@ -22,10 +22,10 @@ class MeekSTV(BaseSTV):
         return _('Multi-seat ranked voting - Meek STV (Single Transferable Vote)')
 
     @staticmethod
-    def create_tally(election):
+    def create_tally(election, question_num):
         '''
         Create object that helps to compute the tally
         '''
-        tally = BaseSTVTally(election)
+        tally = BaseSTVTally(election, question_num)
         tally.method_name = "MeekSTV"
         return tally

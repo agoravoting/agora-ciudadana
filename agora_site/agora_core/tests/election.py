@@ -909,7 +909,7 @@ class ElectionTest(RootTestCase):
             ]
         }
         self.assertEqual(results_should_be, data['result'])
-        tally_log_should_be = {
+        tally_log_should_be =  [{
             'winners':[
                 'Florentino',
                 'Jack'
@@ -948,5 +948,5 @@ class ElectionTest(RootTestCase):
                 }
             ],
             'num_seats':2
-        }
+        }]
         self.assertEqual(tally_log_should_be, data['extra_data']['tally_log'])

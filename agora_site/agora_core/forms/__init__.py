@@ -228,8 +228,8 @@ def election_questions_validator(questions):
     '''
     error = django_forms.ValidationError(_('Invalid questions format'))
 
-    # only one question allowed, for now
-    if not isinstance(questions, list) or len(questions) != 1:
+    # we need at least one question
+    if not isinstance(questions, list) or len(questions) < 1:
         raise error
 
     for question in questions:

@@ -43,7 +43,7 @@ Now we will install the dependencies:
 After that, we need to configure the database (we use sqlite by default):
 
     $ ./manage.py syncdb --all
-    
+
 And mark all migration scripts as applied (because we have created the database
 with --all option):
 

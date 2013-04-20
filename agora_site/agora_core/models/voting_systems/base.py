@@ -56,11 +56,11 @@ class BaseVotingSystem(object):
         pass
 
     @staticmethod
-    def create_tally(election):
+    def create_tally(election, question_num):
         '''
         Create object that helps to compute the tally
         '''
-        return BaseTally(election)
+        return BaseTally(election, question_num)
 
     @staticmethod
     def get_question_field(election, question):
@@ -82,9 +82,15 @@ class BaseTally(object):
     Class oser to tally an election
     '''
     election = None
+    question_num = None
 
-    def __init__(self, election):
+    def __init__(self, election, question_num):
         self.election = election
+        self.question_num = question_num
+        self.init()
+
+    def init(self):
+        pass
 
     def pre_tally(self, result):
         '''
