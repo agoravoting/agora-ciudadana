@@ -1,8 +1,12 @@
-all: mainjs agorajs
+all: mainjs agorajs agoraless
 
 dependencies:
 	npm install uglify-js less jshint
 
+agoraless:
+	./node_modules/less/bin/lessc \
+		./agora_site/static/less/agora.less \
+		> ./agora_site/static/less/agora.css
 
 mainjs:
 	./node_modules/uglify-js/bin/uglifyjs \
