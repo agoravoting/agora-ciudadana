@@ -92,7 +92,8 @@
                                     <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu complete-block">
-                                        <li data-id="ONE_CHOICE"><a href="#"><div class="row-fluid">
+                                        <li data-id="ONE_CHOICE" data-usertext="{% trans "Classic vote (Plurality)" %}">
+                                        <a href="#"><div class="row-fluid">
                                             <div class="span3">
                                                 <img src="{% static 'img/plurality_ballot.png' %}"/>
                                             </div>
@@ -104,7 +105,8 @@
                                             </div>
                                         </div></a></li>
                                         <li class="divider"></li>
-                                        <li data-id="MEEK-STV"><a href="#"><div class="row-fluid">
+                                        <li data-id="MEEK-STV" data-usertext="{% trans "Elect a list (Meek-STV)" %}">
+                                        <a href="#"><div class="row-fluid">
                                             <div class="span3">
                                                 <img src="{% static 'img/preferential_ballot.png' %}"/>
                                             </div>
@@ -120,6 +122,74 @@
                                     </ul>
                                 </div>
                             </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label inline" for="num_winners">{% trans "Elect a list of" %}</label>
+                            <input type="text" name="num_winners" maxlength="3" value="1" id="num_winners" class="inline input-nano"/>
+                            {% trans "winners" %}.
+                            <label class="control-label inline" for="min_num_choices">{% trans "A voter selects from" %}</label>
+                            <input type="text" name="min_num_choices" value="0" maxlength="3" id="min_num_choices" class="inline input-nano"/>
+                            <label class="control-label inline" for="max_num_choices">{% trans "to" %}</label>
+                            <input type="text" name="max_num_choices" maxlength="3" value="1" id="max_num_choices" class="inline input-nano"/>
+                            {% trans "choices" %}.
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="name">{% trans "Choice" %}</label>
+                            <div class="input-append">
+                                <input id="add_option" type="text" placeholder="{% trans "Add a choice" %}">
+                                <button class="btn btn-primary" type="button"><i class="icon-plus icon-white"></i></button>
+                            </div>
+                            <table class="table well">
+                                <tbody class="option-list">
+                                    <tr>
+                                        <td>
+                                            <a href="#" class="option-edit">
+                                                Option #1
+                                                <i class="icon-pencil"></i>
+                                            </a>
+                                        <td>
+                                            <div class="text-right">
+                                                <a href="#">
+                                                    <i class="icon-remove"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="#" class="option-edit">
+                                                Option #2
+                                                <i class="icon-pencil"></i>
+                                            </a>
+                                        <td>
+                                            <div class="text-right">
+                                                <a href="#">
+                                                    <i class="icon-remove"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="#" class="option-edit">
+                                                Option #3
+                                                <i class="icon-pencil"></i>
+                                            </a>
+                                        <td>
+                                            <div class="text-right">
+                                                <a href="#">
+                                                    <i class="icon-remove"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="control-group spaced-up-control">
+                            <button class="btn btn-large btn-block add-question" type="button">
+                                {% trans "Remove question" %}
+                            </button>
                         </div>
                     </fieldset>
                 </div>
@@ -145,6 +215,11 @@
 <script type="text/javascript">
 $(document).ready(function() {
     $('.datetimepicker').datetimepicker();
+    $('div.top-form #schedule_voting_controls').toggle($('div.top-form #schedule_voting').is(':checked'));
+
+    $('div.top-form #schedule_voting').click(function(){
+        $('div.top-form #schedule_voting_controls').toggle(this.checked);
+    });
 });
 </script>
 {% endblock %}
