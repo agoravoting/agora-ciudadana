@@ -1,67 +1,67 @@
 {% load i18n %}
 {% load static from staticfiles %}
 <script id="template-election_form" type="text/underscore-template">
-    <h1>{% trans "Create election" %}</h1>
+    <h1><%= gettext("Create election") %></h1>
     <form>
         <ul class="nav nav-tabs">
             <li class="active">
-                <a href="#election-tab"  data-toggle="tab">{% trans "Election" %}</a>
+                <a href="#election-tab"  data-toggle="tab"><%= gettext("Election") %></a>
             </li>
             <li>
-                <a href="#" data-toggle="tab">{% trans "Question #1" %}</a>
+                <a href="#" data-toggle="tab"><%= gettext("Question #1") %></a>
             </li>
             <li>
-                <a href="#" data-toggle="tab">{% trans "Question #2" %}</a>
+                <a href="#" data-toggle="tab"><%= gettext("Question #2") %></a>
             </li>
-            <li><a href="#add-question-tab" data-toggle="tab"><i class="icon-plus"></i> {% trans "Add question" %}</a></li>
+            <li><a href="#add-question-tab" data-toggle="tab"><i class="icon-plus"></i> <%= gettext("Add question") %></a></li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="election-tab">
                 <fieldset>
                     <div class="control-group">
-                        <label class="control-label" for="name">{% trans "Name" %}</label>
+                        <label class="control-label" for="name"><%= gettext("Name") %></label>
                         <div class="controls">
-                            <textarea rows="1" class="input-xxlarge" id="name" placeholder="{% trans "Election name" %}"></textarea>
+                            <textarea rows="1" class="input-xxlarge" id="name" placeholder="<%= gettext("Election name") %>"></textarea>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="description">{% trans "Description" %}</label>
+                        <label class="control-label" for="description"><%= gettext("Description") %></label>
                         <div class="controls">
-                            <textarea rows="3" class="input-xxlarge" id="description" placeholder="{% trans "Election description (optional)" %}"></textarea>
+                            <textarea rows="3" class="input-xxlarge" id="description" placeholder="<%= gettext("Election description (optional)") %>"></textarea>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label radio">
                             <input type="radio" name="is_vote_secret" id="is_vote_secret_yes" value="secret" checked />
-                            <p>{% trans "Allow voting in secret" %}</p>
+                            <p><%= gettext("Allow voting in secret") %></p>
                         </label>
                         <label class="radio">
                             <input type="radio" name="is_vote_secret" id="is_vote_secret_no" value="public" />
-                            <p>{% trans "All votes are public" %}</p>
+                            <p><%= gettext("All votes are public") %></p>
                         </label>
                     </div>
                     <div class="control-group spaced-up-control">
                         <label class="control-label checkbox">
                             <input type="checkbox" name="schedule_voting" id="schedule_voting" />
-                            <p>{% trans "Schedule start/end voting period" %} <i>({% trans "Optional" %})</i></p>
+                            <p><%= gettext("Schedule start/end voting period") %> <i>(<%= gettext("Optional") %>)</i></p>
                         </label>
                         <div class="control-group sub-group-control hide" id="schedule_voting_controls">
                             <div class="input-prepend inline">
                                 <span class="add-on"><i class="icon-calendar"></i></span>
-                                <input class="span2 datetimepicker" id="start_voting_date" type="text" placeholder="{% trans "Start voting at.." %}" /> -
+                                <input class="span2 datetimepicker" id="start_voting_date" type="text" placeholder="<%= gettext("Start voting at..") %>" /> -
                             </div>
                             <div class="input-append inline">
-                                <input class="span2 datetimepicker" id="end_voting_date" type="text" placeholder="{% trans "End voting at.." %}" />
+                                <input class="span2 datetimepicker" id="end_voting_date" type="text" placeholder="<%= gettext("End voting at..") %>" />
                                 <span class="add-on"><i class="icon-calendar"></i></span>
                             </div>
                         </div>
                     </div>
                     <div class="control-group spaced-up-control">
                         <button class="btn btn-large btn-block btn-primary add-question" type="button">
-                            {% trans "Add question" %}
+                            <%= gettext("Add question") %>
                         </button>
                         <button class="hide btn btn-large btn-block btn-success add-question" type="button">
-                            {% trans "Create election" %}
+                            <%= gettext("Create election") %>
                         </button>
                     </div>
                 </fieldset>
@@ -69,45 +69,45 @@
             <div class="tab-pane" id="add-question-tab">
                 <fieldset>
                     <div class="control-group">
-                        <label class="control-label" for="name">{% trans "Question text" %}</label>
+                        <label class="control-label" for="name"><%= gettext("Question text") %></label>
                         <div class="controls">
-                            <textarea rows="1" class="input-xxlarge" id="name" placeholder="{% trans "Question text" %}"></textarea>
+                            <textarea rows="1" class="input-xxlarge" id="name" placeholder="<%= gettext("Question text") %>"></textarea>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="name">{% trans "Voting system" %}</label>
+                        <label class="control-label" for="name"><%= gettext("Voting system") %></label>
                         <div class="controls">
                             <div class="btn-group">
                                 <a class="btn btn-block dropdown-toggle" data-toggle="dropdown" href="#">
-                                <div class="current-item inline" data-id="ONE_CHOICE">{% trans "Classic vote (Plurality)" %}</div>
+                                <div class="current-item inline" data-id="ONE_CHOICE"><%= gettext("Classic vote (Plurality)") %></div>
                                 <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu complete-block">
-                                    <li data-id="ONE_CHOICE" data-usertext="{% trans "Classic vote (Plurality)" %}">
+                                    <li data-id="ONE_CHOICE" data-usertext="<%= gettext("Classic vote (Plurality)") %>">
                                     <a href="#"><div class="row-fluid">
                                         <div class="span3">
                                             <img src="{% static 'img/plurality_ballot.png' %}"/>
                                         </div>
                                         <div class="span9">
-                                            <h3>{% trans "Classic vote" %}</h3>
-                                            <p>{% trans "Each <strong>voter chooses only one candidate</strong> and the candidate with more votes wins." %}
+                                            <h3><%= gettext("Classic vote") %></h3>
+                                            <p><%= gettext("Each <strong>voter chooses only one candidate</strong> and the candidate with more votes wins.") %>
                                             </p>
-                                            <p><strong>{% trans "Technical name" %}</strong>: {% trans "Plurality" %}</p>
+                                            <p><strong><%= gettext("Technical name") %></strong>: <%= gettext("Plurality") %></p>
                                         </div>
                                     </div></a></li>
                                     <li class="divider"></li>
-                                    <li data-id="MEEK-STV" data-usertext="{% trans "Elect a list (Meek-STV)" %}">
+                                    <li data-id="MEEK-STV" data-usertext="<%= gettext("Elect a list (Meek-STV)") %>">
                                     <a href="#"><div class="row-fluid">
                                         <div class="span3">
                                             <img src="{% static 'img/preferential_ballot.png' %}"/>
                                         </div>
                                         <div class="span9">
-                                            <h3>{% trans "Elect a list" %}</h3>
-                                            <p>{% trans "Each <strong>voter choose a ranked list of candidates</strong>. This method allows to elect a list of winners.</p>" %}
+                                            <h3><%= gettext("Elect a list") %></h3>
+                                            <p><%= gettext("Each <strong>voter choose a ranked list of candidates</strong>. This method allows to elect a list of winners.") %></p>
 
-                                            {% trans "<p>Under Single Transferable Vote, an elector has a single vote that is initially allocated to his most preferred candidate, and then, as the count proceeds and candidates are either elected or eliminated, the <strong>vote is transferred to other candidates</strong> according to the voter's stated preferences." %}
+                                            <p><%= gettext("Under Single Transferable Vote, an elector has a single vote that is initially allocated to his most preferred candidate, and then, as the count proceeds and candidates are either elected or eliminated, the <strong>vote is transferred to other candidates</strong> according to the voter's stated preferences.") %>
                                             </p>
-                                            <p><strong>{% trans "Technical name" %}</strong>: {% trans "Single Transferable Vote - Meek's method (Meek-STV)" %}</p>
+                                            <p><strong><%= gettext("Technical name") %></strong>: <%= gettext("Single Transferable Vote - Meek's method (Meek-STV)") %></p>
                                         </div>
                                     </div></a></li>
                                 </ul>
@@ -115,19 +115,19 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label inline" for="num_winners">{% trans "Elect a list of" %}</label>
+                        <label class="control-label inline" for="num_winners"><%= gettext("Elect a list of") %></label>
                         <input type="text" name="num_winners" maxlength="3" value="1" id="num_winners" class="inline input-nano"/>
-                        {% trans "winners" %}.
-                        <label class="control-label inline" for="min_num_choices">{% trans "A voter selects from" %}</label>
+                        <%= gettext("winners") %>.
+                        <label class="control-label inline" for="min_num_choices"><%= gettext("A voter selects from") %></label>
                         <input type="text" name="min_num_choices" value="0" maxlength="3" id="min_num_choices" class="inline input-nano"/>
-                        <label class="control-label inline" for="max_num_choices">{% trans "to" %}</label>
+                        <label class="control-label inline" for="max_num_choices"><%= gettext("to") %></label>
                         <input type="text" name="max_num_choices" maxlength="3" value="99" id="max_num_choices" class="inline input-nano"/>
-                        {% trans "choices" %}.
+                        <%= gettext("choices") %>.
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="name">{% trans "Choice" %}</label>
+                        <label class="control-label" for="name"><%= gettext("Choices") %></label>
                         <div class="input-append">
-                            <input id="add_option" type="text" placeholder="{% trans "Add a choice" %}">
+                            <input id="add_option" type="text" placeholder="<%= gettext("Add a choice") %>">
                             <button class="btn btn-primary" type="button"><i class="icon-plus icon-white"></i></button>
                         </div>
                         <table class="table well">
@@ -179,7 +179,7 @@
                     </div>
                     <div class="control-group spaced-up-control">
                         <button class="btn btn-large btn-block add-question" type="button">
-                            {% trans "Remove question" %}
+                            <%= gettext("Remove question") %>
                         </button>
                     </div>
                 </fieldset>
