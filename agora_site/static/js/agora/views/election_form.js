@@ -33,6 +33,7 @@
             relatedModel: Agora.QuestionModel
         }],
         defaults: {
+            'action': 'create_election',
             'pretty_name': '',
             'description': '',
             'is_vote_secret': true,
@@ -168,14 +169,15 @@
 
         updateModel: function() {
             this.model.set('question', this.$el.find('.name').val());
-            this.model.set('num_seats', this.$el.find('.num_winners').val());
-            this.model.set('min', this.$el.find('.min_num_choices').val());
-            this.model.set('max', this.$el.find('.max_num_choices').val());
+            this.model.set('num_seats', parseInt(this.$el.find('.num_winners').val()));
+            this.model.set('min', parseInt(this.$el.find('.min_num_choices').val()));
+            this.model.set('max', parseInt(this.$el.find('.max_num_choices').val()));
         },
 
         initialize: function() {
             _.bindAll(this);
             this.template = _.template($("#template-election_form_question_tab_pane").html());
+            this.model.questionView = this;
 
             this.render();
 
@@ -303,7 +305,7 @@
 
         createQuestion: function(e) {
             e.preventDefault();
-            this.formValid = true;
+            this.model.formValid = true;
             return false;
         },
     });
@@ -417,9 +419,9 @@
         createQuestion: function() {
             // use nod to check form is valid. nod will trigger a form submit
             // only if form is valid, which will set this.formValid to true
-            this.addQuestionView.formValid = false;
+            this.addQuestionView.model.formValid = false;
             this.addQuestionView.$el.find("[type=submit]").click();
-            if (!this.addQuestionView.formValid) {
+            if (!this.addQuestionView.model.formValid) {
                 return;
             }
 
@@ -451,9 +453,62 @@
             $('div.top-form #schedule_voting_controls').toggle(e.target.checked);
         },
 
+        updateModel: function() {
+            this.model.set('pretty_name', this.$el.find('#pretty_name').val());
+            this.model.set('description', this.$el.find('#description').val());
+
+            var is_vote_secret = $("#is_vote_secret_yes").attr('checked') == 'checked';
+            this.model.set('is_vote_secret', is_vote_secret);
+        },
+
+        sendingData: false,
+
         createElection: function(e) {
             e.preventDefault();
-            // TODO: send election via AJAX, deal with ajax errors, show election on success
+            // if we are already sending do nothing
+            if (this.sendingData) {
+                return;
+            }
+
+            this.updateModel();
+
+            // look for a question whose data is invalid
+            var failingQuestion = this.model.get('questions').find(function (question) {
+                question.formValid = false;
+                question.questionView.$el.find("[type=submit]").click();
+                return question.formValid == false;
+                question.questionView.updateModel();
+            });
+
+            // if found, switch to that question
+            if (failingQuestion) {
+                var question_num =failingQuestion.get('question_num');
+                var selector = "#question-navtab-" + question_num + " a";
+                this.$el.find(selector).tab('show');
+                return;
+            }
+
+            // okey, we're going to send this new election - but first disable
+            // the send question button to avoid sending the same thing multiple
+            // times
+            this.$el.find("#create_election_btn").addClass("disabled");
+            this.sendingData = true;
+
+            var json = JSON.stringify(this.model.toJSON());
+            var agora_id = $("#agora_id").val();
+            var self = this;
+            var jqxhr = $.ajax("/api/v1/agora/" + agora_id + "/action/", {
+                data: json, 
+                contentType : 'application/json',
+                type: 'POST',
+            })
+            .done(function(e) { window.location.href = e.url; })
+            .fail(function() { alert("Error creating the election"); })
+            .always(function() {
+                self.sendingData = false;
+                self.$el.find("#create_election_btn").removeClass("disabled");
+            });
+
             return false;
         },
 
