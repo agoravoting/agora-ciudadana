@@ -25,6 +25,7 @@ mainjs:
 					      agora_site/static/js/libs/moment-lang/es.js \
 					      agora_site/static/js/libs/livestamp.min.js \
 					      agora_site/static/js/libs/nod.min.js \
+					      agora_site/static/js/libs/backbone-associations.min.js \
 					      	-o agora_site/static/js/min/main.min.js
 agorajs:
 	./node_modules/uglify-js/bin/uglifyjs \

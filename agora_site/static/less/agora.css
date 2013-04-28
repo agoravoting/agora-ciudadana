@@ -5206,7 +5206,7 @@ div.top-form .controls .dropdown-toggle .caret {
 div.top-form .dropdown-menu a p {
   white-space: normal;
 }
-div.top-form #add_option {
+div.top-form .add_option {
   width: 655px;
 }
 div.top-form .option-list tr a {

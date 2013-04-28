@@ -2,22 +2,15 @@
 {% load static from staticfiles %}
 <script id="template-election_form" type="text/underscore-template">
     <h1><%= gettext("Create election") %></h1>
-    <form id="create_election_form">
         <ul class="nav nav-tabs">
             <li class="active">
                 <a href="#election-tab"  data-toggle="tab"><%= gettext("Election") %></a>
-            </li>
-            <li>
-                <a href="#" data-toggle="tab"><%= gettext("Question #") %>1</a>
-            </li>
-            <li>
-                <a href="#" data-toggle="tab"><%= gettext("Question #") %>2</a>
             </li>
             <li id="add-question-navtab"><a href="#question-tab-0" data-toggle="tab"><i class="icon-plus"></i> <%= gettext("Add question") %></a></li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="election-tab">
-                <fieldset>
+                <form id="create_election_form"><fieldset>
                     <div class="control-group">
                         <label class="control-label" for="pretty_name"><%= gettext("Name") %></label>
                         <div class="controls">
@@ -64,7 +57,7 @@
                             <%= gettext("Create election") %>
                         </button>
                     </div>
-                </fieldset>
+                </fieldset></form>
             </div>
         </div>
     </form>
@@ -83,17 +76,18 @@
 </script>
 
 <script id="template-election_form_question_navtab" type="text/underscore-template">
-    <li>
-        <a href="#" data-toggle="tab"><%= gettext("Question #") %><%= question_num %></a>
+    <li id="question-navtab-<%= question_num %>">
+        <a href="#question-tab-<%= question_num %>" data-toggle="tab"><%= gettext("Question #") %><%= question_num %></a>
     </li>
 </script>
 
 <script id="template-election_form_question_tab_pane" type="text/underscore-template">
+    <form>
     <fieldset>
         <div class="control-group">
             <label class="control-label" for="name"><%= gettext("Question text") %></label>
             <div class="controls">
-                <textarea rows="1" class="input-xxlarge" id="name" placeholder="<%= gettext("Question text") %>"></textarea>
+                <textarea rows="1" class="input-xxlarge name" id="name<%=question_num%>" placeholder="<%= gettext("Question text") %>"><%= question %></textarea>
             </div>
         </div>
         <div class="control-group">
@@ -101,10 +95,10 @@
             <div class="controls">
                 <div class="btn-group">
                     <a class="btn btn-block dropdown-toggle" data-toggle="dropdown" href="#">
-                    <div id="votingsystem" class="current-item inline" data-id="<%= tally_type %>"></div>
+                    <div id="votingsystem<%=question_num%>" class="votingsystem current-item inline" data-id="<%= tally_type %>"></div>
                     <span class="caret"></span>
                     </a>
-                    <ul class="dropdown-menu complete-block" id="votingsystem-dropdown">
+                    <ul class="dropdown-menu complete-block votingsystem-dropdown" id="votingsystem-dropdown<%=question_num%>">
                         <li data-id="ONE_CHOICE" data-showids="" data-usertext="<%= gettext("Classic vote (Plurality)") %>">
                         <a href="#"><div class="row-fluid">
                             <div class="span3">
@@ -137,99 +131,67 @@
             </div>
         </div>
         <div class="control-group">
-            <div id="num_winners_opts" class="inline">
+            <div id="num_winners_opts<%=question_num%>" class="inline num_winners_opts">
             <label class="control-label inline" for="num_winners"><%= gettext("Elect a list of") %></label>
-            <input type="text" name="num_winners" maxlength="3" value="1" id="num_winners" class="inline input-nano"/>
+            <input type="text" name="num_winners" maxlength="3" value="1" id="num_winners<%=question_num%>" class="num_winners inline input-nano"/>
             <%= gettext("winners") %>.
             </div>
             <div class="inline">
                 <label class="control-label inline" for="min_num_choices"><%= gettext("A voter selects from") %></label>
-                <input type="text" name="min_num_choices" value="<%= min %>" maxlength="3" id="min_num_choices" class="inline input-nano"/>
+                <input type="text" name="min_num_choices" value="<%= min %>" maxlength="3" id="min_num_choices<%=question_num%>" class="inline input-nano min_num_choices"/>
                 <label class="control-label inline" for="max_num_choices"><%= gettext("to") %></label>
-                <input type="text" name="max_num_choices" maxlength="3" value="<%= max %>" id="max_num_choices" class="inline input-nano"/>
+                <input type="text" name="max_num_choices" maxlength="3" value="<%= max %>" id="max_num_choices<%=question_num%>" class="inline input-nano max_num_choices"/>
                 <%= gettext("choices") %>.
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="name"><%= gettext("Choices") %></label>
+            <label class="control-label" for="add_option"><%= gettext("Choices") %></label>
             <div class="input-append">
-                <input id="add_option" type="text" placeholder="<%= gettext("Add a choice") %>">
-                <button class="btn btn-primary" type="button"><i class="icon-plus icon-white"></i></button>
+                <input class="add_option" id="add_option<%=question_num%>" type="text" placeholder="<%= gettext("Add a choice") %>">
+                <button id="add_option_btn<%=question_num%>" class="add_option_btn btn btn-primary" type="button"><i class="icon-plus icon-white"></i></button>
             </div>
             <table class="table well">
                 <tbody class="option-list">
-                    <tr>
-                        <td>
-                            <a href="#" class="option-edit">
-                                Option #1
-                                <i class="icon-pencil"></i>
-                            </a>
-                        <td>
-                            <div class="text-right">
-                                <a href="#">
-                                    <i class="icon-remove"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#" class="option-edit">
-                                Option #2
-                                <i class="icon-pencil"></i>
-                            </a>
-                        <td>
-                            <div class="text-right">
-                                <a href="#">
-                                    <i class="icon-remove"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#" class="option-edit">
-                                Option #3
-                                <i class="icon-pencil"></i>
-                            </a>
-                        <td>
-                            <div class="text-right">
-                                <a href="#">
-                                    <i class="icon-remove"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
+                    <!-- here goes the options list -->
                 </tbody>
             </table>
+            <div class="well atleastwooptions">
+                <%= gettext("A question needs at least two choices") %>
+            </div>
         </div>
         <div class="control-group spaced-up-control">
             <% if (question_num > 0) { %>
-            <button class="btn btn-large btn-block add-question" id="remove_question_btn" type="button">
+            <button class="btn btn-large btn-block add-question remove_question_btn" id="remove_question_btn<%=question_num%>" data-id="<%=question_num%>" type="button">
                 <%= gettext("Remove question") %>
             </button>
             <% } else { %>
-            <button class="btn btn-large btn-block btn-success" id="create_question_btn" type="button">
+            <button class="btn btn-large btn-block btn-success create_question_btn" id="create_question_btn<%=question_num%>" type="button">
                 <%= gettext("Add question") %>
             </button>
             <% } %>
+            <input type="submit" class="hide" value="submit"/>
         </div>
     </fieldset>
+    </form>
 </script>
 
-<script id="template-election_form_question_tab_pane" type="text/underscore-template">
-    <tr>
-        <td>
-            <a href="#" class="option-edit">
-                {{value}}
-                <i class="icon-pencil"></i>
+<script id="template-election_form_question_answer" type="text/underscore-template">
+    <td>
+        <div class="view-value">
+        <a href="#" class="option-edit">
+            <div class="the-value inline"><%= value %></div> 
+            <i class="icon-pencil inline"></i>
+        </a>
+        </div>
+        <div class="hide edit-value">
+            <input type="text" value="<%= value %>" class="input-edit-value input-xxlarge" />
+        </div>
+    </td>
+    <td>
+        <div class="text-right">
+            <a href="#" class="remove_option" data-value="<%= value %>">
+                <i class="icon-remove"></i>
             </a>
-        <td>
-            <div class="text-right">
-                <a href="#">
-                    <i class="icon-remove"></i>
-                </a>
-            </div>
-        </td>
-    </tr>
+        </div>
+    </td>
 </script>
