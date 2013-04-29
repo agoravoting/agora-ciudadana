@@ -5234,3 +5234,7 @@ div.top-form .option-edit:hover {
 .text-right {
   text-align: right;
 }
+.checkbox input[type="checkbox"],
+.radio input[type="radio"] {
+  width: 13px;
+}
