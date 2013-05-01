@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -99,7 +100,7 @@ class UserenaSignup(models.Model):
 
         salt, hash = generate_sha1(self.user.username)
         self.email_confirmation_key = hash
-        self.email_confirmation_key_created = datetime.datetime.now()
+        self.email_confirmation_key_created = timezone.now()
         self.save()
 
         # Send email for activation
@@ -166,7 +167,7 @@ class UserenaSignup(models.Model):
         expiration_date = self.user.date_joined + expiration_days
         if self.activation_key == userena_settings.USERENA_ACTIVATED:
             return True
-        if datetime.datetime.now() >= expiration_date:
+        if timezone.now() >= expiration_date:
             return True
         return False
 

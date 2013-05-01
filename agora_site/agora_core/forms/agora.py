@@ -40,6 +40,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_unicode
 from django.utils import simplejson as json
 from django.utils import translation
+from django.utils import timezone
 from django.contrib.sites.models import Site
 from django.db import transaction
 
@@ -88,7 +89,7 @@ class DelegateVoteForm(django_forms.ModelForm):
         old_votes = self.agora.delegation_election.cast_votes.filter(
             is_direct=False, invalidated_at_date=None, voter=self.request.user)
         for old_vote in old_votes:
-            old_vote.invalidated_at_date = datetime.datetime.now()
+            old_vote.invalidated_at_date = timezone.now()
             old_vote.save()
 
         # Forge the delegation vote
@@ -116,7 +117,7 @@ class DelegateVoteForm(django_forms.ModelForm):
         vote.is_counted = True # if the user can delegate, it means vote counts
         vote.is_direct = False
         vote.is_public = not self.agora.is_vote_secret
-        vote.casted_at_date = datetime.datetime.now()
+        vote.casted_at_date = timezone.now()
         vote.reason = self.cleaned_data['reason'] if not self.agora.is_vote_secret else ''
         vote.create_hash()
         vote.save()

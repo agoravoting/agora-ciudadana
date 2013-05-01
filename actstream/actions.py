@@ -1,4 +1,5 @@
-from datetime import datetime
+
+from django.utils import timezone
 
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
@@ -106,7 +107,7 @@ def action_handler(verb, **kwargs):
         verb=unicode(verb),
         public=bool(kwargs.pop('public', True)),
         description=kwargs.pop('description', None),
-        timestamp=kwargs.pop('timestamp', datetime.now()),
+        timestamp=kwargs.pop('timestamp', timezone.now()),
         geolocation=kwargs.pop('geolocation', None)
     )
 

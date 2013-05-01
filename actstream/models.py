@@ -3,6 +3,7 @@ from datetime import datetime
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
+from django.utils import timezone
 
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
@@ -82,7 +83,7 @@ class Action(models.Model):
     action_object = generic.GenericForeignKey('action_object_content_type',
         'action_object_object_id')
 
-    timestamp = models.DateTimeField(default=datetime.now)
+    timestamp = models.DateTimeField(default=timezone.now)
 
     public = models.BooleanField(default=True)
 

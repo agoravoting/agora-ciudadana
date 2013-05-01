@@ -3,6 +3,7 @@ from django.db.models import Q
 from django.contrib.auth.models import User, UserManager, Permission, AnonymousUser
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
+from django.utils import timezone
 
 from userena import settings as userena_settings
 from userena.utils import generate_sha1, get_profile_model
@@ -53,7 +54,7 @@ class UserenaManager(UserManager):
         :return: :class:`User` instance representing the new user.
 
         """
-        now = datetime.datetime.now()
+        now = timezone.now()
 
         new_user = User.objects.create_user(username, email, password)
         new_user.first_name = firstname

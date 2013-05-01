@@ -9,6 +9,7 @@ from django.contrib.comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
 from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext_lazy as _, ungettext
+from django.utils import timezone
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
@@ -84,7 +85,7 @@ class PostCommentForm(django_forms.Form):
             object_pk    = force_unicode(self.target_object._get_pk_val()),
             user         = self.request.user,
             comment      = self.cleaned_data["comment"],
-            submit_date  = datetime.datetime.now(),
+            submit_date  = timezone.now(),
             site_id      = settings.SITE_ID,
             is_public    = True,
             is_removed   = False,

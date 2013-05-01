@@ -13,6 +13,7 @@ from django.shortcuts import redirect, get_object_or_404, render_to_response
 from django.utils.translation import ugettext as _
 from django.utils import simplejson as json
 from django.utils import translation
+from django.utils import timezone
 
 from tastypie import fields
 from tastypie.validation import Validation, CleanedDataFormValidation
@@ -1122,7 +1123,7 @@ class AgoraResource(GenericResource):
             return self.raise_error(request, http.HttpBadRequest, data)
 
         # invalidate the vote
-        vote.invalidated_at_date = datetime.datetime.now()
+        vote.invalidated_at_date = timezone.now()
         vote.is_counted = False
         vote.save()
 

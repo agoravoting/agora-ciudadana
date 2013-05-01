@@ -31,6 +31,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_unicode
 from django.utils import simplejson as json
 from django.utils import translation
+from django.utils import timezone
 from django.contrib.sites.models import Site
 from django.db import transaction
 
@@ -253,14 +254,10 @@ class CreateElectionForm(django_forms.ModelForm):
     questions = JSONFormField(label=_('Questions'), required=True,
         validators=[election_questions_validator])
 
-    from_date = django_forms.DateTimeField(label=_('Start voting'), required=False,
-        help_text=_("Not required, you can choose to start the voting period manually"),
-        widget=django_forms.TextInput(attrs={'class': 'datetimepicker'}),
-        input_formats=('%m/%d/%Y %H:%M','%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S'))
-    to_date = django_forms.DateTimeField(label=_('End voting'), required=False,
-        help_text=_("Not required, you can choose to end the voting period manually"),
-        widget=django_forms.TextInput(attrs={'class': 'datetimepicker'}),
-        input_formats=('%m/%d/%Y %H:%M', '%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S'))
+    from_date = ISODateTimeFormField(label=_('Start voting'), required=False,
+        help_text=_("Not required, you can choose to start the voting period manually"))
+    to_date = ISODateTimeFormField(label=_('End voting'), required=False,
+        help_text=_("Not required, you can choose to end the voting period manually"))
 
     def __init__(self, request, agora, *args, **kwargs):
         super(CreateElectionForm, self).__init__(**kwargs)
@@ -296,7 +293,7 @@ class CreateElectionForm(django_forms.ModelForm):
             raise django_forms.ValidationError(_('You need to either provide '
                 'none or both start and end voting dates'))
 
-        if from_date < datetime.datetime.now():
+        if from_date < timezone.now():
             raise django_forms.ValidationError(_('Invalid start date, must be '
                 'in the future'))
 
@@ -320,7 +317,7 @@ class CreateElectionForm(django_forms.ModelForm):
         election.agora = self.agora
         election.create_name()
         election.uuid = str(uuid.uuid4())
-        election.created_at_date = datetime.datetime.now()
+        election.created_at_date = timezone.now()
         election.creator = self.request.user
         election.short_description = election.description[:140]
         election.url = self.request.build_absolute_uri(reverse('election-view',
@@ -341,7 +338,7 @@ class CreateElectionForm(django_forms.ModelForm):
         # admin, it must be approved
         if election.creator in election.agora.admins.all():
             election.is_approved = True
-            election.approved_at_date = datetime.datetime.now()
+            election.approved_at_date = timezone.now()
         else:
             election.is_approved = False
 
@@ -446,7 +443,7 @@ class ElectionEditForm(django_forms.ModelForm):
             raise django_forms.ValidationError(_('You need to either provide '
                 'none or both start and end voting dates'))
 
-        if from_date < datetime.datetime.now():
+        if from_date < timezone.now():
             raise django_forms.ValidationError(_('Invalid start date, must be '
                 'in the future'))
 
@@ -459,7 +456,7 @@ class ElectionEditForm(django_forms.ModelForm):
         election = super(ElectionEditForm, self).save(*args, **kwargs)
 
         election.questions = self.cleaned_data['questions']
-        election.last_modified_at_date = datetime.datetime.now()
+        election.last_modified_at_date = timezone.now()
 
         # save so that in case a task is triggered, it has the correct questions
         # and last modified date
@@ -552,7 +549,7 @@ class VoteForm(django_forms.ModelForm):
         old_votes = self.election.cast_votes.filter(is_direct=True,
             invalidated_at_date=None, voter=self.request.user)
         for old_vote in old_votes:
-            old_vote.invalidated_at_date = datetime.datetime.now()
+            old_vote.invalidated_at_date = timezone.now()
             old_vote.is_counted = False
             old_vote.save()
         vote = super(VoteForm, self).save(commit=False)
@@ -592,7 +589,7 @@ class VoteForm(django_forms.ModelForm):
             vote.reason = self.cleaned_data['reason']
             vote.is_public = True
         vote.data = data
-        vote.casted_at_date = datetime.datetime.now()
+        vote.casted_at_date = timezone.now()
         vote.create_hash()
 
         actstream_action.send(self.request.user, verb='voted', action_object=self.election,

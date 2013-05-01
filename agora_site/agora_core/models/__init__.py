@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Q
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save
 
@@ -98,8 +99,8 @@ class Profile(UserenaLanguageBaseProfile):
         taking place in our agoras.
         '''
         elections = Election.objects.filter(
-            Q(voting_extended_until_date__gt=datetime.datetime.now()) |
-            Q(voting_extended_until_date=None, voting_starts_at_date__lt=datetime.datetime.now()),
+            Q(voting_extended_until_date__gt=timezone.now()) |
+            Q(voting_extended_until_date=None, voting_starts_at_date__lt=timezone.now()),
             Q(is_approved=True, agora__in=self.user.agoras.all())).filter(archived_at_date=None)
 
         if searchquery and len(searchquery) > 1:

@@ -40,7 +40,7 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_unicode
 from django.utils import simplejson as json
-from django.utils import translation
+from django.utils import translation, timezone
 from django.contrib.sites.models import Site
 from django.db import transaction
 
@@ -110,7 +110,7 @@ class VoteForm(django_forms.ModelForm):
         old_votes = self.election.cast_votes.filter(is_direct=True,
             invalidated_at_date=None, voter=self.request.user)
         for old_vote in old_votes:
-            old_vote.invalidated_at_date = datetime.datetime.now()
+            old_vote.invalidated_at_date = timezone.now()
             old_vote.is_counted = False
             old_vote.save()
         vote = super(VoteForm, self).save(commit=False)
@@ -143,7 +143,7 @@ class VoteForm(django_forms.ModelForm):
 
         # assign data, create hash etc
         vote.data = data
-        vote.casted_at_date = datetime.datetime.now()
+        vote.casted_at_date = timezone.now()
         vote.create_hash()
 
         # create action

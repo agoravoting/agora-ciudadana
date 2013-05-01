@@ -8,7 +8,7 @@ from actstream.signals import action
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
-from django.utils import translation
+from django.utils import translation, timezone
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 
@@ -31,10 +31,10 @@ def start_election(election_id, is_secure, site_id, remote_addr, user_id):
         return
 
     if not election.voting_starts_at_date or not election.frozen_at_date or\
-        election.voting_starts_at_date > datetime.datetime.now():
+        election.voting_starts_at_date > timezone.now():
         return
 
-    election.voting_starts_at_date = datetime.datetime.now()
+    election.voting_starts_at_date = timezone.now()
     election.create_hash()
     if not election.extra_data:
         election.extra_data = dict(started=True)
@@ -121,12 +121,12 @@ def end_election(election_id, is_secure, site_id, remote_addr, user_id):
         return
 
     if not election.voting_extended_until_date or not election.frozen_at_date or\
-        election.voting_extended_until_date > datetime.datetime.now():
+        election.voting_extended_until_date > timezone.now():
         return
 
     user = User.objects.get(pk=user_id)
 
-    election.voting_extended_until_date = datetime.datetime.now()
+    election.voting_extended_until_date = timezone.now()
     if not election.extra_data:
         election.extra_data = dict(ended=True)
     else:

@@ -4,7 +4,7 @@
         "model": "agora_core.election",
         "fields": {
             "creator": 0,
-            "last_modified_at_date": "2012-12-06T18:15:20.472",
+            "last_modified_at_date": "2012-12-06T18:15:20.472Z",
             "result_tallied_at_date": null,
             "delegated_votes": [],
             "result": null,
@@ -32,7 +32,7 @@
             "approved_at_date": null,
             "election_type": "SIMPLE_DELEGATION",
             "short_description": "voting used for delegation",
-            "created_at_date": "2012-12-06T18:15:20.471",
+            "created_at_date": "2012-12-06T18:15:20.471Z",
             "agora": 1,
             "voting_starts_at_date": null
         }
@@ -42,7 +42,7 @@
         "model": "agora_core.election",
         "fields": {
             "creator": 0,
-            "last_modified_at_date": "2012-12-06T18:15:20.481",
+            "last_modified_at_date": "2012-12-06T18:15:20.481Z",
             "result_tallied_at_date": null,
             "delegated_votes": [],
             "result": null,
@@ -70,7 +70,7 @@
             "approved_at_date": null,
             "election_type": "SIMPLE_DELEGATION",
             "short_description": "voting used for delegation",
-            "created_at_date": "2012-12-06T18:15:20.481",
+            "created_at_date": "2012-12-06T18:15:20.481Z",
             "agora": 2,
             "voting_starts_at_date": null
         }
@@ -80,7 +80,7 @@
         "model": "agora_core.election",
         "fields": {
             "creator": 0,
-            "last_modified_at_date": "2012-12-06T18:16:14.014",
+            "last_modified_at_date": "2012-12-06T18:16:14.014Z",
             "result_tallied_at_date": null,
             "delegated_votes": [],
             "result": null,
@@ -108,7 +108,7 @@
             "approved_at_date": null,
             "election_type": "ONCE_CHOICE",
             "short_description": "election one",
-            "created_at_date": "2012-12-06T18:16:14.004",
+            "created_at_date": "2012-12-06T18:16:14.004Z",
             "agora": 1,
             "voting_starts_at_date": null
         }
@@ -118,7 +118,7 @@
         "model": "agora_core.election",
         "fields": {
             "creator": 0,
-            "last_modified_at_date": "2012-12-06T18:16:47.478",
+            "last_modified_at_date": "2012-12-06T18:16:47.478Z",
             "result_tallied_at_date": null,
             "delegated_votes": [],
             "result": null,
@@ -146,7 +146,7 @@
             "approved_at_date": null,
             "election_type": "ONCE_CHOICE",
             "short_description": "election two",
-            "created_at_date": "2012-12-06T18:16:47.467",
+            "created_at_date": "2012-12-06T18:16:47.467Z",
             "agora": 1,
             "voting_starts_at_date": null
         }
@@ -156,7 +156,7 @@
         "model": "agora_core.election",
         "fields": {
             "creator": 0,
-            "last_modified_at_date": "2012-12-06T18:17:14.457",
+            "last_modified_at_date": "2012-12-06T18:17:14.457Z",
             "result_tallied_at_date": null,
             "delegated_votes": [],
             "result": null,
@@ -184,7 +184,7 @@
             "approved_at_date": null,
             "election_type": "ONCE_CHOICE",
             "short_description": "election three",
-            "created_at_date": "2012-12-06T18:17:14.446",
+            "created_at_date": "2012-12-06T18:17:14.446Z",
             "agora": 2,
             "voting_starts_at_date": null
         }

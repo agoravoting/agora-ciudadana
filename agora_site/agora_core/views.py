@@ -28,6 +28,7 @@ from django.utils import simplejson as json
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.utils.translation import check_for_language
+from django.utils import timezone
 from django.shortcuts import redirect, get_object_or_404, render_to_response
 from django.template.loader import render_to_string
 from django.views.generic import TemplateView, ListView, CreateView, RedirectView
@@ -530,7 +531,7 @@ class FreezeElectionView(FormActionView):
                 'have permission to freeze the election.'))
             return self.go_next(request)
 
-        election.frozen_at_date = datetime.datetime.now()
+        election.frozen_at_date = timezone.now()
         election.save()
 
         action.send(self.request.user, verb='frozen', action_object=election,
@@ -555,7 +556,7 @@ class StartElectionView(FormActionView):
                 'have permission to start the election.'))
             return self.go_next(request)
 
-        election.voting_starts_at_date = datetime.datetime.now()
+        election.voting_starts_at_date = timezone.now()
         if not election.is_frozen():
             election.frozen_at_date = election.voting_starts_at_date
         election.save()
@@ -588,7 +589,7 @@ class StopElectionView(FormActionView):
                 'have permission to stop the election.'))
             return self.go_next(request)
 
-        election.voting_extended_until_date = election.voting_ends_at_date = datetime.datetime.now()
+        election.voting_extended_until_date = election.voting_ends_at_date = timezone.now()
         election.save()
         transaction.commit()
 
@@ -624,7 +625,7 @@ class ArchiveElectionView(FormActionView):
                 'already archived.'))
             return self.go_next(request)
 
-        election.archived_at_date = datetime.datetime.now()
+        election.archived_at_date = timezone.now()
 
         if election.has_started() and not election.has_ended():
             election.voting_ends_at_date = election.archived_at_date
@@ -789,7 +790,7 @@ class AgoraActionChooseDelegateView(FormActionView):
         old_votes = agora.delegation_election.cast_votes.filter(
             is_direct=False, invalidated_at_date=None, voter=self.request.user)
         for old_vote in old_votes:
-            old_vote.invalidated_at_date = datetime.datetime.now()
+            old_vote.invalidated_at_date = timezone.now()
             old_vote.save()
 
         # Forge the delegation vote
@@ -817,7 +818,7 @@ class AgoraActionChooseDelegateView(FormActionView):
         vote.is_counted = self.request.user in agora.members.all()
         vote.is_direct = False
         vote.is_public = not agora.is_vote_secret
-        vote.casted_at_date = datetime.datetime.now()
+        vote.casted_at_date = timezone.now()
         vote.create_hash()
         vote.save()
 
@@ -1858,7 +1859,7 @@ class CancelVoteView(FormActionView):
                 'participate in this election.'))
             return http.HttpResponseRedirect(election_url)
 
-        vote.invalidated_at_date = datetime.datetime.now()
+        vote.invalidated_at_date = timezone.now()
         vote.is_counted = False
         vote.save()
 

@@ -7,6 +7,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.core.management.base import LabelCommand
 from django.db import reset_queries
 from django.utils.encoding import smart_str
+from django.utils import timezone
 from haystack import connections as haystack_connections
 from haystack.constants import DEFAULT_ALIAS
 from haystack.query import SearchQuerySet
@@ -134,7 +135,7 @@ class Command(LabelCommand):
         end_date = options.get('end_date')
 
         if age is not None:
-            self.start_date = datetime.datetime.now() - datetime.timedelta(hours=int(age))
+            self.start_date = timezone.now() - datetime.timedelta(hours=int(age))
 
         if start_date is not None:
             from dateutil.parser import parse as dateutil_parse

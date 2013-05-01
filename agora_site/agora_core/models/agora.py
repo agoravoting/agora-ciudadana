@@ -8,6 +8,7 @@ from django.db import models
 from django.db.models import Q
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 from django.db.models.signals import post_save
 
 from guardian.shortcuts import *
@@ -105,9 +106,9 @@ class Agora(models.Model):
         taking place.
         '''
         return self.elections.filter(
-            Q(voting_extended_until_date__gt=datetime.datetime.now()) |
+            Q(voting_extended_until_date__gt=timezone.now()) |
                 Q(voting_extended_until_date=None,
-                    voting_starts_at_date__lt=datetime.datetime.now()),
+                    voting_starts_at_date__lt=timezone.now()),
             Q(is_approved=True)).order_by('-voting_extended_until_date',
                 '-voting_starts_at_date')
 
@@ -119,9 +120,9 @@ class Agora(models.Model):
         Used by ajax endpoint searchElection
         '''
         return self.elections.filter(
-            Q(voting_extended_until_date__gt=datetime.datetime.now()) |
+            Q(voting_extended_until_date__gt=timezone.now()) |
                 Q(voting_extended_until_date=None,
-                    voting_starts_at_date__lt=datetime.datetime.now()),
+                    voting_starts_at_date__lt=timezone.now()),
             Q(is_approved=True),
             Q(pretty_name__icontains=name)).order_by('-voting_extended_until_date',
                 '-voting_starts_at_date')
@@ -131,7 +132,7 @@ class Agora(models.Model):
         Returns the list of past elections with a given result
         '''
         return self.elections.filter(
-            result_tallied_at_date__lt=datetime.datetime.now()).order_by(
+            result_tallied_at_date__lt=timezone.now()).order_by(
                 '-voting_extended_until_date')
 
     # Stablishes a default option for elections
@@ -240,8 +241,8 @@ class Agora(models.Model):
         '''
 
         return self.elections.filter(
-            Q(voting_extended_until_date__gt=datetime.datetime.now()) |
-            Q(voting_extended_until_date=None, voting_starts_at_date__lt=datetime.datetime.now()),
+            Q(voting_extended_until_date__gt=timezone.now()) |
+            Q(voting_extended_until_date=None, voting_starts_at_date__lt=timezone.now()),
             Q(is_approved=True)
         ).order_by('-voting_extended_until_date',
             '-voting_starts_at_date')
@@ -419,7 +420,7 @@ def create_delegation_election(sender, instance, created, **kwargs):
     election.description = election.short_description = "voting used for delegation"
     election.election_type = Agora.ELECTION_TYPES[1][0] # simple delegation
     election.uuid = str(uuid.uuid4())
-    election.created_at_date = datetime.datetime.now()
+    election.created_at_date = timezone.now()
     election.create_hash()
     election.save()
 

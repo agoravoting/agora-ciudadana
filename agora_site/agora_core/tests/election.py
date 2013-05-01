@@ -8,6 +8,7 @@ from common import (HTTP_OK,
 
 from common import RootTestCase
 from django.contrib.markup.templatetags.markup import textile
+from django.utils import timezone
 from datetime import datetime, timedelta
 import copy
 
@@ -213,9 +214,9 @@ class ElectionTest(RootTestCase):
         self.login('user1', '123')
         # user1 creates an election, but remains in requested status as it's not
         # an admin
-        date_format = "%Y-%m-%dT%H:%M:%S"
-        now = (datetime.now() + timedelta(seconds=1)).strftime(date_format)
-        later = (datetime.now() + timedelta(hours=2)).strftime(date_format)
+        date_format = "%Y/%m/%dT%H:%M:%S"
+        now = (timezone.now() + timedelta(seconds=1)).strftime(date_format) + 'Z'
+        later = (timezone.now() + timedelta(hours=2)).strftime(date_format) + 'Z'
         orig_data = copy.deepcopy(self.base_election_data)
         orig_data['from_date'] = now
         orig_data['to_date'] = later

@@ -4,6 +4,7 @@ import sys
 import warnings
 from django.db.models import signals
 from django.utils.encoding import force_unicode
+from django.utils import timezone
 from haystack import connections, connection_router
 from haystack.constants import ID, DJANGO_CT, DJANGO_ID, Indexable, DEFAULT_ALIAS
 from haystack.fields import *
@@ -78,7 +79,7 @@ class SearchIndex(threading.local):
                 return Note
 
             def index_queryset(self):
-                return self.get_model().objects.filter(pub_date__lte=datetime.datetime.now())
+                return self.get_model().objects.filter(pub_date__lte=timezone.now())
 
     """
     __metaclass__ = DeclarativeMetaclass
