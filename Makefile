@@ -25,6 +25,7 @@ mainjs:
 					      agora_site/static/js/libs/moment-lang/es.js \
 					      agora_site/static/js/libs/livestamp.min.js \
 					      agora_site/static/js/libs/nod.min.js \
+					      agora_site/static/js/libs/showdown.js \
 					      agora_site/static/js/libs/backbone-associations.min.js \
 					      	-o agora_site/static/js/min/main.min.js
 agorajs:
@@ -42,4 +43,5 @@ agorajs:
 					      agora_site/static/js/agora/views/user.js \
 					      agora_site/static/js/agora/views/user_list.js \
 					      agora_site/static/js/agora/views/election_form.js \
+					      agora_site/static/js/agora/views/voting_booth.js \
 					      	-c -o agora_site/static/js/min/agora.min.js

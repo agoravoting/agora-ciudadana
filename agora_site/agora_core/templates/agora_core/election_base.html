@@ -128,7 +128,7 @@
         {% block election_content %}
             {% if election.description != election.short_description %}
             <div class="main-description">
-                {{ election.biograpy|textile }}
+                {{ election.description|markdown:"safe" }}
             </div>
             {% endif %}
             <div class="activity-list" id="activity-list"

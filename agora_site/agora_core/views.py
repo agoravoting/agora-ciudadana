@@ -421,6 +421,13 @@ class ElectionView(AjaxListView):
         return super(ElectionView, self).dispatch(*args, **kwargs)
 
 
+class VotingBoothView(ElectionView):
+    '''
+    Shows an election voting booth
+    '''
+    template_name = 'agora_core/voting_booth.html'
+
+
 class EditElectionView(UpdateView):
     '''
     Creates a new agora
