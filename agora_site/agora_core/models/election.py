@@ -10,6 +10,7 @@ from django.db import models
 from django.db.models import Q
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 
 from guardian.shortcuts import *
 
@@ -293,17 +294,17 @@ class Election(models.Model):
         '''
         Returns true if voting has started, false otherwise
         '''
-        return self.voting_starts_at_date != None and self.voting_starts_at_date < datetime.datetime.now()
+        return self.voting_starts_at_date != None and self.voting_starts_at_date < timezone.now()
 
     def has_ended(self):
         '''
         Returns true if voting has ended, false otherwise
         '''
-        now = datetime.datetime.now()
+        now = timezone.now()
         if self.voting_extended_until_date == None:
-            return self.voting_ends_at_date and  self.voting_ends_at_date < datetime.datetime.now()
+            return self.voting_ends_at_date and  self.voting_ends_at_date < timezone.now()
         else:
-            return self.voting_extended_until_date and self.voting_extended_until_date < datetime.datetime.now()
+            return self.voting_extended_until_date and self.voting_extended_until_date < timezone.now()
 
     def is_archived(self):
         '''
@@ -393,7 +394,7 @@ class Election(models.Model):
         voting hasn't started yet, so that others can delegate in them in
         advance. For now, any voter is a delegate.
         '''
-        now = datetime.datetime.now()
+        now = timezone.now()
         return self.has_started() and not self.has_ended()
 
     def has_user_voted(self, user):
@@ -548,7 +549,7 @@ class Election(models.Model):
         else:
             tmp = _('Vote is public. ')
             desc += tmp.__unicode__()
-        now = datetime.datetime.now()
+        now = timezone.now()
 
         def timesince(dati):
             return ('<time class="timeago" data-livestamp="%(isotime)s" '
@@ -846,7 +847,7 @@ class Election(models.Model):
         self.extra_data['tally_log'] = tally_log
 
         self.delegated_votes_frozen_at_date = self.voters_frozen_at_date =\
-            self.result_tallied_at_date = datetime.datetime.now()
+            self.result_tallied_at_date = timezone.now()
 
         # TODO: update result_hash
         self.save()

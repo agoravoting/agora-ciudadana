@@ -324,7 +324,8 @@
                 if (!val) {
                     return false;
                 }
-                return isFinite(new Date(val));
+                val = moment(val, "MM/DD/YYYY HH:mm");
+                return isFinite(val) && val > moment();
             };
 
             var checkEndDate = function() {
@@ -335,10 +336,11 @@
                 if (!val) {
                     return true;
                 }
-                var valid = isFinite(new Date(val));
+                var end_date = moment(val, "MM/DD/YYYY HH:mm");
 
                 var val_start = self.$el.find("#start_voting_date").val();
-                return valid && isFinite(new Date(val_start));
+                var start_date = moment(val_start, "MM/DD/YYYY HH:mm");
+                return isFinite(end_date) && isFinite(start_date) && end_date - start_date >= 3600*1000;
             };
 
             return [
@@ -402,6 +404,10 @@
             // do various setup calls
             this.$el.find("#create_election_form").nod(this.getMetrics());
             $('.datetimepicker').datetimepicker();
+            if (this.model.get("from_date")) {
+                this.$el.find("#schedule_voting").click();
+                $('div.top-form #schedule_voting_controls').toggle();
+            }
             $("#create_election_form").submit(this.saveElection);
         },
 
@@ -461,6 +467,15 @@
         },
 
         updateModel: function() {
+            var start_date = this.$el.find("#start_voting_date").val();
+            var end_date = this.$el.find("#end_voting_date").val();
+            if ($("#schedule_voting:checked").length == 0) {
+                this.model.set('from_date', '');
+                this.model.set('to_date', '');
+            } else {
+                this.model.set('from_date', new Date(start_date).toJSON());
+                this.model.set('to_date', new Date(end_date).toJSON());
+            }
             this.model.set('pretty_name', this.$el.find('#pretty_name').val());
             this.model.set('description', this.$el.find('#description').val());
             this.model.set('short_description', this.model.get('description').substr(0, 140));
@@ -542,6 +557,14 @@
 
         getInitModel: function() {
             // here we filter the values to those that can be modified
+            var from_date = moment(ajax_data.voting_starts_at_date);
+            var to_date = moment(ajax_data.voting_ends_at_date);
+            if (from_date) {
+                from_date = from_date.format("MM/DD/YYYY HH:mm");
+            }
+            if (to_date) {
+                to_date = to_date.format("MM/DD/YYYY HH:mm");
+            }
             var initData = {
                 id: ajax_data.id,
                 pretty_name: ajax_data.pretty_name,
@@ -549,8 +572,8 @@
                 comments_policy: ajax_data.comments_policy,
                 is_vote_secret: ajax_data.is_vote_secret,
                 questions: ajax_data.questions,
-                from_date: ajax_data.voting_starts_at_date,
-                to_date: ajax_data.voting_ends_at_date,
+                from_date: from_date,
+                to_date: to_date,
             };
             return new Agora.ElectionModel(initData);
         },
@@ -594,11 +617,17 @@
             this.$el.find("#save_election_btn").addClass("disabled");
             this.sendingData = true;
 
-            var json = JSON.stringify(this.model.toJSON());
+            var json = this.model.toJSON();
+            if (json.from_date) {
+                json.from_date = new Date(json.from_date).toJSON();
+            }
+            if (json.to_date) {
+                json.to_date = new Date(json.to_date).toJSON();
+            }
             var election_id = this.model.get('id');
             var self = this;
             var jqxhr = $.ajax("/api/v1/election/" + election_id + "/", {
-                data: json, 
+                data: JSON.stringify(json), 
                 contentType : 'application/json',
                 type: 'PUT',
             })

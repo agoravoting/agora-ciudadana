@@ -8,7 +8,7 @@ from agora_site.agora_core.resources.castvote import CastVoteResource
 from agora_site.agora_core.forms import PostCommentForm, election_questions_validator
 from agora_site.agora_core.forms.election import VoteForm as ElectionVoteForm
 from agora_site.misc.utils import (geolocate_ip, get_base_email_context,
-    JSONFormField)
+    JSONFormField, ISODateTimeFormField)
 from agora_site.misc.decorators import permission_required
 
 from tastypie import fields, http
@@ -28,6 +28,7 @@ from django.forms import ModelForm
 from django.utils.translation import ugettext as _
 from django.utils import simplejson as json
 from django.utils import translation
+from django.utils import timezone
 from django.db import transaction
 from django import forms as django_forms
 
@@ -69,10 +70,8 @@ class ElectionAdminForm(ModelForm):
     '''
     questions = JSONFormField(label=_('Questions'), required=True,
         validators=[election_questions_validator])
-    from_date = django_forms.DateTimeField(label=_('Start voting'), required=False,
-        input_formats=('%Y-%m-%dT%H:%M:%S',))
-    to_date = django_forms.DateTimeField(label=_('End voting'), required=False,
-        input_formats=('%Y-%m-%dT%H:%M:%S',))
+    from_date = ISODateTimeFormField(label=_('Start voting'), required=False)
+    to_date = ISODateTimeFormField(label=_('End voting'), required=False)
 
     class Meta(GenericMeta):
         model = Election
@@ -95,7 +94,7 @@ class ElectionAdminForm(ModelForm):
         if not from_date and not to_date:
             return cleaned_data
 
-        if from_date < datetime.datetime.now():
+        if from_date < timezone.now():
             raise django_forms.ValidationError(_('Invalid start date, must be '
                 'in the future'))
 
@@ -109,7 +108,7 @@ class ElectionAdminForm(ModelForm):
 
         # Questions/answers have a special formatting
         election.questions = self.cleaned_data['questions']
-        election.last_modified_at_date = datetime.datetime.now()
+        election.last_modified_at_date = timezone.now()
         election.save()
 
         kwargs=dict(
@@ -403,7 +402,7 @@ class ElectionResource(GenericResource):
             user_id=request.user.id
         )
 
-        election.last_modified_at_date = datetime.datetime.now()
+        election.last_modified_at_date = timezone.now()
         election.voting_starts_at_date = election.last_modified_at_date
         if not election.frozen_at_date:
             election.frozen_at_date = election.last_modified_at_date
@@ -418,7 +417,7 @@ class ElectionResource(GenericResource):
         '''
         Ends an election
         '''
-        election.last_modified_at_date = datetime.datetime.now()
+        election.last_modified_at_date = timezone.now()
 
         tkwargs=dict(
             election_id=election.id,
@@ -428,7 +427,7 @@ class ElectionResource(GenericResource):
             user_id=request.user.id
         )
 
-        election.voting_ends_at_date = datetime.datetime.now()
+        election.voting_ends_at_date = timezone.now()
         election.voting_extended_until_date = election.voting_ends_at_date
         election.save()
         transaction.commit()
@@ -441,7 +440,7 @@ class ElectionResource(GenericResource):
         '''
         Archives an election
         '''
-        election.archived_at_date = datetime.datetime.now()
+        election.archived_at_date = timezone.now()
         election.last_modified_at_date = election.archived_at_date
 
         if election.has_started() and not election.has_ended():
@@ -487,7 +486,7 @@ class ElectionResource(GenericResource):
             data = dict(errors=_('You didn\'t participate in this election.'))
             return self.raise_error(request, http.HttpBadRequest, data)
 
-        vote.invalidated_at_date = datetime.datetime.now()
+        vote.invalidated_at_date = timezone.now()
         vote.is_counted = False
         vote.save()
 

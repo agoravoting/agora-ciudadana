@@ -10,6 +10,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
 from django.utils.datastructures import DictWrapper
+from django.utils import datetime_safe
 from django.core import mail as django_mail
 from django.core.mail import (EmailMultiAlternatives, EmailMessage, send_mail,
     send_mass_mail, get_connection)
@@ -22,7 +23,7 @@ from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.shortcuts import _get_queryset
-from django.forms.fields import Field
+from django.forms.fields import Field, DateTimeField
 from django.forms.util import ValidationError
 
 import datetime
@@ -78,6 +79,10 @@ class JSONFormField(Field):
                 raise ValidationError(_("Enter valid JSON"))
         return value
 
+class ISODateTimeFormField(DateTimeField):
+    def strptime(self, value, format):
+        from dateutil.parser import parse
+        return parse(value)
 
 class JSONField(models.TextField):
     """

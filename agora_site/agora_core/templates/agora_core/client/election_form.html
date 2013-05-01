@@ -43,10 +43,10 @@
                         <div class="controls sub-group-control hide" id="schedule_voting_controls">
                             <div class="input-prepend inline">
                                 <span class="add-on"><i class="icon-calendar"></i></span>
-                                <input class="span2 datetimepicker" id="start_voting_date" type="text" placeholder="<%= gettext("Start voting at..") %>" /> -
+                                <input class="span2 datetimepicker" id="start_voting_date" type="text" placeholder="<%= gettext("Start voting at..") %>" value="<%= from_date %>" /> -
                             </div>
                             <div class="input-append inline">
-                                <input class="span2 datetimepicker" id="end_voting_date" type="text" placeholder="<%= gettext("End voting at..") %>" />
+                                <input class="span2 datetimepicker" id="end_voting_date" type="text" placeholder="<%= gettext("End voting at..") %>" value="<%= to_date %>" />
                                 <span class="add-on"><i class="icon-calendar"></i></span>
                             </div>
                         </div>
