@@ -86,7 +86,7 @@
     {% endif %}
 </div>
 
-<p>{{ election.short_description|truncatechars:139 }}</p>
+<p>{{ election.short_description|markdown:"safe" }}</p>
 
 <ul class="nav nav-tabs">
     {% block election-navigation %}
