@@ -139,7 +139,7 @@
         <div class="control-group">
             <div id="num_winners_opts<%=question_num%>" class="inline num_winners_opts">
             <label class="control-label inline" for="num_winners"><%= gettext("Elect a list of") %></label>
-            <input type="text" name="num_winners" maxlength="3" value="1" id="num_winners<%=question_num%>" class="num_winners inline input-nano"/>
+            <input type="text" name="num_winners" maxlength="3" value="<%= num_seats %>" id="num_winners<%=question_num%>" class="num_winners inline input-nano"/>
             <%= gettext("winners") %>.
             </div>
             <div class="inline">

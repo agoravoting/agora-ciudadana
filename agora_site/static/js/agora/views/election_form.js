@@ -20,6 +20,7 @@
             'question_num': 0,
             'max': 1,
             'min': 0,
+            'num_seats': 1,
             'question': '',
             'randomize_answer_order': true,
             'answers': []
@@ -37,6 +38,8 @@
             'description': '',
             'is_vote_secret': true,
             'questions': [],
+            'from_date': '',
+            'to_date': ''
         }
     });
 
@@ -316,31 +319,17 @@
 
         getMetrics: function() {
             var self = this;
-            var checkStartDate = function() {
-                if (self.$el.find("#schedule_voting:checked").length == 0) {
-                    return true;
-                }
-                var val = self.$el.find("#start_voting_date").val();
-                if (!val) {
-                    return false;
-                }
-                val = moment(val, "MM/DD/YYYY HH:mm");
-                return isFinite(val) && val > moment();
-            };
 
-            var checkEndDate = function() {
+            var checkIntervalDate = function() {
                 if (self.$el.find("#schedule_voting:checked").length == 0) {
                     return true;
                 }
-                var val = self.$el.find("#end_voting_date").val();
-                if (!val) {
-                    return true;
-                }
-                var end_date = moment(val, "MM/DD/YYYY HH:mm");
+                var val_end = self.$el.find("#end_voting_date").val();
+                var end_date = moment(val_end, "MM/DD/YYYY HH:mm");
 
                 var val_start = self.$el.find("#start_voting_date").val();
                 var start_date = moment(val_start, "MM/DD/YYYY HH:mm");
-                return isFinite(end_date) && isFinite(start_date) && end_date - start_date >= 3600*1000;
+                return end_date != null && start_date != null && end_date - start_date >= 3600*1000;
             };
 
             return [
@@ -352,8 +341,8 @@
 
                 ['[name=is_vote_secret]',  'presence', gettext('You must choose if vote is secret')],
 
-                ['#start_voting_date', checkStartDate, gettext('Invalid date')],
-                ['#end_voting_date', checkEndDate, gettext('Invalid date')],
+                ['#start_voting_date', checkIntervalDate, gettext('Invalid dates')],
+                ['#end_voting_date', checkIntervalDate, gettext('Invalid dates')],
             ];
         },
 
