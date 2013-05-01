@@ -20,6 +20,41 @@
 
     <div id="voting_booth"></div>
 
+    <script id="template-voting_booth_start_screen" type="text/underscore-template">
+        <div class="modal-header hero-vote">
+            <div class="text-center">
+                <h1><%= pretty_name %></h1>
+                <div class="description markdown-readonly" data-id="description"></div>
+            </div>
+        </div>
+        <div class="modal-header hero-vote">
+            <p><%= gettext("To cast a vote you will be led through the following steps:") %></p>
+            <ol>
+                <li><%= gettext("<strong>Select</strong> your options") %><br/>
+                    <%= gettext("Answer the questions one by one.") %>
+                </li>
+                <li><%= gettext("<strong>Review</strong> your choices") %><br/>
+                    <%= gettext("All your choices will be presented to you for review.") %>
+                </li>
+                <li><%= gettext("<strong>Submit</strong> your ballot") %><br/>
+                    <%= gettext("Proceed to cast your ballot for tallying.") %>
+                </li>
+            </ol>
+            <button class="btn btn-large btn-block btn-primary" type="button">
+                <%= gettext("Start voting") %>
+            </button>
+        </div>
+        <div class="modal-header">
+            <small>
+                <%= gettext("Election") %> <a class="inline text-center" href="<%= url %>" target="_blank"><%= pretty_name %></a> <%= gettext("at") %> <a class="inline text-center" href="<%= agora.url %>" target="_blank"><%= agora.full_name %></a>
+                </a>
+            </small>
+            <small class="pull-right">
+                <%= gettext("Election fingerprint:") %> <%= hash %>
+            </small>
+        </div>
+    </script>
+
     <script id="template-voting_booth" type="text/underscore-template">
         <div class="container">
             <div class="row">
@@ -30,42 +65,13 @@
                             <a href="mailto:agora-ciudadana-devel@googlegroups.com" class="text-right help_link pull-right" target="_blank"><%= gettext("Help!") %></a>
                         </h3>
                     </div>
-                    <div class="modal-header hero-vote">
-                        <div class="text-center">
-                            <h1><%= pretty_name %></h1>
-                            <div class="description markdown-readonly" data-id="description"></div>
-                        </div>
-                    </div>
-                    <div class="modal-header hero-vote">
-                        <p><%= gettext("To cast a vote you will be led through the following steps:") %></p>
-                        <ol>
-                            <li><%= gettext("<strong>Select</strong> your options") %><br/>
-                                <%= gettext("Answer the questions one by one.") %>
-                            </li>
-                            <li><%= gettext("<strong>Review</strong> your choices") %><br/>
-                                <%= gettext("All your choices will be presented to you for review.") %>
-                            </li>
-                            <li><%= gettext("<strong>Submit</strong> your ballot") %><br/>
-                                <%= gettext("Proceed to cast your ballot for tallying.") %>
-                            </li>
-                        </ol>
-                        <button class="btn btn-large btn-block btn-primary" type="button">
-                            <%= gettext("Start voting") %>
-                        </button>
-                    </div>
-                    <div class="modal-header">
-                        <small>
-                            <%= gettext("Election at ") %> <a class="inline text-center" href="<%= agora.url %>" target="_blank"><%= agora.full_name %></a>
-                            </a>
-                        </small>
-                        <small class="pull-right">
-                            <%= gettext("Election fingerprint:") %> <%= hash %>
-                        </small>
+                    <div class="start-screen">
                     </div>
                 </div>
             </div>
         </div>
     </script>
+
 
     <script type="text/javascript" src="{% url jsgettext %}?language={{ LANGUAGE_CODE }}"></script>
     <script src="{% static 'js/min/main.min.js' %}"></script>
