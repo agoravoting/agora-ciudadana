@@ -33,7 +33,6 @@
             relatedModel: Agora.QuestionModel
         }],
         defaults: {
-            'action': 'create_election',
             'pretty_name': '',
             'description': '',
             'is_vote_secret': true,
@@ -297,7 +296,7 @@
             if (id == "MEEK-STV") {
                 this.$el.find(".num_winners_opts").css('display', 'inline-block');
             } else {
-                this.$el.find(".num_winners_opts").val('1');
+                this.$el.find(".num_winners_opts input").val('1');
                 this.$el.find(".num_winners_opts").hide();
             }
             this.model.set('tally_type', id);
@@ -312,6 +311,8 @@
 
     Agora.ElectionCreateForm = Backbone.View.extend({
         el: "div.top-form",
+
+        initData: {},
 
         getMetrics: function() {
             var self = this;
@@ -367,6 +368,12 @@
             return new Agora.ElectionModel();
         },
 
+        modelToJsonForTemplate: function() {
+            var json = this.model.toJSON();
+            json.edit_election = false;
+            return json;
+        },
+
         initialize: function() {
             this.template = _.template($("#template-election_form").html());
             this.templateNavtab = _.template($("#template-election_form_question_navtab").html());
@@ -375,7 +382,7 @@
             this.model = this.getInitModel();
 
             // render initial template
-            this.$el.html(this.template(this.model.toJSON()));
+            this.$el.html(this.template(this.modelToJsonForTemplate()));
 
             // add question tab-content
             this.addQuestionView = new Agora.QuestionEditView({
@@ -395,7 +402,7 @@
             // do various setup calls
             this.$el.find("#create_election_form").nod(this.getMetrics());
             $('.datetimepicker').datetimepicker();
-            $("#create_election_form").submit(this.createElection);
+            $("#create_election_form").submit(this.saveElection);
         },
 
         removeQuestion: function(e) {
@@ -456,6 +463,7 @@
         updateModel: function() {
             this.model.set('pretty_name', this.$el.find('#pretty_name').val());
             this.model.set('description', this.$el.find('#description').val());
+            this.model.set('short_description', this.model.get('description').substr(0, 140));
 
             var is_vote_secret = $("#is_vote_secret_yes").attr('checked') == 'checked';
             this.model.set('is_vote_secret', is_vote_secret);
@@ -463,7 +471,7 @@
 
         sendingData: false,
 
-        createElection: function(e) {
+        saveElection: function(e) {
             e.preventDefault();
             // if we are already sending do nothing
             if (this.sendingData) {
@@ -494,11 +502,12 @@
             this.$el.find("#create_election_btn").addClass("disabled");
             this.sendingData = true;
 
-            var json = JSON.stringify(this.model.toJSON());
+            var json = this.model.toJSON();
+            json.action = 'create_election';
             var agora_id = $("#agora_id").val();
             var self = this;
             var jqxhr = $.ajax("/api/v1/agora/" + agora_id + "/action/", {
-                data: json, 
+                data: JSON.stringify(json),
                 contentType : 'application/json',
                 type: 'POST',
             })
@@ -515,9 +524,11 @@
         updateButtonsShown: function() {
             if (this.model.get("questions").length == 0) {
                 this.$el.find("#create_election_btn").hide();
+                this.$el.find("#save_election_btn").hide();
                 this.$el.find("#show_add_question_tab_btn").show();
             } else {
                 this.$el.find("#create_election_btn").show();
+                this.$el.find("#save_election_btn").show();
                 this.$el.find("#show_add_question_tab_btn").hide();
             }
         },
@@ -528,9 +539,77 @@
     });
 
     Agora.ElectionEditForm = Agora.ElectionCreateForm.extend({
+
         getInitModel: function() {
-            // TODO
-            return {};
-        }
+            // here we filter the values to those that can be modified
+            var initData = {
+                id: this.options.initData.id,
+                pretty_name: this.options.initData.pretty_name,
+                description: this.options.initData.description,
+                comments_policy: this.options.initData.comments_policy,
+                is_vote_secret: this.options.initData.is_vote_secret,
+                questions: this.options.initData.questions,
+                from_date: this.options.initData.voting_starts_at_date,
+                to_date: this.options.initData.voting_ends_at_date,
+            };
+            return new Agora.ElectionModel(initData);
+        },
+
+        modelToJsonForTemplate: function() {
+            var json = this.model.toJSON();
+            json.edit_election = true;
+            return json;
+        },
+
+        sendingData: false,
+
+        saveElection: function(e) {
+            e.preventDefault();
+            // if we are already sending do nothing
+            if (this.sendingData) {
+                return;
+            }
+
+            this.updateModel();
+
+            // look for a question whose data is invalid
+            var failingQuestion = this.model.get('questions').find(function (question) {
+                question.formValid = false;
+                question.questionView.$el.find("[type=submit]").click();
+                return question.formValid == false;
+                question.questionView.updateModel();
+            });
+
+            // if found, switch to that question
+            if (failingQuestion) {
+                var question_num =failingQuestion.get('question_num');
+                var selector = "#question-navtab-" + question_num + " a";
+                this.$el.find(selector).tab('show');
+                return;
+            }
+
+            // okey, we're going to send this new election - but first disable
+            // the send question button to avoid sending the same thing multiple
+            // times
+            this.$el.find("#save_election_btn").addClass("disabled");
+            this.sendingData = true;
+
+            var json = JSON.stringify(this.model.toJSON());
+            var election_id = this.model.get('id');
+            var self = this;
+            var jqxhr = $.ajax("/api/v1/election/" + election_id + "/", {
+                data: json, 
+                contentType : 'application/json',
+                type: 'PUT',
+            })
+            .done(function(e) { window.location.href = e.url; })
+            .fail(function() { alert("Error saving the election"); })
+            .always(function() {
+                self.sendingData = false;
+                self.$el.find("#save_election_btn").removeClass("disabled");
+            });
+
+            return false;
+        },
     });
 }).call(this);

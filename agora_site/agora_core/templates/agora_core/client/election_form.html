@@ -1,7 +1,9 @@
 {% load i18n %}
 {% load static from staticfiles %}
 <script id="template-election_form" type="text/underscore-template">
+    <% if (!edit_election) { %>
     <h1><%= gettext("Create election") %></h1>
+    <% } %>
         <ul class="nav nav-tabs">
             <li class="active">
                 <a href="#election-tab"  data-toggle="tab"><%= gettext("Election") %></a>
@@ -54,7 +56,11 @@
                             <%= gettext("Add question") %>
                         </button>
                         <button class="btn btn-large btn-block btn-success" id="create_election_btn" type="submit">
+                        <% if (!edit_election) { %>
                             <%= gettext("Create election") %>
+                        <% } else { %>
+                            <%= gettext("Save election") %>
+                        <% } %>
                         </button>
                     </div>
                 </fieldset></form>

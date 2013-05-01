@@ -4,6 +4,8 @@ taken from
 http://www.djangosnippets.org/snippets/377/
 """
 
+from django.core.urlresolvers import resolve, Resolver404
+from django.http import HttpRequest
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
@@ -28,6 +30,7 @@ import pygeoip
 
 from jsonfield import JSONField as JSONField2
 from tastypie.fields import ApiField
+from tastypie.serializers import Serializer
 
 from guardian.core import ObjectPermissionChecker
 from guardian.models import UserObjectPermission, GroupObjectPermission
@@ -319,3 +322,98 @@ class GenericForeignKeyField(fields.ToOneField):
     def build_related_resource(self, *args, **kwargs):
         self._to_class = None
         return super(GenericForeignKeyField, self).build_related_resource(*args, **kwargs)
+
+
+# the following is from
+# http://gdorn.circuitlocution.com/blog/2012/11/21/using-tastypie-inside-django.html
+
+def rest(path, query={}, data={}, headers={}, method="GET"):
+    """
+    Converts a RPC-like call to something like a HttpRequest, passes it
+    to the right view function (via django's url resolver) and returns
+    the result.
+
+    Args:
+        path: a uri-like string representing an API endpoint. e.g. /resource/27.
+              /api/v2/ is automatically prepended to the path.
+        query: dictionary of GET-like query parameters to pass to view
+        data: dictionary of POST-like parameters to pass to view
+        headers: dictionary of extra headers to pass to view (will end up in request.META)
+        method: HTTP verb for the emulated request
+    Returns:
+        a tuple of (status, content):
+            status: integer representing an HTTP response code
+            content: string, body of response; may be empty
+    """
+    #adjust for lack of trailing slash, just in case
+    if path[-1] != '/':
+        path += '/'
+
+    hreq = FakeHttpRequest()
+    hreq.path = '/api/v1' + path
+    hreq.GET = query
+    hreq.POST = data
+    hreq.META = headers
+    hreq.method = method
+    try:
+        view = resolve(hreq.path)
+        res = view.func(hreq, *view.args, **view.kwargs)
+    except Resolver404:
+        return (404, '')
+
+     #container is the untouched content before HttpResponse mangles it
+    return (res.status_code, res._container)
+
+class CustomNoneSerializer(Serializer):
+    """
+    A custom serializer for TastyPie allowing "none" as an encoding type.
+
+    Resources need to specify this serializer as Meta.serializer.
+    See http://django-tastypie.readthedocs.org/en/latest/serialization.html
+
+    @todo: Is there a better way to tell TastyPie to not do any serialization per-request
+        (without breaking a hypothetical HTTP REST service)?
+    """
+    formats = Serializer.formats + ['none']
+    content_types = Serializer.content_types
+    content_types['none'] = 'none/none'
+
+    def to_none(self, data, options=None):
+        """
+        Outbound 'serializer'.
+        """
+        #If the object is a tastypie bundle containing a dict, just return the dict.
+        if hasattr(data, 'data'):
+            return data.data
+        elif isinstance(data, dict):
+            if 'objects' in data:
+                data['objects'] = [foo.data for foo in data['objects']]
+        return data
+
+    def from_none(self, data, options=None):
+        return data
+
+
+class FakeHttpRequest(HttpRequest):
+    """
+    Custom version of Django's HttpRequest to minimize unnecessary work
+    for in-process requests.
+    """
+    _read_started = False
+
+    @property
+    def raw_post_data(self):
+        """
+        Instead of providing a file-like object representing the body
+        of the request, just return the internal dict; tastypie copes with
+        this just fine.
+        """
+        return self.POST
+
+    @property
+    def encoding(self):
+        """
+        We're passing python native types around and not encoding anything,
+        so all FakeHttpRequests are encoded as 'none/none'.
+        """
+        return 'none/none'

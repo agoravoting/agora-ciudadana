@@ -19,7 +19,7 @@ from tastypie.exceptions import NotFound, BadRequest, InvalidFilterError, Hydrat
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, ValidationError
 from tastypie.utils.mime import build_content_type
 
-from agora_site.misc.utils import JSONApiField
+from agora_site.misc.utils import JSONApiField, CustomNoneSerializer
 
 class GenericResourceMixin:
 
@@ -200,6 +200,7 @@ class GenericMeta:
     list_allowed_methods = ['get', 'post']
     detail_allowed_methods = ['get', 'post', 'put', 'delete']
     authorization = Authorization()
+    serializer = CustomNoneSerializer()
     authentication = MultiAuthentication(ReadOnlyAuthentication(),
         SessionAuthentication(), ApiKeyAuthentication())
     always_return_data = True

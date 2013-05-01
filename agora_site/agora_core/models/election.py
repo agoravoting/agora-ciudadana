@@ -13,7 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from guardian.shortcuts import *
 
-from agora_site.misc.utils import JSONField
+from agora_site.misc.utils import JSONField, rest
 from agora_site.agora_core.models import Agora
 from agora_site.agora_core.models.voting_systems.base import (
     parse_voting_methods, get_voting_system_by_id)

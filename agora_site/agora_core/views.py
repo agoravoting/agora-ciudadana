@@ -475,6 +475,7 @@ class EditElectionView(UpdateView):
     def get_context_data(self, *args, **kwargs):
         context = super(EditElectionView, self).get_context_data(**kwargs)
         context['object_list'] = []
+        context['permissions'] = self.election.get_perms(self.request.user)
         return context
 
     def get_form_kwargs(self):

@@ -1,5 +1,6 @@
 
 from agora_site.agora_core.models import CastVote
+from agora_site.misc.utils import rest as rest_api
 
 from django import template
 from django.utils.translation import pgettext as _
@@ -196,6 +197,29 @@ class IfActiveTabNode(template.Node):
             return self.nodelist_false.render(context)
 
         return self.nodelist_true.render(context)
+
+class RestNode(template.Node):
+    args = None
+
+    def __init__(self, *args):
+        self.args = args
+
+    def render(self, context):
+        try:
+            args = [str(template.Variable(arg).resolve(context)) for arg in self.args]
+            url = ''.join(args)
+            status_code, container = rest_api(url)
+            if status_code >= 300:
+                return ''
+            else:
+                return container[0]
+        except template.VariableDoesNotExist:
+            return ''
+
+@register.tag
+def rest(parser, token):
+    bits = token.split_contents()[1:]
+    return RestNode(*bits)
 
 @register.tag
 def activetab(parser, token):
