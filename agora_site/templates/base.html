@@ -320,7 +320,10 @@
     <script src="{% static 'js/min/agora.min.js' %}"></script>
     {% endif %}
 
-    <!-- DEPRECATED -->
+    <script>
+        var ajax_data = {% block ajax-data %}{}{% endblock %};
+    </script>
+
     {% block script-block %}{% endblock %}
 </body>
 </html>

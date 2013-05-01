@@ -543,14 +543,14 @@
         getInitModel: function() {
             // here we filter the values to those that can be modified
             var initData = {
-                id: this.options.initData.id,
-                pretty_name: this.options.initData.pretty_name,
-                description: this.options.initData.description,
-                comments_policy: this.options.initData.comments_policy,
-                is_vote_secret: this.options.initData.is_vote_secret,
-                questions: this.options.initData.questions,
-                from_date: this.options.initData.voting_starts_at_date,
-                to_date: this.options.initData.voting_ends_at_date,
+                id: ajax_data.id,
+                pretty_name: ajax_data.pretty_name,
+                description: ajax_data.description,
+                comments_policy: ajax_data.comments_policy,
+                is_vote_secret: ajax_data.is_vote_secret,
+                questions: ajax_data.questions,
+                from_date: ajax_data.voting_starts_at_date,
+                to_date: ajax_data.voting_ends_at_date,
             };
             return new Agora.ElectionModel(initData);
         },

@@ -20,11 +20,11 @@
 
 {% endblock %}
 
+{% block ajax-data %}{% rest '/election/' election.id '/' %}{% endblock %}
+
 {% block script-block %}
     {% include "agora_core/client/election_form.html" %}
     <script>
-        app.currentView = new Agora.ElectionEditForm({
-            initData: {% rest '/election/' election.id '/' %}
-        });
+        app.currentView = new Agora.ElectionEditForm();
     </script>
 {% endblock %}
