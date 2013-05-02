@@ -31,8 +31,7 @@
             'question': '',
             'randomize_answer_order': true,
             'answers': [],
-            'user_answers': [],
-            'next_is_review': false
+            'user_answers': []
         }
     });
 
@@ -54,7 +53,6 @@
             var self = this;
             this.get('questions').each(function (element, index, list) {
                 element.set('question_num', index);
-                element.set('min', 1);
                 element.set('num_questions', list.length);
                 element.set('election_name', self.get('pretty_name'));
             })
@@ -67,6 +65,8 @@
         events: {
             'click .btn-start-voting': 'startVoting',
         },
+
+        reviewMode: false,
 
         initialize: function() {
             _.bindAll(this);
@@ -94,6 +94,14 @@
                 self.questionViews[index] = self.createQuestionView(element);
             });
 
+            // create review questions view for later
+            this.reviewQuestions = new Agora.ReviewQuestionsView({model: this.model, votingBooth: this});
+
+            // create vote caste view for later
+            this.voteCast = new Agora.VoteCastView({model: this.model, votingBooth: this});
+
+            this.delegateEvents();
+
             return this;
         },
 
@@ -104,9 +112,9 @@
         createQuestionView: function (model) {
             var voting_system = model.get('tally_type');
             if (voting_system != "ONE_CHOICE") {
-                return new Agora.VotePluralityQuestion({model: model});
+                return new Agora.VotePluralityQuestion({model: model, votingBooth: this});
             } else if (voting_system == "MEEK-STV") {
-                return new Agora.VotePluralityQuestion({model: model});
+                return new Agora.VotePluralityQuestion({model: model, votingBooth: this});
             }
         },
 
@@ -117,13 +125,39 @@
             this.$el.find(".current-screen").html('');
             this.$el.find(".current-screen").append(this.questionViews[0].render().el)
         },
+
+        /**
+         * Invokes the next step. The first argument is the number of the
+         * question from which the user clicked continue
+         */
+        nextStep: function(question_num) {
+            var size = this.model.get('questions').length;
+            this.$el.find(".current-screen").html('');
+
+            if (question_num + 1 == size || this.reviewMode) {
+                this.reviewMode = true;
+                this.$el.find(".current-screen").append(this.reviewQuestions.render().el);
+                return;
+            }
+
+            this.$el.find(".current-screen").append(this.questionViews[question_num].render().el);
+        },
+
+        changeQuestionChoices: function(question_num) {
+            this.$el.find(".current-screen").html('');
+            this.$el.find(".current-screen").append(this.questionViews[question_num].render().el);
+        },
+
+        castVote: function() {
+            this.$el.find(".current-screen").html('');
+            this.$el.find(".current-screen").append(this.voteCast.render().el);
+        }
     });
 
     Agora.VotingBoothStartScreen = Backbone.View.extend({
         initialize: function() {
             _.bindAll(this);
             this.template = _.template($("#template-voting_booth_start_screen").html());
-            this.render();
 
             return this.$el;
         },
@@ -137,6 +171,7 @@
                 var data_id = $(this).data('id');
                 $(this).html(converter.makeHtml(self.model.get(data_id)));
             });
+            this.delegateEvents();
             return this;
         },
     });
@@ -144,13 +179,14 @@
     Agora.VotePluralityQuestion = Backbone.View.extend({
         events: {
             'click input': 'selectChoice',
+            'click .remove-selection': 'removeSelection',
             'click .btn-continue': 'continueClicked',
         },
 
         initialize: function() {
             _.bindAll(this);
             this.template = _.template($("#template-voting_booth_question_plurality").html());
-            this.render();
+            this.votingBooth = this.options.votingBooth;
 
             return this.$el;
         },
@@ -161,13 +197,57 @@
             if (this.model.get('randomize_answer_order')) {
                 this.$el.find('.plurality-options').shuffle();
             }
+
+            if (this.model.get('user_answers').length > 0) {
+                var self = this;
+                var currentSelection = this.model.get('user_answers').at(0).get('value');
+                this.$el.find('label input').each(function (index) {
+                    if ($(this).val() == currentSelection) {
+                        $(this).attr('checked', 'checked');
+                        $(this).closest('label').addClass('active');
+                    }
+                });
+            }
+            this.delegateEvents();
             return this;
         },
 
         selectChoice: function(e) {
-            this.$el.find('label').removeClass('active');
+            // highlight
+            this.$el.find('label.active').removeClass('active');
             $(e.target).closest('label').addClass('active');
+
+            // hide error info box
             this.$el.find('.select-info').hide();
+
+            // find user choice
+            var value = $(e.target).val();
+            var newSelection;
+            this.model.get('answers').each(function (element, index, list) {
+                if (element.get('value') == value) {
+                    newSelection = element.clone();
+                }
+            });
+
+            // remove previous choice
+            if (this.model.get('user_answers').length > 0) {
+                this.model.get('user_answers').at(0).destroy();
+            }
+            // set new choice
+            this.model.get('user_answers').add(newSelection);
+        },
+
+        removeSelection: function() {
+            // uncheck
+            this.$el.find('label.active input').prop('checked', false);
+
+            // make inactive
+            this.$el.find('label.active').removeClass('active');
+
+            // remove previous choice
+            if (this.model.get('user_answers').length > 0) {
+                this.model.get('user_answers').at(0).destroy();
+            }
         },
 
         continueClicked: function() {
@@ -185,7 +265,56 @@
         },
 
         nextStep: function() {
-            // TODO
+            this.votingBooth.nextStep(this.model.get('question_num'));
+        }
+    });
+
+    Agora.ReviewQuestionsView = Backbone.View.extend({
+        events: {
+            'click th a': 'changeQuestionChoices',
+            'click .btn-continue': 'continueClicked',
+        },
+
+        initialize: function() {
+            _.bindAll(this);
+            this.template = _.template($("#template-voting_booth_review_questions").html());
+            this.votingBooth = this.options.votingBooth;
+
+            return this.$el;
+        },
+
+        render: function() {
+            // render template
+            this.$el.html(this.template(this.model.toJSON()));
+            this.delegateEvents();
+            return this;
+        },
+
+        changeQuestionChoices: function(e) {
+            this.votingBooth.changeQuestionChoices($(e.target).data('id'));
+        },
+
+        continueClicked: function() {
+            this.votingBooth.castVote();
+        }
+    });
+
+    Agora.VoteCastView = Backbone.View.extend({
+        events: {},
+
+        initialize: function() {
+            _.bindAll(this);
+            this.template = _.template($("#template-voting_booth_vote_cast").html());
+            this.votingBooth = this.options.votingBooth;
+
+            return this.$el;
+        },
+
+        render: function() {
+            // render template
+            this.$el.html(this.template(this.model.toJSON()));
+            this.delegateEvents();
+            return this;
         }
     });
 }).call(this);
