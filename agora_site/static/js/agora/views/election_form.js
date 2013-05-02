@@ -516,10 +516,10 @@
                 type: 'POST',
             })
             .done(function(e) { window.location.href = e.url; })
-            .fail(function() { alert("Error creating the election"); })
-            .always(function() {
+            .fail(function() {
                 self.sendingData = false;
                 self.$el.find("#create_election_btn").removeClass("disabled");
+                alert("Error creating the election");
             });
 
             return false;

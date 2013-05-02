@@ -115,7 +115,7 @@
             if (voting_system == "ONE_CHOICE") {
                 return new Agora.VotePluralityQuestion({model: model, votingBooth: this});
             } else if (voting_system == "MEEK-STV") {
-                return new Agora.VotePluralityQuestion({model: model, votingBooth: this});
+                return new Agora.VoteRankedQuestion({model: model, votingBooth: this});
             }
         },
 
@@ -192,11 +192,9 @@
                 self.$el.find(".current-screen").append(self.voteCast.render().el);
             })
             .fail(function() {
-                alert("Error casting the ballot, try again or report this problem");
-            })
-            .always(function() {
                 self.sendingData = false;
                 self.$el.find("#cast-ballot-btn").removeClass("disabled");
+                alert("Error casting the ballot, try again or report this problem");
             });
 
         }
@@ -242,10 +240,13 @@
         render: function() {
             // render template
             this.$el.html(this.template(this.model.toJSON()));
+
+            // shuffle options
             if (this.model.get('randomize_answer_order')) {
                 this.$el.find('.plurality-options').shuffle();
             }
 
+            // restore selected option from model if any
             if (this.model.get('user_answers').length > 0) {
                 var self = this;
                 var currentSelection = this.model.get('user_answers').at(0).get('value');
@@ -316,6 +317,140 @@
             this.votingBooth.nextStep(this.model.get('question_num'));
         }
     });
+
+    Agora.VoteRankedQuestion = Backbone.View.extend({
+        events: {
+            'click .available-choices li a': 'selectChoice',
+            'click .btn-continue': 'continueClicked',
+        },
+
+        initialize: function() {
+            _.bindAll(this);
+            this.template = _.template($("#template-voting_booth_question_ranked").html());
+            this.templateChoice = _.template($("#template-voting_booth_question_ranked_choice").html());
+            this.votingBooth = this.options.votingBooth;
+
+            return this.$el;
+        },
+
+        render: function() {
+            // render template
+            this.$el.html(this.template(this.model.toJSON()));
+
+            // shuffle options
+            if (this.model.get('randomize_answer_order')) {
+                this.$el.find('.available-choices ul').shuffle();
+            }
+
+            this.delegateEvents();
+            return this;
+        },
+
+        /**
+         * Continues to next question or review view if this is the last question
+         */
+        continueClicked: function() {
+            var length = this.model.get('user_answers').length;
+            if (length < this.model.get('min')) {
+                this.$el.find('.need-select-more').show();
+                return;
+            }
+
+            this.nextStep();
+        },
+
+        /**
+         * Selects a choice from the available choices list, adding it to the
+         * ballot and marking it as selected.
+         */
+        selectChoice: function(e) {
+            var liEl = $(e.target).closest('li');
+            var value = liEl.data('value');
+            var length = this.model.get('user_answers').length;
+
+            // find user choice
+            var newSelection;
+            this.model.get('answers').each(function (element, index, list) {
+                if (element.get('value') == value) {
+                    newSelection = element.clone();
+                }
+            });
+
+            // select
+            if (!liEl.hasClass('active')) {
+                if (length >= this.model.get('max')) {
+                    return;
+                }
+                // mark selected
+                liEl.addClass('active');
+                liEl.find('i').removeClass('icon-chevron-right');
+                liEl.find('i').addClass('icon-chevron-left');
+                liEl.find('i').addClass('icon-white');
+
+                // add to user choices
+                var templData = {
+                    value: value,
+                    i: length + 1
+                };
+                var newChoiceLink = this.templateChoice(templData);
+                var newChoice = $(document.createElement('li'));
+                newChoice.data('value', value);
+                newChoice.html(newChoiceLink);
+                this.$el.find('.user-choices ul').append(newChoice);
+
+               // add choice to model
+                this.model.get('user_answers').add(newSelection);
+
+                // show/hide relevant info
+                if (length + 1 == this.model.get('min')) {
+                    this.$el.find('.need-select-more').hide();
+                }
+                if (length + 1 == this.model.get('max')) {
+                    this.$el.find('.cannot-select-more').show();
+                }
+            }
+            // deselect
+            else {
+                // unmark selected
+                liEl.removeClass('active');
+                liEl.find('i').addClass('icon-chevron-right');
+                liEl.find('i').removeClass('icon-chevron-left');
+                liEl.find('i').removeClass('icon-white');
+
+                // find user choice
+                var userChoice = null;
+                this.$el.find('.user-choices ul li').each(function (index) {
+                    if ($(this).data('value') == value) {
+                        userChoice = $(this);
+                    }
+                    // renumerate
+                    if (userChoice) {
+                        $(this).find('small').html(index + ".");
+                    }
+                });
+
+                // remove from user choices
+                userChoice.remove()
+
+                // remove choice from model
+                this.model.get('user_answers').each(function (element, index, list) {
+                    if (element.get('value') == value) {
+                        element.destroy();
+                    }
+                });
+
+                // show/hide relevant info
+                if (length - 1 < this.model.get('max')) {
+                    this.$el.find('.cannot-select-more').hide();
+                }
+            }
+        },
+
+        nextStep: function() {
+            this.votingBooth.nextStep(this.model.get('question_num'));
+        }
+    });
+
 
     Agora.ReviewQuestionsView = Backbone.View.extend({
         events: {
