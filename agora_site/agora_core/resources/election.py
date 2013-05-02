@@ -234,6 +234,8 @@ class ElectionResource(GenericResource):
         return bundle.obj.get_delegated_votes().count()
 
     def dehydrate_user_has_delegated(self, bundle):
+        if bundle.request.user.is_anonymous():
+            return False
         return bundle.obj.has_user_voted_via_a_delegate(bundle.request.user)
 
     def prepend_urls(self):
