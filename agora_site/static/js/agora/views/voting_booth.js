@@ -111,7 +111,7 @@
          */
         createQuestionView: function (model) {
             var voting_system = model.get('tally_type');
-            if (voting_system != "ONE_CHOICE") {
+            if (voting_system == "ONE_CHOICE") {
                 return new Agora.VotePluralityQuestion({model: model, votingBooth: this});
             } else if (voting_system == "MEEK-STV") {
                 return new Agora.VotePluralityQuestion({model: model, votingBooth: this});

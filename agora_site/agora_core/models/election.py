@@ -46,6 +46,11 @@ class Election(models.Model):
             kwargs=dict(username=self.agora.creator.username,
                 agoraname=self.agora.name, electionname=self.name))
 
+    def get_vote_link(self):
+        return reverse("election-voting-booth",
+            kwargs=dict(username=self.agora.creator.username,
+                agoraname=self.agora.name, electionname=self.name))
+
     def delete(self, *args, **kwargs):
         '''
         Delete reimplemented to remove votes and actions related to the election

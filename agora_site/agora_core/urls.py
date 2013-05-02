@@ -152,7 +152,7 @@ urlpatterns += patterns('',
         ElectionView.as_view(), name='election-view'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/vote/?$',
-        VotingBoothView.as_view(), name='election-vote'),
+        VotingBoothView.as_view(), name='election-voting-booth'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/edit/?$',
         EditElectionView.as_view(), name='election-edit'),

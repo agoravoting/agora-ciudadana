@@ -171,14 +171,14 @@
                         {% elif "vote_counts" in permissions or "emit_delegate_vote" in permissions %}
                         <div class="button-vote">
                             {% if "vote_counts" in permissions %}
-                                <a class="btn btn-success" data-toggle="modal" href="#vote-modal-dialog" >
+                                <a class="btn btn-success" data-toggle="modal" href="{{ election.get_vote_link }}" >
                                 {% if vote_from_user and vote_from_user.is_direct %}
                                     {% trans "Change my vote" %}
                                 {% else %}
                                     {% trans "Vote" %}
                                 {% endif %}
                             {% else %}
-                                <a class="btn btn-success btn-medium" data-toggle="modal" href="#vote-modal-dialog" >
+                                <a class="btn btn-success btn-medium" data-toggle="modal" href="{{ election.get_vote_link }}" >
                                 {% if vote_from_user and vote_from_user.is_direct %}
                                     {% trans "Change my position as non-member delegate" %}
                                 {% else %}
@@ -187,46 +187,6 @@
                             {% endif %}
                             </a>
                         </div>
-                        <div class="modal fade {% block voting-form-class %}hide{% endblock %}" id="vote-modal-dialog">
-                            <div class="modal-header">
-                                <a class="close" data-dismiss="modal">×</a>
-                                <h3>{{ election.pretty_name }}</h3>
-                                <p>
-                                {% url user-view election.creator.username as user_url %}
-                                {% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}
-                                    Election created by <a href="{{ user_url }}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
-                                {% endblocktrans %}</p>
-                                <em>{{ election.short_description|truncatechars:139 }}</em>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row-fluid">
-                                    <div class="span8">
-                                        {% crispy vote_form %}
-                                    </div>
-                                    <div class="span4">
-                                        <div>
-                                        {% if user in election.agora.members.all or 'join' in agora_perms %}
-                                            <strong>{% trans "Who represents you?" %}</strong>
-                                            <p>{% trans "If you don't know what to vote or you'd rather not have to be aware of all the elections of this Agora, you can delegate your vote to someone you trust." %}</p>
-                                            <a href="{% url election-delegates election.agora.creator.username election.agora.name election.name %}"
-                                                class="btn btn-primary btn-large">{% trans "Delegate" %}</a>
-                                        </div>
-                                        {% elif 'join' not in agora_perms %}
-                                                <strong>{% trans "What's a non-member delegate?" %}</strong>
-                                                <p>{% trans "You're not a member in this agora and <b>your vote won't be counted</b>. But if you vote as a delegate, even if your vote is not counted, others will be able to delegate in you and their vote will count." %}</p>
-                                                {% if 'request_membership' in agora_perms %}
-                                                    <a class="btn btn-success action-form-link"
-                                                        href="{% url agora-action-join election.agora.creator.username election.agora.name %}">
-                                                        {% trans "Request agora membership" %}
-                                                    </a>
-                                                {% elif 'cancel_membership_request' in agora_perms %}
-                                                    {% trans "Your agora membership request is pending" %}
-                                                {% endif %}
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         {% elif 'cancel_membership_request' in agora_perms %}
                         <strong>{% trans "Your membership request in this election's agora is pending" %}</strong>

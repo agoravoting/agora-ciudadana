@@ -409,6 +409,7 @@ class ElectionView(AjaxListView):
                 self.request.user)
         return context
 
+
     def dispatch(self, *args, **kwargs):
         self.kwargs = kwargs
 
@@ -427,6 +428,17 @@ class VotingBoothView(ElectionView):
     '''
     template_name = 'agora_core/voting_booth.html'
 
+    def get(self, request, *args, **kwargs):
+        if not self.election.has_perms('emit_direct_vote', request.user):
+            messages.add_message(self.request, messages.ERROR, _('Sorry, but '
+            'you don\'t have permissions to vote on <em>%(electionname)s</em>.') %\
+                dict(electionname=self.election.pretty_name))
+            return http.HttpResponseRedirect(self.election.get_link())
+        return super(VotingBoothView, self).get(request, *args, **kwargs)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(VotingBoothView, self).dispatch(*args, **kwargs)
 
 class EditElectionView(UpdateView):
     '''
