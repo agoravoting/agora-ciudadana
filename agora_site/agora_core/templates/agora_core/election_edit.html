@@ -20,7 +20,7 @@
 
 {% endblock %}
 
-{% block ajax-data %}{% rest '/election/' election.id '/' %}{% endblock %}
+{% block ajax-data %}{% rest request '/election/' election.id '/' %}{% endblock %}
 
 {% block script-block %}
     {% include "agora_core/client/election_form.html" %}

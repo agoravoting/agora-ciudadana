@@ -206,6 +206,8 @@ class ElectionResource(GenericResource):
 
     mugshot_url = fields.CharField()
 
+    user_has_delegated = fields.BooleanField()
+
     class Meta(GenericMeta):
         queryset = Election.objects\
                     .exclude(url__startswith=DELEGATION_URL)\
@@ -230,6 +232,9 @@ class ElectionResource(GenericResource):
 
     def dehydrate_delegated_votes_count(self, bundle):
         return bundle.obj.get_delegated_votes().count()
+
+    def dehydrate_user_has_delegated(self, bundle):
+        return bundle.obj.has_user_voted_via_a_delegate(bundle.request.user)
 
     def prepend_urls(self):
         return [

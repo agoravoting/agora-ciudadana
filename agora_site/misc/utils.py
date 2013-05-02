@@ -332,7 +332,7 @@ class GenericForeignKeyField(fields.ToOneField):
 # the following is from
 # http://gdorn.circuitlocution.com/blog/2012/11/21/using-tastypie-inside-django.html
 
-def rest(path, query={}, data={}, headers={}, method="GET"):
+def rest(path, query={}, data={}, headers={}, method="GET", request=None):
     """
     Converts a RPC-like call to something like a HttpRequest, passes it
     to the right view function (via django's url resolver) and returns
@@ -360,6 +360,8 @@ def rest(path, query={}, data={}, headers={}, method="GET"):
     hreq.POST = data
     hreq.META = headers
     hreq.method = method
+    if request:
+        hreq.user = request.user
     try:
         view = resolve(hreq.path)
         res = view.func(hreq, *view.args, **view.kwargs)

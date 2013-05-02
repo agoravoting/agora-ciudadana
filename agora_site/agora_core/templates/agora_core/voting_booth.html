@@ -20,6 +20,32 @@
 
     <div id="voting_booth"></div>
 
+    <script id="template-voting_booth" type="text/underscore-template">
+        <div class="container">
+            <div class="row">
+                <div class="span12 round-bordered">
+                    <div class="modal-header">
+                        <h3 class="inline">
+                            <%= gettext("Agora Voting Booth") %>
+                            <a href="mailto:agora-ciudadana-devel@googlegroups.com" class="text-right help_link pull-right" target="_blank"><%= gettext("Help!") %></a>
+                        </h3>
+                    </div>
+                    <div class="current-screen">
+                    </div>
+                    <div class="modal-header">
+                        <small>
+                            <%= gettext("Election") %> <a class="inline text-center" href="<%= url %>" target="_blank"><%= pretty_name %></a> <%= gettext("at") %> <a class="inline text-center" href="<%= agora.url %>" target="_blank"><%= agora.full_name %></a>
+                            </a>
+                        </small>
+                        <small class="pull-right">
+                            <%= gettext("Election fingerprint:") %> <%= hash %>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
     <script id="template-voting_booth_start_screen" type="text/underscore-template">
         <div class="modal-header hero-vote">
             <div class="text-center">
@@ -40,35 +66,52 @@
                     <%= gettext("Proceed to cast your ballot for tallying.") %>
                 </li>
             </ol>
-            <button class="btn btn-large btn-block btn-primary" type="button">
+            <% if (user_has_delegated) { %>
+                <p><%= gettext("Currently, you have delegated your vote in this agora. So if you don't vote, this delegate can vote for you.") %></p>
+            <% } %>
+            <button class="btn btn-large btn-block btn-primary btn-start-voting" type="button">
                 <%= gettext("Start voting") %>
             </button>
         </div>
-        <div class="modal-header">
-            <small>
-                <%= gettext("Election") %> <a class="inline text-center" href="<%= url %>" target="_blank"><%= pretty_name %></a> <%= gettext("at") %> <a class="inline text-center" href="<%= agora.url %>" target="_blank"><%= agora.full_name %></a>
-                </a>
-            </small>
-            <small class="pull-right">
-                <%= gettext("Election fingerprint:") %> <%= hash %>
-            </small>
-        </div>
     </script>
 
-    <script id="template-voting_booth" type="text/underscore-template">
-        <div class="container">
-            <div class="row">
-                <div class="span12 round-bordered">
-                    <div class="modal-header">
-                        <h3 class="inline">
-                            <%= gettext("Agora Voting Booth") %>
-                            <a href="mailto:agora-ciudadana-devel@googlegroups.com" class="text-right help_link pull-right" target="_blank"><%= gettext("Help!") %></a>
-                        </h3>
-                    </div>
-                    <div class="start-screen">
-                    </div>
+    <script id="template-voting_booth_question_plurality" type="text/underscore-template">
+        <div class="modal-header hero-vote">
+            <div class="text-center">
+                <h1><%= election_name %></h1>
+                <div class="btn-group">
+                    <button class="btn btn-primary disabled"><%= gettext("1. Select") %></button>
+                    <button class="btn disabled"><%= gettext("2. Review") %></button>
+                    <button class="btn disabled"><%= gettext("3. Submit") %></button>
                 </div>
             </div>
+        </div>
+        <div class="modal-header hero-vote question">
+            <h2><%= question %></h2>
+            <small>
+            <div class="inline">
+                <%= interpolate(gettext("Question #%s of %s"), [question_num, num_questions]) %> —
+            </div>
+            <div class="inline">
+                <% if (min == 0) { %>
+                    <%= gettext("Select up to one answer") %>
+                <% } else {%>
+                    <%= gettext("Select one answer") %>
+                <% } %>
+            </div>
+            </small>
+            <% for (var i = 0; i < answers.length; i++) { %>
+                <label class="radio">
+                    <input type="radio" name="q<%= question_num %>answer" value="<%= answers[i].value %>">
+                    <%= answers[i].value %>
+                </label>
+            <% } %>
+            <div class="select-info error hide">
+                <%= gettext("You haven't chosen option. Please select one, it's mandatory for this question.") %>
+            </div>
+            <button class="btn btn-large btn-block btn-primary btn-continue" type="button">
+                <%= gettext("Continue") %>
+            </button>
         </div>
     </script>
 
@@ -88,7 +131,7 @@
     {% endif %}
 
     <script>
-        var ajax_data = {% block ajax-data %}{% rest '/election/' election.id '/' %}{% endblock %};
+        var ajax_data = {% rest request '/election/' election.id '/' %};
         app.currentView = new Agora.VotingBooth();
     </script>
 </body>

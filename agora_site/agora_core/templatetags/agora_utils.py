@@ -201,14 +201,16 @@ class IfActiveTabNode(template.Node):
 class RestNode(template.Node):
     args = None
 
-    def __init__(self, *args):
+    def __init__(self, req, *args):
         self.args = args
+        self.req = req
 
     def render(self, context):
         try:
+            request = template.Variable(self.req).resolve(context)
             args = [str(template.Variable(arg).resolve(context)) for arg in self.args]
             url = ''.join(args)
-            status_code, container = rest_api(url)
+            status_code, container = rest_api(url, request=request)
             if status_code >= 300:
                 return ''
             else:
@@ -218,8 +220,9 @@ class RestNode(template.Node):
 
 @register.tag
 def rest(parser, token):
-    bits = token.split_contents()[1:]
-    return RestNode(*bits)
+    req = token.split_contents()[1]
+    bits = token.split_contents()[2:]
+    return RestNode(req, *bits)
 
 @register.tag
 def activetab(parser, token):
