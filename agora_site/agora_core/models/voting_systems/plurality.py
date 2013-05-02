@@ -40,7 +40,7 @@ class Plurality(BaseVotingSystem):
         random.shuffle(answers)
 
         return PluralityField(label=question['question'],
-            choices=answers, required=True, election=election)
+            choices=answers, required=True, election=election, question=question)
 
     @staticmethod
     def validate_question(question):
@@ -92,16 +92,22 @@ class PluralityField(django_forms.ChoiceField):
     election = None
 
     def __init__(self, *args, **kwargs):
-        if 'election' in kwargs:
-            self.election = kwargs['election']
+        self.election = kwargs['election']
         del kwargs['election']
+
+        self.question = kwargs['question']
+        del kwargs['question']
+
         return super(PluralityField, self).__init__(*args, **kwargs)
 
     def clean(self, value):
         """
         Wraps the choice field the proper way
         """
-        clean_value = super(PluralityField, self).clean(value)
+        if value or self.question['min'] > 0:
+            clean_value = super(PluralityField, self).clean(value)
+        else:
+            clean_value = ""
 
         # NOTE: in the future, when encryption support is added, this will be
         # handled differently, probably in a more generic way so that

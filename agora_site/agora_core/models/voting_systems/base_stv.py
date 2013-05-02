@@ -45,7 +45,7 @@ class BaseSTV(BaseVotingSystem):
         random.shuffle(answers)
 
         return BaseSTVField(label=question['question'],
-            choices=answers, required=True, election=election)
+            choices=answers, required=True, election=election, question=question)
 
     @staticmethod
     def validate_question(question):
@@ -108,8 +108,9 @@ class BaseSTVField(JSONFormField):
     '''
     election = None
 
-    def __init__(self, choices, election, *args, **kwargs):
+    def __init__(self, choices, election, question, *args, **kwargs):
         self.election = election
+        self.question = question
         return super(BaseSTVField, self).__init__(*args, **kwargs)
 
     def clean(self, value):
@@ -124,6 +125,9 @@ class BaseSTVField(JSONFormField):
 
         # check for repeated answers
         if len(value) != len(set(value)):
+            raise error
+
+        if len(value) < self.question['min'] or len(value) > self.question['max']:
             raise error
 
         # find question in election

@@ -544,6 +544,131 @@ class ElectionTest(RootTestCase):
         data = self.getAndParse('election/%s/' % election_id, code=HTTP_OK)
         self.assertEqual(data['voting_starts_at_date'], None)
 
+    def test_vote_empty(self):
+        # create election as admin
+        self.login('david', 'david')
+        data = self.postAndParse('agora/1/action/', data=self.base_election_data,
+            code=HTTP_OK, content_type='application/json')
+        election_id = data['id']
+
+        # start election
+        orig_data = dict(action='start')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # david votes empty vote
+        vote_data = {
+            'is_vote_secret': True,
+            'question0': "",
+            'action': 'vote'
+        }
+        data = self.post('election/%d/action/' % election_id,
+            data=vote_data, code=HTTP_OK, content_type='application/json')
+
+    def test_vote_empty_fail(self):
+        # create election as admin
+        election_data = self.base_election_data.copy()
+        election_data['questions'][0]['min'] = 1
+        self.login('david', 'david')
+        data = self.postAndParse('agora/1/action/', data=self.base_election_data,
+            code=HTTP_OK, content_type='application/json')
+        election_id = data['id']
+
+        # start election
+        orig_data = dict(action='start')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # david votes empty vote, fails - one choice minimum needed
+        vote_data = {
+            'is_vote_secret': True,
+            'question0': "",
+            'action': 'vote'
+        }
+        data = self.post('election/%d/action/' % election_id,
+            data=vote_data, code=HTTP_BAD_REQUEST, content_type='application/json')
+
+    def test_vote_minmax_stv(self):
+        election_data = {
+            'action': "create_election",
+            'pretty_name': "foo bar",
+            'description': "foo bar foo bar",
+            'questions': [
+                {
+                    'a': 'ballot/question',
+                    'tally_type': 'MEEK-STV',
+                    'max': 2,
+                    'min': 1,
+                    'question': 'Who should be the next president?',
+                    'randomize_answer_order': True,
+                    'num_seats': 2,
+                    'answers': [
+                        {
+                            'a': 'ballot/answer',
+                            'url': '',
+                            'details': '',
+                            'value': 'Florentino'
+                        },
+                        {
+                            'a': 'ballot/answer',
+                            'url': '',
+                            'details': '',
+                            'value': 'Jack'
+                        },
+                        {
+                            'a': 'ballot/answer',
+                            'url': '',
+                            'details': '',
+                            'value': 'Marie'
+                        },
+                        {
+                            'a': 'ballot/answer',
+                            'url': '',
+                            'details': '',
+                            'value': 'Jijoe'
+                        },
+                    ]
+                }
+            ],
+            'is_vote_secret': True,
+            'from_date': '',
+            'to_date': '',
+        }
+        # create election as admin
+        self.login('david', 'david')
+        data = self.postAndParse('agora/1/action/', data=election_data,
+            code=HTTP_OK, content_type='application/json')
+        election_id = data['id']
+
+        # start election
+        orig_data = dict(action='start')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # david tries to vote empty but fails, need to choose at least one
+        vote_data = {
+            'is_vote_secret': True,
+            'question0': [],
+            'action': 'vote'
+        }
+        data = self.post('election/%d/action/' % election_id,
+            data=vote_data, code=HTTP_BAD_REQUEST, content_type='application/json')
+
+        # david votes to one and two options and works fine
+        vote_data ['question0'] = ['Jijoe']
+        data = self.post('election/%d/action/' % election_id,
+            data=vote_data, code=HTTP_OK, content_type='application/json')
+
+        vote_data ['question0'] = ['Marie', 'Jack']
+        data = self.post('election/%d/action/' % election_id,
+            data=vote_data, code=HTTP_OK, content_type='application/json')
+
+        # david tries to vote to 3 options and fails, too many
+        vote_data ['question0'] = ['Marie', 'Jack', 'Florentino']
+        data = self.post('election/%d/action/' % election_id,
+            data=vote_data, code=HTTP_BAD_REQUEST, content_type='application/json')
+
+
     def test_vote_on_election(self):
         # create election as admin
         self.login('david', 'david')
@@ -780,7 +905,7 @@ class ElectionTest(RootTestCase):
                 {
                     'a': 'ballot/question',
                     'tally_type': 'MEEK-STV',
-                    'max': 1,
+                    'max': 3,
                     'min': 0,
                     'question': 'Who should be the next president?',
                     'randomize_answer_order': True,
@@ -864,7 +989,7 @@ class ElectionTest(RootTestCase):
                 {
                     'a':'question/result/MEEK-STV',
                     'min':0,
-                    'max':1,
+                    'max':3,
                     'tally_type':'MEEK-STV',
                     'question':'Who should be the next president?',
                     'answers':[

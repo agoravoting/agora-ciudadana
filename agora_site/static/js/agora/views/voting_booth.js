@@ -45,6 +45,7 @@
             'pretty_name': '',
             'description': '',
             'is_vote_secret': true,
+            'user_vote_is_secret': true,
             'questions': [],
             'from_date': '',
             'to_date': ''
@@ -148,9 +149,54 @@
             this.$el.find(".current-screen").append(this.questionViews[question_num].render().el);
         },
 
+        sendingData: false,
+
         castVote: function() {
-            this.$el.find(".current-screen").html('');
-            this.$el.find(".current-screen").append(this.voteCast.render().el);
+            if (this.sendingData) {
+                return;
+            }
+
+            // do not set ballot twice
+            this.sendingData = true;
+            $("#cast-ballot-btn").addClass("disabled");
+
+            var ballot = {
+                'is_vote_secret': this.model.get('user_vote_is_secret'),
+                'action': 'vote'
+            };
+            this.model.get('questions').each(function (element, index, list) {
+                var user_answers = element.get('user_answers').pluck('value');
+                var voting_system = element.get('tally_type');
+                if (voting_system == "ONE_CHOICE") {
+                    if (user_answers.length > 0) {
+                        ballot['question' + index] = user_answers[0];
+                    } else {
+                        ballot['question' + index] = "";
+                    }
+                } else if (voting_system == "MEEK-STV") {
+                    ballot['question' + index] = user_answers;
+                }
+            });
+            var election_id = this.model.get('id');
+
+            var self = this;
+            var jqxhr = $.ajax("/api/v1/election/" + election_id + "/action/", {
+                data: JSON.stringify(ballot),
+                contentType : 'application/json',
+                type: 'POST',
+            })
+            .done(function(e) {
+                self.$el.find(".current-screen").html('');
+                self.$el.find(".current-screen").append(self.voteCast.render().el);
+            })
+            .fail(function() {
+                alert("Error casting the ballot, try again or report this problem");
+            })
+            .always(function() {
+                self.sendingData = false;
+                self.$el.find("#cast-ballot-btn").removeClass("disabled");
+            });
+
         }
     });
 
@@ -272,7 +318,7 @@
     Agora.ReviewQuestionsView = Backbone.View.extend({
         events: {
             'click th a': 'changeQuestionChoices',
-            'click .btn-continue': 'continueClicked',
+            'click #cast-ballot-btn': 'continueClicked',
         },
 
         initialize: function() {
@@ -294,7 +340,7 @@
             this.votingBooth.changeQuestionChoices($(e.target).data('id'));
         },
 
-        continueClicked: function() {
+        continueClicked: function(e) {
             this.votingBooth.castVote();
         }
     });
