@@ -161,6 +161,14 @@
                     </tbody>
                 </table>
             <% } %>
+            <label class="checkbox public-warning">
+                <input name="user_vote_is_public" id="user_vote_is_public" type="checkbox">
+                <%= gettext("Vote in public as a delegate") %>
+                <span>
+                    <strong><%= gettext("NOTE") %></strong>
+                    <%= gettext("Choosing this will make your vote <strong>public</strong>, allowing others to delegate their vote in you for this election.") %>
+                </span>
+            </label>
             <button class="btn btn-large btn-block btn-success btn-continue" id="cast-ballot-btn" type="button">
                 <strong><%= gettext("Confirm choices and cast ballot") %></strong>
             </button>
@@ -185,7 +193,7 @@
                 <p><%= interpolate(gettext("You can <strong>delegate your vote</strong> so that <strong>in future elections in this agora</strong> <a href=\"%s\">%s</a> this delegate votes for you if you don't find the time to vote"),
                 [agora.url, agora.full_name]) %>.</p>
 
-                <a class="btn btn-large btn-block btn-continue" href="<%= agora.url %>/members/active_delegates">
+                <a class="btn btn-large btn-block btn-continue" href="<%= url %>/delegates">
                     <strong><%= interpolate(gettext("Choose a delegate for agora %s"), [agora.full_name]) %></strong>
                 </a>
             <% } %>

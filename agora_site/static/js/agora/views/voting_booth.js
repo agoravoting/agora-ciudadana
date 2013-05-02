@@ -160,8 +160,10 @@
             this.sendingData = true;
             $("#cast-ballot-btn").addClass("disabled");
 
+            var user_vote_is_secret = (this.$el.find("#user_vote_is_public:checked").length == 0);
+
             var ballot = {
-                'is_vote_secret': this.model.get('user_vote_is_secret'),
+                'is_vote_secret': user_vote_is_secret,
                 'action': 'vote'
             };
             this.model.get('questions').each(function (element, index, list) {
