@@ -342,6 +342,27 @@
                 this.$el.find('.available-choices ul').shuffle();
             }
 
+            var self = this;
+            var selection = [];
+            // restore selected options from model if any
+            this.model.get('user_answers').each(function (element, index, list) {
+                var value = element.get('value');
+                var target = null;
+                self.$el.find('.available-choices ul li').each(function (index) {
+                    if ($(this).data('value') == value) {
+                        target = this;
+                    }
+                });
+
+                // simulate user clicked it
+                selection[index] = target;
+            });
+
+            this.model.get('user_answers').reset();
+            _.each(selection, function (element, index, list) {
+                self.selectChoice({target: element});
+            });
+
             this.delegateEvents();
             return this;
         },

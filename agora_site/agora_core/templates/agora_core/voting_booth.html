@@ -148,9 +148,9 @@
             </div>
             <div class="inline">
                 <% if (min == 0) { %>
-                    <%= gettext("Select up to one answer") %>
+                    <%= interpolate(gettext("Select up to %s answers"), [max]) %>
                 <% } else {%>
-                    <%= gettext("Select one answer") %>
+                    <%= interpolate(gettext("Select from %s to %s answers"), [min, max]) %>
                 <% } %>
             </div>
             <div class="inline">
