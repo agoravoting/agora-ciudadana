@@ -18,6 +18,7 @@ mainjs:
 					      agora_site/static/js/libs/bootstrap.min.js \
 					      agora_site/static/js/libs/jquery-ui-1.8.23.custom.min.js \
 					      agora_site/static/js/libs/jquery-ui-timepicker-addon.js \
+					      agora_site/static/js/libs/jquery-shuffle.js \
 					      agora_site/static/js/libs/jsrender.js \
 					      agora_site/static/js/libs/d3.v2.min.js \
 					      agora_site/static/js/libs/moment.min.js \

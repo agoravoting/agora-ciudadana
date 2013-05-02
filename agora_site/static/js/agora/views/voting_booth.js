@@ -158,6 +158,9 @@
         render: function() {
             // render template
             this.$el.html(this.template(this.model.toJSON()));
+            if (this.model.get('randomize_answer_order')) {
+                this.$el.find('.plurality-options').shuffle();
+            }
             return this;
         },
 

@@ -25,7 +25,7 @@
             <div class="row">
                 <div class="span12 round-bordered">
                     <div class="modal-header">
-                        <h3 class="inline">
+                        <h3>
                             <%= gettext("Agora Voting Booth") %>
                             <a href="mailto:agora-ciudadana-devel@googlegroups.com" class="text-right help_link pull-right" target="_blank"><%= gettext("Help!") %></a>
                         </h3>
@@ -100,12 +100,14 @@
                 <% } %>
             </div>
             </small>
-            <% for (var i = 0; i < answers.length; i++) { %>
-                <label class="radio">
-                    <input type="radio" name="q<%= question_num %>answer" value="<%= answers[i].value %>">
-                    <%= answers[i].value %>
-                </label>
-            <% } %>
+            <div class="plurality-options">
+                <% for (var i = 0; i < answers.length; i++) { %>
+                    <label class="radio">
+                        <input type="radio" name="q<%= question_num %>answer" value="<%= answers[i].value %>">
+                        <%= answers[i].value %>
+                    </label>
+                <% } %>
+            </div>
             <div class="select-info error hide">
                 <%= gettext("You haven't chosen option. Please select one, it's mandatory for this question.") %>
             </div>
