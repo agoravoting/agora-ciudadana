@@ -28,6 +28,7 @@ mainjs:
 					      agora_site/static/js/libs/nod.min.js \
 					      agora_site/static/js/libs/showdown.js \
 					      agora_site/static/js/libs/backbone-associations.min.js \
+					      agora_site/static/js/libs/sortElements-jquery.js \
 					      	-o agora_site/static/js/min/main.min.js
 agorajs:
 	./node_modules/uglify-js/bin/uglifyjs \

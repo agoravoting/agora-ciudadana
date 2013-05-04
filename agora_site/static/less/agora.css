@@ -4807,6 +4807,62 @@ body {
   margin-right: 20px;
   margin-bottom: 10px;
 }
+.election-content-row .election-data {
+  width: 570px;
+}
+.table_wrapper {
+  max-width: 100%;
+  overflow-x: scroll;
+  /* Scrollbar is displayed as it's needed */
+
+}
+table.question-stv thead {
+  background-color: #F9F9F9;
+}
+table.question-stv th {
+  min-width: 60px;
+}
+table.question-stv td.candidate {
+  min-width: 150px;
+}
+table.question-stv td.won {
+  background-color: #5EBC5E;
+  font-weight: bold;
+  color: white;
+}
+table.question-stv tr:hover td.won {
+  background-color: #5EBC5E;
+  color: black;
+}
+table.question-stv td.already_won {
+  color: #eeeeee;
+}
+table.question-stv td.lost {
+  font-weight: bold;
+  color: #DD1144;
+}
+table.question-stv td.already_lost {
+  color: transparent;
+}
+.headerlink a {
+  border: medium none;
+  color: #CCCCCC;
+  font-size: 1em;
+  margin-left: 6px;
+  padding: 0 4px;
+  visibility: hidden;
+  text-decoration: none;
+}
+.headerlink:hover a {
+  color: #ccc;
+  visibility: visible;
+}
+.headerlink:hover a:hover {
+  color: #c60f0f;
+}
+#question-list table.question {
+  margin: 10px;
+}
 #vote-modal-dialog {
   width: 700px;
   left: 45%;
