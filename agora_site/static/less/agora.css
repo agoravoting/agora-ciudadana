@@ -4795,10 +4795,16 @@ body {
   font-size: 12px;
   text-transform: none;
 }
+.election-content-row .election-widget .sidebar-body .election-results li small {
+  color: black;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  text-transform: none;
+}
 .main-description {
   padding-bottom: 10px;
   margin-right: 20px;
-  border-bottom: 1px solid #eeeeee;
   margin-bottom: 10px;
 }
 #vote-modal-dialog {

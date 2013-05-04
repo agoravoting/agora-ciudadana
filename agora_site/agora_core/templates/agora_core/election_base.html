@@ -86,8 +86,6 @@
     {% endif %}
 </div>
 
-<p>{{ election.short_description|markdown:"safe" }}</p>
-
 <ul class="nav nav-tabs">
     {% block election-navigation %}
     {% block election-navigation-base %}
@@ -126,11 +124,9 @@
 <div class="row election-content-row">
     <div class="content">
         {% block election_content %}
-            {% if election.description != election.short_description %}
             <div class="main-description">
                 {{ election.description|markdown:"safe" }}
             </div>
-            {% endif %}
             <div class="activity-list" id="activity-list"
             data-url="{% block election-activity-url %}/api/v1/action/election/{{ election.id }}/{% endblock %}">
                 <div class="endless-container">
@@ -142,12 +138,35 @@
     </div>
     <div class="sidebar">
         <div class="row-fluid right-widget election-widget">
-            <strong class="counter">
-                <span>{{ election.get_all_votes.count }}</span>
-                {% blocktrans with participation=election.percentage_of_participation|floatformat:"-2" %}
-                VOTES ({{ participation }}% of the electorate)
-                {% endblocktrans %}
-            </strong>
+            {% if election.is_tallied %}
+                {% with participation=election.get_participation %}
+                <strong class="counter">
+                    <span>{{ participation|getitem:"total_votes" }}</span>
+                    {% blocktrans with percent=participation|getitem:"percentage_of_participation"|floatformat:"-2" %}
+                    VOTES ({{ percent }}% of the electorate)
+                    {% endblocktrans %}
+                </strong>
+                <strong class="counter">
+                    <span>{{ participation|getitem:"total_delegated_votes" }}</span>
+                    {% blocktrans with percent=participation|getitem:"percentage_of_delegation"|floatformat:"-2" %}
+                    DELEGATED VOTES ({{ percent }}% of the votes)
+                    {% endblocktrans %}
+                </strong>
+                {% endwith %}
+            {% else %}
+                {% with participation=election.get_participation %}
+                <strong class="counter">
+                    <span>{{ participation|getitem:"direct_votes" }}</span>
+                    {% blocktrans with percent=participation|getitem:"percentage_of_direct_participation"|floatformat:"-2" %}
+                    DIRECT VOTES ({{ percent }}% of the electorate)
+                    {% endblocktrans %}
+                </strong>
+                <strong class="counter">
+                    <span>{{ participation|getitem:"delegated_votes" }}</span>
+                    {% trans "DELEGATED VOTES" %}
+                </strong>
+                {% endwith %}
+            {% endif %}
             <div class="highlight-sidebar">
                 <span class="highlight-top-left"></span>
                 <span class="highlight-top-right"></span>
@@ -274,7 +293,8 @@
                     {% for question in election.result.counts %}
                     <div class="election-results">
                         <h4>{{ question|getitem:'question' }}</h4>
-                        <ul>
+                        {% ifequal question|getitem:'a' 'question/result/ONE_CHOICE' %}
+                            <ul>
                             {% for answer in question|getitem:'answers' %}
                                 <li>
                                     {{ answer|getitem:'value' }} <em>({% blocktrans with count=answer|getitem:'total_count'|floatformat:"-2" %}{{ count }} votes{% endblocktrans %})</em>
@@ -285,7 +305,17 @@
                                     </div>
                                 </li>
                             {% endfor %}
-                        </ul>
+                            </ul>
+                        {% endifequal %}
+                        {% ifequal question|getitem:'a' 'question/result/MEEK-STV' %}
+                            <ol>
+                            {% for winner in question|getitem:'winners' %}
+                            <li>
+                                {{winner}} <small>({% trans "elected" %})</small>
+                            </li>
+                            {% endfor %}
+                            </ol>
+                        {% endifequal %}
                     </div>
                     {% endfor %}
                 {% else %}

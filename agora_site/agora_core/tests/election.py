@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from common import (HTTP_OK,
                     HTTP_CREATED,
                     HTTP_ACCEPTED,
@@ -515,7 +517,10 @@ class ElectionTest(RootTestCase):
                     'dirty_votes':1,
                     'total_votes':5
                 }
-            ]
+            ],
+            'total_votes': 6,
+            'electorate_count': 7,
+            'total_delegated_votes': 2
         }
         self.assertEqual(data['result'], result_should_be)
         data = self.getAndParse('election/%d/extra_data/' % election_id)
@@ -916,7 +921,7 @@ class ElectionTest(RootTestCase):
                     'tally_type': 'MEEK-STV',
                     'max': 3,
                     'min': 0,
-                    'question': 'Who should be the next president?',
+                    'question': 'Who should be the next presidentá unicode chars ñè?',
                     'randomize_answer_order': True,
                     'num_seats': 2,
                     'answers': [
@@ -1003,7 +1008,7 @@ class ElectionTest(RootTestCase):
                     'min':0,
                     'max':3,
                     'tally_type':'MEEK-STV',
-                    'question':'Who should be the next president?',
+                    'question': 'Who should be the next presidentá unicode chars ñè?',
                     'answers':[
                     {
                         'a':'answer/result/MEEK-STV',
@@ -1045,7 +1050,10 @@ class ElectionTest(RootTestCase):
                     'dirty_votes':1,
                     'total_votes':5
                 }
-            ]
+            ],
+            'total_votes': 6,
+            'electorate_count': 7,
+            'total_delegated_votes': 0
         }
         self.assertEqual(results_should_be, data['result'])
         tally_log_should_be =  [{

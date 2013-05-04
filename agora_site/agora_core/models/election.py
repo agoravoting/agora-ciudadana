@@ -495,6 +495,27 @@ class Election(models.Model):
         else:
             return self.delegated_votes.all()
 
+
+    def get_participation(self):
+        '''
+        Returns the participation details
+        '''
+        if self.is_tallied():
+            total_votes = self.result['total_votes']
+            return {
+                'total_votes': self.result['total_votes'],
+                'percentage_of_participation': self.result['total_votes'] * 100.0 / self.result['electorate_count'],
+                'total_delegated_votes': self.result["total_delegated_votes"],
+                'percentage_of_delegation': self.result["total_delegated_votes"] * 100.0 / self.result['total_votes']
+            }
+        else:
+            return {
+                'direct_votes': self.get_direct_votes().count(),
+                'electorate_count': self.agora.members.count(),
+                'percentage_of_direct_participation': self.get_direct_votes().count() * 100.0 / self.agora.members.count(),
+                'delegated_votes': self.get_delegated_votes().count()
+            }
+
     def percentage_of_participation(self):
         '''
         Returns the percentage (0 to 100%) of people that have voted with
@@ -674,7 +695,7 @@ class Election(models.Model):
         # the number of delegated votes.
         # Note that because of chains of delegations, the same vote can be
         # counted multiple times.
-        delegation_counts = dict() 
+        delegation_counts = dict()
 
         def update_delegation_counts(vote):
             '''
@@ -762,6 +783,7 @@ class Election(models.Model):
             # prepare the tally
             tally.pre_tally(result)
 
+        num_delegated_votes = 0
         def add_vote(user_answers, is_delegated):
             '''
             Given the answers of a vote, update the result
@@ -781,6 +803,7 @@ class Election(models.Model):
 
                 # update delegation counts
                 update_delegation_counts(get_vote_for_voter(voter))
+                num_delegated_votes += 1
                 add_vote(path_for_user['answers'], is_delegated=True)
             # found the user in a direct vote
             elif nodes.filter(voter=voter).count() == 1:
@@ -813,6 +836,7 @@ class Election(models.Model):
                         path_for_user['user_ids'] += path['user_ids']
 
                         # Count the vote
+                        num_delegated_votes += 1
                         add_vote(path_for_user['answers'], is_delegated=True)
                         update_delegation_counts(current_edge)
                         loop = False
@@ -822,6 +846,7 @@ class Election(models.Model):
                         vote = nodes.filter(voter=delegate)[0]
                         path["answers"]=vote.data['answers']
                         paths += [path]
+                        num_delegated_votes += 1
                         add_vote(vote.data['answers'], is_delegated=True)
                         update_delegation_counts(current_edge)
                         loop = False
@@ -843,6 +868,9 @@ class Election(models.Model):
         self.result = dict(
             a= "result",
             counts = result,
+            total_votes = result[0]['total_votes'] + result[0]['dirty_votes'],
+            electorate_count = self.electorate.count(),
+            total_delegated_votes = num_delegated_votes
         )
 
         tally_log = []

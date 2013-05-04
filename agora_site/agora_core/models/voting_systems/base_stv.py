@@ -202,7 +202,8 @@ class BaseSTVTally(BaseTally):
         '''
         Function called once before the tally begins
         '''
-        self.ballots_file = open(self.ballots_path, 'w')
+        import codecs
+        self.ballots_file = codecs.open(self.ballots_path, encoding='utf-8', mode='w')
 
         question = result[self.question_num]
         self.num_seats = question['num_seats']
@@ -262,9 +263,13 @@ class BaseSTVTally(BaseTally):
 
         # write the candidates
         for answer in question['answers']:
-            self.ballots_file.write('"%s"\n' % answer['value'])
+            ans = '"%s"\n' % answer['value']
+            ans.encode('utf-8')
+            self.ballots_file.write(ans)
 
-        self.ballots_file.write('"%s"\n' % question['question'])
+        q = '"%s"\n' % question['question']
+        q.encode('utf-8')
+        self.ballots_file.write(q)
         self.ballots_file.close()
         self.election.extra_data['ballots_path'] = self.ballots_path
         self.election.save()
