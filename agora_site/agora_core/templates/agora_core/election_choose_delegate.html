@@ -53,9 +53,15 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        jQuery(document).ready(function() {
-            $('#vote-modal-dialog').modal('show');
-        });
-    </script>
+{% endblock %}
+
+{% block script-block %}
+
+{{ block.super }}
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        $('#vote-modal-dialog').modal('show');
+    });
+</script>
+
 {% endblock %}
