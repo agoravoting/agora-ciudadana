@@ -973,6 +973,12 @@ class ElectionTest(RootTestCase):
         }
         vote(['user1', 'user2', 'user3'], vote1_data)
         vote(['user4', 'user5'], vote2_data)
+        # one vote in blank
+        vote(['user6'], {
+            'is_vote_secret': False,
+            'question0': [],
+            'action': 'vote'
+        })
 
         # count the votes of the empty election
         self.login('david', 'david')
@@ -1041,7 +1047,7 @@ class ElectionTest(RootTestCase):
                 'Jack'
             ],
             'ballots_count':5,
-            'dirty_ballots_count':5,
+            'dirty_ballots_count':6,
             'candidates':[
                 'Florentino',
                 'Jack',

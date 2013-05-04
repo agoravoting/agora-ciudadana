@@ -127,6 +127,24 @@
     }, 
     {
         "fields": {
+            "date_joined": "2012-11-29T18:37:37.993Z", 
+            "email": "user6@agoraciudadana.com", 
+            "first_name": "Mariano Arizón", 
+            "groups": [], 
+            "is_active": true, 
+            "is_staff": false, 
+            "is_superuser": false, 
+            "last_login": "2012-11-29T18:37:37.993Z", 
+            "last_name": "", 
+            "password": "bcrypt$$2a$12$.wym57rWq8NQRAYr/enwcOTRKPg0y1wdBWbobI/9gBR7IZIzgdjNK", 
+            "user_permissions": [], 
+            "username": "user6"
+        }, 
+        "model": "auth.user", 
+        "pk": 6
+    }, 
+    {
+        "fields": {
             "biography": "", 
             "email_updates": true, 
             "extra": null, 

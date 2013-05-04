@@ -118,7 +118,6 @@ class BaseSTVField(JSONFormField):
         Wraps the choice field the proper way
         """
         error = django_forms.ValidationError(_('Invalid answer format'))
-        clean_value = super(BaseSTVField, self).clean(value)
 
         if not isinstance(value, list):
             raise error
@@ -147,10 +146,17 @@ class BaseSTVField(JSONFormField):
         # NOTE: in the future, when encryption support is added, this will be
         # handled differently, probably in a more generic way so that
         # BaseSTVField doesn't know anything about plaintext or encryption.
-        return {
-            "a": "plaintext-answer",
-            "choices": clean_value,
-        }
+        if len(value) > 0:
+            clean_value = super(BaseSTVField, self).clean(value)
+            return {
+                "a": "plaintext-answer",
+                "choices": clean_value,
+            }
+        else:
+            return {
+                "a": "plaintext-answer",
+                "choices": [],
+            }
 
 class BaseSTVTally(BaseTally):
     '''
