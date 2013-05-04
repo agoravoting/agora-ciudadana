@@ -104,23 +104,28 @@ class PluralityField(django_forms.ChoiceField):
         """
         Wraps the choice field the proper way
         """
-        if value or self.question['min'] > 0:
-            clean_value = super(PluralityField, self).clean(value)
-        else:
-            clean_value = ""
 
         # NOTE: in the future, when encryption support is added, this will be
         # handled differently, probably in a more generic way so that
         # PluralityField doesn't know anything about plaintext or encryption.
-        return {
-            "a": "plaintext-answer",
-            "choices": [clean_value],
-        }
+        if value or self.question['min'] > 0:
+            clean_value = super(PluralityField, self).clean(value)
+            return {
+                "a": "plaintext-answer",
+                "choices": [clean_value],
+            }
+        else:
+            return {
+                "a": "plaintext-answer",
+                "choices": [],
+            }
+
 
 class PluralityTally(BaseTally):
     '''
     Class to tally an election
     '''
+    dirty_votes = 0
 
     def pre_tally(self, result):
         '''
@@ -144,6 +149,8 @@ class PluralityTally(BaseTally):
                 else:
                     answer['by_direct_vote_count'] += 1
                 break
+        if not voter_answers[self.question_num]["choices"]:
+            self.dirty_votes += 1
 
     def post_tally(self, result):
         '''
@@ -188,6 +195,7 @@ class PluralityTally(BaseTally):
                 winner = answer
 
         question['total_votes'] = total_votes
+        question['dirty_votes'] = self.dirty_votes
         question['winners'] = [winner['value']]
 
         for answer in question['answers']:

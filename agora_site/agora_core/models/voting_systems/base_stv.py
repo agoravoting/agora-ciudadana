@@ -312,6 +312,7 @@ class BaseSTVTally(BaseTally):
 
         question = result[self.question_num]
         question['total_votes'] = json_report['ballots_count']
+        question['dirty_votes'] = json_report['dirty_ballots_count'] - json_report['ballots_count']
         question['winners'] = json_report['winners']
 
         i = 1

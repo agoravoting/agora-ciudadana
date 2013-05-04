@@ -389,7 +389,7 @@ class ElectionTest(RootTestCase):
             code=HTTP_OK, content_type='application/json')
 
         # all users join the agora
-        for username in ['user1', 'user2', 'user3', 'user4', 'user5']:
+        for username in ['user1', 'user2', 'user3', 'user4', 'user5', 'user6']:
             self.login(username, '123')
             orig_data = {'action': "join"}
             data = self.post('agora/1/action/', data=orig_data,
@@ -433,6 +433,12 @@ class ElectionTest(RootTestCase):
         vote(['user1', 'user2', 'user3', 'user4'], vote_foo_data)
         vote(['user4', 'user5'], vote_bar_data)
         vote(['user1', 'user3'], cancel_vote_data)
+        # one vote in blank
+        vote(['user6'], {
+            'is_vote_secret': False,
+            'question0': "",
+            'action': 'vote'
+        })
 
         # This is what happens:
         # 
@@ -448,6 +454,7 @@ class ElectionTest(RootTestCase):
         # user3 ---> foo CANCELLED ----------------------------------------> NO VOTE
         # user4 ---> foo ---> bar OVERWRITTEN -----------------------------> bar
         # user5 ---> bar --------------------------------------------------> bar
+        # user6 ---> BLANK VOTE -------------------------------------------> INVALID VOTE
         # 
         # Results:
         # foo ---> 3 votes (1 direct, 2 delegated) 
@@ -508,6 +515,7 @@ class ElectionTest(RootTestCase):
                         }
                     ],
                     'randomize_answer_order':True,
+                    'dirty_votes':1,
                     'total_votes':5
                 }
             ]
@@ -1036,6 +1044,7 @@ class ElectionTest(RootTestCase):
                     ],
                     'num_seats':2,
                     'randomize_answer_order':True,
+                    'dirty_votes':1,
                     'total_votes':5
                 }
             ]

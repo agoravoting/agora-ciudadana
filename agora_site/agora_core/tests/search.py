@@ -19,7 +19,7 @@ class SearchTest(RootTestCase):
     def test_search(self):
         # all
         data = self.getAndParse('search/')
-        self.assertEquals(data['meta']['total_count'], 14)
+        self.assertEquals(data['meta']['total_count'], 15)
 
         data = self.getAndParse('search/?q=agoraone')
         self.assertEquals(data['meta']['total_count'], 3)
