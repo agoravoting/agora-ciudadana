@@ -8,7 +8,7 @@ from agora_site.agora_core.resources.castvote import CastVoteResource
 from agora_site.agora_core.forms import PostCommentForm, election_questions_validator
 from agora_site.agora_core.forms.election import VoteForm as ElectionVoteForm
 from agora_site.misc.utils import (geolocate_ip, get_base_email_context,
-    JSONFormField, ISODateTimeFormField)
+    JSONFormField, JSONApiField, ISODateTimeFormField)
 from agora_site.misc.decorators import permission_required
 
 from tastypie import fields, http
@@ -208,6 +208,8 @@ class ElectionResource(GenericResource):
 
     user_has_delegated = fields.BooleanField()
 
+    user_perms = JSONApiField()
+
     class Meta(GenericMeta):
         queryset = Election.objects\
                     .exclude(url__startswith=DELEGATION_URL)\
@@ -237,6 +239,9 @@ class ElectionResource(GenericResource):
         if bundle.request.user.is_anonymous():
             return False
         return bundle.obj.has_user_voted_via_a_delegate(bundle.request.user)
+
+    def dehydrate_user_perms(self, bundle):
+        return bundle.obj.get_perms(bundle.request.user)
 
     def prepend_urls(self):
         return [

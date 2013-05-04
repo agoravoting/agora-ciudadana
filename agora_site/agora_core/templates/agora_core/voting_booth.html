@@ -233,9 +233,13 @@
             <label class="checkbox public-warning">
                 <input name="user_vote_is_public" id="user_vote_is_public" type="checkbox">
                 <%= gettext("Vote in public as a delegate") %>
-                <span>
+                <span class="optional">
                     <strong><%= gettext("NOTE") %></strong>
                     <%= gettext("Choosing this will make your vote <strong>public</strong>, allowing others to delegate their vote in you for this election.") %>
+                </span>
+                <span class="mandatory">
+                    <strong><%= gettext("NOTE") %></strong>
+                    <%= gettext("This will make your vote <strong>public</strong>. You cannot vote in secret in this election. This might be because of different reasons: maybe you are not a member in this agora, or perhaps this election allows only public vote.") %>
                 </span>
             </label>
             <button class="btn btn-large btn-block btn-success btn-continue" id="cast-ballot-btn" type="button">

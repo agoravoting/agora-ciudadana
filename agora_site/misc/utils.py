@@ -61,7 +61,10 @@ class JSONApiField(ApiField):
     help_text = "JSON data. Ex: {'prices': [26.73, 34], 'name': 'Daniel'}"
 
     def dehydrate(self, bundle):
-        return getattr(bundle.obj, self.attribute)
+        if self.attribute and hasattr(bundle.obj, self.attribute):
+            return getattr(bundle.obj, self.attribute)
+        else:
+            return None
 
 
 class JSONFormField(Field):

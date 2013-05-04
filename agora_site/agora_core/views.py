@@ -271,9 +271,9 @@ class ElectionChooseDelegateView(AjaxListView):
             agora__creator__username=username)
 
         self.delegate = get_object_or_404(User, username=delegate_username)
-        self.vote = get_object_or_404(CastVote, is_counted=True,
+        self.vote = get_object_or_404(CastVote, is_public=True,
             election=self.election, invalidated_at_date=None,
-            voter=self.delegate, is_public=True)
+            voter=self.delegate)
 
         return super(ElectionChooseDelegateView, self).dispatch(*args, **kwargs)
 
