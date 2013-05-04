@@ -471,9 +471,6 @@ class ElectionTest(RootTestCase):
         data = self.getAndParse('election/%d/' % election_id)
         result_should_be = {
             'a':'result',
-            'delegation_counts':{
-                '2':1
-            },
             'counts':[
                 {
                     'a':'question/result/ONE_CHOICE',
@@ -521,6 +518,10 @@ class ElectionTest(RootTestCase):
             ]
         }
         self.assertEqual(data['result'], result_should_be)
+        data = self.getAndParse('election/%d/extra_data/' % election_id)
+        self.assertEqual(data['delegation_counts'], {
+            '2':1
+        })
 
 
 
@@ -996,9 +997,6 @@ class ElectionTest(RootTestCase):
         data = self.getAndParse('election/%d/' % election_id)
         results_should_be = {
             'a':'result',
-            'delegation_counts':{
-
-            },
             'counts':[
                 {
                     'a':'question/result/MEEK-STV',
@@ -1090,4 +1088,5 @@ class ElectionTest(RootTestCase):
             ],
             'num_seats':2
         }]
-        self.assertEqual(tally_log_should_be, data['extra_data']['tally_log'])
+        data = self.getAndParse('election/%d/extra_data/' % election_id)
+        self.assertEqual(tally_log_should_be, data['tally_log'])

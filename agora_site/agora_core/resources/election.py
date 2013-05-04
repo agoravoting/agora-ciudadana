@@ -221,7 +221,7 @@ class ElectionResource(GenericResource):
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'put']
 
-        excludes = ['PROHIBITED_ELECTION_NAMES']
+        excludes = ['PROHIBITED_ELECTION_NAMES', 'extra_data']
 
     def dehydrate_url(self, bundle):
         return bundle.obj.get_link()
@@ -245,6 +245,11 @@ class ElectionResource(GenericResource):
 
     def prepend_urls(self):
         return [
+            # election extra_data
+            url(r"^(?P<resource_name>%s)/(?P<electionid>\d+)/extra_data%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_extra_data'), name="api_election_extra_data"),
+
             # all counting votes
             url(r"^(?P<resource_name>%s)/(?P<electionid>\d+)/all_votes%s$" \
                 % (self._meta.resource_name, trailing_slash()),
@@ -282,6 +287,19 @@ class ElectionResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('action'), name="api_election_action"),
         ]
+
+    def get_extra_data(self, request, **kwargs):
+        if request.method != "GET":
+            raise ImmediateHttpResponse(response=http.HttpMethodNotAllowed())
+
+        election = None
+        electionid = kwargs.get('electionid', -1)
+        try:
+            election = Election.objects.get(id=electionid)
+        except:
+            raise ImmediateHttpResponse(response=http.HttpNotFound())
+
+        return self.create_response(request, election.extra_data)
 
     def get_comments(self, request, **kwargs):
         '''

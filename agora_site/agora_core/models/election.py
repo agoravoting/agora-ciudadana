@@ -843,13 +843,13 @@ class Election(models.Model):
         self.result = dict(
             a= "result",
             counts = result,
-            delegation_counts = delegation_counts,
         )
 
         tally_log = []
         for tally in tallies:
             tally_log.append(tally.get_log())
         self.extra_data['tally_log'] = tally_log
+        self.extra_data['delegation_counts'] = delegation_counts
 
         self.delegated_votes_frozen_at_date = self.voters_frozen_at_date =\
             self.result_tallied_at_date = timezone.now()
