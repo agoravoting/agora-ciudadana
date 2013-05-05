@@ -4780,7 +4780,7 @@ body {
   margin-bottom: 10px;
 }
 .election-content-row .election-data {
-  width: 570px;
+  width: 600px;
 }
 .table_wrapper {
   max-width: 100%;
@@ -4861,7 +4861,7 @@ table.question-stv td.already_lost {
   color: #c60f0f;
 }
 #question-list table.question {
-  margin: 10px;
+  margin: 10px 10px 10px 0;
 }
 #vote-modal-dialog {
   width: 700px;
