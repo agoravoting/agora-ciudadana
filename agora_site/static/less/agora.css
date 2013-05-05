@@ -4784,7 +4784,7 @@ body {
 }
 .table_wrapper {
   max-width: 100%;
-  overflow-x: scroll;
+  overflow-x: auto;
   /* Scrollbar is displayed as it's needed */
 
 }

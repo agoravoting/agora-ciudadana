@@ -76,7 +76,10 @@
             this.$el.html(this.template(this.options));
             this.$el.find('tbody tr').sortElements(function (a, b) {
                 var rate = function (i) {
-                    return $(i).find('.already_won').length - $(i).find('.already_lost').length;
+                    return ($(i).find('.already_won').length
+                        + $(i).find('.won').length
+                        - $(i).find('.lost').length
+                        - $(i).find('.already_lost').length);
                 }
                 return rate(a) < rate(b);
             });

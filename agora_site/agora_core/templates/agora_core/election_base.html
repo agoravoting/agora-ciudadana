@@ -355,6 +355,12 @@
 
 <script id="template-question_meek_stv_tally" type="text/underscore-template">
     <h3 class="headerlink"><%= question_num +1 %>. <%= question.question %> <a href="#tally_question<%= question_num %>">¶</a></h3>
+    <strong class="winners">
+        <%= gettext("Winners: ") %>
+        <% for(var i=0; i < tally.winners.length; i++) { %>
+            <%= tally.winners[i] %><% if (i + 1 <  tally.winners.length) { %>,<% } %>
+        <% } %>
+    </strong>
     <div class="table_wrapper">
         <table class="question-stv table table-bordered">
             <thead><tr>
@@ -402,7 +408,7 @@
 
 <script id="template-question_one_choice_tally" type="text/underscore-template">
     <h3 class="headerlink"><%= question_num +1 %>. <%= question.question %> <a href="#tally_question<%= question_num %>">¶</a></h3>
-    <ul>
+    <strong class="winners"><%= gettext("Winner: ") %> <%= question.winners[0] %></strong>
     <% for(var i = 0; i < question.answers.length; i++) { %>
         <li data-value="<%= question.answers[i].total_count %>">
             <%= question.answers[i].value %>
