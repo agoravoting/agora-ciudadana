@@ -141,7 +141,7 @@
                 return;
             }
 
-            this.$el.find(".current-screen").append(this.questionViews[question_num].render().el);
+            this.$el.find(".current-screen").append(this.questionViews[question_num + 1].render().el);
         },
 
         changeQuestionChoices: function(question_num) {
