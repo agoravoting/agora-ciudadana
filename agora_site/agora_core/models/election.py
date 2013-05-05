@@ -765,7 +765,10 @@ class Election(models.Model):
         # setup the initial data common to all voting system
         i = 0
         for question in result:
-            voting_system = get_voting_system_by_id(self.election_type)
+            tally_type = self.election_type
+            if 'tally_type' in question:
+                tally_type = question['tally_type']
+            voting_system = get_voting_system_by_id(tally_type)
             tally = voting_system.create_tally(self, i)
             voting_systems.append(voting_system)
             tallies.append(tally)

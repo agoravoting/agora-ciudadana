@@ -8,6 +8,7 @@ class JsonReport(ReportPlugin):
     json = {}
 
     def __init__(self, e):
+        self.json = {}
         ReportPlugin.__init__(self, e, None, False)
 
     def generateReportIterative(self):

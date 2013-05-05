@@ -197,6 +197,8 @@ class BaseSTVTally(BaseTally):
         import uuid
         self.ballots_path = os.path.join(settings.MEDIA_ROOT, 'elections',
             (str(uuid.uuid4()) + '.blt'))
+        self.ballots = []
+        self.answer_to_ids_dict = dict()
 
     def pre_tally(self, result):
         '''
