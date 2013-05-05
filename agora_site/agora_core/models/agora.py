@@ -20,9 +20,9 @@ class Agora(models.Model):
     '''
     Represents an Agora, formed by a group of people which can vote and delegate
     '''
-    ELECTION_TYPES = parse_voting_methods() + (
+    ELECTION_TYPES = (
         ('SIMPLE_DELEGATION', _('Simple election for delegates where only one delegate can be chosen')),
-    )
+    ) + parse_voting_methods()
 
     MEMBERSHIP_TYPE = (
         ('ANYONE_CAN_JOIN', _('Anyone can join')),
