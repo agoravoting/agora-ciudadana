@@ -189,8 +189,11 @@ class CastVote(models.Model):
                 raise Exception('Invalid direct vote')
 
             question_title = self.election.questions[0]['question']
-            return dict(question=question_title,
-                answer=self.data['answers'][0]['choices'][0])
+            try:
+                return dict(question=question_title,
+                    answer=self.data['answers'][0]['choices'][0])
+            except Exception:
+                return dict(question=question_title,answer="")
 
         elif self.data['a'] == 'delegated-vote':
             if self.data['answers'][0]['a'] != 'plaintext-delegate':
