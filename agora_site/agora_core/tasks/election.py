@@ -229,7 +229,7 @@ def archive_election(election_id, is_secure, site_id, remote_addr, user_id):
 
 
 @task(ignore_result=True)
-def send_election_created_mails(election_id, is_secure, site_id, remote_addr):
+def send_election_created_mails(election_id, is_secure, site_id, remote_addr, user_id):
     election = Election.objects.get(pk=election_id)
     if not election or election.is_archived():
         return
