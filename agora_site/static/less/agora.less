@@ -831,41 +831,6 @@ body {
                     font-size: 14px;
                 }
             }
-
-            .election-results {
-                h4 {
-                    color: @sidebar-grey-text-color;
-                    padding-bottom: 10px;
-                }
-
-                ul {
-                    margin-left: 0;
-                }
-
-                li {
-                    display: block;
-                    font-size: 17px;
-                    color: @green-bright;
-                    font-weight: bold;
-                    text-transform: uppercase;
-
-                    em {
-                        color: @linkColor;
-                        font-style: normal;
-                        font-weight: normal;
-                        font-size: 12px;
-                        text-transform: none;
-                    }
-
-                    small {
-                        color: black;
-                        font-style: normal;
-                        font-weight: normal;
-                        font-size: 12px;
-                        text-transform: none;
-                    }
-                }
-            }
         }
     }
 }
@@ -919,6 +884,41 @@ table.question-stv td.lost {
 
 table.question-stv td.already_lost {
     color: transparent;
+}
+
+.election-results {
+    h4 {
+        color: @sidebar-grey-text-color;
+        padding-bottom: 10px;
+    }
+
+    ul {
+        margin-left: 0;
+    }
+
+    li {
+        display: block;
+        font-size: 17px;
+        color: @green-bright;
+        font-weight: bold;
+        text-transform: uppercase;
+
+        em {
+            color: @linkColor;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 12px;
+            text-transform: none;
+        }
+
+        small {
+            color: black;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 12px;
+            text-transform: none;
+        }
+    }
 }
 
 
@@ -1625,6 +1625,10 @@ div.top-form .option-edit:hover {
     clear: both;
     color: #C09853;
     margin-left: 8px;
+}
+
+#voting_booth label.public-warning span.hide {
+    display: none;
 }
 
 // ranked voting

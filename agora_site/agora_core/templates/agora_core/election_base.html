@@ -295,52 +295,6 @@
                     {% endif %}
 
                 {% endif%}
-
-                {% if election.is_tallied %}
-                    <h3>{% trans "Results" %}</h3>
-                    {% for question in election.result.counts %}
-                    <div class="election-results">
-                        <h4>{{ question|getitem:'question' }}</h4>
-                        {% ifequal question|getitem:'a' 'question/result/ONE_CHOICE' %}
-                            <ul>
-                            {% for answer in question|getitem:'answers' %}
-                                <li>
-                                    {{ answer|getitem:'value' }} <em>({% blocktrans with count=answer|getitem:'total_count'|floatformat:"-2" %}{{ count }} votes{% endblocktrans %})</em>
-                                    <div class="progress progress-large progress-success">
-                                        <div class="bar" style="width: {{ answer|getitem:'total_count_percentage'|unlocalize }}%">
-                                        {{ answer|getitem:'total_count_percentage'|floatformat }}%
-                                        </div>
-                                    </div>
-                                </li>
-                            {% endfor %}
-                            </ul>
-                        {% endifequal %}
-                        {% ifequal question|getitem:'a' 'question/result/MEEK-STV' %}
-                            <ol>
-                            {% for winner in question|getitem:'winners' %}
-                            <li>
-                                {{winner}} <small>({% trans "elected" %})</small>
-                            </li>
-                            {% endfor %}
-                            </ol>
-                        {% endifequal %}
-                    </div>
-                    {% endfor %}
-                {% else %}
-                    <h3>{% trans "Questions" %}</h3>
-                    {% for question in election.questions %}
-                        <div class="election-question">
-                            <h4>{{ question|getitem:'question' }}</h4>
-                            <ul>
-                                {% for answer in question|getitem:'answers' %}
-                                    <li>
-                                        {{ answer|getitem:'value' }}
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    {% endfor %}
-                {% endif %}
             </div>
 
             <div class="row-fluid social-icons">
@@ -450,7 +404,7 @@
     <h3 class="headerlink"><%= question_num +1 %>. <%= question.question %> <a href="#tally_question<%= question_num %>">¶</a></h3>
     <ul>
     <% for(var i = 0; i < question.answers.length; i++) { %>
-        <li>
+        <li data-value="<%= question.answers[i].total_count %>">
             <%= question.answers[i].value %>
             <em>
                 (<%= interpolate(gettext("%s votes"), [question.answers[i].total_count]) %>)

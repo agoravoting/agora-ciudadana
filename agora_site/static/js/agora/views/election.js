@@ -37,21 +37,21 @@
             // render template
             this.$el.html(this.template(ajax_data));
             $("#election-results").append(this.$el);
-            for (var i = 0; i < ajax_data.election.questions.length; i++) {
+            for (var i = 0; i < ajax_data.election.result.counts.length; i++) {
                 var view = null;
-                if (ajax_data.election.questions[i].tally_type == 'MEEK-STV') {
+                if (ajax_data.election.result.counts[i].tally_type == 'MEEK-STV') {
                     view = new Agora.MeekStvTallyView({
-                        question: ajax_data.election.questions[i],
+                        question: ajax_data.election.result.counts[i],
                         tally:ajax_data.extra_data.tally_log[i],
                         question_num: i,
                     });
-                } else if (ajax_data.questions[i].tally_type == 'ONE_CHOICE') {
+                } else if (ajax_data.election.result.counts[i].tally_type == 'ONE_CHOICE') {
                     view = new Agora.OneChoiceTallyView({
-                        question: ajax_data.election.questions[i],
+                        question: ajax_data.election.result.counts[i],
                         tally: ajax_data.extra_data.tally_log[i],
                         question_num: i,
                     });
-                } 
+                }
                 $("#election-results").append(view.render().el);
             }
         }
@@ -91,6 +91,8 @@
             return "tally_question" + this.options.question_num;
         },
 
+        className: "election-results",
+
         initialize: function() {
             _.bindAll(this);
             this.template = _.template($("#template-question_one_choice_tally").html());
@@ -101,6 +103,12 @@
         render: function() {
             // render template
             this.$el.html(this.template(this.options));
+            this.$el.find('li').sortElements(function (a, b) {
+                var rate = function (i) {
+                    return parseFloat($(i).data('value'));
+                }
+                return rate(a) < rate(b);
+            });
             return this;
         }
     });
