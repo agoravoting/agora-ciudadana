@@ -502,17 +502,27 @@ class Election(models.Model):
         '''
         if self.is_tallied():
             total_votes = self.result['total_votes']
+            if self.result['electorate_count'] != 0:
+                percentage_of_participation = self.result['total_votes'] * 100.0 / self.result['electorate_count']
+                percentage_of_delegation = self.result["total_delegated_votes"] * 100.0 / self.result['total_votes']
+            else:
+                percentage_of_participation = 0
+                percentage_of_delegation = 0
             return {
                 'total_votes': self.result['total_votes'],
-                'percentage_of_participation': self.result['total_votes'] * 100.0 / self.result['electorate_count'],
+                'percentage_of_participation': percentage_of_participation,
                 'total_delegated_votes': self.result["total_delegated_votes"],
-                'percentage_of_delegation': self.result["total_delegated_votes"] * 100.0 / self.result['total_votes']
+                'percentage_of_delegation': percentage_of_delegation
             }
         else:
+            if self.agora.members.count() != 0:
+                percentage_of_direct_participation = self.get_direct_votes().count() * 100.0 / self.agora.members.count()
+            else:
+                percentage_of_direct_participation = 0
             return {
                 'direct_votes': self.get_direct_votes().count(),
                 'electorate_count': self.agora.members.count(),
-                'percentage_of_direct_participation': self.get_direct_votes().count() * 100.0 / self.agora.members.count(),
+                'percentage_of_direct_participation': percentage_of_direct_participation,
                 'delegated_votes': self.get_delegated_votes().count()
             }
 
