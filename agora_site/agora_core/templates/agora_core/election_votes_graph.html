@@ -5,34 +5,29 @@
 {% load static from staticfiles %}
 
 {% block title %}{% trans "Visual" %} - {{ election.pretty_name }} - {{ election.agora.creator.username }}/{{ election.agora.name }}{% endblock %}
-{% block election-navigation %}{% activetab "election-nav" "graph" %}{{ block.super }}{% endblock %}
+{% block election-navigation %}{% activetab "election-nav" "visual" %}{{ block.super }}{% endblock %}
 
 {% block election_content %}
 
 <div id="around">
 <div id="graph-container" class="container-fluid">
   <div class="row-fluid">
-    <div class="span12 graph-box">      			
-			<div id="graph"></div>			
+    <div class="span12 graph-box">
+        <div id="graph"></div>
     </div>
-    
   </div>
-	<div class="row-fluid">
-    <div class="span12">
-      
-			
-			<div id="graph-data">
-			<ul class="legend">
-				<li><span class="voter"></span> Voter</li>
-				<li><span class="choice"></span> Choice</li>
-				<li><span class="winner"></span> Winner</li>
-			</ul><button id="graph-dialog-button">detach <img src="/static/img/external.png"/></button><br/><br/>
-			<p><span class="graph-info"></span><button id="tally-button">tally (client-side)</button></p>
-			
-			<!--FIXME this should go on the left -->
-			<p><span>Mouse wheel to zoom, click and drag the canvas to pan (editing is ON)</span></p>
-			</div>
-			
+    <div class="row-fluid">
+        <div class="span12">
+            <div id="graph-data">
+            <ul class="legend">
+                <li><span class="voter"></span> {% trans "Voter" %}</li>
+                <li><span class="choice"></span> {% trans "Choice" %}</li>
+                <li><span class="winner"></span> {% trans "Winner" %}</li>
+            </ul><button id="graph-dialog-button">detach <img src="/static/img/external.png"/></button><br/><br/>
+            <p><span class="graph-info"></span><button id="tally-button">{% trans "tally (client-side)" %}</button></p>
+            <!--FIXME this should go on the left -->
+            <p><span>{% trans "Mouse wheel to zoom, click and drag the canvas to pan (editing is ON)" %}</span></p>
+            </div>
     </div>
     
   </div>
@@ -54,24 +49,24 @@
 
 
 <script>
-	var lv = new Liquidv({
-		'url': 'http://localhost:8000/',
-		'scale': 0.8,
-		'vector': [50,50]
-	});
-	lv.draw({{election.id}});
+    var lv = new Liquidv({
+        'url': 'http://localhost:8000/',
+        'scale': 0.8,
+        'vector': [50,50]
+    });
+    lv.draw({{election.id}});
 
-	$('#graph-dialog').dialog({ autoOpen: false, width: 1000, height: 730 });
-	$('#graph-dialog').bind('dialogclose', function(event) {
-		$('#around').append($('#graph-container'));
-		lv.resize(570, 350);
-		$( "#graph-dialog-button" ).prop("disabled", false);
-	});
-	$( "#graph-dialog-button" ).click(function() {
-		$( '#graph-dialog' ).append($('#graph-container'));
-		lv.resize(910, 550);
-		$( "#graph-dialog-button" ).prop("disabled", true);
-		$( '#graph-dialog' ).dialog( "open" );
-	});
-	</script>
+    $('#graph-dialog').dialog({ autoOpen: false, width: 1000, height: 730 });
+    $('#graph-dialog').bind('dialogclose', function(event) {
+        $('#around').append($('#graph-container'));
+        lv.resize(570, 350);
+        $( "#graph-dialog-button" ).prop("disabled", false);
+    });
+    $( "#graph-dialog-button" ).click(function() {
+        $( '#graph-dialog' ).append($('#graph-container'));
+        lv.resize(910, 550);
+        $( "#graph-dialog-button" ).prop("disabled", true);
+        $( '#graph-dialog' ).dialog( "open" );
+    });
+    </script>
 {% endblock %}

@@ -106,8 +106,8 @@
         <span class="badge badge-info">{{ election.get_votes_from_delegates.count }}</span></a>
     </li>
 		<li {% ifactivetab "election-nav" "visual" %}class="active"{% endifactivetab %}>
-        <a href="{% url election-graph election.agora.creator.username election.agora.name election.name %}">{% trans "Visual(experimental)" %}
-        <span class="badge badge-info">{{ election.get_all_votes.count }}</span></a>
+        <a href="{% url election-graph election.agora.creator.username election.agora.name election.name %}">{% trans "Visual" %}
+        <span class="badge badge-warning">{% trans "beta" %}</span></a>
     </li>
 		
     {% if "edit_details" in permissions %}
