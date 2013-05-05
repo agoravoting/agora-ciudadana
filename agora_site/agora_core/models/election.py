@@ -861,6 +861,9 @@ class Election(models.Model):
                         paths += [path]
                         loop = False
 
+        if not self.extra_data:
+            self.extra_data = dict()
+
         # post process the tally
         for tally in tallies:
             tally.post_tally(result)
