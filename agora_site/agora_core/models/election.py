@@ -502,12 +502,17 @@ class Election(models.Model):
         '''
         if self.is_tallied():
             total_votes = self.result['total_votes']
-            if self.result['electorate_count'] != 0:
+
+            if self.result['electorate_count'] > 0:
                 percentage_of_participation = self.result['total_votes'] * 100.0 / self.result['electorate_count']
-                percentage_of_delegation = self.result["total_delegated_votes"] * 100.0 / self.result['total_votes']
             else:
                 percentage_of_participation = 0
+
+            if self.result['total_votes'] > 0:
+                percentage_of_delegation = self.result["total_delegated_votes"] * 100.0 / self.result['total_votes']
+            else:
                 percentage_of_delegation = 0
+
             return {
                 'total_votes': self.result['total_votes'],
                 'percentage_of_participation': percentage_of_participation,
