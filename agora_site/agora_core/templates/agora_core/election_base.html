@@ -417,7 +417,7 @@
             </em>
             <div class="progress progress-large progress-success">
                 <div class="bar" style="width: <%= question.answers[i].total_count_percentage %>%">
-                <%= parseFloat(question.answers[i].total_count_percentage).round(3) %>%
+                <%= parseFloat(question.answers[i].total_count_percentage).toFixed(2) %>%
                 </div>
             </div>
         </li>
