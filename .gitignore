@@ -11,3 +11,4 @@ celerybeat-schedule
 djcelery.schedulers.DatabaseScheduler
 docs/_build/
 agora_site/media/data/
+agora_site/media/mugshots/
