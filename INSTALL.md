@@ -131,15 +131,15 @@ cities data base and put it where the settings.py will look it for:
 We would be happy to consider any additions or bugfixes that you would like to
 add to the project. Please send them to us.
 
-If you find a bug or would like to request a feature you may do so at
-the issue tracker for this project:
+If you find a bug or would like to request a feature you may do so at our
+trello board:
 
-https://github.com/agoraciudadana/agora-ciudadana/issues/new
+https://trello.com/board/agora-ciudadana/5054e9e060d5bc9a08196b96
 
 Note that you don't need to be a developer to be able to contribute to Agora:
-You can also help us adding or maintaining translations, testing the releases
-or improving the wiki. Don't hesitate to contact with us if you want to help,
-your collaboration will be much appreciated.
+You can also help us adding or maintaining translations, testing the releases,
+improving the wiki, marketing the project. Just don't hesitate to contact
+with us if you want to help, your collaboration will be much appreciated.
 
 We use Trello for managing the work in the project, using the following board
 where all the work we are doing and planning to do for future releases can be
