@@ -266,6 +266,9 @@ AUTHENTICATION_BACKENDS = (
     'guardian.backends.ObjectPermissionBackend',
 )
 
+SOCIAL_AUTH_SLUGIFY_USERNAMES = True
+SOCIAL_AUTH_UUID_LENGTH = 2
+
 TWITTER_CONSUMER_KEY         = ''
 TWITTER_CONSUMER_SECRET      = ''
 
