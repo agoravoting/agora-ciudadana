@@ -261,7 +261,7 @@ class UserenaBaseProfile(models.Model):
         """
         # First check for a mugshot and if any return that.
         if self.mugshot:
-            return settings.MEDIA_ROOT +\
+            return settings.MEDIA_URL +\
                    settings.MUGSHOTS_DIR +\
                    self.mugshot.name.split("/")[-1]
 
