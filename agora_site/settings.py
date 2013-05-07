@@ -369,6 +369,8 @@ VOTING_METHODS = (
     'agora_site.agora_core.models.voting_systems.meek_stv.MeekSTV',
 )
 
+AGORA_USE_HTTPS = False
+
 try:
     # custom settings is the file where you should set your modifications of the
     # settings file
