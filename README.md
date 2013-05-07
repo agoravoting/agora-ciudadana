@@ -21,7 +21,7 @@ https://agora-ciudadana.readthedocs.org
 
 ### Installation instructions
 
-The INSTALL file contains the detailed installation instructions
+The INSTALL.md file contains the detailed installation instructions
 
 ### Test instructions
 
