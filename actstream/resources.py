@@ -124,6 +124,9 @@ class ActionResource(GenericResource):
         elif bundle.obj.target and bundle.obj.target_content_type.name == "election":
             return "target_election"
 
+        elif bundle.obj.actor and bundle.obj.actor_content_type.name == "user" and bundle.obj.verb="settings updated":
+            return "actor_user"
+
         else:
             return "unknown"
 
