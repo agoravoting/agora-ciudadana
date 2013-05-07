@@ -261,8 +261,8 @@ class UserenaBaseProfile(models.Model):
         """
         # First check for a mugshot and if any return that.
         if self.mugshot:
-            return settings.STATIC_URL +\
-                   settings.MUGSHOT_DIR +\
+            return settings.MEDIA_ROOT +\
+                   settings.MUGSHOTS_DIR +\
                    self.mugshot.name.split("/")[-1]
 
         # Use Gravatar if the user wants to.
