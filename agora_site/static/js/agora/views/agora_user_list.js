@@ -11,21 +11,8 @@
             var json = model.toJSON();
             json.agora_id = this.$el.data('agora-id');
             json.agora_path = this.$el.data('agora-path');
-            json.initials = this.getInitials(json);
+            json.initials = Agora.getUserInitials(json);
             return this.template(json);
-        },
-
-        getInitials: function(json) {
-            if (json.full_name && json.full_name != json.username) {
-                var initials = "";
-                var words = json.full_name.trim().split(" ");
-                _.each(words, function (word) {
-                    initials += word[0].toUpperCase();
-                });
-                return initials;
-            } else {
-                return json.username[0].toUpperCase();
-            }
         },
 
         clickUser: function(e) {
