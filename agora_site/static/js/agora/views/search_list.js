@@ -26,9 +26,26 @@
                 var templateEl = this.templateEl;
                 var ctype = model.get('obj').content_type;
                 var template = this.templates[ctype];
-                var ret = template(model.toJSON().obj);
+                var json = model.toJSON().obj;
+                if (ctype == 'profile') {
+                    json.initials = this.getInitials(json);
+                }
+                var ret = template(json);
                 return ret;
-            }
+            },
+
+            getInitials: function(json) {
+                if (json.full_name && json.full_name != json.username) {
+                    var initials = "";
+                    var words = json.full_name.trim().split(" ");
+                    _.each(words, function (word) {
+                        initials += word[0].toUpperCase();
+                    });
+                    return initials;
+                } else {
+                    return json.username[0].toUpperCase();
+                }
+            },
         });
 
         Agora.SearchListView = Backbone.View.extend({

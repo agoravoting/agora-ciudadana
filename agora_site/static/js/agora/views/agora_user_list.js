@@ -18,7 +18,7 @@
         getInitials: function(json) {
             if (json.full_name && json.full_name != json.username) {
                 var initials = "";
-                var words = json.full_name.split(" ");
+                var words = json.full_name.trim().split(" ");
                 _.each(words, function (word) {
                     initials += word[0].toUpperCase();
                 });
