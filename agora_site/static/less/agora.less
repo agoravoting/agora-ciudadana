@@ -1698,9 +1698,8 @@ div.top-form .option-edit:hover {
 div.result-item {
     a {
         img {
-            display: block;
             float: left;
-            padding: 5px;
+            margin: 5px;
         }
 
         p, p:hover {
@@ -1739,7 +1738,19 @@ div.result-item {
     background-color: @grayLighter;
 }
 
-.user-result strong > em {
+strong.username > em {
     color: @grayLight;
     font-weight: normal;
+    font-style: normal;
+}
+
+img.mugshot, .activity-action > a.mugshot > img {
+    display: block;
+    background-color: @grayLighter;
+    text-align: center;
+    line-height: 50px;
+    min-height: 50px;
+    min-width: 50px;
+    color: @gray;
+    font-weight: bold;
 }

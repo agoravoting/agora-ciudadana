@@ -5485,9 +5485,8 @@ div.result-item {
   clear: both;
 }
 div.result-item a img {
-  display: block;
   float: left;
-  padding: 5px;
+  margin: 5px;
 }
 div.result-item a p,
 div.result-item a p:hover {
@@ -5513,7 +5512,19 @@ div.result-item a .span2 {
 .user-result .row:hover {
   background-color: #eeeeee;
 }
-.user-result strong > em {
+strong.username > em {
   color: #999999;
   font-weight: normal;
+  font-style: normal;
+}
+img.mugshot,
+.activity-action > a.mugshot > img {
+  display: block;
+  background-color: #eeeeee;
+  text-align: center;
+  line-height: 50px;
+  min-height: 50px;
+  min-width: 50px;
+  color: #555555;
+  font-weight: bold;
 }

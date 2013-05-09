@@ -29,6 +29,7 @@ class TinyUserResource(GenericResource):
     content_type = fields.CharField(default="user")
     url = fields.CharField()
     mugshot_url = fields.CharField()
+    full_name = fields.CharField()
 
     class Meta(GenericMeta):
         queryset = User.objects.all()
@@ -40,6 +41,9 @@ class TinyUserResource(GenericResource):
 
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_profile().get_mugshot_url()
+
+    def dehydrate_full_name(self, bundle):
+        return bundle.obj.get_full_name()
 
 
 class TinyProfileResource(GenericResource):

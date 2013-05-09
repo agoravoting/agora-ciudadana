@@ -292,6 +292,7 @@
 
             renderItem: function(model) {
                 var json = model.toJSON();
+                json.actor.initials = this.getInitials(json);
                 if (!this.templates[json.type_name]) {
                     this.templates[json.type_name] = _.template(
                         $('#template-action_' + json.type_name).html()
@@ -300,7 +301,20 @@
                     );
                 }
                 return this.templates[json.type_name](json);
-            }
+            },
+
+            getInitials: function(json) {
+                if (json.actor.full_name && json.actor.full_name != json.actor.username) {
+                    var initials = "";
+                    var words = json.actor.full_name.split(" ");
+                    _.each(words, function (word) {
+                        initials += word[0].toUpperCase();
+                    });
+                    return initials;
+                } else {
+                    return json.actor.username[0].toUpperCase();
+                }
+            },
         });
     }).call(this);
 }).call(this);

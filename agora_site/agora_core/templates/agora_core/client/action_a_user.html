@@ -1,11 +1,17 @@
 <script id="template-action_actor_user" type="text/underscore-template">
     <div class="activity-action" geodata="<%= geolocation %>">
         <a href="<%= actor.url %>" class="mugshot">
-            <img src="<%= actor.mugshot_url %>" alt="<%= actor.username %>" />
+            <img src="<%= actor.mugshot_url %>" alt="<%= actor.initials %>" />
         </a>
         <div class="action-body">
             <div class="action-title">
-                <a href="<%= actor.url %>"><strong class="username"><%= actor.username %></strong></a> <strong class="verb"><%= gettext(verb) %></strong>
+                <a href="<%= actor.url %>"><strong class="username">
+<% if (actor.full_name && actor.full_name != actor.username) { %>
+    <%= actor.full_name %> <em>(<%= actor.username %>)</em>
+<% } else { %>
+    <%= actor.username %>
+<% } %>
+</strong></a> <strong class="verb"><%= gettext(verb) %></strong>
                 <time class="timeago" data-livestamp="<%= timestamp %>" datetime="<%= timestamp %>"></time>
             </div>
         </div>
