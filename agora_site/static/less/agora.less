@@ -1720,15 +1720,23 @@ div.result-item {
 }
 
 .user-result {
-    padding: 3px;
 
-    a .span2 {
+    .span2 {
+        padding: 3px;
         width: 50px !important;
     }
 
     .span7 {
         width: 540px;
     }
+}
+
+.user-result .row {
+    cursor: pointer;
+}
+
+.user-result .row:hover {
+    background-color: @grayLighter;
 }
 
 .user-result strong > em {

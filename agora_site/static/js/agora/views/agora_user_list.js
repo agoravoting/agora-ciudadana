@@ -3,6 +3,10 @@
         el: "#user-list",
         templateEl: "#template-agora-profile-item",
 
+        events: {
+            'click .user-result .row': 'clickUser',
+        },
+
         renderItem: function(model) {
             var json = model.toJSON();
             json.agora_id = this.$el.data('agora-id');
@@ -22,6 +26,14 @@
             } else {
                 return json.username[0].toUpperCase();
             }
+        },
+
+        clickUser: function(e) {
+            if ($(e.target).closest("a")) {
+                return;
+            }
+            var url = $(e.target).closest(".row").data('url');
+            window.location.href= url;
         }
     });
 

@@ -10,7 +10,7 @@
 {% block content %}
     <div class="row">
         <div class="span8 agora-left-side">
-            <div class="activity-list round-bordered no-overflow" id="user-list"
+            <div class="activity-list" id="user-list"
                 data-url="/api/v1/agora/{{ agora.id }}/{{filter}}/"
                 data-agora-path="{{ agora.get_link }}"
                 data-agora-id="{{ agora.id }}" data-method="get" data-margin="300">

@@ -318,6 +318,8 @@ USERENA_MUGSHOT_PATH =  os.path.join(MEDIA_ROOT, MUGSHOTS_DIR)
 
 USERENA_WITHOUT_USERNAMES = False
 
+#USERENA_MUGSHOT_GRAVATAR = False
+
 # required by  django-guardian to be set
 ANONYMOUS_USER_ID = -1
 

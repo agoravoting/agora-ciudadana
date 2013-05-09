@@ -5500,14 +5500,18 @@ div.result-item a .span2 {
 .no-overflow {
   overflow: hidden;
 }
-.user-result {
+.user-result .span2 {
   padding: 3px;
-}
-.user-result a .span2 {
   width: 50px !important;
 }
 .user-result .span7 {
   width: 540px;
+}
+.user-result .row {
+  cursor: pointer;
+}
+.user-result .row:hover {
+  background-color: #eeeeee;
 }
 .user-result strong > em {
   color: #999999;

@@ -1,18 +1,17 @@
 <script id="template-agora-profile-item" type="text/underscore-template">
     <div class="result-item user-result">
-        <a href="<%= url %>">
-            <div class="row bottom-bordered">
-                <div class="span2">
+            <div class="row bottom-bordered" data-url="<%= url %>">
+                <a href="<%= url %>"><div class="span2">
                     <img src="<%= mugshot_url %>" alt="<%= initials %>" class="mugshot"/>
-                </div>
+                </div></a>
                 <div class="span7">
-                    <strong>
+                    <a href="<%= url %>"><strong>
                         <% if (full_name && full_name != username) { %>
                             <%= full_name %> <em>(<%= username %>)</em>
                         <% } else { %>
                             <%= username %>
                         <% } %>
-                    </strong>
+                    </strong></a>
                     <% if (agora_permissions.length > 0) { %>
                     <div class="pull-right dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
