@@ -970,22 +970,14 @@ class AgoraActionJoinView(FormActionView):
                         agora=agora.get_full_name()
                     ),
                 extra_urls=(
-                    (_('Accept membership request'),
-                    reverse('agora-action-accept-membership-request',
+                    (_('List of membership requests'),
+                    reverse('agora-members',
                         kwargs=dict(
                             username=agora.creator,
                             agoraname=agora.name,
-                            username2=self.request.user.username
+                            members_filter="membership_requests"
                         ))
                     ),
-                    (_('Dismiss membership request'),
-                    reverse('agora-action-dismiss-membership-request',
-                        kwargs=dict(
-                            username=agora.creator,
-                            agoraname=agora.name,
-                            username2=self.request.user.username
-                        ))
-                    )
                 ),
             ))
             for admin in agora.admins.all():
@@ -1052,22 +1044,14 @@ class AgoraActionRequestAdminMembershipView(FormActionView):
                     agora=agora.get_full_name()
                 ),
             extra_urls=(
-                (_('Accept admin membership request'),
-                reverse('agora-action-accept-admin-membership-request',
+                (_('List of admin membership requests'),
+                reverse('agora-members',
                     kwargs=dict(
                         username=agora.creator,
                         agoraname=agora.name,
-                        username2=self.request.user.username
+                        members_filter="admin_membership_requests"
                     ))
                 ),
-                (_('Dismiss admin  membership request'),
-                reverse('agora-action-dismiss-admin-membership-request',
-                    kwargs=dict(
-                        username=agora.creator,
-                        agoraname=agora.name,
-                        username2=self.request.user.username
-                    ))
-                )
             ),
         ))
         for admin in agora.admins.all():
