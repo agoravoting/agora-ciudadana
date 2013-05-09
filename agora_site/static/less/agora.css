@@ -4392,9 +4392,6 @@ body {
 .with-user-actions.nav-pills {
   float: right;
 }
-div.result-item .span2 {
-  width: 40px !important;
-}
 .user-action.group > a.username {
   min-width: 100px;
   text-align: left;
@@ -5203,22 +5200,6 @@ table.question-stv td.already_lost {
 div.clear {
   clear: both;
 }
-div.result-item {
-  clear: both;
-}
-div.result-item a img {
-  display: block;
-  float: left;
-  padding: 5px;
-}
-div.result-item a p,
-div.result-item a p:hover {
-  margin-top: 5px;
-  color: #000000;
-}
-div.result-item a .span2 {
-  width: 55px;
-}
 div.search .agora-left-side {
   padding-left: 25px;
 }
@@ -5496,4 +5477,39 @@ div.top-form .option-edit:hover {
 }
 #voting_booth .sidenav a:hover [class^="icon-"] {
   opacity: 0.5;
+}
+.bottom-bordered {
+  border-bottom: 1px solid #EEEEEE;
+}
+div.result-item {
+  clear: both;
+}
+div.result-item a img {
+  display: block;
+  float: left;
+  padding: 5px;
+}
+div.result-item a p,
+div.result-item a p:hover {
+  margin-top: 5px;
+  color: #000000;
+}
+div.result-item a .span2 {
+  width: 55px;
+}
+.no-overflow {
+  overflow: hidden;
+}
+.user-result {
+  padding: 3px;
+}
+.user-result a .span2 {
+  width: 50px !important;
+}
+.user-result .span7 {
+  width: 540px;
+}
+.user-result strong > em {
+  color: #999999;
+  font-weight: normal;
 }

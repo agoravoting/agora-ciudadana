@@ -374,10 +374,6 @@ body {
     float: right;
 }
 
-div.result-item .span2 {
-    width: 40px !important;
-}
-
 .user-action.group > a.username {
     min-width: 100px;
     text-align: left; 
@@ -1341,26 +1337,6 @@ div.clear {
     clear: both;
 }
 
-div.result-item {
-    a {
-        img {
-            display: block;
-            float: left;
-            padding: 5px;
-        }
-
-        p, p:hover {
-            margin-top: 5px;
-            color: @black;
-        }
-
-        .span2 {
-            width: 55px;
-        }
-    }
-    clear: both;
-}
-
 div.search {
     .agora-left-side {
         padding-left: 25px;
@@ -1711,4 +1687,51 @@ div.top-form .option-edit:hover {
 #voting_booth .sidenav a:hover [class^="icon-"]
 {
     opacity: 0.5;
+}
+
+.bottom-bordered {
+    border-bottom: 1px solid #EEEEEE;
+}
+
+// profile
+
+div.result-item {
+    a {
+        img {
+            display: block;
+            float: left;
+            padding: 5px;
+        }
+
+        p, p:hover {
+            margin-top: 5px;
+            color: @black;
+        }
+
+        .span2 {
+            width: 55px;
+        }
+    }
+    clear: both;
+}
+
+.no-overflow {
+    overflow: hidden;
+}
+
+.user-result {
+    padding: 3px;
+
+    a .span2 {
+        width: 50px !important;
+    }
+
+    .span7 {
+        width: 540px;
+    }
+}
+
+.user-result strong > em {
+    color: @grayLight;
+    font-weight: normal;
 }
