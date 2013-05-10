@@ -1,6 +1,7 @@
 all: mainjs agorajs agoraless
 
 dependencies:
+	mkdir node_modules
 	npm install uglify-js less jshint
 
 agoraless:
