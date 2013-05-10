@@ -3,7 +3,7 @@
 {% load static from staticfiles %}
 {% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="utf-8" />
     <meta content="telephone=no" name="format-detection" />
@@ -11,9 +11,6 @@
     <link href="{% static 'favicon.ico' %}" rel="icon" type="image/png" />
 
     <link rel="stylesheet" href="{% static 'less/agora.css' %}" type="text/css" />
-        <!-- DRB added -->
-        <link rel="stylesheet" href="{% static 'css/liquidv.css' %}" type="text/css" />
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
 </head>
 <body data-userid="{{ user.pk }}" data-lang="{{ LANGUAGE_CODE }}">
 
@@ -274,7 +271,11 @@
     </script>
 
     <script type="text/javascript" src="{% url jsgettext %}?language={{ LANGUAGE_CODE }}"></script>
+    <!--[if lte IE 8]><script src="{% static 'js/min/main.compat.min.js' %}"></script><![endif]-->
+    <!--[if gte IE 9]><!-->
     <script src="{% static 'js/min/main.min.js' %}"></script>
+    <!--<![endif]-->
+
 
     <!-- Development -->
     {% if DEBUG %}
