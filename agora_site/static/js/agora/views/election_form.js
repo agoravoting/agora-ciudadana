@@ -70,7 +70,7 @@
         },
 
         editValue: function(e) {
-            if (e.target.class == "remove_option") {
+            if ($(e.target).hasClass("remove_option")) {
                 return;
             }
             var val = this.$el.find('.the-value').html();

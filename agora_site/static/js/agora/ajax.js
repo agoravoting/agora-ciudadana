@@ -19,7 +19,7 @@ var Ajax = Backbone.View.extend({
         return this.request("PUT", url, data, type);
     },
 
-    delete: function(url, data, type) {
+    'delete': function(url, data, type) {
         return this.request("DELETE", url, data, type);
     },
 

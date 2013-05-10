@@ -306,9 +306,9 @@
         Agora.getUserInitials = function(json) {
             if (json.full_name && json.full_name != json.username) {
                 var initials = "";
-                var words = json.full_name.trim().split(" ");
+                var words = $.trim(json.full_name).split(" ");
                 _.each(words, function (word) {
-                    var trimmed = word.trim();
+                    var trimmed = $.trim(word);
                     if (trimmed.length > 0) {
                         initials += word[0].toUpperCase();
                     }
