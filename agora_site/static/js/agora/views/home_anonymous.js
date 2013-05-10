@@ -4,6 +4,8 @@
 
     Agora.HomeActivtyList = Agora.ActivityListView.extend({
 
+        points: [],
+
         collectionReset: function(collection) {
             this.$el.empty();
             collection.each(this.addItem);
@@ -97,15 +99,22 @@
         {
             pos = this.xy(pos);
 
-            function animateSecondStep()
-            {
-                d3.select(this)
+            var point = this.points.pop()
+            if (point) {
+                d3.select(point)
                 .transition()
-                    .duration(35000)
+                    .duration(100)
                     .style("fill-opacity", "0")
                     .each("end", function() {
                         d3.select(this).remove();
                     });
+            }
+
+
+            var self = this;
+            function animateSecondStep()
+            {
+                self.points.push(this);
             }
 
             d3.select("#home_worldmap_canvas svg")
