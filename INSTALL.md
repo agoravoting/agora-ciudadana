@@ -122,7 +122,7 @@ For example all the actions are geolocalized based on the user's ip address. But
 in order for this to work you need to first have to download the geolocalized
 cities data base and put it where the settings.py will look it for:
 
-    $ cd agora_site/media/ && mkdir -p media/data && cd media/data
+    $ cd agora_site/ && mkdir -p media/data && cd media/data
     $ wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
     $ gunzip GeoLiteCity.dat.gz
 
