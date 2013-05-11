@@ -41,6 +41,19 @@ class Profile(UserenaLanguageBaseProfile):
         else:
             return self.user.first_name
 
+    def get_initials(self):
+        '''
+        Returns the initials of the profile
+        '''
+        base_text = self.get_fullname().strip()
+        initials = ""
+        for word in base_text.split(" "):
+            word = word.strip()
+            if not word:
+                continue
+            initials += word[0].upper()
+        return initials
+
     def get_short_description(self):
         '''
         Returns a short description of the user
