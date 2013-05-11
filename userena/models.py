@@ -269,7 +269,7 @@ class UserenaBaseProfile(models.Model):
         # Use Gravatar if the user wants to.
         if userena_settings.USERENA_MUGSHOT_GRAVATAR:
             if userena_settings.USERENA_MUGSHOT_DEFAULT == 'blank-unitials':
-                d = 'http://unitials.com/mugshot/size/50/%s.png' % self.get_initials()
+                d = 'http://unitials.com/mugshot/50/%s.png' % self.get_initials()
             return get_gravatar(self.user.email,
                                 userena_settings.USERENA_MUGSHOT_SIZE, d)
 
