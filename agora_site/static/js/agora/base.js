@@ -69,4 +69,8 @@ if (window.gettext === undefined) {
     });
 
     app.messages = new Agora.MessagesBox();
+
+    Agora.round2decimals = function(num) {
+        return Math.round(num * 100) / 100;
+    }
 }).call(this);

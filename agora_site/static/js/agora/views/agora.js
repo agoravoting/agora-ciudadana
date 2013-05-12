@@ -22,10 +22,7 @@
                 election.result.is_simple = false;
 
                 election.result.participation_percentage = 
-                    (election.result.electorate_count * 100.0 / election.result.total_votes);
-                // round two decimals
-                election.result.participation_percentage =
-                    Math.round(election.result.participation_percentage * 100) / 100;
+                    Agora.round2decimals(election.result.electorate_count * 100.0 / election.result.total_votes);
 
                 // in simple elections, find the winner data
                 if (election.result.counts.length == 1 &&
@@ -35,6 +32,9 @@
                     for (var j = 0; j < answers.length; j++) {
                         if (answers[j].value == winner) {
                             election.result.winner_data = answers[j];
+                            election.result.winner_data.total_count_percentage =
+                                Agora.round2decimals(
+                                    election.result.winner_data.total_count_percentage);
                             election.result.is_simple = true;
                             break;
                         }
