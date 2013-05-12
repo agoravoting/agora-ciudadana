@@ -1,4 +1,5 @@
 import datetime
+import unicodedata
 
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
@@ -46,13 +47,13 @@ class Profile(UserenaLanguageBaseProfile):
         Returns the initials of the profile
         '''
         base_text = self.get_fullname().strip()
-        initials = ""
+        initials = u""
         for word in base_text.split(" "):
             word = word.strip()
             if not word:
                 continue
             initials += word[0].upper()
-        return initials
+        return unicodedata.normalize('NFKD', initials).encode('ascii','ignore')
 
     def get_short_description(self):
         '''
