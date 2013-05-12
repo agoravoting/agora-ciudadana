@@ -109,8 +109,10 @@ class Agora(models.Model):
             Q(voting_extended_until_date__gt=timezone.now()) |
                 Q(voting_extended_until_date=None,
                     voting_starts_at_date__lt=timezone.now()),
-            Q(is_approved=True)).order_by('-voting_extended_until_date',
-                '-voting_starts_at_date')
+            Q(is_approved=True,
+                archived_at_date__isnull=True)).order_by(
+                    '-voting_extended_until_date',
+                    '-voting_starts_at_date')
 
     def get_open_elections_with_name_start(self, name):
         '''
@@ -123,7 +125,7 @@ class Agora(models.Model):
             Q(voting_extended_until_date__gt=timezone.now()) |
                 Q(voting_extended_until_date=None,
                     voting_starts_at_date__lt=timezone.now()),
-            Q(is_approved=True),
+            Q(is_approved=True, archived_at_date__isnull=True),
             Q(pretty_name__icontains=name)).order_by('-voting_extended_until_date',
                 '-voting_starts_at_date')
 
@@ -132,7 +134,8 @@ class Agora(models.Model):
         Returns the list of past elections with a given result
         '''
         return self.elections.filter(
-            result_tallied_at_date__lt=timezone.now()).order_by(
+            result_tallied_at_date__lt=timezone.now(),
+            archived_at_date__isnull=True).order_by(
                 '-voting_extended_until_date')
 
     # Stablishes a default option for elections
@@ -233,7 +236,7 @@ class Agora(models.Model):
         '''
         Returns the QuerySet with the approved elections
         '''
-        return self.elections.filter(is_approved=True)
+        return self.elections.filter(is_approved=True, archived_at_date__isnull=True)
 
     def open_elections(self):
         '''
@@ -243,7 +246,7 @@ class Agora(models.Model):
         return self.elections.filter(
             Q(voting_extended_until_date__gt=timezone.now()) |
             Q(voting_extended_until_date=None, voting_starts_at_date__lt=timezone.now()),
-            Q(is_approved=True)
+            Q(is_approved=True, archived_at_date__isnull=True)
         ).order_by('-voting_extended_until_date',
             '-voting_starts_at_date')
 
@@ -252,7 +255,7 @@ class Agora(models.Model):
         '''
         Returns a QuerySet with the not approved elections
         '''
-        return self.elections.filter(is_approved=False).exclude(name='delegation')
+        return self.elections.filter(is_approved=False, archived_at_date__isnull=True).exclude(name='delegation')
 
     @staticmethod
     def static_has_perms(permission_name, user):

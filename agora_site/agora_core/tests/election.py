@@ -528,8 +528,6 @@ class ElectionTest(RootTestCase):
             '2':1
         })
 
-
-
     def test_archive_election(self):
         # create election as admin
         self.login('david', 'david')
@@ -557,6 +555,47 @@ class ElectionTest(RootTestCase):
         # because start date has been reset
         data = self.getAndParse('election/%s/' % election_id, code=HTTP_OK)
         self.assertEqual(data['voting_starts_at_date'], None)
+
+    def test_archived_election_delisted(self):
+        # create election as admin
+        self.login('david', 'david')
+        data = self.postAndParse('agora/1/action/', data=self.base_election_data,
+            code=HTTP_OK, content_type='application/json')
+        election_id = data['id']
+
+        # start election
+        orig_data = dict(action='start')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # david votes empty vote
+        vote_data = {
+            'is_vote_secret': True,
+            'question0': "bar",
+            'action': 'vote'
+        }
+        data = self.post('election/%d/action/' % election_id,
+            data=vote_data, code=HTTP_OK, content_type='application/json')
+
+        # stop and tally election
+        self.login('david', 'david')
+        orig_data = dict(action='stop')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # check election is listed appropiately as tallied
+        data = self.getAndParse('agora/1/tallied_elections/', code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 1)
+        self.assertEqual(data['objects'][0]['id'], election_id)
+
+        # archive the election
+        orig_data = dict(action='archive')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # check that election is not listed as tallied anymore
+        data = self.getAndParse('agora/1/tallied_elections/', code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 0)
 
     def test_vote_empty(self):
         # create election as admin
