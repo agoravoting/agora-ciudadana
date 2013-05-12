@@ -183,7 +183,7 @@
 
             var self = this;
             var jqxhr = $.ajax("/api/v1/election/" + election_id + "/action/", {
-                data: JSON.stringify(ballot),
+                data: JSON.stringifyCompat(ballot),
                 contentType : 'application/json',
                 type: 'POST',
             })

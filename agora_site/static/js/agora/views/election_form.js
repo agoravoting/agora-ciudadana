@@ -511,7 +511,7 @@
             var agora_id = $("#agora_id").val();
             var self = this;
             var jqxhr = $.ajax("/api/v1/agora/" + agora_id + "/action/", {
-                data: JSON.stringify(json),
+                data: JSON.stringifyCompat(json),
                 contentType : 'application/json',
                 type: 'POST',
             })
@@ -616,7 +616,7 @@
             var election_id = this.model.get('id');
             var self = this;
             var jqxhr = $.ajax("/api/v1/election/" + election_id + "/", {
-                data: JSON.stringify(json), 
+                data: JSON.stringifyCompat(json), 
                 contentType : 'application/json',
                 type: 'PUT',
             })
