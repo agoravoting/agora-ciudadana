@@ -22,7 +22,7 @@
                 election.result.is_simple = false;
 
                 election.result.participation_percentage = 
-                    Agora.round2decimals(election.result.electorate_count * 100.0 / election.result.total_votes);
+                    Agora.round2decimals(election.result.total_votes * 100.0 / election.result.electorate_count);
 
                 // in simple elections, find the winner data
                 if (election.result.counts.length == 1 &&
