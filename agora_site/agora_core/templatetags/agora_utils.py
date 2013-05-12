@@ -2,6 +2,9 @@
 from agora_site.agora_core.models import CastVote
 from agora_site.misc.utils import rest as rest_api
 
+
+from urlparse import urlparse, urlunparse
+from django.http import QueryDict
 from django import template
 from django.utils.translation import pgettext as _
 from django.template.base import token_kwargs
@@ -210,7 +213,13 @@ class RestNode(template.Node):
             request = template.Variable(self.req).resolve(context)
             args = [str(template.Variable(arg).resolve(context)) for arg in self.args]
             url = ''.join(args)
-            status_code, container = rest_api(url, request=request)
+
+            # separate query params from url
+            (scheme, netloc, path, params, query, fragment) = urlparse(url)
+            query_dict = QueryDict(query)
+            url = urlunparse((scheme, netloc, path, params, '', fragment))
+
+            status_code, container = rest_api(url, request=request, query=query_dict)
             if status_code >= 300:
                 return ''
             else:
