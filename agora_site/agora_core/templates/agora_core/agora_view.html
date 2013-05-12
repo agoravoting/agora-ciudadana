@@ -211,44 +211,8 @@
             </div>
         </div>
 
-        <div class="row-fluid right-widget right-widget-grey">
-            <div class="right-widget-header">
-                <h4>{% trans "Last elections" %} <span>({{ agora.get_tallied_elections.count }})</span></h4>
-            </div>
-            <div class="row-fluid hover-items">
-                <ul>
-                    {% for election in agora.get_tallied_elections|slice:':3' %}
-                    <li>
-                        <a href="{% url election-view agora.creator.username agora.name election.name %}" class="election">
-                            <strong>{{ election.pretty_name|truncatechars:40 }}</strong>
-                            <time datetime="{{ election.result_tallied_at_date.isoformat }}" data-livestamp="{{ election.result_tallied_at_date.isoformat }}">
-                                {{ election.result_tallied_at_date|pretty_date }}
-                            </time>
-                            <span>{{ election.get_winning_option|getitem:'value' }}</span>
-                            <small>{% blocktrans with votes=election.get_winning_option|getitem:'total_count' %}({{ votes }} votes){% endblocktrans %}</small>
-
-                            <div class="progress progress-success progress-small">
-                                <div class="bar" style="width: {{ election.get_winning_option|getitem:'total_count_percentage'|floatformat }}%;">
-                                    {{ election.get_winning_option|getitem:'total_count_percentage'|floatformat }}%
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    {% empty %}
-                    <li class="empty">
-                        {% trans "No tallied elections yet" %}
-                    </li>
-                    {% endfor %}
-
-                    {% if agora.get_tallied_elections.count > 3 %}
-                    <li>
-                        <a class="election remaining" href="{% url agora-elections agora.creator.username agora.name "tallied" %}">
-                            {% trans "... and more" %}
-                        </a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
+        <div class="row-fluid right-widget right-widget-grey" id="tallied_elections_view">
+            <!-- here will go the tallied elections view when rendered -->
         </div>
     </div>
 </div>
@@ -258,6 +222,12 @@
 {% include "agora_core/include-js-template-election.html" %}
 {% include "agora_core/include-js-template-agora.html" %}
 {% include "agora_core/client/all_actions.html" %}
-<script>app.currentView = new Agora.AgoraView();</script>
+{% include "agora_core/client/tallied_elections_view.html" %}
+<script>
+var ajax_data = {
+    'tallied_elections': {% rest request '/agora/' agora.id '/tallied_elections/?limit=3' %}
+};
+app.currentView = new Agora.AgoraView();
+</script>
 {% endblock %}
 {% block footer %} {% endblock %}

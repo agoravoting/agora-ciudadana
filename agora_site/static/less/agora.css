@@ -4094,6 +4094,12 @@ a.thumbnail:hover {
 body {
   background-color: #ececec;
 }
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+}
 #poweredby {
   text-align: center;
   padding-top: 20px;
@@ -4513,7 +4519,7 @@ body {
 }
 .row-fluid.right-widget-grey .hover-items ul {
   display: block;
-  margin: 1px;
+  margin: 1px 2px 1px 1px;
   list-style: none;
 }
 .row-fluid.right-widget-grey .hover-items ul li a {
@@ -4537,9 +4543,6 @@ body {
   display: inline-block;
   float: right;
 }
-.row-fluid.right-widget-grey .hover-items ul li a.election {
-  min-height: 70px;
-}
 .row-fluid.right-widget-grey .hover-items ul li a.election.election-result {
   min-height: 140px;
   background: linear-gradient(top, #ffffff 54%, #f2f2f2 100%);
@@ -4559,6 +4562,7 @@ body {
   padding: 2px;
   font-weight: normal;
   font-size: 14px;
+  max-width: 100%;
 }
 .row-fluid.right-widget-grey .hover-items ul li a.election time {
   display: block;
@@ -4576,11 +4580,11 @@ body {
   color: #555555;
   font-size: 14px;
   font-weight: bold;
+  max-width: 100%;
 }
 .row-fluid.right-widget-grey .hover-items ul li a.election small {
   color: #555555;
   display: block;
-  clear: right;
   float: left;
   padding: 2px;
   font-size: 12px;
@@ -4589,6 +4593,8 @@ body {
   float: left;
   clear: left;
   width: 100%;
+  margin-bottom: 0;
+  border: none;
 }
 .row-fluid.agora-list {
   margin-top: 30px !important;
@@ -5523,8 +5529,8 @@ img.mugshot,
   background-color: #eeeeee;
   text-align: center;
   line-height: 50px;
-  min-height: 50px;
-  min-width: 50px;
+  height: 50px;
+  width: 50px;
   color: #555555;
   font-weight: bold;
 }

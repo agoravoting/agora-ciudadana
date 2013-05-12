@@ -24,6 +24,12 @@ body {
     background-color: @footer-background-color;
 }
 
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+}
 
 #poweredby {
     text-align: center;
@@ -514,7 +520,7 @@ body {
 
     .hover-items ul {
         display: block;
-        margin: 1px;
+        margin: 1px 2px 1px 1px;
         list-style: none;
 
         li a {
@@ -542,7 +548,6 @@ body {
             }
 
             &.election {
-                min-height: 70px;
 
                 &.election-result {
                     min-height: 140px;
@@ -572,6 +577,7 @@ body {
                     padding: 2px;
                     font-weight: normal;
                     font-size: 14px;
+                    max-width: 100%;
                 }
 
                 time {
@@ -591,12 +597,12 @@ body {
                     color: @gray;
                     font-size: 14px;
                     font-weight: bold;
+                    max-width: 100%;
                 }
 
                 small {
                     color: @gray;
                     display: block;
-                    clear: right;
                     float: left;
                     padding: 2px;
                     font-size: 12px;
@@ -606,6 +612,8 @@ body {
                     float: left;
                     clear: left;
                     width: 100%;
+                    margin-bottom: 0;
+                    border: none;
                 }
             }
         }
