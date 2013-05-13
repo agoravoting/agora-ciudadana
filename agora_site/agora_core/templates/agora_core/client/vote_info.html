@@ -47,11 +47,11 @@
         <% for (var i = 0; i < election.questions.length; i++) { %>
             <h3>Q<%=  i + 1 %>. <%= election.questions[i].question %></h3>
             <% if (election.questions[i].tally_type == 'MEEK-STV') { %>
-                <ul>
+                <ol>
                 <% for (var j = 0; j < vote.public_data.answers[i].choices.length; j++) { %>
                     <li><%=  vote.public_data.answers[i].choices[j] %></li>
                 <% } %>
-                </ul>
+                </ol>
             <% } else { %>
                 <ul><li><%=  vote.public_data.answers[i].choices[0] %></li></ul>
             <% } %>
