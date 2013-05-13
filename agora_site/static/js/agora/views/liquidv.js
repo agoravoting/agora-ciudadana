@@ -530,20 +530,24 @@ var  colors = d3.scale.category10();
             $.getJSON(delegatedVotesUrl(electionId), {})
             .done(function( delegated ) {
                 var allUsers = {};
+                var loadedVotes = 0, loadedDelegatedVotes = 0;
                 $.each(delegated.objects, function(index, item) {
-                    var choice = item.public_data.answers[0].choices[0];
-                    var voter = item.voter;
-                    var delegateNode, voterNode;
-                    if(allUsers[choice.user_id] == null) {
-                        allUsers[choice.user_id] = {'id': ++lastNodeId, 'name': choice.user_name, 'user_name': choice.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
+                    if(item.public_data.answers != null) {
+                        var choice = item.public_data.answers[0].choices[0];
+                        var voter = item.voter;
+                        var delegateNode, voterNode;
+                        if(allUsers[choice.user_id] == null) {
+                            allUsers[choice.user_id] = {'id': ++lastNodeId, 'name': choice.user_name, 'user_name': choice.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
+                        }
+                        delegateNode = allUsers[choice.user_id];
+                        if(allUsers[voter.id] == null) {
+                            allUsers[voter.id] = {'id': ++lastNodeId, 'name': voter.first_name, 'user_name': voter.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
+                        }
+                        voterNode = allUsers[voter.id];
+                        // update targets
+                        voterNode.targets = [delegateNode].concat(voterNode.targets);
+                        loadedDelegatedVotes++;
                     }
-                    delegateNode = allUsers[choice.user_id];
-                    if(allUsers[voter.id] == null) {
-                        allUsers[voter.id] = {'id': ++lastNodeId, 'name': voter.first_name, 'user_name': voter.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
-                    }
-                    voterNode = allUsers[voter.id];
-                    // update targets
-                    voterNode.targets = [delegateNode].concat(voterNode.targets);
                 });
                 // console.log(allUsers);
                 /* var users = delegated.objects.reduce(function(obj, x) {
@@ -556,71 +560,65 @@ var  colors = d3.scale.category10();
                 }, {});*/ 
                 $.getJSON(directVotesUrl(electionId), {})
                 .done(function( direct ) {
-                    $.each(direct.objects, function(index, item) {
-                        var choice = item.public_data.answers[0].choices[0];
-                        var voter = item.voter;
-                        var choiceNode, voterNode;
-                        if(allUsers[choice] == null) {
-                            allUsers[choice] = {'id': ++lastNodeId, 'name': choice, 'user_name': '', 'type': 'choice', 'color': '#00CC00', 'votes': 0}
+                    
+                    $.each(direct.objects, function(index, item) {                        
+                        
+                        if(item.public_data.answers != null) {
+                            var choice = item.public_data.answers[0].choices[0];
+                            var voter = item.voter;
+                            var choiceNode, voterNode;
+                            if(allUsers[choice] == null) {
+                                allUsers[choice] = {'id': ++lastNodeId, 'name': choice, 'user_name': '', 'type': 'choice', 'color': '#00CC00', 'votes': 0}
+                            }
+                            choiceNode = allUsers[choice];					
+                            if(allUsers[voter.id] == null) {
+                                allUsers[voter.id] = {'id': ++lastNodeId, 'name': voter.first_name, 'user_name': voter.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
+                            }
+                            voterNode = allUsers[voter.id];
+                            // update targets
+                            voterNode.targets = [choiceNode].concat(voterNode.targets);
+                            loadedVotes++;
                         }
-                        choiceNode = allUsers[choice];					
-                        if(allUsers[voter.id] == null) {
-                            allUsers[voter.id] = {'id': ++lastNodeId, 'name': voter.first_name, 'user_name': voter.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
-                        }
-                        voterNode = allUsers[voter.id];
-                        // update targets
-                        voterNode.targets = [choiceNode].concat(voterNode.targets);
+                        $(".graph-info").text('Loaded ' + loadedVotes + ' direct votes and ' + loadedDelegatedVotes +  ' delegated votes');				
+                    });                  
 
-                        $(".graph-info").text('Loaded ' + direct.objects.length + ' direct votes and ' + delegated.objects.length +  ' delegated votes');				
+                    // reset, must be done here
+                    if(force != null) {
+                        force.stop();
+                        links = [];
+                        nodes = [];
+                        restart();
+                    }
+
+                    // once we have accumulated all the nodes (users plus choices), construct links
+                    var delegationLinks = $.map(delegated.objects, function(x, index) {
+                        if(x.public_data.answers != null) {
+                            var choice = x.public_data.answers[0].choices[0];
+                            var voter = x.voter;
+                            // console.log(voter.id + " -> " + choice.user_id);
+                            return {'source': allUsers[voter.id], 'target': allUsers[choice.user_id], 'id': ++lastLinkId, 'color': '#0099FF'};
+                        }
+                    });
+                    var voteLinks = $.map(direct.objects, function(x, index) {                    
+                        if(x.public_data.answers != null) {
+                            var choice = x.public_data.answers[0].choices[0];
+                            var voter = x.voter;
+                            return {'source': allUsers[voter.id], 'target': allUsers[choice], 'id': ++lastLinkId, 'color': '#0099FF'};
+                        }                    
                     });
 
-                    /* var allUsers = direct.objects.reduce(function(obj, x) {
-                        var choice = x.public_data.answers[0].choices[0];
-                        var voter = x.voter;
-                        var ret = {};
-                        if(!found[choice]) {
-                            i++;
-                            found[choice] = true;
-                        }
-                        // ret[choice] = {'id': choice, 'name': choice, 'type': 'choice', 'color': '#00CC00', 'x': 1.1*width, 'y': (height/5.0) +(i / uniqueChoices.length) * (height/1.0), 'fixed': true}
-                        ret[choice] = {'id': choice, 'name': choice, 'user_name': '', 'type': 'choice', 'color': '#00CC00'}
-                        ret[voter.id] = {'id': voter.id, 'name': voter.first_name, 'user_name': voter.username, 'type': 'voter', 'color': '#0099FF'}
-                        return $.extend({}, obj, ret);
-                    }, users);*/
+                    links = delegationLinks.concat(voteLinks)
+                    // get only the values
+                    nodes = Object.keys(allUsers).map(function(key){
+                        return allUsers[key];
+                    });
 
-                // reset, must be done here
-                if(force != null) {
-                    force.stop();
-                    links = [];
-                    nodes = [];
-                    restart();
-                }
+                    console.log('links');
+                    console.log(links);
+                    console.log('nodes');
+                    console.log(nodes);
 
-                // once we have accumulated all the nodes (users plus choices), construct links
-                var delegationLinks = $.map(delegated.objects, function(x, index) {
-                    var choice = x.public_data.answers[0].choices[0];
-                    var voter = x.voter;
-                    // console.log(voter.id + " -> " + choice.user_id);
-                    return {'source': allUsers[voter.id], 'target': allUsers[choice.user_id], 'id': ++lastLinkId, 'color': '#0099FF'};
-                });
-                var voteLinks = $.map(direct.objects, function(x, index) {
-                    var choice = x.public_data.answers[0].choices[0];
-                    var voter = x.voter;
-                    return {'source': allUsers[voter.id], 'target': allUsers[choice], 'id': ++lastLinkId, 'color': '#0099FF'};
-                });
-
-                links = delegationLinks.concat(voteLinks)
-                // get only the values
-                nodes = Object.keys(allUsers).map(function(key){
-                    return allUsers[key];
-                });
-
-                console.log('links');
-                console.log(links);
-                console.log('nodes');
-                console.log(nodes);
-
-                me.go()
+                    me.go()
                 });
             });
         },
