@@ -159,7 +159,11 @@
                 extra_data: ajax_data.extra_data
             };
             if (model.election.result_tallied_at_date) {
-                model.num_delegated_votes = ajax_data.extra_data.delegation_counts[model.vote.voter.id];
+                if (ajax_data.extra_data.delegation_counts[model.vote.voter.id]) {
+                    model.num_delegated_votes = ajax_data.extra_data.delegation_counts[model.vote.voter.id];
+                } else {
+                    model.num_delegated_votes = 0;
+                }
                 var size = _.size(ajax_data.extra_data.delegation_counts);
                 var filtered = _.filter(ajax_data.extra_data.delegation_counts,
                     function (val) { return val <= model.num_delegated_votes; }
