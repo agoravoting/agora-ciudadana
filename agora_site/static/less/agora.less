@@ -20,6 +20,14 @@
     margin-bottom: 40px;
 }
 
+
+.img-polaroid {
+    background-color: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 4px;
+}
+
 body {
     background-color: @footer-background-color;
 }
@@ -1761,4 +1769,49 @@ img.mugshot, .activity-action > a.mugshot > img {
     width: 50px;
     color: @gray;
     font-weight: bold;
+}
+
+// election_delegates.html
+
+#vote_info {
+    .row-fluid {
+        margin-left: 10px;
+
+        &.userinfo, &.userdetails {
+            padding-bottom: 15px;
+        }
+
+        &.bignums {
+            padding-top: 10px;
+
+            h1 { display: block; }
+        }
+
+        strong.username {
+            color: @gray;
+        }
+
+        blockquote {
+            margin-top: 10px;
+            border: none;
+            padding: 0;
+        }
+
+        .btn.choose-as-delegate {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        &.questions {
+            margin-top: 20px;
+
+            strong {
+                color: @green;
+            }
+
+            li {
+                color: @gray;
+            }
+        }
+    }
 }

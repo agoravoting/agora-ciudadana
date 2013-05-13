@@ -133,4 +133,48 @@
             }
         }
     });
+
+    Agora.ElectionDelegatesView = Agora.GenericListView.extend({
+        el: "#user-list",
+        templateEl: "#template-vote_list_item",
+        templateVoteInfoEl: "#template-vote_info",
+
+        events: {
+            'click .user-result .row': 'clickUser',
+            'hover .user-result .row': 'hoverUser',
+        },
+
+        renderItem: function(model) {
+            return this.template(model.toJSON());
+        },
+
+        hoverUser: function(e) {
+            if (!this.templateVoteInfo) {
+                this.templateVoteInfo = _.template($(this.templateVoteInfoEl).html());
+            }
+            var id = $(e.target).closest('.row').data('id');
+            var model = {
+                vote: this.collection.get(id).toJSON(),
+                election: ajax_data.election,
+                extra_data: ajax_data.extra_data
+            };
+            if (model.election.result_tallied_at_date) {
+                model.num_delegated_votes = ajax_data.extra_data.delegation_counts[model.vote.voter.id];
+                var size = _.size(ajax_data.extra_data.delegation_counts);
+                var filtered = _.filter(ajax_data.extra_data.delegation_counts,
+                    function (val) { return val <= model.num_delegated_votes; }
+                );
+                model.rank_in_delegates = size - filtered.length + 1;
+            }
+            $("#vote_info").html(this.templateVoteInfo(model));
+        },
+
+        clickUser: function(e) {
+//             if ($(e.target).closest("a")) {
+//                 return;
+//             }
+//             var url = $(e.target).closest(".row").data('url');
+//             window.location.href= url;
+        }
+    });
 }).call(this)

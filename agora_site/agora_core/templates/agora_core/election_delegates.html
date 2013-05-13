@@ -7,20 +7,32 @@
 
 {% block election-navigation %}{% activetab "election-nav" "delegates" %}{{ block.super }}{% endblock %}
 
-{% block election_content %}
-    {% paginate object_list %}
-    {% for object in object_list %}
-        <!-- {% cycle "left" "right" as row %} -->
-        {% if object.is_direct %}
-            {% include "agora_core/vote_from_delegate_item.html" %}
-        {% else %}
-            {% include "agora_core/delegated_vote_item.html" %}
-        {% endif %}
-        {% if forloop.last and row == "left" %}
-                <div class="span6 span6-right">
+{% block content %}
+    <div class="row election-content-row">
+        <div class="span8 agora-left-side">
+            <div class="activity-list" id="user-list"
+                data-url="/api/v1/election/{{ election.id }}/votes_from_delegates/"
+                data-method="get" data-margin="300">
+
+                <div class="endless-container">
+                    <a class="endless_more" href="#">{% trans "more" %}</a>
+                    <div class="endless_loading hidden">{% trans "Loading..." %}</div>
                 </div>
             </div>
-        {% endif %}
-    {% endfor %}
-    {% show_more %}
+        </div>
+        <div class="span4 agora-right-side" id="vote_info">
+        </div>
+    </div>
+{% endblock %}
+
+{% block script-block %}
+    {% include "agora_core/client/vote_list_item.html" %}
+    {% include "agora_core/client/vote_info.html" %}
+    <script>
+        var ajax_data = {
+            election: {% rest request '/election/' election.id '/' %},
+            extra_data: {% rest request '/election/' election.id '/extra_data/' %}
+        };
+        app.currentView = new Agora.ElectionDelegatesView();
+    </script>
 {% endblock %}

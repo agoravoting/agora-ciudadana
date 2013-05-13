@@ -1,0 +1,60 @@
+<script id="template-vote_info" type="text/underscore-template">
+    <div class="row-fluid bottom-bordered userinfo">
+            <div class="span3">
+                <a href="<%= vote.voter.url %>">
+                <img src="<%= vote.voter.mugshot_url %>" alt="<%= vote.voter.username %>" class="img-polaroid"/>
+                </a>
+            </div>
+            <div class="span8">
+                <a href="<%= vote.voter.url %>">
+                <h3>
+                    <%= vote.voter.full_name %>
+                </h3>
+                <strong class="username">
+                    <%= vote.voter.username %>
+                </strong>
+                </a>
+            </div>
+    </div>
+    <% if (election.result_tallied_at_date) { %>
+    <div class="row-fluid bignums bottom-bordered">
+        <div class="span6">
+            <h1 class="text-centered"><%= num_delegated_votes %></h1>
+            <p class="bignumlabel"><%= gettext("Delegated votes in this election") %></p>
+        </div>
+        <div class="span6">
+            <h1 class="text-centered"><%= rank_in_delegates %>º</h1>
+            <p class="bignumlabel"><%= gettext("Most influential delegate in this election") %></p>
+        </div>
+    </div>
+    <% } %>
+    <div class="row-fluid userdetails">
+        <blockquote>
+            <% if (vote.reason) { %>
+                <%= vote.reason %>
+            <% } else { %>
+                <%= vote.voter.short_description %>
+            <% } %>
+        </blockquote>
+        <a class="btn btn-large btn-block btn-primary" href="#"
+            class="choose-as-delegate" data-id="<% vote.voter.id %>">
+            <%= interpolate(gettext("Choose %s as my delegate for agora %s"),
+                [vote.voter.full_name, election.agora.full_name]) %>
+        </a>
+    </div>
+    <div class="row-fluid questions">
+        <strong><%= interpolate(gettext("%s answers in this election"), [vote.voter.full_name]) %></strong>
+        <% for (var i = 0; i < election.questions.length; i++) { %>
+            <h3>Q<%=  i + 1 %>. <%= election.questions[i].question %></h3>
+            <% if (election.questions[i].tally_type == 'MEEK-STV') { %>
+                <ul>
+                <% for (var j = 0; j < vote.public_data.answers[i].choices.length; j++) { %>
+                    <li><%=  vote.public_data.answers[i].choices[j] %></li>
+                <% } %>
+                </ul>
+            <% } else { %>
+                <ul><li><%=  vote.public_data.answers[i].choices[0] %></li></ul>
+            <% } %>
+        <% } %>
+    </div>
+</script>

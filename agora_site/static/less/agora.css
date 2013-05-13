@@ -4091,6 +4091,12 @@ a.thumbnail:hover {
 .bottom-space {
   margin-bottom: 40px;
 }
+.img-polaroid {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 4px;
+}
 body {
   background-color: #ececec;
 }
@@ -5533,4 +5539,38 @@ img.mugshot,
   width: 50px;
   color: #555555;
   font-weight: bold;
+}
+#vote_info .row-fluid {
+  margin-left: 10px;
+}
+#vote_info .row-fluid.userinfo,
+#vote_info .row-fluid.userdetails {
+  padding-bottom: 15px;
+}
+#vote_info .row-fluid.bignums {
+  padding-top: 10px;
+}
+#vote_info .row-fluid.bignums h1 {
+  display: block;
+}
+#vote_info .row-fluid strong.username {
+  color: #555555;
+}
+#vote_info .row-fluid blockquote {
+  margin-top: 10px;
+  border: none;
+  padding: 0;
+}
+#vote_info .row-fluid .btn.choose-as-delegate {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+#vote_info .row-fluid.questions {
+  margin-top: 20px;
+}
+#vote_info .row-fluid.questions strong {
+  color: #46a546;
+}
+#vote_info .row-fluid.questions li {
+  color: #555555;
 }

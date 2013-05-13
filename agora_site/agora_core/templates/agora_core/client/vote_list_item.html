@@ -1,0 +1,24 @@
+<script id="template-vote_list_item" type="text/underscore-template">
+    <div class="result-item user-result">
+            <div class="row bottom-bordered" data-id="<%= id %>">
+                <a href="#" class="show_vote"><div class="span2">
+                    <img src="<%= voter.mugshot_url %>" alt="<%= voter.username %>" class="mugshot"/>
+                </div></a>
+                <div class="span7">
+                    <a href="#" class="show_vote"><strong class="username">
+                        <% if (voter.full_name && voter.full_name != voter.username) { %>
+                            <%= voter.full_name %> <em>(<%= voter.username %>)</em>
+                        <% } else { %>
+                            <%= voter.username %>
+                        <% } %>
+                    </strong></a>
+
+                    <p>
+                        <%= voter.short_description %>
+                    </p>
+
+                </div>
+            </div>
+        </a>
+    </div>
+</script>
