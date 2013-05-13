@@ -209,6 +209,7 @@
                         self.$el.find(".num_winners_opts").css('display', 'inline-block');
                     } else {
                         self.$el.find(".num_winners_opts").hide();
+                        self.$el.find(".max_num_choices").attr('readonly', 'readonly');
                     }
                 }
             });
@@ -298,9 +299,12 @@
             this.$el.find(".votingsystem").html(usertext);
             if (id == "MEEK-STV") {
                 this.$el.find(".num_winners_opts").css('display', 'inline-block');
+                this.$el.find(".max_num_choices").removeAttr('readonly');
             } else {
                 this.$el.find(".num_winners_opts input").val('1');
                 this.$el.find(".num_winners_opts").hide();
+                this.$el.find(".max_num_choices").val('1');
+                this.$el.find(".max_num_choices").attr('readonly', 'readonly');
             }
             this.model.set('tally_type', id);
         },
