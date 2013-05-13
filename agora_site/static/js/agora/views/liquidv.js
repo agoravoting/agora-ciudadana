@@ -87,11 +87,12 @@ var Liquidv = (function () {
         // add new links
         var ps = path.enter().append('svg:g')
         ps.append('svg:path')
-            .attr('id', function(d) { return 'path' + d.id})
+            .attr('id', function(d) { return 'path' + d.id; })
             .attr('class', 'link')
             .classed('selected', function(d) { return d === selected_link; })
             .style('marker-start', '')
             .style('marker-end', 'url(#end-arrow)')
+            .style('stroke', function(d) { return d.stroke; })
             // .style('marker-start', function(d) { return d.left ? 'url(#start-arrow)' : ''; })
             // .style('marker-end', function(d) { return d.right ? 'url(#end-arrow)' : ''; })
             .on('mousedown', function(d) {				
@@ -109,16 +110,16 @@ var Liquidv = (function () {
                 .text(function(d) { 
                     if(d.condition != null) return d.condition; 
                 });*/
-        // path condition text, currently unused
+        // path label text
         ps.append('svg:text')
-            .attr('x', 20)
+            .attr('x', 50)
             .attr('dy', 15)
             // .style('font-family', 'Verdana')
-            .style('font-size', '8.5')
+            .style('font-size', '5')
             .append('svg:textPath')	
             .attr('xlink:href', function(d) { return '#path' + d.id })
             .text(function(d) { 
-                if(d.condition != null) return d.condition; 
+                if(d.label != null) return d.label; 
             });
 
         // remove old links
@@ -404,7 +405,7 @@ var Liquidv = (function () {
 
     //// svg dom initialization	
 
-var  colors = d3.scale.category10();
+    var  colors = d3.scale.category10();
     var zoom = d3.behavior.zoom();
     var translatex = 0;
     var translatey = 0;
@@ -412,9 +413,9 @@ var  colors = d3.scale.category10();
     $('#graph').addClass('graph');
 
     var full = d3.select('#graph')
-.append('svg')
-// .attr('width', width)
-// .attr('height', height)	
+    .append('svg')
+    // .attr('width', width)
+    // .attr('height', height)	
     .attr("viewBox", "0 0 " + width + " " + height )
     .attr("preserveAspectRatio", "xMidYMid meet")
     .attr("pointer-events", "all")
@@ -440,7 +441,7 @@ var  colors = d3.scale.category10();
     .attr('markerWidth', 3)
     .attr('markerHeight', 3)
     .attr('orient', 'auto')
-.append('svg:path')
+    .append('svg:path')
     .attr('d', 'M0,-5L10,0L0,5')
     .attr('fill', '#000');
 
@@ -451,7 +452,7 @@ var  colors = d3.scale.category10();
     .attr('markerWidth', 3)
     .attr('markerHeight', 3)
     .attr('orient', 'auto')
-.append('svg:path')
+    .append('svg:path')
     .attr('d', 'M10,-5L0,0L10,5')
     .attr('fill', '#000');
 
@@ -491,6 +492,11 @@ var  colors = d3.scale.category10();
         console.log(next);
         if(next.length > 0) liquidTally(next);
     }
+    
+    var strokeForIndex = function(index, length) {
+        var number = Math.floor((index / length) * 15);
+        return '#' + new Array(4).join(number.toString(16));
+    }
 
     // constructor
     Constructor = function (properties) {
@@ -513,8 +519,8 @@ var  colors = d3.scale.category10();
 
         var me = this;
         $("#tally-button").click(function () {
-    me.tally();
-    });
+            me.tally();
+        });
     };
 
     // public api
@@ -529,27 +535,27 @@ var  colors = d3.scale.category10();
             $(".graph-info").text('Loading graph data..');
             $.getJSON(delegatedVotesUrl(electionId), {})
             .done(function( delegated ) {
-                var allUsers = {};
+                var allNodes = {};
                 var loadedVotes = 0, loadedDelegatedVotes = 0;
                 $.each(delegated.objects, function(index, item) {
                     if(item.public_data.answers != null) {
                         var choice = item.public_data.answers[0].choices[0];
                         var voter = item.voter;
                         var delegateNode, voterNode;
-                        if(allUsers[choice.user_id] == null) {
-                            allUsers[choice.user_id] = {'id': ++lastNodeId, 'name': choice.user_name, 'user_name': choice.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
+                        if(allNodes[choice.user_id] == null) {
+                            allNodes[choice.user_id] = {'id': ++lastNodeId, 'name': choice.user_name, 'user_name': choice.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
                         }
-                        delegateNode = allUsers[choice.user_id];
-                        if(allUsers[voter.id] == null) {
-                            allUsers[voter.id] = {'id': ++lastNodeId, 'name': voter.first_name, 'user_name': voter.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
+                        delegateNode = allNodes[choice.user_id];
+                        if(allNodes[voter.id] == null) {
+                            allNodes[voter.id] = {'id': ++lastNodeId, 'name': voter.first_name, 'user_name': voter.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
                         }
-                        voterNode = allUsers[voter.id];
+                        voterNode = allNodes[voter.id];
                         // update targets
                         voterNode.targets = [delegateNode].concat(voterNode.targets);
                         loadedDelegatedVotes++;
                     }
                 });
-                // console.log(allUsers);
+                // console.log(allNodes);
                 /* var users = delegated.objects.reduce(function(obj, x) {
                     var choice = x.public_data.answers[0].choices[0];
                     var voter = x.voter;
@@ -564,19 +570,37 @@ var  colors = d3.scale.category10();
                     $.each(direct.objects, function(index, item) {                        
                         
                         if(item.public_data.answers != null) {
-                            var choice = item.public_data.answers[0].choices[0];
+                            /* var choice = item.public_data.answers[0].choices[0];
                             var voter = item.voter;
                             var choiceNode, voterNode;
-                            if(allUsers[choice] == null) {
-                                allUsers[choice] = {'id': ++lastNodeId, 'name': choice, 'user_name': '', 'type': 'choice', 'color': '#00CC00', 'votes': 0}
+                            if(allNodes[choice] == null) {
+                                allNodes[choice] = {'id': ++lastNodeId, 'name': choice, 'user_name': '', 'type': 'choice', 'color': '#00CC00', 'votes': 0}
                             }
-                            choiceNode = allUsers[choice];					
-                            if(allUsers[voter.id] == null) {
-                                allUsers[voter.id] = {'id': ++lastNodeId, 'name': voter.first_name, 'user_name': voter.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
+                            choiceNode = allNodes[choice];					
+                            if(allNodes[voter.id] == null) {
+                                allNodes[voter.id] = {'id': ++lastNodeId, 'name': voter.first_name, 'user_name': voter.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
                             }
-                            voterNode = allUsers[voter.id];
+                            voterNode = allNodes[voter.id];
                             // update targets
                             voterNode.targets = [choiceNode].concat(voterNode.targets);
+                            loadedVotes++;*/
+                            
+                            var voter = item.voter;
+                            var choices = item.public_data.answers[0].choices;
+                            $.each(choices, function(idx, choice) {
+                                var choiceNode, voterNode;
+                            
+                                if(allNodes[choice] == null) {
+                                    allNodes[choice] = {'id': ++lastNodeId, 'name': choice, 'user_name': '', 'type': 'choice', 'color': '#00CC00', 'votes': 0}
+                                }
+                                choiceNode = allNodes[choice];					
+                                if(allNodes[voter.id] == null) {
+                                    allNodes[voter.id] = {'id': ++lastNodeId, 'name': voter.first_name, 'user_name': voter.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
+                                }
+                                voterNode = allNodes[voter.id];
+                                // update targets
+                                voterNode.targets = [choiceNode].concat(voterNode.targets);                                
+                            });
                             loadedVotes++;
                         }
                         $(".graph-info").text('Loaded ' + loadedVotes + ' direct votes and ' + loadedDelegatedVotes +  ' delegated votes');				
@@ -596,21 +620,25 @@ var  colors = d3.scale.category10();
                             var choice = x.public_data.answers[0].choices[0];
                             var voter = x.voter;
                             // console.log(voter.id + " -> " + choice.user_id);
-                            return {'source': allUsers[voter.id], 'target': allUsers[choice.user_id], 'id': ++lastLinkId, 'color': '#0099FF'};
+                            return {'source': allNodes[voter.id], 'target': allNodes[choice.user_id], 'id': ++lastLinkId, 'color': '#0099FF'};
                         }
                     });
                     var voteLinks = $.map(direct.objects, function(x, index) {                    
                         if(x.public_data.answers != null) {
-                            var choice = x.public_data.answers[0].choices[0];
+                            /* var choice = x.public_data.answers[0].choices[0];
                             var voter = x.voter;
-                            return {'source': allUsers[voter.id], 'target': allUsers[choice], 'id': ++lastLinkId, 'color': '#0099FF'};
+                            return {'source': allNodes[voter.id], 'target': allNodes[choice], 'id': ++lastLinkId, 'color': '#0099FF'};*/
+                            var ret = $.map(x.public_data.answers[0].choices, function(y, index) {                    
+                                return {'source': allNodes[x.voter.id], 'target': allNodes[y], 'id': ++lastLinkId, 'color': '#0099FF', 'stroke': strokeForIndex(index, x.public_data.answers[0].choices.length), 'label': index + 1};
+                            });
+                            return ret;
                         }                    
                     });
 
                     links = delegationLinks.concat(voteLinks)
                     // get only the values
-                    nodes = Object.keys(allUsers).map(function(key){
-                        return allUsers[key];
+                    nodes = Object.keys(allNodes).map(function(key){
+                        return allNodes[key];
                     });
 
                     console.log('links');
