@@ -511,7 +511,8 @@ Execute an action
 
     {
        "action": "add_membership",
-       "username": "foobar"
+       "username": "user1",
+       "welcome_message": "weeEeEeelcome!"
     }
 
    **Example response**:
@@ -555,35 +556,57 @@ Retrieve agora members
     Content-Type: application/json; charset=utf-8
 
     {
-       "meta":
-       {
-           "limit": 20,
-           "offset": 0,
-           "total_count": 2
-       },
-       "objects":
-       [
-           {
-               "date_joined": "2012-12-18T15:46:35.590347",
-               "first_name": "Isabel Romero",
-               "id": 2,
-               "is_active": true,
-               "last_login": "2012-12-18T15:47:35.109371",
-               "last_name": "",
-               "username": "user1",
-               "agora_permissions": []
-           },
-           {
-               "date_joined": "2012-12-18T15:46:37.644236",
-               "first_name": "Maria Moreno",
-               "id": 5,
-               "is_active": true,
-               "last_login": "2012-12-18T15:55:12.833627",
-               "last_name": "",
-               "username": "user4",
-               "agora_permissions": []
-           }
-       ]
+        "meta": 
+        {
+            "total_count": 2, 
+            "limit": 20, 
+            "offset": 0
+        }, 
+        "objects": 
+        [
+            {
+                "username": "david", 
+                "first_name": "", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2F.png", 
+                "url": "/user/david", 
+                "is_active": true, 
+                "short_description": "Is a member of 2 agoras and has emitted  0 direct votes.", 
+                "last_login": "2013-05-14T18:36:45.100082", 
+                "full_name": "", 
+                "agora_permissions": 
+                [
+                    "admin", 
+                    "delete", 
+                    "comment", 
+                    "create_election", 
+                    "delegate"
+                ], 
+                "id": 0, 
+                "date_joined": "2012-11-29T16:08:43.874000"
+            }, 
+            {
+                "username": "user1", 
+                "first_name": "Juana Molero", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/cc721459f5b77680bc6a8ba6c9681c46?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2FJM.png", 
+                "url": "/user/user1", 
+                "is_active": true, 
+                "short_description": "ultricies. semper vel et, eu laoreet Quisque odio semper ornare. elementum elementum tristique pretium ornare", 
+                "last_login": "2012-11-29T19:37:36.263000", 
+                "full_name": "Juana Molero", 
+                "agora_permissions": 
+                [
+                    "request_admin_membership", 
+                    "leave", 
+                    "comment", 
+                    "create_election", 
+                    "delegate"
+                ], 
+                "id": 1, 
+                "date_joined": "2012-11-29T19:37:36.263000"
+            }
+        ]
     }
 
 List administrators
@@ -615,25 +638,36 @@ List administrators
     Content-Type: application/json; charset=utf-8
 
     {
-       "meta":
-       {
-           "limit": 20,
-           "offset": 0,
-           "total_count": 1
-       },
-       "objects":
-       [
-           {
-               "date_joined": "2012-12-18T15:46:35.590347",
-               "first_name": "Isabel Romero",
-               "id": 2,
-               "is_active": true,
-               "last_login": "2012-12-18T15:47:35.109371",
-               "last_name": "",
-               "username": "user1",
-               "agora_permissions": []
-           }
-       ]
+        "meta": 
+        {
+            "total_count": 1, 
+            "limit": 20, 
+            "offset": 0
+        }, 
+        "objects": 
+        [
+            {
+                "username": "david", 
+                "first_name": "", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2F.png", 
+                "url": "/user/david", 
+                "is_active": true, 
+                "short_description": "Is a member of 2 agoras and has emitted  0 direct votes.", 
+                "last_login": "2013-05-14T18:56:38.574606", 
+                "full_name": "", 
+                "agora_permissions": 
+                [
+                    "admin", 
+                    "delete", 
+                    "comment", 
+                    "create_election", 
+                    "delegate"
+                ], 
+                "id": 0, 
+                "date_joined": "2012-11-29T16:08:43.874000"
+            }
+        ]
     }
 
 List membership requests
@@ -665,25 +699,29 @@ List membership requests
     Content-Type: application/json; charset=utf-8
 
     {
-       "meta":
-       {
-           "limit": 20,
-           "offset": 0,
-           "total_count": 1
-       },
-       "objects":
-       [
-           {
-               "date_joined": "2012-12-18T15:46:38.968369",
-               "first_name": "Monica Moreno",
-               "id": 7,
-               "is_active": true,
-               "last_login": "2012-12-18T16:31:32.390732",
-               "last_name": "",
-               "username": "user6",
-               "agora_permissions": []
-           }
-       ]
+        "meta": 
+        {
+            "total_count": 1, 
+            "limit": 20, 
+            "offset": 0
+        }, 
+        "objects": 
+        [
+            {
+                "username": "user2", 
+                "first_name": "Jose Lopez", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/ecdecef1814126d1846e600cbef37a24?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2FJL.png", 
+                "url": "/user/user2", 
+                "is_active": true, 
+                "short_description": "justo. consectetur ultricies ullamcorper nisi, volutpat porta. Sed dui. non Nam Ut volutpat Maecenas orci", 
+                "last_login": "2013-05-14T18:59:51.810766", 
+                "full_name": "Jose Lopez", 
+                "agora_permissions": [], 
+                "id": 2, 
+                "date_joined": "2012-11-29T19:37:36.987000"
+            }
+        ]
     }
 
 Retrieve agora admin membership requests
@@ -716,25 +754,36 @@ Retrieve agora admin membership requests
     Content-Type: application/json; charset=utf-8
 
     {
-       "meta":
-       {
-           "limit": 20,
-           "offset": 0,
-           "total_count": 1
-       },
-       "objects":
-       [
-           {
-               "date_joined": "2012-12-18T15:46:38.968369",
-               "first_name": "Monica Moreno",
-               "id": 7,
-               "is_active": true,
-               "last_login": "2012-12-18T16:31:32.390732",
-               "last_name": "",
-               "username": "user6",
-               "agora_permissions": []
-           }
-       ]
+        "meta": 
+        {
+            "total_count": 1, 
+            "limit": 20, 
+            "offset": 0
+        }, 
+        "objects": 
+        [
+            {
+                "username": "user1", 
+                "first_name": "Juana Molero", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/cc721459f5b77680bc6a8ba6c9681c46?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2FJM.png", 
+                "url": "/user/user1", 
+                "is_active": true, 
+                "short_description": "ultricies. semper vel et, eu laoreet Quisque odio semper ornare. elementum elementum tristique pretium ornare", 
+                "last_login": "2013-05-14T19:02:37.785145", 
+                "full_name": "Juana Molero", 
+                "agora_permissions": 
+                [
+                    "cancel_admin_membership_request", 
+                    "leave", 
+                    "comment", 
+                    "create_election", 
+                    "delegate"
+                ], 
+                "id": 1, 
+                "date_joined": "2012-11-29T19:37:36.263000"
+            }
+        ]
     }
 
 List active delegates
