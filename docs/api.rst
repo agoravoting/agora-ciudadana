@@ -92,122 +92,81 @@ List Agoras
     Vary: Accept, Accept-Language, Cookie
     Content-Type: application/json; charset=utf-8
 
-    {
-       "meta":
-       {
-           "limit": 20,
-           "next": null,
-           "offset": 0,
-           "previous": null,
-           "total_count": 4
-       },
-       "objects":
-       [
-           {
-               "archived_at_date": null,
-               "biography": "",
-               "comments_policy": "aaaaaaa",
-               "created_at_date": "2012-12-16T18:10:25.583006",
-               "creator":
-               {
-                   "date_joined": "2012-06-16T17:04:15.016445",
-                   "first_name": "edulix",
-                   "id": 2,
-                   "is_active": true,
-                   "last_login": "2012-12-16T18:08:04.271163",
-                   "last_name": "Robles Elvira",
-                   "username": "edulix"
-               },
-               "election_type": "ONE_CHOICE",
-               "eligibility": "",
-               "extra_data": "",
-               "id": 2,
-               "image_url": "",
-               "is_vote_secret": false,
-               "membership_policy": "ANYONE_CAN_JOIN",
-               "name": "blahblah",
-               "pretty_name": " blahblah",
-               "short_description": "blahblah"
-           },
-           {
-               "archived_at_date": null,
-               "biography": "",
-               "comments_policy": "ANYONE_CAN_COMMENT",
-               "created_at_date": "2012-10-10T01:15:04.603246",
-               "creator":
-               {
-                   "date_joined": "2012-09-05T17:45:40.223602",
-                   "first_name": "Juana Molero",
-                   "id": 12,
-                   "is_active": true,
-                   "last_login": "2012-10-10T00:06:47.741392",
-                   "last_name": "",
-                   "username": "user10"
-               },
-               "election_type": "ONE_CHOICE",
-               "eligibility": "",
-               "extra_data": "",
-               "id": 3,
-               "image_url": "",
-               "is_vote_secret": true,
-               "membership_policy": "JOINING_REQUIRES_ADMINS_APPROVAL",
-               "name": "testagora",
-               "pretty_name": "testagora",
-               "short_description": "yeahhhhhh"
-           },
-           {
-               "archived_at_date": null,
-               "biography": "",
-               "comments_policy": "ONLY_MEMBERS_CAN_COMMENT",
-               "created_at_date": "2012-12-13T14:12:03.711985",
-               "creator":
-               {
-                   "date_joined": "2012-09-05T17:45:48.390074",
-                   "first_name": "Victoria Ariza",
-                   "id": 22,
-                   "is_active": true,
-                   "last_login": "2012-12-18T10:35:07.444961",
-                   "last_name": "",
-                   "username": "user20"
-               },
-               "election_type": "ONE_CHOICE",
-               "eligibility": "",
-               "extra_data": "",
-               "id": 4,
-               "image_url": "",
-               "is_vote_secret": false,
-               "membership_policy": "JOINING_REQUIRES_ADMINS_APPROVAL",
-               "name": "testagora",
-               "pretty_name": "testagora",
-               "short_description": "tesagora yeah"
-           },
-           {
-               "archived_at_date": null,
-               "biography": "",
-               "comments_policy": "ANYONE_CAN_COMMENT",
-               "created_at_date": "2012-12-02T16:35:52.110729",
-               "creator":
-               {
-                   "date_joined": "2012-06-14T14:13:48.850044",
-                   "first_name": "",
-                   "id": 1,
-                   "is_active": true,
-                   "last_login": "2012-12-16T18:06:25.185835",
-                   "last_name": "",
-                   "username": "admin"
-               },
-               "election_type": "ONE_CHOICE",
-               "eligibility": "",
-               "extra_data": "",
-               "id": 5,
-               "image_url": "",
-               "is_vote_secret": false,
-               "membership_policy": "ANYONE_CAN_JOIN",
-               "name": "created-agora",
-               "pretty_name": "created agora",
-               "short_description": "created agora description"
-           }
-       ]
+        {
+        "meta": {
+            "previous": null, 
+            "total_count": 2, 
+            "offset": 0, 
+            "limit": 20, 
+            "next": null
+        }, 
+        "objects": 
+        [
+            {
+                "membership_policy": "ANYONE_CAN_JOIN", 
+                "mugshot_url": "/static/img/agora_default_logo.png", 
+                "name": "agoraone", 
+                "creator": {
+                    "username": "david", 
+                    "first_name": "", 
+                    "last_name": "", 
+                    "mugshot_url": "http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=http%3A%2F%2Funitials.com%2Fmugshot%2F50%2F.png", 
+                    "url": "/user/david", 
+                    "is_active": true, 
+                    "last_login": "2012-11-29T18:18:46.837000", 
+                    "full_name": "", 
+                    "short_description": "Is a member of 2 agoras and has emitted  0 direct votes.", 
+                    "id": 0, 
+                    "date_joined": "2012-11-29T16:08:43.874000"
+                }, 
+                "eligibility": null, 
+                "comments_policy": "ANYONE_CAN_COMMENT", 
+                "id": 1, 
+                "pretty_name": "AgoraOne", 
+                "url": "/david/agoraone", 
+                "created_at_date": "2013-05-13T22:03:30.119472", 
+                "archived_at_date": null, 
+                "full_name": "david/agoraone", 
+                "short_description": "AgoraOne", 
+                "image_url": "", 
+                "extra_data": null, 
+                "is_vote_secret": false, 
+                "election_type": "ONCE_CHOICE", 
+                "biography": ""
+            }, 
+            {
+                "membership_policy": "ANYONE_CAN_JOIN", 
+                "mugshot_url": "/static/img/agora_default_logo.png", 
+                "name": "agoratwo", 
+                "creator": {
+                    "username": "david", 
+                    "first_name": "", 
+                    "last_name": "", 
+                    "mugshot_url": "http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=http%3A%2F%2Funitials.com%2Fmugshot%2F50%2F.png", 
+                    "url": "/user/david", 
+                    "is_active": true, 
+                    "last_login": "2012-11-29T18:18:46.837000", 
+                    "full_name": "", 
+                    "short_description": "Is a member of 2 agoras and has emitted  0 direct votes.", 
+                    "id": 0, 
+                    "date_joined": "2012-11-29T16:08:43.874000"
+                }, 
+                "eligibility": null, 
+                "comments_policy": "ANYONE_CAN_COMMENT", 
+                "id": 2, 
+                "pretty_name": "AgoraTwo", 
+                "url": "/david/agoratwo", 
+                "created_at_date": "2013-05-13T22:03:30.134413", 
+                "archived_at_date": null, 
+                "full_name": "david/agoratwo", 
+                "short_description": "AgoraTwo", 
+                "image_url": "", 
+                "extra_data": null, 
+                "is_vote_secret": true, 
+                "election_type": "ONCE_CHOICE", 
+                "biography": ""
+            }
+        ]
     }
 
 Retrieve an agora
@@ -239,30 +198,37 @@ Retrieve an agora
     Content-Type: application/json; charset=utf-8
 
     {
-        "archived_at_date": null,
-        "biography": "",
-        "comments_policy": "ANYONE_CAN_COMMENT",
-        "created_at_date": "2012-12-02T16:35:52.110729",
-        "creator":
+        "membership_policy": "ANYONE_CAN_JOIN", 
+        "mugshot_url": "/static/img/agora_default_logo.png", 
+        "name": "agoraone", 
+        "creator": 
         {
-            "date_joined": "2012-06-14T14:13:48.850044",
-            "first_name": "",
-            "id": 1,
-            "is_active": true,
-            "last_login": "2012-12-16T18:06:25.185835",
-            "last_name": "",
-            "username": "admin"
-        },
-        "election_type": "ONE_CHOICE",
-        "eligibility": "",
-        "extra_data": "",
-        "id": 5,
-        "image_url": "",
-        "is_vote_secret": true,
-        "membership_policy": "ANYONE_CAN_JOIN",
-        "name": "agora-name",
-        "pretty_name": "agora name",
-        "short_description": "some fancydescription"
+            "username": "david", 
+            "first_name": "", 
+            "last_name": "", 
+            "mugshot_url": "http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=http%3A%2F%2Funitials.com%2Fmugshot%2F50%2F.png", 
+            "url": "/user/david", 
+            "is_active": true, 
+            "last_login": "2012-11-29T18:18:46.837000", 
+            "full_name": "", 
+            "short_description": "Is a member of 2 agoras and has emitted  0 direct votes.", 
+            "id": 0, 
+            "date_joined": "2012-11-29T16:08:43.874000"
+        }, 
+        "eligibility": null, 
+        "comments_policy": "ANYONE_CAN_COMMENT", 
+        "id": 1, 
+        "pretty_name": "AgoraOne", 
+        "url": "/david/agoraone", 
+        "created_at_date": "2013-05-13T22:22:11.790946", 
+        "archived_at_date": null, 
+        "full_name": "david/agoraone", 
+        "short_description": "AgoraOne", 
+        "image_url": "", 
+        "extra_data": null, 
+        "is_vote_secret": false, 
+        "election_type": "ONCE_CHOICE", 
+        "biography": ""
     }
 
 Create new agora
@@ -294,9 +260,9 @@ Create new agora
     Accept: application/json, text/javascript
 
     {
-        "pretty_name": "agora name",
-        "short_description": "some fancydescription",
-        "is_vote_secret": true
+        "pretty_name": "created-agora",
+        "short_description": "created agora description",
+        "is_vote_secret": false
     }
 
    **Example response**:
@@ -308,30 +274,36 @@ Create new agora
     Content-Type: application/json; charset=utf-8
 
     {
-        "archived_at_date": null,
-        "biography": "",
-        "comments_policy": "ANYONE_CAN_COMMENT",
-        "created_at_date": "2012-12-02T16:35:52.110729",
-        "creator":
-        {
-            "date_joined": "2012-06-14T14:13:48.850044",
-            "first_name": "",
-            "id": 1,
-            "is_active": true,
-            "last_login": "2012-12-16T18:06:25.185835",
-            "last_name": "",
-            "username": "admin"
-        },
-        "election_type": "ONE_CHOICE",
-        "eligibility": "",
-        "extra_data": "",
-        "id": 5,
-        "image_url": "",
-        "is_vote_secret": true,
-        "membership_policy": "ANYONE_CAN_JOIN",
-        "name": "agora-name",
-        "pretty_name": "agora name",
-        "short_description": "some fancydescription"
+        "membership_policy": "ANYONE_CAN_JOIN", 
+        "mugshot_url": "/static/img/agora_default_logo.png", 
+        "name": "created-agora", 
+        "creator": {
+            "username": "david", 
+            "first_name": "", 
+            "last_name": "", 
+            "mugshot_url": "http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=http%3A%2F%2Funitials.com%2Fmugshot%2F50%2F.png", 
+            "url": "/user/david", 
+            "is_active": true, 
+            "last_login": "2013-05-13T22:25:15.264859", 
+            "full_name": "", 
+            "short_description": "Is a member of 3 agoras and has emitted  0 direct votes.", 
+            "id": 0, 
+            "date_joined": "2012-11-29T16:08:43.874000"
+        }, 
+        "eligibility": null, 
+        "comments_policy": "ANYONE_CAN_COMMENT", 
+        "id": 3, 
+        "pretty_name": "created agora", 
+        "url": "/david/created-agora", 
+        "created_at_date": "2013-05-13T22:25:29.613300", 
+        "archived_at_date": null, 
+        "full_name": "david/created-agora", 
+        "short_description": "created agora description", 
+        "image_url": "", 
+        "extra_data": null, 
+        "is_vote_secret": false, 
+        "election_type": "SIMPLE_DELEGATION", 
+        "biography": ""
     }
 
 Delete an agora
@@ -388,12 +360,12 @@ Modify agora
     Accept: application/json, text/javascript
 
     {
-        "pretty_name": "agora name",
-        "short_description": "some fancydescription",
-        "is_vote_secret": true,
+        "pretty_name": "updated name",
+        "short_description": "new desc",
+        "is_vote_secret": false,
         "comments_policy": "ANYONE_CAN_COMMENT",
         "membership_policy": "ANYONE_CAN_JOIN",
-        "biography": "",
+        "biography": "bio",
     }
 
    **Example response**:
@@ -405,30 +377,37 @@ Modify agora
     Content-Type: application/json; charset=utf-8
 
     {
-        "archived_at_date": null,
-        "biography": "",
-        "comments_policy": "ANYONE_CAN_COMMENT",
-        "created_at_date": "2012-12-02T16:35:52.110729",
-        "creator":
+        "membership_policy": "ANYONE_CAN_JOIN", 
+        "mugshot_url": "/static/img/agora_default_logo.png", 
+        "name": "agoraone", 
+        "creator": 
         {
-            "date_joined": "2012-06-14T14:13:48.850044",
-            "first_name": "",
-            "id": 1,
-            "is_active": true,
-            "last_login": "2012-12-16T18:06:25.185835",
-            "last_name": "",
-            "username": "admin"
-        },
-        "election_type": "ONE_CHOICE",
-        "eligibility": "",
-        "extra_data": "",
-        "id": 5,
-        "image_url": "",
-        "is_vote_secret": true,
-        "membership_policy": "ANYONE_CAN_JOIN",
-        "name": "agora-name",
-        "pretty_name": "agora name",
-        "short_description": "some fancydescription"
+            "username": "david", 
+            "first_name": "", 
+            "last_name": "", 
+            "mugshot_url": "http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=http%3A%2F%2Funitials.com%2Fmugshot%2F50%2F.png", 
+            "url": "/user/david", 
+            "is_active": true, 
+            "last_login": "2013-05-13T22:36:27.249371", 
+            "full_name": "", 
+            "short_description": "Is a member of 2 agoras and has emitted  0 direct votes.", 
+            "id": 0, 
+            "date_joined": "2012-11-29T16:08:43.874000"
+        }, 
+        "eligibility": null, 
+        "comments_policy": "ANYONE_CAN_COMMENT", 
+        "id": 1, 
+        "pretty_name": "updated name", 
+        "url": "/david/agoraone", 
+        "created_at_date": "2013-05-13T22:36:35.484807", 
+        "archived_at_date": null, 
+        "full_name": "david/agoraone", 
+        "short_description": "new desc", 
+        "image_url": "", 
+        "extra_data": null, 
+        "is_vote_secret": false, 
+        "election_type": "ONCE_CHOICE", 
+        "biography": "bio"
     }
 
 Execute an action

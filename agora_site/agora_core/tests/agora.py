@@ -189,7 +189,6 @@ class AgoraTest(RootTestCase):
         self.login('david', 'david')
         data = self.put('agora/1/', data=orig_data,
             code=HTTP_ACCEPTED, content_type='application/json')
-
         data = self.getAndParse('agora/1/')
         for k, v in orig_data.items():
             self.assertEquals(data[k], v)
