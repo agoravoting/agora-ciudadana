@@ -5574,3 +5574,11 @@ img.mugshot,
 #vote_info .row-fluid.questions li {
   color: #555555;
 }
+/** Charts **/
+.legendbox {
+  width: 16px;
+  height: 16px;
+  display: block;
+  float: left;
+  margin-right: 5px;
+}

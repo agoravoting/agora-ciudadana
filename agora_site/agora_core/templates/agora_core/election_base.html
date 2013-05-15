@@ -410,18 +410,17 @@
     <h3 class="headerlink"><%= question_num +1 %>. <%= question.question %> <a href="#tally_question<%= question_num %>">¶</a></h3>
     <strong class="winners"><%= gettext("Winner: ") %> <%= question.winners[0] %></strong>
     <% for(var i = 0; i < question.answers.length; i++) { %>
-        <li data-value="<%= question.answers[i].total_count %>">
+        <li style="color: <%= question.answers[i].color %>" data-value="<%= question.answers[i].total_count %>">
             <%= question.answers[i].value %>
             <em>
                 (<%= interpolate(gettext("%s votes"), [question.answers[i].total_count]) %>)
-            </em>
-            <div class="progress progress-large progress-success">
-                <div class="bar" style="width: <%= question.answers[i].total_count_percentage %>%">
                 <%= parseFloat(question.answers[i].total_count_percentage).toFixed(2) %>%
-                </div>
-            </div>
+                <span class="legendbox" style="background-color: <%= question.answers[i].color %>"></span>
+            </em>
         </li>
     <% } %>
+    <div class="piechart">
+    </div>
 </script>
 
 {% endblock %}
