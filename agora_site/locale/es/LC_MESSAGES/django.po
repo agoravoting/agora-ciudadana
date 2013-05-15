@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-15 18:59+0200\n"
+"POT-Creation-Date: 2013-05-15 19:20+0200\n"
 "PO-Revision-Date: 2013-03-19 19:24+0100\n"
 "Last-Translator: FelixR <felrobelv@gmail.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -87,12 +87,14 @@ msgstr ""
 "de no olvidarla esta vez.</p>"
 
 #: accounts/views.py:31
-msgid "Registration "
-msgstr "Registro"
+msgid ""
+"Registration successful! We have sent the activation link to your email "
+"address, look it up."
+msgstr ""
 
 #: accounts/views.py:38
 msgid ""
-"An e-mail has been send to you which explains how to reset your password"
+"An e-mail has been sent to you which explains how to reset your password"
 msgstr ""
 
 #: accounts/views.py:45
@@ -3417,6 +3419,9 @@ msgstr "Funciona con"
 #: templates/base.html:298
 msgid "Wadobo Labs"
 msgstr "Wadobo Labs"
+
+#~ msgid "Registration "
+#~ msgstr "Registro"
 
 #~ msgid "An e-mail has been "
 #~ msgstr "Un email ha sido"

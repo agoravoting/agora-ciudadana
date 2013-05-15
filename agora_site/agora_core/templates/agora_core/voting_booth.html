@@ -31,7 +31,7 @@
                     </div>
                     <div class="modal-header">
                         <small>
-                            <%= gettext("Election") %> <a class="inline text-center" href="<%= url %>" target="_blank"><%= pretty_name %></a> <%= gettext("at") %> <a class="inline text-center" href="<%= agora.url %>" target="_blank"><%= agora.full_name %></a>
+                            <%= gettext("Election") %> <a class="inline text-center" href="<%= url %>" target="_blank"><%= pretty_name %></a> <%= pgettext("<election> at <agora>", "at") %> <a class="inline text-center" href="<%= agora.url %>" target="_blank"><%= agora.full_name %></a>
                             </a>
                         </small>
                         <small class="pull-right">

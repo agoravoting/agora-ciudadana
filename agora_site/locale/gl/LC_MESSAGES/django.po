@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-15 18:59+0200\n"
+"POT-Creation-Date: 2013-05-15 19:20+0200\n"
 "PO-Revision-Date: 2012-11-20 18:58+0100\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -87,12 +87,14 @@ msgstr ""
 "procure non volvelo esquecer.</p>"
 
 #: accounts/views.py:31
-msgid "Registration "
-msgstr "Rexistro "
+msgid ""
+"Registration successful! We have sent the activation link to your email "
+"address, look it up."
+msgstr ""
 
 #: accounts/views.py:38
 msgid ""
-"An e-mail has been send to you which explains how to reset your password"
+"An e-mail has been sent to you which explains how to reset your password"
 msgstr ""
 
 #: accounts/views.py:45
@@ -3445,6 +3447,9 @@ msgstr "Co apoio de"
 #: templates/base.html:298
 msgid "Wadobo Labs"
 msgstr "Wadobo Labs"
+
+#~ msgid "Registration "
+#~ msgstr "Rexistro "
 
 #~ msgid "An e-mail has been "
 #~ msgstr "Un correo foi "
