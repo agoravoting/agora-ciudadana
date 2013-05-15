@@ -182,14 +182,15 @@
             if (model.election.result_tallied_at_date) {
                 if (ajax_data.extra_data.delegation_counts[model.vote.voter.id]) {
                     model.num_delegated_votes = ajax_data.extra_data.delegation_counts[model.vote.voter.id];
+                    var size = _.size(ajax_data.extra_data.delegation_counts);
+                    var filtered = _.filter(ajax_data.extra_data.delegation_counts,
+                        function (val) { return val <= model.num_delegated_votes; }
+                    );
+                    model.rank_in_delegates = (size - filtered.length + 1) + "º";
                 } else {
                     model.num_delegated_votes = 0;
+                    model.rank_in_delegates = "-";
                 }
-                var size = _.size(ajax_data.extra_data.delegation_counts);
-                var filtered = _.filter(ajax_data.extra_data.delegation_counts,
-                    function (val) { return val <= model.num_delegated_votes; }
-                );
-                model.rank_in_delegates = size - filtered.length + 1;
             }
             $("#vote_info").html(this.templateVoteInfo(model));
             $("#vote_info .delegate_vote").click(this.delegateVote);
