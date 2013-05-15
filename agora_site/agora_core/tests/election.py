@@ -398,7 +398,7 @@ class ElectionTest(RootTestCase):
                 code=HTTP_OK, content_type='application/json')
 
         vote_foo_data = {
-            'is_vote_secret': True,
+            'is_vote_secret': False,
             'question0': "foo",
             'action': 'vote'
         }
@@ -525,7 +525,182 @@ class ElectionTest(RootTestCase):
         self.assertEqual(data['result'], result_should_be)
         data = self.getAndParse('election/%d/extra_data/' % election_id)
         self.assertEqual(data['delegation_counts'], {
-            '2':1
+            '2': 2,
+            '1': 1
+        })
+
+
+
+    def test_tally_election2(self):
+        '''
+        This is an election where some delegates vote in secret
+        '''
+
+        # make delegated votes secret in this agora
+        self.login('david', 'david')
+        orig_data = {'pretty_name': "updated name",
+                     'short_description': "new desc",
+                     'is_vote_secret': True,
+                     'biography': "bio",
+                     'membership_policy': 'ANYONE_CAN_JOIN',
+                     'comments_policy': 'ANYONE_CAN_COMMENT'}
+        data = self.put('agora/1/', data=orig_data,
+            code=HTTP_ACCEPTED, content_type='application/json')
+
+        # create election
+        orig_data = copy.deepcopy(self.base_election_data)
+        orig_data['questions'][0]['answers'][0]['value'] = "foo"
+        orig_data['questions'][0]['answers'][1]['value'] = "bar"
+        orig_data['questions'][0]['answers'].append({
+            'a': 'ballot/answer',
+            'url': '',
+            'details': '',
+            'value': 'none'
+        })
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        election_id = data['id']
+
+        # start election
+        orig_data = dict(action='start')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # all users join the agora
+        for username in ['user1', 'user2', 'user3', 'user4', 'user5', 'user6']:
+            self.login(username, '123')
+            orig_data = {'action': "join"}
+            data = self.post('agora/1/action/', data=orig_data,
+                code=HTTP_OK, content_type='application/json')
+
+        vote_foo_data = {
+            'is_vote_secret': False,
+            'question0': "foo",
+            'action': 'vote'
+        }
+        vote_bar_data = vote_foo_data.copy()
+        vote_bar_data['question0'] = "bar"
+
+        cancel_vote_data = dict(action='cancel_vote')
+
+        def delegate(user, password, delegate_id):
+            self.login(user, password)
+            orig_data = dict(action='delegate_vote', user_id=delegate_id)
+            data = self.postAndParse('agora/1/action/', data=orig_data,
+                code=HTTP_OK, content_type='application/json')
+
+        def cancel_delegation(user, password):
+            self.login(user, password)
+            orig_data = dict(action='cancel_vote_delegation')
+            data = self.postAndParse('agora/1/action/', data=orig_data,
+                code=HTTP_OK, content_type='application/json')
+
+        def vote(usernames, orig_data):
+            for username in usernames:
+                self.login(username, '123')
+                data = self.post('election/%d/action/' % election_id,
+                    data=orig_data, code=HTTP_OK,
+                    content_type='application/json')
+
+        # vote and delegate
+        delegate('david', 'david', 1)
+        delegate('user1', '123', 6)
+        delegate('user2', '123', 3)
+
+        vote(['user1', 'user3', 'user4'], vote_foo_data)
+        vote(['user4', 'user5'], vote_bar_data)
+        vote(['user1'], cancel_vote_data)
+        # one direct vote in secret
+        vote(['user6'], {
+            'is_vote_secret': True,
+            'question0': "foo",
+            'action': 'vote'
+        })
+
+        # This is what happens:
+        # 
+        # DELEGATIONS:
+        # david --> user1
+        # user1 --> user6
+        # user2 --> user3
+        # 
+        # VOTES:
+        # david ---> NO VOTE -----> delegates > user1 delegates secretly --> NO VOTE
+        # user1 ---> foo CANCELLED --> delegates > user6, votes secretly --> NO VOTE
+        # user2 ---> NO VOTE -----> delegates > user3 > foo ---------------> foo
+        # user3 ---> foo --------------------------------------------------> foo
+        # user4 ---> foo ---> bar OVERWRITTEN -----------------------------> bar
+        # user5 ---> bar --------------------------------------------------> bar
+        # user6 ---> foo secretly -----------------------------------------> foo
+        # 
+        # Results:
+        # foo ---> 3 votes (2 direct, 1 delegated) 
+        # bar ---> 2 votes (2 direct, 0 delegated)
+        # none --> 0 votes
+
+        # stop election
+        self.login('david', 'david')
+        orig_data = dict(action='stop')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # check the tally
+        data = self.getAndParse('election/%d/' % election_id)
+        result_should_be = {
+            'a':'result',
+            'counts':[
+                {
+                    'a':'question/result/ONE_CHOICE',
+                    'winners': ['foo'],
+                    'min':0,
+                    'max':1,
+                    'tally_type':'ONE_CHOICE',
+                    'question':'Do you prefer foo or bar?',
+                    'answers':[
+                        {
+                        'a':'answer/result/ONE_CHOICE',
+                        'by_delegation_count':1,
+                        'url':u'',
+                        'total_count':3,
+                        'by_direct_vote_count':2,
+                        'value':'foo',
+                        'details':u'',
+                        'total_count_percentage':60.0
+                        },
+                        {
+                        'a':'answer/result/ONE_CHOICE',
+                        'by_delegation_count':0,
+                        'url':u'',
+                        'total_count':2,
+                        'by_direct_vote_count':2,
+                        'value':'bar',
+                        'details':u'',
+                        'total_count_percentage':40.0
+                        },
+                        {
+                        'a':'answer/result/ONE_CHOICE',
+                        'by_delegation_count':0,
+                        'url':u'',
+                        'total_count':0,
+                        'by_direct_vote_count':0,
+                        'value':'none',
+                        'details':u'',
+                        'total_count_percentage':0.0
+                        }
+                    ],
+                    'randomize_answer_order':True,
+                    'dirty_votes':0,
+                    'total_votes':5
+                }
+            ],
+            'total_votes': 5,
+            'electorate_count': 7,
+            'total_delegated_votes': 1
+        }
+        self.assertEqual(data['result'], result_should_be)
+        data = self.getAndParse('election/%d/extra_data/' % election_id)
+        self.assertEqual(data['delegation_counts'], {
+            '3':1
         })
 
     def test_archive_election(self):

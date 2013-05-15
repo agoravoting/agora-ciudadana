@@ -716,7 +716,10 @@ class Election(models.Model):
             '''
             function used to update the delegation counts, for each valid vote.
             it basically goes deep in the delegation chain, updating the count
-            for each delegate
+            for each delegate.
+
+            NOTE: Calling to this function assumes a valid path for the vote,
+            which means for example that the delegation chain is public.
             '''
             # if there is no vote we have nothing to do
             if not vote:
@@ -762,7 +765,7 @@ class Election(models.Model):
             '''
             if nodes.filter(voter=voter).count() == 1:
                 return nodes.filter(voter=voter)[0]
-            elif edges.filter(voter=voter) == 1:
+            elif edges.filter(voter=voter).count() == 1:
                 return edges.filter(voter=voter)[0]
             else:
                 return None
@@ -820,13 +823,15 @@ class Election(models.Model):
                 # found a path to which the user belongs
 
                 # update delegation counts
-                update_delegation_counts(get_vote_for_voter(voter))
                 num_delegated_votes += 1
                 add_vote(path_for_user['answers'], is_delegated=True)
+                update_delegation_counts(get_vote_for_voter(voter))
+
             # found the user in a direct vote
             elif nodes.filter(voter=voter).count() == 1:
                 vote = nodes.filter(voter=voter)[0]
                 add_vote(vote.data["answers"], is_delegated=False)
+
             # found the user in an edge (delegated vote), but not yet in a path
             elif edges.filter(voter=voter).count() == 1:
                 path = dict(
@@ -856,23 +861,45 @@ class Election(models.Model):
                         # Count the vote
                         num_delegated_votes += 1
                         add_vote(path_for_user['answers'], is_delegated=True)
-                        update_delegation_counts(current_edge)
+                        update_delegation_counts(get_vote_for_voter(voter))
                         loop = False
                     elif check_depth and nodes.filter(voter=delegate).count() == 1:
-                        # The delegate voted directly, add the path and count
-                        # the vote
+                        # The delegate voted directly
                         vote = nodes.filter(voter=delegate)[0]
-                        path["answers"]=vote.data['answers']
+
+                        # if the vote of the delegate is not public, then
+                        # it doesn't count, we have finished
+                        if not vote.is_public:
+                            # wrong path! loop found, vote won't be counted
+                            path['is_broken_loop'] = True
+                            paths += [path]
+                            loop = False
+                            break
+
+                        # add the path and count the vote
+                        path["answers"] = vote.data['answers']
                         paths += [path]
                         num_delegated_votes += 1
                         add_vote(vote.data['answers'], is_delegated=True)
-                        update_delegation_counts(current_edge)
+                        update_delegation_counts(get_vote_for_voter(voter))
                         loop = False
 
                     elif check_depth and edges.filter(voter=delegate).count() == 1:
-                        # the delegate also delegated, so continue looping
+                        # the delegate also delegated
+                        vote = edges.filter(voter=delegate)[0]
+
+                        # if the vote of the delegate is not public, then
+                        # it doesn't count, we have finished
+                        if not vote.is_public:
+                            # wrong path! loop found, vote won't be counted
+                            path['is_broken_loop'] = True
+                            paths += [path]
+                            loop = False
+                            break
+
+                        # vote is public, so continue looping
                         path['user_ids'] += [delegate.id]
-                        current_edge = edges.filter(voter=delegate)[0]
+                        current_edge = vote
                     else:
                         # broken path! we cannot continue
                         path['is_broken_loop'] = True

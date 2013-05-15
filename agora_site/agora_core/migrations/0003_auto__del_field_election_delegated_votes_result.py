@@ -400,7 +400,9 @@ class Migration(SchemaMigration):
                 result_tallied_at_date__isnull=False, 
                 archived_at_date__isnull=True)
             for election in elections:
+                date = election.result_tallied_at_date
                 compute_result(election, orm)
+                election.result_tallied_at_date = date
 
 
     def backwards(self, orm):
