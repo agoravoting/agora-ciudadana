@@ -5,4 +5,23 @@
 
 {% block title %}{% trans "Votes" %} - {{ election.pretty_name }} - {{ election.agora.creator.username }}/{{ election.agora.name }}{% endblock %}
 
+
+{% block content %}
+    <div class="row election-content-row">
+        <div class="span8 agora-left-side">
+            <div class="activity-list" id="user-list"
+                data-url="/api/v1/election/{{ election.id }}/all_votes/"
+                data-method="get" data-margin="300">
+
+                <div class="endless-container">
+                    <a class="endless_more" href="#">{% trans "more" %}</a>
+                    <div class="endless_loading hidden">{% trans "Loading..." %}</div>
+                </div>
+            </div>
+        </div>
+        <div class="span4 agora-right-side" id="vote_info">
+        </div>
+    </div>
+{% endblock %}
+
 {% block election-navigation %}{% activetab "election-nav" "votes" %}{% block election-navigation-base %}{{ block.super }}{% endblock %}{% endblock %}

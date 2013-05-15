@@ -45,18 +45,32 @@
         </a>
     </div>
     <div class="row-fluid questions">
-        <strong><%= interpolate(gettext("%s answers in this election"), [vote.voter.full_name]) %></strong>
-        <% for (var i = 0; i < election.questions.length; i++) { %>
-            <h3>Q<%=  i + 1 %>. <%= election.questions[i].question %></h3>
-            <% if (election.questions[i].tally_type == 'MEEK-STV') { %>
-                <ol>
-                <% for (var j = 0; j < vote.public_data.answers[i].choices.length; j++) { %>
-                    <li><%=  vote.public_data.answers[i].choices[j] %></li>
+    <% if (vote.is_public) { %>
+        <% if (vote.is_direct) { %>
+            <strong><%= interpolate(gettext("%s answers in this election"), [vote.voter.full_name]) %></strong>
+            <% for (var i = 0; i < election.questions.length; i++) { %>
+                <h3>Q<%=  i + 1 %>. <%= election.questions[i].question %></h3>
+                <% if (election.questions[i].tally_type == 'MEEK-STV') { %>
+                    <ol>
+                    <% for (var j = 0; j < vote.public_data.answers[i].choices.length; j++) { %>
+                        <li><%=  vote.public_data.answers[i].choices[j] %></li>
+                    <% } %>
+                    </ol>
+                <% } else { %>
+                    <ul><li><%=  vote.public_data.answers[i].choices[0] %></li></ul>
                 <% } %>
-                </ol>
-            <% } else { %>
-                <ul><li><%=  vote.public_data.answers[i].choices[0] %></li></ul>
             <% } %>
+        <% } else { %>
+            <div class="row-fluid questions">
+                <strong><%= interpolate(gettext("%s his vote"), [vote.voter.full_name]) %></strong>
+            </div>
         <% } %>
-    </div>
+    <% } else { %>
+        <% if (vote.is_direct) { %>
+            <strong><%= interpolate(gettext("%s vote is secret"), [vote.voter.full_name]) %></strong>
+        <% } else { %>
+            <strong><%= interpolate(gettext("%s delegation is secret"), [vote.voter.full_name]) %></strong>
+        <% } %>
+    <% } %>
+        </div>
 </script>
