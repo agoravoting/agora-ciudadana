@@ -136,7 +136,7 @@ class Agora(models.Model):
         return self.elections.filter(
             result_tallied_at_date__lt=timezone.now(),
             archived_at_date__isnull=True).order_by(
-                '-voting_extended_until_date')
+                '-result_tallied_at_date')
 
     # Stablishes a default option for elections
     is_vote_secret = models.BooleanField(_('Is delegation secret'), default=False,
