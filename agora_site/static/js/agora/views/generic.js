@@ -222,6 +222,7 @@
 
                 this.setup();
                 this.setupTemplates();
+                this.delegateEvents();
                 this.requestObjects();
 
                 $(window).scroll(this.infiniteScroll);
@@ -284,7 +285,7 @@
                         // elements can be fetch, so fetch those
                         } else if (doc.height() == win.height() &&
                             win.scrollTop() == 0) {
-                            this.$("a.endless_more").click();
+                            this.onMoreClicked();
                             this.$("a.endless_more").hide();
                             this.endlessDom.find("div.endless_loading").show();
                         }
@@ -317,14 +318,16 @@
                 if (!this.finished &&
                     (doc.height() - win.height() - win.scrollTop()) <= margin)
                 {
-                    this.$("a.endless_more").click();
+                    this.onMoreClicked();
                     this.$("a.endless_more").hide();
                     this.endlessDom.find("div.endless_loading").show();
                 }
             },
 
             onMoreClicked: function(event) {
-                event.preventDefault();
+                if (event) {
+                    event.preventDefault();
+                }
                 this.requestObjects();
             }
         });
