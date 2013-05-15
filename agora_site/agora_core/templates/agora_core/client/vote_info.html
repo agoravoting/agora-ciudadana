@@ -62,7 +62,7 @@
             <% } %>
         <% } else { %>
             <div class="row-fluid questions">
-                <strong><%= interpolate(gettext("%s his vote"), [vote.voter.full_name]) %></strong>
+                <strong><%= interpolate(gettext("%s delegated his vote"), [vote.voter.full_name]) %></strong>
             </div>
         <% } %>
     <% } else { %>
