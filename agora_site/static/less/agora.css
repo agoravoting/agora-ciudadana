@@ -5561,7 +5561,7 @@ img.mugshot,
   border: none;
   padding: 0;
 }
-#vote_info .row-fluid .btn.choose-as-delegate {
+#vote_info .row-fluid .btn.delegate_vote {
   padding-left: 5px;
   padding-right: 5px;
 }

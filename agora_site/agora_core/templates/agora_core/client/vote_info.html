@@ -36,8 +36,10 @@
                 <%= vote.voter.short_description %>
             <% } %>
         </blockquote>
-        <a class="btn btn-large btn-block btn-primary" href="#"
-            class="choose-as-delegate" data-id="<% vote.voter.id %>">
+        <a class="btn btn-large btn-block btn-primary delegate_vote" href="#"
+            data-agora="<%- JSON.stringifyCompat(election.agora) %>"
+            data-delegate="<%- JSON.stringifyCompat(vote.voter) %>"
+            >
             <%= interpolate(gettext("Choose %s as my delegate for agora %s"),
                 [vote.voter.full_name, election.agora.full_name]) %>
         </a>

@@ -138,10 +138,16 @@
         el: "#user-list",
         templateEl: "#template-vote_list_item",
         templateVoteInfoEl: "#template-vote_info",
+        sendingData: false,
 
         events: {
-            'click .user-result .row': 'clickUser',
-            'hover .user-result .row': 'hoverUser',
+            'hover .user-result .row': 'hoverUser'
+        },
+
+        initialize: function() {
+            Agora.GenericListView.prototype.initialize.apply(this);
+
+            this.delegateView = null;
         },
 
         renderItem: function(model) {
@@ -171,14 +177,11 @@
                 model.rank_in_delegates = size - filtered.length + 1;
             }
             $("#vote_info").html(this.templateVoteInfo(model));
+            $("#vote_info .delegate_vote").click(this.delegateVote);
         },
 
-        clickUser: function(e) {
-//             if ($(e.target).closest("a")) {
-//                 return;
-//             }
-//             var url = $(e.target).closest(".row").data('url');
-//             window.location.href= url;
+        delegateVote: function (e) {
+            Agora.delegateVoteHandler(e, this);
         }
     });
 }).call(this)

@@ -1,0 +1,16 @@
+<script id="template-modal_dialog" type="text/underscore-template">
+    <div id="modal_dialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="modal-label"><%= header %></h3>
+        </div>
+        <div class="modal-body">
+            <%= body %>
+        </div>
+        <% if (footer) { %>
+        <div class="modal-footer">
+            <%= footer %>
+        </div>
+        <% } %>
+    </div> 
+</script>

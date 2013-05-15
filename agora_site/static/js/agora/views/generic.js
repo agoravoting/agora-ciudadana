@@ -129,6 +129,53 @@
         });
     }).call(this);
 
+    /**
+     * Used for showing modal dialogs
+     */
+    (function() {
+        Agora.ModalDialogView = Backbone.View.extend({
+            el: "#modaldialogdiv",
+
+            initialize: function() {
+                _.bindAll(this);
+                this.template = _.template($("#template-modal_dialog").html());
+                this.$el.html(this.template(this.model.toJSON()));
+                this.delegateEvents();
+            },
+        });
+    }).call(this);
+
+    /**
+     * used to delegate your vote
+     */
+    Agora.delegateVoteHandler = function(e, self) {
+        if (self.sendingData) {
+            return;
+        }
+        var agora = $(e.target).data('agora');
+        var delegate = $(e.target).data('delegate');
+
+        var ballot = {
+            'action':'delegate_vote',
+            'user_id': delegate.id
+        };
+
+        self.sendingData = true;
+        var jqxhr = $.ajax("/api/v1/agora/" + agora.id + "/action/", {
+            data: JSON.stringifyCompat(ballot),
+            contentType : 'application/json',
+            type: 'POST',
+        })
+        .done(function(e) {
+            self.sendingData = false;
+            alert(interpolate(gettext("Your delegation to %s in agora %s was successfully recorded."),
+                [delegate.full_name, agora.full_name]));
+        })
+        .fail(function() {
+            self.sendingData = false;
+            alert("Error casting the ballot, try again or report this problem");
+        });
+    };
 
     /*
      * Generic view for all search pages.
