@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-15 19:20+0200\n"
+"POT-Creation-Date: 2013-05-16 21:35+0200\n"
 "PO-Revision-Date: 2012-11-20 18:58+0100\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -121,14 +121,16 @@ msgstr ""
 "activación?"
 
 #: accounts/templates/accounts/activate_fail.html:9
+#, fuzzy
 msgid ""
-"Please try signing up again or contact us if you think something went wrong."
+"Please try signing up again, try to activate your account again or contact "
+"us if you think something went wrong."
 msgstr ""
 "Intente rexistrarse de novo, ou contacte connosco se cre que se trata dun "
 "erro."
 
 #: accounts/templates/accounts/auth_forms.html:11
-#: accounts/templates/accounts/signin_form.html:9 templates/base.html:78
+#: accounts/templates/accounts/signin_form.html:9 templates/base.html:79
 msgid "Register"
 msgstr "Rexistrarse"
 
@@ -975,7 +977,7 @@ msgstr "Cambiou a configuración da ágora «%(agoraname)s»."
 
 #: agora_core/forms/__init__.py:62 agora_core/forms/__init__.py:63
 #: agora_core/templates/agora_core/create_agora_form.html:6
-#: templates/base.html:70
+#: templates/base.html:71
 msgid "Create Agora"
 msgstr "Nova ágora"
 
@@ -1049,7 +1051,7 @@ msgstr "Novo contrasinal (repítao):"
 msgid "Profile"
 msgstr "Perfil"
 
-#: agora_core/forms/__init__.py:146 templates/base.html:271
+#: agora_core/forms/__init__.py:146 templates/base.html:272
 msgid "Security"
 msgstr "Seguridade"
 
@@ -1113,7 +1115,7 @@ msgstr "Opcional. Pode rematar a votación manualmente."
 #: agora_core/forms/__init__.py:270
 #: agora_core/templates/agora_core/agora_view.html:182
 #: agora_core/templates/agora_core/home_loggedin_activity.html:101
-#: templates/base.html:55
+#: templates/base.html:56
 msgid "Create election"
 msgstr "Nova votación"
 
@@ -1158,7 +1160,7 @@ msgstr "Votar en público como delegado externo"
 #: agora_core/forms/__init__.py:533
 #: agora_core/templates/agora_core/election_base.html:196
 #: agora_core/templates/agora_core/election_base.html:205
-#: templates/base.html:38
+#: templates/base.html:39
 msgid "Vote"
 msgstr "Votar"
 
@@ -1815,8 +1817,8 @@ msgstr "Comentarios"
 #: agora_core/templates/agora_core/agora_elections.html:5
 #: agora_core/templates/agora_core/agora_view.html:144
 #: agora_core/templates/agora_core/user_elections.html:5
-#: agora_core/templates/agora_core/user_view.html:31 templates/base.html:157
-#: templates/base.html.py:178
+#: agora_core/templates/agora_core/user_view.html:31 templates/base.html:158
+#: templates/base.html.py:179
 msgid "Elections"
 msgstr "Votacións"
 
@@ -1827,6 +1829,7 @@ msgstr "Votacións"
 #: agora_core/templates/agora_core/election_base.html:141
 #: agora_core/templates/agora_core/election_delegates.html:18
 #: agora_core/templates/agora_core/election_list.html:29
+#: agora_core/templates/agora_core/election_votes.html:17
 #: agora_core/templates/agora_core/home_loggedin_activity.html:90
 #: agora_core/templates/agora_core/user_listing.html:29
 #: agora_core/templates/agora_core/user_view.html:53
@@ -1841,6 +1844,7 @@ msgstr ""
 #: agora_core/templates/agora_core/election_base.html:142
 #: agora_core/templates/agora_core/election_delegates.html:19
 #: agora_core/templates/agora_core/election_list.html:30
+#: agora_core/templates/agora_core/election_votes.html:18
 #: agora_core/templates/agora_core/home_loggedin_activity.html:91
 #: agora_core/templates/agora_core/user_listing.html:30
 #: agora_core/templates/agora_core/user_view.html:54
@@ -2012,7 +2016,6 @@ msgstr "Cree un sitio web para o seu grupo no que poder realizar as votacións."
 #: agora_core/templates/agora_core/election_choose_delegate.html:26
 #: agora_core/templates/agora_core/user_item.html:76
 #: agora_core/templates/agora_core/vote_from_delegate_item.html:19
-#: agora_core/templates/agora_core/client/choose_delegate_dialog.html:20
 msgid "User mugshot"
 msgstr "Imaxe do usuario"
 
@@ -2029,7 +2032,6 @@ msgstr "O voto é secreto."
 #: agora_core/templates/agora_core/delegated_vote_item.html:42
 #: agora_core/templates/agora_core/election_choose_delegate.html:34
 #: agora_core/templates/agora_core/vote_from_delegate_item.html:30
-#: agora_core/templates/agora_core/client/choose_delegate_dialog.html:28
 msgid "Answers:"
 msgstr "Respostas:"
 
@@ -2233,7 +2235,7 @@ msgid "Do you really want to cancel your vote in this election?"
 msgstr "Está seguro de que quere cancelar o seu voto nesta votación?"
 
 #: agora_core/templates/agora_core/election_base.html:291
-#: templates/base.html:123
+#: templates/base.html:124
 msgid "Close"
 msgstr "Pechar"
 
@@ -2267,18 +2269,15 @@ msgstr ""
 "            "
 
 #: agora_core/templates/agora_core/election_choose_delegate.html:43
-#: agora_core/templates/agora_core/client/choose_delegate_dialog.html:37
 #, python-format
 msgid "Delegate to %(username)s"
 msgstr "Delegar en %(username)s"
 
 #: agora_core/templates/agora_core/election_choose_delegate.html:48
-#: agora_core/templates/agora_core/client/choose_delegate_dialog.html:42
 msgid "Who represents you?"
 msgstr "Quen o representa?"
 
 #: agora_core/templates/agora_core/election_choose_delegate.html:49
-#: agora_core/templates/agora_core/client/choose_delegate_dialog.html:43
 msgid ""
 "If you don't know what to vote or you'd rather not have to be aware of all "
 "the elections of this Agora, you can delegate your vote to someone you trust."
@@ -2288,7 +2287,6 @@ msgstr ""
 "súa confianza."
 
 #: agora_core/templates/agora_core/election_choose_delegate.html:50
-#: agora_core/templates/agora_core/client/choose_delegate_dialog.html:44
 msgid "View other delegates..."
 msgstr "Ver outros delegados…"
 
@@ -2379,12 +2377,12 @@ msgid "Follow a friend. Create a delegate. Comment. Participate."
 msgstr "Siga aos amigos. Cree un delegado. Comente. Participe."
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:70
-#: templates/base.html:283
+#: templates/base.html:284
 msgid "Follow on Twitter"
 msgstr "Seguirnos en Twitter"
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:71
-#: templates/base.html:286
+#: templates/base.html:287
 msgid "Like in Facebook"
 msgstr "Gustarnos en Facebook"
 
@@ -2393,7 +2391,7 @@ msgid "Follow in Identi.ca"
 msgstr "Seguirnos en Identi.ca"
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:73
-#: templates/base.html:292
+#: templates/base.html:293
 msgid "+1 in Google Plus"
 msgstr "+1 en Google Plus"
 
@@ -2402,8 +2400,8 @@ msgid "No elections found in the calendar"
 msgstr "Non se atoparon votacións no calendario."
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:128
-#: agora_core/templates/agora_core/user_view.html:64 templates/base.html:138
-#: templates/base.html.py:151
+#: agora_core/templates/agora_core/user_view.html:64 templates/base.html:139
+#: templates/base.html.py:152
 msgid "Agoras"
 msgstr "Ágoras"
 
@@ -2487,7 +2485,7 @@ msgstr "Configuración do usuario"
 msgid "%(username)s logo"
 msgstr "Logo de %(username)s"
 
-#: agora_core/templates/agora_core/user_view.html:36 templates/base.html:87
+#: agora_core/templates/agora_core/user_view.html:36 templates/base.html:88
 msgid "Settings"
 msgstr "Configuración"
 
@@ -2495,7 +2493,7 @@ msgstr "Configuración"
 msgid "Last elections"
 msgstr "Últimas votacións"
 
-#: agora_core/templates/agora_core/user_view.html:85 templates/base.html:218
+#: agora_core/templates/agora_core/user_view.html:85 templates/base.html:219
 msgid "Explore"
 msgstr "Explorar"
 
@@ -2528,21 +2526,6 @@ msgstr ""
 #: agora_core/templates/agora_core/voting_booth.html:10
 msgid "Voting Booth"
 msgstr ""
-
-#: agora_core/templates/agora_core/client/choose_delegate_dialog.html:9
-#, fuzzy, python-format
-msgid ""
-"\n"
-"                Election created by <a href=\"<%%= delegate.url %%>\"><%%= "
-"election_creator_username %%></a> in <a href=\"%(agora_view_url)s\">"
-"%(agora_creator_username)s/%(agora_name)s</a>\n"
-"            "
-msgstr ""
-"\n"
-"                Votación creada por <a href=\"%(user_view_url)s\">"
-"%(election_creator_username)s</a> na ágora «<a href=\"%(agora_view_url)s\">"
-"%(agora_creator_username)s/%(agora_name)s</a>».\n"
-"            "
 
 #: agora_core/templates/agora_core/emails/agora_notification.html:4
 #, python-format
@@ -3277,7 +3260,7 @@ msgstr ""
 "Descrición: %(election_description)s\n"
 "\n"
 
-#: agora_core/templates/search/search.html:13 templates/base.html:75
+#: agora_core/templates/search/search.html:13 templates/base.html:76
 msgid "Search"
 msgstr "Resultados da busca"
 
@@ -3327,64 +3310,64 @@ msgstr ""
 msgid "Enter valid JSON"
 msgstr ""
 
-#: templates/base.html:48
+#: templates/base.html:49
 msgid "Find an election to vote"
 msgstr "Atopar unha votación na que participar"
 
-#: templates/base.html:65
+#: templates/base.html:66
 msgid "Find an agora to create an election"
 msgstr "Atopar unha ágora na que crear unha votación"
 
-#: templates/base.html:77
+#: templates/base.html:78
 msgid "Enter"
 msgstr "Entrar"
 
-#: templates/base.html:86
+#: templates/base.html:87
 msgid "Log out"
 msgstr "Saír"
 
-#: templates/base.html:105
+#: templates/base.html:106
 msgid "Heads Up!"
 msgstr "Atención!"
 
-#: templates/base.html:106
+#: templates/base.html:107
 msgid "Well done!"
 msgstr "Moi ben!"
 
-#: templates/base.html:107
+#: templates/base.html:108
 msgid "Be aware!"
 msgstr "Coidado!"
 
-#: templates/base.html:108
+#: templates/base.html:109
 msgid "Oh snap!"
 msgstr "Oh!"
 
-#: templates/base.html:117
+#: templates/base.html:118
 msgid "Heads up!"
 msgstr "Atención!"
 
-#: templates/base.html:146
+#: templates/base.html:147
 msgid "Explore other agoras"
 msgstr "Atopar outras ágoras"
 
-#: templates/base.html:173
+#: templates/base.html:174
 msgid "Explore other elections"
 msgstr "Atopar outras votacións"
 
 # Contexto: texto da ligazón a «https://agoravoting.com/user/list» do menú principal.
-#: templates/base.html:182
+#: templates/base.html:183
 msgid "People"
 msgstr "Xente"
 
-#: templates/base.html:214
+#: templates/base.html:215
 msgid "<p>A new way of</p><h1>Making group decisions</h1>"
 msgstr "<p>Unha nova forma de</p> <h1>Tomar decisións en grupo</h1>"
 
-#: templates/base.html:217
+#: templates/base.html:218
 msgid "Participate"
 msgstr "Participar"
 
-#: templates/base.html:223
+#: templates/base.html:224
 msgid ""
 "An indispensable tool to lead an organization in a democratic manner. Its "
 "delegation system reflects trust relationships"
@@ -3392,61 +3375,75 @@ msgstr ""
 "Unha ferramenta indispensábel para levar unha organización de forma "
 "democrática. O seu sistema de delegación reflicte as relacións de confianza."
 
-#: templates/base.html:225
+#: templates/base.html:226
 msgid "Eduardo Robles Elvira, Cofounder of Wadobo"
 msgstr "Eduardo Robles Elvira, co-fundador de Wadobo."
 
-#: templates/base.html:244
+#: templates/base.html:245
 msgid "Discover"
 msgstr "Coñézanos"
 
-#: templates/base.html:247
+#: templates/base.html:248
 msgid "About"
 msgstr "Información"
 
-#: templates/base.html:250
+#: templates/base.html:251
 msgid "Libre Software"
 msgstr "Software libre"
 
-#: templates/base.html:253
+#: templates/base.html:254
 msgid "Blog"
 msgstr "Bitácora"
 
-#: templates/base.html:256
+#: templates/base.html:257
 msgid "Status"
 msgstr "Estado"
 
-#: templates/base.html:262
+#: templates/base.html:263
 msgid "Serious Stuff"
 msgstr "Cousas serias"
 
-#: templates/base.html:265
+#: templates/base.html:266
 msgid "Terms of Service"
 msgstr "Condicións de uso"
 
-#: templates/base.html:268
+#: templates/base.html:269
 msgid "Privacy Policy"
 msgstr "Política de protección da intimidade"
 
-#: templates/base.html:274
+#: templates/base.html:275
 msgid "Contact Us"
 msgstr "Contacte connosco"
 
-#: templates/base.html:280
+#: templates/base.html:281
 msgid "Be Social"
 msgstr "Socialice"
 
-#: templates/base.html:289
+#: templates/base.html:290
 msgid "Follow in Indenti.ca"
 msgstr "Seguirnos en Identi.ca"
 
-#: templates/base.html:297
+#: templates/base.html:298
 msgid "Powered by"
 msgstr "Co apoio de"
 
-#: templates/base.html:298
+#: templates/base.html:299
 msgid "Wadobo Labs"
 msgstr "Wadobo Labs"
+
+#, fuzzy
+#~ msgid ""
+#~ "\n"
+#~ "                Election created by <a href=\"<%%= delegate.url %%>\"><"
+#~ "%%= election_creator_username %%></a> in <a href=\"%(agora_view_url)s\">"
+#~ "%(agora_creator_username)s/%(agora_name)s</a>\n"
+#~ "            "
+#~ msgstr ""
+#~ "\n"
+#~ "                Votación creada por <a href=\"%(user_view_url)s\">"
+#~ "%(election_creator_username)s</a> na ágora «<a href=\"%(agora_view_url)s"
+#~ "\">%(agora_creator_username)s/%(agora_name)s</a>».\n"
+#~ "            "
 
 #~ msgid "Registration "
 #~ msgstr "Rexistro "
