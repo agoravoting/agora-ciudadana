@@ -28,6 +28,11 @@
         </div>
     </div>
     <% } %>
+    <% if (!vote.is_counted) { %>
+    <div class="row-fluid bignums bottom-bordered">
+        <a href="#" data-toggle="tooltip" title="<%= gettext("A vote might not be counted because at the time the user emitted the vote this user was not a member of the Agora or was not part of the electorate, for example. However, if the vote is public, members of the electorate might delegate in this vote, and those delegations would be counted.") %>"><%= gettext("This vote is not counted") %> <i class="icon-question-sign"></i></a>
+    </div>
+    <% } %>
     <div class="row-fluid userdetails">
         <blockquote>
             <% if (vote.reason) { %>
