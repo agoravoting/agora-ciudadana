@@ -10,6 +10,7 @@ from tastypie.utils import trailing_slash
 from tastypie import http
 from tastypie import fields
 from tastypie.exceptions import ImmediateHttpResponse
+from tastypie.constants import ALL, ALL_WITH_RELATIONS
 
 from userena import forms as userena_forms
 

@@ -15,7 +15,7 @@ from django.utils import timezone
 from guardian.shortcuts import *
 
 from agora_site.misc.utils import JSONField, rest
-from agora_site.agora_core.models import Agora
+from agora_site.agora_core.models.agora import Agora
 from agora_site.agora_core.models.voting_systems.base import (
     parse_voting_methods, get_voting_system_by_id)
 
@@ -921,7 +921,14 @@ class Election(models.Model):
         for tally in tallies:
             tally_log.append(tally.get_log())
         self.extra_data['tally_log'] = tally_log
-        self.extra_data['delegation_counts'] = delegation_counts
+
+        # refresh DelegateElectionCount items
+        from agora_site.agora_core.models.delegateelectioncount import DelegateElectionCount
+        DelegateElectionCount.objects.filter(election=self).delete()
+        for key, value in delegation_counts.iteritems():
+            dec = DelegateElectionCount(election=self, count=value)
+            dec.delegate_id = int(key)
+            dec.save()
 
         self.delegated_votes_frozen_at_date = self.voters_frozen_at_date =\
             self.result_tallied_at_date = timezone.now()

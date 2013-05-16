@@ -16,6 +16,7 @@ from agora_site.misc.utils import JSONField
 from agora import Agora
 from election import Election
 from castvote import CastVote
+from delegateelectioncount import DelegateElectionCount
 
 
 class Profile(UserenaLanguageBaseProfile):

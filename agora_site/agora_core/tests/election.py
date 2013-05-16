@@ -523,13 +523,17 @@ class ElectionTest(RootTestCase):
             'total_delegated_votes': 2
         }
         self.assertEqual(data['result'], result_should_be)
-        data = self.getAndParse('election/%d/extra_data/' % election_id)
-        self.assertEqual(data['delegation_counts'], {
+        data = self.getAndParse('delegateelectioncount/?election=%d' % election_id)
+        self.check_delegates_counts(data, {
             '2': 2,
             '1': 1
         })
 
-
+    def check_delegates_counts(self, query, data):
+        self.assertEqual(len(data.keys()), query['meta']['total_count'])
+        for item in query['objects']:
+            self.assertTrue(str(item['delegate']['id']) in data)
+            self.assertEqual(data[str(item['delegate']['id'])], item['count'])
 
     def test_tally_election2(self):
         '''
@@ -698,8 +702,8 @@ class ElectionTest(RootTestCase):
             'total_delegated_votes': 1
         }
         self.assertEqual(data['result'], result_should_be)
-        data = self.getAndParse('election/%d/extra_data/' % election_id)
-        self.assertEqual(data['delegation_counts'], {
+        data = self.getAndParse('delegateelectioncount/?election=%d' % election_id)
+        self.check_delegates_counts(data, {
             '3':1
         })
 
@@ -1474,7 +1478,7 @@ class ElectionTest(RootTestCase):
             'total_delegated_votes': 1
         }
         self.assertEqual(data['result'], result_should_be)
-        data = self.getAndParse('election/%d/extra_data/' % election_id)
-        self.assertEqual(data['delegation_counts'], {
+        data = self.getAndParse('delegateelectioncount/?election=%d' % election_id)
+        self.check_delegates_counts(data, {
             '5':1
         })

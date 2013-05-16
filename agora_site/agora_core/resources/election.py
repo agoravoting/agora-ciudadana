@@ -16,6 +16,7 @@ from tastypie.authorization import Authorization
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.validation import Validation, CleanedDataFormValidation
 from tastypie.utils import trailing_slash
+from tastypie.constants import ALL, ALL_WITH_RELATIONS
 
 from actstream.signals import action
 from actstream.models import object_stream
@@ -56,6 +57,9 @@ class TinyElectionResource(GenericResource):
     class Meta(GenericMeta):
         queryset = Election.objects.all()
         fields = ['name', 'pretty_name', 'id', 'short_description']
+        filtering = {
+            'id': ALL
+        }
 
     def dehydrate_url(self, bundle):
         return bundle.obj.get_link()
