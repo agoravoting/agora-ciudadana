@@ -65,6 +65,11 @@ with:
 
     $ sudo /etc/rc.d/rabbitmq start
 
+In some occasions, for example if you are using ubuntu or Opensuse, the command
+above won't work. You need use this one instead:
+
+    $ sudo service rabbitmq-server start
+
 And then for celery to actually process the tasks sent to it (for example start
 or stop an election), you need to run it as a daemon:
 
