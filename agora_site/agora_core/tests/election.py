@@ -532,8 +532,9 @@ class ElectionTest(RootTestCase):
     def check_delegates_counts(self, query, data):
         self.assertEqual(len(data.keys()), query['meta']['total_count'])
         for item in query['objects']:
-            self.assertTrue(str(item['delegate']['id']) in data)
-            self.assertEqual(data[str(item['delegate']['id'])], item['count'])
+            del_id = item['delegate'].split('/')[-2]
+            self.assertTrue(del_id in data)
+            self.assertEqual(data[del_id], item['count'])
 
     def test_tally_election2(self):
         '''

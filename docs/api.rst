@@ -3761,28 +3761,33 @@ List
     Content-Type: application/json; charset=utf-8
 
     {
-        "meta":{
-            "limit":20,
-            "next":null,
-            "offset":0,
-            "previous":null,
-            "total_count":1
+    'meta':{
+        'previous':None,
+        'total_count':2,
+        'offset':0,
+        'limit':20,
+        'next':None
+    },
+    'objects':[
+        {
+            'count':1,
+            'rank':2,
+            'count_percentage':16.666666666666668,
+            'created_at_date':'2013-05-17T20:54:38.762526',
+            'election':'/api/v1/election/6/',
+            'delegate_vote':'/api/v1/castvote/2/',
+            'delegate':u''
         },
-        "objects":[
-            {
-                "count":1,
-                "delegate":{
-                    "content_type":"user",
-                    "first_name":"Ḿonica García",
-                    "full_name":"Ḿonica García",
-                    "id":0,
-                    "mugshot_url":"/media/mugshots/b44e86eb9e.jpg",
-                    "url":"/user/user1",
-                    "username":"user1"
-                },
-                "election":"/api/v1/election/8/"
-            }
-        ]
+        {
+            'count':2,
+            'rank':1,
+            'count_percentage':33.333333333333336,
+            'created_at_date':'2013-05-17T20:54:38.764793',
+            'election':'/api/v1/election/6/',
+            'delegate_vote':'/api/v1/castvote/5/',
+            'delegate':u''
+        }
+    ]
     }
 
 Retrieve
@@ -3814,15 +3819,11 @@ Retrieve
     Content-Type: application/json; charset=utf-8
 
     {
-        "count":1,
-        "delegate":{
-            "content_type":"user",
-            "first_name":"Ḿonica García",
-            "full_name":"Ḿonica García",
-            "id":0,
-            "mugshot_url":"/media/mugshots/b44e86eb9e.jpg",
-            "url":"/user/user1",
-            "username":"user1"
-        },
-        "election":"/api/v1/election/8/"
+        'count':1,
+        'rank':2,
+        'count_percentage':16.666666666666668,
+        'created_at_date':'2013-05-17T20:54:38.762526',
+        'election':'/api/v1/election/6/',
+        'delegate_vote':'/api/v1/castvote/2/',
+        'delegate':u''
     }

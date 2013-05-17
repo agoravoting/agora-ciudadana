@@ -38,7 +38,10 @@ class RootTestCase(TestCase):
 
         response = self.client.post(API_ROOT + url, simplejson.dumps(data),
             content_type=content_type, **kwargs)
-        self.assertEqual(response.status_code, code)
+        try:
+            self.assertEqual(response.status_code, code)
+        except:
+            import ipdb; ipdb.set_trace()
 
         return response.content
 

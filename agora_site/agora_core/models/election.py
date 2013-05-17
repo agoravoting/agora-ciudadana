@@ -755,15 +755,15 @@ class Election(models.Model):
                     return path
             return None
 
-        def get_vote_for_voter(voter):
+        def get_vote_for_voter(voter_id):
             '''
             Given a voter (an User), returns the vote of the vote of this voter
             on the election. It will be either a proxy or a direct vote
             '''
-            if nodes.filter(voter=voter).count() == 1:
-                return nodes.filter(voter=voter)[0]
-            elif edges.filter(voter=voter).count() == 1:
-                return edges.filter(voter=voter)[0]
+            if nodes.filter(voter_id=voter_id).count() == 1:
+                return nodes.filter(voter_id=voter_id)[0]
+            elif edges.filter(voter_id=voter_id).count() == 1:
+                return edges.filter(voter_id=voter_id)[0]
             else:
                 return None
 
@@ -822,7 +822,7 @@ class Election(models.Model):
                 # update delegation counts
                 num_delegated_votes += 1
                 add_vote(path_for_user['answers'], is_delegated=True)
-                update_delegation_counts(get_vote_for_voter(voter))
+                update_delegation_counts(get_vote_for_voter(voter.id))
 
             # found the user in a direct vote
             elif nodes.filter(voter=voter).count() == 1:
@@ -857,7 +857,7 @@ class Election(models.Model):
                         # Count the vote
                         num_delegated_votes += 1
                         add_vote(path_for_user['answers'], is_delegated=True)
-                        update_delegation_counts(get_vote_for_voter(voter))
+                        update_delegation_counts(get_vote_for_voter(voter.id))
                         loop = False
                     elif nodes.filter(voter=delegate).count() == 1:
                         # The delegate voted directly
@@ -877,7 +877,7 @@ class Election(models.Model):
                         paths += [path]
                         num_delegated_votes += 1
                         add_vote(vote.data['answers'], is_delegated=True)
-                        update_delegation_counts(get_vote_for_voter(voter))
+                        update_delegation_counts(get_vote_for_voter(voter.id))
                         loop = False
 
                     elif edges.filter(voter=delegate).count() == 1:
@@ -922,11 +922,23 @@ class Election(models.Model):
             tally_log.append(tally.get_log())
         self.extra_data['tally_log'] = tally_log
 
+        def rank_delegate(delegate_count, delegation_counts):
+            if delegate_count == 0:
+                return None
+            count = 0
+            for key, value in delegation_counts.iteritems():
+                if delegate_count <= value:
+                    count += 1
+            return count
+
         # refresh DelegateElectionCount items
         from agora_site.agora_core.models.delegateelectioncount import DelegateElectionCount
         DelegateElectionCount.objects.filter(election=self).delete()
         for key, value in delegation_counts.iteritems():
             dec = DelegateElectionCount(election=self, count=value)
+            dec.rank = rank_delegate(value, delegation_counts)
+            dec.count_percentage = value * 100.0 / self.result['total_votes']
+            dec.delegate_vote = get_vote_for_voter(int(key))
             dec.delegate_id = int(key)
             dec.save()
 
