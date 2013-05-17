@@ -442,6 +442,7 @@ class ElectionTest(RootTestCase):
             'action': 'vote'
         })
 
+
         # This is what happens:
         # 
         # DELEGATIONS:
@@ -522,6 +523,9 @@ class ElectionTest(RootTestCase):
             'electorate_count': 7,
             'total_delegated_votes': 2
         }
+
+
+
         self.assertEqual(data['result'], result_should_be)
         data = self.getAndParse('delegateelectioncount/?election=%d' % election_id)
         self.check_delegates_counts(data, {
