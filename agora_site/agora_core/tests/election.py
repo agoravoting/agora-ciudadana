@@ -776,6 +776,12 @@ class ElectionTest(RootTestCase):
         data = self.getAndParse('agora/1/tallied_elections/', code=HTTP_OK)
         self.assertEqual(len(data['objects']), 0)
 
+        # check that election is  listed as archived
+        import ipdb, json; ipdb.set_trace()
+        data = self.getAndParse('agora/1/archived_elections/', code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 1)
+        self.assertEqual(data['objects'][0]['id'], election_id)
+
     def test_vote_empty(self):
         # create election as admin
         self.login('david', 'david')

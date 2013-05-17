@@ -816,25 +816,71 @@ List active delegates
     Content-Type: application/json; charset=utf-8
 
     {
-       "meta":
-       {
-           "limit": 20,
-           "offset": 0,
-           "total_count": 1
-       },
-       "objects":
-       [
-           {
-               "date_joined": "2012-12-18T15:46:37.041147",
-               "first_name": "Juana Garcia",
-               "id": 4,
-               "is_active": true,
-               "last_login": "2012-12-18T15:46:37.041112",
-               "last_name": "",
-               "username": "user3",
-               "agora_permissions": []
-           }
-       ]
+        "meta": 
+        {
+            "total_count": 4, 
+            "limit": 20, 
+            "offset": 0
+        }, 
+        "objects": 
+        [
+            {
+                "username": "user2", 
+                "first_name": "Jose Lopez", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/ecdecef1814126d1846e600cbef37a24?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2FJL.png", 
+                "url": "/user/user2", 
+                "is_active": true, 
+                "short_description": "justo. consectetur ultricies ullamcorper nisi, volutpat porta. Sed dui. non Nam Ut volutpat Maecenas orci", 
+                "last_login": "2013-05-17T15:52:42.563169", 
+                "full_name": "Jose Lopez", 
+                "agora_permissions": [], 
+                "id": 2, 
+                "date_joined": "2012-11-29T19:37:36.987000"
+            }, 
+            {
+                "username": "user4", 
+                "first_name": "Antonio Bonilla", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/562c89a550b820fe2f63365202f07eb0?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2FAB.png", 
+                "url": "/user/user4", 
+                "is_active": true, 
+                "short_description": "Nullam fringilla ut ultricies elit. semper erat, gravida fermentum Quisque nec. gravida elit. nulla nec", 
+                "last_login": "2013-05-17T15:52:44.018377", 
+                "full_name": "Antonio Bonilla", 
+                "agora_permissions": [], 
+                "id": 4, 
+                "date_joined": "2012-11-29T19:37:37.662000"
+            }, 
+            {
+                "username": "user5", 
+                "first_name": "Maria Ariza", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/4363106ea31735235c6c6b911ab460c2?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2FMA.png", 
+                "url": "/user/user5", 
+                "is_active": true, 
+                "short_description": "Nullam vestibulum bibendum Maecenas eu, Curabitur sit erat congue amet a ultricies velit gravida dictum,", 
+                "last_login": "2013-05-17T15:52:44.500338", 
+                "full_name": "Maria Ariza", 
+                "agora_permissions": [], 
+                "id": 5, 
+                "date_joined": "2012-11-29T19:37:37.993000"
+            }, 
+            {
+                "username": "user6", 
+                "first_name": "Mariano Ariz\\u00f3n", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/013c1f55acdb49dfe716cacc231c8c47?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2FMA.png", 
+                "url": "/user/user6", 
+                "is_active": true, 
+                "short_description": "Is a member of 1 agoras and has emitted  1 direct votes.", 
+                "last_login": "2013-05-17T15:52:45.920995", 
+                "full_name": "Mariano Ariz\\u00f3n", 
+                "agora_permissions": [], 
+                "id": 6, 
+                "date_joined": "2012-11-29T19:37:37.993000"
+            }
+        ]
     }
 
 List all elections
@@ -866,82 +912,97 @@ List all elections
     Content-Type: application/json; charset=utf-8
 
     {
-       "meta":
-       {
-           "limit": 20,
-           "offset": 0,
-           "total_count": 1
-       },
-       "objects":
-       [
-           {
-               "agora": "/api/v1/agora/1/",
-               "approved_at_date": null,
-               "archived_at_date": null,
-               "comments_policy": "ANYONE_CAN_COMMENT",
-               "created_at_date": "2012-12-18T15:53:05.265843",
-               "creator": "/api/v1/user/2/",
-               "delegated_votes_frozen_at_date": null,
-               "delegated_votes_result": "",
-               "description": "this is election 2",
-               "election_type": "ONE_CHOICE",
-               "electorate":
-               [
-               ],
-               "eligibility": "",
-               "extra_data": 
-               {
-                   "started": true
-               },
-               "frozen_at_date": "2012-12-18T15:53:24.071076",
-               "hash": "b05bc33717cacc1557ff47bffdbfecbf10d3a1a52baba603b5b7b8e10c6db9fa",
-               "id": 4,
-               "is_approved": true,
-               "is_vote_secret": false,
-               "last_modified_at_date": "2012-12-18T15:53:05.275983",
-               "name": "election-2",
-               "parent_election": null,
-               "percentage_of_participation": 50,
-               "pretty_name": "election 2",
-               "questions": 
-               [
-                   {
-                       "a": "ballot/question",
-                       "min": 0,
-                       "max": 1,
-                       "tally_type": "simple",
-                       "question": "question of election 2",
-                       "answers": 
-                       [
-                           {
-                               "a": "ballot/answer",
-                               "url": "",
-                               "details": "",
-                               "value": "yes"
-                           },
-                           {
-                               "a": "ballot/answer",
-                               "url": "",
-                               "details": "",
-                               "value": "no"
-                           }
-                       ],
-                       "randomize_answer_order": true
-                   }
-               ],
-               "resource_uri": "/api/v1/election/4/",
-               "result": "",
-               "result_tallied_at_date": null,
-               "short_description": "this is election 2",
-               "tiny_hash": null,
-               "url": "http://localhost:8000/user1/agora1/election/election-2",
-               "uuid": "318707f0-fd82-4d1a-b70a-9ee25c77000b",
-               "voters_frozen_at_date": null,
-               "voting_ends_at_date": null,
-               "voting_extended_until_date": null,
-               "voting_starts_at_date": "2012-12-18T15:58:12.728550"
-           }
-       ]
+        "meta": 
+        {
+            "total_count": 1, 
+            "limit": 20, 
+            "offset": 0
+        }, 
+        "objects": 
+        [
+            {
+                "creator": "/api/v1/user/0/", 
+                "comments_policy": "ANYONE_CAN_COMMENT", 
+                "result_tallied_at_date": null, 
+                "user_perms": 
+                [
+                    "comment"
+                ], 
+                "result": null, 
+                "questions": 
+                [
+                    {
+                        "a": "ballot/question", 
+                        "min": 0, 
+                        "max": 1, 
+                        "tally_type": "simple", 
+                        "question": "question one", 
+                        "answers": 
+                        [
+                            {
+                                "a": "ballot/answer", 
+                                "url": "", 
+                                "details": "", 
+                                "value": "one"
+                            }, 
+                            {
+                                "a": "ballot/answer", 
+                                "url": "", 
+                                "details": "", 
+                                "value": "two"
+                            }, 
+                            {
+                                "a": "ballot/answer", 
+                                "url": "", 
+                                "details": "", 
+                                "value": "three"
+                            }
+                        ], 
+                        "randomize_answer_order": true
+                    }
+                ], 
+                "mugshot_url": "/static/img/election_new_form_info.png", 
+                "id": 3, 
+                "voting_extended_until_date": null, 
+                "is_approved": true, 
+                "last_modified_at_date": "2012-12-06T19:16:14.014000", 
+                "direct_votes_count": 0, 
+                "user_has_delegated": false, 
+                "short_description": "election one", 
+                "is_vote_secret": true, 
+                "voters_frozen_at_date": null, 
+                "hash": null, 
+                "description": "election one", 
+                "frozen_at_date": null, 
+                "eligibility": null, 
+                "parent_election": null, 
+                "pretty_name": "electionone", 
+                "archived_at_date": null, 
+                "uuid": "a36b385a-8f20-4730-a92e-0b9968adac18", 
+                "delegated_votes_count": 0, 
+                "percentage_of_participation": 0.0, 
+                "name": "electionone", 
+                "delegated_votes_frozen_at_date": null, 
+                "url": "/david/agoraone/election/electionone", 
+                "voting_ends_at_date": null, 
+                "approved_at_date": null, 
+                "tiny_hash": null, 
+                "created_at_date": "2012-12-06T19:16:14.004000", 
+                "agora": 
+                {
+                    "mugshot_url": "/static/img/agora_default_logo.png", 
+                    "name": "agoraone", 
+                    "url": "/david/agoraone", 
+                    "pretty_name": "AgoraOne", 
+                    "content_type": "agora", 
+                    "full_name": "david/agoraone", 
+                    "short_description": "AgoraOne", 
+                    "id": 1
+                }, 
+                "voting_starts_at_date": null, 
+                "election_type": "ONCE_CHOICE"
+            }
+        ]
     }
 
 List tallied elections
@@ -973,149 +1034,140 @@ List tallied elections
     Vary: Accept, Accept-Language, Cookie
     Content-Type: application/json; charset=utf-8
 
-    {
-       "meta":
-       {
-           "limit": 20,
-           "offset": 0,
-           "total_count": 1
-       },
-       "objects":
-       [
-           {
-               "agora": "/api/v1/agora/2/",
-               "approved_at_date": null,
-               "archived_at_date": null,
-               "comments_policy": "ANYONE_CAN_COMMENT",
-               "created_at_date": "2012-12-18T15:54:17.742549",
-               "creator": "/api/v1/user/2/",
-               "delegated_votes_frozen_at_date": "2012-12-18T17:15:40.772925",
-               "delegated_votes_result": 
-               {
-                   "delegation_counts": 
-                   [
-                   ],
-                   "a": "result",
-                   "election_counts":
-                   [
-                       [
-                           0,
-                           0,
-                           0
-                       ]
-                   ]
-               },
-               "description": "this is election 3",
-               "election_type": "ONE_CHOICE",
-               "electorate":
-               [
-                   "/api/v1/user/2/",
-                   "/api/v1/user/5/"
-               ],
-               "eligibility": "",
-               "extra_data": 
-               {
-                   "started": true,
-                   "ended": true
-               },
-               "frozen_at_date": "2012-12-18T15:54:22.296002",
-               "hash": "e707a91d4657e9f0c2dabeb72c6c4598b468159b409844f87160457aa9de1dc4",
-               "id": 5,
-               "is_approved": true,
-               "is_vote_secret": false,
-               "last_modified_at_date": "2012-12-18T15:54:17.758384",
-               "name": "election-3",
-               "parent_election": null,
-               "percentage_of_participation": 100,
-               "pretty_name": "election 3",
-               "questions":
-               [
-                   {
-                       "a": "ballot/question",
-                       "min": 0,
-                       "max": 1,
-                       "tally_type": "simple",
-                       "question": "question of election 3",
-                       "answers":
-                       [
-                           {
-                               "a": "ballot/answer",
-                               "by_delegation_count": 0,
-                               "url": "",
-                               "by_direct_vote_count": 0,
-                               "value": "a",
-                               "details": ""
-                           },
-                           {
-                               "a": "ballot/answer",
-                               "by_delegation_count": 0,
-                               "url": "",
-                               "by_direct_vote_count": 1,
-                               "value": "b",
-                               "details": ""
-                           },
-                           {
-                               "a": "ballot/answer",
-                               "by_delegation_count": 0,
-                               "url": "",
-                               "by_direct_vote_count": 1,
-                               "value": "c",
-                               "details": ""
-                           }
-                       ],
-                       "randomize_answer_order": true
-                   }
-               ],
-               "resource_uri": "/api/v1/election/5/",
-               "result":
-               [
-                   {
-                       "a": "ballot/question",
-                       "min": 0,
-                       "max": 1,
-                       "tally_type": "simple",
-                       "question": "question of election 3",
-                       "answers":
-                       [
-                           {
-                               "a": "ballot/answer",
-                               "by_delegation_count": 0,
-                               "url": "",
-                               "by_direct_vote_count": 0,
-                               "value": "a",
-                               "details": ""
-                           },
-                           {
-                               "a": "ballot/answer",
-                               "by_delegation_count": 0,
-                               "url": "",
-                               "by_direct_vote_count": 1,
-                               "value": "b",
-                               "details": ""
-                           },
-                           {
-                               "a": "ballot/answer",
-                               "by_delegation_count": 0,
-                               "url": "",
-                               "by_direct_vote_count": 1,
-                               "value": "c",
-                               "details": ""
-                           }
-                       ],
-                       "randomize_answer_order": true
-                   }
-               ],
-               "result_tallied_at_date": "2012-12-18T17:15:40.772925",
-               "short_description": "this is election 3",
-               "tiny_hash": null,
-               "url": "http://localhost:8000/user1/agora2/election/election-3",
-               "uuid": "9dffc9c2-a2a2-4837-a8c5-3e20cb06f965",
-               "voters_frozen_at_date": "2012-12-18T17:15:40.772925",
-               "voting_ends_at_date": "2012-12-18T17:15:40.188654",
-               "voting_extended_until_date": "2012-12-18T17:15:40.434542",
-               "voting_starts_at_date": "2012-12-18T15:54:28.043188"
-           }
-       ]
+     {
+        "meta": 
+        {
+            "total_count": 1, 
+            "limit": 20, 
+            "offset": 0
+        }, 
+        "objects": 
+        [
+            {
+                "creator": "/api/v1/user/0/", 
+                "comments_policy": "ANYONE_CAN_COMMENT", 
+                "result_tallied_at_date": "2013-05-17T16:03:34.082719", 
+                "user_perms": 
+                [
+                    "archive_election", 
+                    "comment", 
+                    "vote_counts"
+                ], 
+                "result": 
+                {
+                    "a": "result", 
+                    "counts": 
+                    [
+                        {
+                            "a": "question/result/ONE_CHOICE", 
+                            "min": 0, 
+                            "max": 1, 
+                            "tally_type": "ONE_CHOICE", 
+                            "question": "Do you prefer foo or bar?", 
+                            "answers": 
+                            [
+                                {
+                                    "a": "answer/result/ONE_CHOICE", 
+                                    "by_delegation_count": 0, 
+                                    "url": "", 
+                                    "total_count": 0, 
+                                    "by_direct_vote_count": 0, 
+                                    "value": "fo\\"o", 
+                                    "details": "", 
+                                    "total_count_percentage": 0.0
+                                }, 
+                                {
+                                    "a": "answer/result/ONE_CHOICE", 
+                                    "by_delegation_count": 0, 
+                                    "url": "", 
+                                    "total_count": 1, 
+                                    "by_direct_vote_count": 1, 
+                                    "value": "bar", 
+                                    "details": "", 
+                                    "total_count_percentage": 100.0
+                                }
+                            ], 
+                            "winners": 
+                            [
+                                "bar"
+                            ], 
+                            "dirty_votes": 0, 
+                            "randomize_answer_order": true, 
+                            "total_votes": 1
+                        }
+                    ], 
+                    "total_votes": 1, 
+                    "electorate_count": 1, 
+                    "total_delegated_votes": 0
+                }, 
+                "questions": 
+                [
+                    {
+                        "a": "ballot/question", 
+                        "min": 0, 
+                        "max": 1, 
+                        "tally_type": "ONE_CHOICE", 
+                        "question": "Do you prefer foo or bar?", 
+                        "answers": 
+                        [
+                            {
+                                "a": "ballot/answer", 
+                                "url": "", 
+                                "details": "", 
+                                "value": "fo\\"o"
+                            }, 
+                            {
+                                "a": "ballot/answer", 
+                                "url": "", 
+                                "details": "", 
+                                "value": "bar"
+                            }
+                        ], 
+                        "randomize_answer_order": true
+                    }
+                ], 
+                "mugshot_url": "/static/img/election_new_form_info.png", 
+                "id": 6, 
+                "voting_extended_until_date": "2013-05-17T16:03:34.059170", 
+                "is_approved": true, 
+                "last_modified_at_date": "2013-05-17T16:03:34.053587", 
+                "direct_votes_count": 1, 
+                "user_has_delegated": false, 
+                "short_description": "foo bar foo bar", 
+                "is_vote_secret": true, 
+                "voters_frozen_at_date": "2013-05-17T16:03:34.082719", 
+                "hash": "c709bbfd3c618468396e5c2694ba3646898560e4db971f1108ba207f041c0d20", 
+                "description": "foo bar foo bar", 
+                "frozen_at_date": "2013-05-17T16:03:33.475545", 
+                "eligibility": null, 
+                "parent_election": null, 
+                "pretty_name": "foo bar", 
+                "archived_at_date": null, 
+                "uuid": "9cb86cbf-2916-437b-89da-70a7ffebb010", 
+                "delegated_votes_count": 0, 
+                "percentage_of_participation": 100.0, 
+                "name": "foo-bar", 
+                "delegated_votes_frozen_at_date": "2013-05-17T16:03:34.082719", 
+                "url": "/david/agoraone/election/foo-bar", 
+                "voting_ends_at_date": "2013-05-17T16:03:34.053628", 
+                "approved_at_date": "2013-05-17T16:03:33.378015", 
+                "tiny_hash": null, 
+                "created_at_date": "2013-05-17T16:03:33.298794", 
+                "agora": 
+                {
+                    "mugshot_url": "/static/img/agora_default_logo.png", 
+                    "name": "agoraone", 
+                    "url": "/david/agoraone", 
+                    "pretty_name": "AgoraOne", 
+                    "content_type": "agora", 
+                    "full_name": "david/agoraone", 
+                    "short_description": "AgoraOne", 
+                    "id": 1
+                }, 
+                "voting_starts_at_date": "2013-05-17T16:03:33.480100", 
+                "election_type": "ONE_CHOICE"
+            }
+        ]
     }
 
 List open elections
@@ -1148,88 +1200,96 @@ List open elections
     Content-Type: application/json; charset=utf-8
 
     {
-        "meta":
+        "meta": 
         {
-            "limit": 20,
-            "offset": 0,
-            "total_count": 1
-        },
-        "objects":
+            "total_count": 1, 
+            "limit": 20, 
+            "offset": 0
+        }, 
+        "objects": 
         [
             {
-                "agora": "/api/v1/agora/2/",
-                "approved_at_date": null,
-                "archived_at_date": null,
-                "comments_policy": "ANYONE_CAN_COMMENT",
-                "created_at_date": "2012-12-18T15:50:48.576146",
-                "creator": "/api/v1/user/2/",
-                "delegated_votes_frozen_at_date": null,
-                "delegated_votes_result": "",
-                "description": "this is election 1",
-                "election_type": "ONE_CHOICE",
-                "electorate":
+                "creator": "/api/v1/user/0/", 
+                "comments_policy": "ANYONE_CAN_COMMENT", 
+                "result_tallied_at_date": null, 
+                "user_perms": 
                 [
-                ],
-                "eligibility": "",
-                "extra_data": 
-                {
-                    "started": true
-                },
-                "frozen_at_date": "2012-12-18T15:51:05.405218",
-                "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
-                "id": 3,
-                "is_approved": true,
-                "is_vote_secret": true,
-                "last_modified_at_date": "2012-12-18T15:50:48.588385",
-                "name": "election-1",
-                "parent_election": null,
-                "percentage_of_participation": 50,
-                "pretty_name": "election 1",
+                    "end_election", 
+                    "archive_election", 
+                    "comment", 
+                    "emit_direct_vote", 
+                    "emit_delegate_vote", 
+                    "vote_counts"
+                ], 
+                "result": null, 
                 "questions": 
                 [
                     {
-                        "a": "ballot/question",
-                        "tally_type": "simple",
-                        "max": 1,
-                        "min": 0,
-                        "question": "question of election 1",
+                        "a": "ballot/question", 
+                        "min": 0, 
+                        "max": 1, 
+                        "tally_type": "ONE_CHOICE", 
+                        "question": "Do you prefer foo or bar?", 
                         "answers": 
                         [
                             {
-                                "a": "ballot/answer",
-                                "url": "",
-                                "details": "",
-                                "value": "one"
-                            },
+                                "a": "ballot/answer", 
+                                "url": "", 
+                                "details": "", 
+                                "value": "fo\\"o"
+                            }, 
                             {
-                                "a": "ballot/answer",
-                                "url": "",
-                                "details": "",
-                                "value": "two"
-                            },
-                            {
-                                "a": "ballot/answer",
-                                "url": "",
-                                "details": "",
-                                "value": "three"
+                                "a": "ballot/answer", 
+                                "url": "", 
+                                "details": "", 
+                                "value": "bar"
                             }
-                        ],
+                        ], 
                         "randomize_answer_order": true
                     }
-                ],
-               "resource_uri": "/api/v1/election/3/",
-               "result": "",
-               "result_tallied_at_date": null,
-               "short_description": "this is election 1",
-               "tiny_hash": null,
-               "url": "http://localhost:8000/user1/agora2/election/election-1",
-               "uuid": "c2ad36c2-b67e-499c-8100-59becd538549",
-               "voters_frozen_at_date": null,
-               "voting_ends_at_date": "2012-12-20T00:00:00",
-               "voting_extended_until_date": "2012-12-20T00:00:00",
-               "voting_starts_at_date": "2012-12-18T16:51:00.018431"
-           }
-       ]
+                ], 
+                "mugshot_url": "/static/img/election_new_form_info.png", 
+                "id": 6, 
+                "voting_extended_until_date": null, 
+                "is_approved": true, 
+                "last_modified_at_date": "2013-05-17T16:08:34.046707", 
+                "direct_votes_count": 0, 
+                "user_has_delegated": false, 
+                "short_description": "foo bar foo bar", 
+                "is_vote_secret": true, 
+                "voters_frozen_at_date": null, 
+                "hash": "7a5d754655de9c4bf7e787398e3fe14694826ffe0b7a02548be7a7d385ceea32", 
+                "description": "foo bar foo bar", 
+                "frozen_at_date": "2013-05-17T16:08:34.046707", 
+                "eligibility": null, 
+                "parent_election": null, 
+                "pretty_name": "foo bar", 
+                "archived_at_date": null, 
+                "uuid": "93a058aa-5f60-48a9-bddb-df0b56e4f88a", 
+                "delegated_votes_count": 0, 
+                "percentage_of_participation": 0.0, 
+                "name": "foo-bar", 
+                "delegated_votes_frozen_at_date": null, 
+                "url": "/david/agoraone/election/foo-bar", 
+                "voting_ends_at_date": null, 
+                "approved_at_date": "2013-05-17T16:08:32.990663", 
+                "tiny_hash": null, 
+                "created_at_date": "2013-05-17T16:08:32.914089", 
+                "agora": 
+                {
+                    "mugshot_url": "/static/img/agora_default_logo.png", 
+                    "name": "agoraone", 
+                    "url": "/david/agoraone", 
+                    "pretty_name": "AgoraOne", 
+                    "content_type": "agora", 
+                    "full_name": "david/agoraone", 
+                    "short_description": "AgoraOne", 
+                    "id": 1
+                }, 
+                "voting_starts_at_date": "2013-05-17T16:08:34.051455", 
+                "election_type": "ONE_CHOICE"
+            }
+        ]
     }
 
 
@@ -1264,88 +1324,94 @@ List requested elections
     Content-Type: application/json; charset=utf-8
 
     {
-       "meta":
-       {
-           "limit": 20,
-           "offset": 0,
-           "total_count": 1
-       },
-       "objects":
-       [
-           {
-               "agora": "/api/v1/agora/2/",
-               "approved_at_date": null,
-               "archived_at_date": null,
-               "comments_policy": "ANYONE_CAN_COMMENT",
-               "created_at_date": "2012-12-18T15:50:48.576146",
-               "creator": "/api/v1/user/2/",
-               "delegated_votes_frozen_at_date": null,
-               "delegated_votes_result": "",
-               "description": "this is election 1",
-               "election_type": "ONE_CHOICE",
-               "electorate":
-               [
-               ],
-               "eligibility": "",
-               "extra_data":
-               {
-                   "started": true
-               },
-               "frozen_at_date": "2012-12-18T15:51:05.405218",
-               "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
-               "id": 3,
-               "is_approved": true,
-               "is_vote_secret": true,
-               "last_modified_at_date": "2012-12-18T15:50:48.588385",
-               "name": "election-1",
-               "parent_election": null,
-               "percentage_of_participation": 50,
-               "pretty_name": "election 1",
-               "questions": 
-               [
-                   {
-                       "a": "ballot/question",
-                       "tally_type": "simple",
-                       "max": 1,
-                       "min": 0,
-                       "question": "question of election 1",
-                       "answers":
-                       [
-                           {
-                               "a": "ballot/answer",
-                               "url": "",
-                               "details": "",
-                               "value": "one"
-                           },
-                           {
-                               "a": "ballot/answer",
-                               "url": "",
-                               "details": "",
-                               "value": "two"
-                           },
-                           {
-                               "a": "ballot/answer",
-                               "url": "",
-                               "details": "",
-                               "value": "three"
-                           }
-                       ],
-                       "randomize_answer_order": true
-                   }
-               ],
-               "resource_uri": "/api/v1/election/3/",
-               "result": "",
-               "result_tallied_at_date": null,
-               "short_description": "this is election 1",
-               "tiny_hash": null,
-               "url": "http://localhost:8000/user1/agora2/election/election-1",
-               "uuid": "c2ad36c2-b67e-499c-8100-59becd538549",
-               "voters_frozen_at_date": null,
-               "voting_ends_at_date": "2012-12-20T00:00:00",
-               "voting_extended_until_date": "2012-12-20T00:00:00",
-               "voting_starts_at_date": "2012-12-18T16:51:00.018431"
-           }
-       ]
+        "meta": 
+        {
+            "total_count": 1, 
+            "limit": 20, 
+            "offset": 0
+        }, 
+        "objects": 
+        [
+            {
+                "creator": "/api/v1/user/1/", 
+                "comments_policy": "ANYONE_CAN_COMMENT", 
+                "result_tallied_at_date": null, 
+                "user_perms": 
+                [
+                    "edit_details", 
+                    "freeze_election", 
+                    "archive_election", 
+                    "comment"
+                ], 
+                "result": null, 
+                "questions": 
+                [
+                    {
+                        "a": "ballot/question", 
+                        "min": 0, 
+                        "max": 1, 
+                        "tally_type": "ONE_CHOICE", 
+                        "question": "Do you prefer foo or bar?", 
+                        "answers": 
+                        [
+                            {
+                                "a": "ballot/answer", 
+                                "url": "", 
+                                "details": "", 
+                                "value": "foo"
+                            }, 
+                            {
+                                "a": "ballot/answer", 
+                                "url": "", 
+                                "details": "", 
+                                "value": "bar"
+                            }
+                        ], 
+                        "randomize_answer_order": true
+                    }
+                ], 
+                "mugshot_url": "/static/img/election_new_form_info.png", 
+                "id": 6, 
+                "voting_extended_until_date": null, 
+                "is_approved": false, 
+                "last_modified_at_date": "2013-05-17T16:13:43.281816", 
+                "direct_votes_count": 0, 
+                "user_has_delegated": false, 
+                "short_description": "foo bar foo bar", 
+                "is_vote_secret": true, 
+                "voters_frozen_at_date": null, 
+                "hash": null, 
+                "description": "foo bar foo bar", 
+                "frozen_at_date": null, 
+                "eligibility": null, 
+                "parent_election": null, 
+                "pretty_name": "foo bar", 
+                "archived_at_date": null, 
+                "uuid": "7f820e29-831d-4ff8-a40f-a09cb98396ee", 
+                "delegated_votes_count": 0, 
+                "percentage_of_participation": 0.0, 
+                "name": "foo-bar", 
+                "delegated_votes_frozen_at_date": null, 
+                "url": "/david/agoraone/election/foo-bar", 
+                "voting_ends_at_date": null, 
+                "approved_at_date": null, 
+                "tiny_hash": null, 
+                "created_at_date": "2013-05-17T16:13:43.201443", 
+                "agora": 
+                {
+                    "mugshot_url": "/static/img/agora_default_logo.png", 
+                    "name": "agoraone", 
+                    "url": "/david/agoraone", 
+                    "pretty_name": "AgoraOne", 
+                    "content_type": "agora", 
+                    "full_name": "david/agoraone", 
+                    "short_description": "AgoraOne", 
+                    "id": 1
+                }, 
+                "voting_starts_at_date": null, 
+                "election_type": "ONE_CHOICE"
+            }
+        ]
     }
 
 List archived elections
@@ -1378,88 +1444,134 @@ List archived elections
     Content-Type: application/json; charset=utf-8
 
     {
-       "meta":
-       {
-           "limit": 20,
-           "offset": 0,
-           "total_count": 1
-       },
-       "objects":
-       [
-           {
-               "agora": "/api/v1/agora/2/",
-               "approved_at_date": null,
-               "archived_at_date": null,
-               "comments_policy": "ANYONE_CAN_COMMENT",
-               "created_at_date": "2012-12-18T15:50:48.576146",
-               "creator": "/api/v1/user/2/",
-               "delegated_votes_frozen_at_date": null,
-               "delegated_votes_result": "",
-               "description": "this is election 1",
-               "election_type": "ONE_CHOICE",
-               "electorate":
-               [
-               ],
-               "eligibility": "",
-               "extra_data":
-               {
-                   "started": true
-               },
-               "frozen_at_date": "2012-12-18T15:51:05.405218",
-               "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
-               "id": 3,
-               "is_approved": true,
-               "is_vote_secret": true,
-               "last_modified_at_date": "2012-12-18T15:50:48.588385",
-               "name": "election-1",
-               "parent_election": null,
-               "percentage_of_participation": 50,
-               "pretty_name": "election 1",
-               "questions": 
-               [
-                   {
-                       "a": "ballot/question",
-                       "tally_type": "simple",
-                       "max": 1,
-                       "min": 0,
-                       "question": "question of election 1",
-                       "answers":
-                       [
-                           {
-                               "a": "ballot/answer",
-                               "url": "",
-                               "details": "",
-                               "value": "one"
-                           },
-                           {
-                               "a": "ballot/answer",
-                               "url": "",
-                               "details": "",
-                               "value": "two"
-                           },
-                           {
-                               "a": "ballot/answer",
-                               "url": "",
-                               "details": "",
-                               "value": "three"
-                           }
-                       ],
-                       "randomize_answer_order": true
-                   }
-               ],
-               "resource_uri": "/api/v1/election/3/",
-               "result": "",
-               "result_tallied_at_date": null,
-               "short_description": "this is election 1",
-               "tiny_hash": null,
-               "url": "http://localhost:8000/user1/agora2/election/election-1",
-               "uuid": "c2ad36c2-b67e-499c-8100-59becd538549",
-               "voters_frozen_at_date": null,
-               "voting_ends_at_date": "2012-12-20T00:00:00",
-               "voting_extended_until_date": "2012-12-20T00:00:00",
-               "voting_starts_at_date": "2012-12-18T16:51:00.018431"
-           }
-       ]
+        "meta": 
+        {
+            "total_count": 1, 
+            "limit": 20, 
+            "offset": 0
+        }, 
+        "objects": 
+        [
+            {
+                "creator": "/api/v1/user/0/", 
+                "comments_policy": "ANYONE_CAN_COMMENT", 
+                "result_tallied_at_date": "2013-05-17T16:28:31.501997", 
+                "user_perms": [], 
+                "result": 
+                {
+                    "a": "result", 
+                    "counts": 
+                    [
+                        {
+                            "a": "question/result/ONE_CHOICE", 
+                            "min": 0, 
+                            "max": 1, 
+                            "tally_type": "ONE_CHOICE", 
+                            "question": "Do you prefer foo or bar?", 
+                            "answers": 
+                            [
+                                {
+                                    "a": "answer/result/ONE_CHOICE", 
+                                    "by_delegation_count": 0, 
+                                    "url": "", 
+                                    "total_count": 0, 
+                                    "by_direct_vote_count": 0, 
+                                    "value": "fo\\"o", 
+                                    "details": "", 
+                                    "total_count_percentage": 0.0
+                                }, 
+                                {
+                                    "a": "answer/result/ONE_CHOICE", 
+                                    "by_delegation_count": 0, 
+                                    "url": "", 
+                                    "total_count": 1, 
+                                    "by_direct_vote_count": 1, 
+                                    "value": "bar", 
+                                    "details": "", 
+                                    "total_count_percentage": 100.0
+                                }
+                            ], 
+                            "winners": 
+                            [
+                                "bar"
+                            ], 
+                            "dirty_votes": 0, 
+                            "randomize_answer_order": true, 
+                            "total_votes": 1
+                        }
+                    ], 
+                    "total_votes": 1, 
+                    "electorate_count": 1, 
+                    "total_delegated_votes": 0
+                }, 
+                "questions": 
+                [
+                    {
+                        "a": "ballot/question", 
+                        "min": 0, 
+                        "max": 1, 
+                        "tally_type": "ONE_CHOICE", 
+                        "question": "Do you prefer foo or bar?", 
+                        "answers": 
+                        [
+                            {
+                                "a": "ballot/answer", 
+                                "url": "", 
+                                "details": "", 
+                                "value": "fo\\"o"
+                            }, 
+                            {
+                                "a": "ballot/answer", 
+                                "url": "", 
+                                "details": "", 
+                                "value": "bar"
+                            }
+                        ], 
+                        "randomize_answer_order": true
+                    }
+                ], 
+                "mugshot_url": "/static/img/election_new_form_info.png", 
+                "id": 6, 
+                "voting_extended_until_date": "2013-05-17T16:28:31.478280", 
+                "is_approved": true, 
+                "last_modified_at_date": "2013-05-17T16:28:31.593120", 
+                "direct_votes_count": 1, 
+                "user_has_delegated": false, 
+                "short_description": "foo bar foo bar", 
+                "is_vote_secret": true, 
+                "voters_frozen_at_date": "2013-05-17T16:28:31.501997", 
+                "hash": "50be7dce7f12d3f81177695a15f1f4a5a1fe36ac4b7dbc66974ea5805291ef49", 
+                "description": "foo bar foo bar", 
+                "frozen_at_date": "2013-05-17T16:28:30.873941", 
+                "eligibility": null, 
+                "parent_election": null, 
+                "pretty_name": "foo bar", 
+                "archived_at_date": "2013-05-17T16:28:31.593120", 
+                "uuid": "c82c3fd6-93ba-45e1-8c76-9f4f613170b4", 
+                "delegated_votes_count": 0, 
+                "percentage_of_participation": 100.0, 
+                "name": "foo-bar", 
+                "delegated_votes_frozen_at_date": "2013-05-17T16:28:31.501997", 
+                "url": "/david/agoraone/election/foo-bar", 
+                "voting_ends_at_date": "2013-05-17T16:28:31.472584", 
+                "approved_at_date": "2013-05-17T16:28:30.768339", 
+                "tiny_hash": null, 
+                "created_at_date": "2013-05-17T16:28:30.686342", 
+                "agora": 
+                {
+                    "mugshot_url": "/static/img/agora_default_logo.png", 
+                    "name": "agoraone", 
+                    "url": "/david/agoraone", 
+                    "pretty_name": "AgoraOne", 
+                    "content_type": "agora", 
+                    "full_name": "david/agoraone", 
+                    "short_description": "AgoraOne", 
+                    "id": 1
+                }, 
+                "voting_starts_at_date": "2013-05-17T16:28:30.878968", 
+                "election_type": "ONE_CHOICE"
+            }
+        ]
     }
 
 List approved elections
