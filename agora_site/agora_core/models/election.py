@@ -845,7 +845,7 @@ class Election(models.Model):
                     delegate = current_edge.get_delegate()
                     path_for_user = get_path_for_user(delegate.id)
 
-                    if delegate in path['user_ids']:
+                    if delegate.id in path['user_ids']:
                         # wrong path! loop found, vote won't be counted
                         path['is_broken_loop'] = True
                         paths += [path]
