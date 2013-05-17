@@ -173,6 +173,10 @@ class UserResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view("agoras"), name="api_specific_user_agoras"),
 
+            url(r"^(?P<resource_name>%s)/(?P<userid>\d+)/participated_elections%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view("get_participated_elections"), name="api_votes_participated_elections"),
+
             url(r"^(?P<resource_name>%s)/open_elections%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view("open_elections"), name="api_user_open_elections"),
@@ -274,4 +278,15 @@ class UserResource(GenericResource):
 
         queryset = request.user.get_profile().get_open_elections(search)
         return UserElectionResource().get_custom_list(request=request,
+            queryset=queryset)
+
+    def get_participated_elections(self, request, userid, **kwargs):
+        '''
+        Lists the elections in which the user participated either direct
+        or indirectly
+        '''
+        from .election import ElectionResource
+        user = get_object_or_404(User, pk=userid)
+        queryset = user.get_profile().get_participated_elections()
+        return ElectionResource().get_custom_list(request=request,
             queryset=queryset)

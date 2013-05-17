@@ -9,26 +9,19 @@
 {% block content %}
     <div class="row">
         <div class="span8 agora-left-side">
-            {% include "agora_core/election_list_page.html" %}
-        </div>
-        <div class="span4 agora-right-side">
-            <ul class="nav nav-pills nav-stacked">
-                <li{% ifequal filter 'open' %} class="active"{% endifequal %}>
-                    <a href="{% url user-elections user_shown.username 'open' %}">
-                        {% trans "Open" %} ({{ user_shown.get_profile.get_open_elections.count }})
-                    </a>
-                </li>
-                <li{% ifequal filter 'participated' %} class="active"{% endifequal %}>
-                    <a href="{% url user-elections user_shown.username 'participated' %}">
-                        {% trans "Participated" %} ({{ user_shown.get_profile.get_participated_elections.count }})
-                    </a>
-                </li>
-                <li{% ifequal filter 'requested' %} class="active"{% endifequal %}>
-                    <a href="{% url user-elections user_shown.username 'requested' %}">
-                        {% trans "Requested" %} ({{ user_shown.get_profile.get_requested_elections.count }})
-                    </a>
-                </li>
-            </ul>
+            <div class="activity-list" id="activity-list"
+                data-url="/api/v1/user/{{ user_shown.id }}/participated_elections/" data-method="get" data-margin="300">
+
+                <div class="endless-container">
+                    <a class="endless_more" href="#">{% trans "more" %}</a>
+                    <div class="endless_loading hidden">{% trans "Loading..." %}</div>
+                </div>
+            </div>
         </div>
     </div>
+{% endblock %}
+
+{% block script-block %}
+    {% include "search/include-js-template-search-election.html" %}
+    <script>app.currentView = new Agora.ElectionListView();</script>
 {% endblock %}

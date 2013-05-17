@@ -29,7 +29,7 @@
         </li>
         <li {% ifactivetab "user-nav" "elections" %}class="active"{% endifactivetab %}>
             <a href="{% url user-elections user_shown.username 'participated' %}">{% trans "Elections" %}
-            <span class="badge badge-info">{{ user_shown.get_profile.count_direct_votes }}</span></a>
+            <span class="badge badge-info">{{ user_shown.get_profile.get_participated_elections.count }}</span></a>
         </li>
         {% if user == user_shown %}
         <li {% ifactivetab "user-nav" "settings" %}class="active"{% endifactivetab %}>
@@ -59,69 +59,27 @@
 
         <div class="span4 agora-right-side">
 
-	       <div class="row-fluid right-widget right-widget-grey agora-list" id="agora-list" data-url="/api/v1/user/{{user_shown.id}}/agoras/">
-		    <div class="right-widget-header">
-		        <h4>{% trans "Agoras" %} <span>({{ user_shown.agoras.count }})</span></h4>
-		        {% if can_create_agoras %}
-		        <div class="btn-group">
-		            <a class="btn btn-primary" data-toggle="dropdown" href="{% url agora-new %}">
-		                {% trans "Create agora" %}
-		            </a>
-		        </div>
-		        {% endif %}
-		    </div>
-		    <div class="row-fluid hover-items last-elections last-agoras">
-		        <ul class="list-container">
-		            <li id="no-agoras" class="hidden">{% trans "No agoras found" %}</li>
-		        </ul>
-		    </div>
-		</div>
-
-            <div class="row-fluid right-widget right-widget-grey agora-list">
-                <div class="right-widget-header">
-                    <h4>{% trans "Last elections" %} <span>({{ user_shown.get_profile.get_participated_elections.count }})</span></h4>
-                    <div class="btn-group">
-                        <a class="btn btn-primary" data-toggle="dropdown" href="{% url user-elections user_shown.username 'open' %}">
-                            {% trans "Explore" %}
-                        </a>
+            <div class="row-fluid right-widget right-widget-grey agora-list" id="agora-list" data-url="/api/v1/user/{{user_shown.id}}/agoras/">
+                    <div class="right-widget-header">
+                        <h4>{% trans "Agoras" %} <span>({{ user_shown.agoras.count }})</span></h4>
+                        {% if can_create_agoras %}
+                        <div class="btn-group">
+                            <a class="btn btn-primary" data-toggle="dropdown" href="{% url agora-new %}">
+                                {% trans "Create agora" %}
+                            </a>
+                        </div>
+                        {% endif %}
                     </div>
-                </div>
-                <div class="row-fluid hover-items">
-                <ul>
-                    {% for election in user_shown.get_profile.get_participated_elections|slice:':3' %}
-                    <li>
-                        <a href="{{ election.get_link }}" class="election">
-                            <strong>{{ election.pretty_name|truncatechars:40 }}</strong>
-                            <time datetime="{{ election.result_tallied_at_date.isoformat }}" data-livestamp="{{ election.result_tallied_at_date.isoformat }}">
-                                {{ election.result_tallied_at_date|pretty_date }}
-                            </time>
-                            <span>{{ election.get_winning_option|getitem:'value' }}</span>
-                            <small>{% blocktrans with votes=election.get_winning_option|getitem:'total_count' %}({{ votes }} votes){% endblocktrans %}</small>
-
-                            <div class="progress progress-success progress-small">
-                                <div class="bar" style="width: {{ election.get_winning_option|getitem:'total_count_percentage'|floatformat }}%;">
-                                    {{ election.get_winning_option|getitem:'total_count_percentage'|floatformat }}%
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    {% empty %}
-                    <li class="empty">
-                        {% trans "No tallied elections found for this user" %}
-                    </li>
-                    {% endfor %}
-
-                    {% if agora.get_tallied_elections.count > 3 %}
-                    <li>
-                        <a class="election remaining" href="{% url user-elections user_shown.username 'participated' %}">
-                            {% trans "... and more" %}
-                        </a>
-                    </li>
-                    {% endif %}
-                </ul>
+                    <div class="row-fluid hover-items last-elections last-agoras">
+                        <ul class="list-container">
+                            <li id="no-agoras" class="hidden">{% trans "No agoras found" %}</li>
+                        </ul>
+                    </div>
             </div>
+
+            <div class="row-fluid right-widget right-widget-grey" id="tallied_user_elections_view">
+                <!-- here will go the tallied elections view when rendered -->
             </div>
-            <!-- here goes: Your agoras and following right-boxes -->
         </div>
     </div>
 
@@ -131,5 +89,12 @@
 
     {% include "agora_core/include-js-template-agora.html" %}
     {% include "agora_core/client/all_actions.html" %}
-    <script>app.currentView = new Agora.UserView();</script>
+    {% include "agora_core/client/tallied_user_elections_view.html" %}
+    <script>
+        var ajax_data = {
+            'tallied_elections': {% rest request '/user/' user_shown.id '/participated_elections/?limit=3' %},
+            'user': {% rest request '/user/' user_shown.id '/' %}
+        };
+        app.currentView = new Agora.UserView();
+    </script>
 {% endblock %}

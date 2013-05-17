@@ -149,7 +149,7 @@ class Profile(UserenaLanguageBaseProfile):
         return Election.objects.filter(agora__isnull=False,
             result_tallied_at_date__isnull=False).filter(
                 Q(delegated_votes__in=user_delegated_votes) |
-                Q(cast_votes__in=user_direct_votes)).order_by('-result_tallied_at_date','-voting_extended_until_date')
+                Q(cast_votes__in=user_direct_votes)).distinct().order_by('-result_tallied_at_date','-voting_extended_until_date')
 
     def has_delegated_in_agora(self, agora):
         '''

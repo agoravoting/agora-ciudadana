@@ -1,0 +1,50 @@
+<script id="template-tallied_user_elections_view" type="text/underscore-template">
+    <div class="right-widget-header">
+        <h4><%= gettext("Recent elections") %> <span>(<%= meta.total_count %>)</span></h4>
+    </div>
+    <div class="row-fluid hover-items">
+        <ul>
+            <% for (var i = 0; i < objects.length; i++) { %>
+            <li>
+                <a href="<%= objects[i].url %>" class="election">
+                    <strong class="ellipsis"><%= objects[i].pretty_name %></strong>
+                    <time datetime="<%= objects[i].result_tallied_at_date %>" data-livestamp="<%= objects[i].result_tallied_at_date %>">
+                        <%= objects[i].result_tallied_at_date %>
+                    </time>
+                    <% if (objects[i].result.is_simple) { %>
+                        <span class="ellipsis"><%= objects[i].result.winner_data.value %></span>
+                        <small><%= interpolate(gettext("(%s votes)"), [objects[i].result.winner_data.total_count]) %></small>
+
+                        <div class="progress progress-success progress-small">
+                            <div class="bar" style="width: <%= objects[i].result.winner_data.total_count_percentage %>%;">
+                                <%= objects[i].result.winner_data.total_count_percentage %>%
+                            </div>
+                        </div>
+                    <% } else { %>
+                        <small>
+                        <%= interpolate(gettext(
+                            "%s questions, %s votes, %s% participation"),
+                            [objects[i].result.counts.length,
+                             objects[i].result.total_votes,
+                             objects[i].result.participation_percentage]) %></small>
+                    <% } %>
+                    <div class="clearfix"></div>
+                </a>
+            </li>
+            <% } %>
+            <% if (meta.total_count == 0) { %>
+            <li class="empty">
+                <%= gettext("Didn't participate in any tallied election yet") %>
+            </li>
+            <% } %>
+
+            <% if (meta.total_count > 3)  { %>
+            <li>
+                <a class="election remaining" href="<%= user.url %>/elections/participated">
+                    <%= gettext("... and more") %>
+                </a>
+            </li>
+            <% } %>
+        </ul>
+    </div>
+</script>
