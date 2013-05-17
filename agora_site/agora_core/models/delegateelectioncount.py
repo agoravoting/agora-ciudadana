@@ -40,7 +40,7 @@ class DelegateElectionCount(models.Model):
         auto_now_add=True, editable=True, default=timezone.now())
 
     delegate_vote = models.ForeignKey(CastVote, related_name='delegate_election_count',
-        verbose_name=_('Delegate vote'), null=True, blank=True, unique=True)
+        verbose_name=_('Delegate vote'), null=True, blank=True)
 
     class Meta:
         app_label = 'agora_core'
