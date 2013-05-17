@@ -21,7 +21,6 @@ class SearchTest(RootTestCase):
         data = self.getAndParse('search/')
         self.assertEquals(data['meta']['total_count'], 15)
 
-        import ipdb, json; ipdb.set_trace()
         data = self.getAndParse('search/?q=agoraone')
         self.assertEquals(data['meta']['total_count'], 3)
 
