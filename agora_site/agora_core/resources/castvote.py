@@ -28,6 +28,7 @@ class CastVoteResource(GenericResource):
 
     def dehydrate_delegate_election_count(self, bundle):
         if not bundle.obj.delegate_election_count.all():
+            # TODO return the previous most recent election delegate_election_count
             return None
         else:
             dec = bundle.obj.delegate_election_count.all()[0]

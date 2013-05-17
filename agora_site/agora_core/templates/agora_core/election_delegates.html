@@ -31,7 +31,6 @@
     <script>
         var ajax_data = {
             election: {% rest request '/election/' election.id '/' %},
-            delegates_election_count: {% rest request '/delegateelectioncount/?limit=1000&election=' election.id %},
         };
         app.currentView = new Agora.ElectionDelegatesView();
     </script>
