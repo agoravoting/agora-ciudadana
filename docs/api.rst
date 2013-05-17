@@ -3762,3 +3762,105 @@ Retrieve a vote
             "username":"david"
         }
     }
+
+
+Resource: DelegateElectionCount
+===============================
+
+This resource stores how many delegated votes an election delegate got in a given election. These resources are created when an election is tallied.
+
+List
+----
+
+.. http:get:: /delegateelectioncount/
+
+   List resource items
+
+   :query offset: offset number. default is 0
+   :query limit: limit number. default is 20
+   :query delegate: filter by `delegate` id. It allows all django filter types.
+   :query election: filter by `election` id. It allows all django filter types.
+   :statuscode 200 OK: no error
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/delegateelectioncount/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "meta":{
+            "limit":20,
+            "next":null,
+            "offset":0,
+            "previous":null,
+            "total_count":1
+        },
+        "objects":[
+            {
+                "count":1,
+                "delegate":{
+                    "content_type":"user",
+                    "first_name":"Ḿonica García",
+                    "full_name":"Ḿonica García",
+                    "id":0,
+                    "mugshot_url":"/media/mugshots/b44e86eb9e.jpg",
+                    "url":"/user/user1",
+                    "username":"user1"
+                },
+                "election":"/api/v1/election/8/"
+            }
+        ]
+    }
+
+Retrieve
+--------
+
+.. http:get:: /delegateelectioncount/(int:item_id)
+
+   Retrieves an item in the resource (`item_id`).
+
+   :param item_id: delegate election count resource id.
+   :type item_id: int
+   :status 200 OK: no error
+   :status 404 NOT FOUND: when the resource is not found
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    GET /api/v1/delegateelectioncount/1/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "count":1,
+        "delegate":{
+            "content_type":"user",
+            "first_name":"Ḿonica García",
+            "full_name":"Ḿonica García",
+            "id":0,
+            "mugshot_url":"/media/mugshots/b44e86eb9e.jpg",
+            "url":"/user/user1",
+            "username":"user1"
+        },
+        "election":"/api/v1/election/8/"
+    }

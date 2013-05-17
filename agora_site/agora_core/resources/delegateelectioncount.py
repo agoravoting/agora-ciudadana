@@ -11,10 +11,11 @@ class DelegateElectionCountResource(GenericResource):
                                  'election')
     class Meta(GenericMeta):
         queryset = DelegateElectionCount.objects.all()
-        fields = ['count']
+        fields = ['count', 'created_at_date']
         list_allowed_methods = ['get']
         detail_allowed_methods = ['get']
         filtering = {
             'voter': ALL,
-            'election': ALL
+            'election': ALL,
+            'created_at_date': ALL
         }

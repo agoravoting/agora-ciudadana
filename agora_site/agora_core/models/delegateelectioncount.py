@@ -6,6 +6,7 @@ from django.db import models
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 
 from guardian.shortcuts import *
 
@@ -24,6 +25,9 @@ class DelegateElectionCount(models.Model):
         verbose_name=_('election'), null=False)
 
     count = models.IntegerField(null=False)
+
+    created_at_date = models.DateTimeField(_(u'Created at date'),
+        auto_now_add=True, editable=True, default=timezone.now())
 
     class Meta:
         app_label = 'agora_core'
