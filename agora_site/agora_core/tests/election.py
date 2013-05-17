@@ -188,10 +188,6 @@ class ElectionTest(RootTestCase):
         self.assertEqual(len(data['objects']), 1)
         self.assertEqual(data['objects'][0]['id'], election_id)
 
-        # there is no approved election yet
-	#data = self.getAndParse('agora/1/approved_elections/', code=HTTP_OK)
-        #self.assertEqual(len(data['objects']), 0)
-
         # try to approve election with user1 - prohibited, it has no admin perms
         orig_data = dict(action='approve')
         data = self.post('election/%d/action/' % election_id, data=orig_data,
@@ -211,12 +207,6 @@ class ElectionTest(RootTestCase):
         data = self.getAndParse('election/%s/' % election_id, code=HTTP_OK)
         self.assertTrue('is_approved' in data)
         self.assertEquals(data['is_approved'], True)
-
-
-        # there is one approved election
-	#data = self.getAndParse('agora/1/approved_elections/', code=HTTP_OK)
-        #self.assertEqual(len(data['objects']), 1)
-        #self.assertEqual(data['objects'][0]['id'], election_id)
 
         # check that election is not in requested elections
         data = self.getAndParse('agora/1/requested_elections/', code=HTTP_OK)

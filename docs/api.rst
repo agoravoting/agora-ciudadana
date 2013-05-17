@@ -1604,88 +1604,102 @@ List approved elections
     Content-Type: application/json; charset=utf-8
 
     {
-       "meta":
-       {
-           "limit": 20,
-           "offset": 0,
-           "total_count": 1
-       },
-       "objects":
-       [
-           {
-               "agora": "/api/v1/agora/2/",
-               "approved_at_date": null,
-               "archived_at_date": null,
-               "comments_policy": "ANYONE_CAN_COMMENT",
-               "created_at_date": "2012-12-18T15:50:48.576146",
-               "creator": "/api/v1/user/2/",
-               "delegated_votes_frozen_at_date": null,
-               "delegated_votes_result": "",
-               "description": "this is election 1",
-               "election_type": "ONE_CHOICE",
-               "electorate":
-               [
-               ],
-               "eligibility": "",
-               "extra_data":
-               {
-                   "started": true
-               },
-               "frozen_at_date": "2012-12-18T15:51:05.405218",
-               "hash": "4e7b9fd6e8fa6e35182743ee19a4102ba3b996b38497660be4d173095ad45b91",
-               "id": 3,
-               "is_approved": true,
-               "is_vote_secret": true,
-               "last_modified_at_date": "2012-12-18T15:50:48.588385",
-               "name": "election-1",
-               "parent_election": null,
-               "percentage_of_participation": 50,
-               "pretty_name": "election 1",
-               "questions": 
-               [
-                   {
-                       "a": "ballot/question",
-                       "tally_type": "simple",
-                       "max": 1,
-                       "min": 0,
-                       "question": "question of election 1",
-                       "answers": 
-                       [
-                           {
-                               "a": "ballot/answer",
-                               "url": "",
-                               "details": "",
-                               "value": "one"
-                           },
-                           {
-                               "a": "ballot/answer",
-                               "url": "",
-                               "details": "",
-                               "value": "two"
-                           },
-                           {
-                               "a": "ballot/answer",
-                               "url": "",
-                               "details": "",
-                               "value": "three"
-                           }
-                       ],
-                       "randomize_answer_order": true
-                   }
-               ],
-               "resource_uri": "/api/v1/election/3/",
-               "result": "",
-               "result_tallied_at_date": null,
-               "short_description": "this is election 1",
-               "tiny_hash": null,
-               "url": "http://localhost:8000/user1/agora2/election/election-1",
-               "uuid": "c2ad36c2-b67e-499c-8100-59becd538549",
-               "voters_frozen_at_date": null,
-               "voting_ends_at_date": "2012-12-20T00:00:00",
-               "voting_extended_until_date": "2012-12-20T00:00:00",
-               "voting_starts_at_date": "2012-12-18T16:51:00.018431"
-           }
-       ]
+        "meta": 
+        {
+            "total_count": 1, 
+            "limit": 20, 
+            "offset": 0
+        }, 
+        "objects": 
+        [
+            {
+                "creator": "/api/v1/user/0/", 
+                "comments_policy": "ANYONE_CAN_COMMENT", 
+                "result_tallied_at_date": null, 
+                "user_perms": 
+                [
+                    "edit_details", 
+                    "begin_election", 
+                    "freeze_election", 
+                    "archive_election", 
+                    "comment", 
+                    "vote_counts"
+                ], 
+                "result": null, 
+                "questions": 
+                [
+                    {
+                        "a": "ballot/question", 
+                        "min": 0, 
+                        "max": 1, 
+                        "tally_type": "simple", 
+                        "question": "question one", 
+                        "answers": 
+                        [
+                            {
+                                "a": "ballot/answer", 
+                                "url": "", 
+                                "details": "", 
+                                "value": "one"
+                            }, 
+                            {
+                                "a": "ballot/answer", 
+                                "url": "", 
+                                "details": "", 
+                                "value": "two"
+                            }, 
+                            {
+                                "a": "ballot/answer", 
+                                "url": "", 
+                                "details": "", 
+                                "value": "three"
+                            }
+                        ], 
+                        "randomize_answer_order": true
+                    }
+                ], 
+                "mugshot_url": "/static/img/election_new_form_info.png", 
+                "id": 3, 
+                "voting_extended_until_date": null, 
+                "is_approved": true, 
+                "last_modified_at_date": "2012-12-06T19:16:14.014000", 
+                "direct_votes_count": 0, 
+                "user_has_delegated": false, 
+                "short_description": "election one", 
+                "is_vote_secret": true, 
+                "voters_frozen_at_date": null, 
+                "hash": null, 
+                "description": "election one", 
+                "frozen_at_date": null, 
+                "eligibility": null, 
+                "parent_election": null, 
+                "pretty_name": "electionone", 
+                "archived_at_date": null, 
+                "uuid": "a36b385a-8f20-4730-a92e-0b9968adac18", 
+                "delegated_votes_count": 0, 
+                "percentage_of_participation": 0.0, 
+                "name": "electionone", 
+                "delegated_votes_frozen_at_date": null, 
+                "url": "/david/agoraone/election/electionone", 
+                "voting_ends_at_date": null, 
+                "approved_at_date": null, 
+                "tiny_hash": null, 
+                "created_at_date": "2012-12-06T19:16:14.004000", 
+                "agora": 
+                {
+                    "mugshot_url": "/static/img/agora_default_logo.png", 
+                    "name": "agoraone", 
+                    "url": "/david/agoraone", 
+                    "pretty_name": "AgoraOne", 
+                    "content_type": "agora", 
+                    "full_name": "david/agoraone", 
+                    "short_description": "AgoraOne", 
+                    "id": 1
+                }, 
+                "voting_starts_at_date": null, 
+                "election_type": "ONCE_CHOICE"
+            }
+        ]
     }
 
 
@@ -1718,53 +1732,49 @@ Comments
     Content-Type: application/json; charset=utf-8
 
     {
-        "meta":{
-            "total_count":1,
-            "limit":20,
-            "offset":0
-        },
-        "objects":[
+        "meta": 
+        {
+            "total_count": 1, 
+            "limit": 20, 
+            "offset": 0
+        }, 
+        "objects": 
+        [
             {
-                "geolocation":
-                [
-                    0,
-                    0
-                ],
-                "description":"",
-                "timestamp":"2013-03-31T11:15:20.753223",
-                "type_name":"target_agora_action_object_comment",
-                "actor":
+                "geolocation": "[0, 0]", 
+                "description": "", 
+                "timestamp": "2013-05-17T16:57:08.670832", 
+                "type_name": "target_agora_action_object_comment", 
+                "actor": 
                 {
-                    "username":"david",
-                    "first_name":"",
-                    "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
-                    "url":"/user/david",
-                    "content_type":"user",
-                    "id":0
-                },
-                "public":true,
-                "verb":"commented",
-                "vote":
+                    "username": "david", 
+                    "first_name": "", 
+                    "mugshot_url": "http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2F.png", 
+                    "content_type": "user", 
+                    "url": "/user/david", 
+                    "full_name": "", 
+                    "id": 0
+                }, 
+                "public": true, 
+                "verb": "commented", 
+                "vote": {}, 
+                "action_object": 
                 {
-
-                },
-                "action_object":
+                    "comment": "\\t<p>blah blah blah blah.</p>", 
+                    "id": 1, 
+                    "content_type": "comment"
+                }, 
+                "id": 1, 
+                "target": 
                 {
-                    "comment":"foo comment",
-                    "id":1,
-                    "content_type":"comment"
-                },
-                "id":1,
-                "target":
-                {
-                    "mugshot_url":"/static/img/agora_default_logo.png",
-                    "name":"agoraone",
-                    "url":"/david/agoraone",
-                    "pretty_name":"AgoraOne",
-                    "content_type":"agora",
-                    "full_name":"david/agoraone",
-                    "short_description":"AgoraOne",
-                    "id":1
+                    "mugshot_url": "/static/img/agora_default_logo.png", 
+                    "name": "agoraone", 
+                    "url": "/david/agoraone", 
+                    "pretty_name": "AgoraOne", 
+                    "content_type": "agora", 
+                    "full_name": "david/agoraone", 
+                    "short_description": "AgoraOne", 
+                    "id": 1
                 }
             }
         ]
@@ -1793,7 +1803,7 @@ Add comment
     Authorization: ApiKey daniel:204db7bcfafb2deb7506b89eb3b9b715b09905c8
 
     {
-        "comment": "foo comment"
+        "comment": "blah blah blah blah."
     }
 
    **Example response**:
@@ -1806,69 +1816,18 @@ Add comment
 
 
     {
-        "meta":
-        {
-            "total_count":1,
-            "limit":20,
-            "offset":0
-        },
-        "objects":
-        [
-            {
-                "geolocation":
-                [
-                    0,
-                    0
-                ],
-                "description":"",
-                "timestamp":"2013-03-31T11:15:20.753223",
-                "type_name":"target_agora_action_object_comment",
-                "actor":
-                {
-                    "username":"david",
-                    "first_name":"",
-                    "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
-                    "url":"/user/david",
-                    "content_type":"user",
-                    "id":0
-                },
-                "public":true,
-                "verb":"commented",
-                "vote":
-                {
-
-                },
-                "action_object":
-                {
-                    "comment":"foo comment",
-                    "id":1,
-                    "content_type":"comment"
-                },
-                "id":1,
-                "target":
-                {
-                    "mugshot_url":"/static/img/agora_default_logo.png",
-                    "name":"agoraone",
-                    "url":"/david/agoraone",
-                    "pretty_name":"AgoraOne",
-                    "content_type":"agora",
-                    "full_name":"david/agoraone",
-                    "short_description":"AgoraOne",
-                    "id":1
-                }
-            }
-        ]
+         ": blah blah blah blah...."
     }
 
-Resource: User
+Resource: Members
 ==============
 
-List users
+List members
 ----------
 
-.. http:get:: /user/
+.. http:get:: /agora/(int:agora_id)/members/
 
-   List users
+   List members of agora (`agora_id`)
 
    :query offset: offset number. default is 0
    :query limit: limit number. default is 20
@@ -1878,7 +1837,7 @@ List users
 
    .. sourcecode:: http
 
-    GET /api/v1/user/ HTTP/1.1
+    GET /api/v1/agora/1/members/ HTTP/1.1
     Host: example.com
     Accept: application/json, text/javascript
 
@@ -1891,44 +1850,113 @@ List users
     Content-Type: application/json; charset=utf-8
 
     {
-       "meta":
-       {
-           "limit": 20,
-           "next": null,
-           "offset": 0,
-           "previous": null,
-           "total_count": 3
-       },
-       "objects":
-       [
-           {
-               "date_joined": "2012-06-14T14:13:48.850044",
-               "first_name": "",
-               "id": 1,
-               "is_active": true,
-               "last_login": "2012-12-16T18:06:25.185835",
-               "last_name": "",
-               "username": "admin"
-           },
-           {
-               "date_joined": "2012-06-16T17:04:15.016445",
-               "first_name": "edulix",
-               "id": 2,
-               "is_active": true,
-               "last_login": "2012-12-16T18:08:04.271163",
-               "last_name": "Robles Elvira",
-               "username": "edulix"
-           },
-           {
-               "date_joined": "2012-09-05T17:45:32.215085",
-               "first_name": "Maria Robles",
-               "id": 3,
-               "is_active": true,
-               "last_login": "2012-10-07T15:38:16.076439",
-               "last_name": "",
-               "username": "user1"
-           }
-       ]
+        "meta": 
+        {
+            "total_count": 7, 
+            "limit": 20, 
+            "offset": 0
+        }, 
+        "objects": 
+        [
+            {
+                "username": "david", 
+                "first_name": "", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2F.png", 
+                "url": "/user/david", 
+                "is_active": true, 
+                "short_description": "Is a member of 2 agoras and has emitted  0 direct votes.", 
+                "last_login": "2013-05-17T17:21:24.492134", 
+                "full_name": "", 
+                "agora_permissions": [], 
+                "id": 0, 
+                "date_joined": "2012-11-29T16:08:43.874000"
+            }, 
+            {
+                "username": "user1", 
+                "first_name": "Juana Molero", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/cc721459f5b77680bc6a8ba6c9681c46?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2FJM.png", 
+                "url": "/user/user1", 
+                "is_active": true, 
+                "short_description": "ultricies. semper vel et, eu laoreet Quisque odio semper ornare. elementum elementum tristique pretium ornare", 
+                "last_login": "2013-05-17T17:21:24.975390", 
+                "full_name": "Juana Molero", 
+                "agora_permissions": [], 
+                "id": 1, 
+                "date_joined": "2012-11-29T19:37:36.263000"
+            }, 
+            {
+                "username": "user2", 
+                "first_name": "Jose Lopez", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/ecdecef1814126d1846e600cbef37a24?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2FJL.png", 
+                "url": "/user/user2", 
+                "is_active": true, 
+                "short_description": "justo. consectetur ultricies ullamcorper nisi, volutpat porta. Sed dui. non Nam Ut volutpat Maecenas orci", 
+                "last_login": "2013-05-17T17:21:25.928757", 
+                "full_name": "Jose Lopez", 
+                "agora_permissions": [], 
+                "id": 2, 
+                "date_joined": "2012-11-29T19:37:36.987000"
+            }, 
+            {
+                "username": "user3", 
+                "first_name": "David Perez", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/783711dc4d57fe8542857211b9064d42?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2FDP.png", 
+                "url": "/user/user3", 
+                "is_active": true, 
+                "short_description": "dictum, orci Fusce Nullam et Nunc convallis Curabitur ante semper convallis euismod et a purus", 
+                "last_login": "2013-05-17T17:21:22.651395", 
+                "full_name": "David Perez", 
+                "agora_permissions": [], 
+                "id": 3, 
+                "date_joined": "2012-11-29T19:37:37.332000"
+            }, 
+            {
+                "username": "user4", 
+                "first_name": "Antonio Bonilla", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/562c89a550b820fe2f63365202f07eb0?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2FAB.png", 
+                "url": "/user/user4", 
+                "is_active": true, 
+                "short_description": "Nullam fringilla ut ultricies elit. semper erat, gravida fermentum Quisque nec. gravida elit. nulla nec", 
+                "last_login": "2013-05-17T17:21:23.111299", 
+                "full_name": "Antonio Bonilla", 
+                "agora_permissions": [], 
+                "id": 4, 
+                "date_joined": "2012-11-29T19:37:37.662000"
+            }, 
+            {
+                "username": "user5", 
+                "first_name": "Maria Ariza", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/4363106ea31735235c6c6b911ab460c2?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2FMA.png", 
+                "url": "/user/user5", 
+                "is_active": true, 
+                "short_description": "Nullam vestibulum bibendum Maecenas eu, Curabitur sit erat congue amet a ultricies velit gravida dictum,", 
+                "last_login": "2013-05-17T17:21:23.573394", 
+                "full_name": "Maria Ariza", 
+                "agora_permissions": [], 
+                "id": 5, 
+                "date_joined": "2012-11-29T19:37:37.993000"
+            }, 
+            {
+                "username": "user6", 
+                "first_name": "Mariano Ariz\\u00f3n", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/013c1f55acdb49dfe716cacc231c8c47?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2FMA.png", 
+                "url": "/user/user6", 
+                "is_active": true, 
+                "short_description": "Is a member of 1 agoras and has emitted  0 direct votes.", 
+                "last_login": "2013-05-17T17:21:24.032687", 
+                "full_name": "Mariano Ariz\\u00f3n", 
+                "agora_permissions": [], 
+                "id": 6, 
+                "date_joined": "2012-11-29T19:37:37.993000"
+            }
+        ]
     }
 
 User settings
@@ -1957,13 +1985,17 @@ User settings
     Content-Type: application/json; charset=utf-8
 
     {
-        "date_joined": "2012-11-29T15:07:55.727000",
-        "first_name": "David",
-        "id": 0,
-        "is_active": true,
-        "last_login": "2012-11-29T15:07:55.727000",
-        "last_name": "",
-        "username": "david"
+        "username": "david", 
+        "first_name": "", 
+        "last_name": "", 
+        "mugshot_url": "http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2F.png", 
+        "url": "/user/david", 
+        "is_active": true, 
+        "last_login": "2013-05-17T17:45:01.597510", 
+        "full_name": "", 
+        "short_description": "Is a member of 2 agoras and has emitted  0 direct votes.", 
+        "id": 0, 
+        "date_joined": "2012-11-29T16:08:43.874000"
     }
 
 User register
@@ -2066,7 +2098,7 @@ Check username is available
 
 .. http:get:: /user/username_available/
 
-   Checks if a username is avaliable
+   Checks if a username is available
 
    :status 200 OK: when the username is available
    :status 400 BAD REQUEST: when the username isn"t available
@@ -2118,20 +2150,7 @@ Reset Password
     Content-Type: application/json; charset=utf-8
 
     {
-        "objects":[
-            {
-                "username":"david",
-                "first_name":"",
-                "last_name":"",
-                "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
-                "url":"/user/david",
-                "is_active":true,
-                "last_login":"2012-11-29T17:18:46.837000",
-                "short_description":"Is a member of 2 agoras and has emitted  0 direct votes.",
-                "id":0,
-                "date_joined":"2012-11-29T15:08:43.874000"
-            }
-        ]
+        
     }
 
 Disable current user
@@ -2189,119 +2208,81 @@ List current user agoras
     Content-Type: application/json; charset=utf-8
 
     {
-       "meta":
-       {
-           "limit": 20,
-           "offset": 0,
-           "total_count": 4
-       },
-       "objects":
-       [
-           {
-               "archived_at_date": null,
-               "biography": "",
-               "comments_policy": "aaaaaaa",
-               "created_at_date": "2012-12-16T18:10:25.583006",
-               "creator":
-               {
-                   "date_joined": "2012-06-16T17:04:15.016445",
-                   "first_name": "edulix",
-                   "id": 2,
-                   "is_active": true,
-                   "last_login": "2012-12-16T18:08:04.271163",
-                   "last_name": "Robles Elvira",
-                   "username": "edulix"
-               },
-               "election_type": "ONE_CHOICE",
-               "eligibility": "",
-               "extra_data": "",
-               "id": 2,
-               "image_url": "",
-               "is_vote_secret": false,
-               "membership_policy": "ANYONE_CAN_JOIN",
-               "name": "blahblah",
-               "pretty_name": " blahblah",
-               "short_description": "blahblah"
-           },
-           {
-               "archived_at_date": null,
-               "biography": "",
-               "comments_policy": "ANYONE_CAN_COMMENT",
-               "created_at_date": "2012-10-10T01:15:04.603246",
-               "creator":
-               {
-                   "date_joined": "2012-09-05T17:45:40.223602",
-                   "first_name": "Juana Molero",
-                   "id": 12,
-                   "is_active": true,
-                   "last_login": "2012-10-10T00:06:47.741392",
-                   "last_name": "",
-                   "username": "user10"
-               },
-               "election_type": "ONE_CHOICE",
-               "eligibility": "",
-               "extra_data": "",
-               "id": 3,
-               "image_url": "",
-               "is_vote_secret": true,
-               "membership_policy": "JOINING_REQUIRES_ADMINS_APPROVAL",
-               "name": "testagora",
-               "pretty_name": "testagora",
-               "short_description": "yeahhhhhh"
-           },
-           {
-               "archived_at_date": null,
-               "biography": "",
-               "comments_policy": "ONLY_MEMBERS_CAN_COMMENT",
-               "created_at_date": "2012-12-13T14:12:03.711985",
-               "creator":
-               {
-                   "date_joined": "2012-09-05T17:45:48.390074",
-                   "first_name": "Victoria Ariza",
-                   "id": 22,
-                   "is_active": true,
-                   "last_login": "2012-12-18T10:35:07.444961",
-                   "last_name": "",
-                   "username": "user20"
-               },
-               "election_type": "ONE_CHOICE",
-               "eligibility": "",
-               "extra_data": "",
-               "id": 4,
-               "image_url": "",
-               "is_vote_secret": false,
-               "membership_policy": "JOINING_REQUIRES_ADMINS_APPROVAL",
-               "name": "testagora",
-               "pretty_name": "testagora",
-               "short_description": "tesagora yeah"
-           },
-           {
-               "archived_at_date": null,
-               "biography": "",
-               "comments_policy": "ANYONE_CAN_COMMENT",
-               "created_at_date": "2012-12-02T16:35:52.110729",
-               "creator":
-               {
-                   "date_joined": "2012-06-14T14:13:48.850044",
-                   "first_name": "",
-                   "id": 1,
-                   "is_active": true,
-                   "last_login": "2012-12-16T18:06:25.185835",
-                   "last_name": "",
-                   "username": "admin"
-               },
-               "election_type": "ONE_CHOICE",
-               "eligibility": "",
-               "extra_data": "",
-               "id": 5,
-               "image_url": "",
-               "is_vote_secret": false,
-               "membership_policy": "ANYONE_CAN_JOIN",
-               "name": "created-agora",
-               "pretty_name": "created agora",
-               "short_description": "created agora description"
-           }
-       ]
+        "meta": 
+        {
+            "total_count": 2, 
+            "limit": 20, 
+            "offset": 0
+        }, 
+        "objects": 
+        [
+            {
+                "membership_policy": "ANYONE_CAN_JOIN", 
+                "mugshot_url": "/static/img/agora_default_logo.png", 
+                "name": "agoraone", 
+                "creator": 
+                {
+                    "username": "david", 
+                    "first_name": "", 
+                    "last_name": "", 
+                    "mugshot_url": "http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2F.png", 
+                    "url": "/user/david", 
+                    "is_active": true, 
+                    "last_login": "2013-05-17T18:14:38.647876", 
+                    "full_name": "", 
+                    "short_description": "Is a member of 2 agoras and has emitted  0 direct votes.", 
+                    "id": 0, 
+                    "date_joined": "2012-11-29T16:08:43.874000"
+                }, 
+                "eligibility": null, 
+                "comments_policy": "ANYONE_CAN_COMMENT", 
+                "id": 1, 
+                "pretty_name": "AgoraOne", 
+                "url": "/david/agoraone", 
+                "created_at_date": "2013-05-17T18:14:37.839919", 
+                "archived_at_date": null, 
+                "full_name": "david/agoraone", 
+                "short_description": "AgoraOne", 
+                "image_url": "", 
+                "extra_data": null, 
+                "is_vote_secret": false, 
+                "election_type": "ONCE_CHOICE", 
+                "biography": ""
+            }, 
+            {
+                "membership_policy": "ANYONE_CAN_JOIN", 
+                "mugshot_url": "/static/img/agora_default_logo.png", 
+                "name": "agoratwo", 
+                "creator": 
+                {
+                    "username": "david", 
+                    "first_name": "", 
+                    "last_name": "", 
+                    "mugshot_url": "http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2F.png", 
+                    "url": "/user/david", 
+                    "is_active": true, 
+                    "last_login": "2013-05-17T18:14:38.647876", 
+                    "full_name": "", 
+                    "short_description": "Is a member of 2 agoras and has emitted  0 direct votes.", 
+                    "id": 0, 
+                    "date_joined": "2012-11-29T16:08:43.874000"
+                }, 
+                "eligibility": null, 
+                "comments_policy": "ANYONE_CAN_COMMENT", 
+                "id": 2, 
+                "pretty_name": "AgoraTwo", 
+                "url": "/david/agoratwo", 
+                "created_at_date": "2013-05-17T18:14:37.855397", 
+                "archived_at_date": null, 
+                "full_name": "david/agoratwo", 
+                "short_description": "AgoraTwo", 
+                "image_url": "", 
+                "extra_data": null, 
+                "is_vote_secret": true, 
+                "election_type": "ONCE_CHOICE", 
+                "biography": ""
+            }
+        ]
     }
 
 
@@ -2334,79 +2315,81 @@ List agoras of a given user
     Content-Type: application/json; charset=utf-8
 
     {
-       "meta":
-       {
-          "total_count":2,
-          "limit":20,
-          "offset":0
-       },
-       "objects":
-       [
-          {
-	     "membership_policy":"ANYONE_CAN_JOIN",
-	     "mugshot_url":"/static/img/agora_default_logo.png",
-	     "name":"agoraone",
-	     "creator":
-             {
-	        "username":"david",
-	        "first_name":"",
-	        "last_name":"",
-	        "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
-	        "url":"/user/david",
-	        "is_active":true,
-	        "last_login":"2012-11-29T17:18:46.837000",
-	        "short_description":"Is a member of 2 agoras and has emitted  0 direct votes.",
-	        "id":0,
-	        "date_joined":"2012-11-29T15:08:43.874000"
-	     },
-	     "eligibility":"",
-	     "comments_policy":"ANYONE_CAN_COMMENT",
-	     "id":1,
-	     "pretty_name":"AgoraOne",
-	     "url":"/david/agoraone",
-	     "created_at_date":"2013-03-31T14:55:15.004828",
-	     "archived_at_date":null,
-	     "full_name":"david/agoraone",
-	     "short_description":"AgoraOne",
-	     "image_url":"",
-	     "extra_data":"",
-	     "is_vote_secret":false,
-	     "election_type":"ONCE_CHOICE",
-	     "biography":""
-          },
-          {
-	     "membership_policy":"ANYONE_CAN_JOIN",
-	     "mugshot_url":"/static/img/agora_default_logo.png",
-	     "name":"agoratwo",
-	     "creator":
-             {
-	        "username":"david",
-	        "first_name":"",
-	        "last_name":"",
-	        "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
-	        "url":"/user/david",
-	        "is_active":true,
-	        "last_login":"2012-11-29T17:18:46.837000",
-	        "short_description":"Is a member of 2 agoras and has emitted  0 direct votes.",
-	        "id":0,
-	        "date_joined":"2012-11-29T15:08:43.874000"
-	     },
-	     "eligibility":"",
-	     "comments_policy":"ANYONE_CAN_COMMENT",
-	     "id":2,
-	     "pretty_name":"AgoraTwo",
-	     "url":"/david/agoratwo",
-	     "created_at_date":"2013-03-31T14:55:15.019918",
-	     "archived_at_date":null,
-	     "full_name":"david/agoratwo",
-	     "short_description":"AgoraTwo",
-	     "image_url":"",
-	     "extra_data":"",
-	     "is_vote_secret":true,
-	     "election_type":"ONCE_CHOICE",
-	     "biography":""
-          }
-       ]
+        "meta": 
+        {
+            "total_count": 2, 
+            "limit": 20, 
+            "offset": 0
+        }, 
+        "objects": 
+        [
+            {
+                "membership_policy": "ANYONE_CAN_JOIN", 
+                "mugshot_url": "/static/img/agora_default_logo.png", 
+                "name": "agoraone", 
+                "creator": 
+                {
+                    "username": "david", 
+                    "first_name": "", 
+                    "last_name": "", 
+                    "mugshot_url": "http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2F.png", 
+                    "url": "/user/david", 
+                    "is_active": true, 
+                    "last_login": "2012-11-29T18:18:46.837000", 
+                    "full_name": "", 
+                    "short_description": "Is a member of 2 agoras and has emitted  0 direct votes.", 
+                    "id": 0, 
+                    "date_joined": "2012-11-29T16:08:43.874000"
+                }, 
+                "eligibility": null, 
+                "comments_policy": "ANYONE_CAN_COMMENT", 
+                "id": 1, 
+                "pretty_name": "AgoraOne", 
+                "url": "/david/agoraone", 
+                "created_at_date": "2013-05-17T18:17:04.412905", 
+                "archived_at_date": null, 
+                "full_name": "david/agoraone", 
+                "short_description": "AgoraOne", 
+                "image_url": "", 
+                "extra_data": null, 
+                "is_vote_secret": false, 
+                "election_type": "ONCE_CHOICE", 
+                "biography": ""
+            }, 
+            {
+                "membership_policy": "ANYONE_CAN_JOIN", 
+                "mugshot_url": "/static/img/agora_default_logo.png", 
+                "name": "agoratwo", 
+                "creator": 
+                {
+                    "username": "david", 
+                    "first_name": "", 
+                    "last_name": "", 
+                    "mugshot_url": "http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2F.png", 
+                    "url": "/user/david", 
+                    "is_active": true, 
+                    "last_login": "2012-11-29T18:18:46.837000", 
+                    "full_name": "", 
+                    "short_description": "Is a member of 2 agoras and has emitted  0 direct votes.", 
+                    "id": 0, 
+                    "date_joined": "2012-11-29T16:08:43.874000"
+                }, 
+                "eligibility": null, 
+                "comments_policy": "ANYONE_CAN_COMMENT", 
+                "id": 2, 
+                "pretty_name": "AgoraTwo", 
+                "url": "/david/agoratwo", 
+                "created_at_date": "2013-05-17T18:17:04.428307", 
+                "archived_at_date": null, 
+                "full_name": "david/agoratwo", 
+                "short_description": "AgoraTwo", 
+                "image_url": "", 
+                "extra_data": null, 
+                "is_vote_secret": true, 
+                "election_type": "ONCE_CHOICE", 
+                "biography": ""
+            }
+        ]
     }
 
 
@@ -2442,91 +2425,97 @@ List elections this user can vote in
     Content-Type: application/json; charset=utf-8
 
     {
-       "meta":
-       {
-           "limit": 20,
-           "offset": 0,
-           "total_count": 1
-       },
-       "objects":
-       [
-           {
-               "agora": "/api/v1/agora/4/",
-               "approved_at_date": null,
-               "archived_at_date": null,
-               "comments_policy": "ANYONE_CAN_COMMENT",
-               "created_at_date": "2012-10-28T09:36:30.951957",
-               "creator": "/api/v1/user/22/",
-               "delegated_votes_frozen_at_date": null,
-               "delegated_votes_result": "",
-               "description": "blah",
-               "election_type": "ONE_CHOICE",
-               "electorate":
-               [
-               ],
-               "eligibility": "",
-               "extra_data":
-               {
-                   "started": true
-               },
-               "frozen_at_date": "2012-10-28T09:36:44.106801",
-               "has_user_voted": true,
-               "has_user_voted_via_a_delegate": false,
-               "hash": "057e6e4a31ca99089ae5d5826723f29e6ee119f9a4f9066a560c5e39e9f58500",
-               "id": 27,
-               "is_approved": true,
-               "is_vote_secret": true,
-               "last_modified_at_date": "2012-10-28T09:36:30.962801",
-               "name": "votacion-de-prueba",
-               "parent_election": null,
-               "percentage_of_participation": 22,
-               "pretty_name": "Votación de prueba",
-               "questions":
-               [
-                   {
-                       "a": "ballot/question",
-                       "tally_type": "simple",
-                       "max": 1,
-                       "min": 0,
-                       "question":
-                       "question of election 1",
-                       "answers":
-                       [
-                           {
-                               "a": "ballot/answer",
-                               "url": "",
-                               "details": "",
-                               "value": "one"
-                           },
-                           {
-                               "a": "ballot/answer",
-                               "url": "",
-                               "details": "",
-                               "value": "two"
-                           },
-                           {
-                               "a": "ballot/answer",
-                               "url": "",
-                               "details": "",
-                               "value": "three"
-                           }
-                       ],
-                       "randomize_answer_order": true
-                   }
-               ],
-               "resource_uri": "",
-               "result": "",
-               "result_tallied_at_date": null,
-               "short_description": "blah",
-               "tiny_hash": null,
-               "url": "http://local.dev:8000/user20/testagora/election/votacion-de-prueba",
-               "uuid": "3c4b6bbc-24ca-4d82-832e-27e049d9cc85",
-               "voters_frozen_at_date": null,
-               "voting_ends_at_date": null,
-               "voting_extended_until_date": null,
-               "voting_starts_at_date": "2012-11-03T08:39:49.019238"
-           }
-       ]
+        "meta": 
+        {
+            "total_count": 1, 
+            "limit": 20, 
+            "offset": 0
+        }, 
+        "objects": 
+        [
+            {
+                "creator": "/api/v1/user/0/", 
+                "comments_policy": "ANYONE_CAN_COMMENT", 
+                "result_tallied_at_date": null, 
+                "user_perms": 
+                [
+                    "end_election", 
+                    "archive_election", 
+                    "comment", 
+                    "emit_direct_vote", 
+                    "emit_delegate_vote", 
+                    "vote_counts"
+                ], 
+                "result": null, 
+                "questions": 
+                [
+                    {
+                        "a": "ballot/question", 
+                        "min": 0, 
+                        "max": 1, 
+                        "tally_type": "ONE_CHOICE", 
+                        "question": "Do you prefer foo or bar?", 
+                        "answers": [
+                            {
+                                "a": "ballot/answer", 
+                                "url": "", 
+                                "details": "", 
+                                "value": "fo\\"o"
+                            }, 
+                            {
+                                "a": "ballot/answer", 
+                                "url": "", 
+                                "details": "", 
+                                "value": "bar"
+                            }
+                        ], 
+                        "randomize_answer_order": true
+                    }
+                ], 
+                "id": 6, 
+                "hash": "f5d139f50af19b500ef7089fef7cae6ebd9e221af6d287dc207cf6ae7264d740", 
+                "has_user_voted_via_a_delegate": false, 
+                "voting_extended_until_date": null, 
+                "is_approved": true, 
+                "last_modified_at_date": "2013-05-17T18:24:29.388901", 
+                "direct_votes_count": 0, 
+                "user_has_delegated": false, 
+                "has_user_voted": false, 
+                "short_description": "foo bar foo bar", 
+                "is_vote_secret": true, 
+                "voters_frozen_at_date": null, 
+                "mugshot_url": "/static/img/election_new_form_info.png", 
+                "description": "foo bar foo bar", 
+                "frozen_at_date": "2013-05-17T18:24:29.388901", 
+                "eligibility": null, 
+                "parent_election": null, 
+                "pretty_name": "foo bar", 
+                "archived_at_date": null, 
+                "uuid": "9eedf9f3-4e9e-45d2-a9f0-28a80b4cc244", 
+                "delegated_votes_count": 0, 
+                "percentage_of_participation": 0.0, 
+                "name": "foo-bar", 
+                "delegated_votes_frozen_at_date": null, 
+                "url": "/david/agoraone/election/foo-bar", 
+                "voting_ends_at_date": null, 
+                "approved_at_date": "2013-05-17T18:24:28.307743", 
+                "tiny_hash": null, 
+                "created_at_date": "2013-05-17T18:24:28.223238", 
+                "agora": 
+                {
+                    "mugshot_url": "/static/img/agora_default_logo.png", 
+                    "name": "agoraone", 
+                    "url": "/david/agoraone", 
+                    "pretty_name": "AgoraOne", 
+                    "content_type": "agora", 
+                    "full_name": "david/agoraone", 
+                    "short_description": "AgoraOne", 
+                    "id": 1
+                }, 
+                "voting_starts_at_date": "2013-05-17T18:24:29.394027", 
+                "election_type": "ONE_CHOICE"
+            }
+        ]
     }
 
 
@@ -2557,32 +2546,34 @@ List of valid usernames
     Content-Type: application/json; charset=utf-8
 
     {
-        "objects":
+        "objects": 
         [
             {
-                "username":"david",
-                "first_name":"",
-                "last_name":"",
-                "mugshot_url":"http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=identicon",
-                "url":"/user/david",
-                "is_active":true,
-                "last_login":"2012-11-29T17:18:46.837000",
-                "short_description":"Is a member of 2 agoras and has emitted  0 direct votes.",
-                "id":0,
-                "date_joined":"2012-11-29T15:08:43.874000"
-            },
+                "username": "david", 
+                "first_name": "", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2F.png", 
+                "url": "/user/david", 
+                "is_active": true, 
+                "last_login": "2012-11-29T18:18:46.837000", 
+                "full_name": "", 
+                "short_description": "Is a member of 2 agoras and has emitted  0 direct votes.", 
+                "id": 0, 
+                "date_joined": "2012-11-29T16:08:43.874000"
+            }, 
             {
-                "username":"user1",
-                "first_name":"Juana Molero",
-                "last_name":"",
-                "mugshot_url":"http://www.gravatar.com/avatar/cc721459f5b77680bc6a8ba6c9681c46?s=50&d=identicon",
-                "url":"/user/user1",
-                "is_active":true,
-                "last_login":"2012-11-29T18:37:36.263000",
-                "short_description":"ultricies. semper vel et, eu laoreet Quisque odio semper ornare. elementum elementum tristique pretium ornare",
-                "id":1,
-                "date_joined":"2012-11-29T18:37:36.263000"
-             }
+                "username": "user1", 
+                "first_name": "Juana Molero", 
+                "last_name": "", 
+                "mugshot_url": "http://www.gravatar.com/avatar/cc721459f5b77680bc6a8ba6c9681c46?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2FJM.png", 
+                "url": "/user/user1", 
+                "is_active": true, 
+                "last_login": "2012-11-29T19:37:36.263000", 
+                "full_name": "Juana Molero", 
+                "short_description": "ultricies. semper vel et, eu laoreet Quisque odio semper ornare. elementum elementum tristique pretium ornare", 
+                "id": 1, 
+                "date_joined": "2012-11-29T19:37:36.263000"
+            }
         ]
     }
 
@@ -2610,7 +2601,7 @@ This resource allows searches, using Haystack
 
    .. sourcecode:: http
 
-    GET /api/v1/search/?q=vota HTTP/1.1
+    GET /api/v1/search/?q=agoraone HTTP/1.1
     Host: example.com
     Accept: application/json, text/javascript
 
@@ -2623,105 +2614,76 @@ This resource allows searches, using Haystack
     Content-Type: application/json; charset=utf-8
 
     {
-       "meta":
-       {
-           "limit": 20,
-           "next": null,
-           "offset": 0,
-           "previous": null,
-           "total_count": 8
-       },
-       "objects":
-       [
-           {
-               "obj":
-               {
-                   "content_type": "profile",
-                   "first_name": "edulix",
-                   "id": 3,
-                   "url": "/user/edulix",
-                   "user_id": 2,
-                   "username": "edulix"
-               }
-           },
-           {
-               "obj":
-               {
-                   "content_type": "election",
-                   "id": 23,
-                   "name": "me-aprobara-rock-neurotico-esta-votacion",
-                   "pretty_name": "¿Me aprobará rock neurótico ésta votación?",
-                   "short_description": "aaaaaa",
-                   "url": "/edulix/blahblah/election/me-aprobara-rock-neurotico-esta-votacion"
-               }
-           },
-           {
-               "obj":
-               {
-                   "content_type": "profile",
-                   "first_name": "",
-                   "id": 1,
-                   "url": "/user/admin",
-                   "user_id": 1,
-                   "username": "admin"
-               }
-           },
-           {
-               "obj":
-               {
-                   "content_type": "agora",
-                   "id": 2,
-                   "name": "blahblah",
-                   "pretty_name": " blahblah",
-                   "short_description": "blahblah",
-                   "url": "/edulix/blahblah"
-               }
-           },
-           {
-               "obj":
-               {
-                   "content_type": "profile",
-                   "first_name": "probando1",
-                   "id": 55,
-                   "url": "/user/probando1",
-                   "user_id": 54,
-                   "username": "probando1"
-               }
-           },
-           {
-               "obj":
-               {
-                   "content_type": "profile",
-                   "first_name": "probando2",
-                   "id": 56,
-                   "url": "/user/probando2",
-                   "user_id": 55,
-                   "username": "probando2"
-               }
-           },
-           {
-               "obj":
-               {
-                   "content_type": "profile",
-                   "first_name": "probando3",
-                   "id": 57,
-                   "url": "/user/probando3",
-                   "user_id": 56,
-                   "username": "probando3"
-               }
-           },
-           {
-               "obj":
-               {
-                   "content_type": "election",
-                   "id": 4,
-                   "name": "delegation",
-                   "pretty_name": "",
-                   "short_description": "voting used for delegation",
-                   "url": "/edulix/blahblah/election/delegation"
-               }
-           }
-       ]
+        "meta": 
+        {
+            "previous": null, 
+            "total_count": 3, 
+            "offset": 0, 
+            "limit": 20, 
+            "next": null
+        }, 
+        "objects": 
+        [
+            {
+                "obj": 
+                {
+                    "mugshot_url": "/static/img/agora_default_logo.png", 
+                    "name": "agoraone", 
+                    "url": "/david/agoraone", 
+                    "pretty_name": "AgoraOne", 
+                    "content_type": "agora", 
+                    "full_name": "david/agoraone", 
+                    "short_description": "AgoraOne", 
+                    "id": 1
+                }
+            }, 
+            {
+                "obj": 
+                {
+                    "mugshot_url": "/static/img/election_new_form_info.png", 
+                    "name": "electionone", 
+                    "url": "/david/agoraone/election/electionone", 
+                    "pretty_name": "electionone", 
+                    "agora": 
+                    {
+                        "mugshot_url": "/static/img/agora_default_logo.png", 
+                        "name": "agoraone", 
+                        "url": "/david/agoraone", 
+                        "pretty_name": "AgoraOne", 
+                        "content_type": "agora", 
+                        "full_name": "david/agoraone", 
+                        "short_description": "AgoraOne", 
+                        "id": 1
+                    }, 
+                    "content_type": "election", 
+                    "short_description": "election one", 
+                    "id": 3
+                }
+            }, 
+            {
+                "obj": 
+                {
+                    "mugshot_url": "/static/img/election_new_form_info.png", 
+                    "name": "electiontwo", 
+                    "url": "/david/agoraone/election/electiontwo", 
+                    "pretty_name": "electiontwo", 
+                    "agora": 
+                    {
+                        "mugshot_url": "/static/img/agora_default_logo.png", 
+                        "name": "agoraone", 
+                        "url": "/david/agoraone", 
+                        "pretty_name": "AgoraOne", 
+                        "content_type": "agora", 
+                        "full_name": "david/agoraone", 
+                        "short_description": "AgoraOne", 
+                        "id": 1
+                    }, 
+                    "content_type": "election", 
+                    "short_description": "election two", 
+                    "id": 4
+                }
+            }
+        ]
     }
 
 Resource: Election
