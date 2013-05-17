@@ -11,6 +11,7 @@ direct vote or by delegating the vote.
 * Python 2.x >= 2.7
 * python virtualenvwrapper
 * rabbitmq-server
+* git
 
 * Development files por python are required to compile some later dependencies.
   In Ubuntu/Debian you can do this:
