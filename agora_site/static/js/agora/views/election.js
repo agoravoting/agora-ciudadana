@@ -169,6 +169,15 @@
             return this.template(model.toJSON());
         },
 
+        getDelegateCount: function(user_id) {
+            for (var i = 0; i < ajax_data.delegates_election_count.objects.length; i++) {
+                if (ajax_data.delegates_election_count.objects[i].delegate.id == user_id) {
+                    return ajax_data.delegates_election_count.objects[i];
+                }
+            }
+            return null;
+        },
+
         hoverUser: function(e) {
             if (!this.templateVoteInfo) {
                 this.templateVoteInfo = _.template($(this.templateVoteInfoEl).html());
@@ -180,11 +189,12 @@
                 extra_data: ajax_data.extra_data
             };
             if (model.election.result_tallied_at_date) {
-                if (ajax_data.extra_data.delegation_counts[model.vote.voter.id]) {
-                    model.num_delegated_votes = ajax_data.extra_data.delegation_counts[model.vote.voter.id];
-                    var size = _.size(ajax_data.extra_data.delegation_counts);
-                    var filtered = _.filter(ajax_data.extra_data.delegation_counts,
-                        function (val) { return val <= model.num_delegated_votes; }
+                var delegate_count = this.getDelegateCount(model.vote.voter.id);
+                if (delegate_count) {
+                    model.num_delegated_votes = delegate_count.count;
+                    var size = ajax_data.delegates_election_count.meta.total_count;
+                    var filtered = _.filter(ajax_data.delegates_election_count.objects,
+                        function (obj) { return obj.count <= model.num_delegated_votes; }
                     );
                     model.rank_in_delegates = (size - filtered.length + 1) + "º";
                 } else {
