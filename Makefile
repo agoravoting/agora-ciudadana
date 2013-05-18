@@ -22,6 +22,7 @@ mainjs:
 					      agora_site/static/js/libs/jquery-shuffle.js \
 					      agora_site/static/js/libs/jsrender.js \
 					      agora_site/static/js/libs/d3.v2.min.js \
+					      agora_site/static/js/libs/nv.d3.min.js \
 					      agora_site/static/js/libs/moment.min.js \
 					      agora_site/static/js/libs/moment-lang/gl.js \
 					      agora_site/static/js/libs/moment-lang/es.js \
@@ -43,6 +44,7 @@ mainjs:
 					      agora_site/static/js/libs/jquery-shuffle.js \
 					      agora_site/static/js/libs/jsrender.js \
 					      agora_site/static/js/libs/r2d3.min.js \
+					      agora_site/static/js/libs/nv.d3.min.js \
 					      agora_site/static/js/libs/moment.min.js \
 					      agora_site/static/js/libs/moment-lang/gl.js \
 					      agora_site/static/js/libs/moment-lang/es.js \

@@ -59,7 +59,7 @@
 
         <div class="span4 agora-right-side">
 
-            <div class="row-fluid right-widget right-widget-grey agora-list" id="user_agora_list">
+            <div class="row-fluid right-widget right-widget-grey" id="user_agora_list">
                 <!-- here will go the view with list of agoras with the nice graphs of delegated votes when rendered -->
             </div>
 
@@ -83,7 +83,7 @@
             'user': {% rest request '/user/' user_shown.id '/' %},
             'castvotes_by_agoras': {
                 {% for agora in user_shown.agoras.all %}
-                '{{ agora.id }}': {% rest request '/delegateelectioncount/?delegate=' user_shown.id '&election__agora=' agora.id %}
+                '{{ agora.id }}': {% rest request '/delegateelectioncount/?delegate=' user_shown.id '&election__agora=' agora.id %},
                 {% endfor %}
             },
             'user_agoras': {% rest request '/user/' user_shown.id '/agoras/' %}

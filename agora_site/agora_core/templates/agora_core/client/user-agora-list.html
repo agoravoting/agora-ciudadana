@@ -2,19 +2,19 @@
     <div class="right-widget-header">
         <h4><%= gettext("Agoras") %> <span>(<%= user_agoras.meta.total_count %>)</span></h4>
     </div>
-    <div class="row-fluid hover-items last-elections last-agoras">
+    <div class="row-fluid last-elections last-agoras">
         <ul class="list-container">
         <% for (var i=0; i < user_agoras.objects.length; i++) { %>
-            <li data-agora-id="<%= user_agoras.objects[i].id %>">
-                <a href="<%= user_agoras.objects[i].url %>">
-                    <span class="agora"><%= user_agoras.objects[i].creator.username %>/<strong><%= user_agoras.objects[i].name %> </strong></span>
-                    <i class="icon-arrow-right"></i>
+            <li data-agora-id="<%= user_agoras.objects[i].id %>" class="agora-user-item">
+                <a href="<%= user_agoras.objects[i].url %>" class="agora">
+                    <strong><%= user_agoras.objects[i].full_name %></strong>
                 </a>
                 <!-- TODO: allow user to delegate in this user only if user is a member in this agora -->
-                <% if (false) { %>
-                    <a href="btn pull-right" href="#" class="delegate-in-user"><%= gettext("Delegate") %></a>
+                <% if (true) { %>
+                    <a class="btn btn-primary pull-right" href="#" class="delegate-in-user"><%= gettext("Delegate") %></a>
                 <% } %>
-                <div class="agora-delegated-votes-chart" id="chart-user-agora<%= user_agoras.objects[i].id %>">
+                <div class="clearfix"></div>
+                <div class="hide agora-delegated-votes-chart" id="chart-user-agora<%= user_agoras.objects[i].id %>">
                     <svg></svg>
                 </div>
             </li>

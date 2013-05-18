@@ -17,6 +17,63 @@
             var data = ajax_data;
             this.$el.html(this.template(data));
             this.delegateEvents();
+
+            function agoraChartData(agora) {
+                var castvotes = ajax_data.castvotes_by_agoras[(agora.id).toString()].objects;
+                var abs_values = _.map(castvotes, function(castvote) {
+                    return {
+                        x: new Date(castvote.created_at_date).getTime(),
+                        y: castvote.count
+                    };
+                });
+                var abs_values = _.map(castvotes, function(castvote) {
+                    return {
+                        x: new Date(castvote.created_at_date).getTime(),
+                        y: castvote.count
+                    };
+                });
+                return [
+                    {
+                        values: abs_values,
+                        key: gettext("Delegated votes"),
+                        color: '#ff7f0e'
+                    }
+                ]
+            }
+
+            for (var i = 0; i < data.user_agoras.objects.length; i++) {
+                (function() {
+                    var agora = data.user_agoras.objects[i];
+                    var chartDivSelector = '#chart-user-agora' + agora.id;
+                    var agoraData = agoraChartData(agora);
+                    if (agoraData[0].values.length == 0) {
+                        return;
+                    }
+                    nv.addGraph(function() {
+                        var chart = nv.models.lineChart();
+
+                        chart.xAxis
+//                             .showMaxMin(false)
+                            .tickFormat(function(d) {
+                                return d3.time.format('%d/%m')(new Date(d));
+                            })
+                            ;
+
+                        chart.yAxis
+                            .tickFormat(d3.format(',f'));
+
+                        d3.select(chartDivSelector + ' svg')
+                            .datum(agoraData)
+                            .call(chart);
+
+                        $(chartDivSelector).removeClass('hide');
+                        chart.update();
+
+                        return chart;
+                    });
+                })();
+            }
+
             return this;
         }
     });
