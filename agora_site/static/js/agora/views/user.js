@@ -49,7 +49,6 @@
                         var chart = nv.models.lineChart();
 
                         chart.xAxis
-//                             .showMaxMin(false)
                             .tickFormat(function(d) {
                                 return d3.time.format('%d/%m')(new Date(d));
                             })
