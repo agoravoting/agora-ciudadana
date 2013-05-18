@@ -6,20 +6,21 @@ direct vote or by delegating the vote.
 
 ### Dependencies
 
-* It Has only been tested in Linux so far.
+Agora has only been tested to work in Linux-based servers so far.
 
-* Python 2.x >= 2.7
-* python virtualenvwrapper
+* python
+* virtualenvwrapper
+* python2.7-dev
 * rabbitmq-server
 * git
+* gettext
 
-* Development files por python are required to compile some later dependencies.
-  In Ubuntu/Debian you can do this:
+* In Ubuntu/Debian you can install the dependencies with the following command:
 
-    $ sudo apt-get install python2.7-dev
-    
+    $ sudo apt-get install python2.7-dev python virtualenvwrapper \
+      rabbitmq-server git gettext
+
 Other dependencies will be installed with virtualenv.
-
 
 ### First installation
 
