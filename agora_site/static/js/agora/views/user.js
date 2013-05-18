@@ -26,12 +26,8 @@
                         y: castvote.count
                     };
                 });
-                var abs_values = _.map(castvotes, function(castvote) {
-                    return {
-                        x: new Date(castvote.created_at_date).getTime(),
-                        y: castvote.count
-                    };
-                });
+                abs_values = _.sortBy(abs_values, function (item) {return item.x });
+
                 return [
                     {
                         values: abs_values,
