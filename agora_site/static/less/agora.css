@@ -5600,10 +5600,9 @@ ul.list-container {
   margin: 1px 2px 1px 1px;
   list-style: none;
 }
-ul.list-container li.agora-user-item {
-  background-color: white;
-  padding: 10px;
+ul.list-container li.agora-user-item.complex {
   margin-bottom: 1px;
+  padding: 10px;
   background: #ffffff;
   /* Old browsers */
 
@@ -5632,13 +5631,31 @@ ul.list-container li.agora-user-item {
   /* IE6-8 */
 
 }
-ul.list-container li.agora-user-item > a.agora {
+ul.list-container li.agora-user-item.complex > a.agora {
   display: inline !important;
   background-color: transparent !important;
   margin-bottom: 0  !important;
   padding: 0 !important;
   width: auto !important;
 }
-ul.list-container li.agora-user-item > a.agora:hover {
+ul.list-container li.agora-user-item.complex > a.agora:hover {
   background-color: none !important;
+}
+ul.list-container li.agora-user-item.complex > a.agora > i {
+  display: none !important;
+}
+ul.list-container li.agora-user-item.simple > a.agora {
+  display: block !important;
+  background-color: white !important;
+  margin-bottom: 1px;
+  padding: 10px;
+  width: 94%;
+}
+ul.list-container li.agora-user-item.simple > a.agora:hover {
+  text-decoration: none !important;
+  background-color: #ECECEC !important;
+}
+ul.list-container li.agora-user-item.simple > a.agora i {
+  display: inline-block;
+  float: right;
 }

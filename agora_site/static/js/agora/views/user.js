@@ -37,6 +37,7 @@
                 ]
             }
 
+            var self = this;
             for (var i = 0; i < data.user_agoras.objects.length; i++) {
                 (function() {
                     var agora = data.user_agoras.objects[i];
@@ -51,8 +52,7 @@
                         chart.xAxis
                             .tickFormat(function(d) {
                                 return d3.time.format('%d/%m')(new Date(d));
-                            })
-                            ;
+                            });
 
                         chart.yAxis
                             .tickFormat(d3.format(',f'));
@@ -62,6 +62,8 @@
                             .call(chart);
 
                         $(chartDivSelector).removeClass('hide');
+                        self.$('.agora-user-item[data-agora-id='+ agora.id + ']').removeClass('simple');
+                        self.$('.agora-user-item[data-agora-id='+ agora.id + ']').addClass('complex');
                         chart.update();
 
                         return chart;

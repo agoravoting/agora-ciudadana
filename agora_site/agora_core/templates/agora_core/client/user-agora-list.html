@@ -5,9 +5,10 @@
     <div class="row-fluid last-elections last-agoras">
         <ul class="list-container">
         <% for (var i=0; i < user_agoras.objects.length; i++) { %>
-            <li data-agora-id="<%= user_agoras.objects[i].id %>" class="agora-user-item">
+            <li data-agora-id="<%= user_agoras.objects[i].id %>" class="agora-user-item simple">
                 <a href="<%= user_agoras.objects[i].url %>" class="agora">
                     <strong><%= user_agoras.objects[i].full_name %></strong>
+                    <i class="icon-arrow-right"></i>
                 </a>
                 <!-- TODO: allow user to delegate in this user only if user is a member in this agora -->
                 <% if (false) { %>
