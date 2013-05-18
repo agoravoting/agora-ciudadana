@@ -26,7 +26,7 @@ class Command(BaseCommand):
 
 
     def update_election(self, e):
-        date = e.result_tallied_at_date
+        date = e.voting_ends_at_date
         e.compute_result()
         e.result_tallied_at_date = date
         e.save()
