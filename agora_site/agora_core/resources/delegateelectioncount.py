@@ -17,7 +17,7 @@ class DelegateElectionCountResource(GenericResource):
         list_allowed_methods = ['get']
         detail_allowed_methods = ['get']
         filtering = {
-            'voter': ALL,
-            'election': ALL,
+            'delegate': ALL,
+            'election': ALL_WITH_RELATIONS,
             'created_at_date': ALL,
         }

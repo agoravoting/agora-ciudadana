@@ -224,6 +224,9 @@ class ElectionResource(GenericResource):
         always_return_data = True
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'put']
+        filtering = {
+            'agora': ALL
+        }
 
         excludes = ['PROHIBITED_ELECTION_NAMES', 'extra_data']
 
