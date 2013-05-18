@@ -2,6 +2,24 @@
     var Agora = this.Agora,
         app = this.app;
 
+    Agora.UserAgorasListView = Backbone.View.extend({
+        el: "#user_agora_list",
+
+        initialize: function() {
+            _.bindAll(this);
+            this.template = _.template($("#template-user_agora_list").html());
+            this.render();
+
+            return this.$el;
+        },
+
+        render: function() {
+            var data = ajax_data;
+            this.$el.html(this.template(data));
+            this.delegateEvents();
+            return this;
+        }
+    });
 
     Agora.TalliedUserElectionsView = Backbone.View.extend({
         el: "#tallied_user_elections_view",
@@ -61,8 +79,8 @@
             if ($("#activity-list").length > 0) {
                 this.activityListView = new Agora.ActivityListView();
             }
-            this.agoralistView = new Agora.AgoraWidgetListView();
             this.tallied_user_elections_view = new Agora.TalliedUserElectionsView();
+            this.user_agoras_list_view = new Agora.UserAgorasListView();
         }
     });
 }).call(this)
