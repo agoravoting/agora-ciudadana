@@ -81,16 +81,14 @@ var Liquidv = (function () {
         path.selectAll('path').classed('selected', function(d) { return d === selected_link; })                
         // .style('marker-end', 'url(#end-arrow-2)');
         .style('marker-end', function(d) {
-        if(d.weight == null) {
+            if(d.weight == null) {
                 return 'url(#end-arrow-' + grayScale(maxWeight - d.source.votes, maxWeight) + ')'; 
             }
             else {
                 return 'url(#end-arrow-' + d.weight + ')'; 
             }                
-        });
-                
-        // update links (for tally)
-        path.selectAll('path').style('stroke', function(d) {
+        })
+        .style('stroke', function(d) {
             if(d.weight == null) {
 // console.log(d.source.name + " " + grayScale(maxWeight - d.source.votes, maxWeight));
                 return '#' + grayScale(maxWeight - d.source.votes, maxWeight);
@@ -99,38 +97,38 @@ var Liquidv = (function () {
                 return '#' + d.weight; 
            }
         });
-
+        
         // add new links
         var ps = path.enter().append('svg:g')
         ps.append('svg:path')
-            .attr('id', function(d) { return 'path' + d.id; })
-            .attr('class', 'link')
-            .classed('selected', function(d) { return d === selected_link; })
-            .style('marker-start', '')
-            // .style('marker-end', 'url(#end-arrow-000)')
-            .style('marker-end', function(d) { 
-                if(d.weight == null) {
-                    return 'url(#end-arrow-000)';
-                }
-                else {
-                    return 'url(#end-arrow-' + d.weight + ')'; 
-                }
-             })
-            .style('stroke', function(d) { 
-                return '#' + d.weight;
-             })
-            .on('mousedown', function(d) {				
-                // select link
-                mousedown_link = d;
-                if(mousedown_link === selected_link) selected_link = null;
-                else selected_link = mousedown_link;
-                selected_node = null;
+        .attr('id', function(d) { return 'path' + d.id; })
+        .attr('class', 'link')
+        .classed('selected', function(d) { return d === selected_link; })
+        .style('marker-start', '')
+        // .style('marker-end', 'url(#end-arrow-000)')
+        .style('marker-end', function(d) { 
+            if(d.weight == null) {
+                return 'url(#end-arrow-000)';
+            }
+            else {
+                return 'url(#end-arrow-' + d.weight + ')'; 
+            }
+         })
+        .style('stroke', function(d) { 
+            return '#' + d.weight;
+         })
+        .on('mousedown', function(d) {				
+            // select link
+            mousedown_link = d;
+            if(mousedown_link === selected_link) selected_link = null;
+            else selected_link = mousedown_link;
+            selected_node = null;
 
-                restart();
-            });
+            restart();
+        });
         
         // path label text
-        ps.append('svg:text')
+        /* ps.append('svg:text')
             .attr('x', 50)
             .attr('dy', 15)
             // .style('font-family', 'Verdana')
@@ -139,7 +137,7 @@ var Liquidv = (function () {
             .attr('xlink:href', function(d) { return '#path' + d.id })
             .text(function(d) { 
                 if(d.label != null) return d.label; 
-            });
+            });*/
 
         // remove old links
         path.exit().remove();
@@ -149,15 +147,17 @@ var Liquidv = (function () {
 
         // update existing nodes (selected visual states)
         circle.selectAll('circle')            
-            .style('fill', function(d) { return (maxVotes > 0.0 && d.votes == maxVotes && d.type == 'choice') ? 'red' : (d === selected_node) ? d3.rgb(d.color).brighter().toString() : d3.rgb(d.color); })
-            .attr('r', function(d) {                                 
-                if(maxVotes > 0.0) {
-                    return 12 + (d.votes/maxVotes) * 6;
-                }
-                else {
-                    return (d.type == 'voter') ? 12 : 16;
-                }
-            });
+        .style('fill', function(d) { 
+            return (maxVotes > 0.0 && d.votes == maxVotes && d.type == 'choice') ? 'red' : (d === selected_node) ? d3.rgb(d.color).brighter().toString() : d3.rgb(d.color); 
+        })
+        .attr('r', function(d) {                                 
+            if(maxVotes > 0.0) {
+                return 12 + (d.votes/maxVotes) * 6;
+            }
+            else {
+                return (d.type == 'voter') ? 12 : 16;
+            }
+        });
 
         // update votes (for tally)
         circle.selectAll('text.votes').text(function(d) { return d.votes; });              
@@ -331,9 +331,7 @@ console.log(mousedown_node.targets);
     var mouseup = function () {
         if(mousedown_node) {
             // hide drag line
-            drag_line
-                .classed('hidden', true)
-                .style('marker-end', '');
+            drag_line.classed('hidden', true).style('marker-end', '');
 
             // reset zoom
             var scale = zoom.scale();
@@ -371,9 +369,7 @@ console.log(mousedown_node.targets);
 
         // ctrl
         if(d3.event.keyCode === 17) {
-            circle
-                .on('mousedown.drag', null)
-                .on('touchstart.drag', null);
+            circle.on('mousedown.drag', null).on('touchstart.drag', null);
             svg.classed('ctrl', false);
         }	
 
@@ -668,8 +664,9 @@ console.log('links');
 console.log(links);
 console.log('nodes');
 console.log(nodes);
-
+                                                            
                     me.go()
+                    me.tally();
                 });
             });
         },
