@@ -439,7 +439,7 @@ console.log(selected_link);
         .attr('fill', 'white');
 
     // define arrow markers for graph links        
-    var defs = svg.append('svg:defs')
+    var defs = svg.append('svg:defs').attr('id', 'svg-defs');
     
     defs.append('svg:marker')
     .attr('id', 'end-arrow-000')
@@ -455,7 +455,7 @@ console.log(selected_link);
     for(var i = 1; i < 15; i++) {        
         var hex = new Array(4).join(i.toString(16));
         
-        var head = $('#end-arrow-000').clone().attr('id', 'end-arrow-' + hex).appendTo(defs);
+        var head = $('#end-arrow-000').clone().attr('id', 'end-arrow-' + hex).appendTo($('#svg-defs'));
         head.children('path').attr('fill', '#' + hex);
     }       
 
