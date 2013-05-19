@@ -96,7 +96,7 @@ class UserSettingsForm(django_forms.ModelForm):
     delete_avatar = django_forms.BooleanField(label=_("Remove this avatar"),
                                               required=False)
 
-    short_description = django_forms.CharField(_('Short Description'),
+    short_description = django_forms.CharField(label=_('Short Description'),  max_length=140,
         help_text=_("Say something about yourself (140 chars max)"), required=False)
 
     biography = django_forms.CharField(_('Biography'),
