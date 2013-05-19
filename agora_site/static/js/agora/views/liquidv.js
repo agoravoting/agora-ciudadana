@@ -80,9 +80,27 @@ var Liquidv = (function () {
         path = path.data(links, function(d) { return d.id });
 
         // update existing links
-        path.selectAll('path').classed('selected', function(d) { return d === selected_link; })
-                .style('marker-start', '')
-                .style('marker-end', 'url(#end-arrow)');
+        path.selectAll('path').classed('selected', function(d) { return d === selected_link; })                
+        // .style('marker-end', 'url(#end-arrow-2)');
+        .style('marker-end', function(d) {
+        if(d.weight == null) {
+                return 'url(#end-arrow-' + grayScale(maxWeight - d.source.votes, maxWeight) + ')'; 
+            }
+            else {
+                return 'url(#end-arrow-' + d.weight + ')'; 
+            }                
+        });
+                
+        // update links (for tally)
+        path.selectAll('path').style('stroke', function(d) {
+            if(d.weight == null) {
+// console.log(d.source.name + " " + grayScale(maxWeight - d.source.votes, maxWeight));
+                return '#' + grayScale(maxWeight - d.source.votes, maxWeight);
+            }
+            else {
+                return '#' + d.weight; 
+           }
+        });
 
         // add new links
         var ps = path.enter().append('svg:g')
@@ -91,10 +109,18 @@ var Liquidv = (function () {
             .attr('class', 'link')
             .classed('selected', function(d) { return d === selected_link; })
             .style('marker-start', '')
-            .style('marker-end', 'url(#end-arrow)')
-            .style('stroke', function(d) { return d.stroke; })
-            // .style('marker-start', function(d) { return d.left ? 'url(#start-arrow)' : ''; })
-            // .style('marker-end', function(d) { return d.right ? 'url(#end-arrow)' : ''; })
+            // .style('marker-end', 'url(#end-arrow-000)')
+            .style('marker-end', function(d) { 
+                if(d.weight == null) {
+                    return 'url(#end-arrow-000)';
+                }
+                else {
+                    return 'url(#end-arrow-' + d.weight + ')'; 
+                }
+             })
+            .style('stroke', function(d) { 
+                return '#' + d.weight;
+             })
             .on('mousedown', function(d) {				
                 // select link
                 mousedown_link = d;
@@ -104,12 +130,7 @@ var Liquidv = (function () {
 
                 restart();
             });
-        /*ps.append('svg:text')
-                .attr('x', 6)
-                .attr('dy', 15)
-                .text(function(d) { 
-                    if(d.condition != null) return d.condition; 
-                });*/
+        
         // path label text
         ps.append('svg:text')
             .attr('x', 50)
@@ -125,15 +146,13 @@ var Liquidv = (function () {
         // remove old links
         path.exit().remove();
 
-        // circle (node) group
-        // nodes are known by id
+        // circle (node) group, nodes are known by id
         circle = circle.data(nodes, function(d) { return d.id; });
 
         // update existing nodes (selected visual states)
-        circle.selectAll('circle')
-            // .style('fill', function(d) { return (d === selected_node) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id); })
+        circle.selectAll('circle')            
             .style('fill', function(d) { return (maxVotes > 0.0 && d.votes == maxVotes && d.type == 'choice') ? 'red' : (d === selected_node) ? d3.rgb(d.color).brighter().toString() : d3.rgb(d.color); })
-            .attr('r', function(d) { 
+            .attr('r', function(d) {                                 
                 if(maxVotes > 0.0) {
                     return 12 + (d.votes/maxVotes) * 6;
                 }
@@ -143,14 +162,14 @@ var Liquidv = (function () {
             });
 
         // update votes (for tally)
-        circle.selectAll('text.votes').text(function(d) { return d.votes; });
+        circle.selectAll('text.votes').text(function(d) { return d.votes; });              
 
         // add new nodes
         var g = circle.enter().append('svg:g');
 
         g.append('svg:circle')
             .attr('class', 'node')
-            .attr('r', function(d) { 
+            .attr('r', function(d) {                 
                 if(maxVotes > 0.0) {
                     return 12 + (d.votes/maxVotes) * 6;
                 }
@@ -184,12 +203,8 @@ var Liquidv = (function () {
                 var info = 'Selected node \'' + ((d.name) ? d.name : d.user_name) + '\' (type ' + d.type + '), ' + d.votes + ' votes';
                 if(d.votes == maxVotes) info += ' (max)';
                 $('.graph-info').text(info);
-                /* $('#node-username').text(d.user_name);
-                $('#node-name').text(d.name);
-                $('#node-type').text(d.type);
-                $('#node-votes').text(d.votes);*/
 
-                console.log(selected_node);
+console.log(selected_node);
 
                 // code for dragging
                 if(d3.event.ctrlKey) {
@@ -200,10 +215,9 @@ var Liquidv = (function () {
                     translatey = zoom.translate()[1];
 
                     // reposition drag line
-                    drag_line
-                        .style('marker-end', 'url(#end-arrow)')
-                        .classed('hidden', false)
-                        .attr('d', 'M' + mousedown_node.x + ',' + mousedown_node.y + 'L' + mousedown_node.x + ',' + mousedown_node.y);			 
+                    drag_line.style('marker-end', 'url(#end-arrow-000)')
+                    .classed('hidden', false)
+                    .attr('d', 'M' + mousedown_node.x + ',' + mousedown_node.y + 'L' + mousedown_node.x + ',' + mousedown_node.y);			 
                 }
 
                 restart();
@@ -234,15 +248,7 @@ var Liquidv = (function () {
                 // add link to graph (update if exists)
                 // NB: links are strictly source < target; arrows separately specified by booleans
                 var source, target, direction;
-                /* if(mousedown_node.id < mouseup_node.id) {
-                    source = mousedown_node;
-                    target = mouseup_node;
-                    direction = 'right';
-                } else {
-                    source = mouseup_node;
-                    target = mousedown_node;
-                    direction = 'left';
-                }*/
+                
                 source = mousedown_node;
                 target = mouseup_node;
 
@@ -272,8 +278,8 @@ var Liquidv = (function () {
 
                 // update targets
                 mousedown_node.targets = [mouseup_node].concat(mousedown_node.targets);
-                console.log("update targets");
-                console.log(mousedown_node.targets);
+console.log('update targets');
+console.log(mousedown_node.targets);
 
                 restart();	
             });
@@ -381,7 +387,7 @@ var Liquidv = (function () {
                     nodes.splice(nodes.indexOf(selected_node), 1);
                     spliceLinksForNode(selected_node);
                 } else if(selected_link) {
-                    console.log(selected_link);
+console.log(selected_link);
                     selected_link.source.targets.splice(selected_link.source.targets.indexOf(selected_link.target), 1);
                     links.splice(links.indexOf(selected_link), 1);
                 }
@@ -416,10 +422,10 @@ var Liquidv = (function () {
     .append('svg')
     // .attr('width', width)
     // .attr('height', height)	
-    .attr("viewBox", "0 0 " + width + " " + height )
-    .attr("preserveAspectRatio", "xMidYMid meet")
-    .attr("pointer-events", "all")
-    .call(zoom.on("zoom", redraw));
+    .attr('viewBox', "0 0 " + width + " " + height )
+    .attr('preserveAspectRatio', 'xMidYMid meet')
+    .attr('pointer-events', 'all')
+    .call(zoom.on('zoom', redraw));
     var svg = full.append('svg:g');
 
     /* moved to constructor
@@ -433,9 +439,11 @@ var Liquidv = (function () {
         .attr('height', height)		
         .attr('fill', 'white');
 
-    // define arrow markers for graph links
-    svg.append('svg:defs').append('svg:marker')
-    .attr('id', 'end-arrow')
+    // define arrow markers for graph links        
+    var defs = svg.append('svg:defs')
+    
+    defs.append('svg:marker')
+    .attr('id', 'end-arrow-000')
     .attr('viewBox', '0 -5 10 10')
     .attr('refX', 6)
     .attr('markerWidth', 3)
@@ -443,9 +451,16 @@ var Liquidv = (function () {
     .attr('orient', 'auto')
     .append('svg:path')
     .attr('d', 'M0,-5L10,0L0,5')
-    .attr('fill', '#000');
+    .attr('fill', '#000');       
+    
+    for(var i = 1; i < 15; i++) {        
+        var hex = new Array(4).join(i.toString(16));
+        
+        var head = $('#end-arrow-000').clone().attr('id', 'end-arrow-' + hex).appendTo(defs);
+        head.children('path').attr('fill', '#' + hex);
+    }       
 
-    svg.append('svg:defs').append('svg:marker')
+    /* svg.append('svg:defs').append('svg:marker')
     .attr('id', 'start-arrow')
     .attr('viewBox', '0 -5 10 10')
     .attr('refX', 4)
@@ -454,7 +469,7 @@ var Liquidv = (function () {
     .attr('orient', 'auto')
     .append('svg:path')
     .attr('d', 'M10,-5L0,0L10,5')
-    .attr('fill', '#000');
+    .attr('fill', '#000');*/
 
     // line displayed when dragging new nodes
     var drag_line = svg.append('svg:path')
@@ -475,6 +490,7 @@ var Liquidv = (function () {
 
     // liquid tally
     var maxVotes = 0.0;
+    var maxWeight = 0;
     var liquidTally = function(nodes) {
         var next = [];
         $.each(nodes, function(index, item) {
@@ -482,20 +498,28 @@ var Liquidv = (function () {
                 $.each(item.targets, function(index, target) {
                     target.votes = target.votes + item.transients;
                     maxVotes = (target.votes > maxVotes) ? target.votes : maxVotes;
+                    if(target.type == 'voter') {
+                        maxWeight = (target.votes > maxWeight) ? target.votes : maxWeight;
+                    }
                     target.transients = target.transients + item.transients;
                 });
                 item.transients = 0;
                 next = next.concat(item.targets);
             }
         });		
-        console.log("next");
-        console.log(next);
+console.log('next');
+console.log(next);
         if(next.length > 0) liquidTally(next);
     }
     
-    var strokeForIndex = function(index, length) {
-        var number = Math.floor((index / length) * 15);
-        return '#' + new Array(4).join(number.toString(16));
+    var grayScale = function(level, max) {
+        var ret = '000';
+        if(max != 0) {
+            var number = Math.floor((level / max) * 14);
+            ret = new Array(4).join(number.toString(16));
+        }
+        
+        return ret;
     }
 
     // constructor
@@ -629,7 +653,7 @@ var Liquidv = (function () {
                             var voter = x.voter;
                             return {'source': allNodes[voter.id], 'target': allNodes[choice], 'id': ++lastLinkId, 'color': '#0099FF'};*/
                             var ret = $.map(x.public_data.answers[0].choices, function(y, index) {                    
-                                return {'source': allNodes[x.voter.id], 'target': allNodes[y], 'id': ++lastLinkId, 'color': '#0099FF', 'stroke': strokeForIndex(index, x.public_data.answers[0].choices.length), 'label': index + 1};
+                                return {'source': allNodes[x.voter.id], 'target': allNodes[y], 'id': ++lastLinkId, 'color': '#0099FF', 'weight': grayScale(index, x.public_data.answers[0].choices.length), 'label': index + 1};
                             });
                             return ret;
                         }                    
@@ -641,10 +665,10 @@ var Liquidv = (function () {
                         return allNodes[key];
                     });
 
-                    console.log('links');
-                    console.log(links);
-                    console.log('nodes');
-                    console.log(nodes);
+console.log('links');
+console.log(links);
+console.log('nodes');
+console.log(nodes);
 
                     me.go()
                 });
@@ -686,11 +710,12 @@ var Liquidv = (function () {
                     item.votes = 0;
                 }					
             });
-            maxVotes = 0.0;			
+            maxVotes = 0.0;
+            maxWeight = 0;
             liquidTally(nodes);
 
             $(".graph-info").text('Tally complete');
-            restart();			
+            restart();
         },
         resize: function(width, height) {
             full.attr('width', width)
