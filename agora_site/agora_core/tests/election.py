@@ -1181,6 +1181,7 @@ class ElectionTest(RootTestCase):
 
         # create election as admin
         self.login('david', 'david')
+        import ipdb, json; ipdb.set_trace()
         data = self.postAndParse('agora/1/action/', data=election_data,
             code=HTTP_OK, content_type='application/json')
         election_id = data['id']

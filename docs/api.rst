@@ -527,6 +527,289 @@ Execute an action
         "status": "success"
     }
 
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    POST /api/v1/agora/1/action/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+    Authorization: ApiKey linus:204db7bcfafb2deb7506b89eb3b9b715b09905c8
+
+    {
+        'action': "create_election",
+        'pretty_name': "foo bar",
+        'description': "foo bar foo bar",
+        'questions': 
+        [
+            {
+                'a': 'ballot/question',
+                'tally_type': 'ONE_CHOICE',
+                'max': 1,
+                'min': 0,
+                'question': 'Do you prefer foo or bar?',
+                'randomize_answer_order': True,
+                'answers': 
+                [
+                    {
+                        'a': 'ballot/answer',
+                        'url': '',
+                        'details': '',
+                        'value': 'fo\"o'
+                    },
+                    {
+                        'a': 'ballot/answer',
+                        'url': '',
+                        'details': '',
+                        'value': 'bar'
+                    }
+                ]
+            }
+        ],
+        'is_vote_secret': True,
+        'from_date': '',
+        'to_date': '',
+    }
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+    {
+        "creator": "/api/v1/user/0/", 
+        "comments_policy": "ANYONE_CAN_COMMENT", 
+        "result_tallied_at_date": null, 
+        "user_perms": 
+        [
+            "edit_details", 
+            "begin_election", 
+            "freeze_election", 
+            "archive_election", 
+            "comment", 
+            "vote_counts"
+        ], 
+        "result": null, 
+        "questions": 
+        [
+            {
+                "a": "ballot/question", 
+                "min": 0, 
+                "max": 1, 
+                "tally_type": "ONE_CHOICE", 
+                "question": "Do you prefer foo or bar?", 
+                "answers": [
+                    {
+                        "a": "ballot/answer", 
+                        "url": "", 
+                        "details": "", 
+                        "value": "fo\\"o"
+                    }, 
+                    {
+                        "a": "ballot/answer", 
+                        "url": "", 
+                        "details": "", 
+                        "value": "bar"
+                    }
+                ], 
+                "randomize_answer_order": true
+            }
+        ], 
+        "mugshot_url": "/static/img/election_new_form_info.png", 
+        "id": 6, 
+        "voting_extended_until_date": null, 
+        "is_approved": true, 
+        "last_modified_at_date": "2013-05-19T22:36:57.563538", 
+        "direct_votes_count": 0, 
+        "user_has_delegated": false, 
+        "short_description": "foo bar foo bar", 
+        "is_vote_secret": true, 
+        "voters_frozen_at_date": null, 
+        "hash": null, 
+        "description": "foo bar foo bar", 
+        "frozen_at_date": null, 
+        "eligibility": null, 
+        "parent_election": null, 
+        "pretty_name": "foo bar", 
+        "archived_at_date": null, 
+        "uuid": "d302fd84-a6ba-4956-a2dc-dc60bb4ebc6f", 
+        "delegated_votes_count": 0, 
+        "percentage_of_participation": 0.0, 
+        "name": "foo-bar", 
+        "delegated_votes_frozen_at_date": null, 
+        "url": "/david/agoraone/election/foo-bar", 
+        "voting_ends_at_date": null, 
+        "approved_at_date": "2013-05-19T22:36:57.561286", 
+        "tiny_hash": null, 
+        "created_at_date": "2013-05-19T22:36:56.753200", 
+        "agora": 
+        {
+            "mugshot_url": "/static/img/agora_default_logo.png", 
+            "name": "agoraone", 
+            "url": "/david/agoraone", 
+            "pretty_name": "AgoraOne", 
+            "content_type": "agora", 
+            "full_name": "david/agoraone", 
+            "short_description": "AgoraOne", 
+            "id": 1
+        }, 
+        "voting_starts_at_date": null, 
+        "election_type": "ONE_CHOICE"
+    }
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    POST /api/v1/agora/1/action/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+    Authorization: ApiKey linus:204db7bcfafb2deb7506b89eb3b9b715b09905c8
+
+    {
+            'action': "create_election",
+            'pretty_name': "foo bar",
+            'description': "foo bar foo bar",
+            'questions': 
+            [
+                {
+                    'a': 'ballot/question',
+                    'tally_type': 'MEEK-STV',
+                    'max': 3,
+                    'min': 0,
+                    'question': 'Who should be the next presidentá unicode chars ñè?',
+                    'randomize_answer_order': True,
+                    'num_seats': 2,
+                    'answers': 
+                    [
+                        {
+                            'a': 'ballot/answer',
+                            'url': '',
+                            'details': '',
+                            'value': 'Florentino'
+                        },
+                        {
+                            'a': 'ballot/answer',
+                            'url': '',
+                            'details': '',
+                            'value': 'Jack'
+                        },
+                        {
+                            'a': 'ballot/answer',
+                            'url': '',
+                            'details': '',
+                            'value': 'Marie'
+                        }
+                    ]
+                }
+            ],
+            'is_vote_secret': True,
+            'from_date': '',
+            'to_date': '',
+        }
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
+
+        {
+        "creator": "/api/v1/user/0/", 
+        "comments_policy": "ANYONE_CAN_COMMENT", 
+        "result_tallied_at_date": null, 
+        "user_perms": 
+        [
+            "edit_details", 
+            "begin_election", 
+            "freeze_election", 
+            "archive_election", 
+            "comment", 
+            "vote_counts"
+        ], 
+        "result": null, 
+        "questions": 
+        [
+            {
+                "a": "ballot/question", 
+                "min": 0, 
+                "max": 3, 
+                "tally_type": "MEEK-STV", 
+                "question": "Who should be the next president\\u00e1 unicode chars \\u00f1\\u00e8?", 
+                "answers": 
+                [
+                    {
+                        "a": "ballot/answer", 
+                        "url": "", 
+                        "details": "", 
+                        "value": "Florentino"
+                    }, 
+                    {
+                        "a": "ballot/answer", 
+                        "url": "", 
+                        "details": "", 
+                        "value": "Jack"
+                    }, 
+                    {
+                        "a": "ballot/answer", 
+                        "url": "", 
+                        "details": "", 
+                        "value": "Marie"
+                    }
+                ], 
+                "num_seats": 2, 
+                "randomize_answer_order": true
+            }
+        ], 
+        "mugshot_url": "/static/img/election_new_form_info.png", 
+        "id": 6, 
+        "voting_extended_until_date": null, 
+        "is_approved": true, 
+        "last_modified_at_date": "2013-05-19T22:41:46.701673", 
+        "direct_votes_count": 0, 
+        "user_has_delegated": false, 
+        "short_description": "foo bar foo bar", 
+        "is_vote_secret": true, 
+        "voters_frozen_at_date": null, 
+        "hash": null, 
+        "description": "foo bar foo bar", 
+        "frozen_at_date": null, 
+        "eligibility": null, 
+        "parent_election": null, 
+        "pretty_name": "foo bar", 
+        "archived_at_date": null, 
+        "uuid": "e5067217-2eff-4ae7-8f97-500ebb966e5f", 
+        "delegated_votes_count": 0, 
+        "percentage_of_participation": 0.0, 
+        "name": "foo-bar", 
+        "delegated_votes_frozen_at_date": null, 
+        "url": "/david/agoraone/election/foo-bar", 
+        "voting_ends_at_date": null, 
+        "approved_at_date": "2013-05-19T22:41:46.699415", 
+        "tiny_hash": null, 
+        "created_at_date": "2013-05-19T22:41:45.904296", 
+        "agora": 
+        {
+            "mugshot_url": "/static/img/agora_default_logo.png", 
+            "name": "agoraone", 
+            "url": "/david/agoraone", 
+            "pretty_name": "AgoraOne", 
+            "content_type": "agora", 
+            "full_name": "david/agoraone", 
+            "short_description": "AgoraOne", 
+            "id": 1
+        }, 
+        "voting_starts_at_date": null, 
+        "election_type": "MEEK-STV"
+    }
+
+
 Retrieve agora members
 ----------------------
 
