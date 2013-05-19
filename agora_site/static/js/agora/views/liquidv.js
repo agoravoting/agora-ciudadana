@@ -26,10 +26,8 @@ var Liquidv = (function () {
     // private functions
 
     // d3 functions
-    var redraw = function() {
-        svg.attr("transform",
-        "translate(" + d3.event.translate + ")"
-        + " scale(" + d3.event.scale + ")");
+    var redraw = function() {        
+        svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
     }
 
     var resetMouseVars = function () {
@@ -422,10 +420,11 @@ console.log(selected_link);
     .append('svg')
     // .attr('width', width)
     // .attr('height', height)	
-    .attr('viewBox', "0 0 " + width + " " + height )
-    .attr('preserveAspectRatio', 'xMidYMid meet')
-    .attr('pointer-events', 'all')
-    .call(zoom.on('zoom', redraw));
+    .attr("viewBox", "0 0 " + width + " " + height )
+    .attr("preserveAspectRatio", "xMidYMid meet")
+    .attr("pointer-events", "all")
+    .call(zoom.on("zoom", redraw));
+    
     var svg = full.append('svg:g');
 
     /* moved to constructor

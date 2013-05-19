@@ -54,6 +54,11 @@ text.votes {
 border-radius:14px 14px 0 0;
 background-color:#ececec;
 vertical-align:top;
+/* height: 350px; */
+}
+
+.chrome-height-fix {
+height: 350px;
 }
 		
 .graph {
