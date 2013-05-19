@@ -4082,6 +4082,9 @@ a.thumbnail:hover {
 .invisible {
   visibility: hidden;
 }
+.affix {
+  position: fixed;
+}
 .btn-block {
   -moz-box-sizing: border-box;
   display: block;
@@ -5540,6 +5543,10 @@ img.mugshot,
   width: 50px;
   color: #555555;
   font-weight: bold;
+}
+#vote_info.affix {
+  top: 20px;
+  margin-left: 640px;
 }
 #vote_info .row-fluid {
   margin-left: 10px;

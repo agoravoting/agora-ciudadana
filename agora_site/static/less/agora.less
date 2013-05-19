@@ -9,6 +9,11 @@
 @sidebar-grey-text-color: #464748;
 @green-bright: #00D600;
 
+// from bootstrap 2.1
+.affix {
+    position: fixed;
+}
+
 .btn-block {
     -moz-box-sizing: border-box;
     display: block;
@@ -1775,6 +1780,11 @@ img.mugshot, .activity-action > a.mugshot > img {
 // election_delegates.html
 
 #vote_info {
+    &.affix {
+        top: 20px;
+        margin-left: 640px;
+    }
+
     .row-fluid {
         margin-left: 10px;
 
