@@ -5545,6 +5545,7 @@ img.mugshot,
   font-weight: bold;
 }
 #vote_info.affix {
+  background-color: white;
   top: 20px;
   margin-left: 640px;
 }
