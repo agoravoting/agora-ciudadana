@@ -61,6 +61,7 @@ agorajs:
 					      agora_site/static/js/agora/libs/charts.js \
 					      agora_site/static/js/agora/views/generic.js \
 					      agora_site/static/js/agora/views/home_anonymous.js \
+					      agora_site/static/js/agora/views/user_agora_list.js \
 					      agora_site/static/js/agora/views/home.js \
 					      agora_site/static/js/agora/views/agora.js \
 					      agora_site/static/js/agora/views/agora_list.js \

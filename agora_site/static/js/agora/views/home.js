@@ -8,7 +8,7 @@
         initialize: function() {
             _.bindAll(this);
             this.calendarView = new Agora.CalendarWidgetView();
-            this.agoralistView = new Agora.AgoraWidgetListView();
+            this.user_agoras_list_view = new Agora.UserAgorasListView();
             this.activityListView = new Agora.ActivityListView();
         }
     });
