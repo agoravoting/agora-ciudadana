@@ -1,0 +1,22 @@
+<script id="template-user_delegate_in_actions" type="text/underscore-template">
+    <% if (agoras.length > 0) { %>
+    <div class="btn-group">
+        <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
+            <i class="icon-user"></i>
+                <%= interpolate(gettext("Choose %s as delegate in.."), [user.full_name]) %>
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <% for(var i = 0; i < agoras.length; i++) { %>
+                <li>
+                    <a class="delegate_vote" href="" 
+                        data-agora="<%- JSON.stringifyCompat(agoras[i]) %>"
+                        data-delegate="<%- JSON.stringifyCompat(user) %>">
+                        <i class="icon-ok"></i>
+                        <%= interpolate(gettext("Choose as delegate in %s"), [agoras[i].full_name]) %>
+                    </a>
+                </li>
+            <% } %>
+    </div>
+    <% } %>
+</script>

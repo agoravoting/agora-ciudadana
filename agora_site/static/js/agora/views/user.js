@@ -51,6 +51,42 @@
         },
     });
 
+    Agora.UserDelegateInActionsView = Backbone.View.extend({
+        el: "#user_delegate_in_actions",
+
+        initialize: function() {
+            _.bindAll(this);
+            this.template = _.template($("#template-user_delegate_in_actions").html());
+            this.render();
+
+            return this.$el;
+        },
+
+        render: function() {
+            // One cannot delegate in oneself, that's for sure
+            if ($("body").data('userid') == ajax_data.user.id) {
+                return;
+            }
+
+            // render template
+            var data = {
+                agoras: _.filter(ajax_data.user_agoras.objects, function(agora) {
+                    return _.indexOf(agora.agora_permissions, "delegate") != -1;
+                }),
+                user: ajax_data.user
+            };
+            this.$el.html(this.template(data));
+            this.$(".delegate_vote").click(this.delegateVote);
+            this.delegateEvents();
+            return this;
+        },
+
+        delegateVote: function (e) {
+            e.preventDefault();
+            Agora.delegateVoteHandler(e, this);
+        }
+    });
+
     Agora.UserView = Backbone.View.extend({
         el: "div.user",
 
@@ -62,6 +98,7 @@
             }
             this.tallied_user_elections_view = new Agora.TalliedUserElectionsView();
             this.user_agoras_list_view = new Agora.UserAgorasListView();
+            this.user_delegate_in_actions_view = new Agora.UserDelegateInActionsView();
         }
     });
 }).call(this)

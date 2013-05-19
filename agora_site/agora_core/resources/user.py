@@ -240,9 +240,16 @@ class UserResource(GenericResource):
 
     def agoras(self, request, **kwargs):
         '''
-        Lists the agoras in which the authenticated user is a member
+        Lists the agoras in which the authenticated user or the specified user
+        is a member
         '''
         from .agora import AgoraResource
+        class AgoraPermissionsResource(AgoraResource):
+            agora_permissions = fields.ApiField()
+
+            def dehydrate_agora_permissions(self, bundle):
+                return bundle.obj.get_perms(bundle.request.user)
+
         if kwargs.has_key('userid'):
             user = get_object_or_404(User, pk=kwargs['userid'])
         else:
@@ -250,7 +257,7 @@ class UserResource(GenericResource):
         if user.is_anonymous():
             raise ImmediateHttpResponse(response=http.HttpForbidden())
 
-        return AgoraResource().get_custom_list(request=request, queryset=user.agoras.all())
+        return AgoraPermissionsResource().get_custom_list(request=request, queryset=user.agoras.all())
 
     def open_elections(self, request, **kwargs):
         '''

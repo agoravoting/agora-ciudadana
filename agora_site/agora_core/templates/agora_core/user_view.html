@@ -18,6 +18,9 @@
         </h1>
         <p>{{ user_shown.get_profile.short_description }}</p>
     </div>
+    <div class="pull-right" id="user_delegate_in_actions">
+        <!-- here goes the actions to delegate in this user, if any -->
+    </div>
 
     <ul class="nav nav-tabs">
         {% block user-navigation %}
@@ -77,6 +80,7 @@
     {% include "agora_core/client/all_actions.html" %}
     {% include "agora_core/client/tallied_user_elections_view.html" %}
     {% include "agora_core/client/user-agora-list.html" %}
+    {% include "agora_core/client/user_delegate_in_actions.html" %}
     <script>
         var ajax_data = {
             'tallied_elections': {% rest request '/user/' user_shown.id '/participated_elections/?limit=3' %},

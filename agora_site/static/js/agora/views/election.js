@@ -195,6 +195,7 @@
         },
 
         delegateVote: function (e) {
+            e.preventDefault();
             Agora.delegateVoteHandler(e, this);
         }
     });
