@@ -12,6 +12,7 @@ from common import RootTestCase
 from django.contrib.markup.templatetags.markup import textile
 from django.utils import timezone
 from datetime import datetime, timedelta
+from unidecode import unidecode
 import copy
 
 class ElectionTest(RootTestCase):
@@ -1157,7 +1158,7 @@ class ElectionTest(RootTestCase):
                             'a': 'ballot/answer',
                             'url': '',
                             'details': '',
-                            'value': 'Florentino'
+                            'value': u'Florentino de los Jagüeños jórl!'
                         },
                         {
                             'a': 'ballot/answer',
@@ -1205,7 +1206,7 @@ class ElectionTest(RootTestCase):
 
         vote1_data = {
             'is_vote_secret': False,
-            'question0': ["Florentino", "Jack", "Marie"],
+            'question0': [u'Florentino de los Jagüeños jórl!', "Jack", "Marie"],
             'action': 'vote'
         }
         vote2_data = {
@@ -1242,7 +1243,7 @@ class ElectionTest(RootTestCase):
                         'a':'answer/result/MEEK-STV',
                         'url':u'',
                         'total_count':0,
-                        'value':'Florentino',
+                        'value':u'Florentino de los Jagüeños jórl!',
                         'elected':True,
                         'details':u'',
                         'seat_number':1,
@@ -1270,7 +1271,7 @@ class ElectionTest(RootTestCase):
                     }
                     ],
                     'winners':[
-                        'Florentino',
+                        u'Florentino de los Jagüeños jórl!',
                         'Jack'
                     ],
                     'num_seats':2,
@@ -1286,13 +1287,13 @@ class ElectionTest(RootTestCase):
         self.assertEqual(results_should_be, data['result'])
         tally_log_should_be =  [{
             'winners':[
-                'Florentino',
+                u'Florentino de los Jagüeños jórl!',
                 'Jack'
             ],
             'ballots_count':5,
             'dirty_ballots_count':6,
             'candidates':[
-                'Florentino',
+                u'Florentino de los Jagüeños jórl!',
                 'Jack',
                 'Marie'
             ],
@@ -1304,7 +1305,7 @@ class ElectionTest(RootTestCase):
                     {
                         'count':'3.000000',
                         'status':'won',
-                        'name':'Florentino',
+                        'name':u'Florentino de los Jagüeños jórl!',
                         'transfer':False
                     },
                     {
