@@ -78,8 +78,7 @@ var Liquidv = (function () {
         path = path.data(links, function(d) { return d.id });
 
         // update existing links
-        path.selectAll('path').classed('selected', function(d) { return d === selected_link; })                
-        // .style('marker-end', 'url(#end-arrow-2)');
+        path.selectAll('path').classed('selected', function(d) { return d === selected_link; })                        
         .style('marker-end', function(d) {
             if(d.weight == null) {
                 return 'url(#end-arrow-' + grayScale(maxWeight - d.source.votes, maxWeight) + ')'; 
@@ -90,7 +89,6 @@ var Liquidv = (function () {
         })
         .style('stroke', function(d) {
             if(d.weight == null) {
-// console.log(d.source.name + " " + grayScale(maxWeight - d.source.votes, maxWeight));
                 return '#' + grayScale(maxWeight - d.source.votes, maxWeight);
             }
             else {
@@ -174,12 +172,9 @@ var Liquidv = (function () {
                 else {
                     return (d.type == 'voter') ? 12 : 16;
                 }
-            })
-            // .style('fill', function(d) { return (d === selected_node) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.type); })
-            // .style('fill', function(d) { return (d === selected_node) ? d3.rgb(d.color).brighter().toString() : d3.rgb(d.color); })
+            })            
             .style('fill', function(d) { return (d === selected_node) ? d3.rgb(d.color).brighter().toString() : d3.rgb(d.color); })
-            .style('stroke', function(d) { return d3.rgb(colors(d.id)).darker().toString(); })
-            // .classed('reflexive', function(d) { return d.reflexive; })
+            .style('stroke', function(d) { return d3.rgb(colors(d.id)).darker().toString(); })            
             .on('mouseover', function(d) {
                 if(!mousedown_node || d === mousedown_node) return;
                 // enlarge target node
@@ -202,7 +197,7 @@ var Liquidv = (function () {
                 if(d.votes == maxVotes) info += ' (max)';
                 $('.graph-info').text(info);
 
-console.log(selected_node);
+                console.log(selected_node);
 
                 // code for dragging
                 if(d3.event.ctrlKey) {
@@ -276,8 +271,8 @@ console.log(selected_node);
 
                 // update targets
                 mousedown_node.targets = [mouseup_node].concat(mousedown_node.targets);
-console.log('update targets');
-console.log(mousedown_node.targets);
+                console.log('update targets');
+                console.log(mousedown_node.targets);
 
                 restart();	
             });
@@ -413,20 +408,13 @@ console.log(selected_link);
     $('#graph').addClass('graph');
 
     var full = d3.select('#graph')
-    .append('svg')
-    // .attr('width', width)
-    // .attr('height', height)	
+    .append('svg')    
     .attr("viewBox", "0 0 " + width + " " + height )
     .attr("preserveAspectRatio", "xMidYMid meet")
     .attr("pointer-events", "all")
     .call(zoom.on("zoom", redraw));
     
-    var svg = full.append('svg:g');
-
-    /* moved to constructor
-    zoom.translate(initialVector);
-    zoom.scale(initialScale);
-    svg.attr("transform", "translate(" + initialVector + ")" + " scale(" + initialScale + ")");	*/
+    var svg = full.append('svg:g');   
 
     // background rect to capture editing events
     var rect = svg.append('svg:g').append('svg:rect')
@@ -453,18 +441,7 @@ console.log(selected_link);
         
         var head = $('#end-arrow-000').clone().attr('id', 'end-arrow-' + hex).appendTo($('#svg-defs'));
         head.children('path').attr('fill', '#' + hex);
-    }       
-
-    /* svg.append('svg:defs').append('svg:marker')
-    .attr('id', 'start-arrow')
-    .attr('viewBox', '0 -5 10 10')
-    .attr('refX', 4)
-    .attr('markerWidth', 3)
-    .attr('markerHeight', 3)
-    .attr('orient', 'auto')
-    .append('svg:path')
-    .attr('d', 'M10,-5L0,0L10,5')
-    .attr('fill', '#000');*/
+    }
 
     // line displayed when dragging new nodes
     var drag_line = svg.append('svg:path')
@@ -483,6 +460,7 @@ console.log(selected_link);
         return url + 'api/v1/election/' + id + '/direct_votes/?format=json&limit=1000';
     }
 
+    // FIXME loop detection
     // liquid tally
     var maxVotes = 0.0;
     var maxWeight = 0;
@@ -501,9 +479,7 @@ console.log(selected_link);
                 item.transients = 0;
                 next = next.concat(item.targets);
             }
-        });		
-console.log('next');
-console.log(next);
+        });
         if(next.length > 0) liquidTally(next);
     }
     
@@ -574,19 +550,17 @@ console.log(next);
                         loadedDelegatedVotes++;
                     }
                 });
-                // console.log(allNodes);
-                /* var users = delegated.objects.reduce(function(obj, x) {
-                    var choice = x.public_data.answers[0].choices[0];
-                    var voter = x.voter;
-                    var ret = {};
-                    ret[choice.user_id] = {'id': choice.user_id, 'name': choice.username, 'user_name': choice.user_name, 'type': 'voter', 'color': '#0099FF'}
-                    ret[voter.id] = {'id': voter.id, 'name': voter.first_name, 'user_name': voter.username, 'type': 'voter', 'color': '#0099FF'}
-                    return $.extend({}, obj, ret);
-                }, {});*/ 
+                
                 $.getJSON(directVotesUrl(electionId), {})
                 .done(function( direct ) {
                     
                     $.each(direct.objects, function(index, item) {                        
+                        var voterNode;
+                        var voter = item.voter;
+                        if(allNodes[voter.id] == null) {
+                            allNodes[voter.id] = {'id': ++lastNodeId, 'name': voter.first_name, 'user_name': voter.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
+                        }
+                        voterNode = allNodes[voter.id];
                         
                         if(item.public_data.answers != null) {
                             /* var choice = item.public_data.answers[0].choices[0];
@@ -604,19 +578,16 @@ console.log(next);
                             voterNode.targets = [choiceNode].concat(voterNode.targets);
                             loadedVotes++;*/
                             
-                            var voter = item.voter;
+                            
                             var choices = item.public_data.answers[0].choices;
                             $.each(choices, function(idx, choice) {
-                                var choiceNode, voterNode;
+                                var choiceNode;
                             
                                 if(allNodes[choice] == null) {
                                     allNodes[choice] = {'id': ++lastNodeId, 'name': choice, 'user_name': '', 'type': 'choice', 'color': '#00CC00', 'votes': 0}
                                 }
                                 choiceNode = allNodes[choice];					
-                                if(allNodes[voter.id] == null) {
-                                    allNodes[voter.id] = {'id': ++lastNodeId, 'name': voter.first_name, 'user_name': voter.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
-                                }
-                                voterNode = allNodes[voter.id];
+                                
                                 // update targets
                                 voterNode.targets = [choiceNode].concat(voterNode.targets);                                
                             });
