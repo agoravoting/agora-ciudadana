@@ -334,10 +334,10 @@ CELERY_DISABLE_RATE_LIMITS = True
 
 from celery.schedules import crontab
 CELERYBEAT_SCHEDULE = {
-    # Executes clean_expired_users task every Monday morning at 7:30 A.M
+    # Executes clean_expired_users task every day at 7:30 A.M
     'every-monday-morning': {
-        'task': 'tasks.election.clean_expired_users',
-        'schedule': crontab(hour=7, minute=30, day_of_week=1),
+        'task': 'agora_site.agora_core.tasks.election.clean_expired_users',
+        'schedule': crontab(hour=7, minute=30),
     },
 }
 
