@@ -53,6 +53,12 @@
                                     <%= gettext("Remove membership") %>
                                 </a>
                             </li>
+                            <li>
+                                <a href="<%= agora_path %>/action/make-admin/<%= username %>" class="action-form-link">
+                                    <i class="icon-remove"></i>
+                                    <%= gettext("Make admin") %>
+                                </a>
+                            </li>
                             <% } %>
                             <% if (_.contains(agora_permissions, "leave_admin")) { %>
                             <li>
