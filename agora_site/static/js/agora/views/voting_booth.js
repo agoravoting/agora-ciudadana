@@ -493,11 +493,14 @@
             this.delegateEvents();
 
             // user cannot vote secretly
-            if (this.model.get('user_perms').indexOf('vote_counts') == -1) {
+            if (this.model.get('user_perms').indexOf('vote_counts') == -1 ||
+                !this.model.get('is_vote_secret')) {
                 this.$el.find("#user_vote_is_public").attr('checked', 'checked');
                 this.$el.find("#user_vote_is_public").attr('disabled', true);
+                this.$el.find("#user_vote_is_public").hide();
                 this.$el.find("#user_vote_is_public").closest('label').find('span.optional').hide();
                 this.$el.find("#user_vote_is_public").closest('label').find('span.mandatory').removeClass('hide');
+                this.$el.find(".mainlabel").hide();
             }
             return this;
         },
