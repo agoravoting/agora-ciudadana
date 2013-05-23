@@ -1,0 +1,26 @@
+<script id="template-action_list" type="text/underscore-template">
+    <% if (dropdown) { %>
+    <div class="btn-group">
+        <a class="btn dropdown-toggle main-action <%= main_action_class %>"
+            href="#" data-toggle="dropdown" data-id="<%= main_action_id %>">
+            <i class="<%= main_action_icon %>"></i> <%= main_action_name %>
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <% for (var i = 0; i < actions.length; i++) { %>
+                <li>
+                    <a href="#" data-id="<%= actions[i].id %>" class="action-link">
+                        <i class="<%= actions[i].icon %>"></i>
+                        <%= actions[i].name %>
+                    </a>
+                </li>
+            <% } %>
+        </ul>
+    </div>
+    <% } else { %>
+    <a class="btn main-action action-link <%= main_action_class %>" href="#"
+        data-id="<%= main_action_id %>">
+        <i class="<%= main_action_icon %>"></i> <%= main_action_name %>
+    </a>
+    <% } %>
+</script>

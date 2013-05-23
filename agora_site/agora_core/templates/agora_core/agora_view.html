@@ -18,113 +18,8 @@
     <p>{{ agora.short_description }}</p>
 </div>
 
-<div class="upper-right-corner">
-    {% with perms=agora|get_perms:user %}
-        {% if user == agora.creator %}
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
-                <i class="icon-user"></i> {% trans "You are the owner" %}
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                    <a href="{% url agora-admin agora.creator.username agora.name %}">
-                        <i class="icon-edit"></i>
-                        {% trans "Edit agora details" %}
-                    </a>
-                </li>
-                <!-- TODO: do in a later version
-                <li>
-                    <a href="{ % agora-transfer-ownership agora.creator.username agora.name %}" class="action-form-link">
-                        <i class="icon-random"></i>
-                        {% trans "Transfer ownership" %}
-                    </a>
-                </li>-->
-            </ul>
-        </div>
-        {% elif user in agora.admins.all %}
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
-                <i class="icon-user"></i> {% trans "You are an admin" %}
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                    <a href="{% url agora-admin agora.creator.username agora.name %}">
-                        <i class="icon-edit"></i>
-                        {% trans "Edit agora details" %}
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url agora-action-leave-admin agora.creator.username agora.name %}" class="action-form-link">
-                        <i class="icon-remove"></i>
-                        {% trans "Remove my admin membership" %}
-                    </a>
-                </li>
-            </ul>
-        </div>
-        {% elif user in agora.members.all %}
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
-                <i class="icon-user"></i> {% trans "You are a member" %}
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                {% if "leave" in perms %}
-                <li>
-                    <a href="{% url agora-action-leave agora.creator.username agora.name %}" class="action-form-link">
-                        <i class="icon-remove"></i>
-                        {% trans "Remove my membership" %}
-                    </a>
-                </li>
-                {% endif %}
-                {% if "request_admin_membership" in perms %}
-                <li>
-                    <a href="{% url agora-action-request-admin-membership agora.creator.username agora.name %}" class="action-form-link">
-                        <i class="icon-eject"></i>
-                        {% trans "Request admin membership" %}
-                    </a>
-                </li>
-                {% endif %}
-                {% if "cancel_admin_membership_request" in perms %}
-                <li>
-                    <a href="{% url agora-action-cancel-admin-membership-request agora.creator.username agora.name %}" class="action-form-link">
-                        <i class="icon-remove"></i>
-                        {% trans "Cancel admin membership request" %}
-                    </a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
-        {% else %}
-            {% if 'join' in perms %}
-            <a class="btn btn-success action-form-link" href="{% url agora-action-join agora.creator.username agora.name %}">
-                <i class="icon-heart icon-white"></i>
-                {% trans "Join this agora now" %}
-            </a>
-            {% elif 'request_membership' in perms %}
-            <a class="btn btn-success action-form-link" href="{% url agora-action-join agora.creator.username agora.name %}">
-                <i class="icon-heart icon-white"></i>
-                {% trans "Request membership in this agora" %}
-            </a>
-            {% elif 'cancel_membership_request' in perms %}
-            <div class="btn-group">
-                <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
-                    <i class="icon-user"></i> {% trans "You requested membership" %}
-                    <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a href="{% url agora-action-leave agora.creator.username agora.name %}" class="action-form-link">
-                            <i class="icon-remove"></i>
-                            {% trans "Cancel my membership request" %}
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            {% endif %}
-        {% endif %}
-    {% endwith %}
+<div class="upper-right-corner" id="action_list">
+    <!-- here goes the backbone generated action list -->
 </div>
 
 <ul class="nav nav-tabs">
@@ -222,10 +117,13 @@
 {% include "agora_core/include-js-template-election.html" %}
 {% include "agora_core/include-js-template-agora.html" %}
 {% include "agora_core/client/all_actions.html" %}
+{% include "agora_core/client/action_list.html" %}
 {% include "agora_core/client/tallied_elections_view.html" %}
 <script>
 var ajax_data = {
-    'tallied_elections': {% rest request '/agora/' agora.id '/tallied_elections/?limit=3' %}
+    'tallied_elections': {% rest request '/agora/' agora.id '/tallied_elections/?limit=3' %},
+    'agora': {% rest request '/agora/' agora.id %},
+    'user_permissions': {% custom_rest request "POST" '{"action":"get_permissions"}' '/agora/' agora.id '/action/' %}
 };
 app.currentView = new Agora.AgoraView();
 </script>

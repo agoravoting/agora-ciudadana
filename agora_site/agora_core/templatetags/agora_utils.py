@@ -2,7 +2,7 @@
 from agora_site.agora_core.models import CastVote
 from agora_site.misc.utils import rest as rest_api
 
-
+import json
 from urlparse import urlparse, urlunparse
 from django.http import QueryDict
 from django import template
@@ -204,13 +204,21 @@ class IfActiveTabNode(template.Node):
 class RestNode(template.Node):
     args = None
 
-    def __init__(self, req, *args):
+    def __init__(self, req, method, data, *args):
         self.args = args
+        self.method = method
+        self.data = data
         self.req = req
 
     def render(self, context):
         try:
             request = template.Variable(self.req).resolve(context)
+            data = ""
+            method = "GET"
+            if self.method != "GET":
+                data = str(template.Variable(self.data).resolve(context))
+                method = str(template.Variable(self.method).resolve(context))
+
             args = [str(template.Variable(arg).resolve(context)) for arg in self.args]
             url = ''.join(args)
 
@@ -219,7 +227,8 @@ class RestNode(template.Node):
             query_dict = QueryDict(query)
             url = urlunparse((scheme, netloc, path, params, '', fragment))
 
-            status_code, container = rest_api(url, request=request, query=query_dict)
+            status_code, container = rest_api(url, request=request,
+                query=query_dict, data=data, method=method)
             if status_code >= 300:
                 return ''
             else:
@@ -230,8 +239,19 @@ class RestNode(template.Node):
 @register.tag
 def rest(parser, token):
     req = token.split_contents()[1]
+    method = "GET"
+    data = None
     bits = token.split_contents()[2:]
-    return RestNode(req, *bits)
+    return RestNode(req, method, data, *bits)
+
+
+@register.tag
+def custom_rest(parser, token):
+    req = token.split_contents()[1]
+    method = token.split_contents()[2]
+    data = token.split_contents()[3]
+    bits = token.split_contents()[4:]
+    return RestNode(req, method, data, *bits)
 
 @register.tag
 def activetab(parser, token):

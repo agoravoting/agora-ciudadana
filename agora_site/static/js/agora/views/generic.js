@@ -368,5 +368,49 @@
                 return json.username[0].toUpperCase();
             }
         };
+
+        /**
+         * This view renders a dynamic action list view. Inherit it
+         * overriding the model in the setup() function.
+         */
+        Agora.ActionListView = Backbone.View.extend({
+            el: "#action_list",
+
+            events: {
+                'click a.main-action': 'doMainAction',
+                'click a.action-link': 'doAction'
+            },
+
+            initialize: function() {
+                _.bindAll(this);
+                this.template = _.template($("#template-action_list").html());
+                this.setup();
+                this.render();
+
+                return this.$el;
+            },
+
+            setup: function() {
+                this.model = {};
+            },
+
+            render: function() {
+                if (this.model) {
+                    this.$el.html(this.template(this.model));
+                    this.delegateEvents();
+                }
+                return this;
+            },
+
+            doAction: function(e) {
+                e.preventDefault();
+                console.log("doAction not implemented");
+            },
+
+            doMainAction: function(e) {
+                e.preventDefault();
+                console.log("doMainAction not implemented");
+            }
+        });
     }).call(this);
 }).call(this);
