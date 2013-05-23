@@ -416,12 +416,14 @@ class AgoraResource(GenericResource):
             * request_membership
             * join
             * leave
+            * cancel_membership_request
             * accept_membership
             * deny_membership
             * add_membership
             * remove_membership
 
             * request_admin_membership
+            * cancel_admin_membership_request
             * accept_admin_membership
             * deny_admin_membership
             * add_admin_membership
@@ -443,6 +445,7 @@ class AgoraResource(GenericResource):
             'test': self.test_action,
 
             'request_membership': self.request_membership_action,
+            'cancel_membership_request': self.cancel_membership_request_action,
             'join': self.join_action,
             'leave': self.leave_action,
             'accept_membership': self.accept_membership_action,
@@ -451,6 +454,7 @@ class AgoraResource(GenericResource):
             'remove_membership': self.remove_membership_action,
 
             'request_admin_membership': self.request_admin_membership_action,
+            'cancel_admin_membership_request': self.cancel_admin_membership_request_action,
             'accept_admin_membership': self.accept_admin_membership_action,
             'deny_admin_membership': self.deny_admin_membership_action,
             'add_admin_membership': self.add_admin_membership_action,
@@ -515,6 +519,52 @@ class AgoraResource(GenericResource):
 
         return self.create_response(request, dict(status="success"))
 
+    @permission_required('cancel_membership_request', (Agora, 'id', 'agoraid'))
+    def cancel_membership_request_action(self, request, agora, **kwargs):
+        '''
+        Cancel a membership request from the given username user in an agora
+        '''
+        # remove the request membership status and add user to the agora
+        remove_perm('requested_membership', request.user, agora)
+
+        # create an action for the event
+        action.send(request.user, verb='cancelled requested membership',
+            action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            target=request.user,
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        # Mail to the user
+        if request.user.get_profile().has_perms('receive_email_updates'):
+            translation.activate(request.user.get_profile().lang_code)
+            context = get_base_email_context(request)
+            context.update(dict(
+                agora=agora,
+                other_user=request.user,
+                notification_text=_('Your cancelled your membership request at '
+                    '%(agora)s') % dict(
+                        agora=agora.get_full_name()
+                    ),
+                to=request.user
+            ))
+
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - cancelled your membership request at '
+                        '%(agora)s') % dict(
+                        site=Site.objects.get_current().domain,
+                        agora=agora.get_full_name()
+                    ),
+                body=render_to_string('agora_core/emails/agora_notification.txt',
+                    context),
+                to=[request.user.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/agora_notification.html',
+                    context), "text/html")
+            email.send()
+            translation.deactivate()
+
+        return self.create_response(request, dict(status="success"))
+
     @permission_required('join', (Agora, 'id', 'agoraid'))
     def join_action(self, request, agora, **kwargs):
         '''
@@ -559,7 +609,6 @@ class AgoraResource(GenericResource):
             translation.deactivate()
 
         return self.create_response(request, dict(status="success"))
-
 
     @permission_required('admin', (Agora, 'id', 'agoraid'))
     def accept_membership_action(self, request, agora, username, **kwargs):
@@ -803,6 +852,53 @@ class AgoraResource(GenericResource):
             remote_addr=request.META.get('REMOTE_ADDR')
         )
         send_request_admin_membership_mails.apply_async(kwargs=kwargs)
+
+        return self.create_response(request, dict(status="success"))
+
+
+    @permission_required('cancel_admin_membership_request', (Agora, 'id', 'agoraid'))
+    def cancel_admin_membership_request_action(self, request, agora, **kwargs):
+        '''
+        Cancel an admin membership request from the given username user in an agora
+        '''
+        # remove the request membership status and add user to the agora
+        remove_perm('requested_admin_membership', request.user, agora)
+
+        # create an action for the event
+        action.send(request.user, verb='cancelled requested admin membership',
+            action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            target=request.user,
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+        # Mail to the user
+        if request.user.get_profile().has_perms('receive_email_updates'):
+            translation.activate(request.user.get_profile().lang_code)
+            context = get_base_email_context(request)
+            context.update(dict(
+                agora=agora,
+                other_user=request.user,
+                notification_text=_('Your cancelled your admin membership request at '
+                    '%(agora)s') % dict(
+                        agora=agora.get_full_name()
+                    ),
+                to=request.user
+            ))
+
+            email = EmailMultiAlternatives(
+                subject=_('%(site)s - cancelled your admin membership request at '
+                        '%(agora)s') % dict(
+                        site=Site.objects.get_current().domain,
+                        agora=agora.get_full_name()
+                    ),
+                body=render_to_string('agora_core/emails/agora_notification.txt',
+                    context),
+                to=[request.user.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/agora_notification.html',
+                    context), "text/html")
+            email.send()
+            translation.deactivate()
 
         return self.create_response(request, dict(status="success"))
 

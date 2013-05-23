@@ -246,6 +246,16 @@ class AgoraTest(RootTestCase):
         self.assertEquals(data['meta']['total_count'], 1)
         self.assertEquals(data['objects'][0]['username'], 'user2')
 
+        # user2 stops requesting
+        orig_data = {'action': "cancel_membership_request"}
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # user2 is requesting
+        data = self.getAndParse('agora/1/membership_requests/', code=HTTP_OK)
+        self.assertEquals(data['meta']['total_count'], 0)
+
+
     def test_agora_accept_membership_request(self):
         '''
         Test that an admin can accept a membership request

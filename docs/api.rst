@@ -427,6 +427,10 @@ Execute an action
 
    The authenticated user requests membership in the specified agora. The authenticated user must have the ``request_membership`` permission on the agora to succeed.
 
+   **cancel_membership**
+
+   The authenticated user cancels its membership request in an agora. The authenticated user must have ``cancel_membership_request`` permission on the agora to succeed.
+
    **join**
 
    The authenticated user joins the specified agora. The authenticated user must have the ``join`` permission on the agora to succeed.
@@ -453,6 +457,10 @@ Execute an action
    **request_admin_membership**
 
    The authenticated user requests admin membership in an agora. The authenticated user must have ``request_admin_membership`` permission on the agora to succeed.
+
+   **cancel_admin_membership**
+
+   The authenticated user cancels its admin membership request in an agora. The authenticated user must have ``cancel_admin_membership_request`` permission on the agora to succeed.
 
    **accept_admin_membership**
 
