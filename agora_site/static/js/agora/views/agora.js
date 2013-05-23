@@ -120,6 +120,14 @@
                         icon: "icon-remove"
                     };
                 }
+
+                if (_.contains(ajax_data.user_permissions.permissions, "cancel_vote_delegation")) {
+                    this.model.actions[this.model.actions.length] = {
+                        id: "cancel_vote_delegation",
+                        name: gettext("Cancel vote delegation"),
+                        icon: "icon-remove"
+                    };
+                }
             } else if (_.contains(ajax_data.user_permissions.permissions, "join")) {
                 this.model = {
                     dropdown: false,
@@ -195,6 +203,8 @@
             case "cancel-membership-request":
                 data = {action: "cancel_membership_request"};
                 break;
+            case "cancel_vote_delegation":
+                data = {action: "cancel_vote_delegation"};
             }
 
             var jqxhr = $.ajax("/api/v1/agora/" + ajax_data.agora.id + "/action/", {
