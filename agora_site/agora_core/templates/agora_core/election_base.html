@@ -411,11 +411,11 @@
     <strong class="winners"><%= gettext("Winner: ") %> <%= question.winners[0] %></strong>
     <% for(var i = 0; i < question.answers.length; i++) { %>
         <li style="color: <%= question.answers[i].color %>" data-value="<%= question.answers[i].total_count %>">
+            <span class="legendbox" style="background-color: <%= question.answers[i].color %>"></span>
             <%= question.answers[i].value %>
             <em>
                 (<%= interpolate(gettext("%s votes"), [question.answers[i].total_count]) %>)
                 <%= parseFloat(question.answers[i].total_count_percentage).toFixed(2) %>%
-                <span class="legendbox" style="background-color: <%= question.answers[i].color %>"></span>
             </em>
         </li>
     <% } %>
