@@ -59,6 +59,9 @@
     Charts._arc_mouseover = function(o, arc2, key_selector) {
         var obj = d3.select(o);
         var key = key_selector(obj.data()[0].data);
+        if (key.length >= 35) {
+            key = key.slice(0, 35) + '...';
+        }
         var val = obj.data()[0].value;
         var svg = d3.select('svg');
         var width = svg.attr("width");
@@ -70,7 +73,7 @@
 
             d3.select("g").append("text")
                 .attr("class", "textg")
-                .attr("dy", "-4em")
+                .attr("dy", "-3em")
                 .attr("text-anchor", "middle")
                 .style("font", "300 24px Sans Serif") 
                 .text(key);
