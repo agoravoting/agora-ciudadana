@@ -189,12 +189,14 @@
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'change:question_num', this.render);
             this.listenTo(this.model.get("answers"), 'change:value', this.answerChanged);
+            this.$el.find("form").submit(function (e) { e.preventDefault(); return false; });
 
             return this.$el;
         },
 
         render: function() {
             var json = this.model.toJSON();
+            json.edit_election = (!ajax_data) ? false : true;
             this.$el.html(this.template(json));
             this.$el.attr("id", this.id);
 
@@ -313,7 +315,7 @@
             e.preventDefault();
             this.model.formValid = true;
             return false;
-        },
+        }
     });
 
     Agora.ElectionCreateForm = Backbone.View.extend({
@@ -356,6 +358,7 @@
             'click #schedule_voting_label': 'checkSchedule',
             'click .create_question_btn': 'createQuestion',
             'click .remove_question_btn': 'removeQuestion',
+            'click .create_election_btn': 'saveElection'
         },
 
         getInitModel: function() {
@@ -401,7 +404,7 @@
                 this.$el.find("#schedule_voting").click();
                 $('div.top-form #schedule_voting_controls').toggle();
             }
-            $("#create_election_form").submit(this.saveElection);
+            this.$el.find("form").submit(function (e) { e.preventDefault(); return false; });
         },
 
         removeQuestion: function(e) {
@@ -482,6 +485,12 @@
         saveElection: function(e) {
             e.preventDefault();
             // if we are already sending do nothing
+            if (!$("#main-election-tab").hasClass("active")) {
+                $("#main-election-tab a").tab('show');
+                $("#create_election_form [type=submit]").click();
+                return;
+            }
+
             if (this.sendingData) {
                 return;
             }
@@ -507,7 +516,7 @@
             // okey, we're going to send this new election - but first disable
             // the send question button to avoid sending the same thing multiple
             // times
-            this.$el.find("#create_election_btn").addClass("disabled");
+            this.$el.find(".create_election_btn").addClass("disabled");
             this.sendingData = true;
 
             var json = this.model.toJSON();
@@ -522,7 +531,7 @@
             .done(function(e) { window.location.href = e.url; })
             .fail(function() {
                 self.sendingData = false;
-                self.$el.find("#create_election_btn").removeClass("disabled");
+                self.$el.find(".create_election_btn").removeClass("disabled");
                 alert("Error creating the election");
             });
 
@@ -531,11 +540,11 @@
 
         updateButtonsShown: function() {
             if (this.model.get("questions").length == 0) {
-                this.$el.find("#create_election_btn").hide();
+                this.$el.find(".create_election_btn").hide();
                 this.$el.find("#save_election_btn").hide();
                 this.$el.find("#show_add_question_tab_btn").show();
             } else {
-                this.$el.find("#create_election_btn").show();
+                this.$el.find(".create_election_btn").show();
                 this.$el.find("#save_election_btn").show();
                 this.$el.find("#show_add_question_tab_btn").hide();
             }
@@ -573,7 +582,7 @@
 
         modelToJsonForTemplate: function() {
             var json = this.model.toJSON();
-            json.edit_election = true;
+            json.edit_election = (!ajax_data) ? false : true;
             return json;
         },
 
@@ -581,6 +590,13 @@
 
         saveElection: function(e) {
             e.preventDefault();
+            // if we are already sending do nothing
+            if (!$("#main-election-tab").hasClass("active")) {
+                $("#main-election-tab a").tab('show');
+                $("#create_election_form [type=submit]").click();
+                return;
+            }
+
             // if we are already sending do nothing
             if (this.sendingData) {
                 return;

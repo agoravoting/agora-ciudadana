@@ -5,7 +5,7 @@
     <h1><%= gettext("Create election") %></h1>
     <% } %>
         <ul class="nav nav-tabs">
-            <li class="active">
+            <li class="active" id="main-election-tab">
                 <a href="#election-tab"  data-toggle="tab"><%= gettext("Election") %></a>
             </li>
             <li id="add-question-navtab"><a href="#question-tab-0" data-toggle="tab"><i class="icon-plus"></i> <%= gettext("Add question") %></a></li>
@@ -55,13 +55,14 @@
                         <button class="btn btn-large btn-block btn-primary" id="show_add_question_tab_btn" type="button">
                             <%= gettext("Add question") %>
                         </button>
-                        <button class="btn btn-large btn-block btn-success" id="create_election_btn" type="submit">
+                        <button class="btn btn-large btn-block btn-success create_election_btn">
                         <% if (!edit_election) { %>
                             <%= gettext("Create election") %>
                         <% } else { %>
                             <%= gettext("Save election") %>
                         <% } %>
                         </button>
+                        <input type="submit" class="hide" value="submit"/>
                     </div>
                 </fieldset></form>
             </div>
@@ -171,10 +172,18 @@
                 <%= gettext("Remove question") %>
             </button>
             <% } else { %>
-            <button class="btn btn-large btn-block btn-success create_question_btn" id="create_question_btn<%=question_num%>" type="button">
+            <button class="btn btn-large btn-block btn-primary create_question_btn" id="create_question_btn<%=question_num%>" type="button">
                 <%= gettext("Add question") %>
             </button>
             <% } %>
+            <div class="small-space-separator"></div>
+            <button class="btn btn-large btn-block btn-success create_election_btn">
+            <% if (!edit_election) { %>
+                <%= gettext("Create election") %>
+            <% } else { %>
+                <%= gettext("Save election") %>
+            <% } %>
+            </button>
             <input type="submit" class="hide" value="submit"/>
         </div>
     </fieldset>

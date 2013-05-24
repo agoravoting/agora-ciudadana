@@ -17,5 +17,8 @@
 
 {% block script-block %}
     {% include "agora_core/client/election_form.html" %}
-    <script>app.currentView = new Agora.ElectionCreateForm();</script>
+    <script>
+    var ajax_data = null;
+    app.currentView = new Agora.ElectionCreateForm();
+    </script>
 {% endblock %}
