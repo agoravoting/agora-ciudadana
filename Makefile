@@ -11,47 +11,47 @@ agoraless:
 
 mainjs:
 	./node_modules/uglify-js/bin/uglifyjs \
-					      agora_site/static/js/libs/jquery-1.8.3.min.js \
-					      agora_site/static/js/libs/underscore-min.js \
+					      agora_site/static/js/libs/jquery.js \
+					      agora_site/static/js/libs/underscore.js \
 					      agora_site/static/js/libs/json2.js \
-					      agora_site/static/js/libs/backbone-min.js \
-					      agora_site/static/js/libs/underscore.string.min.js \
-					      agora_site/static/js/libs/bootstrap.min.js \
-					      agora_site/static/js/libs/jquery-ui-1.8.23.custom.min.js \
+					      agora_site/static/js/libs/backbone.js \
+					      agora_site/static/js/libs/underscore.string.js \
+					      agora_site/static/js/libs/bootstrap.js \
+					      agora_site/static/js/libs/jquery-ui.js \
 					      agora_site/static/js/libs/jquery-ui-timepicker-addon.js \
 					      agora_site/static/js/libs/jquery-shuffle.js \
 					      agora_site/static/js/libs/jsrender.js \
-					      agora_site/static/js/libs/d3.v2.min.js \
-					      agora_site/static/js/libs/nv.d3.min.js \
-					      agora_site/static/js/libs/moment.min.js \
+					      agora_site/static/js/libs/d3.v3.js \
+					      agora_site/static/js/libs/nv.d3.js \
+					      agora_site/static/js/libs/moment.js \
 					      agora_site/static/js/libs/moment-lang/gl.js \
 					      agora_site/static/js/libs/moment-lang/es.js \
-					      agora_site/static/js/libs/livestamp.min.js \
-					      agora_site/static/js/libs/nod.min.js \
+					      agora_site/static/js/libs/livestamp.js \
+					      agora_site/static/js/libs/nod.js \
 					      agora_site/static/js/libs/showdown.js \
-					      agora_site/static/js/libs/backbone-associations.min.js \
+					      agora_site/static/js/libs/backbone-associations.js \
 					      agora_site/static/js/libs/sortElements-jquery.js \
 					      -o agora_site/static/js/min/main.min.js
 	./node_modules/uglify-js/bin/uglifyjs \
-					      agora_site/static/js/libs/jquery-1.8.3.min.js \
-					      agora_site/static/js/libs/underscore-min.js \
+					      agora_site/static/js/libs/jquery.js \
+					      agora_site/static/js/libs/underscore.js \
 					      agora_site/static/js/libs/json2.js \
-					      agora_site/static/js/libs/backbone-min.js \
-					      agora_site/static/js/libs/underscore.string.min.js \
-					      agora_site/static/js/libs/bootstrap.min.js \
-					      agora_site/static/js/libs/jquery-ui-1.8.23.custom.min.js \
+					      agora_site/static/js/libs/backbone.js \
+					      agora_site/static/js/libs/underscore.string.js \
+					      agora_site/static/js/libs/bootstrap.js \
+					      agora_site/static/js/libs/jquery-ui.js \
 					      agora_site/static/js/libs/jquery-ui-timepicker-addon.js \
 					      agora_site/static/js/libs/jquery-shuffle.js \
 					      agora_site/static/js/libs/jsrender.js \
-					      agora_site/static/js/libs/r2d3.min.js \
-					      agora_site/static/js/libs/nv.d3.min.js \
-					      agora_site/static/js/libs/moment.min.js \
+					      agora_site/static/js/libs/d3.v3.js \
+					      agora_site/static/js/libs/nv.d3.js \
+					      agora_site/static/js/libs/moment.js \
 					      agora_site/static/js/libs/moment-lang/gl.js \
 					      agora_site/static/js/libs/moment-lang/es.js \
-					      agora_site/static/js/libs/livestamp.min.js \
-					      agora_site/static/js/libs/nod.min.js \
+					      agora_site/static/js/libs/livestamp.js \
+					      agora_site/static/js/libs/nod.js \
 					      agora_site/static/js/libs/showdown.js \
-					      agora_site/static/js/libs/backbone-associations.min.js \
+					      agora_site/static/js/libs/backbone-associations.js \
 					      agora_site/static/js/libs/sortElements-jquery.js \
 					      -o agora_site/static/js/min/main.compat.min.js -b
 agorajs:
