@@ -267,6 +267,7 @@ Nod = (function() {
 
   function Nod(form, fields, options) {
     this.form = form;
+    form[0].__nod = this;
     this.formIsErrorFree = __bind(this.formIsErrorFree, this);
 
     this.submitForm = __bind(this.submitForm, this);
@@ -408,6 +409,9 @@ Nod = (function() {
 
   Nod.prototype.formIsErrorFree = function() {
     return !jQuery(this.listeners).filter(function() {
+        if (this.status == null) {
+            this.runCheck();
+        }
       return !this.status;
     }).length;
   };
@@ -442,6 +446,9 @@ Nod = (function() {
 
 
 $.fn.nod = function(fields, settings) {
+  if (fields == undefined && settings == undefined) {
+     return this[0].__nod;
+  }
   new Nod(this, fields, settings);
   return this;
 };

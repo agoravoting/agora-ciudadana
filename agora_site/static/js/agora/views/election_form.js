@@ -189,7 +189,6 @@
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'change:question_num', this.render);
             this.listenTo(this.model.get("answers"), 'change:value', this.answerChanged);
-            this.$el.find("form").submit(function (e) { e.preventDefault(); return false; });
 
             return this.$el;
         },
@@ -217,8 +216,10 @@
             });
 
             this.resetAnswers();
-            this.$el.find("form").nod(this.getMetrics());
-            this.$el.find("form").submit(this.createQuestion);
+            this.$el.find("form").nod(this.getMetrics(),
+                {silentSubmit: true, broadcastError: true});
+            this.$el.find("form").on('silentSubmit', this.createQuestion);
+            this.$el.find("form").submit(function (e) { e.preventDefault(); });
             return this;
         },
 
@@ -232,9 +233,9 @@
         },
 
         userAddAnswerEnter: function(e) {
+            e.preventDefault();
             if (e.keyCode == 13) { // <Enter>
                 this.userAddAnswer();
-                e.preventDefault();
             }
         },
 
@@ -312,10 +313,15 @@
         },
 
         createQuestion: function(e) {
-            e.preventDefault();
-            this.model.formValid = true;
-            return false;
-        }
+            // create the question
+            this.updateModel();
+            var model = this.model.clone();
+            model.set("question_num", app.currentView.model.get('questions').length + 1);
+            app.currentView.model.get('questions').add(model);
+
+            // reset the add question tab
+            this.resetForm();
+        },
     });
 
     Agora.ElectionCreateForm = Backbone.View.extend({
@@ -356,9 +362,7 @@
             'click #schedule_voting': 'toggleScheduleVoting',
             'click #show_add_question_tab_btn': 'showAddQuestionTab',
             'click #schedule_voting_label': 'checkSchedule',
-            'click .create_question_btn': 'createQuestion',
             'click .remove_question_btn': 'removeQuestion',
-            'click .create_election_btn': 'saveElection'
         },
 
         getInitModel: function() {
@@ -373,6 +377,12 @@
         },
 
         initialize: function() {
+            var log_error = function( event, data ) {
+                console.log( data.el );
+                console.log( data.msg );
+            }
+            $( window ).on( 'nod_error_fired', log_error );
+
             this.template = _.template($("#template-election_form").html());
             this.templateNavtab = _.template($("#template-election_form_question_navtab").html());
 
@@ -398,13 +408,16 @@
             this.updateButtonsShown();
 
             // do various setup calls
-            this.$el.find("#create_election_form").nod(this.getMetrics());
+            this.$el.find("#create_election_form").nod(this.getMetrics(),
+                {silentSubmit: true})
+            this.$el.find("#create_election_form").on('silentSubmit', this.saveElection);
+            this.$el.find("form").submit(function (e) { e.preventDefault(); });
+
             $('.datetimepicker').datetimepicker();
             if (this.model.get("from_date")) {
                 this.$el.find("#schedule_voting").click();
                 $('div.top-form #schedule_voting_controls').toggle();
             }
-            this.$el.find("form").submit(function (e) { e.preventDefault(); return false; });
         },
 
         removeQuestion: function(e) {
@@ -423,25 +436,6 @@
 
             var selector = "#add-question-navtab a";
             this.$el.find(selector).tab('show');
-        },
-
-        createQuestion: function() {
-            // use nod to check form is valid. nod will trigger a form submit
-            // only if form is valid, which will set this.formValid to true
-            this.addQuestionView.model.formValid = false;
-            this.addQuestionView.$el.find("[type=submit]").click();
-            if (!this.addQuestionView.model.formValid) {
-                return;
-            }
-
-            // create the question
-            this.addQuestionView.updateModel();
-            var model = this.addQuestionView.model.clone();
-            model.set("question_num", this.model.get('questions').length + 1);
-            this.model.get('questions').add(model);
-
-            // reset the add question tab
-            this.addQuestionView.resetForm();
         },
 
         checkSchedule: function(e) {
@@ -499,10 +493,8 @@
 
             // look for a question whose data is invalid
             var failingQuestion = this.model.get('questions').find(function (question) {
-                question.formValid = false;
-                question.questionView.$el.find("[type=submit]").click();
-                return question.formValid == false;
                 question.questionView.updateModel();
+                return !question.questionView.$el.find("form").nod().formIsErrorFree();
             });
 
             // if found, switch to that question
@@ -516,7 +508,7 @@
             // okey, we're going to send this new election - but first disable
             // the send question button to avoid sending the same thing multiple
             // times
-            this.$el.find(".create_election_btn").addClass("disabled");
+            $(".create_election_btn").addClass("disabled");
             this.sendingData = true;
 
             var json = this.model.toJSON();
@@ -531,7 +523,7 @@
             .done(function(e) { window.location.href = e.url; })
             .fail(function() {
                 self.sendingData = false;
-                self.$el.find(".create_election_btn").removeClass("disabled");
+                $(".create_election_btn").removeClass("disabled");
                 alert("Error creating the election");
             });
 
@@ -590,13 +582,6 @@
 
         saveElection: function(e) {
             e.preventDefault();
-            // if we are already sending do nothing
-            if (!$("#main-election-tab").hasClass("active")) {
-                $("#main-election-tab a").tab('show');
-                $("#create_election_form [type=submit]").click();
-                return;
-            }
-
             // if we are already sending do nothing
             if (this.sendingData) {
                 return;
