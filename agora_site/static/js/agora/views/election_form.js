@@ -120,7 +120,13 @@
             'click .dropdown-menu li a': 'selectVotingSystem',
             'click .add_option_btn': 'userAddAnswer',
             'keyup .add_option': 'userAddAnswerEnter',
-            'click .remove_option': 'userRemoveAnswer'
+            'click .remove_option': 'userRemoveAnswer',
+            'click .create_election_btn': 'saveElection'
+        },
+
+        saveElection:  function(e) {
+            $("#main-election-tab a").tab('show');
+            $("#create_election_form").nod().massCheck();
         },
 
         getMetrics: function() {

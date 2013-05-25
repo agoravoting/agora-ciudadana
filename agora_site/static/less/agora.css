@@ -5603,10 +5603,16 @@ img.mugshot,
   width: 360px;
   margin-left: -50px;
 }
-.lateralwidget-spacer {
+.lateralwidget-spacer,
+.space-separator {
   display: block;
   clear: both;
   height: 30px;
+}
+.small-space-separator {
+  display: block;
+  clear: both;
+  height: 15px;
 }
 ul.list-container {
   display: block;
