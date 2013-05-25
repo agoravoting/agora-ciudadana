@@ -139,9 +139,28 @@
             initialize: function() {
                 _.bindAll(this);
                 this.template = _.template($("#template-modal_dialog").html());
-                this.$el.html(this.template(this.model.toJSON()));
                 this.delegateEvents();
             },
+
+            populate: function(header, body, footer) {
+                this.$el.html(this.template({'header': header,
+                                             'body':  body,
+                                             'footer': footer}));
+            },
+
+            modal: function(data) {
+                this.$el.find("#modal_dialog").modal(data);
+            },
+
+            hide: function() {
+                this.modal('hide');
+            },
+
+            show: function() {
+                this.modal('show');
+            },
+
+
         });
     }).call(this);
 

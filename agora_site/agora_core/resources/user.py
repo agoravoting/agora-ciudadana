@@ -15,8 +15,10 @@ from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from userena import forms as userena_forms
 
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
+from agora_site.misc.utils import rest
 from agora_site.agora_core.forms.user import *
 from agora_site.agora_core.models import Profile
+from agora_site.agora_core.models import Agora
 
 
 class TinyUserResource(GenericResource):
@@ -183,7 +185,11 @@ class UserResource(GenericResource):
 
             url(r"^(?P<resource_name>%s)/set_username/(?P<user_list>\w[\w/;-]*)%s$" \
                 % (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('user_set_by_username'), name="api_user_set_by_username")
+                self.wrap_view('user_set_by_username'), name="api_user_set_by_username"),
+
+            url(r"^(?P<resource_name>%s)/invite%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('user_invite'), name="api_user_invite")
         ]
 
     def disable(self, request, **kwargs):
@@ -237,6 +243,39 @@ class UserResource(GenericResource):
                       }
 
         return self.create_response(request, object_list)
+
+    def user_invite(self, request, **kwargs):
+        if request.method != 'POST':
+            raise ImmediateHttpResponse(response=http.HttpMethodNotAllowed())
+        data = self.deserialize_post_data(request)
+        emails = data['emails']
+        agoraid = data['agoraid']
+        agora = get_object_or_404(Agora, pk=agoraid)
+
+        if not agora.has_perms('admin', request.user):
+            raise ImmediateHttpResponse(response=http.HttpMethodNotAllowed())
+
+        for email in emails:
+            q = User.objects.filter(email=email)
+            exists = q.exists()
+            if exists:
+                # if user exists in agora, we'll add it directly
+                u = q[0]
+                status, resp = rest('agora/%s/action/' % agoraid,
+                                    data={'action': 'add_membership',
+                                          'username': u.username,
+                                          'welcome_message': 'HOLA'},
+                                    method="POST",
+                                    request=request)
+                if status != '200':
+                    # there's a problem here
+                    #import ipdb; ipdb.set_trace()
+                    pass
+            else:
+                # send invitation
+                pass
+
+        return self.create_response(request, {'debug': 'ok'})
 
     def agoras(self, request, **kwargs):
         '''

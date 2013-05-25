@@ -360,7 +360,10 @@ def rest(path, query={}, data={}, headers={}, method="GET", request=None):
     hreq = FakeHttpRequest()
     hreq.path = '/api/v1' + path
     hreq.GET = query
-    hreq.POST = data
+    if isinstance(data, basestring):
+        hreq.POST = data
+    else:
+        hreq.POST = json.dumps(data)
     hreq.META = headers
     hreq.method = method
     if request:

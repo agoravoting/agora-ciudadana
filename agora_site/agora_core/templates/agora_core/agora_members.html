@@ -24,7 +24,7 @@
         <div class="span4 agora-right-side">
             {% if agora|is_agora_admin:user %}
 	    <!--<a class="btn btn-large btn-block bottom-space" href="{ % url agora-add-members agora.creator.username agora.name %}">-->
-            {% trans "Add members manually" %}
+            <a id="manual-member" class="btn btn-primary btn-block btn-large">{% trans "Add members manually" %}</a>
             </a>
             {% endif %}
             <ul class="nav nav-pills nav-stacked">
@@ -62,6 +62,41 @@
 
 
 {% block script-block %}
+    <script>
+    var ajax_data = {
+        'agora': {% rest request '/agora/' agora.id %},
+    };
+    </script>
+
+
     {% include "search/include-js-template-agora-profile.html" %}
     <script>app.currentView = new Agora.AgoraUserListView(); </script>
+
+    {% include "agora_core/client/modal_dialog.html" %}
+    <div class="modal-foot hide">
+         <a href="#" class="btn btn-primary">{% trans "Add members" %}</a>
+    </div>
+    <div class="modal-body hide">
+        <p>
+        {% blocktrans %}
+        Add members emails to invite separated by commas. If the
+        user exists in agora will be added directly, if not an email with
+        an invitation will be sent.
+        {% endblocktrans %}
+        </p>
+        <textarea placeholder="user1@example.com, user2@example.com" class="input-block-level"></textarea>
+    </div>
+    <script type="text/javascript">
+        app.addMembersDialog = new Agora.ModalDialogView();
+        title = gettext('Add members manually');
+        body = $(".modal-body").html();
+        footer = $(".modal-foot").html();
+
+        app.addMembersDialog.populate(title, body, footer);
+        $("#manual-member").click(function() {
+            app.addMembersDialog.show();
+            return false;
+        });
+    </script>
+
 {% endblock %}
