@@ -84,6 +84,10 @@ class UserTest(RootTestCase):
         data = self.postAndParse('user/password_reset/', {'email': 'david@david.com'})
         # TODO can we test that the operation worked?
 
+    def test_send_mail(self):
+        self.login('david', 'david')
+        data = self.postAndParse('user/1/send_mail/',
+        {'comment': 'holaaaaaaaaaaaa'}, code=HTTP_OK)
 
     def test_disable(self):
         self.get('user/disable/', code=HTTP_METHOD_NOT_ALLOWED)

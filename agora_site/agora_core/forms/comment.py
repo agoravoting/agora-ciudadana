@@ -5,6 +5,7 @@ import json
 from django import forms as django_forms
 from django.contrib.comments.forms import CommentSecurityForm
 from django.conf import settings
+from django.template.loader import render_to_string
 from django.contrib.comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
 from django.utils.encoding import force_unicode

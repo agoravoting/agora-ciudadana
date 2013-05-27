@@ -16,6 +16,7 @@ from userena import forms as userena_forms
 
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.misc.utils import rest
+from agora_site.misc.decorators import permission_required
 from agora_site.agora_core.forms.user import *
 from agora_site.agora_core.models import Profile
 from agora_site.agora_core.models import Agora
@@ -67,10 +68,14 @@ class TinyProfileResource(GenericResource):
     full_name = fields.CharField()
     num_agoras = fields.IntegerField()
     num_votes = fields.IntegerField()
+    permissions_on_user = fields.ApiField()
 
     class Meta(GenericMeta):
         queryset = Profile.objects.all()
         fields = ["id"]
+
+    def dehydrate_permissions_on_user(self, bundle):
+        return bundle.obj.get_perms(bundle.request.user)
 
     def dehydrate_username(self, bundle):
         return bundle.obj.user.username
@@ -187,6 +192,10 @@ class UserResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('user_set_by_username'), name="api_user_set_by_username"),
 
+            url(r"^(?P<resource_name>%s)/(?P<userid>\d+)/send_mail%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('send_mail'), name="api_user_send_mail"),
+
             url(r"^(?P<resource_name>%s)/invite%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('user_invite'), name="api_user_invite")
@@ -213,6 +222,13 @@ class UserResource(GenericResource):
             return self.create_response(request, dict(status="success"))
         except Exception, e:
             raise ImmediateHttpResponse(response=http.HttpBadRequest())
+
+    @permission_required('receive_mail', (Profile, 'user__id', 'userid'))
+    def send_mail(self, request, **kwargs):
+        '''
+        Send mail to the user
+        '''
+        return self.wrap_form(SendMailForm)(request, **kwargs)
 
     def user_settings(self, request, **kwargs):
         '''

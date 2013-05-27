@@ -74,10 +74,12 @@ class Profile(UserenaLanguageBaseProfile):
         else:
             return self.user.username
 
-    def has_perms(self, permission_name):
+    def has_perms(self, permission_name, user=None):
         '''
         Return whether a given user has a given permission name
         '''
+        isanon = user and user.is_anonymous()
+
         if permission_name == 'receive_email_updates':
             from django.core.validators import validate_email
             from django.core.exceptions import ValidationError
@@ -85,9 +87,24 @@ class Profile(UserenaLanguageBaseProfile):
                 validate_email(self.user.email)
             except ValidationError:
                 return False
-            return self.email_updates
+            return self.email_updates 
+        elif permission_name == 'receive_mail':
+            from django.core.validators import validate_email
+            from django.core.exceptions import ValidationError
+            try:
+                validate_email(self.user.email)
+            except ValidationError:
+                return False
+            return not isanon
         else:
             return False
+
+    def get_perms(self, user):
+        '''
+        Returns a list of permissions for a given user calling to self.has_perms()
+        '''
+        return [perm for perm in ('receive_email_updates', 'receive_mail')
+                if self.has_perms(perm, user)]
 
     short_description = models.CharField(_('Short Description'), max_length=140)
 

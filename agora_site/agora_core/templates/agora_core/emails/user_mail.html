@@ -1,0 +1,19 @@
+{% load i18n %}
+{% load agora_utils %}
+{% autoescape off %}
+
+{% blocktrans with to_email=to.email to_fullname=to.get_profile.get_full_name comment=comment from_url=from.get_profile.get_link from_fullname=from.get_profile.get_fullname %}Hello {{ to_fullname }},
+
+<p>{{ from_fullname }} has sent you the following message through <a href="{{ protocol }}://{{ site_domain }}">{{ site_domain }}</a>:</p>
+
+<blockquote>{{ comment }}</blockquote>
+
+<p>This is {{ from_fullname }} profile in the website: <a href="{{ protocol }}://{{ site_domain }}{{ from_url }}">{{ protocol }}://{{ site_domain }}{{ from_url }}</a></p>
+{% endblocktrans %}
+<p>--<br/>
+{% blocktrans with to_email=to.username site_name=site.name site_domain=site.domain %}
+    This message was sent to {{ to_email }}.
+{% endblocktrans %}
+</p>
+
+{% endautoescape %}
