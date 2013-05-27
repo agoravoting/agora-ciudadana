@@ -12,7 +12,6 @@ from common import RootTestCase
 from django.contrib.markup.templatetags.markup import textile
 from django.utils import timezone
 from datetime import datetime, timedelta
-from unidecode import unidecode
 import copy
 
 class ElectionTest(RootTestCase):
