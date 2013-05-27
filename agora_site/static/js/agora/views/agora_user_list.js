@@ -30,6 +30,17 @@
         initialize: function() {
             _.bindAll(this);
             this.infiniteListView = new AgoraUserInfiniteView();
+
+            app.addMembersDialog = new Agora.ModalDialogView();
+            title = gettext('Add members manually');
+            var body = _.template($("#template-add_members_modal_dialog_body").html())();
+            var footer = _.template($("#template-add_members_modal_dialog_footer").html())();
+
+            app.addMembersDialog.populate(title, body, footer);
+            $("#manual-member").click(function() {
+                app.addMembersDialog.show();
+                return false;
+            });
         }
     });
 }).call(this);
