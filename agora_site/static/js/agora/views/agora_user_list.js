@@ -26,6 +26,7 @@
 
         showSendMessageDialog: function(e) {
             e.preventDefault();
+
             $(e.target).closest('.dropdown').find('.dropdown-toggle').dropdown('toggle');
             var user_id = $(e.target).closest("div.row.bottom-bordered").data('id');
             var user_fullname = $(e.target).closest("div.row.bottom-bordered").data('fullname');
@@ -41,8 +42,28 @@
             app.sendMessageDialog.show();
             $('#send-mail-action').click(function (e) {
                 e.preventDefault();
-                $("#modal_dialog").modal('hide');
-                console.log("TODO: send mail");
+                if ($("#send-mail-action").hasClass("disabled")) {
+                    return;
+                }
+                $("#send-mail-action").addClass("disabled");
+
+                var json = {
+                    "comment": $("#mail_content").val()
+                };
+
+                var jqxhr = $.ajax("/api/v1/user/" + user_id + "/send_mail/", {
+                    data: JSON.stringifyCompat(json),
+                    contentType : 'application/json',
+                    type: 'POST',
+                })
+                .done(function() {
+                    $("#modal_dialog").modal('hide');
+                    alert(gettext("Mail sent successfully"));
+                })
+                .fail(function() {
+                    $("#send-mail-action").removeClass("disabled");
+                    alert(gettext("Error sending the message, please try again later"));
+                });
             });
 
             return false;
