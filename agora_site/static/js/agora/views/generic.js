@@ -146,6 +146,7 @@
                 this.$el.html(this.template({'header': header,
                                              'body':  body,
                                              'footer': footer}));
+                this.delegateEvents();
             },
 
             modal: function(data) {

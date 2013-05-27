@@ -96,7 +96,12 @@ class AgoraUserResource(UserResource):
 
     def dehydrate_agora_permissions(self, bundle):
         if not self.agora.has_perms('admin', self.request_user):
-            return []
+            if self.agora.has_perms('leave', self.request_user) and\
+                self.agora.has_perms('receive_mail', bundle.obj):
+                return ['receive_mail']
+            else:
+                return []
+
         return self.agora.get_perms(bundle.obj)
 
 def user_resource_for_agora(agora, request_user):

@@ -1,6 +1,7 @@
 <script id="template-agora-profile-item" type="text/underscore-template">
     <div class="result-item user-result">
-            <div class="row bottom-bordered" data-url="<%= url %>">
+            <div class="row bottom-bordered" data-url="<%= url %>"
+                data-id="<%= id %>" data-fullname="<%= full_name %>">
                 <a href="<%= url %>"><div class="span2">
                     <img src="<%= mugshot_url %>" alt="<%= initials %>" class="mugshot"/>
                 </div></a>
@@ -65,6 +66,14 @@
                                 <a href="<%= agora_path %>/action/remove-admin-membership/<%= username %>" class="action-form-link">
                                     <i class="icon-remove"></i>
                                     <%= gettext("Remove admin membership") %>
+                                </a>
+                            </li>
+                            <% } %>
+                            <% if (_.contains(agora_permissions, "receive_mail")) { %>
+                            <li>
+                                <a href="#" class="action-send-message">
+                                    <i class="icon-envelope"></i>
+                                    <%= gettext("Send mail") %>
                                 </a>
                             </li>
                             <% } %>

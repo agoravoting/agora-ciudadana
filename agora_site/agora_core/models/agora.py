@@ -354,6 +354,9 @@ class Agora(models.Model):
         elif permission_name == 'delegate':
             return user in self.members.all() and not isarchived
 
+        elif permission_name == 'receive_mail':
+            return user in self.members.all() and not isarchived and user.email
+
         elif permission_name == 'cancel_vote_delegation':
             return user in self.members.all() and not isarchived and\
                 self.delegation_election.cast_votes.filter(
@@ -367,7 +370,8 @@ class Agora(models.Model):
         return [perm for perm in ('join', 'request_membership', 'admin',
             'cancel_membership_request', 'request_admin_membership', 'delete',
             'cancel_admin_membership_request', 'leave', 'leave_admin',
-            'comment', 'create_election', 'delegate', 'cancel_vote_delegation')
+            'comment', 'create_election', 'delegate', 'cancel_vote_delegation',
+            'receive_mail')
                 if self.has_perms(perm, user)]
 
     def get_delegated_vote_for_user(self, user):
