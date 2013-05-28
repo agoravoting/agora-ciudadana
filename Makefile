@@ -33,6 +33,7 @@ mainjs:
 					      agora_site/static/js/libs/sortElements-jquery.js \
 					      -o agora_site/static/js/min/main.min.js
 	./node_modules/uglify-js/bin/uglifyjs \
+					      agora_site/static/js/libs/es5-shim.js \
 					      agora_site/static/js/libs/jquery.js \
 					      agora_site/static/js/libs/underscore.js \
 					      agora_site/static/js/libs/json2.js \
@@ -43,7 +44,7 @@ mainjs:
 					      agora_site/static/js/libs/jquery-ui-timepicker-addon.js \
 					      agora_site/static/js/libs/jquery-shuffle.js \
 					      agora_site/static/js/libs/jsrender.js \
-					      agora_site/static/js/libs/d3.v3.js \
+					      agora_site/static/js/libs/r2d3.js \
 					      agora_site/static/js/libs/nv.d3.js \
 					      agora_site/static/js/libs/moment.js \
 					      agora_site/static/js/libs/moment-lang/gl.js \
