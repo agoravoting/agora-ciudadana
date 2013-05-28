@@ -5678,3 +5678,6 @@ ul.list-container li.agora-user-item.simple > a.agora i {
   display: inline-block;
   float: right;
 }
+.piechart {
+  height: 250px;
+}
