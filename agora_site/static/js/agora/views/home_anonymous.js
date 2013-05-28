@@ -33,7 +33,7 @@
             d3.json("/static/js/world-countries.json",
                 function(collection) {
 
-                    self.xy.scale(320);
+                    self.xy.scale(51);
                     var translate = self.xy.translate();
                     translate[0] = 160;
                     translate[1] = 110;
