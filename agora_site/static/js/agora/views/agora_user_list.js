@@ -64,6 +64,8 @@
                     $("#send-mail-action").removeClass("disabled");
                     alert(gettext("Error sending the message, please try again later"));
                 });
+
+                return false;
             });
 
             return false;
@@ -78,13 +80,48 @@
             this.infiniteListView = new AgoraUserInfiniteView();
 
             app.addMembersDialog = new Agora.ModalDialogView();
-            var title = gettext('Add members manually');
-            var body = _.template($("#template-add_members_modal_dialog_body").html())();
-            var footer = _.template($("#template-add_members_modal_dialog_footer").html())();
-
-            app.addMembersDialog.populate(title, body, footer);
             $("#manual-member").click(function() {
+                var title = gettext('Add members manually');
+                var body = _.template($("#template-add_members_modal_dialog_body").html())();
+                var footer = _.template($("#template-add_members_modal_dialog_footer").html())();
+
+                app.addMembersDialog.populate(title, body, footer);
                 app.addMembersDialog.show();
+
+                $("#add-members-action").click(function(e) {
+                    e.preventDefault();
+                    if ($("#add-members-action").hasClass("disabled")) {
+                        return false;
+                    }
+                    var json = {
+                        agoraid: ajax_data.agora.id,
+                        emails: $("#add_members_textarea").val(),
+                        welcome_message: gettext('Welcome to this agora')
+                    }
+
+                    if (json.emails.length == 0) {
+                        return false;
+                    }
+
+                    json.emails = json.emails.split(",");
+
+                    $("#add-members-action").addClass("disabled");
+
+                    var jqxhr = $.ajax("/api/v1/user/invite/", {
+                        data: JSON.stringifyCompat(json),
+                        contentType : 'application/json',
+                        type: 'POST',
+                    })
+                    .done(function() {
+                        $("#modal_dialog").modal('hide');
+                    })
+                    .fail(function() {
+                        $("#add-members-action").removeClass("disabled");
+                        alert(gettext("Error sending the invitations, please check the input data"));
+                    });
+                    return false;
+                });
+
                 return false;
             });
         }

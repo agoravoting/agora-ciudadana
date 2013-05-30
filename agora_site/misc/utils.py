@@ -211,6 +211,15 @@ def get_protocol(request):
     else:
         return 'http'
 
+def validate_email(email):
+    from django.core.validators import validate_email
+    from django.core.exceptions import ValidationError
+    try:
+        validate_email(email)
+        return True
+    except ValidationError:
+        return False
+
 def get_base_email_context(request):
     '''
     Returns a basic email context

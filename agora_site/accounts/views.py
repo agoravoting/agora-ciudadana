@@ -25,6 +25,11 @@ from django.utils.translation import ugettext as _
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from django.views.generic import ListView
+from django.views.generic.edit import FormView
+
+from userena.models import UserenaSignup
+from userena.managers import SHA1_RE
+from .forms import RegisterCompleteInviteForm
 
 class SignUpCompleteView(TemplateView):
     def get(self, request, username):
@@ -39,7 +44,6 @@ class PasswordResetDoneView(TemplateView):
             'sent to you which explains how to reset your password'))
         return redirect('/')
 
-
 class PasswordResetCompleteView(TemplateView):
     def get(self, request):
         messages.add_message(request, settings.SUCCESS_MODAL, _('Your password has '
@@ -47,3 +51,33 @@ class PasswordResetCompleteView(TemplateView):
             'new password') % dict(url=reverse('userena_signin')))
         return redirect('/')
 
+class RegisterCompleteInviteView(FormView):
+    template_name = 'accounts/complete_registration_invite_form.html'
+    form_class = RegisterCompleteInviteForm
+    success_url = '/'
+
+    def get_form_kwargs(self):
+        kwargs = super(RegisterCompleteInviteView, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        kwargs.update({'userena_signup_obj': self.userena_signup_obj})
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return redirect('/')
+
+    def dispatch(self, request, *args, **kwargs):
+        self.activation_key = kwargs['activation_key']
+        if SHA1_RE.search(self.activation_key):
+            try:
+                self.userena_signup_obj = UserenaSignup.objects.get(activation_key=self.activation_key)
+            except:
+                messages.add_message(request, messages.ERROR, _('Invalid activation link.'))
+                return redirect('/')
+            if self.userena_signup_obj.activation_key_expired():
+                messages.add_message(request, messages.ERROR, _('Invalid activation link.'))
+                return redirect('/')
+        else:
+            messages.add_message(request, messages.ERROR, _('Invalid activation link.'))
+            return redirect('/')
+        return super(RegisterCompleteInviteView, self).dispatch(*args, **kwargs)

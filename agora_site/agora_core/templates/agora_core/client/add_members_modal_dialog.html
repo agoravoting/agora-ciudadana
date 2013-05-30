@@ -1,9 +1,9 @@
 <script id="template-add_members_modal_dialog_footer" type="text/underscore-template">
-    <a href="#" class="btn btn-primary"><%= gettext("Add members") %></a>
+    <a href="#" class="btn btn-primary" id="add-members-action"><%= gettext("Add members") %></a>
 </script>
 <script id="template-add_members_modal_dialog_body" type="text/underscore-template">
     <p>
-    <%= gettext("Write the emails of the people you wants to invite, separated by commas. If an user exists in agora with a given email, it will be added as a member of this agora directly. Otherwise, an email with an invitation will be sent.") %>
+    <%= gettext("Write the emails or usernames of the people you wants to invite, separated by commas. If an user exists in agora with a given email or username, it will be added as a member of this agora directly. Otherwise, an email with an invitation will be sent if it's a valid email address.") %>
     </p>
-    <textarea placeholder="user1@example.com, user2@example.com" class="input-block-level"></textarea>
+    <textarea placeholder="user1@example.com, user2@example.com" class="input-block-level" id="add_members_textarea"></textarea>
 </script>

@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from django.contrib.auth.models import User
 from django.conf.urls.defaults import url
 from django.core.urlresolvers import reverse
@@ -5,6 +7,14 @@ from django.contrib.auth import forms as auth_forms
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout as auth_logout
 from django.shortcuts import get_object_or_404
+from django.utils.translation import ugettext as _
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives, EmailMessage, send_mass_mail
+from django.utils import simplejson as json
+from django.utils import translation
+from django.db.models import Q
+from django.utils import timezone
+from django.contrib.sites.models import Site
 
 from tastypie.utils import trailing_slash
 from tastypie import http
@@ -13,9 +23,10 @@ from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 
 from userena import forms as userena_forms
+from userena.models import UserenaSignup
 
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
-from agora_site.misc.utils import rest
+from agora_site.misc.utils import rest, validate_email
 from agora_site.misc.decorators import permission_required
 from agora_site.agora_core.forms.user import *
 from agora_site.agora_core.models import Profile
@@ -267,31 +278,79 @@ class UserResource(GenericResource):
         emails = data['emails']
         agoraid = data['agoraid']
         agora = get_object_or_404(Agora, pk=agoraid)
+        welcome_message = data.get('welcome_message', _("Welcome to this agora"))
 
         if not agora.has_perms('admin', request.user):
             raise ImmediateHttpResponse(response=http.HttpMethodNotAllowed())
 
         for email in emails:
-            q = User.objects.filter(email=email)
+            email = email.strip()
+            q = User.objects.filter(Q(email=email)|Q(username=email))
+            exists = q.exists()
+            if not exists and not validate_email(email):
+                # invalid email address, cannot send an email there!
+                raise ImmediateHttpResponse(response=http.HttpBadRequest())
+
+        for email in emails:
+            q = User.objects.filter(Q(email=email)|Q(username=email))
             exists = q.exists()
             if exists:
                 # if user exists in agora, we'll add it directly
-                u = q[0]
-                status, resp = rest('agora/%s/action/' % agoraid,
+                user = q[0]
+                if user in agora.members.all():
+                    continue
+                # if user exists in agora, we'll add it directly
+                status, resp = rest('/agora/%s/action/' % agoraid,
                                     data={'action': 'add_membership',
-                                          'username': u.username,
-                                          'welcome_message': 'HOLA'},
+                                          'username': user.username,
+                                          'welcome_message': welcome_message},
                                     method="POST",
                                     request=request)
-                if status != '200':
-                    # there's a problem here
-                    #import ipdb; ipdb.set_trace()
-                    pass
+                if status != 200:
+                    raise ImmediateHttpResponse(response=http.HttpBadRequest())
             else:
                 # send invitation
-                pass
+                username = str(uuid4())
+                password = str(uuid4())
+                new_user = UserenaSignup.objects.create_user(username,
+                                                email, 
+                                                password,
+                                                False,
+                                                False)
+                profile = new_user.get_profile()
+                profile.lang_code = request.user.get_profile().lang_code
+                profile.extra = {'join_agora_id': agoraid}
+                profile.save()
 
-        return self.create_response(request, {'debug': 'ok'})
+                # Mail to the user
+                user = new_user
+                translation.activate(user.get_profile().lang_code)
+                context = get_base_email_context(request)
+                context.update(dict(
+                    agora=agora,
+                    other_user=request.user,
+                    to=user,
+                    invitation_link=reverse('register-complete-invite',
+                        kwargs=dict(activation_key=user.userena_signup.activation_key)),
+                    welcome_message=welcome_message
+                ))
+
+                email = EmailMultiAlternatives(
+                    subject=_('%(site)s - invitation to join %(agora)s') % dict(
+                                site=Site.objects.get_current().domain,
+                                agora=agora.get_full_name()
+                            ),
+                    body=render_to_string('agora_core/emails/join_invitation.txt',
+                        context),
+                    to=[user.email])
+
+                email.attach_alternative(
+                    render_to_string('agora_core/emails/join_invitation.html',
+                        context), "text/html")
+                email.send()
+                translation.deactivate()
+
+        return self.create_response(request, {})
 
     def agoras(self, request, **kwargs):
         '''

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}{% trans "Finish registration" %}{% endblock %}
+{% block running-board-wrapper-class %}auth-board{% endblock %}
+{% block running-board  %}
+
+<div class="row">
+    <div class="span3 auth-highlight">
+    <h3>{% trans "Finish Registration" %}</h3>
+    {% crispy form %}
+    </div>
+    <div class="span3">
+    {% trans "Please complete your registration details. Once done, you'll automatically be signed in and will be a member of the agora you were invited to. This account will become associated to the email address in which you received an email with a link to this web page." %}
+    </div>
+</div>
+{% endblock %}
