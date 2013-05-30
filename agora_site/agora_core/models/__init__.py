@@ -91,6 +91,8 @@ class Profile(UserenaLanguageBaseProfile):
         elif permission_name == 'receive_mail':
             from django.core.validators import validate_email
             from django.core.exceptions import ValidationError
+            if user.is_anonymous():
+                return False
             try:
                 validate_email(self.user.email)
             except ValidationError:

@@ -101,8 +101,9 @@ class AgoraUserResource(UserResource):
             perms = self.agora.get_perms(bundle.obj)
 
         # add also receive_mail permission from the user
-        if self.request_user.get_profile().has_perms('receive_mail',
-            bundle.request.user):
+        if not self.request_user.is_anonymous() and\
+            self.request_user.get_profile().has_perms('receive_mail',
+                bundle.request.user):
             perms.append('receive_mail')
 
         return perms
