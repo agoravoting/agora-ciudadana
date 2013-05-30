@@ -28,6 +28,8 @@
 {% block script-block %}
     {% include "agora_core/client/vote_list_item.html" %}
     {% include "agora_core/client/vote_info.html" %}
+    {% include "agora_core/client/modal_dialog.html" %}
+    {% include "agora_core/client/confirm_delegate_modal_dialog.html" %}
     <script>
         var ajax_data = {
             election: {% rest request '/election/' election.id '/' %},

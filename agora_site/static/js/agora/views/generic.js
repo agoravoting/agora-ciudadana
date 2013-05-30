@@ -180,21 +180,54 @@
             'user_id': delegate.id
         };
 
+
+   
+        app.confirmDelegateActionDialog = new Agora.ModalDialogView();
+        var title = interpolate(gettext("Confirm delegation to %s in agora %s"),
+                [delegate.full_name, agora.full_name]);
+        var body = interpolate(gettext("When you choose someone as your delegate, he/she will vote in your name.\
+ Do you want to choose %s as delegate on agora %s?"),
+                [delegate.full_name, agora.full_name]);
+        var footer = _.template($("#template-confirm_delegate_modal_dialog_footer").html())();
+
+        app.confirmDelegateActionDialog.populate(title, body, footer);
+        app.confirmDelegateActionDialog.show();
+        
         self.sendingData = true;
-        var jqxhr = $.ajax("/api/v1/agora/" + agora.id + "/action/", {
-            data: JSON.stringifyCompat(ballot),
-            contentType : 'application/json',
-            type: 'POST',
-        })
-        .done(function(e) {
-            self.sendingData = false;
-            alert(interpolate(gettext("Your delegation to %s in agora %s was successfully recorded."),
-                [delegate.full_name, agora.full_name]));
-        })
-        .fail(function() {
-            self.sendingData = false;
-            alert("Error casting the ballot, try again or report this problem");
+        $("#confirm-delegate-action").click(function(e, self) {
+            e.preventDefault();
+            if ($("#confirm-delegate-action").hasClass("disabled")) {
+               return false;
+            }
+            
+             $("#confirm-delegate-action").addClass("disabled");
+
+             var jqxhr = $.ajax("/api/v1/agora/" + agora.id + "/action/", {
+                 data: JSON.stringifyCompat(ballot),
+                 contentType : 'application/json',
+                 type: 'POST',
+             })
+             .done(function(e, self) {
+                 self.sendingData = false;
+                 $("#modal_dialog").modal('hide');
+                 return false;
+             })
+             .fail(function(e, self) {
+                 $("#confirm-delegate-action").removeClass("disabled");
+                 alert("Error casting the ballot, try again or report this problem");
+                 $("#modal_dialog").modal('hide');
+                 return false;
+             });
+             
+            
+            return false;
         });
+
+        $("#deny-delegate-action").click(function(e, self) {
+            $("#modal_dialog").modal('hide');
+            return false;
+        });
+        self.sendingData = false;
     };
 
     /*
