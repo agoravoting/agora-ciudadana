@@ -4427,7 +4427,7 @@ body {
   margin-top: -24px;
 }
 #content-wrapper {
-  padding-top: 30px;
+  padding-top: 10px;
   padding-bottom: 30px;
 }
 #footer-wrapper.short {
@@ -5147,7 +5147,7 @@ table.question-stv td.already_lost {
   color: #464748;
 }
 #content-wrapper.home {
-  padding-top: 0;
+  margin-top: -20px;
 }
 #content-wrapper.home .sidebar {
   background-color: #ffffff;
@@ -5258,9 +5258,6 @@ table.question-stv td.already_lost {
 }
 .home-loggedin .span3 > div a p {
   font-size: 12px;
-}
-#content-wrapper.home {
-  padding-top: 20px;
 }
 /** election_comments.html */
 .comments .activity-action-first {
@@ -5676,7 +5673,7 @@ img.mugshot,
   margin-right: 5px;
 }
 #user_agora_list {
-  margin-top: -10px;
+  margin-top: 0px;
 }
 .agora-delegated-votes-chart {
   background-color: transparent;
