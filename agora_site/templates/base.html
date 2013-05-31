@@ -46,7 +46,7 @@
                                         </a>
                                     </li>
                                 {% endfor %}
-                                {% if agora in user.agoras.count > 0 %}
+                                {% if user.agoras.all.count > 0 %}
                                     <li class="divider"></li>
                                 {% endif %}
                                 <li>
