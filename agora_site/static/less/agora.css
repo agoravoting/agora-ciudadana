@@ -4710,6 +4710,10 @@ body {
   border-radius: 14px 0 0 14px;
   box-shadow: none;
 }
+.row-fluid.archived {
+  background-color: #EEEEEE;
+  padding-top: 5px;
+}
 .election-content-row {
   display: table;
 }

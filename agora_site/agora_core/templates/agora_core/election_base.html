@@ -118,9 +118,27 @@
     {% endblock %}
     {% endblock %}
 </ul>
+
+{% endblock %}
+
+{% block post-background-wrapper %}
+    {% if election.is_archived %}
+        <div class="row-fluid archived">
+            <div class="container">
+                <div class="row">
+                    <div class="span12">
+                        <p><strong>{% trans "This election is archived and dismissed." %}</strong>
+                        {% trans "This usually means that this election results are not valid." %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
+
 <div class="row election-content-row">
     <div class="content">
         {% block election_content %}
