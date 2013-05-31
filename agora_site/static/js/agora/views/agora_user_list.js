@@ -32,7 +32,7 @@
 
             $(e.target).closest(".action-choose-as-delegate").data("agora", ajax_data.agora);
             $(e.target).closest(".action-choose-as-delegate").data("delegate", voter);
-            
+
             Agora.delegateVoteHandler(e, this);
         },
 

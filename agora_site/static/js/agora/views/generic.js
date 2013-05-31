@@ -181,7 +181,7 @@
         };
 
         var data = {"agora": agora, "delegate": delegate};
-   
+
         app.confirmDelegateActionDialog = new Agora.ModalDialogView();
         var title = interpolate(gettext("Confirm delegation to %s in agora %s"),
                 [delegate.full_name, agora.full_name]);
@@ -190,14 +190,14 @@
 
         app.confirmDelegateActionDialog.populate(title, body, footer);
         app.confirmDelegateActionDialog.show();
-        
+
         self.sendingData = true;
         $("#confirm-delegate-action").click(function(e, self) {
             e.preventDefault();
             if ($("#confirm-delegate-action").hasClass("disabled")) {
                return false;
             }
-            
+
              $("#confirm-delegate-action").addClass("disabled");
 
              var jqxhr = $.ajax("/api/v1/agora/" + agora.id + "/action/", {
@@ -216,8 +216,7 @@
                  $("#modal_dialog").modal('hide');
                  return false;
              });
-             
-            
+
             return false;
         });
 

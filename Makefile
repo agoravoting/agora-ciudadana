@@ -31,7 +31,7 @@ mainjs:
 					      agora_site/static/js/libs/showdown.js \
 					      agora_site/static/js/libs/backbone-associations.js \
 					      agora_site/static/js/libs/sortElements-jquery.js \
-					      -o agora_site/static/js/min/main.min.js -b
+					      -o agora_site/static/js/min/main.min.js
 	./node_modules/uglify-js/bin/uglifyjs \
 					      agora_site/static/js/libs/es5-shim.js \
 					      agora_site/static/js/libs/jquery.js \
