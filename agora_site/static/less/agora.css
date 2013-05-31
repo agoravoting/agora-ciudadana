@@ -5149,6 +5149,9 @@ table.question-stv td.already_lost {
 #content-wrapper.home {
   margin-top: -20px;
 }
+#content-wrapper.home.home-loggedin {
+  margin-top: 0px;
+}
 #content-wrapper.home .sidebar {
   background-color: #ffffff;
 }
