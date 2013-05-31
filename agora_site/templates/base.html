@@ -71,10 +71,19 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     {% for election in user.profile.get_open_elections.all %}
-                                        <li><a href="{% url election-view election.agora.creator.username election.agora.name election.name %}">{{ election.pretty_name }}</a></li>
+                                        <li>
+                                            <a href="{% url election-view election.agora.creator.username election.agora.name election.name %}">
+                                                {{ election.pretty_name }}
+                                            </a>
+                                        </li>
                                     {% endfor %}
                                     <li class="divider"></li>
-                                    <li><a href="{% url election-list %}">{% trans "Explore other elections" %}</a></li>
+                                    <li>
+                                        <a href="{% url election-list %}">
+                                            <i class="icon-search"></i>
+                                            {% trans "Explore other elections" %}
+                                        </a>
+                                    </li>
                                 </ul>
                         </li>
                     {% else %}
@@ -101,7 +110,11 @@
                             </a>
                             <ul class="dropdown-menu language">
                                 {% for key, value in LANGUAGES %}
-                                    <li><a href="{% url set-language key %}" class="action-form-link">{{ value }}</a></li>
+                                    <li>
+                                        <a href="{% url set-language key %}" class="action-form-link">
+                                            {{ value }}
+                                        </a>
+                                    </li>
                                 {% endfor %}
                             </ul>
                         </li>
@@ -112,8 +125,18 @@
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="{% url userena_signout %}">{% trans "Log out" %}</a></li>
-                                <li><a href="{% url user-settings %}">{% trans "Settings" %}</a></li>
+                                <li>
+                                    <a href="{% url userena_signout %}">
+                                        <i class="icon-off"></i>
+                                        {% trans "Log out" %}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url user-settings %}">
+                                        <i class="icon-edit"></i>
+                                        {% trans "Settings" %}
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     {% endif %}
