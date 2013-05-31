@@ -5,7 +5,8 @@
 
         events: {
             'click .user-result .row': 'clickUser',
-            'click .action-send-message': 'showSendMessageDialog'
+            'click .action-send-message': 'showSendMessageDialog',
+            'click .action-choose-as-delegate': 'delegateVote'
         },
 
         renderItem: function(model) {
@@ -22,6 +23,17 @@
             }
             var url = $(e.target).closest(".row").data('url');
             window.location.href= url;
+        },
+
+        delegateVote: function (e) {
+            e.preventDefault();
+            var id = this.$el.data('agora-id');
+            var voter = this.collection.get(id).toJSON();
+
+            $(e.target).closest(".action-choose-as-delegate").data("agora", ajax_data.agora);
+            $(e.target).closest(".action-choose-as-delegate").data("delegate", voter);
+            
+            Agora.delegateVoteHandler(e, this);
         },
 
         showSendMessageDialog: function(e) {

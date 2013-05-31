@@ -180,14 +180,12 @@
             'user_id': delegate.id
         };
 
-
+        var data = {"agora": agora, "delegate": delegate};
    
         app.confirmDelegateActionDialog = new Agora.ModalDialogView();
         var title = interpolate(gettext("Confirm delegation to %s in agora %s"),
                 [delegate.full_name, agora.full_name]);
-        var body = interpolate(gettext("When you choose someone as your delegate, he/she will vote in your name.\
- Do you want to choose %s as delegate on agora %s?"),
-                [delegate.full_name, agora.full_name]);
+        var body =  _.template($("#template-confirm_delegate_modal_dialog_body").html())(data);
         var footer = _.template($("#template-confirm_delegate_modal_dialog_footer").html())();
 
         app.confirmDelegateActionDialog.populate(title, body, footer);
