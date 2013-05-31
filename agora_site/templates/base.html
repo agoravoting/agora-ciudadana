@@ -26,147 +26,50 @@
         {% csrf_token %}
     </form>
     <div id="modaldialogdiv"></div>
-    <div class="container-fluid top-bar" id="top-bar">
-        <div class="container">
-            <div class="row" id="headerbar">
-                <div class="span7">
-                    <a class="brand" href="{% url home %}">
-                        <img alt="{{ SITE_NAME }}" src="{{ STATIC_URL }}img/agoralogo.png" />
-                    </a>
-                    <div class="btn-wrapper">
-                        <div class="btn-group">
-                            <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#">
-                            {% trans "Vote" %}
-                            <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                {% for election in user.profile.get_open_elections.all %}
-                                    <li><a href="{% url election-view election.agora.creator.username election.agora.name election.name %}">{{ election.pretty_name }}</a></li>
-                                    {% if forloop.last %}
-                                        <li class="divider"></li>
-                                    {% endif %}
-                                {% endfor %}
-                                <li><a href="{% url election-list %}">{% trans "Find an election to vote" %}</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="btn-wrapper">
-                        <div class="btn-group">
-                            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
-                            {% trans "Create election" %}
-                            <span class="caret"></span>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a href="href="{% url home %}" class="brand" alt="{% trans "Home" %}">
+                    <img alt="{{ SITE_NAME }}"  src="{{ STATIC_URL }}img/agora_house.png" />
+                </a>
+                <ul class="nav">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            {% trans "Agoras" %}
+                            <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
                                 {% for agora in user.agoras.all %}
-                                    <li><a href="{% url election-new agora.creator.username agora.name %}">{{ agora.creator.username }}/{{ agora.name }}</a></li>
-                                    {% if forloop.last %}
-                                        <li class="divider"></li>
-                                    {% endif %}
+                                    <li>
+                                        <a href="{% url agora-view agora.creator.username agora.name %}">
+                                            {{ agora.creator.username }}/{{ agora.name }}
+                                        </a>
+                                    </li>
                                 {% endfor %}
-                                <li><a href="{% url agora-list %}">{% trans "Find an agora to create an election" %}</a></li>
+                                {% if agora in user.agoras.count > 0 %}
+                                    <li class="divider"></li>
+                                {% endif %}
+                                <li>
+                                    <a href="{% url agora-list %}">
+                                        <i class="icon-search"></i>
+                                        {% trans "Explore existing agoras.." %}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url agora-new %}">
+                                        <i class="icon-plus"></i>
+                                        {% trans "Create an Agora" %}
+                                    </a>
+                                </li>
                             </ul>
-                        </div>
-                    </div>
-                    {% if can_create_agoras %}
-                    <a class="btn btn-primary" href="{% url agora-new %}">{% trans "Create Agora" %}</a>
-                    {% endif %}
-                </div>
-                <div class="span5">
-                    <form id="search-form" class="form-search form-inline btn-toolbar" action="{% url search-view %}">
-                        <input type="text" class="input-medium search-query"  value="{{ query }}" placeholder="{% trans "Search" %}" name="q" />
-                    {% if not user or not user.is_authenticated %}
-                        <a class="user-link link-green" href="{% url userena_signin %}">{% trans "Enter" %}</a>
-                        <a class="user-link" href="{% url userena_signup %}">{% trans "Register" %}</a>
-                    {% else %}
-                        <div class="btn-group">
-                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                {{ user.get_profile.get_first_name_or_nick|truncate_words:1 }}
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{% url userena_signout %}">{% trans "Log out" %}</a></li>
-                                <li><a href="{% url user-settings %}">{% trans "Settings" %}</a></li>
-                            </ul>
-                        </div>
-                    {% endif %}
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="messages-box" id="messages-box">
-                    {% if messages %}
-                    <ul id="flash-messages">
-                        {% for message in messages %}
-                            {% if message.tags != "alert-success-modal" %}
-                            <div class="alert {{ message.tags }}">
-                                <a class="close" data-dismiss="alert">×</a>
-                                <strong>
-                                    {% if message.tags == 'alert-info' %}{% trans "Heads Up!" %}
-                                    {% elif message.tags == 'alert-success' %}{% trans "Well done!" %}
-                                    {% elif message.tags == 'alert-warning' %}{% trans "Be aware!" %}
-                                    {% elif message.tags == 'alert-error' %}{% trans "Oh snap!" %}
-                                    {% endif %}
-                                </strong>
-                                {{ message|safe }}
-                            </div>
-                            {% else %}
-                            <div class="modal hide fade">
-                                <div class="modal-header">
-                                    <a class="close" data-dismiss="modal">×</a>
-                                    <h3>{% trans "Heads up!" %}</h3>
-                                </div>
-                                <div class="modal-body">
-                                    <p>{{ message|safe }}</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <a data-dismiss="modal" class="btn close btn-success">{% trans "Close" %}</a>
-                                </div>
-                            </div>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="rows" id="sections-wrapper">
-                <div class="span10">
-                    <ul class="nav nav-pills">
-                        {% if user and user.agoras.count > 0 %}
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                {% trans "Agoras" %}
-                                <b class="caret"></b>
-                                </a>
-                                <ul class="dropdown-menu">
-                                {% for agora in user.agoras.all %}
-                                    <li><a href="{% url agora-view agora.creator.username agora.name %}">{{ agora.creator.username }}/{{ agora.name }}</a></li>
-                                {% endfor %}
-                                <li class="divider"></li>
-                                <li><a href="{% url agora-list %}">{% trans "Explore other agoras" %}</a></li>
-                                </ul>
-                        </li>
-                        {% else %}
-                        <li>
-                            <a href="{% url agora-list %}">{% trans "Agoras" %}</a>
-                        </li>
-                        {% endif %}
-                        {% if user.profile.get_open_elections.count > 0 or user.profile.get_requested_elections.count > 0 %}
+                    </li>
+                    {% if user.profile.get_open_elections.count > 0 %}
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                 {% trans "Elections" %}
                                 <b class="caret"></b>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    {% if user.profile.get_requested_elections.count > 0 %}
-                                        {% for election in user.profile.get_requested_elections.all %}
-                                            <li><a href="{% url election-view election.agora.creator.username election.agora.name election.name %}">{{ election.pretty_name }}</a></li>
-                                        {% endfor %}
-                                        {% if user.profile.get_open_elections.count > 0 %}
-                                            <li class="divider"></li>
-                                        {% endif %}
-                                    {% endif %}
                                     {% for election in user.profile.get_open_elections.all %}
                                         <li><a href="{% url election-view election.agora.creator.username election.agora.name election.name %}">{{ election.pretty_name }}</a></li>
                                     {% endfor %}
@@ -174,19 +77,21 @@
                                     <li><a href="{% url election-list %}">{% trans "Explore other elections" %}</a></li>
                                 </ul>
                         </li>
-                        {% else %}
+                    {% else %}
                         <li>
                             <a href="{% url election-list %}">{% trans "Elections" %}</a>
                         </li>
-                        {% endif %}
-                        <li>
-                            <a href="{% url user-list %}">{% trans "People" %}</a>
-                        </li>
-                    </ul>
-                </div>
+                    {% endif %}
+                    <li>
+                        <a href="{% url user-list %}">{% trans "People" %}</a>
+                    </li>
+                </ul>
 
-                <div class="span2">
-                    <ul class="nav nav-pills">
+                <ul class="nav pull-right">
+                    {% if not user or not user.is_authenticated %}
+                        <li>
+                            <a class="link-green" href="{% url userena_signin %}">{% trans "Enter" %}</a>
+                        </li>
                         {% get_current_language as LANGUAGE_CODE %}
                         {% get_available_languages as LANGUAGES %}
                         <li class="dropdown">
@@ -194,14 +99,67 @@
                                 {{ LANGUAGES|getdoublelistitem:LANGUAGE_CODE }}
                                 <b class="caret"></b>
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu language">
                                 {% for key, value in LANGUAGES %}
                                     <li><a href="{% url set-language key %}" class="action-form-link">{{ value }}</a></li>
                                 {% endfor %}
                             </ul>
                         </li>
-                    </ul>
-                </div>
+                    {% else %}
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                {{ user.get_profile.get_first_name_or_nick|truncate_words:1 }}
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url userena_signout %}">{% trans "Log out" %}</a></li>
+                                <li><a href="{% url user-settings %}">{% trans "Settings" %}</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
+                <form id="search-form" class="nav-search pull-right" action="{% url search-view %}">
+                    <input type="text" class="span2 search-query"  value="{{ query }}" placeholder="{% trans "Search" %}" name="q" />
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="messages-box" id="messages-box">
+                {% if messages %}
+                <ul id="flash-messages">
+                    {% for message in messages %}
+                        {% if message.tags != "alert-success-modal" %}
+                        <div class="alert {{ message.tags }}">
+                            <a class="close" data-dismiss="alert">×</a>
+                            <strong>
+                                {% if message.tags == 'alert-info' %}{% trans "Heads Up!" %}
+                                {% elif message.tags == 'alert-success' %}{% trans "Well done!" %}
+                                {% elif message.tags == 'alert-warning' %}{% trans "Be aware!" %}
+                                {% elif message.tags == 'alert-error' %}{% trans "Oh snap!" %}
+                                {% endif %}
+                            </strong>
+                            {{ message|safe }}
+                        </div>
+                        {% else %}
+                        <div class="modal hide fade">
+                            <div class="modal-header">
+                                <a class="close" data-dismiss="modal">×</a>
+                                <h3>{% trans "Heads up!" %}</h3>
+                            </div>
+                            <div class="modal-body">
+                                <p>{{ message|safe }}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a data-dismiss="modal" class="btn close btn-success">{% trans "Close" %}</a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                {% endif %}
             </div>
         </div>
     </div>
