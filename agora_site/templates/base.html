@@ -39,6 +39,9 @@
                             <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
+                                {% if user.agoras.all.count > 0 %}
+                                    <li class="nav-header">{% trans "My Agoras" %}</li>
+                                {% endif %}
                                 {% for agora in user.agoras.all %}
                                     <li>
                                         <a href="{% url agora-view agora.creator.username agora.name %}">
@@ -70,6 +73,9 @@
                                 <b class="caret"></b>
                                 </a>
                                 <ul class="dropdown-menu">
+                                    {% if user.profile.get_open_elections.all.count > 0 %}
+                                        <li class="nav-header">{% trans "Active elections" %}</li>
+                                    {% endif %}
                                     {% for election in user.profile.get_open_elections.all %}
                                         <li>
                                             <a href="{% url election-view election.agora.creator.username election.agora.name election.name %}">
@@ -77,7 +83,9 @@
                                             </a>
                                         </li>
                                     {% endfor %}
-                                    <li class="divider"></li>
+                                    {% if user.profile.get_open_elections.all.count > 0 %}
+                                        <li class="divider"></li>
+                                    {% endif %}
                                     <li>
                                         <a href="{% url election-list %}">
                                             <i class="icon-search"></i>
@@ -132,9 +140,15 @@
                                     </a>
                                 </li>
                                 <li>
+                                    <a href="{% url user-view user.username %}">
+                                        <i class="icon-user"></i>
+                                        {% trans "View my profile" %}
+                                    </a>
+                                </li>
+                                <li>
                                     <a href="{% url user-settings %}">
                                         <i class="icon-edit"></i>
-                                        {% trans "Settings" %}
+                                        {% trans "Account settings" %}
                                     </a>
                                 </li>
                             </ul>
