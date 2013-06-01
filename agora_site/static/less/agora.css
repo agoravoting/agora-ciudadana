@@ -4123,6 +4123,96 @@ a.thumbnail:hover {
 .tabs-left > .nav-tabs .active > a:focus {
   border-color: #DDDDDD transparent #DDDDDD #DDDDDD;
 }
+.avatar-canvas {
+  -moz-user-select: none;
+  background: none repeat scroll 0 0 #E0EAF1;
+  border: 1px solid #B9B9B9;
+  color: #777777;
+  float: left;
+  font-weight: bold;
+  margin-right: 3px;
+  text-align: center;
+  text-decoration: none;
+}
+.large-user-avatar {
+  font-size: 70px;
+  height: 170px;
+  line-height: 149px;
+  margin-bottom: 20px;
+  width: 170px;
+}
+.med-large-user-avatar {
+  font-size: 22px;
+  height: 70px;
+  line-height: 64px;
+  width: 70px;
+}
+.medium-user-avatar {
+  font-size: 14px;
+  height: 35px;
+  line-height: 32px;
+  margin-right: 7px;
+  width: 35px;
+}
+.small-user-avatar {
+  font-size: 10px;
+  height: 24px;
+  line-height: 22px;
+  width: 24px;
+}
+ul.user-image-options {
+  margin-left: -30px;
+  list-style: none outside none;
+}
+ul.user-image-options h3 {
+  margin: 0 0 0 30px;
+}
+ul.user-image-options li {
+  margin: 0 0 10px;
+  padding: 0;
+  width: 250px;
+}
+ul.user-image-options li a {
+  color: #777777;
+  cursor: pointer;
+  float: left;
+  padding: 8px;
+}
+ul.user-image-options li .medium-user-image.image-canvas {
+  float: left;
+  width: 28px;
+}
+ul.user-image-options li .option-label {
+  float: left;
+  line-height: 32px;
+  padding-left: 10px;
+  text-decoration: underline;
+  width: 140px;
+}
+ul.user-image-options li.clearfix:hover {
+  background-color: #E0EAF1;
+}
+#uploaded-avatar {
+  bottom: 36px;
+  height: 36px;
+  margin: 0;
+  opacity: 0;
+  position: relative;
+  width: 150px;
+}
+#upload-form {
+  margin: 0;
+  height: 0;
+}
+#tab-user legend {
+  border-color: #EEEEEE;
+  border-image: none;
+  border-style: none none solid;
+  border-width: 0 0 1px;
+}
+#tab-user .row.user-picture {
+  margin-top: 10px;
+}
 .btn-block {
   -moz-box-sizing: border-box;
   display: block;

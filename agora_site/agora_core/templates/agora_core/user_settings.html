@@ -95,6 +95,72 @@
             </form>
         </div>
         <div id="tab-user" class="tab-pane form-data admin-form span7">
+            <legend><%= gettext("User picture") %></legend>
+            <div class='row user-picture'>
+                <div class='span3'>
+                    <div class='large-user-avatar avatar-canvas' id='avatar-preview'>
+                    <img alt="Fadb64d123868b634eb5d9541e8d899f" src=
+                    "https://secure.gravatar.com/avatar/fadb64d123868b634eb5d9541e8d899f.png?d=none&amp;r=pg&amp;s=170"></div>
+                </div>
+
+                <div class='span3'>
+                    <ul class='user-image-options'>
+                        <li class='image-setting clearfix'>
+                            <a data-method="put" data-remote="true" href=
+                            "/users/2813/set_avatar_kind?avatar_kind=gravatar" id=
+                            "use_gravatar" rel="nofollow"><span></span>
+
+                            <div class='medium-user-avatar avatar-canvas' id=
+                            'image-option-gravatar'>
+                                <span><img alt="Fadb64d123868b634eb5d9541e8d899f" src=
+                                "https://secure.gravatar.com/avatar/fadb64d123868b634eb5d9541e8d899f.png?d=none&amp;r=pg&amp;s=35"></span>
+                            </div>
+
+                            <div class='option-label'>
+                                <span>Use gravatar</span>
+                            </div></a>
+                        </li>
+
+                        <li class='image-setting clearfix'>
+                            <a data-method="put" data-remote="true" href=
+                            "/users/2813/set_avatar_kind?avatar_kind=initials" id=
+                            "use_initials" rel="nofollow"><span></span>
+
+                            <div class='medium-user-avatar avatar-canvas' id=
+                            'image-option-initials'>
+                                <span>ERE</span>
+                            </div>
+
+                            <div class='option-label'>
+                                <span>Use initials</span>
+                            </div></a>
+                        </li>
+
+                        <li class='image-setting'>
+                            <a class="btn btn-grey" href="#" id=
+                            "upload-new-image">Upload a new image</a>
+
+                            <form accept-charset="UTF-8" action=
+                            "/users/2813/upload_new_avatar" class="edit_user" enctype=
+                            "multipart/form-data" id="upload-form" method="post" name=
+                            "upload-form">
+                                <div style="margin:0;padding:0;display:inline">
+                                    <input name="utf8" type="hidden" value=
+                                    "✓"><input name="authenticity_token" type="hidden"
+                                    value=
+                                    "mWYaQECLSJLP84Ki1B0kLRPlPvnLVFklS2FrCZlkTOc=">
+                                </div><input id="uploaded-avatar" name=
+                                "uploaded_avatar" type="file"> <input id=
+                                "user-avatar-kind" name="user[avatar_kind]" type=
+                                "hidden" value=""> <input id="max-file-size" name=
+                                "max_file_size" type="hidden" value="1000">
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+
             <form>
                 <fieldset>
                     <legend>
@@ -166,8 +232,64 @@
                 </fieldset>
             </form>
         </div>
-        <div id="tab-account" class="tab-pane active form-data admin-form span7">
-            Account tab
+        <div id="tab-account" class="tab-pane form-data admin-form span7">
+            <form>
+                <fieldset>
+                <legend>Change password</legend>
+
+                <div class="control-group" id="div_id_current_password">
+                    <label class="control-label" for="id_current_password">
+                        <%= gettext("Current password") %>
+                    </label>
+
+                    <div class="controls">
+                        <input class="required textinput textInput"
+                        id="current_password" name="current_password"
+                        type="password" />
+
+                        <p class="help-block" id="hint_id_current_password">
+                            <%= gettext("Provide your current password for security, required field") %>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="control-group" id="div_id_password1">
+                    <label class="control-label" for="id_password1">
+                        <%= gettext("New password") %>
+                    </label>
+
+                    <div class="controls">
+                        <input class="required textinput textInput"
+                            id="id_password1" name="password1"
+                            type="password" />
+
+                        <p class="help-block" id="hint_id_password1">
+                            <%= gettext("Specify your new password if you want to change it, or leave it blank") %>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="control-group" id="div_id_password2">
+                    <label class="control-label" for="id_password2">
+                        <%= gettext("Repeat new password") %>
+                    </label>
+
+                    <div class="controls">
+                        <input class="required textinput textInput"
+                        id="id_password2" name="password2" type="password" />
+                    </div>
+                </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button class="btn btn-large btn-block btn-success"
+                            id="save_profile" type="button">
+                                <%= gettext("Change password") %>
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
         </div>
     </div>
 </script>
