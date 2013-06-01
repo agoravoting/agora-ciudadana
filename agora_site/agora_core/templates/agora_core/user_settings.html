@@ -8,12 +8,176 @@
 {% block user-navigation %}{% activetab "user-nav" "settings" %}{{ block.super }}{% endblock %}
 
 {% block content %}
+    <div class="tabbable tabs-left row" id="user-settings-form">
+        <!-- here goes the settings form -->
+    </div>
 
-    <div class="row">
-        <div class="span8 agora-left-side">
-            <div class="form-data admin-form">
-                {% crispy form %}
-            </div>
+<script id="template-user-settings-form" type="text/underscore-template">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#tab-profile" data-toggle="tab"><%= gettext("Profile") %></a>
+        </li>
+        <li>
+            <a href="#tab-user" data-toggle="tab"><%= gettext("User settings") %></a>
+        </li>
+        <li>
+            <a href="#tab-account" data-toggle="tab"><%= gettext("Account") %></a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab-profile" class="tab-pane active form-data admin-form span7">
+            <form>
+                <fieldset>
+
+                    <div class="control-group" id="div_id_first_name">
+                        <label class="control-label" for="id_first_name">
+                            <%= gettext("First name") %>
+                        </label>
+
+                        <div class="controls">
+                            <input class="textinput textInput" id="id_first_name"
+                            maxlength="30" name="first_name" type="text"
+                            value="edulix">
+                        </div>
+                    </div>
+
+                    <div class="control-group" id="div_id_last_name">
+                        <label class="control-label" for="id_last_name">
+                            <%= gettext("Last name") %>
+                        </label>
+
+                        <div class="controls">
+                            <input class="textinput textInput" id="id_last_name"
+                            maxlength="30" name="last_name" type="text">
+                        </div>
+                    </div>
+
+                    <div class="control-group" id="div_id_short_description">
+                        <label class="control-label" for="id_short_description">
+                            <%= gettext("Short Description") %>
+                        </label>
+
+                        <div class="controls">
+                            <input class="textinput textInput"
+                            id="id_short_description" maxlength="140"
+                            name="short_description" type="text" value="" />
+
+                            <p class="help-block" id="hint_id_short_description">
+                                <%= gettext("Say something about yourself (140 chars max)") %>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="control-group" id="div_id_biography">
+                        <label class="control-label" for=
+                        "id_biography"><%= gettext("Biography") %></label>
+
+                        <div class="controls">
+                            <textarea class="textarea" cols="40" id="id_biography"
+                            name="biography" rows="10">
+                            </textarea>
+
+                            <p class="help-block" id="hint_id_biography">
+                                <%= gettext("Tell us about you, use as much text as needed") %>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button class="btn btn-large btn-block btn-success"
+                            id="save_profile" type="button">
+                                <%= gettext("Save profile") %>
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div id="tab-user" class="tab-pane form-data admin-form span7">
+            <form>
+                <fieldset>
+                    <legend>
+                        <%= gettext("Language") %>
+                    </legend>
+
+                    <div class="control-group" id="div_id_language">
+
+                        <div class="controls">
+                            <div class="btn-group" id="id_language">
+                                <a class="btn btn-block dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <div class="current-item inline" data-id="es">
+                                        Spanish
+                                    </div>
+                                    <span class="caret inline"></span>
+                                </a>
+                                <ul class="dropdown-menu span7">
+                                    <li data-id="es" data-usertext="Spanish">
+                                        <a href="#">Spanish</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li data-id="en" data-usertext="English">
+                                        <a href="#">English</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>
+                        <%= gettext("Email settings") %>
+                    </legend>
+
+                    <div class="control-group" id="div_id_email">
+                        <label class="control-label" for="id_email">
+                            <%= gettext("Email") %>
+                        </label>
+
+                        <div class="controls">
+                            <input class="required textinput textInput" id="id_email"
+                            maxlength="75" name="email" type="text">
+
+                            <p class="help-block" id="hint_id_email">
+                                <%= gettext("Email is visible by agora admins") %>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="control-group" id="div_id_email_updates">
+                        <div class="controls">
+                            <label class="checkbox" for="id_email_updates">
+                                <input checked="checked" class= "checkboxinput"
+                                id="id_email_updates" name="email_updates"
+                                type="checkbox">
+                                    <%= gettext("Receive email updates") %>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button class="btn btn-large btn-block btn-success"
+                            id="save_profile" type="button">
+                                <%= gettext("Save email settings") %>
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div id="tab-account" class="tab-pane active form-data admin-form span7">
+            Account tab
         </div>
     </div>
+</script>
+
+{% endblock %}
+
+{% block script-block %}
+<script>
+var ajax_data = {
+};
+app.currentView = new Agora.UserSettingsView();
+</script>
 {% endblock %}

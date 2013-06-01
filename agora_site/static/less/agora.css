@@ -4085,6 +4085,44 @@ a.thumbnail:hover {
 .affix {
   position: fixed;
 }
+.tabs-below > .nav-tabs,
+.tabs-right > .nav-tabs,
+.tabs-left > .nav-tabs {
+  border-bottom: 0 none;
+}
+.tabs-left .tab-content {
+  display: auto;
+  overflow: auto;
+  width: auto;
+}
+.tabs-left > .nav-tabs > li,
+.tabs-right > .nav-tabs > li {
+  float: none;
+}
+.tabs-left > .nav-tabs > li > a,
+.tabs-right > .nav-tabs > li > a {
+  margin-bottom: 3px;
+  margin-right: 0;
+  min-width: 74px;
+}
+.tabs-left > .nav-tabs {
+  border-right: 1px solid #DDDDDD;
+  float: left;
+  margin-right: 19px;
+}
+.tabs-left > .nav-tabs > li > a {
+  border-radius: 4px 0 0 4px;
+  margin-right: -1px;
+}
+.tabs-left > .nav-tabs > li > a:hover,
+.tabs-left > .nav-tabs > li > a:focus {
+  border-color: #EEEEEE #DDDDDD #EEEEEE #EEEEEE;
+}
+.tabs-left > .nav-tabs .active > a,
+.tabs-left > .nav-tabs .active > a:hover,
+.tabs-left > .nav-tabs .active > a:focus {
+  border-color: #DDDDDD transparent #DDDDDD #DDDDDD;
+}
 .btn-block {
   -moz-box-sizing: border-box;
   display: block;
@@ -4360,10 +4398,6 @@ body {
 .top-form {
   margin-top: 20px;
 }
-.top-form .form-data,
-.admin-form.form-data {
-  margin-left: 50px;
-}
 .top-form .form-data input,
 .admin-form.form-data input,
 .top-form .form-data textarea,
@@ -4380,8 +4414,17 @@ body {
 }
 .top-form .form-data legend,
 .admin-form.form-data legend {
-  border: none;
-  font-size: 35px;
+  margin-bottom: 0;
+}
+.top-form .form-data .controls .dropdown-toggle .current-item,
+.admin-form.form-data .controls .dropdown-toggle .current-item {
+  display: block;
+  float: left;
+}
+.top-form .form-data .controls .dropdown-toggle .caret,
+.admin-form.form-data .controls .dropdown-toggle .caret {
+  display: block;
+  float: right;
 }
 .top-form .form-data input[type="button"],
 .admin-form.form-data input[type="button"],
@@ -4394,12 +4437,22 @@ body {
   display: block;
   float: right;
 }
+.top-form .form-data fieldset,
+.admin-form.form-data fieldset {
+  margin-bottom: 8px;
+}
 .top-form .form-data .form-actions,
 .admin-form.form-data .form-actions {
   background: none;
   border: none;
   margin: 0;
   padding: 0;
+}
+.top-form .form-data .help-block,
+.admin-form.form-data .help-block,
+.top-form .form-data .help-inline,
+.admin-form.form-data .help-inline {
+  font-size: 11px;
 }
 .top-form .form-info {
   margin-left: 100px;
