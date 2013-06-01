@@ -149,13 +149,13 @@ class CastVote(models.Model):
         if self.data['a'] != 'delegated-vote' or not self.is_plaintext():
             raise Exception('This kind of vote does not have delegate user')
         else:
-            return get_object_or_404(User, username=self.get_delegate_id())
+            return get_object_or_404(User, pk=self.get_delegate_id())
 
     def get_delegate_id(self):
         if self.data['a'] != 'delegated-vote' or not self.is_plaintext():
             raise Exception('This kind of vote does not have delegate user')
         else:
-            return self.data['answers'][0]['choices'][0]['username']
+            return self.data['answers'][0]['choices'][0]['user_id']
 
     def get_chained_first_pretty_answer(self, election=None):
         if not self.is_public:
