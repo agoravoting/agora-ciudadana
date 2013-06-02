@@ -91,6 +91,17 @@
                 }
             });
 
+
+            // username form
+            var metrics_username = [
+                ['#id_username', 'presence', gettext('This field is required')],
+                ['#id_username', 'between:4:140', gettext('Must be between 4 and 140 characters long')],
+            ];
+            this.$el.find("#username_form").nod(metrics_username,
+                {silentSubmit: true, broadcastError: true});
+            this.$el.find("#username_form").on('silentSubmit', this.changeUsername);
+            this.$el.find("#username_form").submit(function (e) { e.preventDefault(); });
+
             return this.$el;
         },
 
@@ -169,6 +180,7 @@
                 'first_name': $('#id_first_name').val(),
                 'short_description': $('#id_short_description').val(),
                 'biography': $('#id_biography').val(),
+                'username': $('#id_username').val(),
             };
             var self = this;
             var jqxhr = $.ajax("/api/v1/user/settings/", {
@@ -251,6 +263,73 @@
 
             return false;
         },
+
+        changeUsername: function(e) {
+            e.preventDefault();
+            if (this.sendingData) {
+                return;
+            }
+
+            var data = {"username": ajax_data.user.username };
+
+            app.confirmChangeUsernameDialog = new Agora.ModalDialogView();
+            var title = _.template($("#template-confirm_change_username_modal_dialog_title").html())();
+            var body =  _.template($("#template-confirm_change_username_modal_dialog_body").html())();
+            var footer = _.template($("#template-confirm_change_username_modal_dialog_footer").html())();
+
+
+            var title2 = _.template($("#template-confirm_change_username_modal_dialog_title2").html())();
+            var body2 =  _.template($("#template-confirm_change_username_modal_dialog_body2").html())(data);
+            var footer2 = _.template($("#template-confirm_change_username_modal_dialog_footer2").html())();
+
+            app.confirmChangeUsernameDialog.populate(title, body, footer);
+            app.confirmChangeUsernameDialog.show();
+            $("#confirm-change-username-action").click(function(e, self) {
+                e.preventDefault();
+
+                $("#modal-label").html(title2);
+                $(".modal-body").html(body2);
+                $(".modal-footer").html(footer2);
+                
+                $("#do-change-username-action").click(function(e, self) {
+                    e.preventDefault();
+                    if ($("#do-change-username-action").hasClass("disabled")) {
+                       return false;
+                    }
+
+                    $("#do-change-username-action").addClass("disabled");
+                    this.sendingData = true;
+
+                    var json = {
+                        'username': $('#id_username_modal_dialog').val(),
+                    };
+                    var self = this;
+                    var jqxhr = $.ajax("/api/v1/user/settings/", {
+                        data: JSON.stringifyCompat(json),
+                        contentType : 'application/json',
+                        type: 'PUT',
+                    })
+                    .done(function(e) {
+                        self.sendingData = false;
+                        $("#do-change-username-action").removeClass("disabled");
+                        $("#modal_dialog").modal('hide');
+                    })
+                    .fail(function() {
+                        self.sendingData = false;
+                        $("#do-change-username-action").removeClass("disabled");
+                        alert("Error changing username");
+                        $("#modal_dialog").modal('hide');
+                    });
+
+                    return false;
+                });
+
+                return false;
+            });
+
+            return false;
+        },
+
 
         render: function() {
             this.$el.html(this.template(ajax_data.user));

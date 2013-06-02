@@ -136,7 +136,7 @@ class UserSettingsForm(django_forms.ModelForm):
             del self.fields['old_password']
             self.helper.layout = Layout(
                 Fieldset(_('Profile'), 'avatar', 'delete_avatar',
-                    'first_name', 'last_name',
+                    'first_name', 'last_name', 'username',
                     'short_description', 'biography', 'email_updates'),
                 Fieldset(_('Change email'), 'email'),
                 Fieldset(_('Change password'), 'password1', 'password2')
@@ -145,7 +145,7 @@ class UserSettingsForm(django_forms.ModelForm):
             self.helper.layout = Layout(
                 Fieldset(_('Security'), 'old_password'),
                 Fieldset(_('Profile'), 'avatar', 'delete_avatar',
-                    'first_name', 'last_name',
+                    'first_name', 'last_name', 'username',
                     'short_description', 'biography', 'email_updates'),
                 Fieldset(_('Change email'), 'email'),
                 Fieldset(_('Change password'), 'password1', 'password2')
@@ -203,7 +203,7 @@ class UserSettingsForm(django_forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name')
+        fields = ('first_name', 'last_name', 'username')
 
 
 class AgoraAdminForm(django_forms.ModelForm):

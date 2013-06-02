@@ -289,6 +289,24 @@
                     </div>
                 </fieldset>
             </form>
+            <form id="username_form">
+                <fieldset>
+                <legend><%= gettext("Change username") %></legend>
+
+                <div class="control-group">
+                    <p class="help-block" id="hint_id_change_username">
+                    <%= gettext("Changing your username can have unintended side effects.") %>
+                    </p>
+
+                    <div class="controls">
+                        <button class="btn btn-large btn-block"
+                        id="change_username" type="submit">
+                            <%= gettext("Change username") %>
+                        </button>
+                    </div>
+                </div>
+                </fieldset>
+            </form>
         </div>
     </div>
 </script>
@@ -296,10 +314,12 @@
 {% endblock %}
 
 {% block script-block %}
-<script>
-var ajax_data = {
-    user: {% rest request '/user/settings/' %},
-};
-app.currentView = new Agora.UserSettingsView();
-</script>
+    {% include "agora_core/client/modal_dialog.html" %}
+    {% include "agora_core/client/confirm_change_username_modal_dialog.html" %}
+    <script>
+    var ajax_data = {
+        user: {% rest request '/user/settings/' %},
+    };
+    app.currentView = new Agora.UserSettingsView();
+    </script>
 {% endblock %}

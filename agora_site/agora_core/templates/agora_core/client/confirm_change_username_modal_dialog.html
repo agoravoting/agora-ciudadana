@@ -1,0 +1,30 @@
+<script id="template-confirm_change_username_modal_dialog_footer" type="text/underscore-template">
+    <a href="#" class="btn btn-danger" id="confirm-change-username-action"><%= gettext("I understand, let's change my username") %></a>
+</script>
+<script id="template-confirm_change_username_modal_dialog_body" type="text/underscore-template">
+    <p>
+    <%= gettext("Changing your username can have unintended side effects.") %>
+    </p>
+</script>
+<script id="template-confirm_change_username_modal_dialog_title" type="text/underscore-template">
+    <p>
+    <%= gettext("Really want to change your username??") %>
+    </p>
+</script>
+
+
+<script id="template-confirm_change_username_modal_dialog_footer2" type="text/underscore-template">
+    <a href="#" class="btn btn-primary" id="do-change-username-action"><%= gettext("Change my username") %></a>
+</script>
+<script id="template-confirm_change_username_modal_dialog_body2" type="text/underscore-template">
+     <div class="controls">
+        <input class="textinput textInput" id="id_username_modal_dialog"
+            maxlength="30" name="username" type="text"
+            value="<%= username %>">
+     </div>
+</script>
+<script id="template-confirm_change_username_modal_dialog_title2" type="text/underscore-template">
+    <p>
+    <%= gettext("Enter a new username") %>
+    </p>
+</script>
