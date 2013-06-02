@@ -165,6 +165,8 @@ class CustomAvatarForm(django_forms.ModelForm):
 class UserSettingsForm(django_forms.ModelForm):
     use_gravatar = django_forms.BooleanField(required=False)
 
+    first_name = django_forms.CharField(max_length=140, required=False)
+
     use_initials = django_forms.BooleanField(required=False)
 
     short_description = django_forms.CharField(max_length=140, required=False)
@@ -213,6 +215,9 @@ class UserSettingsForm(django_forms.ModelForm):
 
         if 'email' in self.data:
             user.email = self.cleaned_data['email']
+
+        if 'first_name' in self.data:
+            user.first_name = self.cleaned_data['first_name']
 
         if 'username' in self.data:
             user.username = self.cleaned_data['username']
@@ -291,7 +296,7 @@ class UserSettingsForm(django_forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name')
+        fields = ()
 
     @staticmethod
     def static_get_form_kwargs(request, data, *args, **kwargs):
