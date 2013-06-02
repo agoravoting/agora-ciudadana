@@ -112,6 +112,12 @@ optimization only for production:
 
     $ make dependencies && make all
 
+### Making search work
+
+Agora uses django-haystack with whoosh backend by default. This means that you
+need to run ./manage.py update_index regularly to keep the search index updated.
+You can do this in a nightly cron task, for example.
+
 ### Settings configuration
 
 The settings.py file contains the default configuration for the project. You
