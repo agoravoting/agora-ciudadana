@@ -7,9 +7,12 @@ from django.db import models
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 from django.db.models.signals import post_save
 
 from userena.models import UserenaLanguageBaseProfile
+from userena.utils import get_gravatar
+from userena import settings as userena_settings
 from guardian.shortcuts import *
 
 from agora_site.misc.utils import JSONField
@@ -55,6 +58,60 @@ class Profile(UserenaLanguageBaseProfile):
                 continue
             initials += word[0].upper()
         return unicodedata.normalize('NFKD', initials).encode('ascii','ignore')
+
+    def get_initials_mugshot(self, custom_size = userena_settings.USERENA_MUGSHOT_SIZE):
+        if userena_settings.USERENA_MUGSHOT_DEFAULT == 'blank-unitials-ssl':
+            return 'https://unitials.com/mugshot/%s/%s.png' % (
+                custom_size, self.get_initials()
+            )
+        elif userena_settings.USERENA_MUGSHOT_DEFAULT == 'blank-unitials':
+            return 'http://unitials.com/mugshot/%s/%s.png' % (
+                custom_size, self.get_initials()
+            )
+
+    def get_gravatar_mugshot(self, custom_size = userena_settings.USERENA_MUGSHOT_SIZE):
+        d = self.get_initials_mugshot(custom_size)
+        return get_gravatar(self.user.email, custom_size, d)
+
+    def get_big_mugshot(self):
+        return self.get_mugshot_url(170)
+
+    def get_mugshot_url(self, custom_size = userena_settings.USERENA_MUGSHOT_SIZE):
+        """
+        Returns the image containing the mugshot for the user.
+
+        The mugshot can be a uploaded image or a Gravatar.
+
+        Gravatar functionality will only be used when
+        ``USERENA_MUGSHOT_GRAVATAR`` is set to ``True``.
+
+        :return:
+            ``None`` when Gravatar is not used and no default image is supplied
+            by ``USERENA_MUGSHOT_DEFAULT``.
+
+        """
+        # First check for a mugshot and if any return that.
+        if self.mugshot.name == "gravatar":
+            return self.get_gravatar_mugshot(custom_size)
+        elif self.mugshot.name == "initials":
+            return self.get_initials_mugshot(custom_size)
+        elif self.mugshot:
+            return settings.MEDIA_URL +\
+                   settings.MUGSHOTS_DIR +\
+                   self.mugshot.name.split("/")[-1]
+
+        # Use Gravatar if the user wants to.
+        if userena_settings.USERENA_MUGSHOT_GRAVATAR:
+            return self.get_gravatar_mugshot(custom_size)
+
+        # Gravatar not used, check for a default image.
+        else:
+            if userena_settings.USERENA_MUGSHOT_DEFAULT not in ['404', 'mm',
+                'identicon', 'monsterid', 'wavatar', 'blank']:
+                return userena_settings.USERENA_MUGSHOT_DEFAULT
+            else:
+                return None
+
 
     def get_short_description(self):
         '''

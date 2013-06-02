@@ -96,60 +96,58 @@
             <div class='row user-picture'>
                 <div class='span3'>
                     <div class='large-user-avatar avatar-canvas' id='avatar-preview'>
-                    <img alt="" src="https://secure.gravatar.com/avatar/fadb64d123868b634eb5d9541e8d899f.png?d=none&amp;r=pg&amp;s=170"></div>
+                    <img alt=""src="<%= big_mugshot %>"></div>
                 </div>
 
                 <div class='span3'>
                     <ul class='user-image-options'>
                         <li class='image-setting clearfix'>
-                            <a data-method="put" data-remote="true" href=
-                            "/users/2813/set_avatar_kind?avatar_kind=gravatar" id=
-                            "use_gravatar" rel="nofollow"><span></span>
+                            <a rel="nofollow" id="set_gravatar_mugshot">
+                                <span></span>
 
-                            <div class='medium-user-avatar avatar-canvas' id=
-                            'image-option-gravatar'>
-                                <span><img alt="" src=
-                                "https://secure.gravatar.com/avatar/fadb64d123868b634eb5d9541e8d899f.png?d=none&amp;r=pg&amp;s=35"></span>
-                            </div>
+                                <div class='medium-user-avatar avatar-canvas' id=
+                                'image-option-gravatar'>
+                                    <span>
+                                        <img alt="" src="<%= gravatar_mugshot %>">
+                                    </span>
+                                </div>
 
-                            <div class='option-label'>
-                                <span>Use gravatar</span>
-                            </div></a>
+                                <div class='option-label'>
+                                    <span><%= gettext("Use gravatar") %></span>
+                                </div>
+                            </a>
                         </li>
 
                         <li class='image-setting clearfix'>
-                            <a data-method="put" data-remote="true" href=
-                            "/users/2813/set_avatar_kind?avatar_kind=initials" id=
-                            "use_initials" rel="nofollow"><span></span>
+                            <a rel="nofollow" id="set_initials_mugshot">
+                                <span></span>
 
-                            <div class='medium-user-avatar avatar-canvas' id=
-                            'image-option-initials'>
-                                <span>ERE</span>
-                            </div>
+                                <div class='medium-user-avatar avatar-canvas' id=
+                                'image-option-gravatar'>
+                                    <span>
+                                        <img alt="" src="<%= initials_mugshot %>">
+                                    </span>
+                                </div>
 
                             <div class='option-label'>
-                                <span>Use initials</span>
+                                <span><%= gettext("Use initials") %></span>
                             </div></a>
                         </li>
 
                         <li class='image-setting'>
                             <a class="btn btn-grey" href="#" id=
-                            "upload-new-image">Upload a new image</a>
+                            "upload-new-image">
+                                <%= gettext("Upload a new image") %>
+                            </a>
 
-                            <form accept-charset="UTF-8" action=
-                            "/users/2813/upload_new_avatar" class="edit_user" enctype=
-                            "multipart/form-data" id="upload-form" method="post" name=
-                            "upload-form">
+                            <form accept-charset="UTF-8class="edit_user"
+                                id="upload-form" method="post" name="upload-form">
                                 <div style="margin:0;padding:0;display:inline">
-                                    <input name="utf8" type="hidden" value=
-                                    "✓"><input name="authenticity_token" type="hidden"
-                                    value=
-                                    "mWYaQECLSJLP84Ki1B0kLRPlPvnLVFklS2FrCZlkTOc=">
-                                </div><input id="uploaded-avatar" name=
-                                "uploaded_avatar" type="file"> <input id=
-                                "user-avatar-kind" name="user[avatar_kind]" type=
-                                "hidden" value=""> <input id="max-file-size" name=
-                                "max_file_size" type="hidden" value="1000">
+                                </div>
+                                <input id="uploaded-avatar"
+                                name="uploaded_avatar" type="file" />
+                                <input id="max-file-size" name="max_file_size"
+                                type="hidden" value="1000" />
                             </form>
                         </li>
                     </ul>
@@ -214,7 +212,7 @@
                     <div class="control-group" id="div_id_email_updates">
                         <div class="controls">
                             <label class="checkbox" for="id_email_updates">
-                                <input 
+                                <input
                                 <%= (email_updates) ? 'checked="checked"' : '' %>
                                 class= "checkboxinput"
                                 id="id_email_updates" name="email_updates"

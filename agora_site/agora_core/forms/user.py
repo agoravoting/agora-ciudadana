@@ -198,14 +198,10 @@ class UserSettingsForm(django_forms.ModelForm):
 
         if 'use_gravatar' in self.data:
             profile.mugshot.delete()
-            profile.mugshot = None
+            profile.mugshot.name = "gravatar"
         elif 'use_initials' in self.data:
-            r = requests.get("https://unitials.com/mugshot/170/%s.png" %\
-                user.get_profile().get_initials())
-            img_temp = NamedTemporaryFile(delete=True)
-            img_temp.write(r.content)
-            img_temp.flush()
-            profile.mugshot.save("image.jpg", File(img_temp), save=True)
+            profile.mugshot.delete()
+            profile.mugshot.name = "initials"
 
         if 'short_description' in self.data:
             profile.short_description = self.cleaned_data['short_description']

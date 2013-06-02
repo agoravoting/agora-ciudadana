@@ -4125,8 +4125,6 @@ a.thumbnail:hover {
 }
 .avatar-canvas {
   -moz-user-select: none;
-  background: none repeat scroll 0 0 #E0EAF1;
-  border: 1px solid #B9B9B9;
   color: #777777;
   float: left;
   font-weight: bold;
@@ -4141,24 +4139,11 @@ a.thumbnail:hover {
   margin-bottom: 20px;
   width: 170px;
 }
-.med-large-user-avatar {
+.medium-user-avatar {
   font-size: 22px;
   height: 70px;
   line-height: 64px;
   width: 70px;
-}
-.medium-user-avatar {
-  font-size: 14px;
-  height: 35px;
-  line-height: 32px;
-  margin-right: 7px;
-  width: 35px;
-}
-.small-user-avatar {
-  font-size: 10px;
-  height: 24px;
-  line-height: 22px;
-  width: 24px;
 }
 ul.user-image-options {
   margin-left: -30px;
@@ -4176,7 +4161,6 @@ ul.user-image-options li a {
   color: #777777;
   cursor: pointer;
   float: left;
-  padding: 8px;
 }
 ul.user-image-options li .medium-user-image.image-canvas {
   float: left;

@@ -70,10 +70,7 @@ class RootTestCase(TestCase):
         **kwargs):
         response = self.client.put(API_ROOT + url, simplejson.dumps(data),
             content_type=content_type, **kwargs)
-        try:
-            self.assertEqual(response.status_code, code)
-        except:
-            print response.content
+        self.assertEqual(response.status_code, code)
 
         return response.content
 

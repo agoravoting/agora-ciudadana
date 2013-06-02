@@ -5,6 +5,11 @@
     Agora.UserSettingsFormView = Backbone.View.extend({
         el: "#user-settings-form",
 
+        events: {
+            'click #set_gravatar_mugshot': 'setGravatarMugshot',
+            'click #set_initials_mugshot': 'setInitialsMugshot',
+        },
+
         initialize: function() {
             _.bindAll(this);
             this.template = _.template($("#template-user-settings-form").html());
@@ -50,6 +55,66 @@
         },
 
         sendingData: false,
+
+        setGravatarMugshot: function(e) {
+            e.preventDefault();
+            if (this.sendingData) {
+                return;
+            }
+
+            $(".btn[type=submit]").addClass("disabled");
+            this.sendingData = true;
+
+            var json = {
+                'use_gravatar': true,
+            };
+            var self = this;
+            var jqxhr = $.ajax("/api/v1/user/settings/", {
+                data: JSON.stringifyCompat(json),
+                contentType : 'application/json',
+                type: 'PUT',
+            })
+            .done(function(e) {
+                window.location.reload(true);
+            })
+            .fail(function() {
+                self.sendingData = false;
+                $(".btn[type=submit]").removeClass("disabled");
+                alert("Error saving profile settings");
+            });
+
+            return false;
+        },
+
+        setInitialsMugshot: function(e) {
+            e.preventDefault();
+            if (this.sendingData) {
+                return;
+            }
+
+            $(".btn[type=submit]").addClass("disabled");
+            this.sendingData = true;
+
+            var json = {
+                'use_initials': true,
+            };
+            var self = this;
+            var jqxhr = $.ajax("/api/v1/user/settings/", {
+                data: JSON.stringifyCompat(json),
+                contentType : 'application/json',
+                type: 'PUT',
+            })
+            .done(function(e) {
+                window.location.reload(true);
+            })
+            .fail(function() {
+                self.sendingData = false;
+                $(".btn[type=submit]").removeClass("disabled");
+                alert("Error saving profile settings");
+            });
+
+            return false;
+        },
 
         saveProfile: function(e) {
             e.preventDefault();

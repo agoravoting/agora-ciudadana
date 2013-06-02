@@ -246,7 +246,7 @@ class UserenaBaseProfile(models.Model):
     def __unicode__(self):
         return 'Profile of %(username)s' % {'username': self.user.username}
 
-    def get_mugshot_url(self):
+    def get_mugshot_url(self, custom_size = userena_settings.USERENA_MUGSHOT_SIZE):
         """
         Returns the image containing the mugshot for the user.
 
@@ -269,11 +269,14 @@ class UserenaBaseProfile(models.Model):
         # Use Gravatar if the user wants to.
         if userena_settings.USERENA_MUGSHOT_GRAVATAR:
             if userena_settings.USERENA_MUGSHOT_DEFAULT == 'blank-unitials-ssl':
-                d = 'https://unitials.com/mugshot/50/%s.png' % self.get_initials()
+                d = 'https://unitials.com/mugshot/%s/%s.png' % (
+                    custom_size, self.get_initials()
+                )
             elif userena_settings.USERENA_MUGSHOT_DEFAULT == 'blank-unitials':
-                d = 'http://unitials.com/mugshot/50/%s.png' % self.get_initials()
-            return get_gravatar(self.user.email,
-                                userena_settings.USERENA_MUGSHOT_SIZE, d)
+                d = 'http://unitials.com/mugshot/%s/%s.png' % (
+                    custom_size, self.get_initials()
+                )
+            return get_gravatar(self.user.email, custom_size, d)
 
         # Gravatar not used, check for a default image.
         else:

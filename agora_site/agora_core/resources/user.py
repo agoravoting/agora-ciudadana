@@ -102,7 +102,7 @@ class TinyProfileResource(GenericResource):
         return bundle.obj.user.id
 
     def dehydrate_url(self, bundle):
-        return bundle.obj.get_profile().get_link()
+        return bundle.obj.get_link()
 
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_mugshot_url()
@@ -426,6 +426,10 @@ class UserSettingsResource(UserResource):
     email_updates = fields.BooleanField()
     has_current_password = fields.BooleanField()
 
+    big_mugshot = fields.CharField()
+    initials_mugshot = fields.CharField()
+    gravatar_mugshot = fields.CharField()
+
     def dehydrate_email(self, bundle):
         return bundle.obj.email
 
@@ -437,3 +441,12 @@ class UserSettingsResource(UserResource):
 
     def dehydrate_has_current_password(self, bundle):
         return bundle.obj.password != '!'
+
+    def dehydrate_big_mugshot(self, bundle):
+        return bundle.obj.get_profile().get_big_mugshot()
+
+    def dehydrate_initials_mugshot(self, bundle):
+        return bundle.obj.get_profile().get_initials_mugshot()
+
+    def dehydrate_gravatar_mugshot(self, bundle):
+        return bundle.obj.get_profile().get_gravatar_mugshot()
