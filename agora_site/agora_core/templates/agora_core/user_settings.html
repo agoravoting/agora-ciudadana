@@ -29,27 +29,21 @@
         <div id="tab-profile" class="tab-pane active form-data admin-form span7">
             <form>
                 <fieldset>
+                    <legend><%= gettext("Profile") %></legend>
 
                     <div class="control-group" id="div_id_first_name">
                         <label class="control-label" for="id_first_name">
-                            <%= gettext("First name") %>
+                            <%= gettext("Full name") %>
                         </label>
 
                         <div class="controls">
                             <input class="textinput textInput" id="id_first_name"
                             maxlength="30" name="first_name" type="text"
-                            value="edulix">
-                        </div>
-                    </div>
+                            value="<%= first_name %>">
 
-                    <div class="control-group" id="div_id_last_name">
-                        <label class="control-label" for="id_last_name">
-                            <%= gettext("Last name") %>
-                        </label>
-
-                        <div class="controls">
-                            <input class="textinput textInput" id="id_last_name"
-                            maxlength="30" name="last_name" type="text">
+                            <p class="help-block" id="hint_id_first_name">
+                                <%= gettext("Example: Pepito de los Palotes") %>
+                            </p>
                         </div>
                     </div>
 
@@ -61,7 +55,8 @@
                         <div class="controls">
                             <input class="textinput textInput"
                             id="id_short_description" maxlength="140"
-                            name="short_description" type="text" value="" />
+                            name="short_description" type="text"
+                            value="<%= short_description %>" />
 
                             <p class="help-block" id="hint_id_short_description">
                                 <%= gettext("Say something about yourself (140 chars max)") %>
@@ -76,6 +71,7 @@
                         <div class="controls">
                             <textarea class="textarea" cols="40" id="id_biography"
                             name="biography" rows="10">
+                            <%= biography %>
                             </textarea>
 
                             <p class="help-block" id="hint_id_biography">
@@ -87,7 +83,7 @@
                     <div class="control-group">
                         <div class="controls">
                             <button class="btn btn-large btn-block btn-success"
-                            id="save_profile" type="button">
+                            id="save_profile" type="submit">
                                 <%= gettext("Save profile") %>
                             </button>
                         </div>
@@ -100,8 +96,7 @@
             <div class='row user-picture'>
                 <div class='span3'>
                     <div class='large-user-avatar avatar-canvas' id='avatar-preview'>
-                    <img alt="Fadb64d123868b634eb5d9541e8d899f" src=
-                    "https://secure.gravatar.com/avatar/fadb64d123868b634eb5d9541e8d899f.png?d=none&amp;r=pg&amp;s=170"></div>
+                    <img alt="" src="https://secure.gravatar.com/avatar/fadb64d123868b634eb5d9541e8d899f.png?d=none&amp;r=pg&amp;s=170"></div>
                 </div>
 
                 <div class='span3'>
@@ -113,7 +108,7 @@
 
                             <div class='medium-user-avatar avatar-canvas' id=
                             'image-option-gravatar'>
-                                <span><img alt="Fadb64d123868b634eb5d9541e8d899f" src=
+                                <span><img alt="" src=
                                 "https://secure.gravatar.com/avatar/fadb64d123868b634eb5d9541e8d899f.png?d=none&amp;r=pg&amp;s=35"></span>
                             </div>
 
@@ -174,17 +169,17 @@
                             <div class="btn-group" id="id_language">
                                 <a class="btn btn-block dropdown-toggle" data-toggle="dropdown" href="#">
                                     <div class="current-item inline" data-id="es">
-                                        Spanish
+                                        <%= gettext("Spanish") %>
                                     </div>
                                     <span class="caret inline"></span>
                                 </a>
                                 <ul class="dropdown-menu span7">
-                                    <li data-id="es" data-usertext="Spanish">
-                                        <a href="#">Spanish</a>
+                                    <li data-id="es" data-usertext="<%= gettext("Spanish") %>">
+                                        <a href="#"><%= gettext("Spanish") %></a>
                                     </li>
                                     <li class="divider"></li>
-                                    <li data-id="en" data-usertext="English">
-                                        <a href="#">English</a>
+                                    <li data-id="en" data-usertext="<%= gettext("English") %>">
+                                        <a href="#"><%= gettext("English") %></a>
                                     </li>
                                 </ul>
                             </div>
@@ -203,7 +198,8 @@
 
                         <div class="controls">
                             <input class="required textinput textInput" id="id_email"
-                            maxlength="75" name="email" type="text">
+                            maxlength="75" name="email" type="text"
+                            value="<%= email %>"/>
 
                             <p class="help-block" id="hint_id_email">
                                 <%= gettext("Email is visible by agora admins") %>
@@ -214,9 +210,11 @@
                     <div class="control-group" id="div_id_email_updates">
                         <div class="controls">
                             <label class="checkbox" for="id_email_updates">
-                                <input checked="checked" class= "checkboxinput"
+                                <input 
+                                <%= (email_updates) ? 'checked="checked"' : '' %>
+                                class= "checkboxinput"
                                 id="id_email_updates" name="email_updates"
-                                type="checkbox">
+                                type="checkbox" />
                                     <%= gettext("Receive email updates") %>
                             </label>
                         </div>
@@ -225,7 +223,7 @@
                     <div class="control-group">
                         <div class="controls">
                             <button class="btn btn-large btn-block btn-success"
-                            id="save_profile" type="button">
+                            id="save_profile" type="submit">
                                 <%= gettext("Save email settings") %>
                             </button>
                         </div>

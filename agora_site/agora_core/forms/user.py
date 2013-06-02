@@ -174,6 +174,8 @@ class UserSettingsForm(django_forms.ModelForm):
 
     email = django_forms.EmailField(required=False)
 
+    username = django_forms.CharField(required=False)
+
     email_updates = django_forms.BooleanField(required=False)
 
     old_password = django_forms.CharField(required=False)
@@ -196,7 +198,7 @@ class UserSettingsForm(django_forms.ModelForm):
             profile.mugshot.delete()
             profile.mugshot = None
         elif 'use_initials' in self.data:
-            r = requests.get("https://unitials.com/mugshot/50/%s.png" %\
+            r = requests.get("https://unitials.com/mugshot/170/%s.png" %\
                 user.get_profile().get_initials())
             img_temp = NamedTemporaryFile(delete=True)
             img_temp.write(r.content)
@@ -211,6 +213,9 @@ class UserSettingsForm(django_forms.ModelForm):
 
         if 'email' in self.data:
             user.email = self.cleaned_data['email']
+
+        if 'username' in self.data:
+            user.username = self.cleaned_data['username']
 
         if 'email_updates' in self.data:
             profile.email_updates = self.cleaned_data['email_updates']
@@ -228,11 +233,24 @@ class UserSettingsForm(django_forms.ModelForm):
         if 'email' not in self.data:
             return None
 
-        if User.objects.filter(email__iexact=self.cleaned_data['email']).exclude(
-            email__iexact=self.instance.email).exists():
+        if User.objects.filter(email__iexact=self.cleaned_data['email']
+            ).exclude(pk=self.instance.id).exists():
             raise django_forms.ValidationError(_(u'This email is already in '
                 u'use. Please supply a different email.'))
         return self.cleaned_data['email']
+
+    def clean_username(self):
+        '''
+        Validate that the username is not already registered with another user
+        '''
+        if 'username' not in self.data:
+            return None
+
+        if User.objects.filter(username__iexact=self.cleaned_data['username']
+                ).exclude(pk=self.instance.id).exists():
+            raise django_forms.ValidationError(_(u'This username is already in '
+                u'use. Please supply a different username.'))
+        return self.cleaned_data['username']
 
     def clean_old_password(self):
         '''
@@ -273,7 +291,7 @@ class UserSettingsForm(django_forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username')
+        fields = ('first_name', 'last_name')
 
     @staticmethod
     def static_get_form_kwargs(request, data, *args, **kwargs):

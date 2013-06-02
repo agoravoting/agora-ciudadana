@@ -425,5 +425,14 @@ class UserSettingsResource(UserResource):
     Resource representing users.
     '''
     email = fields.CharField()
+    biography = fields.CharField()
+    email_updates = fields.BooleanField()
+
     def dehydrate_email(self, bundle):
         return bundle.obj.email
+
+    def dehydrate_biography(self, bundle):
+        return bundle.obj.get_profile().biography
+
+    def dehydrate_email_updates(self, bundle):
+        return bundle.obj.get_profile().email_updates

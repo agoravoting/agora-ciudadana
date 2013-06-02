@@ -2285,6 +2285,7 @@ Get User settings
         "is_active": true, 
         "last_login": "2013-05-17T17:45:01.597510", 
         "full_name": "", 
+        "biography": "blah blah",
         "short_description": "Is a member of 2 agoras and has emitted  0 direct votes.", 
         "id": 0, 
         "date_joined": "2012-11-29T16:08:43.874000"
