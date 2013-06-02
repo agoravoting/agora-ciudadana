@@ -1,11 +1,12 @@
-{% extends 'agora_core/user_view.html' %}
+{% extends "base.html" %}
 {% load i18n %}
 {% load agora_utils %}
 {% load crispy_forms_tags %}
 
-{% block title %}{% trans "User settings" %}{{ election.agora.name }}{% endblock %}
+{% block title %}{% trans "User settings" %}{% endblock %}
 
-{% block user-navigation %}{% activetab "user-nav" "settings" %}{{ block.super }}{% endblock %}
+{% block content-wrapper-class %}user{% endblock %}
+{% block background-wrapper %}{% endblock %}
 
 {% block content %}
     <div class="tabbable tabs-left row" id="user-settings-form">
@@ -299,6 +300,7 @@
 {% block script-block %}
 <script>
 var ajax_data = {
+    user: {% rest request '/user/' user_shown.id  '/' %},
 };
 app.currentView = new Agora.UserSettingsView();
 </script>

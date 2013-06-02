@@ -201,6 +201,7 @@
         </div>
     </div>
 
+    {% block background-wrapper %}
     <div class="background-wrapper {% block background-wrapper-class %}{% endblock %}">
         <div class="container-fluid {% block running-board-wrapper-class %}hero-unit{% endblock %}" id="running-board-wrapper">
             <div class="container">
@@ -225,6 +226,7 @@
             </div>
         </div>
     </div>
+    {% endblock %}
     {% block post-background-wrapper %}{% endblock %}
     <div id="content-wrapper" class="{% block content-wrapper-class %}{% endblock %}">
         <div class="container">

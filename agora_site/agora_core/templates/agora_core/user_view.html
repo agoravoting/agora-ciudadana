@@ -34,11 +34,6 @@
             <a href="{% url user-elections user_shown.username 'participated' %}">{% trans "Elections" %}
             <span class="badge badge-info">{{ user_shown.get_profile.get_participated_elections.count }}</span></a>
         </li>
-        {% if user == user_shown %}
-        <li {% ifactivetab "user-nav" "settings" %}class="active"{% endifactivetab %}>
-            <a href="{% url user-settings %}">{% trans "Settings" %}</a>
-        </li>
-        {% endif %}
         {% endblock %}
     </ul>
 {% endblock %}
