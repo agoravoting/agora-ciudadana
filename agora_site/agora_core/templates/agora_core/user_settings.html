@@ -168,18 +168,22 @@
                         <div class="controls">
                             <div class="btn-group" id="id_language">
                                 <a class="btn btn-block dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <div class="current-item inline" data-id="es">
+                                    <div class="current-item inline">
                                         <%= gettext("Spanish") %>
                                     </div>
                                     <span class="caret inline"></span>
                                 </a>
                                 <ul class="dropdown-menu span7">
-                                    <li data-id="es" data-usertext="<%= gettext("Spanish") %>">
-                                        <a href="#"><%= gettext("Spanish") %></a>
+                                    <li data-langcode="es">
+                                        <a href="/misc/set-language/es/" class="action-form-link">
+                                            <%= gettext("Spanish") %>
+                                        </a>
                                     </li>
                                     <li class="divider"></li>
-                                    <li data-id="en" data-usertext="<%= gettext("English") %>">
-                                        <a href="#"><%= gettext("English") %></a>
+                                    <li data-langcode="en">
+                                        <a href="/misc/set-language/en/" class="action-form-link">
+                                            <%= gettext("English") %>
+                                        </a>
                                     </li>
                                 </ul>
                             </div>

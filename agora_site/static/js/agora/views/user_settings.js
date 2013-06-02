@@ -41,6 +41,11 @@
             this.$el.find("#password_form").on('silentSubmit', this.savePassword);
             this.$el.find("#password_form").submit(function (e) { e.preventDefault(); });
 
+            // initialize language selector
+            var lang = $("body").data('lang');
+            var lang_name = $("#id_language li[data-langcode=" + lang + "] a").html();
+            $("#id_language .current-item.inline").html(lang_name);
+
             return this.$el;
         },
 

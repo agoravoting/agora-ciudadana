@@ -53,8 +53,7 @@ class TinyUserResource(GenericResource):
         fields = ["username", "first_name", "id"]
 
     def dehydrate_url(self, bundle):
-        return reverse("user-view",
-            kwargs=dict(username=bundle.obj.username))
+        return bundle.obj.get_profile().get_link()
 
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_profile().get_mugshot_url()
@@ -103,8 +102,7 @@ class TinyProfileResource(GenericResource):
         return bundle.obj.user.id
 
     def dehydrate_url(self, bundle):
-        return reverse("user-view",
-            kwargs=dict(username=bundle.obj.user.username))
+        return bundle.obj.get_profile().get_link()
 
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_mugshot_url()
@@ -134,8 +132,7 @@ class UserResource(GenericResource):
         excludes = ['password', 'is_staff', 'is_superuser', 'email']
 
     def dehydrate_url(self, bundle):
-        return reverse("user-view",
-            kwargs=dict(username=bundle.obj.username))
+        return bundle.obj.get_profile().get_link()
 
     def dehydrate_full_name(self, bundle):
         return bundle.obj.get_full_name()
