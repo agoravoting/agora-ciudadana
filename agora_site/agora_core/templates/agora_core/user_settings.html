@@ -232,25 +232,27 @@
             </form>
         </div>
         <div id="tab-account" class="tab-pane form-data admin-form span7">
-            <form>
+            <form id="password_form">
                 <fieldset>
-                <legend>Change password</legend>
+                <legend><%= gettext("Change password") %></legend>
 
-                <div class="control-group" id="div_id_current_password">
-                    <label class="control-label" for="id_current_password">
-                        <%= gettext("Current password") %>
-                    </label>
+                <% if (has_current_password) { %>
+                    <div class="control-group" id="div_id_current_password">
+                        <label class="control-label" for="id_current_password">
+                            <%= gettext("Current password") %>
+                        </label>
 
-                    <div class="controls">
-                        <input class="required textinput textInput"
-                        id="current_password" name="current_password"
-                        type="password" />
+                        <div class="controls">
+                            <input class="required textinput textInput"
+                            id="id_current_password" name="current_password"
+                            type="password" />
 
-                        <p class="help-block" id="hint_id_current_password">
-                            <%= gettext("Provide your current password for security, required field") %>
-                        </p>
+                            <p class="help-block" id="hint_id_current_password">
+                                <%= gettext("Provide your current password for security, required field") %>
+                            </p>
+                        </div>
                     </div>
-                </div>
+                <% } %>
 
                 <div class="control-group" id="div_id_password1">
                     <label class="control-label" for="id_password1">
@@ -282,7 +284,7 @@
                     <div class="control-group">
                         <div class="controls">
                             <button class="btn btn-large btn-block btn-success"
-                            id="save_profile" type="button">
+                            id="save_pasword" type="submit">
                                 <%= gettext("Change password") %>
                             </button>
                         </div>

@@ -22,12 +22,24 @@
 
             // email form
             var metrics_email = [
-                [ '#id_email', 'email', gettext('Must be a valid email (RFC 822)') ]
+                ['#id_email', 'email', gettext('Must be a valid email (RFC 822)') ]
             ];
-            this.$el.find("#email_form").nod(metrics_profile,
+            this.$el.find("#email_form").nod(metrics_email,
                 {silentSubmit: true, broadcastError: true});
             this.$el.find("#email_form").on('silentSubmit', this.saveEmail);
             this.$el.find("#email_form").submit(function (e) { e.preventDefault(); });
+
+            // password form
+            var metrics_password = [
+                ['#id_password1', 'presence', gettext('This field is required')],
+                ['#id_password2', 'presence', gettext('This field is required')],
+                ['#id_password1', 'min-length:4', gettext('At least 4 characters')],
+                ['#id_password2', 'same-as:#id_password1', gettext('Your passwords do not match')]
+            ];
+            this.$el.find("#password_form").nod(metrics_password,
+                {silentSubmit: true, broadcastError: true});
+            this.$el.find("#password_form").on('silentSubmit', this.savePassword);
+            this.$el.find("#password_form").submit(function (e) { e.preventDefault(); });
 
             return this.$el;
         },
@@ -93,6 +105,38 @@
                 self.sendingData = false;
                 $(".btn[type=submit]").removeClass("disabled");
                 alert("Error saving email settings");
+            });
+
+            return false;
+        },
+
+        savePassword: function(e) {
+            e.preventDefault();
+            if (this.sendingData) {
+                return;
+            }
+
+            $(".btn[type=submit]").addClass("disabled");
+            this.sendingData = true;
+
+            var json = {
+                'old_password': $('#id_current_password').val(),
+                'password1': $('#id_password1').val(),
+                'password2': $('#id_password2').val(),
+            };
+            var self = this;
+            var jqxhr = $.ajax("/api/v1/user/settings/", {
+                data: JSON.stringifyCompat(json),
+                contentType : 'application/json',
+                type: 'PUT',
+            })
+            .done(function(e) {
+                window.location.reload(true);
+            })
+            .fail(function() {
+                self.sendingData = false;
+                $(".btn[type=submit]").removeClass("disabled");
+                alert("Error saving password settings");
             });
 
             return false;

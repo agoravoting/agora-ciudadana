@@ -261,7 +261,7 @@ class UserSettingsForm(django_forms.ModelForm):
         '''
         Clean old password if needed
         '''
-        if 'password1' not in self.data:
+        if 'password1' not in self.data or self.instance.password == '!':
             return None
 
         if not self.instance.check_password(self.cleaned_data['old_password']):
@@ -277,10 +277,10 @@ class UserSettingsForm(django_forms.ModelForm):
             return None
 
         if 'password2' not in self.data or\
-            self.cleaned_data['password1'] != self.cleaned_data['password2'] or\
-            len(self.cleaned_data['password1']) > 3:
+            self.cleaned_data['password1'] != self.data['password2'] or\
+            len(self.cleaned_data['password1']) <= 3:
                 raise django_forms.ValidationError(_('The two password fields'
-                    ' didn\'t match or are very insecure.'))
+                    ' didn\'t match or are insecure.'))
 
         return self.cleaned_data['password1']
 

@@ -427,6 +427,7 @@ class UserSettingsResource(UserResource):
     email = fields.CharField()
     biography = fields.CharField()
     email_updates = fields.BooleanField()
+    has_current_password = fields.BooleanField()
 
     def dehydrate_email(self, bundle):
         return bundle.obj.email
@@ -436,3 +437,6 @@ class UserSettingsResource(UserResource):
 
     def dehydrate_email_updates(self, bundle):
         return bundle.obj.get_profile().email_updates
+
+    def dehydrate_has_current_password(self, bundle):
+        return bundle.obj.password != '!'
