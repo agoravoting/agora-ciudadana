@@ -1,3 +1,7 @@
+import requests
+
+from django.core.files import File
+from django.core.files.temp import NamedTemporaryFile
 from django import forms as django_forms
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -121,4 +125,166 @@ class SendMailForm(django_forms.Form):
         )
 
         ret_kwargs['target_user'] = get_object_or_404(User, pk=kwargs["userid"])
+        return ret_kwargs
+
+class CustomAvatarForm(django_forms.ModelForm):
+    custom_avatar = django_forms.ImageField(_('Avatar'))
+
+    def __init__(self, request, *args, **kwargs):
+        kwargs['instance'] = request.user
+        self.request = request
+        return super(UserSettingsForm, self).__init__(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        user = super(UserSettingsForm, self).save(commit=False)
+        profile = user.get_profile()
+
+        if 'custom_avatar' in self.data:
+            avatar = self.cleaned_data['custom_avatar']
+            if profile.mugshot:
+                profile.mugshot.delete()
+            profile.mugshot = avatar
+        return user
+
+    class Meta:
+        model = User
+        fields = ()
+
+    @staticmethod
+    def static_get_form_kwargs(request, data, *args, **kwargs):
+        '''
+        Returns the parameters that will be sent to the constructor
+        '''
+        ret_kwargs = dict(
+            request=request,
+            data=data
+        )
+
+        return ret_kwargs
+
+class UserSettingsForm(django_forms.ModelForm):
+    use_gravatar = django_forms.BooleanField(required=False)
+
+    use_initials = django_forms.BooleanField(required=False)
+
+    short_description = django_forms.CharField(max_length=140, required=False)
+
+    biography = django_forms.CharField(_('Biography'),
+        widget=django_forms.Textarea, required=False)
+
+    email = django_forms.EmailField(required=False)
+
+    email_updates = django_forms.BooleanField(required=False)
+
+    old_password = django_forms.CharField(required=False)
+
+    password1 = django_forms.CharField(required=False)
+
+    password2 = django_forms.CharField(required=False)
+
+    def __init__(self, request, *args, **kwargs):
+        kwargs['instance'] = request.user
+        self.request = request
+        self.data = kwargs['data']
+        return super(UserSettingsForm, self).__init__(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        user = super(UserSettingsForm, self).save(commit=False)
+        profile = user.get_profile()
+
+        if 'use_gravatar' in self.data:
+            profile.mugshot.delete()
+            profile.mugshot = None
+        elif 'use_initials' in self.data:
+            params = {
+                'fullname': user.get_profile().get_fullname()
+            }
+            r = requests.get("https://unitials.com/mugshot", params=params)
+            img_temp = NamedTemporaryFile(delete=True)
+            img_temp.write(r.content)
+            img_temp.flush()
+            profile.mugshot.save("image.jpg", File(img_temp), save=True)
+
+        if 'short_description' in self.data:
+            profile.short_description = self.cleaned_data['short_description']
+
+        if 'biography' in self.data:
+            profile.biography = self.cleaned_data['biography']
+
+        if 'email' in self.data:
+            user.email = self.cleaned_data['email']
+
+        if 'email_updates' in self.data:
+            profile.email_updates = self.cleaned_data['email_updates']
+
+        if 'password1' in self.data:
+            user.set_password(self.cleaned_data['password1'])
+        profile.save()
+        user.save()
+        return user
+
+    def clean_email(self):
+        '''
+        Validate that the email is not already registered with another user
+        '''
+        if 'email' not in self.data:
+            return None
+
+        if User.objects.filter(email__iexact=self.cleaned_data['email']).exclude(
+            email__iexact=self.instance.email).exists():
+            raise django_forms.ValidationError(_(u'This email is already in '
+                u'use. Please supply a different email.'))
+        return self.cleaned_data['email']
+
+    def clean_old_password(self):
+        '''
+        Clean old password if needed
+        '''
+        if 'password1' not in self.data:
+            return None
+
+        if not self.instance.check_password(self.cleaned_data['old_password']):
+            raise django_forms.ValidationError(_(u'Invalid password.'))
+        return self.cleaned_data['old_password']
+
+
+    def clean_password1(self):
+        '''
+        Clean old passwords match
+        '''
+        if 'password1' not in self.data:
+            return None
+
+        if 'password2' not in self.data or\
+            self.cleaned_data['password1'] != self.cleaned_data['password2'] or\
+            len(self.cleaned_data['password1']) > 3:
+                raise django_forms.ValidationError(_('The two password fields'
+                    ' didn\'t match or are very insecure.'))
+
+        return self.cleaned_data['password1']
+
+    def clean(self):
+        """
+        Validates that the values entered into the two password fields match.
+        """
+        if self.request.user.is_anonymous():
+            raise django_forms.ValidationError(_('You need to be '
+                'authenticated'))
+
+        return self.cleaned_data
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'username')
+
+    @staticmethod
+    def static_get_form_kwargs(request, data, *args, **kwargs):
+        '''
+        Returns the parameters that will be sent to the constructor
+        '''
+        ret_kwargs = dict(
+            request=request,
+            data=data
+        )
+
         return ret_kwargs

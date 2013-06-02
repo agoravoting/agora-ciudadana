@@ -21,6 +21,7 @@ from tastypie import http
 from tastypie import fields
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
+from tastypie.validation import Validation, CleanedDataFormValidation
 
 from userena import forms as userena_forms
 from userena.models import UserenaSignup
@@ -28,7 +29,8 @@ from userena.models import UserenaSignup
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.misc.utils import rest, validate_email
 from agora_site.misc.decorators import permission_required
-from agora_site.agora_core.forms.user import *
+from agora_site.agora_core.forms.user import (UsernameAvailableForm, LoginForm,
+    SendMailForm, UserSettingsForm, CustomAvatarForm)
 from agora_site.agora_core.models import Profile
 from agora_site.agora_core.models import Agora
 
@@ -116,7 +118,6 @@ class TinyProfileResource(GenericResource):
     def dehydrate_num_votes(self, bundle):
         return bundle.obj.count_direct_votes()
 
-
 class UserResource(GenericResource):
     '''
     Resource representing users.
@@ -154,6 +155,11 @@ class UserResource(GenericResource):
             url(r"^(?P<resource_name>%s)/settings%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('user_settings'), name="api_user_settings"),
+
+            url(r"^(?P<resource_name>%s)/avatar%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_form(form_class=CustomAvatarForm, method="POST"),
+                name="api_user_avatar"),
 
             url(r"^(?P<resource_name>%s)/register%s$" \
                 % (self._meta.resource_name, trailing_slash()),
@@ -248,12 +254,13 @@ class UserResource(GenericResource):
 
         if request.method == 'GET':
             user = User.objects.get(username=request.user)
-            bundle = self.build_bundle(obj=user, request=request)
-            bundle = self.full_dehydrate(bundle)
+            usr = UserSettingsResource()
+            bundle = usr.build_bundle(obj=user, request=request)
+            bundle = usr.full_dehydrate(bundle)
 
             return self.create_response(request, bundle)
         elif request.method == 'PUT':
-            return self.put_detail(request)
+            return self.wrap_form(form_class=UserSettingsForm, method="PUT")(request, **kwargs)
 
     def user_set_by_username(self, request, **kwargs):
         user_list = kwargs['user_list'].split(';')
@@ -411,3 +418,12 @@ class UserResource(GenericResource):
         queryset = user.get_profile().get_participated_elections()
         return ElectionResource().get_custom_list(request=request,
             queryset=queryset)
+
+
+class UserSettingsResource(UserResource):
+    '''
+    Resource representing users.
+    '''
+    email = fields.CharField()
+    def dehydrate_email(self, bundle):
+        return bundle.obj.email

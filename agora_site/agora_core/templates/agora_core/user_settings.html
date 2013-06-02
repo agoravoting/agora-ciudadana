@@ -300,7 +300,7 @@
 {% block script-block %}
 <script>
 var ajax_data = {
-    user: {% rest request '/user/' user_shown.id  '/' %},
+    user: {% rest request '/user/settings/' %},
 };
 app.currentView = new Agora.UserSettingsView();
 </script>

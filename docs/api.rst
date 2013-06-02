@@ -2110,9 +2110,6 @@ Add comment
          ": blah blah blah blah...."
     }
 
-Resource: Members
-==============
-
 List members
 ----------
 

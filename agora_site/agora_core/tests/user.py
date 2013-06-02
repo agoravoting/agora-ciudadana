@@ -60,7 +60,12 @@ class UserTest(RootTestCase):
         data = self.getAndParse('user/settings/')
 
         self.assertEqual(data['username'], 'david')
-        # TODO, testing via PUT, not yet implemented in user.py
+
+        # change username
+        input_data = {'username': 'davido'}
+        self.putAndParse('user/settings/', data=input_data)
+        data = self.getAndParse('user/settings/')
+        self.assertEqual(data['username'], 'davido')
 
     def test_user_set_username(self):
         #Gets a list of names and returns the list of users with those names

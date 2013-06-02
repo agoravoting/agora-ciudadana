@@ -57,7 +57,7 @@ class GenericResourceMixin:
         def wrapper(request, *args, **kwargs):
             try:
                 desired_format = self.determine_format(request)
-                if method == "POST":
+                if method == "POST" or method== "PUT":
                     data = self.deserialize(request, request.raw_post_data,
                         desired_format)
                 elif method == "GET":
