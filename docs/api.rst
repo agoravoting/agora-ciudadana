@@ -2247,8 +2247,11 @@ List members
         ]
     }
 
-User settings
--------------
+Resource: User
+==============
+
+Get User settings
+-----------------
 
 .. http:get:: /user/settings/
 
@@ -2260,7 +2263,7 @@ User settings
 
    .. sourcecode:: http
 
-    POST /api/v1/user/settings/ HTTP/1.1
+    GET /api/v1/user/settings/ HTTP/1.1
     Host: example.com
     Accept: application/json, text/javascript
 
@@ -2274,6 +2277,7 @@ User settings
 
     {
         "username": "david", 
+        "email": "david@example.com",
         "first_name": "", 
         "last_name": "", 
         "mugshot_url": "http://www.gravatar.com/avatar/08d5c7923d841a23030038591c9ae3e0?s=50&d=https%3A%2F%2Funitials.com%2Fmugshot%2F50%2F.png", 
@@ -2285,6 +2289,46 @@ User settings
         "id": 0, 
         "date_joined": "2012-11-29T16:08:43.874000"
     }
+
+
+Put User settings
+-----------------
+
+.. http:put:: /user/settings/
+
+   Modifies the settings of the authenticated user. It modifies only the set
+   parameters.
+
+   :form use_gravatar: If you want the user mugshot to be a gravatar
+   :form use_gravatar: If you want the user mugshot to be user initials
+   :form biography: Users' long description
+   :form email: User's email
+   :form email_updates: True if the uswer wants to receive mail updates
+   :form old_password: current password. needed to change password
+   :form password1: new password
+   :form password2: new password
+   :status 202 CREATED: when user is modified correctly
+   :status 400 BAD REQUEST: wen the form parameters are invalid
+
+   **Example request**:
+
+   .. sourcecode:: http
+
+    PUT /api/v1/user/settings/ HTTP/1.1
+    Host: example.com
+    Accept: application/json, text/javascript
+
+    {
+        "username": "new_username"
+    }
+
+   **Example response**:
+
+   .. sourcecode:: http
+
+    HTTP/1.1 200 OK
+    Vary: Accept, Accept-Language, Cookie
+    Content-Type: application/json; charset=utf-8
 
 User register
 -------------

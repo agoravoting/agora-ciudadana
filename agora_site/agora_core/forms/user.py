@@ -196,10 +196,8 @@ class UserSettingsForm(django_forms.ModelForm):
             profile.mugshot.delete()
             profile.mugshot = None
         elif 'use_initials' in self.data:
-            params = {
-                'fullname': user.get_profile().get_fullname()
-            }
-            r = requests.get("https://unitials.com/mugshot", params=params)
+            r = requests.get("https://unitials.com/mugshot/50/%s.png" %\
+                user.get_profile().get_initials())
             img_temp = NamedTemporaryFile(delete=True)
             img_temp.write(r.content)
             img_temp.flush()
