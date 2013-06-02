@@ -133,17 +133,17 @@ class CustomAvatarForm(django_forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         kwargs['instance'] = request.user
         self.request = request
-        return super(UserSettingsForm, self).__init__(*args, **kwargs)
+        return super(CustomAvatarForm, self).__init__(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        user = super(UserSettingsForm, self).save(commit=False)
+        user = super(CustomAvatarForm, self).save(commit=False)
         profile = user.get_profile()
 
-        if 'custom_avatar' in self.data:
-            avatar = self.cleaned_data['custom_avatar']
-            if profile.mugshot:
-                profile.mugshot.delete()
-            profile.mugshot = avatar
+        avatar = self.cleaned_data['custom_avatar']
+        if profile.mugshot:
+            profile.delete_mugshot()
+        profile.mugshot = avatar
+        profile.save()
         return user
 
     class Meta:
@@ -157,7 +157,8 @@ class CustomAvatarForm(django_forms.ModelForm):
         '''
         ret_kwargs = dict(
             request=request,
-            data=data
+            data=request.POST,
+            files=request.FILES
         )
 
         return ret_kwargs
@@ -197,10 +198,10 @@ class UserSettingsForm(django_forms.ModelForm):
         profile = user.get_profile()
 
         if 'use_gravatar' in self.data:
-            profile.mugshot.delete()
+            profile.delete_mugshot()
             profile.mugshot.name = "gravatar"
         elif 'use_initials' in self.data:
-            profile.mugshot.delete()
+            profile.delete_mugshot()
             profile.mugshot.name = "initials"
 
         if 'short_description' in self.data:

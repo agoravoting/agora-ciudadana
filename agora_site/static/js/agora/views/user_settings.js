@@ -51,6 +51,46 @@
             var lang_name = $("#id_language li[data-langcode=" + lang + "] a").html();
             $("#id_language .current-item.inline").html(lang_name);
 
+            // image upload stuff
+            $('#uploaded-avatar').change(function() {
+                var file = this.files[0];
+                name = file.name;
+                size = file.size;
+                type = file.type;
+
+                if (!file.type.match(/image.*/) || size > 1024*100) {
+                    alert("Not an image or too big");
+                    return;
+                }
+                var formdata = false;
+                if (window.FormData) {
+                    formdata = new FormData();
+                }
+
+                if (window.FileReader) {
+                    reader = new FileReader();
+                    reader.readAsDataURL(file);
+                }
+
+                if (formdata) {
+                    formdata.append("custom_avatar", file);
+                    var self = this;
+                    $.ajax("/api/v1/user/mugshot/", {
+                        type: "POST",
+                        data: formdata,
+                        processData: false,
+                        contentType: false
+                    })
+                    .done(function(e) {
+                        window.location.reload(true);
+                    })
+                    .fail(function() {
+                        self.sendingData = false;
+                        alert("Error uploading mugshot");
+                    });
+                }
+            });
+
             return this.$el;
         },
 

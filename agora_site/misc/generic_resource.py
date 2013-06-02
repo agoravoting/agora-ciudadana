@@ -46,7 +46,7 @@ class GenericResourceMixin:
         return http_method(serialized,
             content_type=build_content_type(desired_format))
 
-    def wrap_form(self, form_class, method="POST"):
+    def wrap_form(self, form_class, method="POST", raw=False):
         """
         Creates a view for a given form class, which calls to is_valid()
         and save() when needed. You can get the form args reimplementing
@@ -58,8 +58,11 @@ class GenericResourceMixin:
             try:
                 desired_format = self.determine_format(request)
                 if method == "POST" or method== "PUT":
-                    data = self.deserialize(request, request.raw_post_data,
-                        desired_format)
+                    if not raw:
+                        data = self.deserialize(request, request.raw_post_data,
+                            desired_format)
+                    else:
+                        data = request.raw_post_data
                 elif method == "GET":
                     data = request.GET
                 response_data = {}

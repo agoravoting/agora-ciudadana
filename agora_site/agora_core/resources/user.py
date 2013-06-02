@@ -153,10 +153,10 @@ class UserResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('user_settings'), name="api_user_settings"),
 
-            url(r"^(?P<resource_name>%s)/avatar%s$" \
+            url(r"^(?P<resource_name>%s)/mugshot%s$" \
                 % (self._meta.resource_name, trailing_slash()),
-                self.wrap_form(form_class=CustomAvatarForm, method="POST"),
-                name="api_user_avatar"),
+                self.wrap_form(form_class=CustomAvatarForm, raw=True,
+                method="POST"), name="api_user_avatar"),
 
             url(r"^(?P<resource_name>%s)/register%s$" \
                 % (self._meta.resource_name, trailing_slash()),

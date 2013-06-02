@@ -59,6 +59,12 @@ class Profile(UserenaLanguageBaseProfile):
             initials += word[0].upper()
         return unicodedata.normalize('NFKD', initials).encode('ascii','ignore')
 
+    def delete_mugshot(self):
+        if self.mugshot.name in ['gravatar', 'initials', '']:
+            self.mugshot.name = ""
+            return
+        self.mugshot.delete()
+
     def get_initials_mugshot(self, custom_size = userena_settings.USERENA_MUGSHOT_SIZE):
         if userena_settings.USERENA_MUGSHOT_DEFAULT == 'blank-unitials-ssl':
             return 'https://unitials.com/mugshot/%s/%s.png' % (
