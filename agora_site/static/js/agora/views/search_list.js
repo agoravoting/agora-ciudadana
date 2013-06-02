@@ -29,6 +29,13 @@
                 var json = model.toJSON().obj;
                 if (ctype == 'profile') {
                     json.initials = Agora.getUserInitials(json);
+                } else if (ctype == 'election') {
+                    json.election_at = interpolate(
+                        gettext('%(electionname)s at %(agora_full_name)s'),
+                        {
+                            'electionname': json.pretty_name,
+                            'agora_full_name': json.agora.full_name
+                        }, true);
                 }
                 var ret = template(json);
                 return ret;
