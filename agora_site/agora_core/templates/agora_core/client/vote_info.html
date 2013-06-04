@@ -72,7 +72,7 @@
         <% } %>
     <% } else { %>
         <% if (vote.is_direct) { %>
-            <strong><%= interpolate(gettext("%s vote is secret"), [vote.voter.full_name]) %></strong>
+            <strong><%= interpolate(gettext("%s's vote is secret"), [vote.voter.full_name]) %></strong>
         <% } else { %>
             <strong><%= interpolate(gettext("%s delegation is secret"), [vote.voter.full_name]) %></strong>
         <% } %>

@@ -886,7 +886,7 @@ class AgoraResource(GenericResource):
             context.update(dict(
                 agora=agora,
                 other_user=request.user,
-                notification_text=_('Your cancelled your admin membership request at '
+                notification_text=_('You cancelled your admin membership request at '
                     '%(agora)s') % dict(
                         agora=agora.get_full_name()
                     ),
@@ -1275,7 +1275,7 @@ class AgoraResource(GenericResource):
             context.update(dict(
                 agora=agora,
                 other_user=request.user,
-                notification_text=_('Your hav removed your vote delegation '
+                notification_text=_('Your have removed your vote delegation '
                     'from %(agora)s') % dict(
                             agora=agora.get_full_name()
                         ),
