@@ -41,7 +41,12 @@ def vote_for_election(user, election):
 
 @register.filter
 def get_chained_first_pretty_answer(vote, election):
-    return vote.get_chained_first_pretty_answer(election)
+    try:
+        return vote.get_chained_first_pretty_answer(election)
+    except:
+        # this can happen if for example the vote of the delegate is indeed
+        # private
+        return None
 
 @register.filter
 def last_election_voted(user, agora):
