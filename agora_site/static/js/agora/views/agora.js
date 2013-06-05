@@ -58,30 +58,23 @@
                 main_action_class: "btn-success",
                 main_action_icon: "icon-heart icon-white",
                 main_action_name: gettext("Join this agora now"),
-                main_action_id: "",
+                main_action_id: "join",
                 actions: []
             };
 
             var userid = $("body").data("userid");
-            if (ajax_data.agora.creator.id == userid) {
-                this.model.main_action_icon = "iconuser";
+            if (ajax_data.agora.creator.id == userid ||
+                _.contains(ajax_data.user_permissions.permissions, "admin") ||
+                _.contains(ajax_data.user_permissions.permissions, "leave")) {
+                this.model.main_action_icon = "icon-cog";
                 this.model.dropdown =  true;
                 this.model.main_action_class = "";
-                this.model.main_action_name = gettext("You are the owner");
-                this.model.actions = [
-                    {
-                        id: "admin-agora",
-                        name: gettext("Edit agora details"),
-                        icon: "icon-edit"
-                    }
-                ];
+                this.model.main_action_id = "";
+                this.model.main_action_name = gettext("Quick actions");
+            }
 
-            } else if (_.contains(ajax_data.user_permissions.permissions, "admin")) {
-                this.model.main_action_icon = "icon-user";
-                this.model.dropdown =  true;
-                this.model.main_action_class = "";
-                this.model.main_action_name = gettext("You are an admin");
-                this.model.actions = [
+            if (_.contains(ajax_data.user_permissions.permissions, "admin")) {
+                this.model.actions = this.model.actions.concat([
                     {
                         id: "admin-agora",
                         name: gettext("Edit agora details"),
@@ -92,52 +85,59 @@
                         name: gettext("Remove my admin membership"),
                         icon: "icon-remove"
                     }
-                ];
+                ]);
+            }
 
-            } else if (_.contains(ajax_data.user_permissions.permissions, "leave")) {
-                this.model.main_action_icon = "icon-user";
-                this.model.dropdown =  true;
-                this.model.main_action_class = "";
-                this.model.main_action_name = gettext("You are a member");
-                this.model.actions = [
+            if (_.contains(ajax_data.user_permissions.permissions, "leave_admin")) {
+                this.model.actions = this.model.actions.concat([
                     {
-                        id: "leave-agora",
-                        name: gettext("Remove my membership"),
+                        id: "admin-agora",
+                        name: gettext("Edit agora details"),
+                        icon: "icon-edit"
+                    },
+                    {
+                        id: "remove-my-admin-membership",
+                        name: gettext("Remove my admin membership"),
                         icon: "icon-remove"
                     }
-                ];
+                ]);
+            }
 
-                if (_.contains(ajax_data.user_permissions.permissions, "request_admin_membership")) {
-                    this.model.actions[1] = {
-                        id: "request-admin",
-                        name: gettext("Request admin membership"),
-                        icon: "icon-eject"
-                    };
-                } else if (_.contains(ajax_data.user_permissions.permissions, "cancel_admin_membership_request")) {
-                    this.model.actions[1] = {
-                        id: "cancel-admin-request",
-                        name: gettext("Cancel admin membership request"),
+            if (_.contains(ajax_data.user_permissions.permissions, "leave")) {
+                this.model.actions = this.model.actions.concat([
+                    {
+                        id: "leave-agora",
+                        name: gettext("Leave this agora"),
                         icon: "icon-remove"
-                    };
-                }
+                    }
+                ]);
+            }
 
-                if (_.contains(ajax_data.user_permissions.permissions, "cancel_vote_delegation")) {
-                    this.model.actions[this.model.actions.length] = {
-                        id: "cancel_vote_delegation",
-                        name: gettext("Cancel vote delegation"),
-                        icon: "icon-remove"
-                    };
-                }
-            } else if (_.contains(ajax_data.user_permissions.permissions, "join")) {
-                this.model = {
-                    dropdown: false,
-                    main_action_class: "btn-success",
-                    main_action_icon: "icon-heart icon-white",
-                    main_action_name: gettext("Join this agora now"),
-                    main_action_id: "join",
-                    actions: []
-                };
-            } else if (_.contains(ajax_data.user_permissions.permissions, "request_membership")) {
+            if (_.contains(ajax_data.user_permissions.permissions, "request_admin_membership")) {
+                this.model.actions.push({
+                    id: "request-admin",
+                    name: gettext("Request admin membership"),
+                    icon: "icon-eject"
+                });
+            }
+
+            if (_.contains(ajax_data.user_permissions.permissions, "cancel_admin_membership_request")) {
+                this.model.actions.push({
+                    id: "cancel-admin-request",
+                    name: gettext("Cancel admin membership request"),
+                    icon: "icon-remove"
+                });
+            }
+
+            if (_.contains(ajax_data.user_permissions.permissions, "cancel_vote_delegation")) {
+                this.model.actions.push({
+                    id: "cancel-vote-delegation",
+                    name: gettext("Cancel vote delegation"),
+                    icon: "icon-remove"
+                });
+            }
+
+            if (_.contains(ajax_data.user_permissions.permissions, "request_membership")) {
                 this.model = {
                     dropdown: false,
                     main_action_class: "btn-success",
@@ -146,36 +146,35 @@
                     main_action_id: "request-membership",
                     actions: []
                 };
-            } else if (_.contains(ajax_data.user_permissions.permissions, "cancel_membership_request")) {
+            }
+
+            if (_.contains(ajax_data.user_permissions.permissions, "cancel_membership_request")) {
                 this.model = {
-                    dropdown: true,
-                    main_action_class: "btn-success",
-                    main_action_icon: "icon-user",
+                    dropdown: false,
+                    main_action_class: "",
+                    main_action_icon: "icon-remove",
                     main_action_name: gettext("You requested membership"),
-                    main_action_id: "",
-                    actions: [
-                        {
-                            id: "cancel-membership-request",
-                            name: gettext("Cancel membership request"),
-                            icon: "icon-remove"
-                        }
-                    ]
+                    main_action_id: "cancel-membership-request",
+                    actions: []
                 };
-            } else {
-                this.model = null;
             }
         },
 
         doAction: function(e) {
-            var a = $(e.target).closest("a");
+            e.preventDefault();
             if (this.sendingData) {
                 return;
             }
+
+            var a = $(e.target).closest("a");
+            var action_id = a.data('id');
+            if (!action_id) {
+                return;
+            }
+
             this.sendingData = true;
             a.addClass("disabled");
 
-            e.preventDefault();
-            var action_id = a.data('id');
             var data = null;
             switch (action_id) {
             case "admin-agora":
@@ -203,8 +202,18 @@
             case "cancel-membership-request":
                 data = {action: "cancel_membership_request"};
                 break;
-            case "cancel_vote_delegation":
+            case "cancel-vote-delegation":
                 data = {action: "cancel_vote_delegation"};
+                break;
+            case "join":
+                data = {action: "join"};
+                break;
+            case "request-membership":
+                data = {action: "request_membership"};
+                break;
+            default:
+                a.removeClass("disabled");
+                return;
             }
 
             var jqxhr = $.ajax("/api/v1/agora/" + ajax_data.agora.id + "/action/", {
@@ -216,40 +225,6 @@
                 location.reload();
             });
         },
-
-        doMainAction: function(e) {
-            var a = $(e.target).closest("a");
-            if (this.sendingData || a.data('toggle') == "dropdown") {
-                return;
-            }
-            this.sendingData = true;
-            a.addClass("disabled");
-
-            e.preventDefault();
-            var action_id = a.data('id');
-            var data = null;
-            switch (action_id) {
-            case "join":
-                data = {action: "join"};
-                break;
-            case "request-membership":
-                data = {action: "request_membership"};
-                break;
-            case "cancel-membership-request":
-                data = {action: "cancel_membership_request"};
-                break;
-            }
-            
-
-            var jqxhr = $.ajax("/api/v1/agora/" + ajax_data.agora.id + "/action/", {
-                data: JSON.stringifyCompat(data),
-                contentType : 'application/json',
-                type: 'POST',
-            })
-            .done(function(e) {
-                location.reload();
-            });
-        }
     });
 
     Agora.AgoraView = Backbone.View.extend({

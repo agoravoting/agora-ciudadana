@@ -427,7 +427,7 @@
             el: "#action_list",
 
             events: {
-                'click a.main-action': 'doMainAction',
+                'click a.main-action': 'doAction',
                 'click a.action-link': 'doAction'
             },
 
@@ -456,11 +456,6 @@
                 e.preventDefault();
                 console.log("doAction not implemented");
             },
-
-            doMainAction: function(e) {
-                e.preventDefault();
-                console.log("doMainAction not implemented");
-            }
         });
     }).call(this);
 }).call(this);
