@@ -88,21 +88,6 @@
                 ]);
             }
 
-            if (_.contains(ajax_data.user_permissions.permissions, "leave_admin")) {
-                this.model.actions = this.model.actions.concat([
-                    {
-                        id: "admin-agora",
-                        name: gettext("Edit agora details"),
-                        icon: "icon-edit"
-                    },
-                    {
-                        id: "remove-my-admin-membership",
-                        name: gettext("Remove my admin membership"),
-                        icon: "icon-remove"
-                    }
-                ]);
-            }
-
             if (_.contains(ajax_data.user_permissions.permissions, "leave")) {
                 this.model.actions = this.model.actions.concat([
                     {
