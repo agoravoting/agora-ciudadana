@@ -1,6 +1,7 @@
 
 {% extends 'base.html' %}
 {% load i18n l10n endless crispy_forms_tags agora_utils comments markup %}
+{% load string_tags %}
 
 {% block content-wrapper-class %}elections{% endblock %}
 {% block title %}{{ election.pretty_name }} - {{ election.agora.creator.username }}/{{ election.agora.name }}{% endblock %}
@@ -143,7 +144,7 @@
     <div class="content">
         {% block election_content %}
             <div class="main-description">
-                {{ election.description|markdown:"safe" }}
+                {{ election.description|urlify_markdown|markdown:"safe" }}
             </div>
             <div class="election-data">
                 <div id="election-results">
