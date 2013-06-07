@@ -1,17 +1,19 @@
 <script id="template-search-election-item" type="text/underscore-template">
     <div class="result-item agora-result">
-        <a href="<%= url %>">
-            <div class="row bottom-bordered">
-                <div class="span2">
+        <div class="row bottom-bordered">
+            <div class="span2">
+                <a href="<%= url %>">
                     <img src="<%= mugshot_url %>" />
-                </div>
-                <div class="span6">
-                    <strong>
-                        <%= election_at %>
-                    </strong>
-                    <p><%= short_description %></p>
-                </div>
+                </a>
             </div>
-        </a>
+            <div class="span6">
+                <strong>
+                    <a href="<%= url %>">
+                        <%= election_at %>
+                    </a>
+                </strong>
+                <p><%= short_description_md %></p>
+            </div>
+        </div>
     </div>
 </script>

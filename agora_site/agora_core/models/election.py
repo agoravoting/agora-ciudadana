@@ -3,12 +3,16 @@ import uuid
 import hashlib
 import simplejson
 
+import markdown
+
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
 from django.template.defaultfilters import slugify
+from django.template.defaultfilters import truncatewords_html
+from django.template.defaultfilters import urlizetrunc
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
@@ -948,3 +952,7 @@ class Election(models.Model):
         # TODO: update result_hash
         self.save()
 
+    def short_description_md(self):
+        short_md = markdown.markdown(urlizetrunc(self.description, 15))
+        short_md = truncatewords_html(short_md, 25)
+        return short_md
