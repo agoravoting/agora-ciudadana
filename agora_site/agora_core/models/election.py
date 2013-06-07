@@ -12,7 +12,6 @@ from django.db import models
 from django.db.models import Q
 from django.template.defaultfilters import slugify
 from django.template.defaultfilters import truncatewords_html
-from django.template.defaultfilters import urlizetrunc
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
@@ -22,6 +21,7 @@ from agora_site.misc.utils import JSONField, rest
 from agora_site.agora_core.models.agora import Agora
 from agora_site.agora_core.models.voting_systems.base import (
     parse_voting_methods, get_voting_system_by_id)
+from agora_site.agora_core.templatetags.string_tags import urlify_markdown
 
 
 class Election(models.Model):
@@ -953,6 +953,7 @@ class Election(models.Model):
         self.save()
 
     def short_description_md(self):
-        short_md = markdown.markdown(urlizetrunc(self.description, 15))
+        short_md = markdown.markdown(urlify_markdown(self.description),
+                                     safe_mode="escape", enable_attributes=False)
         short_md = truncatewords_html(short_md, 25)
         return short_md
