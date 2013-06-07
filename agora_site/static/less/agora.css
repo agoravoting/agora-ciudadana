@@ -5723,6 +5723,9 @@ div.result-item a p:hover {
 div.result-item a .span2 {
   width: 55px;
 }
+div.result-item .span2 {
+  width: 55px;
+}
 .no-overflow {
   overflow: hidden;
 }

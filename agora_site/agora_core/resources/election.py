@@ -214,6 +214,8 @@ class ElectionResource(GenericResource):
 
     user_perms = JSONApiField()
 
+    short_description_md = fields.CharField()
+
     class Meta(GenericMeta):
         queryset = Election.objects\
                     .exclude(url__startswith=DELEGATION_URL)\
@@ -249,6 +251,9 @@ class ElectionResource(GenericResource):
 
     def dehydrate_user_perms(self, bundle):
         return bundle.obj.get_perms(bundle.request.user)
+
+    def dehydrate_short_description_md(self, bundle):
+        return bundle.obj.short_description_md()
 
     def prepend_urls(self):
         return [
