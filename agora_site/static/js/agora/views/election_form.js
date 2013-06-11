@@ -623,10 +623,8 @@
 
             // look for a question whose data is invalid
             var failingQuestion = this.model.get('questions').find(function (question) {
-                question.formValid = false;
-                question.questionView.$el.find("[type=submit]").click();
-                return question.formValid == false;
                 question.questionView.updateModel();
+                return !question.questionView.$el.find("form").nod().formIsErrorFree();
             });
 
             // if found, switch to that question
