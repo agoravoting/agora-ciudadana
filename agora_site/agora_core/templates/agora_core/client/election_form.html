@@ -52,11 +52,12 @@
                         </div>
                     </div>
                     <div class="control-group spaced-up-control">
-                        <button class="btn btn-large btn-block btn-primary" id="show_add_question_tab_btn">
+                        <button class="btn btn-large btn-block btn-primary" id="show_add_question_tab_btn" type="button">
                             <%= gettext("Add question") %>
                         </button>
                         <div class="small-space-separator"></div>
-                        <button class="btn btn-large btn-block btn-success create_election_btn" type="submit">
+                        <input type="hidden" class="hidden-input" value="" />
+                        <button class="btn btn-large btn-block btn-success create_election_btn" type="button">
                         <% if (!edit_election) { %>
                             <%= gettext("Create election") %>
                         <% } else { %>
@@ -166,18 +167,18 @@
             </div>
         </div>
         <div class="control-group spaced-up-control">
+            <input type="hidden" class="hidden-input" value="" />
             <% if (question_num > 0) { %>
             <button class="btn btn-large btn-block add-question remove_question_btn" id="remove_question_btn<%=question_num%>" data-id="<%=question_num%>" type="button">
                 <%= gettext("Remove question") %>
             </button>
-            <input type="submit" class="hide" value="submit"/>
             <% } else { %>
-            <button class="btn btn-large btn-block btn-primary create_question_btn" id="create_question_btn<%=question_num%>" type="submit">
+            <button class="btn btn-large btn-block btn-primary create_question_btn" id="create_question_btn<%=question_num%>" type="button">
                 <%= gettext("Add question") %>
             </button>
             <% } %>
             <div class="small-space-separator"></div>
-            <button class="btn btn-large btn-block btn-success create_election_btn">
+            <button class="btn btn-large btn-block btn-success create_election_btn"  type="button">
             <% if (!edit_election) { %>
                 <%= gettext("Create election") %>
             <% } else { %>
