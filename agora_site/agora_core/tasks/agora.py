@@ -33,22 +33,14 @@ def send_request_membership_mails(agora_id, user_id, is_secure, site_id, remote_
                 agora=agora.get_full_name()
             ),
         extra_urls=(
-            (_('Accept membership request'),
-            reverse('agora-action-accept-membership-request',
+            (_('List of membership requests'),
+            reverse('agora-members',
                 kwargs=dict(
                     username=agora.creator,
                     agoraname=agora.name,
-                    username2=user.username
+                    members_filter="membership_requests"
                 ))
             ),
-            (_('Dismiss membership request'),
-            reverse('agora-action-dismiss-membership-request',
-                kwargs=dict(
-                    username=agora.creator,
-                    agoraname=agora.name,
-                    username2=user.username
-                ))
-            )
         ),
     ))
     for admin in agora.admins.all():
@@ -92,22 +84,14 @@ def send_request_admin_membership_mails(agora_id, user_id, is_secure, site_id, r
                 agora=agora.get_full_name()
             ),
         extra_urls=(
-            (_('Accept admin membership request'),
-            reverse('agora-action-admin-accept-membership-request',
+            (_('List of admin membership requests'),
+            reverse('agora-members',
                 kwargs=dict(
                     username=agora.creator,
                     agoraname=agora.name,
-                    username2=user.username
+                    members_filter="admin_membership_requests"
                 ))
             ),
-            (_('Dismiss membership request'),
-            reverse('agora-action-dismiss-admin-membership-request',
-                kwargs=dict(
-                    username=agora.creator,
-                    agoraname=agora.name,
-                    username2=user.username
-                ))
-            )
         ),
     ))
     for admin in agora.admins.all():

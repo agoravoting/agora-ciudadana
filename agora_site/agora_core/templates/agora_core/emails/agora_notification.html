@@ -14,7 +14,7 @@
     {% endfor %}
 {% endif %}
 
-{% blocktrans with agora_url=agora.get_link site_domain=site.domain other_user_url=other_user.get_profile.get_link %}
+{% blocktrans with agora_url=agora.get_link site_domain=site.domain other_user_url=other_user.get_profile.get_link agora_full_name=agora.get_full_name other_user_name=other_user.username %}
 <p>Agora URL: <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_full_name }}</a></p>
 
 <p>User URL: <a href="{{ protocol }}://{{ site_domain }}{{ other_user_url }}">{{ other_user_name }}</a></p>
