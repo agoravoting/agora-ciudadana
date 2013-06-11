@@ -166,6 +166,11 @@
                 'is_vote_secret': user_vote_is_secret,
                 'action': 'vote'
             };
+
+            if (!user_vote_is_secret) {
+                var why = $("#why_id").val();
+                ballor['reason'] = why;
+            }
             this.model.get('questions').each(function (element, index, list) {
                 var user_answers = element.get('user_answers').pluck('value');
                 var voting_system = element.get('tally_type');
