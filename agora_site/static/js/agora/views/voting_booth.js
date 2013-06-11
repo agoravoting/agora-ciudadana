@@ -179,7 +179,7 @@
 
             if (!user_vote_is_secret) {
                 var why = $("#why_id").val();
-                ballor['reason'] = why;
+                ballot['reason'] = why;
             }
             this.model.get('questions').each(function (element, index, list) {
                 var user_answers = element.get('user_answers').pluck('value');
