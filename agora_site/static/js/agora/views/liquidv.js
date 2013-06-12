@@ -515,17 +515,20 @@ console.log(selected_link);
                 var allNodes = {};
                 var loadedVotes = 0, loadedDelegatedVotes = 0;
                 $.each(delegated.objects, function(index, item) {
+                    var voter = item.voter;
+                    if(allNodes[voter.id] == null) {
+                        allNodes[voter.id] = {'id': ++lastNodeId, 'name': voter.first_name, 'user_name': voter.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
+                    }
+                    
                     if(item.public_data.answers != null) {
                         var choice = item.public_data.answers[0].choices[0];
-                        var voter = item.voter;
+                        
                         var delegateNode, voterNode;
                         if(allNodes[choice.user_id] == null) {
                             allNodes[choice.user_id] = {'id': ++lastNodeId, 'name': choice.user_name, 'user_name': choice.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
                         }
                         delegateNode = allNodes[choice.user_id];
-                        if(allNodes[voter.id] == null) {
-                            allNodes[voter.id] = {'id': ++lastNodeId, 'name': voter.first_name, 'user_name': voter.username, 'type': 'voter', 'color': '#0099FF', 'targets': [], 'votes': 1};
-                        }
+                        
                         voterNode = allNodes[voter.id];
                         // update targets
                         voterNode.targets = [delegateNode].concat(voterNode.targets);
