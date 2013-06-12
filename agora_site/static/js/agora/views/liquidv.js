@@ -18,10 +18,10 @@ var Liquidv = (function () {
 
     // mouse event vars
     var selected_node = null,
-            selected_link = null,
-            mousedown_link = null,
-            mousedown_node = null,
-            mouseup_node = null;
+        selected_link = null,
+        mousedown_link = null,
+        mousedown_node = null,
+        mouseup_node = null;
 
     // private functions
 
@@ -73,27 +73,16 @@ var Liquidv = (function () {
 
     // update graph (called when needed)
     var restart = function() {
-        // path (link) group
-        // links are known by id
+        // path (link) group, links are known by id
         path = path.data(links, function(d) { return d.id });
 
         // update existing links
         path.selectAll('path').classed('selected', function(d) { return d === selected_link; })                        
-        .style('marker-end', function(d) {
-            if(d.weight == null) {
-                return 'url(#end-arrow-' + grayScale(maxWeight - d.source.votes, maxWeight) + ')'; 
-            }
-            else {
-                return 'url(#end-arrow-' + d.weight + ')'; 
-            }                
+        .style('marker-end', function(d) {            
+            return 'url(#end-arrow-' + grayScale(maxWeight - (d.source.votes / d.choices), maxWeight) + ')';
         })
         .style('stroke', function(d) {
-            if(d.weight == null) {
-                return '#' + grayScale(maxWeight - d.source.votes, maxWeight);
-            }
-            else {
-                return '#' + d.weight; 
-           }
+           return '#' + grayScale(maxWeight - (d.source.votes / d.choices), maxWeight);
         });
         
         // add new links
@@ -102,18 +91,12 @@ var Liquidv = (function () {
         .attr('id', function(d) { return 'path' + d.id; })
         .attr('class', 'link')
         .classed('selected', function(d) { return d === selected_link; })
-        .style('marker-start', '')
-        // .style('marker-end', 'url(#end-arrow-000)')
+        .style('marker-start', '')        
         .style('marker-end', function(d) { 
-            if(d.weight == null) {
-                return 'url(#end-arrow-000)';
-            }
-            else {
-                return 'url(#end-arrow-' + d.weight + ')'; 
-            }
+            return 'url(#end-arrow-' + grayScale(maxWeight - (d.source.votes / d.choices), maxWeight) + ')';
          })
         .style('stroke', function(d) { 
-            return '#' + d.weight;
+            return '#' + grayScale(maxWeight - (d.source.votes / d.choices), maxWeight);
          })
         .on('mousedown', function(d) {				
             // select link
@@ -238,8 +221,7 @@ var Liquidv = (function () {
                 // unenlarge target node
                 d3.select(this).attr('transform', '');
 
-                // add link to graph (update if exists)
-                // NB: links are strictly source < target; arrows separately specified by booleans
+                // add link to graph (update if exists)                
                 var source, target, direction;
                 
                 source = mousedown_node;
@@ -610,7 +592,7 @@ console.log(selected_link);
                             var choice = x.public_data.answers[0].choices[0];
                             var voter = x.voter;
                             // console.log(voter.id + " -> " + choice.user_id);
-                            return {'source': allNodes[voter.id], 'target': allNodes[choice.user_id], 'id': ++lastLinkId, 'color': '#0099FF'};
+                            return {'source': allNodes[voter.id], 'target': allNodes[choice.user_id], 'id': ++lastLinkId, 'color': '#0099FF', 'choices': 1};
                         }
                     });
                     var voteLinks = $.map(direct.objects, function(x, index) {                    
@@ -619,7 +601,7 @@ console.log(selected_link);
                             var voter = x.voter;
                             return {'source': allNodes[voter.id], 'target': allNodes[choice], 'id': ++lastLinkId, 'color': '#0099FF'};*/
                             var ret = $.map(x.public_data.answers[0].choices, function(y, index) {                    
-                                return {'source': allNodes[x.voter.id], 'target': allNodes[y], 'id': ++lastLinkId, 'color': '#0099FF', 'weight': grayScale(index, x.public_data.answers[0].choices.length), 'label': index + 1};
+                                return {'source': allNodes[x.voter.id], 'target': allNodes[y], 'id': ++lastLinkId, 'color': '#0099FF', 'choices': x.public_data.answers[0].choices.length, 'label': index + 1};
                             });
                             return ret;
                         }                    
