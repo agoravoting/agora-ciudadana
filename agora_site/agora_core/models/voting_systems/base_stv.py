@@ -61,8 +61,8 @@ class BaseSTV(BaseVotingSystem):
 
         if question['a'] != 'ballot/question' or\
             not isinstance(question['min'], int) or question['min'] < 0 or\
-            question['min'] > 1 or\
             not isinstance(question['max'], int) or question['max'] < 1 or\
+            question['min'] > question['max'] or\
             not isinstance(question['randomize_answer_order'], bool):
             raise error
 

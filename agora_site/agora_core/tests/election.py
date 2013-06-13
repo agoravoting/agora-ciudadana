@@ -840,7 +840,7 @@ class ElectionTest(RootTestCase):
                     'a': 'ballot/question',
                     'tally_type': 'MEEK-STV',
                     'max': 2,
-                    'min': 1,
+                    'min': 2,
                     'question': 'Who should be the next president?',
                     'randomize_answer_order': True,
                     'num_seats': 2,
@@ -899,7 +899,7 @@ class ElectionTest(RootTestCase):
         # david votes to one and two options and works fine
         vote_data ['question0'] = ['Jijoe']
         data = self.post('election/%d/action/' % election_id,
-            data=vote_data, code=HTTP_OK, content_type='application/json')
+            data=vote_data, code=HTTP_BAD_REQUEST, content_type='application/json')
 
         vote_data ['question0'] = ['Marie', 'Jack']
         data = self.post('election/%d/action/' % election_id,
