@@ -54,6 +54,8 @@ class TinyElectionResource(GenericResource):
     url = fields.CharField()
     mugshot_url = fields.CharField()
 
+    short_description_md = fields.CharField()
+
     class Meta(GenericMeta):
         queryset = Election.objects.all()
         fields = ['name', 'pretty_name', 'id', 'short_description']
@@ -67,6 +69,8 @@ class TinyElectionResource(GenericResource):
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_mugshot_url()
 
+    def dehydrate_short_description_md(self, bundle):
+        return bundle.obj.short_description_md()
 
 class ElectionAdminForm(ModelForm):
     '''
@@ -231,6 +235,8 @@ class ElectionResource(GenericResource):
         }
 
         excludes = ['PROHIBITED_ELECTION_NAMES', 'extra_data']
+
+    get_list = TinyElectionResource().get_list
 
     def dehydrate_url(self, bundle):
         return bundle.obj.get_link()
