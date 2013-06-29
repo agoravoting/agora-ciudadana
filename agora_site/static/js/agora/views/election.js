@@ -170,7 +170,7 @@
         },
 
         hoverUser: function(e) {
-            if (!this.templateVoteInfoEl) {
+            if (!this.templateVoteInfo) { 
                 this.templateVoteInfo = _.template($(this.templateVoteInfoEl).html());
             }
             var id = $(e.target).closest('.row').data('id');
