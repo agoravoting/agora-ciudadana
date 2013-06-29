@@ -159,6 +159,8 @@ class AgoraResource(GenericResource):
         validation = AgoraValidation()
         filtering = { "name": ALL, }
 
+    get_list = TinyAgoraResource().get_list
+
     def dehydrate_url(self, bundle):
         return bundle.obj.get_link()
 
