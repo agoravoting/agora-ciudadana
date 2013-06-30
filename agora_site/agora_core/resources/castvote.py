@@ -17,8 +17,7 @@ class CastVoteResource(GenericResource):
     public_data = fields.DictField(readonly=True)
 
     class Meta(GenericMeta):
-        queryset = CastVote.objects.all()
-        #authentication = SessionAuthentication()
+        queryset = CastVote.objects.select_related(depth=1).all()
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get']
         excludes = ['data']
@@ -27,12 +26,11 @@ class CastVoteResource(GenericResource):
         return bundle.obj.get_public_data()
 
     def dehydrate_delegate_election_count(self, bundle):
-        if not bundle.obj.delegate_election_count.all():
+        dec = bundle.obj.delegate_election_count.first()
+        if not dec:
             # TODO return the previous most recent election delegate_election_count
             return None
         else:
-            dec = bundle.obj.delegate_election_count.all()[0]
-
             from agora_site.agora_core.resources.delegateelectioncount import DelegateElectionCountResource
             decr = DelegateElectionCountResource()
             cbundle = decr.build_bundle(obj=dec, request=bundle.request)

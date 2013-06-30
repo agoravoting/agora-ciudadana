@@ -58,9 +58,12 @@ class TinyElectionResource(GenericResource):
 
     class Meta(GenericMeta):
         queryset = Election.objects\
+                    .select_related(depth=1)\
                     .exclude(url__startswith=DELEGATION_URL)\
                     .order_by('-last_modified_at_date')
-        fields = ['name', 'pretty_name', 'id', 'short_description']
+        fields = ['name', 'pretty_name', 'id', 'short_description',
+                  'voting_starts_at_date', 'voting_ends_at_date',
+                  'voting_extended_until_date']
         filtering = {
             'id': ALL
         }
@@ -73,6 +76,19 @@ class TinyElectionResource(GenericResource):
 
     def dehydrate_short_description_md(self, bundle):
         return bundle.obj.short_description_md()
+
+class ResultsElectionResource(TinyElectionResource):
+    class Meta(GenericMeta):
+        queryset = Election.objects\
+                    .select_related("agora")\
+                    .exclude(url__startswith=DELEGATION_URL)\
+                    .order_by('-last_modified_at_date')
+        fields = ['name', 'pretty_name', 'id', 'short_description', 'result',
+                  'voting_starts_at_date', 'voting_ends_at_date', 'agora',
+                  'voting_extended_until_date']
+        filtering = {
+            'id': ALL
+        }
 
 class ElectionAdminForm(ModelForm):
     '''
@@ -224,6 +240,7 @@ class ElectionResource(GenericResource):
 
     class Meta(GenericMeta):
         queryset = Election.objects\
+                    .select_related(depth=1)\
                     .exclude(url__startswith=DELEGATION_URL)\
                     .order_by('-last_modified_at_date')
         #authentication = SessionAuthentication()

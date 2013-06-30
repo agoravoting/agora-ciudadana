@@ -126,7 +126,7 @@ class UserResource(GenericResource):
     full_name = fields.CharField()
 
     class Meta(GenericMeta):
-        queryset = User.objects.filter(id__gt=-1)
+        queryset = User.objects.select_related("profile").filter(id__gt=-1)
         list_allowed_methods = ['get']
         detail_allowed_methods = ['get', 'put']
         excludes = ['password', 'is_staff', 'is_superuser', 'email']
@@ -361,8 +361,8 @@ class UserResource(GenericResource):
         Lists the agoras in which the authenticated user or the specified user
         is a member
         '''
-        from .agora import AgoraResource
-        class AgoraPermissionsResource(AgoraResource):
+        from .agora import TinyAgoraResource
+        class AgoraPermissionsResource(TinyAgoraResource):
             agora_permissions = fields.ApiField()
 
             def dehydrate_agora_permissions(self, bundle):
@@ -381,11 +381,11 @@ class UserResource(GenericResource):
         '''
         Lists the open elections in which the authenticated user can participate
         '''
-        from .election import ElectionResource
+        from .election import ResultsElectionResource
 
         search = request.GET.get('q', '')
 
-        class UserElectionResource(ElectionResource):
+        class UserElectionResource(ResultsElectionResource):
             '''
             ElectionResource with some handy information for the user
             '''
@@ -410,10 +410,10 @@ class UserResource(GenericResource):
         Lists the elections in which the user participated either direct
         or indirectly
         '''
-        from .election import ElectionResource
+        from .election import TinyElectionResource
         user = get_object_or_404(User, pk=userid)
         queryset = user.get_profile().get_participated_elections()
-        return ElectionResource().get_custom_list(request=request,
+        return TinyElectionResource().get_custom_list(request=request,
             queryset=queryset)
 
 
