@@ -153,6 +153,7 @@
         el: "#user-list",
         templateEl: "#template-vote_list_item",
         templateVoteInfoEl: "#template-vote_info",
+        templateVoteInfo: null,
         sendingData: false,
 
         events: {
@@ -170,7 +171,7 @@
         },
 
         hoverUser: function(e) {
-            if (!this.templateVoteInfo) { 
+            if (!this.templateVoteInfo) {
                 this.templateVoteInfo = _.template($(this.templateVoteInfoEl).html());
             }
             var id = $(e.target).closest('.row').data('id');

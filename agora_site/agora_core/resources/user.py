@@ -49,7 +49,7 @@ class TinyUserResource(GenericResource):
     full_name = fields.CharField()
 
     class Meta(GenericMeta):
-        queryset = User.objects.all()
+        queryset = User.objects.filter(id__gt=-1)
         fields = ["username", "first_name", "id"]
 
     def dehydrate_url(self, bundle):
@@ -83,7 +83,7 @@ class TinyProfileResource(GenericResource):
     permissions_on_user = fields.ApiField()
 
     class Meta(GenericMeta):
-        queryset = Profile.objects.all()
+        queryset = Profile.objects.filter(user__id__gt=-1)
         fields = ["id"]
 
     def dehydrate_permissions_on_user(self, bundle):

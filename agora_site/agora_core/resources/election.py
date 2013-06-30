@@ -57,7 +57,9 @@ class TinyElectionResource(GenericResource):
     short_description_md = fields.CharField()
 
     class Meta(GenericMeta):
-        queryset = Election.objects.all()
+        queryset = Election.objects\
+                    .exclude(url__startswith=DELEGATION_URL)\
+                    .order_by('-last_modified_at_date')
         fields = ['name', 'pretty_name', 'id', 'short_description']
         filtering = {
             'id': ALL
