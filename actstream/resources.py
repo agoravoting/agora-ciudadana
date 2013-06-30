@@ -73,7 +73,7 @@ class ActionResource(GenericResource):
     vote = fields.DictField()
 
     class Meta(GenericMeta):
-        queryset = Action.objects.filter(public=True)
+        queryset = Action.objects.prefetch_related().filter(public=True)
         filtering = {
                         'action_object': ALL,
                         'actor': ALL,

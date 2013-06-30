@@ -32,16 +32,13 @@ from guardian.shortcuts import assign, remove_perm
 from agora_site.agora_core.models import Agora
 from agora_site.agora_core.tasks.agora import (send_request_membership_mails,
     send_request_admin_membership_mails, )
-from agora_site.agora_core.resources.user import UserResource
+from agora_site.agora_core.resources.user import TinyUserResource
 from agora_site.agora_core.forms import PostCommentForm, CreateElectionForm
 from agora_site.agora_core.forms.agora import DelegateVoteForm
 from agora_site.agora_core.views import AgoraActionJoinView
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.misc.decorators import permission_required
 from agora_site.misc.utils import (geolocate_ip, get_base_email_context)
-
-ELECTION_RESOURCE = 'agora_site.agora_core.resources.election.ElectionResource'
-
 
 class TinyAgoraResource(GenericResource):
     '''
@@ -58,7 +55,8 @@ class TinyAgoraResource(GenericResource):
 
     class Meta(GenericMeta):
         queryset = Agora.objects.all()
-        fields = ['name', 'pretty_name', 'id', 'short_description']
+        fields = ['name', 'pretty_name', 'id', 'short_description', 'url',
+                  'full_name', 'mugshot_url']
 
     def dehydrate_url(self, bundle):
         return bundle.obj.get_link()
@@ -79,6 +77,7 @@ class CreateAgoraForm(ModelForm):
         model = Agora
         fields = ('pretty_name', 'short_description', 'is_vote_secret')
 
+
 class AgoraAdminForm(ModelForm):
     '''
     Form used to validate agora administration details.
@@ -88,36 +87,6 @@ class AgoraAdminForm(ModelForm):
         fields = ('pretty_name', 'short_description', 'is_vote_secret',
             'biography', 'membership_policy', 'comments_policy')
 
-
-class AgoraUserResource(UserResource):
-    agora_permissions = fields.ApiField() # agora permissions
-    agora = None
-    request_user = None
-
-    def dehydrate_agora_permissions(self, bundle):
-        if not self.agora.has_perms('admin', self.request_user):
-            perms = []
-        else:
-            perms = self.agora.get_perms(bundle.obj)
-
-        # add also receive_mail permission from the user
-        if not self.request_user.is_anonymous() and\
-            self.request_user.get_profile().has_perms('receive_mail',
-                bundle.request.user):
-            perms.append('receive_mail')
-
-        return perms
-
-def user_resource_for_agora(agora, request_user):
-    '''
-    Generates a custom user resource that has an agora_permissions property
-    listing the user permissions in the given agora, if the requesting user is
-    an admin
-    '''
-    resource = AgoraUserResource()
-    resource.agora = agora
-    resource.request_user = request_user
-    return resource
 
 class AgoraValidation(Validation):
     '''
@@ -147,13 +116,13 @@ class AgoraResource(GenericResource):
     '''
     Resource for representing agoras.
     '''
-    creator = fields.ForeignKey(UserResource, 'creator', full=True)
+    creator = fields.ForeignKey(TinyUserResource, 'creator', full=True)
     url = fields.CharField()
     full_name = fields.CharField()
     mugshot_url = fields.CharField()
 
     class Meta(GenericMeta):
-        queryset = Agora.objects.all()
+        queryset = Agora.objects.select_related(depth=1).all()
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post', 'put', 'delete']
         validation = AgoraValidation()
@@ -297,7 +266,7 @@ class AgoraResource(GenericResource):
         List admin members of this agora
         '''
         return self.get_custom_resource_list(request,
-            resourcefunc=user_resource_for_agora,
+            resource=TinyUserResource,
             queryfunc=lambda agora: agora.admins.all(), **kwargs)
 
     def get_member_list(self, request, **kwargs):
@@ -305,7 +274,7 @@ class AgoraResource(GenericResource):
         List the members of this agora
         '''
         return self.get_custom_resource_list(request,
-            resourcefunc=user_resource_for_agora,
+            resource=TinyUserResource,
             queryfunc=lambda agora: agora.members.all(), **kwargs)
 
     def get_active_delegates_list(self, request, **kwargs):
@@ -313,55 +282,55 @@ class AgoraResource(GenericResource):
         List currently active delegates in this agora
         '''
         return self.get_custom_resource_list(request,
-            resourcefunc=user_resource_for_agora,
+            resource=TinyUserResource,
             queryfunc=lambda agora: agora.active_delegates(), **kwargs)
 
     def get_all_elections_list(self, request, **kwargs):
         '''
         List all elections in an agora
         '''
-        from agora_site.agora_core.resources.election import ElectionResource
-        return self.get_custom_resource_list(request, resource=ElectionResource,
+        from agora_site.agora_core.resources.election import TinyElectionResource
+        return self.get_custom_resource_list(request, resource=TinyElectionResource,
             queryfunc=lambda agora: agora.all_elections(), **kwargs)
 
     def get_tallied_elections_list(self, request, **kwargs):
         '''
         List elections that have been already tallied in an agora
         '''
-        from agora_site.agora_core.resources.election import ElectionResource
-        return self.get_custom_resource_list(request, resource=ElectionResource,
+        from agora_site.agora_core.resources.election import ResultsElectionResource
+        return self.get_custom_resource_list(request, resource=ResultsElectionResource,
             queryfunc=lambda agora: agora.get_tallied_elections(), **kwargs)
 
     def get_open_elections_list(self, request, **kwargs):
         '''
         List the elections that are currently opened in an agora
         '''
-        from agora_site.agora_core.resources.election import ElectionResource
-        return self.get_custom_resource_list(request, resource=ElectionResource,
+        from agora_site.agora_core.resources.election import TinyElectionResource
+        return self.get_custom_resource_list(request, resource=TinyElectionResource,
             queryfunc=lambda agora: agora.get_open_elections(), **kwargs)
 
     def get_requested_elections_list(self, request, **kwargs):
         '''
         List the elections that are currently requested in an agora
         '''
-        from agora_site.agora_core.resources.election import ElectionResource
-        return self.get_custom_resource_list(request, resource=ElectionResource,
+        from agora_site.agora_core.resources.election import TinyElectionResource
+        return self.get_custom_resource_list(request, resource=TinyElectionResource,
             queryfunc=lambda agora: agora.requested_elections(), **kwargs)
 
     def get_archived_elections_list(self, request, **kwargs):
         '''
         List the elections that have been archived in an agora
         '''
-        from agora_site.agora_core.resources.election import ElectionResource
-        return self.get_custom_resource_list(request, resource=ElectionResource,
+        from agora_site.agora_core.resources.election import TinyElectionResource
+        return self.get_custom_resource_list(request, resource=TinyElectionResource,
             queryfunc=lambda agora: agora.archived_elections(), **kwargs)
 
     def get_approved_elections_list(self, request, **kwargs):
         '''
         List the elections that are currently opened in an agora
         '''
-        from agora_site.agora_core.resources.election import ElectionResource
-        return self.get_custom_resource_list(request, resource=ElectionResource,
+        from agora_site.agora_core.resources.election import TinyElectionResource
+        return self.get_custom_resource_list(request, resource=TinyElectionResource,
             queryfunc=lambda agora: agora.approved_elections(), **kwargs)
 
     def get_request_list(self, request, **kwargs):
@@ -377,7 +346,7 @@ class AgoraResource(GenericResource):
             return queryset
 
         return self.get_custom_resource_list(request, queryfunc=get_queryset,
-            resourcefunc=user_resource_for_agora, **kwargs)
+            resource=TinyUserResource, **kwargs)
 
     @permission_required('admin', (Agora, 'id', 'agoraid'))
     def get_admin_request_list(self, request, **kwargs):
@@ -393,7 +362,7 @@ class AgoraResource(GenericResource):
             return queryset
 
         return self.get_custom_resource_list(request, queryfunc=get_queryset,
-            resourcefunc=user_resource_for_agora, **kwargs)
+            resource=TinyUserResource, **kwargs)
 
     def get_custom_resource_list(self, request, queryfunc, resource=None,
         resourcefunc=None, **kwargs):
@@ -502,8 +471,15 @@ class AgoraResource(GenericResource):
         '''
         Returns the permissions the user that requested it has
         '''
+        user = request.user
+        if 'userid' in kwargs:
+            if not agora.has_perms('admin', request.user):
+                return self.create_response(request,
+                    dict(permissions=[]))
+            user = get_object_or_404(User, id=kwargs['userid'])
+
         return self.create_response(request,
-            dict(permissions=agora.get_perms(request.user)))
+            dict(permissions=agora.get_perms(user)))
 
     @permission_required('request_membership', (Agora, 'id', 'agoraid'))
     def request_membership_action(self, request, agora, **kwargs):

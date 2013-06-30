@@ -1,7 +1,7 @@
 <script id="template-agora-profile-item" type="text/underscore-template">
     <div class="result-item user-result">
             <div class="row bottom-bordered" data-url="<%= url %>"
-                data-id="<%= id %>" data-fullname="<%= full_name %>">
+                data-id="<%= id %>" data-username=<%= username %> data-fullname="<%= full_name %>">
                 <a href="<%= url %>"><div class="span2">
                     <img src="<%= mugshot_url %>" alt="<%= initials %>" class="mugshot"/>
                 </div></a>
@@ -13,81 +13,14 @@
                             <%= username %>
                         <% } %>
                     </strong></a>
-                    <% if (agora_permissions.length > 0) { %>
                     <div class="pull-right dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
                             <i class="icon-chevron-down"></i>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <% if (_.contains(agora_permissions, "cancel_membership_request")) { %>
-                            <li>
-                                <a href="<%= agora_path %>/action/accept-membership-request/<%= username %>" class="action-form-link">
-                                    <i class="icon-ok"></i>
-                                    <%= gettext("Accept membership request") %>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="<%= agora_path %>/action/dismiss-membership-request/<%= username %>" class="action-form-link">
-                                    <i class="icon-remove"></i>
-                                    <%= gettext("Dismiss membership request") %>
-                                </a>
-                            </li>
-                            <% } %>
-                            <% if (_.contains(agora_permissions, "cancel_admin_membership_request")) { %>
-                            <li>
-                                <a href="<%= agora_path %>/action/accept-admin-membership-request/<%= username %>" class="action-form-link">
-                                    <i class="icon-ok"></i>
-                                    <%= gettext("Accept admin membership request") %>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="<%= agora_path %>/action/dismiss-admin-membership-request/<%= username %>" class="action-form-link">
-                                    <i class="icon-remove"></i>
-                                    <%= gettext("Dismiss admin membership request") %>
-                                </a>
-                            </li>
-                            <% } %>
-                            <% if (_.contains(agora_permissions, "leave")) { %>
-                            <li>
-                                <a href="<%= agora_path %>/action/remove-membership/<%= username %>" class="action-form-link">
-                                    <i class="icon-remove"></i>
-                                    <%= gettext("Remove membership") %>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="<%= agora_path %>/action/make-admin/<%= username %>" class="action-form-link">
-                                    <i class="icon-remove"></i>
-                                    <%= gettext("Make admin") %>
-                                </a>
-                            </li>
-                            <% } %>
-                            <% if (_.contains(agora_permissions, "leave_admin")) { %>
-                            <li>
-                                <a href="<%= agora_path %>/action/remove-admin-membership/<%= username %>" class="action-form-link">
-                                    <i class="icon-remove"></i>
-                                    <%= gettext("Remove admin membership") %>
-                                </a>
-                            </li>
-                            <% } %>
-                            <% if (_.contains(agora_permissions, "receive_mail")) { %>
-                            <li>
-                                <a href="#" class="action-send-message">
-                                    <i class="icon-envelope"></i>
-                                    <%= gettext("Send mail") %>
-                                </a>
-                            </li>
-                            <% } %>
-                            <li>
-                                <a href="#" class="action-choose-as-delegate"
-                                   data-agora=""
-                                   data-delegate="">
-                                    <i class="icon-ok"></i>
-                                    <%= gettext("Choose as my delegate") %>
-                                </a>
-                            </li>
+                            <li><%= gettext("Loading..") %></li>
                         </ul>
                     </div>
-                    <% } %>
 
                     <p>
                         <%= short_description %>
@@ -97,4 +30,78 @@
             </div>
         </a>
     </div>
+</script>
+
+<script id="template-agora-profile-permissions" type="text/underscore-template">
+<% if (permissions && permissions.length > 0) { %>
+    <% if (_.contains(permissions, "cancel_membership_request")) { %>
+    <li>
+        <a href="<%= agora_path %>/action/accept-membership-request/<%= username %>" class="action-form-link">
+            <i class="icon-ok"></i>
+            <%= gettext("Accept membership request") %>
+        </a>
+    </li>
+    <li>
+        <a href="<%= agora_path %>/action/dismiss-membership-request/<%= username %>" class="action-form-link">
+            <i class="icon-remove"></i>
+            <%= gettext("Dismiss membership request") %>
+        </a>
+    </li>
+    <% } %>
+    <% if (_.contains(permissions, "cancel_admin_membership_request")) { %>
+    <li>
+        <a href="<%= agora_path %>/action/accept-admin-membership-request/<%= username %>" class="action-form-link">
+            <i class="icon-ok"></i>
+            <%= gettext("Accept admin membership request") %>
+        </a>
+    </li>
+    <li>
+        <a href="<%= agora_path %>/action/dismiss-admin-membership-request/<%= username %>" class="action-form-link">
+            <i class="icon-remove"></i>
+            <%= gettext("Dismiss admin membership request") %>
+        </a>
+    </li>
+    <% } %>
+    <% if (_.contains(permissions, "leave")) { %>
+    <li>
+        <a href="<%= agora_path %>/action/remove-membership/<%= username %>" class="action-form-link">
+            <i class="icon-remove"></i>
+            <%= gettext("Remove membership") %>
+        </a>
+    </li>
+    <li>
+        <a href="<%= agora_path %>/action/make-admin/<%= username %>" class="action-form-link">
+            <i class="icon-remove"></i>
+            <%= gettext("Make admin") %>
+        </a>
+    </li>
+    <% } %>
+    <% if (_.contains(permissions, "leave_admin")) { %>
+    <li>
+        <a href="<%= agora_path %>/action/remove-admin-membership/<%= username %>" class="action-form-link">
+            <i class="icon-remove"></i>
+            <%= gettext("Remove admin membership") %>
+        </a>
+    </li>
+    <% } %>
+    <% if (_.contains(permissions, "receive_mail")) { %>
+    <li>
+        <a href="#" class="action-send-message">
+            <i class="icon-envelope"></i>
+            <%= gettext("Send mail") %>
+        </a>
+    </li>
+    <% } %>
+    <li>
+        <a href="#" class="action-choose-as-delegate"
+            data-agora=""
+            data-delegate="">
+            <i class="icon-ok"></i>
+            <%= gettext("Choose as my delegate") %>
+        </a>
+    </li>
+    <% if (permissions.length == 0) { %>
+        <li><%= gettext("no actions") %></li>
+    <% } %>
+<% } %>
 </script>

@@ -6,7 +6,8 @@
         events: {
             'click .user-result .row': 'clickUser',
             'click .action-send-message': 'showSendMessageDialog',
-            'click .action-choose-as-delegate': 'delegateVote'
+            'click .action-choose-as-delegate': 'delegateVote',
+            'click .dropdown-toggle': 'toggleDropdown'
         },
 
         renderItem: function(model) {
@@ -23,6 +24,34 @@
             }
             var url = $(e.target).closest(".row").data('url');
             window.location.href= url;
+        },
+
+        toggleDropdown: function(e) {
+            // load user permissions
+            console.log("dropdown event");
+            var dropdown = $(e.target).closest('.dropdown-toggle');
+            if (dropdown.data("permissions")) {
+                return;
+            }
+            var json = {
+                'action': 'get_permissions',
+                'userid': dropdown.closest('.row').data('id')
+            };
+            var self = this;
+            var jqxhr = $.ajax("/api/v1/agora/" + ajax_data.agora.id + "/action/", {
+                    data: JSON.stringifyCompat(json),
+                    contentType : 'application/json',
+                    type: 'POST',
+                })
+                .done(function(data) {
+                    data.agora_path = self.$el.data('agora-path');
+                    data.username = dropdown.closest('.row').data('username');
+                    dropdown.data("permissions", data);
+                    var templatePerms = _.template($("#template-agora-profile-permissions").html());
+                    dropdown.closest('.dropdown-toggle').next().html(
+                        templatePerms(data)
+                    );
+                });
         },
 
         delegateVote: function (e) {
