@@ -1,27 +1,26 @@
-# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
+# Adrián Chaves Fernández <adriyetichaves@gmail.com>, 2013.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-10 10:34+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2013-06-26 23:34+0200\n"
+"Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
+"Language-Team: Galician <proxecto@trasno.net>\n"
+"Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: static/admin/js/SelectFilter2.js:45
 #, c-format
 msgid "Available %s"
-msgstr ""
+msgstr "%s dispoñíbeis"
 
 #: static/admin/js/SelectFilter2.js:46
 #, c-format
@@ -29,37 +28,39 @@ msgid ""
 "This is the list of available %s. You may choose some by selecting them in "
 "the box below and then clicking the \"Choose\" arrow between the two boxes."
 msgstr ""
+"Esta é a lista de %s dispoñíbeis. Pode escoller algún seleccionándoos na "
+"seguinte caixa e premendo a frecha de «Escoller» que hai entre as caixas."
 
 #: static/admin/js/SelectFilter2.js:53
 #, c-format
 msgid "Type into this box to filter down the list of available %s."
-msgstr ""
+msgstr "Escriba aquí para filtrar a lista de %s dispoñíbeis."
 
 #: static/admin/js/SelectFilter2.js:57
 msgid "Filter"
-msgstr ""
+msgstr "Filtrar"
 
 #: static/admin/js/SelectFilter2.js:61
 msgid "Choose all"
-msgstr ""
+msgstr "Escollelo todo"
 
 #: static/admin/js/SelectFilter2.js:61
 #, c-format
 msgid "Click to choose all %s at once."
-msgstr ""
+msgstr "Prema para escoller todos os %s."
 
 #: static/admin/js/SelectFilter2.js:67
 msgid "Choose"
-msgstr ""
+msgstr "Escoller"
 
 #: static/admin/js/SelectFilter2.js:69
 msgid "Remove"
-msgstr ""
+msgstr "Retirar"
 
 #: static/admin/js/SelectFilter2.js:75
 #, c-format
 msgid "Chosen %s"
-msgstr ""
+msgstr "%s escollido"
 
 #: static/admin/js/SelectFilter2.js:76
 #, c-format
@@ -67,27 +68,31 @@ msgid ""
 "This is the list of chosen %s. You may remove some by selecting them in the "
 "box below and then clicking the \"Remove\" arrow between the two boxes."
 msgstr ""
+"Esta é a lista de %s escollidos. Pode retirar algúns seleccionándoos na "
+"seguinte caixa e premendo a frecha de «Retirar» que hai entre as caixas."
 
 #: static/admin/js/SelectFilter2.js:80
 msgid "Remove all"
-msgstr ""
+msgstr "Retiralo todo"
 
 #: static/admin/js/SelectFilter2.js:80
 #, c-format
 msgid "Click to remove all chosen %s at once."
-msgstr ""
+msgstr "Prema para retirar todos os %s escollidos."
 
 #: static/admin/js/actions.js:18 static/admin/js/actions.min.js:1
 msgid "%(sel)s of %(cnt)s selected"
 msgid_plural "%(sel)s of %(cnt)s selected"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(sel)s de %(cnt)s seleccionado"
+msgstr[1] "%(sel)s de %(cnt)s seleccionados"
 
 #: static/admin/js/actions.js:109 static/admin/js/actions.min.js:5
 msgid ""
 "You have unsaved changes on individual editable fields. If you run an "
 "action, your unsaved changes will be lost."
 msgstr ""
+"Ten cambios sen gardar en campos editábeis individuais. Se executa unha "
+"acción, perderanse os cambios que non gardase."
 
 #: static/admin/js/actions.js:121 static/admin/js/actions.min.js:6
 msgid ""
@@ -95,6 +100,9 @@ msgid ""
 "individual fields yet. Please click OK to save. You'll need to re-run the "
 "action."
 msgstr ""
+"Seleccionou unha acción, pero aínda non gardou os cambios nos campos "
+"individuais. Prema «Aceptar» para gardalos. Terá que executar a acción outra "
+"vez."
 
 #: static/admin/js/actions.js:123 static/admin/js/actions.min.js:6
 msgid ""
@@ -102,77 +110,82 @@ msgid ""
 "fields. You're probably looking for the Go button rather than the Save "
 "button."
 msgstr ""
+"Seleccionou unha acción, e non fixo cambios nos campos individuais. Prema "
+"«Aceptar», non «Gardar»."
 
 #: static/admin/js/calendar.js:26
 msgid ""
 "January February March April May June July August September October November "
 "December"
 msgstr ""
+"xaneiro febreiro marzo abril maio xuño xullo agosto setembro outubro novembro "
+"decembro"
 
 #: static/admin/js/calendar.js:27
 msgid "S M T W T F S"
-msgstr ""
+msgstr "D L Ma Mé X V S"
 
 #: static/admin/js/collapse.js:8 static/admin/js/collapse.js.c:19
 #: static/admin/js/collapse.min.js:1
 msgid "Show"
-msgstr ""
+msgstr "Mostrar"
 
 #: static/admin/js/collapse.js:15 static/admin/js/collapse.min.js:1
 msgid "Hide"
-msgstr ""
+msgstr "Agochar"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:49
 #: static/admin/js/admin/DateTimeShortcuts.js:85
 msgid "Now"
-msgstr ""
+msgstr "Agora"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:53
 msgid "Clock"
-msgstr ""
+msgstr "Reloxo"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:81
 msgid "Choose a time"
-msgstr ""
+msgstr "Escolla unha hora"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:86
 msgid "Midnight"
-msgstr ""
+msgstr "Medianoite"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:87
 msgid "6 a.m."
-msgstr ""
+msgstr "6 A.M."
 
 #: static/admin/js/admin/DateTimeShortcuts.js:88
 msgid "Noon"
-msgstr ""
+msgstr "Mediodía"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:92
 #: static/admin/js/admin/DateTimeShortcuts.js:204
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:144
 #: static/admin/js/admin/DateTimeShortcuts.js:197
 msgid "Today"
-msgstr ""
+msgstr "Hoxe"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:148
 msgid "Calendar"
-msgstr ""
+msgstr "Calendario"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:195
 msgid "Yesterday"
-msgstr ""
+msgstr "Onte"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:199
 msgid "Tomorrow"
-msgstr ""
+msgstr "Mañá"
 
 #: static/js/agora/views/election_list.js:10
 msgid "%(electionname)s at %(agora_full_name)s"
-msgstr ""
+msgstr "%(electionname)s na ágora %(agora_full_name)s"
 
 #: static/js/agora/views/home.js:39
 msgid "No agoras found"
-msgstr ""
+msgstr "Non se atopou ningunha ágora."
+

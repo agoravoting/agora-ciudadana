@@ -1,13 +1,11 @@
 {% load i18n %}{% load agora_utils %}{% autoescape off %}
-{% blocktrans with to_username=to.username agora_full_name=agora.get_full_name agora_url=agora.get_link site_domain=site.domain delegator_name=vote.voter.username delegator_url=vote.voter.get_profile.get_link %}Hello {{ to_username }},
+{% blocktrans with to_username=to.username %}Hello {{ to_username }},{% endblocktrans %}
 
-{{ delegator_name }} has  delegated to you at agora {{ agora_full_name }}. Congratulations!
+{% blocktrans with agora_full_name=agora.get_full_name delegator_name=vote.voter.username %}{{ delegator_name }} has  delegated to you at agora {{ agora_full_name }}. Congratulations!{% endblocktrans %}
 
-Agora URL: {{ protocol }}://{{ site_domain }}{{ agora_url }}
+{% blocktrans with agora_url=agora.get_link site_domain=site.domain %}Agora URL: {{ protocol }}://{{ site_domain }}{{ agora_url }}{% endblocktrans %}
 
-Delegator URL: {{ protocol }}://{{ site_domain }}{{ delegator_url }}
+{% blocktrans with site_domain=site.domain delegator_url=vote.voter.get_profile.get_link %}Delegator URL: {{ protocol }}://{{ site_domain }}{{ delegator_url }}{% endblocktrans %}
 
-{% endblocktrans %}
 --
-{% blocktrans with to_email=to.username site_name=site.name site_domain=site.domain %}This message was sent to {{ to_email }}. If you want to stop receiving these message from {{ site_name }}, please click here: {{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}
-{% endblocktrans %}{% endautoescape %}
+{% blocktrans with to_email=to.username site_name=site.name site_domain=site.domain %}This message was sent to {{ to_email }}. If you want to stop receiving these message from {{ site_name }}, please click here: {{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}{% endblocktrans %}{% endautoescape %}

@@ -16,14 +16,10 @@
         {% url agora-view election.agora.creator.username election.agora.name as agora_view_url %}
         {% if election.is_approved %}
             {% url user-view election.creator.username as user_url %}
-            {% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}
-            Election created by <a href="{{ user_url }}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
-            {% endblocktrans %}
+            {% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}Election created by <a href="{{ user_url }}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>{% endblocktrans %}
         {% else %}
             {% url user-view election.creator.username as user_url %}
-            {% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}
-            Election proposed by <a href="{{ user_url }}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>
-            {% endblocktrans %}
+            {% blocktrans with election_creator_username=election.creator.username agora_creator_username=election.agora.creator.username agora_name=election.agora.name %}Election proposed by <a href="{{ user_url }}">{{ election_creator_username }}</a> in <a href="{{ agora_view_url }}">{{ agora_creator_username }}/{{ agora_name }}</a>{% endblocktrans %}
         {% endif %}
     </strong>
 </div>
@@ -169,24 +165,18 @@
                 {% with participation=election.get_participation %}
                 <strong class="counter">
                     <span>{{ participation|getitem:"total_votes" }}</span>
-                    {% blocktrans with percent=participation|getitem:"percentage_of_participation"|floatformat:"-2" %}
-                    VOTES ({{ percent }}% of the electorate)
-                    {% endblocktrans %}
+                    {% blocktrans with percent=participation|getitem:"percentage_of_participation"|floatformat:"-2" %}VOTES ({{ percent }}% of the electorate){% endblocktrans %}
                 </strong>
                 <strong class="counter">
                     <span>{{ participation|getitem:"total_delegated_votes" }}</span>
-                    {% blocktrans with percent=participation|getitem:"percentage_of_delegation"|floatformat:"-2" %}
-                    DELEGATED VOTES ({{ percent }}% of the votes)
-                    {% endblocktrans %}
+                    {% blocktrans with percent=participation|getitem:"percentage_of_delegation"|floatformat:"-2" %}DELEGATED VOTES ({{ percent }}% of the votes){% endblocktrans %}
                 </strong>
                 {% endwith %}
             {% else %}
                 {% with participation=election.get_participation %}
                 <strong class="counter">
                     <span>{{ participation|getitem:"direct_votes" }}</span>
-                    {% blocktrans with percent=participation|getitem:"percentage_of_direct_participation"|floatformat:"-2" %}
-                    DIRECT VOTES ({{ percent }}% of the electorate)
-                    {% endblocktrans %}
+                    {% blocktrans with percent=participation|getitem:"percentage_of_direct_participation"|floatformat:"-2" %}DIRECT VOTES ({{ percent }}% of the electorate){% endblocktrans %}
                 </strong>
                 <strong class="counter">
                     <span>{{ participation|getitem:"delegated_votes" }}</span>
@@ -273,21 +263,14 @@
 
                     {% if vote_from_user.is_direct %}
                         {% if vote_from_user.is_public %}
-                            {% blocktrans with question=vote_from_user.get_first_pretty_answer|getitem:'question' answer=vote_from_user.get_first_pretty_answer|getitem:'answer' %}
-                            <p class="answer">You answered <strong>{{ answer }}</strong> to <em>{{ question }}</em></p>
-                            {% endblocktrans %}
+                            <p class="answer">{% blocktrans with question=vote_from_user.get_first_pretty_answer|getitem:'question' answer=vote_from_user.get_first_pretty_answer|getitem:'answer' %}You answered <strong>{{ answer }}</strong> to <em>{{ question }}</em>{% endblocktrans %}</p>
                         {% endif %}
                     {% elif vote_from_user.is_public %}
                         {% with delegate=vote_from_user.get_delegate chained_answer=vote_from_user|get_chained_first_pretty_answer:election %}
                             {% if chained_answer %}
-                                {% blocktrans with delegate_username=delegate.username question=chained_answer|getitem:'question' answer=chained_answer|getitem:'answer' %}
-                                You delegated to <a href="{{delegate_url}}">{{delegate_username}}</a> who answered
-                                <strong>{{ answer }}</strong> to <em>{{ question }}</em></p>
-                                {% endblocktrans %}
+                                <p>{% blocktrans with delegate_username=delegate.username question=chained_answer|getitem:'question' answer=chained_answer|getitem:'answer' %}You delegated to <a href="{{delegate_url}}">{{delegate_username}}</a> who answered <strong>{{ answer }}</strong> to <em>{{ question }}</em>{% endblocktrans %}</p>
                             {% else %}
-                                {% blocktrans with delegate_username=delegate.username %}
-                                You delegated to <a href="{{delegate_url}}">{{delegate_username}}</a>.
-                                {% endblocktrans %}
+                                <p>{% blocktrans with delegate_username=delegate.username %}You delegated to <a href="{{delegate_url}}">{{delegate_username}}</a>{% endblocktrans %}</p>
                             {% endif %}
                         {% endwith %}
                     {% else %}

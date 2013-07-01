@@ -1,13 +1,11 @@
 {% load i18n %}{% load agora_utils %}{% autoescape off %}
-{% blocktrans with to_username=to.username election_name=election.pretty_name agora_username=election.agora.creator.username agora_name=election.agora.name site_domain=site.domain election_description=election.description|striptags %}Hello {{ to_username }},
+{% blocktrans with to_username=to.username %}Hello {{ to_username }},{% endblocktrans %}
 
-As you requested, we have cancelled your vote at election {{ election_name }} at {{ agora_username }}/{{ agora_name }}. You may re-vote if you wish: only your last vote counts.
+{% blocktrans with election_name=election.pretty_name agora_username=election.agora.creator.username agora_name=election.agora.name %}As you requested, we have cancelled your vote at election {{ election_name }} at {{ agora_username }}/{{ agora_name }}. You may re-vote if you wish: only your last vote counts.{% endblocktrans %}
 
-Election URL: {{ protocol }}://{{ site_domain }}{{ election_url }}
+{% blocktrans with site_domain=site.domain %}Election URL: {{ protocol }}://{{ site_domain }}{{ election_url }}{% endblocktrans %}
 
-Election description: {{ election_description }}
+{% blocktrans with election_description=election.description|striptags %}Election description: {{ election_description }}{% endblocktrans %}
 
-{% endblocktrans %}
 --
-{% blocktrans with to_email=to.username site_name=site.name site_domain=site.domain %}This message was sent to {{ to_email }}. If you want to stop receiving these message from {{ site_name }}, please click here: {{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}
-{% endblocktrans %}{% endautoescape %}
+{% blocktrans with to_email=to.username site_name=site.name site_domain=site.domain %}This message was sent to {{ to_email }}. If you want to stop receiving these message from {{ site_name }}, please click here: {{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}{% endblocktrans %}{% endautoescape %}
