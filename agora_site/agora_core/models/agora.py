@@ -384,7 +384,7 @@ class Agora(models.Model):
             return votes[0]
 
     def get_link(self):
-        return self.creator.username + '/' + self.name
+        return '/' + self.creator.username + '/' + self.name
 
     def get_full_name(self, mode="plain"):
         '''
