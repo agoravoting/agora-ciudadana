@@ -51,25 +51,21 @@ class TinyElectionResource(GenericResource):
 
     content_type = fields.CharField(default="election")
     agora = fields.ForeignKey(TinyAgoraResource, 'agora', full=True)
-    url = fields.CharField()
     mugshot_url = fields.CharField()
 
     short_description_md = fields.CharField()
 
     class Meta(GenericMeta):
         queryset = Election.objects\
-                    .select_related(depth=1)\
+                    .select_related("agora", "agora__creator")\
                     .exclude(url__startswith=DELEGATION_URL)\
                     .order_by('-last_modified_at_date')
         fields = ['name', 'pretty_name', 'id', 'short_description',
-                  'voting_starts_at_date', 'voting_ends_at_date',
+                  'voting_starts_at_date', 'voting_ends_at_date', 'url',
                   'voting_extended_until_date']
         filtering = {
             'id': ALL
         }
-
-    def dehydrate_url(self, bundle):
-        return bundle.obj.get_link()
 
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_mugshot_url()
@@ -228,8 +224,6 @@ class ElectionResource(GenericResource):
     # this will be only indicative when election has not been tallied
     delegated_votes_count = fields.IntegerField()
 
-    url = fields.CharField()
-
     mugshot_url = fields.CharField()
 
     user_has_delegated = fields.BooleanField()
@@ -256,9 +250,6 @@ class ElectionResource(GenericResource):
         excludes = ['PROHIBITED_ELECTION_NAMES', 'extra_data']
 
     get_list = TinyElectionResource().get_list
-
-    def dehydrate_url(self, bundle):
-        return bundle.obj.get_link()
 
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_mugshot_url()

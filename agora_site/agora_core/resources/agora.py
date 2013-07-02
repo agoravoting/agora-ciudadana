@@ -54,7 +54,7 @@ class TinyAgoraResource(GenericResource):
     mugshot_url = fields.CharField()
 
     class Meta(GenericMeta):
-        queryset = Agora.objects.all()
+        queryset = Agora.objects.select_related("creator").all()
         fields = ['name', 'pretty_name', 'id', 'short_description', 'url',
                   'full_name', 'mugshot_url']
 

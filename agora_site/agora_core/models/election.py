@@ -46,14 +46,10 @@ class Election(models.Model):
         return "election_task_" + str(self.id) + task.name
 
     def get_link(self):
-        return reverse("election-view",
-            kwargs=dict(username=self.agora.creator.username,
-                agoraname=self.agora.name, electionname=self.name))
+        return self.url
 
     def get_vote_link(self):
-        return reverse("election-voting-booth",
-            kwargs=dict(username=self.agora.creator.username,
-                agoraname=self.agora.name, electionname=self.name))
+        return self.url + "/vote"
 
     def delete(self, *args, **kwargs):
         '''
