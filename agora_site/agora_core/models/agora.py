@@ -63,6 +63,8 @@ class Agora(models.Model):
 
     pretty_name = models.CharField(_('Pretty Name'), max_length=140, blank=False)
 
+    url = models.URLField(_('Url'))
+
     def create_name(self, creator):
         '''
         Using the pretty name, creates an unique name for a given creator
@@ -384,7 +386,7 @@ class Agora(models.Model):
             return votes[0]
 
     def get_link(self):
-        return '/' + self.creator.username + '/' + self.name
+        return self.url
 
     def get_full_name(self, mode="plain"):
         '''

@@ -3,15 +3,12 @@ import uuid
 import hashlib
 import simplejson
 
-import markdown
-
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
 from django.template.defaultfilters import slugify
-from django.template.defaultfilters import truncatewords_html
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
@@ -21,7 +18,6 @@ from agora_site.misc.utils import JSONField, rest
 from agora_site.agora_core.models.agora import Agora
 from agora_site.agora_core.models.voting_systems.base import (
     parse_voting_methods, get_voting_system_by_id)
-from agora_site.agora_core.templatetags.string_tags import urlify_markdown
 
 
 class Election(models.Model):
@@ -947,9 +943,3 @@ class Election(models.Model):
 
         # TODO: update result_hash
         self.save()
-
-    def short_description_md(self):
-        short_md = markdown.markdown(urlify_markdown(self.description),
-                                     safe_mode="escape", enable_attributes=False)
-        short_md = truncatewords_html(short_md, 25)
-        return short_md

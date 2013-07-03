@@ -49,7 +49,6 @@ class TinyAgoraResource(GenericResource):
     '''
 
     content_type = fields.CharField(default="agora")
-    url = fields.CharField()
     full_name = fields.CharField()
     mugshot_url = fields.CharField()
 
@@ -57,9 +56,6 @@ class TinyAgoraResource(GenericResource):
         queryset = Agora.objects.select_related("creator").all()
         fields = ['name', 'pretty_name', 'id', 'short_description', 'url',
                   'full_name', 'mugshot_url']
-
-    def dehydrate_url(self, bundle):
-        return bundle.obj.get_link()
 
     def dehydrate_full_name(self, bundle):
         return bundle.obj.get_full_name()
@@ -117,7 +113,6 @@ class AgoraResource(GenericResource):
     Resource for representing agoras.
     '''
     creator = fields.ForeignKey(TinyUserResource, 'creator', full=True)
-    url = fields.CharField()
     full_name = fields.CharField()
     mugshot_url = fields.CharField()
 
@@ -129,9 +124,6 @@ class AgoraResource(GenericResource):
         filtering = { "name": ALL, }
 
     get_list = TinyAgoraResource().get_list
-
-    def dehydrate_url(self, bundle):
-        return bundle.obj.get_link()
 
     def dehydrate_full_name(self, bundle):
         return bundle.obj.get_full_name()

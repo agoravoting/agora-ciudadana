@@ -53,8 +53,6 @@ class TinyElectionResource(GenericResource):
     agora = fields.ForeignKey(TinyAgoraResource, 'agora', full=True)
     mugshot_url = fields.CharField()
 
-    short_description_md = fields.CharField()
-
     class Meta(GenericMeta):
         queryset = Election.objects\
                     .select_related("agora", "agora__creator")\
@@ -69,9 +67,6 @@ class TinyElectionResource(GenericResource):
 
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_mugshot_url()
-
-    def dehydrate_short_description_md(self, bundle):
-        return bundle.obj.short_description_md()
 
 class ResultsElectionResource(TinyElectionResource):
     class Meta(GenericMeta):
@@ -230,8 +225,6 @@ class ElectionResource(GenericResource):
 
     user_perms = JSONApiField()
 
-    short_description_md = fields.CharField()
-
     class Meta(GenericMeta):
         queryset = Election.objects\
                     .select_related(depth=1)\
@@ -267,9 +260,6 @@ class ElectionResource(GenericResource):
 
     def dehydrate_user_perms(self, bundle):
         return bundle.obj.get_perms(bundle.request.user)
-
-    def dehydrate_short_description_md(self, bundle):
-        return bundle.obj.short_description_md()
 
     def prepend_urls(self):
         return [
