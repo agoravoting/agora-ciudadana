@@ -91,16 +91,16 @@
 
         <div class="row-fluid social-icons">
             <div class="span12">
-                <a href="{ % url share-agora-on-twitter agora.creator.username agora.name %}">
+                <a id="twittershare" href="https://twitter.com/share" data-via="agoraciudadana">
                     <img src="{{ STATIC_URL }}img/twitter-small-logo.png" alt="{% trans "Share on Twitter" %}" />
                 </a>
-                <a href="{ % url share-agora-on-facebook agora.creator.username agora.name %}">
+                <a id="facebookshare" href="http://www.facebook.com/sharer/sharer.php">
                     <img src="{{ STATIC_URL }}img/facebook-small-logo.png" alt="{% trans "Share on Facebook" %}" />
                 </a>
-                <a href="{ % url share-agora-on-identica agora.creator.username agora.name %}">
+                <a id="identicashare" href="http://identi.ca/?action=newnotice">
                     <img src="{{ STATIC_URL }}img/identica-small-logo.png" alt="{% trans "Share on Identica" %}" />
                 </a>
-                <a href="{ % share-agora-on-googleplus agora.creator.username agora.name %}">
+                <a id="googleshare" href="https://plus.google.com/share">
                     <img src="{{ STATIC_URL }}img/googleplus-small-logo.png" alt="{% trans "Share on Google Plus" %}" />
                 </a>
             </div>
@@ -126,6 +126,53 @@ var ajax_data = {
     'user_permissions': {% custom_rest request "POST" '{"action":"get_permissions"}' '/agora/' agora.id '/action/' %}
 };
 app.currentView = new Agora.AgoraView();
+
+// social
+function social() {
+    var name = '{{ agora.name }}';
+    var desc = '{{ agora.short_description }}';
+    var link = encodeURIComponent(location.href);
+    var hr = '';
+    // twitter
+    hr = $("#twittershare").attr('href');
+    hr += '?url=' + link;
+    hr += '&text=' + encodeURIComponent(name + " / " + desc);
+    $("#twittershare").attr('href', hr);
+    $("#twittershare").click(function() {
+        window.open($(this).attr('href'), 'twitter-share-dialog', 'width=626,height=436');
+        return false;
+    });
+
+    // facebook
+    hr = $("#facebookshare").attr('href');
+    hr += '?u=' + link;
+    $("#facebookshare").attr('href', hr);
+    $("#facebookshare").click(function() {
+        window.open($(this).attr('href'), 'facebook-share-dialog', 'width=626,height=436');
+        return false;
+    });
+
+    // google plus
+    hr = $("#googleshare").attr('href');
+    hr += '?url=' + link;
+    $("#googleshare").attr('href', hr);
+    $("#googleshare").click(function() {
+        window.open($(this).attr('href'), 'google-share-dialog', 'width=626,height=436');
+        return false;
+    });
+
+    // identica
+    hr = $("#identicashare").attr('href');
+    hr += '&status_textarea=' + encodeURIComponent(name + " / " + desc) + link;
+    $("#identicashare").attr('href', hr);
+    $("#identicashare").click(function() {
+        window.open($(this).attr('href'), 'identica-share-dialog', 'width=626,height=436');
+        return false;
+    });
+}
+
+social();
+
 </script>
 {% endblock %}
 {% block footer %} {% endblock %}
