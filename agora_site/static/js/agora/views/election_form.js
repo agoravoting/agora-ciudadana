@@ -549,10 +549,15 @@
                 type: 'POST',
             })
             .done(function(e) { window.location.href = e.url; })
-            .fail(function() {
+            .fail(function(e) {
                 self.sendingData = false;
                 $(".create_election_btn").removeClass("disabled");
-                alert("Error creating the election");
+                var response = $.parseJSON(e.responseText);
+                if (response.errors) {
+                    alert(response.errors.__all__);
+                } else {
+                    alert(gettext("Error creating the election"));
+                }
             });
 
             return false;
