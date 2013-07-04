@@ -10,6 +10,20 @@
             'click .dropdown-toggle': 'toggleDropdown'
         },
 
+        filter: function(param) {
+            if (!param) {
+                this.url = this.$el.data('url');
+            } else {
+                this.url = this.$el.data('url') + "?username=" + param;
+            }
+            this.collection.reset();
+
+            this.firstLoadSuccess = false;
+            this.finished = false;
+            this.offset = 0;
+            this.requestObjects();
+        },
+
         renderItem: function(model) {
             var json = model.toJSON();
             json.agora_id = this.$el.data('agora-id');
@@ -119,6 +133,29 @@
         initialize: function() {
             _.bindAll(this);
             this.infiniteListView = new AgoraUserInfiniteView();
+            this.filter = '';
+            var obj = this;
+
+            var delay = (function(){
+              var timer = 0;
+              return function(callback, ms){
+                clearTimeout (timer);
+                timer = setTimeout(callback, ms);
+              };
+            })();
+            $("#filter-input").keyup(function(e) {
+                delay(function() {
+                    obj.filterList();
+                }, 500);
+            });
+            $("#filter-input").keypress(function(e) {
+                if(e.which == 13) {
+                    obj.filterList();
+                }
+            });
+            $("#filter-button").click(function() {
+                obj.filterList();
+            });
 
             app.addMembersDialog = new Agora.ModalDialogView();
             $("#manual-member").click(function() {
@@ -165,6 +202,14 @@
 
                 return false;
             });
+        },
+
+        filterList: function() {
+            newf = $("#filter-input").val();
+            if (this.filter != newf) {
+                this.filter = newf;
+                this.infiniteListView.filter(this.filter);
+            }
         }
     });
 }).call(this);

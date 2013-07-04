@@ -283,7 +283,7 @@ class UserResource(GenericResource):
         if request.method != 'POST':
             raise ImmediateHttpResponse(response=http.HttpMethodNotAllowed())
         data = self.deserialize_post_data(request)
-        emails = data['emails']
+        emails = map(str.strip, data['emails'])
         agoraid = data['agoraid']
         agora = get_object_or_404(Agora, pk=agoraid)
         welcome_message = data.get('welcome_message', _("Welcome to this agora"))
@@ -292,7 +292,6 @@ class UserResource(GenericResource):
             raise ImmediateHttpResponse(response=http.HttpMethodNotAllowed())
 
         for email in emails:
-            email = email.strip()
             q = User.objects.filter(Q(email=email)|Q(username=email))
             exists = q.exists()
             if not exists and not validate_email(email):

@@ -1,6 +1,7 @@
 import re
 import datetime
 
+from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.forms import ModelForm
@@ -257,17 +258,35 @@ class AgoraResource(GenericResource):
         '''
         List admin members of this agora
         '''
+        def qfunc(agora):
+            u_filter = request.GET.get('username', '')
+            if u_filter:
+                q = (Q(username__contains=u_filter) |
+                     Q(first_name__contains=u_filter) |
+                     Q(last_name__contains=u_filter))
+                return agora.admins.filter(q)
+            return agora.admins.all()
+
         return self.get_custom_resource_list(request,
             resource=TinyUserResource,
-            queryfunc=lambda agora: agora.admins.all(), **kwargs)
+            queryfunc=qfunc, **kwargs)
 
     def get_member_list(self, request, **kwargs):
         '''
         List the members of this agora
         '''
+        def qfunc(agora):
+            u_filter = request.GET.get('username', '')
+            if u_filter:
+                q = (Q(username__contains=u_filter) |
+                     Q(first_name__contains=u_filter) |
+                     Q(last_name__contains=u_filter))
+                return agora.members.filter(q)
+            return agora.members.all()
+
         return self.get_custom_resource_list(request,
             resource=TinyUserResource,
-            queryfunc=lambda agora: agora.members.all(), **kwargs)
+            queryfunc=qfunc, **kwargs)
 
     def get_active_delegates_list(self, request, **kwargs):
         '''
