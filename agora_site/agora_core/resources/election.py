@@ -76,7 +76,7 @@ class ResultsElectionResource(TinyElectionResource):
                     .order_by('-last_modified_at_date')
         fields = ['name', 'pretty_name', 'id', 'short_description', 'result',
                   'voting_starts_at_date', 'voting_ends_at_date', 'agora',
-                  'voting_extended_until_date']
+                  'url', 'voting_extended_until_date']
         filtering = {
             'id': ALL
         }
