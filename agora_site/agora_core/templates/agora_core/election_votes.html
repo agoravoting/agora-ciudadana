@@ -9,6 +9,7 @@
 {% block content %}
     <div class="row election-content-row">
         <div class="span8 agora-left-side">
+            {% include "agora_core/filter.html" %}
             <div class="activity-list" id="user-list"
                 data-url="/api/v1/election/{{ election.id }}/all_votes/"
                 data-method="get" data-margin="300">

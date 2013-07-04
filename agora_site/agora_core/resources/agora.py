@@ -254,39 +254,32 @@ class AgoraResource(GenericResource):
         '''
         return self.wrap_form(PostCommentForm)(request, **kwargs)
 
+    def filter_user(self, request, query):
+        u_filter = request.GET.get('username', '')
+        if u_filter:
+            q = (Q(username__icontains=u_filter) |
+                 Q(first_name__icontains=u_filter) |
+                 Q(last_name__icontains=u_filter))
+            return query.filter(q)
+        return query
+
     def get_admin_list(self, request, **kwargs):
         '''
         List admin members of this agora
         '''
-        def qfunc(agora):
-            u_filter = request.GET.get('username', '')
-            if u_filter:
-                q = (Q(username__contains=u_filter) |
-                     Q(first_name__contains=u_filter) |
-                     Q(last_name__contains=u_filter))
-                return agora.admins.filter(q)
-            return agora.admins.all()
-
         return self.get_custom_resource_list(request,
             resource=TinyUserResource,
-            queryfunc=qfunc, **kwargs)
+            queryfunc=lambda agora: self.filter_user(request, agora.admins.all()),
+            **kwargs)
 
     def get_member_list(self, request, **kwargs):
         '''
         List the members of this agora
         '''
-        def qfunc(agora):
-            u_filter = request.GET.get('username', '')
-            if u_filter:
-                q = (Q(username__contains=u_filter) |
-                     Q(first_name__contains=u_filter) |
-                     Q(last_name__contains=u_filter))
-                return agora.members.filter(q)
-            return agora.members.all()
-
         return self.get_custom_resource_list(request,
             resource=TinyUserResource,
-            queryfunc=qfunc, **kwargs)
+            queryfunc=lambda agora: self.filter_user(request, agora.members.all()),
+            **kwargs)
 
     def get_active_delegates_list(self, request, **kwargs):
         '''
@@ -294,7 +287,8 @@ class AgoraResource(GenericResource):
         '''
         return self.get_custom_resource_list(request,
             resource=TinyUserResource,
-            queryfunc=lambda agora: agora.active_delegates(), **kwargs)
+            queryfunc=lambda agora: self.filter_user(request, agora.active_delegates()),
+            **kwargs)
 
     def get_all_elections_list(self, request, **kwargs):
         '''

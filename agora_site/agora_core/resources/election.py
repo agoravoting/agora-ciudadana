@@ -31,6 +31,7 @@ from django.utils import simplejson as json
 from django.utils import translation
 from django.utils import timezone
 from django.db import transaction
+from django.db.models import Q
 from django import forms as django_forms
 
 import datetime
@@ -571,12 +572,22 @@ class ElectionResource(GenericResource):
 
         return self.create_response(request, dict(status="success"))
 
+    def filter_user(self, request, query):
+        u_filter = request.GET.get('username', '')
+        if u_filter:
+            q = (Q(voter__username__icontains=u_filter) |
+                 Q(voter__first_name__icontains=u_filter) |
+                 Q(voter__last_name__icontains=u_filter))
+            return query.filter(q)
+        return query
+
     def get_all_votes(self, request, **kwargs):
         '''
         List all the votes in this agora
         '''
         return self.get_custom_resource_list(request, resource=CastVoteResource,
-            queryfunc=lambda election: election.get_all_votes(), **kwargs)
+            queryfunc=lambda election: self.filter_user(request, election.get_all_votes()),
+            **kwargs)
 
     def get_cast_votes(self, request, **kwargs):
         '''
@@ -597,7 +608,8 @@ class ElectionResource(GenericResource):
         List votes in this agora
         '''
         return self.get_custom_resource_list(request, resource=CastVoteResource,
-            queryfunc=lambda election: election.get_votes_from_delegates(), **kwargs)
+            queryfunc=lambda election: self.filter_user(request, election.get_votes_from_delegates()),
+            **kwargs)
 
     def get_direct_votes(self, request, **kwargs):
         '''
