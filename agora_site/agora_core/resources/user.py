@@ -26,6 +26,7 @@ from tastypie.validation import Validation, CleanedDataFormValidation
 from userena import forms as userena_forms
 from userena.models import UserenaSignup
 
+from agora_site.misc.utils import get_base_email_context
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.misc.utils import rest, validate_email
 from agora_site.misc.decorators import permission_required
@@ -320,7 +321,7 @@ class UserResource(GenericResource):
                 username = str(uuid4())
                 password = str(uuid4())
                 new_user = UserenaSignup.objects.create_user(username,
-                                                email, 
+                                                email,
                                                 password,
                                                 False,
                                                 False)
