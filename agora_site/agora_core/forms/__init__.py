@@ -66,7 +66,6 @@ class CreateAgoraForm(django_forms.ModelForm):
         agora = super(CreateAgoraForm, self).save(commit=False)
         agora.create_name(self.request.user)
         agora.creator = self.request.user
-        import ipdb; ipdb.set_trace()
         agora.url = self.request.build_absolute_uri(reverse('agora-view',
             kwargs=dict(username=agora.creator.username, agoraname=agora.name)))
 
