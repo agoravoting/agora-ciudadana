@@ -378,6 +378,19 @@ AGORA_USE_HTTPS = False
 
 USE_ESI = False
 
+
+# sets default value for max age in cache.
+# set to zero (no-cache) by default
+CACHE_MIDDLEWARE_SECONDS = 0
+
+# sets the max age for calls that do not need to be very updated
+# set to zero (no-cache) by default
+MANY_CACHE_SECONDS = 0
+
+# sets the max age for calls that need to be very updated
+# set to zero (no-cache) by default
+FEW_CACHE_SECONDS = 0
+
 try:
     # custom settings is the file where you should set your modifications of the
     # settings file
