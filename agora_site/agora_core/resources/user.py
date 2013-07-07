@@ -318,7 +318,7 @@ class UserResource(GenericResource):
                                           'username': user.username,
                                           'welcome_message': welcome_message},
                                     method="POST",
-                                    request=request)
+                                    request=request, use_esi=False)
                 if status != 200:
                     raise ImmediateHttpResponse(response=http.HttpBadRequest())
             else:

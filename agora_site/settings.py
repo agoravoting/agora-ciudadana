@@ -376,6 +376,8 @@ VOTING_METHODS = (
 
 AGORA_USE_HTTPS = False
 
+USE_ESI = False
+
 try:
     # custom settings is the file where you should set your modifications of the
     # settings file

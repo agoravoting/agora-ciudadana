@@ -6,6 +6,7 @@ import json
 from urlparse import urlparse, urlunparse
 from django.http import QueryDict
 from django import template
+from django.conf import settings
 from django.utils.translation import pgettext as _
 from django.template.base import token_kwargs
 from django.contrib.contenttypes.models import ContentType
@@ -226,6 +227,10 @@ class RestNode(template.Node):
 
             args = [str(template.Variable(arg).resolve(context)) for arg in self.args]
             url = ''.join(args)
+
+            if settings.USE_ESI and method == "GET" and\
+                    ('use_esi', False) not in self.args:
+                return "<esi:include src=\"%s\" />" % url
 
             # separate query params from url
             (scheme, netloc, path, params, query, fragment) = urlparse(url)
