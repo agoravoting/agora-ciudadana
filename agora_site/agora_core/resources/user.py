@@ -7,6 +7,8 @@ from django.contrib.auth import forms as auth_forms
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout as auth_logout
 from django.shortcuts import get_object_or_404
+from django.conf import settings
+from django.views.decorators.cache import cache_control
 from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives, EmailMessage, send_mass_mail
@@ -220,6 +222,7 @@ class UserResource(GenericResource):
                 self.wrap_view('user_invite'), name="api_user_invite")
         ]
 
+    @cache_control(no_cache=True)
     def disable(self, request, **kwargs):
         '''
         Disable the currently authenticated user
@@ -232,6 +235,7 @@ class UserResource(GenericResource):
         auth_logout(request)
         return self.create_response(request, dict(status="success"))
 
+    @cache_control(no_cache=True)
     def logout(self, request, **kwargs):
         '''
         Log out the currently authenticated user
@@ -249,6 +253,7 @@ class UserResource(GenericResource):
         '''
         return self.wrap_form(SendMailForm)(request, **kwargs)
 
+    @cache_control(no_cache=True)
     def user_settings(self, request, **kwargs):
         '''
             Get the properties of the user currently authenticated

@@ -23,6 +23,8 @@ from actstream.models import object_stream
 
 from django.conf.urls.defaults import url
 from django.contrib.sites.models import Site
+from django.conf import settings
+from django.views.decorators.cache import cache_control
 from django.core.mail import EmailMultiAlternatives, EmailMessage, send_mass_mail
 from django.template.loader import render_to_string
 from django.forms import ModelForm
@@ -307,6 +309,7 @@ class ElectionResource(GenericResource):
                 self.wrap_view('action'), name="api_election_action"),
         ]
 
+    @cache_control(s_max_age=settings.MANY_CACHE_SECONDS)
     def get_extra_data(self, request, **kwargs):
         if request.method != "GET":
             raise ImmediateHttpResponse(response=http.HttpMethodNotAllowed())
@@ -581,6 +584,7 @@ class ElectionResource(GenericResource):
             return query.filter(q)
         return query
 
+    @cache_control(s_max_age=settings.MANY_CACHE_SECONDS)
     def get_all_votes(self, request, **kwargs):
         '''
         List all the votes in this agora
@@ -589,6 +593,7 @@ class ElectionResource(GenericResource):
             queryfunc=lambda election: self.filter_user(request, election.get_all_votes()),
             **kwargs)
 
+    @cache_control(s_max_age=settings.MANY_CACHE_SECONDS)
     def get_cast_votes(self, request, **kwargs):
         '''
         List votes in this agora
@@ -596,6 +601,7 @@ class ElectionResource(GenericResource):
         return self.get_custom_resource_list(request, resource=CastVoteResource,
             queryfunc=lambda election: election.cast_votes.all(), **kwargs)
 
+    @cache_control(s_max_age=settings.MANY_CACHE_SECONDS)
     def get_delegated_votes(self, request, **kwargs):
         '''
         List votes in this agora
@@ -603,6 +609,7 @@ class ElectionResource(GenericResource):
         return self.get_custom_resource_list(request, resource=CastVoteResource,
             queryfunc=lambda election: election.get_delegated_votes(), **kwargs)
 
+    @cache_control(s_max_age=settings.MANY_CACHE_SECONDS)
     def get_votes_from_delegates(self, request, **kwargs):
         '''
         List votes in this agora
@@ -611,6 +618,7 @@ class ElectionResource(GenericResource):
             queryfunc=lambda election: self.filter_user(request, election.get_votes_from_delegates()),
             **kwargs)
 
+    @cache_control(s_max_age=settings.MANY_CACHE_SECONDS)
     def get_direct_votes(self, request, **kwargs):
         '''
         List votes in this agora

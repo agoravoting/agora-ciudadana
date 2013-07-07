@@ -14,6 +14,7 @@ from tastypie.authentication import (ApiKeyAuthentication, MultiAuthentication,
                                      SessionAuthentication)
 from tastypie.resources import ModelResource
 from tastypie.paginator import Paginator
+from tastypie.cache import SimpleCache
 from tastypie import fields, http
 from tastypie.exceptions import NotFound, BadRequest, InvalidFilterError, HydrationError, InvalidSortError, ImmediateHttpResponse, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, ValidationError
@@ -197,7 +198,17 @@ class ReadOnlyAuthentication(Authentication):
             return True
         return False
 
+class GenericCache(SimpleCache):
+    def __init__(self, *args, **kargs):
+        super(GenericCache, self).__init__(*args, **kargs)
 
+    def cacheable(self, request, response):
+        """
+        Modifies cacheable behavior so that requests with specific settings are
+        not  overridden
+        """
+        return bool(request.method == "GET" and response.status_code == 200 and
+            not response.has_header('Cache-Control'))
 
 class GenericMeta:
     list_allowed_methods = ['get', 'post']
@@ -208,4 +219,4 @@ class GenericMeta:
         SessionAuthentication(), ApiKeyAuthentication())
     always_return_data = True
     include_resource_uri = False
-
+    cache = GenericCache(timeout = settings.CACHE_MIDDLEWARE_SECONDS)

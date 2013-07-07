@@ -4,6 +4,7 @@ import datetime
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.views.decorators.cache import cache_control
 from django.forms import ModelForm
 from django.core.urlresolvers import reverse
 from django.conf.urls.defaults import url
@@ -354,6 +355,7 @@ class AgoraResource(GenericResource):
             resource=TinyUserResource, **kwargs)
 
     @permission_required('admin', (Agora, 'id', 'agoraid'))
+    @cache_control(no_cache=True)
     def get_admin_request_list(self, request, **kwargs):
         '''
         List agora admin membership requests

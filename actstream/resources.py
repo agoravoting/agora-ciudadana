@@ -9,6 +9,8 @@ from actstream.models import Follow, Action
 
 from django.contrib.auth.models import User
 from django.conf.urls.defaults import url
+from django.conf import settings
+from django.views.decorators.cache import cache_control
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.comments.models import Comment
@@ -190,6 +192,7 @@ class ActionResource(GenericResource):
                 self.wrap_view('election_add_comment'), name="api_election_add_comment"),
         ]
 
+    @cache_control(s_max_age=settings.MANY_CACHE_SECONDS)
     def get_user_list(self, request, **kwargs):
         '''
         Lists an user actions
@@ -202,6 +205,7 @@ class ActionResource(GenericResource):
 
         return self.get_custom_list(request=request, queryset=object_stream(user))
 
+    @cache_control(s_max_age=settings.MANY_CACHE_SECONDS)
     def get_agora_list(self, request, **kwargs):
         '''
         Lists an agora actions
@@ -215,6 +219,7 @@ class ActionResource(GenericResource):
 
         return self.get_custom_list(request=request, queryset=object_stream(agora))
 
+    @cache_control(s_max_age=settings.MANY_CACHE_SECONDS)
     def get_election_list(self, request, **kwargs):
         '''
         Lists an election actions
