@@ -230,7 +230,7 @@ class RestNode(template.Node):
 
             if settings.USE_ESI and method == "GET" and\
                     ('use_esi', False) not in self.args:
-                return "<esi:include src=\"%s\" />" % url
+                return "<esi:include src=\"/api/v1%s\" />" % url
 
             # separate query params from url
             (scheme, netloc, path, params, query, fragment) = urlparse(url)
