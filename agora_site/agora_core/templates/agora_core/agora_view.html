@@ -22,33 +22,8 @@
     <!-- here goes the backbone generated action list -->
 </div>
 
-<ul class="nav nav-tabs" id="agora-top-menu">
-    {% block agora-navigation %}
-    <li {% ifactivetab "agora-nav" "activity" %}class="active"{% endifactivetab %}>
-        <a href="{%url agora-view agora.creator.username agora.name %}">{% trans "Activity" %}</a>
-    </li>
-    <!-- TODO: maybe make this an option too? an expandable text -->
-    <li {% ifactivetab "agora-nav" "biography" %}class="active"{% endifactivetab %}>
-        <a href="{% url agora-bio agora.creator.username agora.name %}">{% trans "Biography" %}</a>
-    </li>
-    <!-- TODO: maybe make this an option too? -->
-    <li {% ifactivetab "agora-nav" "comments" %}class="active"{% endifactivetab %}>
-        <a href="{% url agora-comments agora.creator.username agora.name %}">{% trans "Comments" %}</a>
-    </li>
-    <li {% ifactivetab "agora-nav" "elections" %}class="active"{% endifactivetab %}>
-        <a href="{% url agora-elections agora.creator.username agora.name 'open' %}">{% trans "Elections" %}
-        <span class="badge badge-info">{{ agora.open_elections.count }}</span></a>
-    </li>
-    <li {% ifactivetab "agora-nav" "members" %}class="active"{% endifactivetab %}>
-        <a href="{% url agora-members agora.creator.username agora.name 'members' %}">{% trans "Members" %}
-        <span class="badge badge-info">{{ agora.members.count }}</span></a>
-    </li>
-    {% if agora|is_agora_admin:user %}
-    <li {% ifactivetab "agora-nav" "admin" %}class="active"{% endifactivetab %}>
-        <a href="{% url agora-admin agora.creator.username agora.name %}">{% trans "Admin" %}</a>
-    </li>
-    {% endif %}
-    {% endblock %}
+<ul class="nav nav-tabs" id="agora-tabs">
+    <!-- here goes the backbone generated agora tab list -->
 </ul>
 {% endblock %}
 
@@ -119,12 +94,16 @@
 {% include "agora_core/client/all_actions.html" %}
 {% include "agora_core/client/action_list.html" %}
 {% include "agora_core/client/tallied_elections_view.html" %}
+{% include "agora_core/client/agora_tabs.html" %}
 <script>
 var ajax_data = {
     'tallied_elections': {% rest request '/agora/' agora.id '/tallied_elections/?limit=3' %},
     'agora': {% rest request '/agora/' agora.id %},
     'user_permissions': {% custom_rest request "POST" '{"action":"get_permissions"}' '/agora/' agora.id '/action/' %}
 };
+
+var current_tab = "{% block agora-tab-name %}activity{% endblock %}";
+
 app.currentView = new Agora.AgoraView();
 
 </script>

@@ -110,6 +110,7 @@ class AgoraValidation(Validation):
         form = CleanedDataFormValidation(form_class=CreateAgoraForm)
         return form.is_valid(bundle, request)
 
+
 class AgoraResource(GenericResource):
     '''
     Resource for representing agoras.
@@ -117,6 +118,8 @@ class AgoraResource(GenericResource):
     creator = fields.ForeignKey(TinyUserResource, 'creator', full=True)
     full_name = fields.CharField()
     mugshot_url = fields.CharField()
+    open_elections_count = fields.IntegerField()
+    members_count = fields.IntegerField()
 
     class Meta(GenericMeta):
         queryset = Agora.objects.select_related(depth=1).all()
@@ -129,6 +132,12 @@ class AgoraResource(GenericResource):
 
     def dehydrate_full_name(self, bundle):
         return bundle.obj.get_full_name()
+
+    def dehydrate_open_elections_count(self, bundle):
+        return bundle.obj.open_elections().count()
+
+    def dehydrate_members_count(self, bundle):
+        return bundle.obj.members.count()
 
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_mugshot_url()
@@ -149,7 +158,8 @@ class AgoraResource(GenericResource):
                       is_vote_secret=is_vote_secret)
         agora.create_name(bundle.request.user)
         agora.creator = bundle.request.user
-        agora.url = bundle.request.build_absolute_uri(agora.get_link())
+        agora.url = bundle.request.build_absolute_uri(reverse('agora-view',
+            kwargs=dict(username=agora.creator.username, agoraname=agora.name)))
 
         # we need to save before add members
         agora.save()
@@ -238,6 +248,11 @@ class AgoraResource(GenericResource):
             url(r"^(?P<resource_name>%s)/(?P<agora>\d+)/add_comment%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('add_comment'), name="api_agora_add_comment"),
+
+            url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/detail%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_detail'), name="api_agora_detail"),
+
         ]
 
     def get_comments(self, request, **kwargs):

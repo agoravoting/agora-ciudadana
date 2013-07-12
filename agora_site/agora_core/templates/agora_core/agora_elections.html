@@ -4,8 +4,6 @@
 
 {% block title %}{% trans "Elections" %} - {{ agora.creator.username }}/{{ agora.name }}{% endblock %}
 
-{% block agora-navigation %}{% activetab "agora-nav" "elections" %}{{ block.super }}{% endblock %}
-
 {% block content %}
     <div class="row">
         <div class="span8 agora-left-side">
@@ -57,5 +55,16 @@
 
 {% block script-block %}
     {% include "search/include-js-template-search-election.html" %}
-    <script>app.currentView = new Agora.ElectionListView();</script>
+    {% include "agora_core/client/agora_tabs.html" %}
+    <script>
+
+    var ajax_data = {
+        'agora': {% rest request '/agora/' agora.id %},
+        'user_permissions': {% custom_rest request "POST" '{"action":"get_permissions"}' '/agora/' agora.id '/action/' %}
+    };
+    var current_tab = "elections";
+    Agora.renderAgoraTabs();
+
+    app.currentView = new Agora.ElectionListView();
+    </script>
 {% endblock %}

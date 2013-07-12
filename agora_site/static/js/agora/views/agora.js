@@ -212,6 +212,12 @@
         },
     });
 
+    Agora.renderAgoraTabs = function() {
+        var tabsTemplate = _.template($("#template-agora-tabs-view").html());
+        $("#agora-tabs").html(tabsTemplate(ajax_data));
+        $("#agora-tabs [data-tabname=" + current_tab + "]").addClass('active');
+    };
+
     Agora.AgoraView = Backbone.View.extend({
         el: "div.agora",
 
@@ -227,6 +233,7 @@
                 this.talliedElectionsView = new Agora.TalliedElectionsView();
             }
             this.social();
+            Agora.renderAgoraTabs();
         },
 
         social: function() {

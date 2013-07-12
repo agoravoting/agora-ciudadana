@@ -5,8 +5,6 @@
 
 {% block title %}{% trans "Members" %} - {{ agora.creator.username }}/{{ agora.name }}{% endblock %}
 
-{% block agora-navigation %}{% activetab "agora-nav" "members" %}{{ block.super }}{% endblock %}
-
 {% block content %}
     <div class="row">
         <div class="span8 agora-left-side">
@@ -78,11 +76,15 @@
     {% include "agora_core/client/modal_dialog.html" %}
     {% include "agora_core/client/confirm_delegate_modal_dialog.html" %}
     {% include "agora_core/client/add_members_modal_dialog.html" %}
+    {% include "agora_core/client/agora_tabs.html" %}
 
     <script>
     var ajax_data = {
         'agora': {% rest request '/agora/' agora.id %},
+        'user_permissions': {% custom_rest request "POST" '{"action":"get_permissions"}' '/agora/' agora.id '/action/' %}
     };
+    var current_tab = "members";
     app.currentView = new Agora.AgoraUserListView();
+    Agora.renderAgoraTabs();
     </script>
 {% endblock %}

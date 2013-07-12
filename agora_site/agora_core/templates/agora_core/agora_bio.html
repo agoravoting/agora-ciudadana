@@ -4,7 +4,7 @@
 
 {% block title %}{{ agora.creator.username }}/{{ agora.name }} / {% trans "Biography" %}{% endblock %}
 
-{% block agora-navigation %}{% activetab "agora-nav" "biography" %}{{ block.super }}{% endblock %}
+{% block agora-tab-name %}biography{% endblock %}
 
 {% block agora_content %}
 <div class="activity-bio" id="activity-bio">
@@ -32,3 +32,4 @@
     {% endif %}
 </div>
 {% endblock %}
+
