@@ -63,7 +63,7 @@ class TinyElectionResource(GenericResource):
                     .order_by('-last_modified_at_date')
         fields = ['name', 'pretty_name', 'id', 'short_description',
                   'voting_starts_at_date', 'voting_ends_at_date', 'url',
-                  'voting_extended_until_date']
+                  'voting_extended_until_date', 'mugshot_url']
         filtering = {
             'id': ALL
         }
@@ -79,7 +79,7 @@ class ResultsElectionResource(TinyElectionResource):
                     .order_by('-last_modified_at_date')
         fields = ['name', 'pretty_name', 'id', 'short_description', 'result',
                   'voting_starts_at_date', 'voting_ends_at_date', 'agora',
-                  'url', 'voting_extended_until_date']
+                  'url', 'voting_extended_until_date', 'mugshot_url']
         filtering = {
             'id': ALL
         }
