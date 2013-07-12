@@ -226,6 +226,51 @@
                 this.activityListView = new Agora.ActivityListView();
                 this.talliedElectionsView = new Agora.TalliedElectionsView();
             }
+            this.social();
+        },
+
+        social: function() {
+            var name = ajax_data.agora.name;
+            var desc = ajax_data.agora.short_description;
+            var link = encodeURIComponent(location.href);
+            var hr = '';
+            // twitter
+            hr = $("#twittershare").attr('href');
+            hr += '?url=' + link;
+            hr += '&text=' + encodeURIComponent(name + " / " + desc);
+            $("#twittershare").attr('href', hr);
+            $("#twittershare").click(function() {
+                window.open($(this).attr('href'), 'twitter-share-dialog', 'width=626,height=436');
+                return false;
+            });
+
+            // facebook
+            hr = $("#facebookshare").attr('href');
+            hr += '?u=' + link;
+            $("#facebookshare").attr('href', hr);
+            $("#facebookshare").click(function() {
+                window.open($(this).attr('href'), 'facebook-share-dialog', 'width=626,height=436');
+                return false;
+            });
+
+            // google plus
+            hr = $("#googleshare").attr('href');
+            hr += '?url=' + link;
+            $("#googleshare").attr('href', hr);
+            $("#googleshare").click(function() {
+                window.open($(this).attr('href'), 'google-share-dialog', 'width=626,height=436');
+                return false;
+            });
+
+            // identica
+            hr = $("#identicashare").attr('href');
+            hr += '&status_textarea=' + encodeURIComponent(name + " / " + desc) + link;
+            $("#identicashare").attr('href', hr);
+            $("#identicashare").click(function() {
+                window.open($(this).attr('href'), 'identica-share-dialog', 'width=626,height=436');
+                return false;
+            });
         }
+
     });
 }).call(this)
