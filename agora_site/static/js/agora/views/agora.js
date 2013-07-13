@@ -218,6 +218,11 @@
         $("#agora-tabs [data-tabname=" + current_tab + "]").addClass('active');
     };
 
+    Agora.renderAgoraCalendar = function() {
+        var tabsTemplate = _.template($("#template-agora-calendar-view").html());
+        $("#agora-calendar").html(tabsTemplate(ajax_data));
+    };
+
     Agora.AgoraView = Backbone.View.extend({
         el: "div.agora",
 
@@ -227,13 +232,15 @@
             this.calendarView = new Agora.CalendarWidgetView();
             this.agoraActionListView = new Agora.AgoraActionListView();
 
+            Agora.renderAgoraTabs();
+            Agora.renderAgoraCalendar();
+
             // Only initialize on correct section of page exists.
             if ($("#activity-list").length > 0) {
                 this.activityListView = new Agora.ActivityListView();
                 this.talliedElectionsView = new Agora.TalliedElectionsView();
             }
             this.social();
-            Agora.renderAgoraTabs();
         },
 
         social: function() {

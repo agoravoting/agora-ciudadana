@@ -117,7 +117,7 @@ class PostCommentForm(django_forms.Form):
         """
 
         if not self.request.user.is_authenticated():
-            raise django_forms.ValidationError(ungettext("You must be authenticated to post a comment"))
+            raise django_forms.ValidationError(_("You must be authenticated to post a comment"))
 
         comment = self.cleaned_data["comment"]
         if settings.COMMENTS_ALLOW_PROFANITIES == False:
