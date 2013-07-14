@@ -44,8 +44,6 @@ from actstream.signals import action
 
 from guardian.shortcuts import *
 
-from endless_pagination.views import AjaxListView
-
 from haystack.query import EmptySearchQuerySet
 from haystack.forms import ModelSearchForm, FacetedSearchForm
 from haystack.query import SearchQuerySet
@@ -2042,12 +2040,11 @@ class UserListView(TemplateView):
     '''
     template_name = 'agora_core/user_listing.html'
 
-class SearchView(AjaxListView, HaystackSearchView):
+class SearchView(TemplateView, HaystackSearchView):
     '''
     Generic search view for all kinds of indexed objects
     '''
     template_name = 'search/search.html'
-    page_template = 'search/search_page.html'
     form_class = ModelSearchForm
     load_all = True
     searchqueryset = None

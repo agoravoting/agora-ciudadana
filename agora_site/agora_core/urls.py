@@ -19,8 +19,6 @@ from django.views.generic import CreateView, RedirectView
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy  as _
 
-from endless_pagination.views import AjaxListView
-
 from agora_site.agora_core.views import *
 from agora_site.misc.utils import RequestCreateView
 from .api import v1

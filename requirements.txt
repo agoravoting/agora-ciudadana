@@ -12,7 +12,6 @@ django-crispy-forms
 easy_thumbnails
 pil
 django-haystack
-django-endless-pagination
 django-debug-toolbar
 textile
 simplejson

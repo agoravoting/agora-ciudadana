@@ -185,7 +185,6 @@ INSTALLED_APPS = (
     'crispy_forms',
     'agora_site.agora_core',
     'agora_site.accounts',
-    'endless_pagination',
     'haystack',
     'djcelery',
     'guardian',
