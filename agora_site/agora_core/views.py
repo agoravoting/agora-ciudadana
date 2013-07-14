@@ -197,21 +197,11 @@ class AgoraMembersView(TemplateView):
 
         return context
 
-class ElectionDelegatesView(AjaxListView):
+class ElectionDelegatesView(TemplateView):
     '''
     Shows the biography of an agora
     '''
     template_name = 'agora_core/election_delegates.html'
-    page_template = 'agora_core/delegate_list_page.html'
-
-    def get_queryset(self):
-        username = self.kwargs["username"]
-        agoraname = self.kwargs["agoraname"]
-        electionname = self.kwargs["electionname"]
-        self.election = get_object_or_404(Election,
-            name=electionname, agora__name=agoraname,
-            agora__creator__username=username)
-        return self.election.get_votes_from_delegates().all()
 
     def get(self, request, *args, **kwargs):
         self.kwargs = kwargs
@@ -219,6 +209,14 @@ class ElectionDelegatesView(AjaxListView):
 
     def get_context_data(self, **kwargs):
         context = super(ElectionDelegatesView, self).get_context_data(**kwargs)
+
+        username = kwargs["username"]
+        agoraname = kwargs["agoraname"]
+        electionname = kwargs["electionname"]
+        self.election = get_object_or_404(Election,
+            name=electionname, agora__name=agoraname,
+            agora__creator__username=username)
+
         context['election'] = self.election
         context['vote_form'] = VoteForm(self.request, self.election)
         context['permissions'] = self.election.get_perms(self.request.user)
@@ -228,54 +226,6 @@ class ElectionDelegatesView(AjaxListView):
             context['vote_from_user'] = self.election.get_vote_for_voter(
                 self.request.user)
         return context
-
-class ElectionChooseDelegateView(AjaxListView):
-    '''
-    Shows the biography of an agora
-    '''
-    template_name = 'agora_core/election_choose_delegate.html'
-    page_template = 'agora_core/delegate_list_page.html'
-
-    def get_queryset(self):
-        return self.election.get_votes_from_delegates().all()
-
-    def get(self, request, *args, **kwargs):
-
-        #  you cannot delegate to yourself
-        delegate_username = self.kwargs["delegate_username"]
-        if delegate_username == request.user.username:
-            return http.HttpResponseRedirect(reverse('user-view',
-                kwargs=dict(username=delegate_username)))
-
-        return super(ElectionChooseDelegateView, self).get(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(ElectionChooseDelegateView, self).get_context_data(**kwargs)
-        context['election'] = self.election
-        context['permissions'] = self.election.get_perms(self.request.user)
-        context['agora_perms'] = self.election.agora.get_perms(self.request.user)
-        context['delegate'] = self.delegate
-        context['vote'] = self.vote
-        context['vote_form'] = VoteForm(self.request, self.election)
-        return context
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        self.kwargs = kwargs
-        username = self.kwargs["username"]
-        agoraname = self.kwargs["agoraname"]
-        electionname = self.kwargs["electionname"]
-        delegate_username = self.kwargs["delegate_username"]
-        self.election = get_object_or_404(Election,
-            name=electionname, agora__name=agoraname,
-            agora__creator__username=username)
-
-        self.delegate = get_object_or_404(User, username=delegate_username)
-        self.vote = get_object_or_404(CastVote, is_public=True,
-            election=self.election, invalidated_at_date=None,
-            voter=self.delegate)
-
-        return super(ElectionChooseDelegateView, self).dispatch(*args, **kwargs)
 
 class  ElectionVotesView(ElectionDelegatesView):
     template_name = 'agora_core/election_votes.html'
@@ -1989,27 +1939,12 @@ class UserSettingsView(UpdateView):
     def dispatch(self, *args, **kwargs):
         return super(UserSettingsView, self).dispatch(*args, **kwargs)
 
-class UserElectionsView(AjaxListView):
+
+class UserElectionsView(TemplateView):
     '''
     Shows the list of elections of an agora
     '''
     template_name = 'agora_core/user_elections.html'
-    page_template = 'agora_core/election_list_page.html'
-
-    def get_queryset(self):
-        username = self.kwargs["username"]
-        election_filter = self.kwargs["election_filter"]
-
-        self.user_shown = get_object_or_404(User, username=username)
-
-        election_list = self.user_shown.get_profile().get_open_elections()
-
-        if election_filter == "participated":
-            election_list = self.user_shown.get_profile().get_participated_elections()
-        elif election_filter == "requested":
-            election_list = self.user_shown.get_profile().get_requested_elections()
-
-        return election_list
 
     def get(self, request, *args, **kwargs):
         self.kwargs = kwargs
@@ -2017,71 +1952,13 @@ class UserElectionsView(AjaxListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(UserElectionsView, self).get_context_data(**kwargs)
+        username = kwargs["username"]
+        self.user_shown = get_object_or_404(User, username=username)
+
         context['user_shown'] = self.user_shown
         context['filter'] = self.kwargs["election_filter"]
         return context
 
-
-'''
-TODO: Activate again later
-class AgoraAddMembersView(UpdateView):
-    ' ''
-    Allows admins to add members to an agora
-    ' ''
-    template_name = 'agora_core/agora_add_members.html'
-    form_class = AgoraAddMembersForm
-    model = Agora
-
-    def post(self, request, *args, **kwargs):
-        if not self.agora.has_perms('admin', self.request.user):
-            messages.add_message(self.request, messages.ERROR, _('Sorry, but '
-            'you don\'t have admin permissions on %(agoraname)s.') %\
-                dict(agoraname=self.agora.name))
-
-            url = reverse('agora-view',
-                kwargs=dict(username=agora.creator.username, agoraname=agora.name))
-            return http.HttpResponseRedirect(url)
-        return super(AgoraAddMembersView, self).post(request, *args, **kwargs)
-
-
-    def get(self, request, *args, **kwargs):
-        if not self.agora.has_perms('admin', self.request.user):
-            messages.add_message(self.request, messages.ERROR, _('Sorry, but '
-            'you don\'t have admin permissions on %(agoraname)s.') %\
-                dict(agoraname=self.agora.name))
-
-            url = reverse('agora-view',
-                kwargs=dict(username=self.agora.creator.username, agoraname=self.agora.name))
-            return http.HttpResponseRedirect(url)
-        return super(AgoraAddMembersView, self).get(request, *args, **kwargs)
-
-    def get_success_url(self):
-        ' ''
-        After creating the agora, show it
-        ' ''
-        agora = self.object
-        messages.add_message(self.request, messages.SUCCESS, _('The people you entered have been added successfully to the agora %(agora)s.') % dict(agora=self.agora.get_link()))
-
-        return reverse('agora-view',
-            kwargs=dict(username=agora.creator.username, agoraname=agora.name))
-
-    def get_object(self):
-        return self.agora
-
-    def get_form_kwargs(self):
-        kwargs = super(AgoraAddMembersView, self).get_form_kwargs()
-        kwargs.update({'request': self.request})
-        return kwargs
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        username = kwargs['username']
-        agoraname = kwargs['agoraname']
-        self.agora = get_object_or_404(Agora, name=agoraname,
-            creator__username=username)
-
-        return super(AgoraAddMembersView, self).dispatch(*args, **kwargs)
-'''
 
 class AgoraAdminView(UpdateView):
     '''
