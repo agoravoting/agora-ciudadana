@@ -428,10 +428,10 @@ class UserResource(GenericResource):
         Lists the elections in which the user participated either direct
         or indirectly
         '''
-        from .election import TinyElectionResource
+        from .election import ResultsElectionResource
         user = get_object_or_404(User, pk=userid)
         queryset = user.get_profile().get_participated_elections()
-        return TinyElectionResource().get_custom_list(request=request,
+        return ResultsElectionResource().get_custom_list(request=request,
             queryset=queryset)
 
 
