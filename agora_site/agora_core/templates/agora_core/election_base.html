@@ -337,115 +337,11 @@
     </div>
 </div>
 
-<script id="template-question_list_view" type="text/underscore-template">
-    <h2 class="headerlink"><%= gettext("Questions") %> <a href="#question-list">¶</a></h2>
-    <% for (var i = 0; i < election.questions.length; i++) { %>
-        <table class="question table table-bordered">
-            <thead>
-                <tr><th>
-                    <strong><%=  i + 1 %>. <%= election.questions[i].question %></strong>
-                    <small>(
-                    <% if (election.questions[i].tally_type == 'MEEK-STV') { %>
-                        <%= interpolate(gettext("%s winners"), [election.questions[i].num_seats]) %>,
-                    <% } %>
-                    <% if (election.questions[i].min == 0) { %>
-                        <%= interpolate(gettext("Select up to %s answers"), [election.questions[i].max]) %>
-                    <% } else {%>
-                        <%= interpolate(gettext("Select from %s to %s answers"),
-                            [election.questions[i].min, election.questions[i].max]) %>
-                    <% } %>
-                    )</small>
-                </th></tr>
-            </thead>
-            <tbody data-randomize="<%= election.questions[i].randomize_answer_order %>">
-                <% for (var j = 0; j < election.questions[i].answers.length; j++) { %>
-                <tr><td>
-                    <%= election.questions[i].answers[j].value %>
-                </td></tr>
-                <% } %>
-            </tbody>
-        </table>
-    <% } %>
-</script>
-
-<script id="template-election_results_view" type="text/underscore-template">
-    <h2 class="headerlink"><%= gettext("Tally") %> <a href="#question-list">¶</a></h2>
-</script>
-
-<script id="template-question_meek_stv_tally" type="text/underscore-template">
-    <h3 class="headerlink"><%= question_num +1 %>. <%= question.question %> <a href="#tally_question<%= question_num %>">¶</a></h3>
-    <strong class="winners">
-        <%= gettext("Winners: ") %>
-        <% for(var i=0; i < tally.winners.length; i++) { %>
-            <%= tally.winners[i] %><% if (i + 1 <  tally.winners.length) { %>,<% } %>
-        <% } %>
-    </strong>
-    <div class="table_wrapper">
-        <table class="question-stv table table-bordered">
-            <thead><tr>
-                <th>
-                    <%= gettext("Candidates") %>
-                </th>
-                <% for(var i = 0; i < tally.iterations.length; i++) { %>
-                    <th>
-                        <%= interpolate(gettext("%sº round"), [tally.iterations[i].round_stage]) %>
-                    </th>
-                <% } %>
-                <th>
-                    <%= gettext("Final") %>
-                </th>
-            </tr></thead>
-            <tbody>
-                <% for(var i = 0; i < question.answers.length; i++) { %>
-                    <tr>
-                        <td class="candidate">
-                        <% if (tally.winners.indexOf(question.answers[i].value) != -1) { %>
-                            <strong><%= question.answers[i].value %></strong>
-                        <% } else { %>
-                            <%= question.answers[i].value %>
-                        <% } %>
-                        </td>
-                        <% for(var j = 0; j < tally.iterations.length; j++) { %>
-                            <td class="<%= tally.iterations[j].candidates[i].status %>">
-                                <%= parseFloat(tally.iterations[j].candidates[i].count) %>
-                            </td>
-                        <% } %>
-                        <% if (tally.winners.indexOf(question.answers[i].value) != -1) { %>
-                            <td class="last won">
-                                <%= gettext("winner") %>
-                            </td>
-                        <% } else { %>
-                            <td class="last">
-                            </td>
-                        <% } %>
-                    </tr>
-                <% } %>
-            </tbody>
-        </table>
-    </div>
-</script>
-
-<script id="template-question_one_choice_tally" type="text/underscore-template">
-    <h3 class="headerlink"><%= question_num +1 %>. <%= question.question %> <a href="#tally_question<%= question_num %>">¶</a></h3>
-    <strong class="winners"><%= gettext("Winner: ") %> <%= question.winners[0] %></strong>
-    <% for(var i = 0; i < question.answers.length; i++) { %>
-        <li style="color: <%= question.answers[i].color %>" data-value="<%= question.answers[i].total_count %>">
-            <span class="legendbox" style="background-color: <%= question.answers[i].color %>"></span>
-            <%= question.answers[i].value %>
-            <em>
-                (<%= interpolate(gettext("%s votes"), [question.answers[i].total_count]) %>)
-                <%= parseFloat(question.answers[i].total_count_percentage).toFixed(2) %>%
-            </em>
-        </li>
-    <% } %>
-    <div class="piechart">
-    </div>
-</script>
-
 {% endblock %}
 
 {% block script-block %}
 {% include "agora_core/client/all_actions.html" %}
+{% include "agora_core/client/election_results.html" %}
 <script>
     var ajax_data = {
         election: {% rest request '/election/' election.id '/' %},
