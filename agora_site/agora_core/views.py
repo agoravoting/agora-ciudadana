@@ -363,7 +363,6 @@ class ElectionView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(ElectionView, self).get_context_data(**kwargs)
         context['election'] = self.election
-        context['vote_form'] = VoteForm(self.request, self.election)
         context['permissions'] = self.election.get_perms(self.request.user)
         context['agora_perms'] = self.election.agora.get_perms(self.request.user)
 
@@ -384,11 +383,16 @@ class ElectionView(TemplateView):
         return super(ElectionView, self).dispatch(*args, **kwargs)
 
 
-class VotingBoothView(ElectionView):
+class VotingBoothView(TemplateView):
     '''
     Shows an election voting booth
     '''
     template_name = 'agora_core/voting_booth.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(VotingBoothView, self).get_context_data(**kwargs)
+        context['election'] = self.election
+        return context
 
     def get(self, request, *args, **kwargs):
         if not self.election.has_perms('emit_direct_vote', request.user):
@@ -400,6 +404,14 @@ class VotingBoothView(ElectionView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
+        self.kwargs = kwargs
+
+        username = kwargs['username']
+        agoraname = kwargs['agoraname']
+        electionname = kwargs['electionname']
+        self.election = get_object_or_404(Election,
+            name=electionname, agora__name=agoraname,
+            agora__creator__username=username)
         return super(VotingBoothView, self).dispatch(*args, **kwargs)
 
 class EditElectionView(UpdateView):
