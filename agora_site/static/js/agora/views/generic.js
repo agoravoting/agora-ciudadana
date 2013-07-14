@@ -21,7 +21,13 @@
 
             initialize: function() {
                 _.bindAll(this);
-                this.template = _.template($("#template-election").html());
+                this.template = _.template($("#template-calendar-election-item-view").html());
+                this.calendarTemplate = _.template($("#template-calendar-view").html());
+                var calTmplData = {
+                    open_elections: user_data.open_elections,
+                    agoras: user_data.agoras
+                };
+                this.$el.html(this.calendarTemplate(calTmplData));
                 this.collection = new ElectionsCollection();
                 this.collection.on('reset', this.resetCollection);
 

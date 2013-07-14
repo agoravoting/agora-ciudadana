@@ -386,16 +386,31 @@ class CreateElectionView(RequestCreateView):
     def dispatch(self, *args, **kwargs):
         return super(CreateElectionView, self).dispatch(*args, **kwargs)
 
+class AgoraView(TemplateView):
+    '''
+    Shows an agora main page
+    '''
+    template_name = 'agora_core/agora_activity.html'
 
-class ElectionView(AjaxListView):
+    def get_context_data(self, **kwargs):
+        context = super(AgoraView, self).get_context_data(**kwargs)
+        context['agora'] = self.agora
+        return context
+
+    def dispatch(self, *args, **kwargs):
+        self.kwargs = kwargs
+        username = self.kwargs["username"]
+        agoraname = self.kwargs["agoraname"]
+
+        self.agora = get_object_or_404(Agora, name=agoraname,
+            creator__username=username)
+        return super(AgoraView, self).dispatch(*args, **kwargs)
+
+class ElectionView(TemplateView):
     '''
     Shows an election main page
     '''
     template_name = 'agora_core/election_activity.html'
-    page_template = 'agora_core/action_items_page.html'
-
-    def get_queryset(self):
-        return election_stream(self.election)
 
     def get_context_data(self, *args, **kwargs):
         context = super(ElectionView, self).get_context_data(**kwargs)
@@ -408,7 +423,6 @@ class ElectionView(AjaxListView):
             context['vote_from_user'] = self.election.get_vote_for_voter(
                 self.request.user)
         return context
-
 
     def dispatch(self, *args, **kwargs):
         self.kwargs = kwargs

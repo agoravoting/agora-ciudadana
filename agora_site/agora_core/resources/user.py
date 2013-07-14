@@ -209,6 +209,10 @@ class UserResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view("open_elections"), name="api_user_open_elections"),
 
+            url(r"^(?P<resource_name>%s)/(?P<userid>\d+)/open_elections%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view("open_elections"), name="api_specific_user_open_elections"),
+
             url(r"^(?P<resource_name>%s)/set_username/(?P<user_list>\w[\w/;-]*)%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('user_set_by_username'), name="api_user_set_by_username"),
@@ -407,10 +411,15 @@ class UserResource(GenericResource):
             def dehydrate_has_user_voted_via_a_delegate(self, bundle):
                 return bundle.obj.has_user_voted_via_a_delegate(request.user)
 
-        if request.user.is_anonymous():
+        if kwargs.has_key('userid'):
+            user = get_object_or_404(User, pk=kwargs['userid'])
+        else:
+            user = request.user
+
+        if user.is_anonymous():
             raise ImmediateHttpResponse(response=http.HttpForbidden())
 
-        queryset = request.user.get_profile().get_open_elections(search)
+        queryset = user.get_profile().get_open_elections(search)
         return UserElectionResource().get_custom_list(request=request,
             queryset=queryset)
 
