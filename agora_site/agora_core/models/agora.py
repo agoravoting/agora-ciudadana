@@ -280,7 +280,7 @@ class Agora(models.Model):
     def __has_perms(self, permission_name, user, isanon, opc_perms, is_member,
             is_admin, isarchived, requires_membership_approval):
         '''
-        Really implements __has_perms. It receives  by params usual has_perm args
+        Really implements has_perms. It receives  by params usual has_perm args
         (permission_name, user) and also thearguments that are common in different
         (has_perms checks, to make get_perms calls more efficient.
         '''
