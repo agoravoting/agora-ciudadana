@@ -47,7 +47,7 @@ class PasswordResetDoneView(TemplateView):
 class PasswordResetCompleteView(TemplateView):
     def get(self, request):
         messages.add_message(request, settings.SUCCESS_MODAL, _('Your password has '
-            'been reset, you can now <a href="%(url)s">login</a> with your '
+            'been reset, you can now <a href="%(url)s">log in</a> with your '
             'new password') % dict(url=reverse('userena_signin')))
         return redirect('/')
 

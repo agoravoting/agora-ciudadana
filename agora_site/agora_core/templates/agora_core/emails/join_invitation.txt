@@ -1,12 +1,10 @@
 {% load i18n %}{% load agora_utils %}{% autoescape off %}
-{% blocktrans with welcome_message=welcome_message to_email=to.email invitation_link=invitation_link site_domain=site.domain protocol=protocol  inviter=other_user.get_profile.get_fullname agora_fullname=agora.get_full_name %}Hello {{ to_email }},
+{% blocktrans with to_email=to.email %}Hello {{ to_email }},{% endblocktrans %}
 
-{{ inviter }} has invited you to join him/her at {{ agora_fullname }}. Please click in the following activation link, where you will be able to complete your registration:
+{% blocktrans with inviter=other_user.get_profile.get_fullname agora_fullname=agora.get_full_name %}{{ inviter }} has invited you to join him/her at {{ agora_fullname }}. Please follow this link to complete your registration:{% endblocktrans %}
 
-{{ protocol }}://{{ site_domain }}{{ invitation_link }}
+{{ protocol }}://{{ site.domain }}{{ invitation_link }}
 
 {{welcome_message}}.
-{% endblocktrans %}
 --
-{% blocktrans with to_email=to.email %}This message was sent to {{ to_email }}.
-{% endblocktrans %}{% endautoescape %}
+{% blocktrans with to_email=to.email %}This message was sent to {{ to_email }}.{% endblocktrans %}{% endautoescape %}

@@ -1,16 +1,13 @@
 {% load i18n %}
 {% load agora_utils %}
 {% autoescape off %}
-{% blocktrans with to_username=to.username agora_full_name=agora.get_full_name agora_url=agora.get_link site_domain=site.domain delegator_name=vote.voter.username delegator_url=vote.voter.get_profile.get_link %}
-<p>Hello {{ to_username }},</p>
+<p>{% blocktrans with to_username=to.username %}Hello {{ to_username }},{% endblocktrans %}</p>
 
-<p>{{ delegator_name }} has  delegated to you at agora {{ agora_full_name }}. Congratulations!</p>
+<p>{% blocktrans with agora_full_name=agora.get_full_name delegator_name=vote.voter.username %}{{ delegator_name }} has  delegated to you at agora {{ agora_full_name }}. Congratulations!{% endblocktrans %}</p>
 
-<p>Agora URL: <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_full_name }}</a></p>
+<p>{% blocktrans with agora_full_name=agora.get_full_name agora_url=agora.get_link site_domain=site.domain %}Agora URL: <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_full_name }}</a>{% endblocktrans %}</p>
 
-<p>Delegator URL: <a href="{{ protocol }}://{{ site_domain }}{{ delegator_url }}">{{ delegator_name }}</a></p>
+<p>{% blocktrans with site_domain=site.domain delegator_name=vote.voter.username delegator_url=vote.voter.get_profile.get_link %}Delegator URL: <a href="{{ protocol }}://{{ site_domain }}{{ delegator_url }}">{{ delegator_name }}</a>{% endblocktrans %}</p>
 
-{% endblocktrans %}
 <p>--<br/>
-{% blocktrans with to_email=to.username site_name=site.name site_domain=site.domain %}This message was sent to {{ to_email }}. If you want to stop receiving these message from <a href="{{ protocol }}://{{ site_domain }}">{{ site_name }}</a>, please <a href="{{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}">click here</a>
-{% endblocktrans %}</p>{% endautoescape %}
+{% blocktrans with to_email=to.username site_name=site.name site_domain=site.domain %}This message was sent to {{ to_email }}. If you want to stop receiving these message from <a href="{{ protocol }}://{{ site_domain }}">{{ site_name }}</a>, please <a href="{{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}">click here</a>{% endblocktrans %}</p>{% endautoescape %}

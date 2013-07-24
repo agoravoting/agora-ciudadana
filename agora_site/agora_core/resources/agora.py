@@ -537,7 +537,7 @@ class AgoraResource(GenericResource):
         remove_perm('requested_membership', request.user, agora)
 
         # create an action for the event
-        action.send(request.user, verb='cancelled requested membership',
+        action.send(request.user, verb='canceled requested membership',
             action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
             target=request.user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
@@ -549,7 +549,7 @@ class AgoraResource(GenericResource):
             context.update(dict(
                 agora=agora,
                 other_user=request.user,
-                notification_text=_('Your cancelled your membership request at '
+                notification_text=_('You canceled your membership request at '
                     '%(agora)s') % dict(
                         agora=agora.get_full_name()
                     ),
@@ -557,7 +557,7 @@ class AgoraResource(GenericResource):
             ))
 
             email = EmailMultiAlternatives(
-                subject=_('%(site)s - cancelled your membership request at '
+                subject=_('%(site)s - canceled your membership request at '
                         '%(agora)s') % dict(
                         site=Site.objects.get_current().domain,
                         agora=agora.get_full_name()
@@ -757,13 +757,13 @@ class AgoraResource(GenericResource):
                 agora=agora,
                 other_user=user,
                 notification_text=_('As administrator of %(agora)s, %(user)s has '
-                    'himself added you to this agora. You can remove your '
+                    'added you to this agora. You can remove your '
                     'membership at anytime, and if you think he is spamming '
                     'you please contact with this website '
-                    'administrators.\n\n') % dict(
+                    'administrators.') % dict(
                         agora=agora.get_full_name(),
                         user=request.user.username
-                    ) + welcome_message,
+                    ) + '\n\n' + welcome_message,
                 to=user
             ))
 
@@ -816,16 +816,15 @@ class AgoraResource(GenericResource):
             context.update(dict(
                 agora=agora,
                 other_user=user,
-                notification_text=_('Your have been removed from membership '
-                    'from %(agora)s . Sorry about that!\n\n') % dict(
+                notification_text=_('Your membership of %(agora)s has been removed. '
+                            'Sorry about that!') % dict(
                             agora=agora.get_full_name()
-                        ) + goodbye_message,
+                        ) + '\n\n' + goodbye_message,
                 to=user
             ))
 
             email = EmailMultiAlternatives(
-                subject=_('%(site)s - membership removed from '
-                    '%(agora)s') % dict(
+                subject=_('%(site)s - membership of %(agora)s removed') % dict(
                         site=Site.objects.get_current().domain,
                         agora=agora.get_full_name()
                     ),
@@ -874,7 +873,7 @@ class AgoraResource(GenericResource):
         remove_perm('requested_admin_membership', request.user, agora)
 
         # create an action for the event
-        action.send(request.user, verb='cancelled requested admin membership',
+        action.send(request.user, verb='canceled requested admin membership',
             action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
             target=request.user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
@@ -886,7 +885,7 @@ class AgoraResource(GenericResource):
             context.update(dict(
                 agora=agora,
                 other_user=request.user,
-                notification_text=_('You cancelled your admin membership request at '
+                notification_text=_('You canceled your admin membership request at '
                     '%(agora)s') % dict(
                         agora=agora.get_full_name()
                     ),
@@ -894,7 +893,7 @@ class AgoraResource(GenericResource):
             ))
 
             email = EmailMultiAlternatives(
-                subject=_('%(site)s - cancelled your admin membership request at '
+                subject=_('%(site)s - canceled your admin membership request at '
                         '%(agora)s') % dict(
                         site=Site.objects.get_current().domain,
                         agora=agora.get_full_name()
@@ -1099,13 +1098,13 @@ class AgoraResource(GenericResource):
                 agora=agora,
                 other_user=user,
                 notification_text=_('As administrator of %(agora)s, %(user)s has '
-                    'himself promoted you to admin of this agora. You can remove '
+                    'promoted you to admin of this agora. You can remove '
                     'your admin membership at anytime, and if you think he is '
                     'spamming you please contact with this website '
-                    'administrators.\n\n') % dict(
+                    'administrators.') % dict(
                         agora=agora.get_full_name(),
                         user=request.user.username
-                    ) + welcome_message,
+                    ) + '\n\n' + welcome_message,
                 to=user
             ))
 
@@ -1146,7 +1145,7 @@ class AgoraResource(GenericResource):
         agora.save()
 
         # create an action for the event
-        action.send(request.user, verb='removed admin permissions',
+        action.send(request.user, verb='revoked admin permissions',
             action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
             target=user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
@@ -1158,15 +1157,14 @@ class AgoraResource(GenericResource):
             context.update(dict(
                 agora=agora,
                 other_user=user,
-                notification_text=_('Your have been removed admin permissions '
-                    'from %(agora)s . Sorry about that!\n\n') % dict(
+                notification_text=_('Your admin permissions on %(agora)s have been revoked. Sorry about that!') % dict(
                             agora=agora.get_full_name()
-                        ) + goodbye_message,
+                        ) + '\n\n' + goodbye_message,
                 to=user
             ))
 
             email = EmailMultiAlternatives(
-                subject=_('%(site)s - admin permissions removed from '
+                subject=_('%(site)s - admin permissions revoked on '
                     '%(agora)s') % dict(
                         site=Site.objects.get_current().domain,
                         agora=agora.get_full_name()
@@ -1193,7 +1191,7 @@ class AgoraResource(GenericResource):
         agora.save()
 
         # create an action for the event
-        action.send(request.user, verb='left admin permissions',
+        action.send(request.user, verb='gave up admin permissions',
             action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
@@ -1204,15 +1202,15 @@ class AgoraResource(GenericResource):
             context.update(dict(
                 agora=agora,
                 other_user=request.user,
-                notification_text=_('Your hav removed your admin permissions '
-                    'from %(agora)s') % dict(
+                notification_text=_('You have given up your admin permissions '
+                    'on %(agora)s') % dict(
                             agora=agora.get_full_name()
                         ),
                 to=request.user
             ))
 
             email = EmailMultiAlternatives(
-                subject=_('%(site)s - admin permissions removed from '
+                subject=_('%(site)s - admin permissions given up on '
                     '%(agora)s') % dict(
                         site=Site.objects.get_current().domain,
                         agora=agora.get_full_name()
@@ -1264,7 +1262,7 @@ class AgoraResource(GenericResource):
         vote.save()
 
         # create an action for the event
-        action.send(request.user, verb='cancelled vote delegation',
+        action.send(request.user, verb='canceled vote delegation',
             action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
@@ -1275,7 +1273,7 @@ class AgoraResource(GenericResource):
             context.update(dict(
                 agora=agora,
                 other_user=request.user,
-                notification_text=_('Your have removed your vote delegation '
+                notification_text=_('You have removed your vote delegation '
                     'from %(agora)s') % dict(
                             agora=agora.get_full_name()
                         ),
@@ -1283,7 +1281,7 @@ class AgoraResource(GenericResource):
             ))
 
             email = EmailMultiAlternatives(
-                subject=_('%(site)s - admin permissions removed from '
+                subject=_('%(site)s - vote delegation removed from '
                     '%(agora)s') % dict(
                         site=Site.objects.get_current().domain,
                         agora=agora.get_full_name()
