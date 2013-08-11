@@ -2,20 +2,31 @@ import datetime
 import unicodedata
 
 from django.core.urlresolvers import reverse
+from django.core.mail import (EmailMultiAlternatives, EmailMessage,
+                              send_mass_mail)
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
+from django.conf import settings
 from django.db import models
 from django.db.models import Q
-from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
-from django.conf import settings
 from django.db.models.signals import post_save
+from django.template.loader import render_to_string
+from django.utils import timezone
+from django.utils import translation
+from django.utils import simplejson as json
+from django.utils.translation import ugettext_lazy as _
+from django.shortcuts import get_object_or_404
 
 from userena.models import UserenaLanguageBaseProfile
 from userena.utils import get_gravatar
 from userena import settings as userena_settings
 from guardian.shortcuts import *
 
-from agora_site.misc.utils import JSONField
+from actstream.actions import follow, is_following
+from actstream.signals import action
+
+from agora_site.misc.utils import (JSONField, geolocate_ip,
+                                   get_base_email_context)
 from agora import Agora
 from election import Election
 from castvote import CastVote
@@ -81,6 +92,60 @@ class Profile(UserenaLanguageBaseProfile):
 
     def get_big_mugshot(self):
         return self.get_mugshot_url(170)
+
+    def add_to_agora(self, request, agora_name=None, agora_id=None):
+        '''
+        Add the user to the specified agora. The agora is specified by its full
+        name or id, for example agora_name="username/agoraname" or agora_id=3.
+        '''
+
+        if agora_name:
+            username, agoraname = agora_name.split("/")
+            agora = get_object_or_404(Agora, name=agoraname,
+                creator__username=username)
+            agora.members.add(self.user)
+            agora.save()
+        else:
+            agora = get_object_or_404(Agora, pk=agora_id)
+            agora.members.add(self.user)
+            agora.save()
+
+        action.send(self.user, verb='joined', action_object=agora,
+            ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
+
+        if not is_following(self.user, agora):
+            follow(self.user, agora, actor_only=False, request=request)
+
+        # Mail to the user
+        if not self.has_perms('receive_email_updates'):
+            return
+
+        translation.activate(self.user.get_profile().lang_code)
+        context = get_base_email_context(request)
+        context.update(dict(
+            agora=agora,
+            other_user=self.user,
+            notification_text=_('You just joined %(agora)s. '
+                'Congratulations!') % dict(agora=agora.get_full_name()),
+            to=self.user
+        ))
+
+        email = EmailMultiAlternatives(
+            subject=_('%(site)s - you are now member of %(agora)s') % dict(
+                        site=Site.objects.get_current().domain,
+                        agora=agora.get_full_name()
+                    ),
+            body=render_to_string('agora_core/emails/agora_notification.txt',
+                context),
+            to=[self.user.email])
+
+        email.attach_alternative(
+            render_to_string('agora_core/emails/agora_notification.html',
+                context), "text/html")
+        email.send()
+        translation.deactivate()
 
     def get_mugshot_url(self, custom_size = userena_settings.USERENA_MUGSHOT_SIZE):
         """

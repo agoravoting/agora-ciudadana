@@ -579,43 +579,7 @@ class AgoraResource(GenericResource):
         '''
         Action that an user can execute to join an agora if it has permissions
         '''
-        agora.members.add(request.user)
-        agora.save()
-
-        action.send(request.user, verb='joined', action_object=agora,
-            ipaddr=request.META.get('REMOTE_ADDR'),
-            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
-
-        if not is_following(request.user, agora):
-            follow(request.user, agora, actor_only=False, request=request)
-
-        # Mail to the user
-        user = request.user
-        if user.get_profile().has_perms('receive_email_updates'):
-            translation.activate(user.get_profile().lang_code)
-            context = get_base_email_context(request)
-            context.update(dict(
-                agora=agora,
-                other_user=user,
-                notification_text=_('You just joined %(agora)s. '
-                    'Congratulations!') % dict(agora=agora.get_full_name()),
-                to=user
-            ))
-
-            email = EmailMultiAlternatives(
-                subject=_('%(site)s - you are now member of %(agora)s') % dict(
-                            site=Site.objects.get_current().domain,
-                            agora=agora.get_full_name()
-                        ),
-                body=render_to_string('agora_core/emails/agora_notification.txt',
-                    context),
-                to=[user.email])
-
-            email.attach_alternative(
-                render_to_string('agora_core/emails/agora_notification.html',
-                    context), "text/html")
-            email.send()
-            translation.deactivate()
+        request.user.get_profile().add_to_agora(agora_id=agora.id, request=request)
 
         return self.create_response(request, dict(status="success"))
 

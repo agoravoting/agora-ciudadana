@@ -336,7 +336,7 @@ class UserResource(GenericResource):
                                                 False)
                 profile = new_user.get_profile()
                 profile.lang_code = request.user.get_profile().lang_code
-                profile.extra = {'join_agora_id': agoraid}
+                profile.extra = {'join_agora_ids': join_agora_ids}
                 profile.save()
 
                 # Mail to the user
@@ -366,6 +366,11 @@ class UserResource(GenericResource):
                         context), "text/html")
                 email.send()
                 translation.deactivate()
+
+                # add user to the default agoras if any
+                for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
+                    profile.add_to_agora(agora_name=agora_name, request=request)
+
 
         return self.create_response(request, {})
 

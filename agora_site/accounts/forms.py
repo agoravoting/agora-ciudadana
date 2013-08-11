@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.contrib import messages
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
@@ -54,6 +55,11 @@ class AccountSignupForm(userena_forms.SignupForm):
     def save(self):
         new_user = super(AccountSignupForm, self).saveWithFirstName()
         new_user.save()
+
+        # add user to the default agoras if any
+        profile = new_user.get_profile()
+        for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
+            profile.add_to_agora(agora_name=agora_name, request=self.request)
         return new_user
 
 class AcccountAuthForm(userena_forms.AuthenticationForm):
@@ -170,43 +176,11 @@ class RegisterCompleteInviteForm(django_forms.Form):
         user.save()
         profile.save()
         self.userena_signup_obj.save()
+        profile.add_to_agora(agora_id=agora_id, request=self.request)
 
-        from agora_site.agora_core.models.agora import Agora
-        agora = get_object_or_404(Agora, pk=agora_id)
-        agora.members.add(user)
-        agora.save()
-
-        action.send(user, verb='joined', action_object=agora,
-            ipaddr=self.request.META.get('REMOTE_ADDR'),
-            geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
-
-        follow(user, agora, actor_only=False, request=self.request)
-
-        # Mail to the user
-        translation.activate(user.get_profile().lang_code)
-        context = get_base_email_context(self.request)
-        context.update(dict(
-            agora=agora,
-            other_user=user,
-            notification_text=_('You just joined %(agora)s. '
-                'Congratulations!') % dict(agora=agora.get_full_name()),
-            to=user
-        ))
-
-        email = EmailMultiAlternatives(
-            subject=_('%(site)s - you are now member of %(agora)s') % dict(
-                        site=Site.objects.get_current().domain,
-                        agora=agora.get_full_name()
-                    ),
-            body=render_to_string('agora_core/emails/agora_notification.txt',
-                context),
-            to=[user.email])
-
-        email.attach_alternative(
-            render_to_string('agora_core/emails/agora_notification.html',
-                context), "text/html")
-        email.send()
-        translation.deactivate()
+        # add user to the default agoras if any
+        for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
+            profile.add_to_agora(agora_name=agora_name, request=self.request)
 
         # Sign the user in.
         auth_user = authenticate(identification=user.email,
