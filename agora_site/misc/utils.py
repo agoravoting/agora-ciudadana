@@ -26,9 +26,11 @@ from django.shortcuts import _get_queryset
 from django.forms.fields import Field, DateTimeField
 from django.forms.util import ValidationError
 
+
 import datetime
 import pygeoip
 
+from actstream.signals import action
 from jsonfield import JSONField as JSONField2
 from tastypie.fields import ApiField
 from tastypie.serializers import Serializer
@@ -206,6 +208,9 @@ def get_protocol(request):
     '''
     Given the request object, returns either 'https' or 'http' appropiately
     '''
+    if request is None:
+      return 'https' if settings.AGORA_USE_HTTPS else 'http'
+
     if request.is_secure():
         return 'https'
     else:
@@ -220,16 +225,33 @@ def validate_email(email):
     except ValidationError:
         return False
 
-def get_base_email_context(request):
+def get_base_email_context(request=None):
     '''
     Returns a basic email context
     '''
+    if request is None:
+      return dict(
+            cancel_emails_url=reverse('cancel-email-updates'),
+            site=Site.objects.all()[0],
+            protocol=get_protocol(request)
+        )
+
     return dict(
             cancel_emails_url=reverse('cancel-email-updates'),
             site=Site.objects.get_current(),
             protocol=get_protocol(request)
         )
 
+def send_action(user, verb, request, action_object=None, target=None):
+    if request is None:
+        ipaddr = ''
+        geolocation = '[0,0]'
+    else:
+        ipaddr=request.META.get('REMOTE_ADDR')
+        geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR')))
+
+    action.send(user, verb=verb, action_object=action_object, target=target,
+        ipaddr=ipaddr, geolocation=geolocation)
 
 def get_base_email_context_task(is_secure, site_id):
     '''

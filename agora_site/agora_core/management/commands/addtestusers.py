@@ -1,5 +1,5 @@
 # Copyright (C) 2012 Daniel Garcia Moreno <danigm AT wadobo DOT com>
-# Copyright (C) 2012 Eduardo Robles Elvira <edulix AT wadobo DOT com>
+# Copyright (C) 2012, 2013 Eduardo Robles Elvira <edulix AT wadobo DOT com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -16,6 +16,7 @@
 
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User
+from django.conf import settings
 
 import random
 
@@ -51,3 +52,7 @@ class Command(BaseCommand):
             p.short_description = ' '.join(random.choice(desc) for i in range(15))
             p.biography = ' '.join(random.choice(desc) for i in range(100))
             p.save()
+
+            # add user to the default agoras if any
+            for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
+                p.add_to_agora(agora_name=agora_name)

@@ -25,7 +25,7 @@ from guardian.shortcuts import *
 from actstream.actions import follow, is_following
 from actstream.signals import action
 
-from agora_site.misc.utils import (JSONField, geolocate_ip,
+from agora_site.misc.utils import (JSONField, geolocate_ip, send_action,
                                    get_base_email_context)
 from agora import Agora
 from election import Election
@@ -93,7 +93,7 @@ class Profile(UserenaLanguageBaseProfile):
     def get_big_mugshot(self):
         return self.get_mugshot_url(170)
 
-    def add_to_agora(self, request, agora_name=None, agora_id=None):
+    def add_to_agora(self, request=None, agora_name=None, agora_id=None):
         '''
         Add the user to the specified agora. The agora is specified by its full
         name or id, for example agora_name="username/agoraname" or agora_id=3.
@@ -110,10 +110,7 @@ class Profile(UserenaLanguageBaseProfile):
             agora.members.add(self.user)
             agora.save()
 
-        action.send(self.user, verb='joined', action_object=agora,
-            ipaddr=request.META.get('REMOTE_ADDR'),
-            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
-
+        send_action(self.user, verb='joined', action_object=agora, request=request)
 
         if not is_following(self.user, agora):
             follow(self.user, agora, actor_only=False, request=request)
