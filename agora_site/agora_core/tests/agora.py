@@ -175,7 +175,6 @@ class AgoraTest(RootTestCase):
         self.get('action/%d/' % action2_id, code=HTTP_NOT_FOUND)
         self.get('action/%d/' % action3_id, code=HTTP_NOT_FOUND)
 
-
     def test_agora_update(self):
         self.login('user1', '123')
         orig_data = {'pretty_name': "updated name",
@@ -183,7 +182,8 @@ class AgoraTest(RootTestCase):
                      'is_vote_secret': False,
                      'biography': "bio",
                      'membership_policy': 'ANYONE_CAN_JOIN',
-                     'comments_policy': 'ANYONE_CAN_COMMENT'}
+                     'comments_policy': 'ANYONE_CAN_COMMENT',
+                     'delegation_policy': 'DISALLOW_DELEGATION'}
         data = self.put('agora/1/', data=orig_data,
             code=HTTP_FORBIDDEN, content_type='application/json')
         self.login('david', 'david')

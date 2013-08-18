@@ -39,6 +39,11 @@ class Agora(models.Model):
         ('NO_COMMENTS', _('No comments')),
     )
 
+    DELEGATION_TYPE = (
+        ('ALLOW_DELEGATION', _('Allow delegation')),
+        ('DISALLOW_DELEGATION', _('Disallow delegation')),
+    )
+
     creator = models.ForeignKey(User, related_name='created_agoras',
         verbose_name=_('Creator'), null=False)
 
@@ -161,6 +166,9 @@ class Agora(models.Model):
 
     comments_policy = models.CharField(max_length=50, choices=COMMENTS_PERMS,
         default=COMMENTS_PERMS[0][0])
+
+    delegation_policy = models.CharField(max_length=50, choices=DELEGATION_TYPE,
+        default=DELEGATION_TYPE[0][0])
 
     members = models.ManyToManyField(User, related_name='agoras',
         verbose_name=_('Members'))
