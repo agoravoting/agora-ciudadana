@@ -369,7 +369,7 @@ AGORA_CREATION_PERMISSIONS="any-user"
 
 # List of agoras to which a user will be joined automatically when they are
 # registered
-AGORA_REGISTER_AUTO_JOIN = ["hola/holaa"]
+AGORA_REGISTER_AUTO_JOIN = []
 
 # Active voting methods in this deployment
 VOTING_METHODS = (
