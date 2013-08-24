@@ -211,12 +211,12 @@ class AgoraAdminForm(django_forms.ModelForm):
         super(AgoraAdminForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.request = request
-        self.helper.layout = Layout(Fieldset(_('General settings'), 'pretty_name', 'short_description', 'biography', 'is_vote_secret', 'membership_policy', 'comments_policy'))
+        self.helper.layout = Layout(Fieldset(_('General settings'), 'pretty_name', 'short_description', 'biography', 'delegation_policy', 'is_vote_secret', 'membership_policy', 'comments_policy'))
         self.helper.add_input(Submit('submit', _('Save settings'), css_class='btn btn-success btn-large'))
 
     class Meta:
         model = Agora
-        fields = ('pretty_name', 'short_description', 'is_vote_secret',
+        fields = ('pretty_name', 'short_description', 'is_vote_secret', 'delegation_policy',
             'biography', 'membership_policy', 'comments_policy')
         widgets = {
             'membership_policy': django_forms.RadioSelect,
