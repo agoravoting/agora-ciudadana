@@ -41,6 +41,7 @@
                 <%= vote.voter.short_description %>
             <% } %>
         </blockquote>
+        <% if (delegation == true) { %>
         <a class="btn btn-large btn-block btn-primary delegate_vote" href="#"
             data-agora="<%- JSON.stringifyCompat(election.agora) %>"
             data-delegate="<%- JSON.stringifyCompat(vote.voter) %>"
@@ -48,22 +49,25 @@
             <%= interpolate(gettext("Choose %s as my delegate for agora %s"),
                 [vote.voter.full_name, election.agora.full_name]) %>
         </a>
+        <% } %>
     </div>
     <div class="row-fluid questions">
     <% if (vote.is_public) { %>
         <% if (vote.is_direct) { %>
-            <strong><%= interpolate(gettext("%s answers in this election"), [vote.voter.full_name]) %></strong>
-            <% for (var i = 0; i < election.questions.length; i++) { %>
-                <h3>Q<%=  i + 1 %>. <%= election.questions[i].question %></h3>
-                <% if (election.questions[i].tally_type == 'MEEK-STV') { %>
-                    <ol>
-                    <% for (var j = 0; j < vote.public_data.answers[i].choices.length; j++) { %>
-                        <li><%=  vote.public_data.answers[i].choices[j] %></li>
-                    <% } %>
-                    </ol>
-                <% } else { %>
-                    <ul><li><%=  vote.public_data.answers[i].choices[0] %></li></ul>
-                <% } %>
+            <% if (delegation == true) { %>
+		    <strong><%= interpolate(gettext("%s answers in this election"), [vote.voter.full_name]) %></strong>
+		    <% for (var i = 0; i < election.questions.length; i++) { %>
+		        <h3>Q<%=  i + 1 %>. <%= election.questions[i].question %></h3>
+		        <% if (election.questions[i].tally_type == 'MEEK-STV') { %>
+		            <ol>
+		            <% for (var j = 0; j < vote.public_data.answers[i].choices.length; j++) { %>
+		                <li><%=  vote.public_data.answers[i].choices[j] %></li>
+		            <% } %>
+		            </ol>
+		        <% } else { %>
+		            <ul><li><%=  vote.public_data.answers[i].choices[0] %></li></ul>
+		        <% } %>
+		    <% } %>
             <% } %>
         <% } else { %>
             <div class="row-fluid questions">

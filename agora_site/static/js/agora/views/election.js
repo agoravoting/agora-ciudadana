@@ -224,9 +224,13 @@
                 this.templateVoteInfo = _.template($(this.templateVoteInfoEl).html());
             }
             var id = $(e.target).closest('.row').data('id');
+            var self = this;
+            var agora = ajax_data.election.agora;
+            self.delegate = (ajax_data.election.agora.delegation_policy == "ALLOW_DELEGATION");
             var model = {
                 vote: this.collection.get(id).toJSON(),
                 election: ajax_data.election,
+                delegation: self.delegate,
                 extra_data: ajax_data.extra_data
             };
             if (model.election.result_tallied_at_date) {
@@ -241,7 +245,10 @@
                 }
             }
             $("#vote_info").html(this.templateVoteInfo(model));
-            $("#vote_info .delegate_vote").click(this.delegateVote);
+            if(delegate == true)
+            {
+                $("#vote_info .delegate_vote").click(this.delegateVote);
+            }
         },
 
         delegateVote: function (e) {

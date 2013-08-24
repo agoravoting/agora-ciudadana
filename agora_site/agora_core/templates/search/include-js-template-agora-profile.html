@@ -92,6 +92,7 @@
         </a>
     </li>
     <% } %>
+    <% if (_.contains(permissions, "delegate"))  { %>
     <li>
         <a href="#" class="action-choose-as-delegate"
             data-agora=""
@@ -100,6 +101,7 @@
             <%= gettext("Choose as my delegate") %>
         </a>
     </li>
+    <% } %>
     <% if (permissions.length == 0) { %>
         <li><%= gettext("no actions") %></li>
     <% } %>
