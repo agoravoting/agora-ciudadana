@@ -202,6 +202,34 @@ class AgoraTest(RootTestCase):
         data = self.put('agora/1/', data=orig_data,
             code=HTTP_BAD_REQUEST, content_type='application/json')
 
+    def test_agora_delegation_policy(self):
+        self.login('david', 'david')
+
+        # user2 should have some permissions
+        orig_data = dict(action="get_permissions")
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertEquals(set(data["permissions"]), set(['admin', 'delete',
+            'comment', 'create_election', 'delegate']))
+
+        orig_data = {'pretty_name': "updated name",
+                     'short_description': "new desc",
+                     'is_vote_secret': False,
+                     'biography': "bio",
+                     'membership_policy': 'ANYONE_CAN_JOIN',
+                     'comments_policy': 'ANYONE_CAN_COMMENT',
+                     'delegation_policy': 'DISALLOW_DELEGATION'}
+        data = self.put('agora/1/', data=orig_data,
+            code=HTTP_ACCEPTED, content_type='application/json')
+
+        # user2 should have some permissions
+        orig_data = dict(action="get_permissions")
+        data = self.postAndParse('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertEquals(set(data["permissions"]), set(['admin', 'delete',
+            'comment', 'create_election']))
+
+
     def test_agora_request_membership(self):
         self.login('user1', '123')
         orig_data = {'action': "request_membership", }

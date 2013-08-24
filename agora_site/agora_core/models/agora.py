@@ -344,7 +344,7 @@ class Agora(models.Model):
             return True
 
         elif permission_name == 'delegate':
-            return is_member()
+            return is_member() and self.delegation_policy == Agora.DELEGATION_TYPE[0][0]
 
         elif permission_name == 'cancel_vote_delegation':
             return is_member() and\
