@@ -57,7 +57,7 @@ class TinyAgoraResource(GenericResource):
     class Meta(GenericMeta):
         queryset = Agora.objects.select_related("creator").all()
         fields = ['name', 'pretty_name', 'id', 'short_description', 'url',
-                  'full_name', 'mugshot_url']
+                  'full_name', 'mugshot_url', 'delegation_policy']
 
     def dehydrate_full_name(self, bundle):
         return bundle.obj.get_full_name()
