@@ -328,6 +328,11 @@ class Agora(models.Model):
         elif permission_name == 'leave_admin':
             return self.creator != user and is_admin()
 
+        # NOTE: this is similar to asking "does this userhave an email and is
+        # a member of this agora?". But it's not same as "does this user have
+        # 'receive_mail' permission from XX user, because we have not been given
+        # the second user. This second condition is only true if the first
+        # question is true and the second user is an admin of this agora.
         elif permission_name == 'receive_mail':
             try:
                 validate_email(user.email)

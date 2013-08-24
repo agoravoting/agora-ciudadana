@@ -218,6 +218,10 @@ class Profile(UserenaLanguageBaseProfile):
             from django.core.exceptions import ValidationError
             if user.is_anonymous():
                 return False
+            # only admins of the agora the user is in can send the user an email
+            if not user.administrated_agoras.only('id').filter(
+                    id__in=self.user.agoras.only('id').all().query).exists():
+                return False
             try:
                 validate_email(self.user.email)
             except ValidationError:
