@@ -10,6 +10,8 @@ from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.db.models.signals import post_save
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
 from guardian.shortcuts import *
 
@@ -326,6 +328,13 @@ class Agora(models.Model):
         elif permission_name == 'leave_admin':
             return self.creator != user and is_admin()
 
+        elif permission_name == 'receive_mail':
+            try:
+                validate_email(user.email)
+            except ValidationError:
+                return False
+            return is_member()
+
         elif permission_name == 'comment':
             if self.comments_policy == Agora.COMMENTS_PERMS[0][0]:
                 return True
@@ -408,7 +417,8 @@ class Agora(models.Model):
         return [perm for perm in ('join', 'request_membership', 'admin',
             'cancel_membership_request', 'request_admin_membership', 'delete',
             'cancel_admin_membership_request', 'leave', 'leave_admin',
-            'comment', 'create_election', 'delegate', 'cancel_vote_delegation')
+            'comment', 'create_election', 'delegate', 'cancel_vote_delegation',
+            'receive_mail')
                 if self.__has_perms(perm, user, isanon, opc_perms, is_member,
                     is_admin, isarchived, requires_membership_approval)]
 

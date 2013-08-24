@@ -85,6 +85,9 @@
             $(e.target).closest('.dropdown').find('.dropdown-toggle').dropdown('toggle');
             var user_id = $(e.target).closest("div.row.bottom-bordered").data('id');
             var user_fullname = $(e.target).closest("div.row.bottom-bordered").data('fullname');
+            if (!user_fullname.length) {
+                user_fullname = $(e.target).closest("div.row.bottom-bordered").data('username');
+            }
 
             app.sendMessageDialog = new Agora.ModalDialogView();
             var title = interpolate(gettext('Send a message to %s'), [user_fullname]);
