@@ -137,7 +137,8 @@
             _.bindAll(this);
             this.infiniteListView = new AgoraUserInfiniteView();
             this.agoraActionListView = new Agora.AgoraActionListView();
-            app.addMembersDialog = new Agora.ModalDialogView();
+            app.modalDialog = new Agora.ModalDialogView();
+
             this.filter = '';
             var obj = this;
 

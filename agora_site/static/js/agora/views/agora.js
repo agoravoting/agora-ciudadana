@@ -177,10 +177,16 @@
                 return;
                 break;
             case "add-members-manually":
+                a.removeClass("disabled");
+                this.sendingData = false;
+
                 this.addMembersManually();
                 return;
             case "send-email-to-members":
-                console.log("TODO");
+                a.removeClass("disabled");
+                this.sendingData = false;
+
+                this.showMailToMembersDialog();
                 return;
             case "remove-my-admin-membership":
                 data = {action: "leave_admin_membership"};
@@ -232,8 +238,8 @@
             var body = _.template($("#template-add_members_modal_dialog_body").html())();
             var footer = _.template($("#template-add_members_modal_dialog_footer").html())();
 
-            app.addMembersDialog.populate(title, body, footer);
-            app.addMembersDialog.show();
+            app.modalDialog.populate(title, body, footer);
+            app.modalDialog.show();
 
             $("#add-members-action").click(function(e) {
                 e.preventDefault();
@@ -270,6 +276,51 @@
             });
 
             return false;
+        },
+
+        showMailToMembersDialog: function() {
+            var title = gettext('Send email to agora members');
+            var body = _.template($("#template-mail_to_members_modal_dialog_body").html())();
+            var footer = _.template($("#template-mail_to_members_modal_dialog_footer").html())();
+
+            app.modalDialog.populate(title, body, footer);
+            app.modalDialog.show();
+
+            $("#send-mail-action").click(function(e) {
+                e.preventDefault();
+                if ($("#send-mail-action").hasClass("disabled")) {
+                    return false;
+                }
+                var json = {
+                    action: "mail_to_members",
+                    receivers: $("#mail_receivers").val(),
+                    subject: $("#mail_subject").val(),
+                    body: $("#mail_body").val()
+                }
+
+                if (json.subject.length == 0 || json.body.length == 0) {
+                    return false;
+                }
+
+                $("#send-mail-action").addClass("disabled");
+
+                var path = "/api/v1/agora/" + ajax_data.agora.id + "/action/";
+                var jqxhr = $.ajax(path, {
+                    data: JSON.stringifyCompat(json),
+                    contentType : 'application/json',
+                    type: 'POST',
+                })
+                .done(function() {
+                    $("#modal_dialog").modal('hide');
+                })
+                .fail(function() {
+                    $("#send-mail-action").removeClass("disabled");
+                    alert(gettext("Error sending the mail, please check the input data"));
+                });
+                return false;
+            });
+
+            return false;
         }
     });
 
@@ -292,7 +343,7 @@
 
             this.calendarView = new Agora.CalendarWidgetView();
             this.agoraActionListView = new Agora.AgoraActionListView();
-            app.addMembersDialog = new Agora.ModalDialogView();
+            app.modalDialog = new Agora.ModalDialogView();
 
             Agora.renderAgoraTabs();
             Agora.renderAgoraCalendar();

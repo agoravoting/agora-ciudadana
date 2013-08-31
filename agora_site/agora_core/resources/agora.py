@@ -33,7 +33,7 @@ from guardian.shortcuts import assign, remove_perm
 
 from agora_site.agora_core.models import Agora
 from agora_site.agora_core.tasks.agora import (send_request_membership_mails,
-    send_request_admin_membership_mails, )
+    send_request_admin_membership_mails, send_mail_to_members)
 from agora_site.agora_core.resources.user import TinyUserResource
 from agora_site.agora_core.forms import PostCommentForm, CreateElectionForm
 from agora_site.agora_core.forms.agora import DelegateVoteForm
@@ -446,6 +446,7 @@ class AgoraResource(GenericResource):
         actions = {
             'get_permissions': self.get_permissions_action,
             'test': self.test_action,
+            'mail_to_members': self.mail_to_members,
 
             'request_membership': self.request_membership_action,
             'cancel_membership_request': self.cancel_membership_request_action,
@@ -503,6 +504,32 @@ class AgoraResource(GenericResource):
 
         return self.create_response(request,
             dict(permissions=agora.get_perms(user)))
+
+    @permission_required('admin', (Agora, 'id', 'agoraid'))
+    def mail_to_members(self, request, agora, receivers, subject, body, **kwargs):
+        '''
+        Mail to members
+        '''
+        if receivers not in ['members', 'admins', 'delegates',
+            'non-delegates', 'requested-membership']:
+            raise ImmediateHttpResponse(response=http.HttpBadRequest())
+
+        if not isinstance(subject, basestring) or len(subject) == 0 or\
+                not isinstance(body, basestring) or len(body) == 0:
+            raise ImmediateHttpResponse(response=http.HttpBadRequest())
+
+        kwargs=dict(
+            agora_id=agora.id,
+            user_id=request.user.id,
+            is_secure=request.is_secure(),
+            receivers=receivers,
+            subject=subject,
+            body=body,
+            site_id=Site.objects.get_current().id,
+            remote_addr=request.META.get('REMOTE_ADDR')
+        )
+        send_mail_to_members.apply_async(kwargs=kwargs)
+        return self.create_response(request, dict(status="success"))
 
     @permission_required('request_membership', (Agora, 'id', 'agoraid'))
     def request_membership_action(self, request, agora, **kwargs):

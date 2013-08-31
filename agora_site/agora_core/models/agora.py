@@ -205,6 +205,16 @@ class Agora(models.Model):
             id__in=CastVote.objects.filter(is_counted=True, is_direct=True, is_public=True,
                 invalidated_at_date=None, election__agora__id=self.id).values('voter').query)
 
+    def non_delegates(self):
+        '''
+        This will return those users not included by active_delegates()
+        '''
+        from agora_site.agora_core.models import CastVote
+
+        return User.objects.exclude(
+            id__in=CastVote.objects.filter(is_counted=True, is_direct=True, is_public=True,
+                invalidated_at_date=None, election__agora__id=self.id).values('voter').query)
+
     def active_nonmembers_delegates(self):
         '''
         Same as active_delegates but all of those who are not currently a member
