@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-06-03 17:34+0200\n"
-"PO-Revision-Date: 2013-06-27 06:19+0200\n"
+"PO-Revision-Date: 2013-08-31 15:19+0200\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: gl\n"
@@ -20,12 +20,12 @@ msgstr ""
 #: agora_core/templates/agora_core/agora_members.html:63
 #: agora_core/templates/search/include-js-template-agora-profile.html:76
 msgid "Send mail"
-msgstr ""
+msgstr "Enviar o correo"
 
 #: agora_core/templates/agora_core/agora_members.html:68
 #, php-format
 msgid "Content of the email to %s:"
-msgstr ""
+msgstr "Contido do correo para %s:"
 
 #: agora_core/templates/agora_core/election_base.html:340
 msgid "Questions"
@@ -86,127 +86,130 @@ msgstr "%s votos"
 #: agora_core/templates/agora_core/user_settings.html:19
 #: agora_core/templates/agora_core/user_settings.html:32
 msgid "Profile"
-msgstr ""
+msgstr "Perfil"
 
 #: agora_core/templates/agora_core/user_settings.html:22
 msgid "User settings"
-msgstr ""
+msgstr "Opcións do usuario"
 
 #: agora_core/templates/agora_core/user_settings.html:25
 msgid "Account"
-msgstr ""
+msgstr "Conta"
 
 #: agora_core/templates/agora_core/user_settings.html:36
 msgid "Full name"
-msgstr ""
+msgstr "Nome completo"
 
 #: agora_core/templates/agora_core/user_settings.html:45
 msgid "Example: Pepito de los Palotes"
-msgstr ""
+msgstr "Exemplo: Rosalía de Castro"
 
 #: agora_core/templates/agora_core/user_settings.html:52
 msgid "Short Description"
-msgstr ""
+msgstr "Descrición breve"
 
 #: agora_core/templates/agora_core/user_settings.html:62
 msgid "Say something about yourself (140 chars max)"
-msgstr ""
+msgstr "Escriba algo sobre vostede en 140 caracteres ou menos."
 
 #: agora_core/templates/agora_core/user_settings.html:69
 msgid "Biography"
-msgstr ""
+msgstr "Biografía"
 
 #: agora_core/templates/agora_core/user_settings.html:76
 msgid "Tell us about you, use as much text as needed"
-msgstr ""
+msgstr "Escriba todo canto queira sobre vostede."
 
 #: agora_core/templates/agora_core/user_settings.html:85
 msgid "Save profile"
-msgstr ""
+msgstr "Gravar o perfil"
 
 #: agora_core/templates/agora_core/user_settings.html:93
 msgid "User picture"
-msgstr ""
+msgstr "Imaxe do usuario"
 
 #: agora_core/templates/agora_core/user_settings.html:114
 msgid "Use gravatar"
-msgstr ""
+msgstr "Usar Gravatar."
 
 #: agora_core/templates/agora_core/user_settings.html:131
 msgid "Use initials"
-msgstr ""
+msgstr "Usar as iniciais."
 
 #: agora_core/templates/agora_core/user_settings.html:138
 msgid "Upload a new image"
-msgstr ""
+msgstr "Enviar unha nova imaxe"
 
 #: agora_core/templates/agora_core/user_settings.html:157
 msgid "Language"
-msgstr ""
+msgstr "Idioma"
 
 #: agora_core/templates/agora_core/user_settings.html:166
 #: agora_core/templates/agora_core/user_settings.html:173
 msgid "Spanish"
-msgstr ""
+msgstr "Español"
 
 #: agora_core/templates/agora_core/user_settings.html:179
 msgid "English"
-msgstr ""
+msgstr "English"
 
 #: agora_core/templates/agora_core/user_settings.html:189
 msgid "Email settings"
-msgstr ""
+msgstr "Configuración do correo electrónico"
 
 #: agora_core/templates/agora_core/user_settings.html:194
 msgid "Email"
-msgstr ""
+msgstr "Correo electrónico"
 
 #: agora_core/templates/agora_core/user_settings.html:203
 msgid "Email is visible by agora admins"
-msgstr ""
+msgstr "O correo pódeno ver os administradores da ágora."
 
 #: agora_core/templates/agora_core/user_settings.html:216
 msgid "Receive email updates"
-msgstr ""
+msgstr "Recibir actualizacións por correo."
 
 #: agora_core/templates/agora_core/user_settings.html:225
 msgid "Save email settings"
-msgstr ""
+msgstr "Gardar a configuración do correo electrónico."
 
 #: agora_core/templates/agora_core/user_settings.html:235
 #: agora_core/templates/agora_core/user_settings.html:286
 msgid "Change password"
-msgstr ""
+msgstr "Cambiar o contrasinal"
 
 #: agora_core/templates/agora_core/user_settings.html:240
 msgid "Current password"
-msgstr ""
+msgstr "Contrasinal actual:"
 
 #: agora_core/templates/agora_core/user_settings.html:249
 msgid "Provide your current password for security, required field"
-msgstr ""
+msgstr "Por cuestión de seguridade, debe fornecer o seu contrasinal actual."
 
 #: agora_core/templates/agora_core/user_settings.html:257
 msgid "New password"
-msgstr ""
+msgstr "Novo contrasinal:"
 
 #: agora_core/templates/agora_core/user_settings.html:266
 msgid "Specify your new password if you want to change it, or leave it blank"
 msgstr ""
+"Indique o seu novo contrasinal se quere cambialo. En caso contrario, deixe o "
+"campo baleiro."
 
 #: agora_core/templates/agora_core/user_settings.html:273
 msgid "Repeat new password"
-msgstr ""
+msgstr "Novo contrasinal (repítao):"
 
 #: agora_core/templates/agora_core/user_settings.html:294
 #: agora_core/templates/agora_core/user_settings.html:304
 msgid "Change username"
-msgstr ""
+msgstr "Cambiar o nome de usuario"
 
 #: agora_core/templates/agora_core/user_settings.html:298
 #: agora_core/templates/agora_core/client/confirm_change_username_modal_dialog.html:6
 msgid "Changing your username can have unintended side effects."
 msgstr ""
+"Cambiar o seu nome de usuario pode ter efectos secundarios non intencionados."
 
 #: agora_core/templates/agora_core/voting_booth.html:26
 msgid "Agora Voting Booth"
@@ -345,7 +348,8 @@ msgid ""
 "You reached the maximum number of allowed choices (%s). You can change your "
 "choices removing current choices first."
 msgstr ""
-"Acadou o número máximo de opcións permitido, %s. Para engadir novas opcións, "
+"Acadou o número máximo de escollas permitido, %s. Para engadir novas "
+"escollas, "
 "retire primeiro algunha das opcións seleccionadas."
 
 #: agora_core/templates/agora_core/voting_booth.html:203
@@ -395,7 +399,7 @@ msgstr ""
 
 #: agora_core/templates/agora_core/voting_booth.html:243
 msgid "Confirm choices and cast ballot"
-msgstr "Confirmar as opcións e emitir o voto"
+msgstr "Confirmar as escollas e emitir o voto"
 
 #: agora_core/templates/agora_core/voting_booth.html:251
 msgid "Vote Successfully Cast"
@@ -564,19 +568,19 @@ msgstr "cancelou a solicitude do status de administrador"
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:26
 msgid "cancelled his/her membership request"
-msgstr ""
+msgstr "Cancelou a súa solicitude de membro"
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:27
 msgid "made admin"
-msgstr ""
+msgstr "feito administrador"
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:28
 msgid "settings updated"
-msgstr ""
+msgstr "actualizouse a configuración"
 
 #: agora_core/templates/agora_core/client/add_members_modal_dialog.html:2
 msgid "Add members"
-msgstr ""
+msgstr "Engadir membros"
 
 #: agora_core/templates/agora_core/client/add_members_modal_dialog.html:6
 msgid ""
@@ -585,30 +589,35 @@ msgid ""
 "will be added as a member of this agora directly. Otherwise, an email with "
 "an invitation will be sent if it's a valid email address."
 msgstr ""
+"Escribe os enderezos de correo ou nomes de usuario das persoas ás que queres "
+"convidar, separados por comas. Se na sitio existe algún usuario co enderezo "
+"de correo ou nome de usuario indicado, engadirase á ágora de maneira directa. "
+"En caso contrario, e se se trata dun enderezo de correo válido, recibirá unha "
+"invitación para unirse."
 
 #: agora_core/templates/agora_core/client/confirm_change_username_modal_dialog.html:2
 msgid "I understand, let's change my username"
-msgstr ""
+msgstr "Entendo, e quero cambialo"
 
 #: agora_core/templates/agora_core/client/confirm_change_username_modal_dialog.html:11
 msgid "Really want to change your username??"
-msgstr ""
+msgstr "Está seguro de que quere cambiar o seu nome de usuario?"
 
 #: agora_core/templates/agora_core/client/confirm_change_username_modal_dialog.html:17
 msgid "Change my username"
-msgstr ""
+msgstr "Cambiar o nome de usuario"
 
 #: agora_core/templates/agora_core/client/confirm_change_username_modal_dialog.html:28
 msgid "Enter a new username"
-msgstr ""
+msgstr "Indique un novo nome de usuario"
 
 #: agora_core/templates/agora_core/client/confirm_delegate_modal_dialog.html:2
 msgid "Yes"
-msgstr ""
+msgstr "Si"
 
 #: agora_core/templates/agora_core/client/confirm_delegate_modal_dialog.html:3
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: agora_core/templates/agora_core/client/confirm_delegate_modal_dialog.html:7
 #, php-format
@@ -616,113 +625,119 @@ msgid ""
 "When you choose someone as your delegate, he/she will vote in your name. Do "
 "you want to choose %s as delegate on agora %s?"
 msgstr ""
+"Cando escolle alguén como delegado, esa persoa vota no seu nome. Está seguro "
+"de que quere escoller a %s como delegado na ágora %s?"
 
 #: agora_core/templates/agora_core/client/election_form.html:5
 #: agora_core/templates/agora_core/client/election_form.html:61
 #: agora_core/templates/agora_core/client/election_form.html:182
 msgid "Create election"
-msgstr ""
+msgstr "Nova votación"
 
 #: agora_core/templates/agora_core/client/election_form.html:11
 #: agora_core/templates/agora_core/client/election_form.html:56
 #: agora_core/templates/agora_core/client/election_form.html:176
 msgid "Add question"
-msgstr ""
+msgstr "Engadir unha pregunta"
 
 #: agora_core/templates/agora_core/client/election_form.html:17
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: agora_core/templates/agora_core/client/election_form.html:19
 msgid "Election name"
-msgstr ""
+msgstr "Nome da votación"
 
 #: agora_core/templates/agora_core/client/election_form.html:23
 msgid "Description"
-msgstr ""
+msgstr "Descrición"
 
 #: agora_core/templates/agora_core/client/election_form.html:25
 msgid "Election description"
-msgstr ""
+msgstr "Descrición da votación"
 
 #: agora_core/templates/agora_core/client/election_form.html:31
 msgid "Allow secret voting"
-msgstr ""
+msgstr "Permitir o voto secreto"
 
 #: agora_core/templates/agora_core/client/election_form.html:35
 msgid "All votes are public"
-msgstr ""
+msgstr "Todos os votos son públicos"
 
 #: agora_core/templates/agora_core/client/election_form.html:41
 msgid "Schedule start/end voting period"
-msgstr ""
+msgstr "Planificar a data de comezo e fin da votación"
 
 #: agora_core/templates/agora_core/client/election_form.html:41
 msgid "Optional"
-msgstr ""
+msgstr "Opcional"
 
 #: agora_core/templates/agora_core/client/election_form.html:46
 msgid "Start voting at.."
-msgstr ""
+msgstr "Data de comezo:"
 
 #: agora_core/templates/agora_core/client/election_form.html:49
 msgid "End voting at.."
-msgstr ""
+msgstr "Data de fin:"
 
 #: agora_core/templates/agora_core/client/election_form.html:63
 #: agora_core/templates/agora_core/client/election_form.html:184
 msgid "Save election"
-msgstr ""
+msgstr "Gardar a votación"
 
 #: agora_core/templates/agora_core/client/election_form.html:86
 msgid "Question #"
-msgstr ""
+msgstr "Número da cuestión"
 
 #: agora_core/templates/agora_core/client/election_form.html:94
 #: agora_core/templates/agora_core/client/election_form.html:96
 msgid "Question text"
-msgstr ""
+msgstr "Texto da cuestión"
 
 #: agora_core/templates/agora_core/client/election_form.html:100
 msgid "Voting system"
-msgstr ""
+msgstr "Tipo de voto"
 
 #: agora_core/templates/agora_core/client/election_form.html:108
 msgid "Classic vote (Plurality)"
-msgstr ""
+msgstr "Voto clásico (pluralidade)"
 
 #: agora_core/templates/agora_core/client/election_form.html:114
 msgid "Classic vote"
-msgstr ""
+msgstr "Voto clásico"
 
 #: agora_core/templates/agora_core/client/election_form.html:115
 msgid ""
 "Each <strong>voter chooses only one candidate</strong> and the candidate "
 "with more votes wins."
 msgstr ""
+"<strong>Cada votante elixe un único candidato</strong> e gaña o que consiga "
+"máis votos."
 
 #: agora_core/templates/agora_core/client/election_form.html:117
 #: agora_core/templates/agora_core/client/election_form.html:132
 msgid "Technical name"
-msgstr ""
+msgstr "Nome técnico"
 
 #: agora_core/templates/agora_core/client/election_form.html:117
 msgid "Plurality"
-msgstr ""
+msgstr "Pluralidade"
 
 #: agora_core/templates/agora_core/client/election_form.html:121
 msgid "Elect a list (Meek-STV)"
-msgstr ""
+msgstr "Elixir unha lista (Meek-STV)"
 
 #: agora_core/templates/agora_core/client/election_form.html:127
 msgid "Elect a list"
-msgstr ""
+msgstr "Elixir unha lista"
 
 #: agora_core/templates/agora_core/client/election_form.html:128
 msgid ""
 "Each <strong>voter choose a ranked list of candidates</strong>. This method "
 "allows to elect a list of winners."
 msgstr ""
+"<strong>Cada votante elixe unha lista de candidatos ordenados</strong>. Este "
+"método permite elixir unha lista de gañadores."
 
 #: agora_core/templates/agora_core/client/election_form.html:130
 msgid ""
@@ -732,108 +747,113 @@ msgid ""
 "is transferred to other candidates</strong> according to the voter's stated "
 "preferences."
 msgstr ""
+"Mediante o voto único transferíbel, os votantes contan cun único voto que se "
+"asigna inicialmente ao seu candidato preferido, e logo, a medida que se fai o "
+"reconto e os candidatos van sendo eliminados ou elixidos, <strong>o voto "
+"transfírese a outros candidatos</strong> de acordo coas preferencias "
+"indicadas polo votante."
 
 #: agora_core/templates/agora_core/client/election_form.html:132
 msgid "Single Transferable Vote - Meek's method (Meek-STV)"
-msgstr ""
+msgstr "Voto único transferíbel — Método de Meek (Meek-STV)"
 
 #: agora_core/templates/agora_core/client/election_form.html:141
 msgid "Elect a list of"
-msgstr ""
+msgstr "Elixir unha lista de"
 
 #: agora_core/templates/agora_core/client/election_form.html:143
 msgid "winners"
-msgstr ""
+msgstr "gañadores"
 
 #: agora_core/templates/agora_core/client/election_form.html:146
 msgid "A voter selects from"
-msgstr ""
+msgstr "Un votante escolle de"
 
 #: agora_core/templates/agora_core/client/election_form.html:148
 msgid "to"
-msgstr ""
+msgstr "a"
 
 #: agora_core/templates/agora_core/client/election_form.html:150
 msgid "choices"
-msgstr ""
+msgstr "opcións"
 
 #: agora_core/templates/agora_core/client/election_form.html:154
 msgid "Choices"
-msgstr ""
+msgstr "Opcións"
 
 #: agora_core/templates/agora_core/client/election_form.html:156
 msgid "Add a choice"
-msgstr ""
+msgstr "Engadir unha opción"
 
 #: agora_core/templates/agora_core/client/election_form.html:165
 msgid "A question needs at least two choices"
-msgstr ""
+msgstr "As cuestións deben ter polo menos dúas opcións"
 
 #: agora_core/templates/agora_core/client/election_form.html:171
 msgid "Remove question"
-msgstr ""
+msgstr "Eliminar a cuestión"
 
 #: agora_core/templates/agora_core/client/tallied_elections_view.html:3
 msgid "Last elections"
-msgstr ""
+msgstr "Últimas votacións"
 
 #: agora_core/templates/agora_core/client/tallied_elections_view.html:16
 #: agora_core/templates/agora_core/client/tallied_user_elections_view.html:16
 #, php-format
 msgid "(%s votes)"
-msgstr ""
+msgstr "(%s votos)"
 
 #: agora_core/templates/agora_core/client/tallied_elections_view.html:26
 #: agora_core/templates/agora_core/client/tallied_user_elections_view.html:26
 msgid "%s questions, %s votes, %s% participation"
-msgstr ""
+msgstr "%s cuestións, %s votos, %s% de participación."
 
 #: agora_core/templates/agora_core/client/tallied_elections_view.html:37
 msgid "No tallied elections yet"
-msgstr ""
+msgstr "Aínda non hai votacións contabilizadas."
 
 #: agora_core/templates/agora_core/client/tallied_elections_view.html:44
 #: agora_core/templates/agora_core/client/tallied_user_elections_view.html:44
 msgid "... and more"
-msgstr ""
+msgstr "…e máis."
 
 #: agora_core/templates/agora_core/client/tallied_user_elections_view.html:3
 msgid "Recent elections"
-msgstr ""
+msgstr "Últimas votacións"
 
 #: agora_core/templates/agora_core/client/tallied_user_elections_view.html:37
 msgid "Didn't participate in any tallied election yet"
-msgstr ""
+msgstr "Aínda non participou en ningunha votación contabilizada."
 
 #: agora_core/templates/agora_core/client/user-agora-list.html:3
 msgid "Agoras"
-msgstr ""
+msgstr "Ágoras"
 
 #: agora_core/templates/agora_core/client/user-agora-list.html:15
 msgid "Delegate"
-msgstr ""
+msgstr "Delegar"
 
 #: agora_core/templates/agora_core/client/user-agora-list.html:24
 msgid "No agoras found"
-msgstr ""
+msgstr "Non se atopou ningunha ágora."
 
 #: agora_core/templates/agora_core/client/user_delegate_in_actions.html:6
 #, php-format
 msgid "Choose %s as delegate in.."
-msgstr ""
+msgstr "Escoller a %s como delegado en…"
 
 #: agora_core/templates/agora_core/client/user_delegate_in_actions.html:16
 #, php-format
 msgid "Choose as delegate in %s"
-msgstr ""
+msgstr "Escoller como delegado en %s"
 
 #: agora_core/templates/agora_core/client/vote_info.html:23
 msgid "Delegated votes in this election"
-msgstr ""
+msgstr "Delegouse a participación nesta votación"
 
 #: agora_core/templates/agora_core/client/vote_info.html:27
 msgid "Most influential delegate in this election"
-msgstr ""
+msgstr "Delegado con maior influenza nesta votación"
 
 #: agora_core/templates/agora_core/client/vote_info.html:33
 msgid ""
@@ -842,64 +862,71 @@ msgid ""
 "for example. However, if the vote is public, members of the electorate might "
 "delegate in this vote, and those delegations would be counted."
 msgstr ""
+"Se un usuario emite un voto nun momento no que non forma parte da ágora na "
+"que se realiza a votación ou non forma parte do electorado, por exemplo, o "
+"seu voto non se contabiliza. Porén, se o voto é público, os membros do "
+"electorado poden delegar no seu voto, e os votos delegados si que se "
+"contabilizan."
 
 #: agora_core/templates/agora_core/client/vote_info.html:33
 msgid "This vote is not counted"
-msgstr ""
+msgstr "Este voto non se contabiliza"
 
 #: agora_core/templates/agora_core/client/vote_info.html:48
 #, php-format
 msgid "Choose %s as my delegate for agora %s"
-msgstr ""
+msgstr "Escoller a %s como delegado para a ágora %s"
 
 #: agora_core/templates/agora_core/client/vote_info.html:55
 #, php-format
 msgid "%s answers in this election"
-msgstr ""
+msgstr "%s respostas nesta votación"
 
 #: agora_core/templates/agora_core/client/vote_info.html:70
 #, php-format
 msgid "%s delegated his vote"
-msgstr ""
+msgstr "%s delegou o seu voto"
 
 #: agora_core/templates/agora_core/client/vote_info.html:75
 #, php-format
 msgid "%s vote is secret"
-msgstr ""
+msgstr "O voto de %s é secreto"
 
 #: agora_core/templates/agora_core/client/vote_info.html:77
 #, php-format
 msgid "%s delegation is secret"
-msgstr ""
+msgstr "A delegación de %s é secreta"
 
 #: agora_core/templates/search/include-js-template-agora-profile.html:26
 msgid "Accept membership request"
-msgstr ""
+msgstr "Aceptar a solicitude de admisión"
 
 #: agora_core/templates/search/include-js-template-agora-profile.html:32
 msgid "Dismiss membership request"
-msgstr ""
+msgstr "Rexeitar a solicitude de admisión"
 
 #: agora_core/templates/search/include-js-template-agora-profile.html:40
 msgid "Accept admin membership request"
-msgstr ""
+msgstr "Conceder o status de administrador"
 
 #: agora_core/templates/search/include-js-template-agora-profile.html:46
 msgid "Dismiss admin membership request"
-msgstr ""
+msgstr "Negar o status de administrador"
 
 #: agora_core/templates/search/include-js-template-agora-profile.html:54
 msgid "Remove membership"
-msgstr ""
+msgstr "Botar da ágora"
 
 #: agora_core/templates/search/include-js-template-agora-profile.html:60
 msgid "Make admin"
-msgstr ""
+msgstr "Converter en administrador"
 
 #: agora_core/templates/search/include-js-template-agora-profile.html:68
 msgid "Remove admin membership"
-msgstr ""
+msgstr "Revogar o status de administrador"
 
 #: agora_core/templates/search/include-js-template-agora-profile.html:85
 msgid "Choose as my delegate"
-msgstr ""
+msgstr "Escoller como delegado"
+
+
