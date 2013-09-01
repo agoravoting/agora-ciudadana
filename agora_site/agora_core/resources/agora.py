@@ -726,7 +726,7 @@ class AgoraResource(GenericResource):
         Adds a member (specified with username) to this agora, sending a
         welcome message to this new member via email
         '''
-        if not re.match("^[a-zA-Z0-9_]+$", username):
+        if not re.match("^[a-zA-Z0-9-_]+$", username):
             raise ImmediateHttpResponse(response=http.HttpBadRequest())
         user = get_object_or_404(User, username=username)
 
