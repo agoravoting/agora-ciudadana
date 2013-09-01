@@ -5,23 +5,18 @@
 {% url agora-view election.agora.creator.username election.agora.name as agora_url %}
 
 {% if election.is_approved %}
-{% blocktrans with to_username=to.username action_username=election.creator.username election_name=election.pretty_name agora_username=election.agora.creator.username agora_name=election.agora.name site_domain=site.domain %}
-<p>Hello {{ to_username }},</p>
 
-<p><a href="{{ protocol }}://{{ site_domain }}{{ action_user_url }}">{{ action_username }}</a> has created election <a href="{{ protocol }}://{{ site_domain }}{{ election_url }}">{{ election_name }}</a> at <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_username }}/{{ agora_name }}</a>. Check it out!</p>
+<p>{% blocktrans with to_username=to.username %}Hello {{ to_username }},{% endblocktrans %}</p>
 
-{% endblocktrans %}
+<p>{% blocktrans with action_username=election.creator.username election_name=election.pretty_name agora_username=election.agora.creator.username agora_name=election.agora.name site_domain=site.domain %}<a href="{{ protocol }}://{{ site_domain }}{{ action_user_url }}">{{ action_username }}</a> has created election <a href="{{ protocol }}://{{ site_domain }}{{ election_url }}">{{ election_name }}</a> at <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_username }}/{{ agora_name }}</a>. Check it out!{% endblocktrans %}</p>
+
 {% else %}
 
-{% blocktrans with to_username=to.username action_username=election.creator.username election_name=election.pretty_name agora_username=election.agora.creator.username agora_name=election.agora.name site_domain=site.domain %}
-<p>Hello {{ to_username }},</p>
+<p>{% blocktrans with to_username=to.username %}Hello {{ to_username }},{% endblocktrans %}</p>
 
-<p><a href="{{ protocol }}://{{ site_domain }}{{ action_user_url }}">{{ action_username }}</a> has created election <a href="{{ protocol }}://{{ site_domain }}{{ election_url }}">{{ election_name }}</a> at <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_username }}/{{ agora_name }}</a>, but it's not approved yet. Check it out!</p>
+<p>{% blocktrans with action_username=election.creator.username election_name=election.pretty_name agora_username=election.agora.creator.username agora_name=election.agora.name site_domain=site.domain %}<a href="{{ protocol }}://{{ site_domain }}{{ action_user_url }}">{{ action_username }}</a> has created election <a href="{{ protocol }}://{{ site_domain }}{{ election_url }}">{{ election_name }}</a> at <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_username }}/{{ agora_name }}</a>, but it's not approved yet. Check it out!{% endblocktrans %}</p>
 
-{% endblocktrans %}
 {% endif %}
 <p>--<br/>
-{% blocktrans with to_username=to.username site_name=site.name site_domain=site.domain %}
-This message was sent to {{ to_username }}. If you want to stop receiving these messages from {{ site_name }}, please <a href="{{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}">click here</a>
-{% endblocktrans %}</p>
+{% blocktrans with to_username=to.username site_name=site.name site_domain=site.domain %}This message was sent to {{ to_username }}. If you want to stop receiving these messages from {{ site_name }}, please <a href="{{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}">click here</a>{% endblocktrans %}</p>
 {% endautoescape %}

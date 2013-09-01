@@ -46,14 +46,10 @@ class Election(models.Model):
         return "election_task_" + str(self.id) + task.name
 
     def get_link(self):
-        return reverse("election-view",
-            kwargs=dict(username=self.agora.creator.username,
-                agoraname=self.agora.name, electionname=self.name))
+        return self.url
 
     def get_vote_link(self):
-        return reverse("election-voting-booth",
-            kwargs=dict(username=self.agora.creator.username,
-                agoraname=self.agora.name, electionname=self.name))
+        return self.url + "/vote"
 
     def delete(self, *args, **kwargs):
         '''
@@ -334,20 +330,14 @@ class Election(models.Model):
         '''
         return self.result_tallied_at_date != None
 
-    def has_perms(self, permission_name, user):
+    def __has_perms(self, permission_name, user, isanon, isadmin,
+            isadminorcreator, isarchived, isfrozen, ismember):
         '''
-        Return whether a given user has a given permission name, depending on
-        also in the state of the election.
+        Really implements has_perms function. It receives  by params usual
+        has_perm args (permission_name, user) and also the arguments that are
+        common in different has_perms checks, to make get_perms call more
+        efficient.
         '''
-        isanon = user.is_anonymous()
-        if isanon:
-            return False
-
-        isadmin = self.agora.admins.filter(id=user.id).exists()
-        isadminorcreator = (self.creator == user or isadmin)
-        isarchived = self.is_archived()
-        isfrozen = self.is_frozen()
-
         if permission_name == 'edit_details':
             return not self.has_started() and isadminorcreator and\
                 not isarchived and not isfrozen
@@ -368,33 +358,63 @@ class Election(models.Model):
             if self.comments_policy == Agora.COMMENTS_PERMS[0][0]:
                 return not isarchived
             elif self.comments_policy == Agora.COMMENTS_PERMS[1][0]:
-                return user in self.agora.members.all() and not isarchived
+                return ismember() and not isarchived
             elif self.comments_policy == Agora.COMMENTS_PERMS[2][0]:
                 return isadminorcreator and not isarchived
             else:
                 return False
         elif permission_name == 'emit_direct_vote':
-            canemit = user in self.agora.members.all() or\
+            canemit = ismember() or\
                 self.agora.has_perms('join', user)
             return canemit and not isarchived and\
                 isfrozen and self.has_started() and not self.has_ended()
         elif permission_name == 'vote_counts':
-            return user in self.agora.members.all() and not isarchived
+            return ismember() and not isarchived
         elif permission_name == 'emit_delegate_vote':
-            can_emit = user in self.agora.members.all() or\
+            can_emit = ismember() or\
                 self.agora.has_perms('join', user) or\
                 self.agora.membership_policy == Agora.MEMBERSHIP_TYPE[1][0]
             return can_emit and not isarchived and isfrozen and\
                 self.has_started() and not self.has_ended()
 
+    def has_perms(self, permission_name, user):
+        '''
+        Return whether a given user has a given permission name, depending on
+        also in the state of the election.
+        '''
+        isanon = user.is_anonymous()
+        if isanon:
+            return False
+
+        isadmin = self.agora.admins.filter(id=user.id).exists()
+        isadminorcreator = (self.creator == user or isadmin)
+        isarchived = self.is_archived()
+        isfrozen = self.is_frozen()
+        ismember = lambda: user in self.agora.members.all()
+        return self.__has_perms(permission_name, user, isanon, isadmin,
+            isadminorcreator, isarchived, isfrozen, ismember)
+
     def get_perms(self, user):
         '''
         Returns a list of permissions for a given user calling to self.has_perms()
         '''
+        isanon = user.is_anonymous()
+        if isanon:
+            return False
+
+        isadmin = self.agora.admins.filter(id=user.id).exists()
+        isadminorcreator = (self.creator == user or isadmin)
+        isarchived = self.is_archived()
+        isfrozen = self.is_frozen()
+        _ismember = user in self.agora.members.all()
+        ismember = lambda: _ismember
+
         return [perm for perm in ('edit_details', 'approve_election',
             'begin_election', 'freeze_election', 'end_election',
             'archive_election', 'comment', 'emit_direct_vote',
-            'emit_delegate_vote', 'vote_counts') if self.has_perms(perm, user)]
+            'emit_delegate_vote', 'vote_counts') if self.__has_perms(perm,
+                user, isanon, isadmin, isadminorcreator, isarchived, isfrozen,
+                ismember)]
 
     def ballot_is_open(self):
         '''
@@ -951,9 +971,3 @@ class Election(models.Model):
 
         # TODO: update result_hash
         self.save()
-
-    def short_description_md(self):
-        short_md = markdown.markdown(urlify_markdown(self.description),
-                                     safe_mode="escape", enable_attributes=False)
-        short_md = truncatewords_html(short_md, 25)
-        return short_md

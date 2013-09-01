@@ -19,8 +19,6 @@ from django.views.generic import CreateView, RedirectView
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy  as _
 
-from endless_pagination.views import AjaxListView
-
 from agora_site.agora_core.views import *
 from agora_site.misc.utils import RequestCreateView
 from .api import v1
@@ -165,9 +163,6 @@ urlpatterns += patterns('',
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/delegates/?$',
         ElectionDelegatesView.as_view(), name='election-delegates'),
-
-    url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/delegate/(?P<delegate_username>[\.\w]+)/?$',
-        ElectionChooseDelegateView.as_view(), name='election-delegate'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/votes/?$',
         ElectionVotesView.as_view(), name='election-votes'),

@@ -1,4 +1,4 @@
-{% load i18n l10n endless string_tags crispy_forms_tags agora_utils comments markup %}
+{% load i18n l10n string_tags crispy_forms_tags agora_utils comments markup %}
 
 {% load static from staticfiles %}
 {% get_current_language as LANGUAGE_CODE %}
@@ -157,7 +157,7 @@
             <div class="row-fluid ranked-form">
                 <div class="span6 available-choices">
                     <p>
-                    <strong><%= gettext("Choices available") %>:</strong>
+                    <strong><%= gettext("Available choices") %>:</strong>
                     <%= gettext("Click to add/remove to your ballot") %></p>
                     <ul class="nav nav-list sidenav">
                         <% for (var i = 0; i < answers.length; i++) { %>
@@ -239,6 +239,7 @@
                     <%= gettext("This will make your vote <strong>public</strong>. You cannot vote in secret in this election. This might be because of different reasons: maybe you are not a member in this agora, or perhaps this election allows only public vote.") %>
                 </span>
             </label>
+                <input type="text" id="why_id" class="btn-block" placeholder="<%= gettext("Why did you vote this way? (optional)") %>" />
             <button class="btn btn-large btn-block btn-success btn-continue" id="cast-ballot-btn" type="button">
                 <strong><%= gettext("Confirm choices and cast ballot") %></strong>
             </button>

@@ -2,18 +2,16 @@
 {% load agora_utils %}
 {% autoescape off %}
 
-{% blocktrans with to_email=to.email to_fullname=to.get_profile.get_fullname comment=comment site_domain=site.domain protocol=protocol from_url=from.get_profile.get_link from_fullname=from.get_profile.get_fullname %}Hello {{ to_fullname }},
+{% blocktrans with to_fullname=to.get_profile.get_fullname %}Hello {{ to_fullname }},{% endblocktrans %}
 
-<p>{{ from_fullname }} has sent you the following message through <a href="{{ protocol }}://{{ site_domain }}">{{ site_domain }}</a>:</p>
+<p>{% blocktrans with site_domain=site.domain from_fullname=from.get_profile.get_fullname %}{{ from_fullname }} has sent you the following message through <a href="{{ protocol }}://{{ site_domain }}">{{ site_domain }}</a>:{% endblocktrans %}</p>
 
 <blockquote>{{ comment }}</blockquote>
 
-<p>This is {{ from_fullname }} profile in the website: <a href="{{ protocol }}://{{ site_domain }}{{ from_url }}">{{ protocol }}://{{ site_domain }}{{ from_url }}</a></p>
-{% endblocktrans %}
+<p>{% blocktrans with site_domain=site.domain from_url=from.get_profile.get_link from_fullname=from.get_profile.get_fullname %}This is {{ from_fullname }}’s profile in the website: <a href="{{ protocol }}://{{ site_domain }}{{ from_url }}">{{ protocol }}://{{ site_domain }}{{ from_url }}</a>{% endblocktrans %}</p>
+
 <p>--<br/>
-{% blocktrans with to_email=to.username site_name=site.name site_domain=site.domain %}
-    This message was sent to {{ to_email }}.
-{% endblocktrans %}
+{% blocktrans with to_email=to.username %}This message was sent to {{ to_email }}.{% endblocktrans %}
 </p>
 
 {% endautoescape %}

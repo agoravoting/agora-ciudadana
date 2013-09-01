@@ -1,8 +1,14 @@
 all: mainjs agorajs agoraless
 
+clean:
+	rm -rf node_modules ./agora_site/static/less/agora.css \
+		agora_site/static/js/min/main.min.js \
+		agora_site/static/js/min/main.compat.min.js \
+		agora_site/static/js/min/agora.min.js
+
 dependencies:
-	mkdir node_modules
-	npm install uglify-js less jshint
+	if [ ! -d node_modules ]; then mkdir node_modules; fi
+	npm install uglify-js less@1.3.3 jshint
 
 agoraless:
 	./node_modules/less/bin/lessc \

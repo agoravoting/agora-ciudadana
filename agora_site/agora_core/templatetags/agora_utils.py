@@ -6,6 +6,7 @@ import json
 from urlparse import urlparse, urlunparse
 from django.http import QueryDict
 from django import template
+from django.conf import settings
 from django.utils.translation import pgettext as _
 from django.template.base import token_kwargs
 from django.contrib.contenttypes.models import ContentType
@@ -41,7 +42,12 @@ def vote_for_election(user, election):
 
 @register.filter
 def get_chained_first_pretty_answer(vote, election):
-    return vote.get_chained_first_pretty_answer(election)
+    try:
+        return vote.get_chained_first_pretty_answer(election)
+    except:
+        # this can happen if for example the vote of the delegate is indeed
+        # private
+        return None
 
 @register.filter
 def last_election_voted(user, agora):
@@ -221,6 +227,10 @@ class RestNode(template.Node):
 
             args = [str(template.Variable(arg).resolve(context)) for arg in self.args]
             url = ''.join(args)
+
+            if settings.USE_ESI and method == "GET" and\
+                    ('use_esi', False) not in self.args:
+                return "<esi:include src=\"/api/v1%s\" />" % url
 
             # separate query params from url
             (scheme, netloc, path, params, query, fragment) = urlparse(url)

@@ -1,15 +1,13 @@
 {% extends 'agora_core/agora_view.html' %}
 {% load i18n %}
-{% load endless %}
 {% load agora_utils %}
 
 {% block title %}{% trans "Members" %} - {{ agora.creator.username }}/{{ agora.name }}{% endblock %}
 
-{% block agora-navigation %}{% activetab "agora-nav" "members" %}{{ block.super }}{% endblock %}
-
 {% block content %}
     <div class="row">
         <div class="span8 agora-left-side">
+            {% include "agora_core/filter.html" %}
             <div class="activity-list" id="user-list"
                 data-url="/api/v1/agora/{{ agora.id }}/{{filter}}/"
                 data-agora-path="{{ agora.get_link }}"
@@ -22,11 +20,6 @@
             </div>
         </div>
         <div class="span4 agora-right-side">
-            {% if agora|is_agora_admin:user %}
-	    <!--<a class="btn btn-large btn-block bottom-space" href="{ % url agora-add-members agora.creator.username agora.name %}">-->
-            <a id="manual-member" class="btn btn-primary btn-block btn-large">{% trans "Add members manually" %}</a>
-            </a>
-            {% endif %}
             <ul class="nav nav-pills nav-stacked">
                 <li{% ifequal filter 'members' %} class="active"{% endifequal %}>
                     <a href="{% url agora-members agora.creator.username agora.name 'members' %}">
@@ -58,30 +51,26 @@
             </ul>
         </div>
     </div>
-
-    <script id="template-send_mail_modal_dialog_footer" type="text/underscore-template">
-        <a href="#" class="btn btn-primary" id="send-mail-action"><%= gettext("Send mail") %></a>
-    </script>
-
-    <script id="template-send_mail_modal_dialog_body" type="text/underscore-template">
-        <p>
-        <%= interpolate(gettext("Content of the email to %s:"), [user_fullname]) %>
-        </p>
-        <textarea class="input-block-level" id="mail_content"></textarea>
-    </script>
 {% endblock %}
 
-
 {% block script-block %}
+    {% include "agora_core/client/action_list.html" %}
     {% include "search/include-js-template-agora-profile.html" %}
     {% include "agora_core/client/modal_dialog.html" %}
-    {% include "agora_core/client/confirm_delegate_modal_dialog.html" %}
+    {% include "agora_core/client/send_mail.html" %}
+    {% include "agora_core/client/modal_dialog.html" %}
+    {% include "agora_core/client/mail_to_members.html" %}
     {% include "agora_core/client/add_members_modal_dialog.html" %}
+    {% include "agora_core/client/confirm_delegate_modal_dialog.html" %}
+    {% include "agora_core/client/agora_tabs.html" %}
 
     <script>
     var ajax_data = {
         'agora': {% rest request '/agora/' agora.id %},
+        'user_permissions': {% custom_rest request "POST" '{"action":"get_permissions"}' '/agora/' agora.id '/action/' %}
     };
+    var current_tab = "members";
     app.currentView = new Agora.AgoraUserListView();
+    Agora.renderAgoraTabs();
     </script>
 {% endblock %}

@@ -153,6 +153,7 @@
         el: "#user-list",
         templateEl: "#template-vote_list_item",
         templateVoteInfoEl: "#template-vote_info",
+        templateVoteInfo: null,
         sendingData: false,
 
         events: {
@@ -163,6 +164,55 @@
             Agora.GenericListView.prototype.initialize.apply(this);
 
             this.delegateView = null;
+            this.init_filter();
+        },
+
+        init_filter: function() {
+            this.filter = '';
+            var obj = this;
+
+            var delay = (function(){
+              var timer = 0;
+              return function(callback, ms){
+                clearTimeout (timer);
+                timer = setTimeout(callback, ms);
+              };
+            })();
+            $("#filter-input").keyup(function(e) {
+                delay(function() {
+                    obj.filterList();
+                }, 500);
+            });
+            $("#filter-input").keypress(function(e) {
+                if(e.which == 13) {
+                    obj.filterList();
+                }
+            });
+            $("#filter-button").click(function() {
+                obj.filterList();
+            });
+        },
+
+        filterList: function() {
+            newf = $("#filter-input").val();
+            if (this.filter != newf) {
+                this.filter = newf;
+                this.filterf(this.filter);
+            }
+        },
+
+        filterf: function(param) {
+            if (!param) {
+                this.url = this.$el.data('url');
+            } else {
+                this.url = this.$el.data('url') + "?username=" + param;
+            }
+            this.collection.reset();
+
+            this.firstLoadSuccess = false;
+            this.finished = false;
+            this.offset = 0;
+            this.requestObjects();
         },
 
         renderItem: function(model) {

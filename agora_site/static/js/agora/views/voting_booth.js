@@ -65,6 +65,7 @@
 
         events: {
             'click .btn-start-voting': 'startVoting',
+            'click #user_vote_is_public': 'toggleWhy'
         },
 
         reviewMode: false,
@@ -151,6 +152,15 @@
 
         sendingData: false,
 
+        toggleWhy: function(e) {
+            var user_vote_is_secret = (this.$el.find("#user_vote_is_public:checked").length == 0);
+            if (user_vote_is_secret) {
+                $("#why_id").hide();
+            } else {
+                $("#why_id").show();
+            }
+        },
+
         castVote: function() {
             if (this.sendingData) {
                 return;
@@ -166,6 +176,11 @@
                 'is_vote_secret': user_vote_is_secret,
                 'action': 'vote'
             };
+
+            if (!user_vote_is_secret) {
+                var why = $("#why_id").val();
+                ballot['reason'] = why;
+            }
             this.model.get('questions').each(function (element, index, list) {
                 var user_answers = element.get('user_answers').pluck('value');
                 var voting_system = element.get('tally_type');
@@ -501,7 +516,10 @@
                 this.$el.find("#user_vote_is_public").closest('label').find('span.optional').hide();
                 this.$el.find("#user_vote_is_public").closest('label').find('span.mandatory').removeClass('hide');
                 this.$el.find(".mainlabel").hide();
+            } else {
+                this.$el.find("#why_id").hide();
             }
+
             return this;
         },
 

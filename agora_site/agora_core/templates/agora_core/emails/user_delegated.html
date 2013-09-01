@@ -4,23 +4,22 @@
 
 {% if vote.is_public %}
 
-{% blocktrans with to_username=to.username agora_full_name=agora.get_full_name agora_url=agora.get_link site_domain=site.domain delegate_name=delegate.username delegate_url=delegate.get_profile.get_link %}
-<p>Hello {{ to_username }},</p>
+<p>{% blocktrans with to_username=to.username %}Hello {{ to_username }},{% endblocktrans %}</p>
 
-<p>We have recorded your delegation at agora <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_full_name }}</a> to <a href="{{ protocol }}://{{ site_domain }}{{ delegate_url }}">{{ delegate_name }}</a>. This means that in future elections of this agora, if you don't directly vote in them, <strong>{{ delegate_name }}</strong> will vote for you. You may change your delegation or cancel it at any time. We advise to delegate only in a someone you trust, and to actively review his vote record  frequently.</p>
+<p>{% blocktrans with agora_full_name=agora.get_full_name agora_url=agora.get_link site_domain=site.domain delegate_name=delegate.username delegate_url=delegate.get_profile.get_link %}We have recorded your delegation at agora <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_full_name }}</a> to <a href="{{ protocol }}://{{ site_domain }}{{ delegate_url }}">{{ delegate_name }}</a>. This means that in future elections of this agora, if you don't directly vote in them, <strong>{{ delegate_name }}</strong> will vote for you. You may change your delegation or cancel it at any time. We advise to delegate only in a someone you trust, and to actively review his vote record  frequently.{% endblocktrans %}</p>
 
-<p>Agora URL: <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_full_name }}</a></p>
+<p>{% blocktrans with agora_full_name=agora.get_full_name agora_url=agora.get_link site_domain=site.domain %}Agora URL: <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_full_name }}</a>{% endblocktrans %}</p>
 
-<p>Delegate URL: <a href="{{ protocol }}://{{ site_domain }}{{ delegate_url }}">{{ delegate_name }}</a></p>
+<p>{% blocktrans with site_domain=site.domain delegate_name=delegate.username delegate_url=delegate.get_profile.get_link %}Delegate URL: <a href="{{ protocol }}://{{ site_domain }}{{ delegate_url }}">{{ delegate_name }}</a>{% endblocktrans %}</p>
 
-{% endblocktrans %}{% else %}
-{% blocktrans with to_username=to.username agora_full_name=agora.get_full_name agora_url=agora.get_link site_domain=site.domain %}<p>Hello {{ to_username }},</p>
+{% else %}
+<p>{% blocktrans with to_username=to.username %}Hello {{ to_username }},{% endblocktrans %}</p>
 
-<p>We have recorded your delegation at agora <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_full_name }}</a> and your delegation is secret. This means that in future elections of this agora, if you don't directly vote in them, your delegate will vote for you. You may change your delegation or cancel it at any time. We advise to delegate only in a someone you trust, and to actively review his vote record  frequently.</p>
+<p>{% blocktrans with agora_full_name=agora.get_full_name agora_url=agora.get_link site_domain=site.domain %}We have recorded your delegation at agora <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_full_name }}</a> and your delegation is secret. This means that in future elections of this agora, if you don't directly vote in them, your delegate will vote for you. You may change your delegation or cancel it at any time. We advise to delegate only in a someone you trust, and to actively review his vote record  frequently.{% endblocktrans %}</p>
 
-<p>Agora URL: <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_full_name }}</a></p>
+<p>{% blocktrans with agora_full_name=agora.get_full_name agora_url=agora.get_link site_domain=site.domain %}Agora URL: <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_full_name }}</a>{% endblocktrans %}</p>
 
-{% endblocktrans %}{% endif %}
+{% endif %}
 <p>--<br/>
 {% blocktrans with to_email=to.username site_name=site.name site_domain=site.domain %}This message was sent to {{ to_email }}. If you want to stop receiving these message from <a href="{{ protocol }}://{{ site_domain }}">{{ site_name }}</a>, please <a href="{{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}">click here</a>
 {% endblocktrans %}</p>{% endautoescape %}

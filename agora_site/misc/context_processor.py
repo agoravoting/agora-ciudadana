@@ -20,6 +20,8 @@ from agora_site.agora_core.models import Agora
 from django.conf import settings
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.flatpages.models import FlatPage
+from django.utils.translation import get_language
+import json
 
 import sys
 
@@ -29,7 +31,13 @@ def base(request):
     '''
     return {
         'session': request.session,
-        'can_create_agoras': Agora.static_has_perms('create', request.user)
+        'can_create_agoras': Agora.static_has_perms('create', request.user),
+        'languages': json.dumps(
+            dict(
+                current=get_language(),
+                objects=[dict(lang_code=lang_code, name=name.decode()) for lang_code, name in settings.LANGUAGES]
+            )
+        ),
     }
 
 class SettingsProcessor(object):

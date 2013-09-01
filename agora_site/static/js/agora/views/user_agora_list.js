@@ -15,6 +15,8 @@
 
         render: function() {
             var data = ajax_data;
+            data.user_agoras = user_data.agoras;
+            data.user = user_data.user;
             this.$el.html(this.template(data));
             this.delegateEvents();
 

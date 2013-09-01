@@ -313,13 +313,21 @@ class CreateElectionForm(django_forms.ModelForm):
         return bundle
 
     def save(self, *args, **kwargs):
+        import markdown
+        from agora_site.agora_core.templatetags.string_tags import urlify_markdown
+        from django.template.defaultfilters import truncatewords_html
+
         election = super(CreateElectionForm, self).save(commit=False)
         election.agora = self.agora
         election.create_name()
         election.uuid = str(uuid.uuid4())
         election.created_at_date = timezone.now()
         election.creator = self.request.user
-        election.short_description = election.description[:140]
+
+        short_md = markdown.markdown(urlify_markdown(election.description[:140]),
+                                     safe_mode="escape", enable_attributes=False)
+        election.short_description = truncatewords_html(short_md, 25)
+
         election.url = self.request.build_absolute_uri(reverse('election-view',
             kwargs=dict(username=election.agora.creator.username, agoraname=election.agora.name,
                 electionname=election.name)))

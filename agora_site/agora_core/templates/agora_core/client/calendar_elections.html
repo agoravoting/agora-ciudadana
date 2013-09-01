@@ -1,0 +1,44 @@
+<script id="template-calendar-election-item-view" type="text/underscore-template">
+<li>
+    <span><%= datetime %></span>
+    <ul>
+        <% _.each(items, function(item) { %>
+        <li>
+            <a href="<%= item.get('url') %>">
+                <img src="static/img/small-icon-envelope.png" />
+                <%= item.get('pretty_name') %>
+            </a>
+        </li>
+        <% }); %>
+    </ul>
+</li>
+</script>
+<script id="template-calendar-view" type="text/underscore-template">
+    <div class="right-widget-header">
+        <h4><%= gettext("Calendar") %> <span>(<%= open_elections.objects.length %>)</span></h4>
+        <div class="btn-group">
+            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                <%= gettext("Create election") %>
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <% for (var i = 0; i < agoras.objects.length; i++) { %>
+                    <li><a href="<%= agoras.objects[i].url %>/election/new"><%= agoras.objects[i].full_name %></a></li>
+                    <% if (i == agoras.objects[i].length - 1) { %>
+                        <li class="divider"></li>
+                    <% } %>
+                <% } %>
+                <li><a href="/agora/list"><%= gettext("Find an agora to create an election") %></a></li>
+            </ul>
+        </div>
+        <input type="text" class="input-medium election-search-query search-query" autocomplete="off" value="" placeholder="<%= gettext("Search...") %>" name="q" />
+    </div>
+    <div class="row-fluid agora-dates">
+        <ul class="list-container"></ul>
+        <div style="display:none">
+            <li id="no-elections" class="empty">
+                <%= gettext("No elections found in the calendar") %>
+            </li>
+        </div>
+    </div>
+</script>

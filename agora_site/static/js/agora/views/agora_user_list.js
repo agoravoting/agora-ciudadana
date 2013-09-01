@@ -6,7 +6,22 @@
         events: {
             'click .user-result .row': 'clickUser',
             'click .action-send-message': 'showSendMessageDialog',
-            'click .action-choose-as-delegate': 'delegateVote'
+            'click .action-choose-as-delegate': 'delegateVote',
+            'click .dropdown-toggle': 'toggleDropdown'
+        },
+
+        filter: function(param) {
+            if (!param) {
+                this.url = this.$el.data('url');
+            } else {
+                this.url = this.$el.data('url') + "?username=" + param;
+            }
+            this.collection.reset();
+
+            this.firstLoadSuccess = false;
+            this.finished = false;
+            this.offset = 0;
+            this.requestObjects();
         },
 
         renderItem: function(model) {
@@ -23,6 +38,34 @@
             }
             var url = $(e.target).closest(".row").data('url');
             window.location.href= url;
+        },
+
+        toggleDropdown: function(e) {
+            // load user permissions
+            console.log("dropdown event");
+            var dropdown = $(e.target).closest('.dropdown-toggle');
+            if (dropdown.data("permissions")) {
+                return;
+            }
+            var json = {
+                'action': 'get_permissions',
+                'userid': dropdown.closest('.row').data('id')
+            };
+            var self = this;
+            var jqxhr = $.ajax("/api/v1/agora/" + ajax_data.agora.id + "/action/", {
+                    data: JSON.stringifyCompat(json),
+                    contentType : 'application/json',
+                    type: 'POST',
+                })
+                .done(function(data) {
+                    data.agora_path = self.$el.data('agora-path');
+                    data.username = dropdown.closest('.row').data('username');
+                    dropdown.data("permissions", data);
+                    var templatePerms = _.template($("#template-agora-profile-permissions").html());
+                    dropdown.closest('.dropdown-toggle').next().html(
+                        templatePerms(data)
+                    );
+                });
         },
 
         delegateVote: function (e) {
@@ -42,6 +85,9 @@
             $(e.target).closest('.dropdown').find('.dropdown-toggle').dropdown('toggle');
             var user_id = $(e.target).closest("div.row.bottom-bordered").data('id');
             var user_fullname = $(e.target).closest("div.row.bottom-bordered").data('fullname');
+            if (!user_fullname.length) {
+                user_fullname = $(e.target).closest("div.row.bottom-bordered").data('username');
+            }
 
             app.sendMessageDialog = new Agora.ModalDialogView();
             var title = interpolate(gettext('Send a message to %s'), [user_fullname]);
@@ -90,52 +136,40 @@
         initialize: function() {
             _.bindAll(this);
             this.infiniteListView = new AgoraUserInfiniteView();
+            this.agoraActionListView = new Agora.AgoraActionListView();
+            app.modalDialog = new Agora.ModalDialogView();
 
-            app.addMembersDialog = new Agora.ModalDialogView();
-            $("#manual-member").click(function() {
-                var title = gettext('Add members manually');
-                var body = _.template($("#template-add_members_modal_dialog_body").html())();
-                var footer = _.template($("#template-add_members_modal_dialog_footer").html())();
+            this.filter = '';
+            var obj = this;
 
-                app.addMembersDialog.populate(title, body, footer);
-                app.addMembersDialog.show();
-
-                $("#add-members-action").click(function(e) {
-                    e.preventDefault();
-                    if ($("#add-members-action").hasClass("disabled")) {
-                        return false;
-                    }
-                    var json = {
-                        agoraid: ajax_data.agora.id,
-                        emails: $("#add_members_textarea").val(),
-                        welcome_message: gettext('Welcome to this agora')
-                    }
-
-                    if (json.emails.length == 0) {
-                        return false;
-                    }
-
-                    json.emails = json.emails.split(",");
-
-                    $("#add-members-action").addClass("disabled");
-
-                    var jqxhr = $.ajax("/api/v1/user/invite/", {
-                        data: JSON.stringifyCompat(json),
-                        contentType : 'application/json',
-                        type: 'POST',
-                    })
-                    .done(function() {
-                        $("#modal_dialog").modal('hide');
-                    })
-                    .fail(function() {
-                        $("#add-members-action").removeClass("disabled");
-                        alert(gettext("Error sending the invitations, please check the input data"));
-                    });
-                    return false;
-                });
-
-                return false;
+            var delay = (function(){
+              var timer = 0;
+              return function(callback, ms){
+                clearTimeout (timer);
+                timer = setTimeout(callback, ms);
+              };
+            })();
+            $("#filter-input").keyup(function(e) {
+                delay(function() {
+                    obj.filterList();
+                }, 500);
             });
+            $("#filter-input").keypress(function(e) {
+                if(e.which == 13) {
+                    obj.filterList();
+                }
+            });
+            $("#filter-button").click(function() {
+                obj.filterList();
+            });
+        },
+
+        filterList: function() {
+            newf = $("#filter-input").val();
+            if (this.filter != newf) {
+                this.filter = newf;
+                this.infiniteListView.filter(this.filter);
+            }
         }
     });
 }).call(this);

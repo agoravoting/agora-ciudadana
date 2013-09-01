@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n endless agora_utils markup %}
+{% load i18n agora_utils markup %}
 
 {% block title %}{{ agora.creator.username }}/{{ agora.name }}{% endblock %}
 
@@ -22,33 +22,8 @@
     <!-- here goes the backbone generated action list -->
 </div>
 
-<ul class="nav nav-tabs">
-    {% block agora-navigation %}
-    <li {% ifactivetab "agora-nav" "activity" %}class="active"{% endifactivetab %}>
-        <a href="{%url agora-view agora.creator.username agora.name %}">{% trans "Activity" %}</a>
-    </li>
-    <!-- TODO: maybe make this an option too? an expandable text -->
-    <li {% ifactivetab "agora-nav" "biography" %}class="active"{% endifactivetab %}>
-        <a href="{% url agora-bio agora.creator.username agora.name %}">{% trans "Biography" %}</a>
-    </li>
-    <!-- TODO: maybe make this an option too? -->
-    <li {% ifactivetab "agora-nav" "comments" %}class="active"{% endifactivetab %}>
-        <a href="{% url agora-comments agora.creator.username agora.name %}">{% trans "Comments" %}</a>
-    </li>
-    <li {% ifactivetab "agora-nav" "elections" %}class="active"{% endifactivetab %}>
-        <a href="{% url agora-elections agora.creator.username agora.name 'open' %}">{% trans "Elections" %}
-        <span class="badge badge-info">{{ agora.open_elections.count }}</span></a>
-    </li>
-    <li {% ifactivetab "agora-nav" "members" %}class="active"{% endifactivetab %}>
-        <a href="{% url agora-members agora.creator.username agora.name 'members' %}">{% trans "Members" %}
-        <span class="badge badge-info">{{ agora.members.count }}</span></a>
-    </li>
-    {% if agora|is_agora_admin:user %}
-    <li {% ifactivetab "agora-nav" "admin" %}class="active"{% endifactivetab %}>
-        <a href="{% url agora-admin agora.creator.username agora.name %}">{% trans "Admin" %}</a>
-    </li>
-    {% endif %}
-    {% endblock %}
+<ul class="nav nav-tabs" id="agora-tabs">
+    <!-- here goes the backbone generated agora tab list -->
 </ul>
 {% endblock %}
 
@@ -72,35 +47,21 @@
     </div>
     <div class="span4 agora-right-side">
         <div class="row-fluid right-widget agora-calendar" id="agora-calendar" data-url="/api/v1/agora/{{ agora.id }}/open_elections/">
-            <div class="right-widget-header">
-                <h4>{% trans "Calendar" %} <span>({{ agora.get_open_elections.count }})</span></h4>
-                <a class="btn btn-primary" href="{% url election-new agora.creator.username agora.name %}">{% trans "Create election" %}</a>
-                <input type="text" class="input-medium election-search-query search-query" autocomplete="off" value="" placeholder="{% trans "Search..." %}" name="q" />
-            </div>
-            <div class="row-fluid agora-dates">
-                <ul>
-                    <div class="list-container"></div>
-                </ul>
-                <div style="display:none">
-                    <li id="no-elections" class="empty">
-                        {% trans "No elections yet, perhaps you want to create one?" %}
-                    </li>
-                </div>
-            </div>
+            <!-- here goes the backbone generated calendar -->
         </div>
 
         <div class="row-fluid social-icons">
             <div class="span12">
-                <a href="{ % url share-agora-on-twitter agora.creator.username agora.name %}">
+                <a id="twittershare" href="https://twitter.com/share" data-via="agoraciudadana">
                     <img src="{{ STATIC_URL }}img/twitter-small-logo.png" alt="{% trans "Share on Twitter" %}" />
                 </a>
-                <a href="{ % url share-agora-on-facebook agora.creator.username agora.name %}">
+                <a id="facebookshare" href="http://www.facebook.com/sharer/sharer.php">
                     <img src="{{ STATIC_URL }}img/facebook-small-logo.png" alt="{% trans "Share on Facebook" %}" />
                 </a>
-                <a href="{ % url share-agora-on-identica agora.creator.username agora.name %}">
+                <a id="identicashare" href="http://identi.ca/?action=newnotice">
                     <img src="{{ STATIC_URL }}img/identica-small-logo.png" alt="{% trans "Share on Identica" %}" />
                 </a>
-                <a href="{ % share-agora-on-googleplus agora.creator.username agora.name %}">
+                <a id="googleshare" href="https://plus.google.com/share">
                     <img src="{{ STATIC_URL }}img/googleplus-small-logo.png" alt="{% trans "Share on Google Plus" %}" />
                 </a>
             </div>
@@ -114,18 +75,28 @@
 {% endblock %}
 
 {% block script-block %}
-{% include "agora_core/include-js-template-election.html" %}
 {% include "agora_core/include-js-template-agora.html" %}
+{% include "agora_core/client/calendar_elections.html" %}
 {% include "agora_core/client/all_actions.html" %}
 {% include "agora_core/client/action_list.html" %}
+{% include "agora_core/client/modal_dialog.html" %}
+{% include "agora_core/client/mail_to_members.html" %}
 {% include "agora_core/client/tallied_elections_view.html" %}
+{% include "agora_core/client/add_members_modal_dialog.html" %}
+{% include "agora_core/client/send_mail.html" %}
+{% include "agora_core/client/agora_tabs.html" %}
+{% include "agora_core/client/agora_calendar.html" %}
 <script>
 var ajax_data = {
     'tallied_elections': {% rest request '/agora/' agora.id '/tallied_elections/?limit=3' %},
-    'agora': {% rest request '/agora/' agora.id %},
+    'agora': {% rest request '/agora/' agora.id '/' %},
     'user_permissions': {% custom_rest request "POST" '{"action":"get_permissions"}' '/agora/' agora.id '/action/' %}
 };
+
+var current_tab = "{% block agora-tab-name %}activity{% endblock %}";
+
 app.currentView = new Agora.AgoraView();
+
 </script>
 {% endblock %}
 {% block footer %} {% endblock %}

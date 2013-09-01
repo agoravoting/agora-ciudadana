@@ -185,7 +185,6 @@ INSTALLED_APPS = (
     'crispy_forms',
     'agora_site.agora_core',
     'agora_site.accounts',
-    'endless_pagination',
     'haystack',
     'djcelery',
     'guardian',
@@ -368,6 +367,10 @@ INTERNAL_IPS = ('127.0.0.1',)
 #    will see the create agora button and will be able to create agoras.
 AGORA_CREATION_PERMISSIONS="any-user"
 
+# List of agoras to which a user will be joined automatically when they are
+# registered
+AGORA_REGISTER_AUTO_JOIN = []
+
 # Active voting methods in this deployment
 VOTING_METHODS = (
     'agora_site.agora_core.models.voting_systems.plurality.Plurality',
@@ -375,6 +378,21 @@ VOTING_METHODS = (
 )
 
 AGORA_USE_HTTPS = False
+
+USE_ESI = False
+
+
+# sets default value for max age in cache.
+# set to zero (no-cache) by default
+CACHE_MIDDLEWARE_SECONDS = 0
+
+# sets the max age for calls that do not need to be very updated
+# set to zero (no-cache) by default
+MANY_CACHE_SECONDS = 0
+
+# sets the max age for calls that need to be very updated
+# set to zero (no-cache) by default
+FEW_CACHE_SECONDS = 0
 
 try:
     # custom settings is the file where you should set your modifications of the

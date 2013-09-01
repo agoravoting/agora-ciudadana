@@ -1,15 +1,13 @@
 {% load i18n %}{% load agora_utils %}{% autoescape off %}
-{% blocktrans with to_username=to.username  %}Hello {{ to_username }},
+{% blocktrans with to_username=to.username  %}Hello {{ to_username }},{% endblocktrans %}
 
-{{ notification_text }}.{% endblocktrans %}
+{{ notification_text }}.
 
 {% if extra_urls %}{% for url_title, url in extra_urls %}{{ url_title }}: {{ protocol }}://{{ site.domain }}{{ url }}
 
-{%endfor%}{%endif%}{% blocktrans with agora_url=agora.get_link site_domain=site.domain other_user_url=other_user.get_profile.get_link %}Agora URL: {{ protocol }}://{{ site_domain }}{{ agora_url }}
+{%endfor%}{%endif%}{% blocktrans with agora_url=agora.get_link site_domain=site.domain %}Agora URL: {{ agora_url }}{% endblocktrans %}
 
-User URL: {{ protocol }}://{{ site_domain }}{{ other_user_url }}
+{% blocktrans with site_domain=site.domain other_user_url=other_user.get_profile.get_link %}User URL: {{ protocol }}://{{ site_domain }}{{ other_user_url }}{% endblocktrans %}
 
-{% endblocktrans %}
 --
-{% blocktrans with to_email=to.username site_name=site.name site_domain=site.domain %}This message was sent to {{ to_email }}. If you want to stop receiving these message from {{ site_name }}, please click here: {{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}
-{% endblocktrans %}{% endautoescape %}
+{% blocktrans with to_email=to.username site_name=site.name site_domain=site.domain %}This message was sent to {{ to_email }}. If you want to stop receiving these message from {{ site_name }}, please click here: {{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}{% endblocktrans %}{% endautoescape %}

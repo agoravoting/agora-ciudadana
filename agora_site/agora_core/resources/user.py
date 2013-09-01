@@ -7,6 +7,8 @@ from django.contrib.auth import forms as auth_forms
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout as auth_logout
 from django.shortcuts import get_object_or_404
+from django.conf import settings
+from django.views.decorators.cache import cache_control
 from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives, EmailMessage, send_mass_mail
@@ -26,6 +28,7 @@ from tastypie.validation import Validation, CleanedDataFormValidation
 from userena import forms as userena_forms
 from userena.models import UserenaSignup
 
+from agora_site.misc.utils import get_base_email_context
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.misc.utils import rest, validate_email
 from agora_site.misc.decorators import permission_required
@@ -47,9 +50,10 @@ class TinyUserResource(GenericResource):
     url = fields.CharField()
     mugshot_url = fields.CharField()
     full_name = fields.CharField()
+    short_description = fields.CharField()
 
     class Meta(GenericMeta):
-        queryset = User.objects.all()
+        queryset = User.objects.select_related("profile").filter(id__gt=-1)
         fields = ["username", "first_name", "id"]
 
     def dehydrate_url(self, bundle):
@@ -60,6 +64,9 @@ class TinyUserResource(GenericResource):
 
     def dehydrate_full_name(self, bundle):
         return bundle.obj.get_full_name()
+
+    def dehydrate_short_description(self, bundle):
+        return bundle.obj.get_profile().get_short_description()
 
 
 class TinyProfileResource(GenericResource):
@@ -83,7 +90,7 @@ class TinyProfileResource(GenericResource):
     permissions_on_user = fields.ApiField()
 
     class Meta(GenericMeta):
-        queryset = Profile.objects.all()
+        queryset = Profile.objects.filter(user__id__gt=-1)
         fields = ["id"]
 
     def dehydrate_permissions_on_user(self, bundle):
@@ -126,7 +133,7 @@ class UserResource(GenericResource):
     full_name = fields.CharField()
 
     class Meta(GenericMeta):
-        queryset = User.objects.filter(id__gt=-1)
+        queryset = User.objects.select_related("profile").filter(id__gt=-1)
         list_allowed_methods = ['get']
         detail_allowed_methods = ['get', 'put']
         excludes = ['password', 'is_staff', 'is_superuser', 'email']
@@ -202,6 +209,10 @@ class UserResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view("open_elections"), name="api_user_open_elections"),
 
+            url(r"^(?P<resource_name>%s)/(?P<userid>\d+)/open_elections%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view("open_elections"), name="api_specific_user_open_elections"),
+
             url(r"^(?P<resource_name>%s)/set_username/(?P<user_list>\w[\w/;-]*)%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('user_set_by_username'), name="api_user_set_by_username"),
@@ -215,6 +226,7 @@ class UserResource(GenericResource):
                 self.wrap_view('user_invite'), name="api_user_invite")
         ]
 
+    @cache_control(no_cache=True)
     def disable(self, request, **kwargs):
         '''
         Disable the currently authenticated user
@@ -227,6 +239,7 @@ class UserResource(GenericResource):
         auth_logout(request)
         return self.create_response(request, dict(status="success"))
 
+    @cache_control(no_cache=True)
     def logout(self, request, **kwargs):
         '''
         Log out the currently authenticated user
@@ -244,6 +257,7 @@ class UserResource(GenericResource):
         '''
         return self.wrap_form(SendMailForm)(request, **kwargs)
 
+    @cache_control(no_cache=True)
     def user_settings(self, request, **kwargs):
         '''
             Get the properties of the user currently authenticated
@@ -279,7 +293,7 @@ class UserResource(GenericResource):
         if request.method != 'POST':
             raise ImmediateHttpResponse(response=http.HttpMethodNotAllowed())
         data = self.deserialize_post_data(request)
-        emails = data['emails']
+        emails = map(str.strip, data['emails'])
         agoraid = data['agoraid']
         agora = get_object_or_404(Agora, pk=agoraid)
         welcome_message = data.get('welcome_message', _("Welcome to this agora"))
@@ -288,7 +302,6 @@ class UserResource(GenericResource):
             raise ImmediateHttpResponse(response=http.HttpMethodNotAllowed())
 
         for email in emails:
-            email = email.strip()
             q = User.objects.filter(Q(email=email)|Q(username=email))
             exists = q.exists()
             if not exists and not validate_email(email):
@@ -316,18 +329,17 @@ class UserResource(GenericResource):
                 # send invitation
                 username = str(uuid4())
                 password = str(uuid4())
-                new_user = UserenaSignup.objects.create_user(username,
-                                                email, 
+                user = UserenaSignup.objects.create_user(username,
+                                                email,
                                                 password,
                                                 False,
                                                 False)
-                profile = new_user.get_profile()
+                profile = user.get_profile()
                 profile.lang_code = request.user.get_profile().lang_code
                 profile.extra = {'join_agora_id': agoraid}
                 profile.save()
 
                 # Mail to the user
-                user = new_user
                 translation.activate(user.get_profile().lang_code)
                 context = get_base_email_context(request)
                 context.update(dict(
@@ -354,6 +366,11 @@ class UserResource(GenericResource):
                 email.send()
                 translation.deactivate()
 
+                # add user to the default agoras if any
+                for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
+                    profile.add_to_agora(agora_name=agora_name, request=request)
+
+
         return self.create_response(request, {})
 
     def agoras(self, request, **kwargs):
@@ -361,8 +378,8 @@ class UserResource(GenericResource):
         Lists the agoras in which the authenticated user or the specified user
         is a member
         '''
-        from .agora import AgoraResource
-        class AgoraPermissionsResource(AgoraResource):
+        from .agora import TinyAgoraResource
+        class AgoraPermissionsResource(TinyAgoraResource):
             agora_permissions = fields.ApiField()
 
             def dehydrate_agora_permissions(self, bundle):
@@ -381,11 +398,11 @@ class UserResource(GenericResource):
         '''
         Lists the open elections in which the authenticated user can participate
         '''
-        from .election import ElectionResource
+        from .election import ResultsElectionResource
 
         search = request.GET.get('q', '')
 
-        class UserElectionResource(ElectionResource):
+        class UserElectionResource(ResultsElectionResource):
             '''
             ElectionResource with some handy information for the user
             '''
@@ -398,10 +415,15 @@ class UserResource(GenericResource):
             def dehydrate_has_user_voted_via_a_delegate(self, bundle):
                 return bundle.obj.has_user_voted_via_a_delegate(request.user)
 
-        if request.user.is_anonymous():
+        if kwargs.has_key('userid'):
+            user = get_object_or_404(User, pk=kwargs['userid'])
+        else:
+            user = request.user
+
+        if user.is_anonymous():
             raise ImmediateHttpResponse(response=http.HttpForbidden())
 
-        queryset = request.user.get_profile().get_open_elections(search)
+        queryset = user.get_profile().get_open_elections(search)
         return UserElectionResource().get_custom_list(request=request,
             queryset=queryset)
 
@@ -410,10 +432,10 @@ class UserResource(GenericResource):
         Lists the elections in which the user participated either direct
         or indirectly
         '''
-        from .election import ElectionResource
+        from .election import ResultsElectionResource
         user = get_object_or_404(User, pk=userid)
         queryset = user.get_profile().get_participated_elections()
-        return ElectionResource().get_custom_list(request=request,
+        return ResultsElectionResource().get_custom_list(request=request,
             queryset=queryset)
 
 

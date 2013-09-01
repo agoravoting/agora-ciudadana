@@ -23,6 +23,8 @@ from actstream.models import object_stream
 
 from django.conf.urls.defaults import url
 from django.contrib.sites.models import Site
+from django.conf import settings
+from django.views.decorators.cache import cache_control
 from django.core.mail import EmailMultiAlternatives, EmailMessage, send_mass_mail
 from django.template.loader import render_to_string
 from django.forms import ModelForm
@@ -31,6 +33,7 @@ from django.utils import simplejson as json
 from django.utils import translation
 from django.utils import timezone
 from django.db import transaction
+from django.db.models import Q
 from django import forms as django_forms
 
 import datetime
@@ -51,22 +54,35 @@ class TinyElectionResource(GenericResource):
 
     content_type = fields.CharField(default="election")
     agora = fields.ForeignKey(TinyAgoraResource, 'agora', full=True)
-    url = fields.CharField()
     mugshot_url = fields.CharField()
 
     class Meta(GenericMeta):
-        queryset = Election.objects.all()
-        fields = ['name', 'pretty_name', 'id', 'short_description']
+        queryset = Election.objects\
+                    .select_related("agora", "agora__creator")\
+                    .exclude(url__startswith=DELEGATION_URL)\
+                    .order_by('-last_modified_at_date')
+        fields = ['name', 'pretty_name', 'id', 'short_description',
+                  'voting_starts_at_date', 'voting_ends_at_date', 'url',
+                  'voting_extended_until_date', 'mugshot_url']
         filtering = {
             'id': ALL
         }
 
-    def dehydrate_url(self, bundle):
-        return bundle.obj.get_link()
-
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_mugshot_url()
 
+class ResultsElectionResource(TinyElectionResource):
+    class Meta(GenericMeta):
+        queryset = Election.objects\
+                    .select_related("agora")\
+                    .exclude(url__startswith=DELEGATION_URL)\
+                    .order_by('-last_modified_at_date')
+        fields = ['name', 'pretty_name', 'id', 'short_description', 'result',
+                  'voting_starts_at_date', 'voting_ends_at_date', 'agora',
+                  'url', 'voting_extended_until_date', 'mugshot_url']
+        filtering = {
+            'id': ALL
+        }
 
 class ElectionAdminForm(ModelForm):
     '''
@@ -206,18 +222,15 @@ class ElectionResource(GenericResource):
     # this will be only indicative when election has not been tallied
     delegated_votes_count = fields.IntegerField()
 
-    url = fields.CharField()
-
     mugshot_url = fields.CharField()
 
     user_has_delegated = fields.BooleanField()
 
     user_perms = JSONApiField()
 
-    short_description_md = fields.CharField()
-
     class Meta(GenericMeta):
         queryset = Election.objects\
+                    .select_related(depth=1)\
                     .exclude(url__startswith=DELEGATION_URL)\
                     .order_by('-last_modified_at_date')
         #authentication = SessionAuthentication()
@@ -232,8 +245,7 @@ class ElectionResource(GenericResource):
 
         excludes = ['PROHIBITED_ELECTION_NAMES', 'extra_data']
 
-    def dehydrate_url(self, bundle):
-        return bundle.obj.get_link()
+    get_list = TinyElectionResource().get_list
 
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_mugshot_url()
@@ -251,9 +263,6 @@ class ElectionResource(GenericResource):
 
     def dehydrate_user_perms(self, bundle):
         return bundle.obj.get_perms(bundle.request.user)
-
-    def dehydrate_short_description_md(self, bundle):
-        return bundle.obj.short_description_md()
 
     def prepend_urls(self):
         return [
@@ -300,6 +309,7 @@ class ElectionResource(GenericResource):
                 self.wrap_view('action'), name="api_election_action"),
         ]
 
+    @cache_control(s_max_age=settings.MANY_CACHE_SECONDS)
     def get_extra_data(self, request, **kwargs):
         if request.method != "GET":
             raise ImmediateHttpResponse(response=http.HttpMethodNotAllowed())
@@ -565,13 +575,25 @@ class ElectionResource(GenericResource):
 
         return self.create_response(request, dict(status="success"))
 
+    def filter_user(self, request, query):
+        u_filter = request.GET.get('username', '')
+        if u_filter:
+            q = (Q(voter__username__icontains=u_filter) |
+                 Q(voter__first_name__icontains=u_filter) |
+                 Q(voter__last_name__icontains=u_filter))
+            return query.filter(q)
+        return query
+
+    @cache_control(s_max_age=settings.MANY_CACHE_SECONDS)
     def get_all_votes(self, request, **kwargs):
         '''
         List all the votes in this agora
         '''
         return self.get_custom_resource_list(request, resource=CastVoteResource,
-            queryfunc=lambda election: election.get_all_votes(), **kwargs)
+            queryfunc=lambda election: self.filter_user(request, election.get_all_votes()),
+            **kwargs)
 
+    @cache_control(s_max_age=settings.MANY_CACHE_SECONDS)
     def get_cast_votes(self, request, **kwargs):
         '''
         List votes in this agora
@@ -579,6 +601,7 @@ class ElectionResource(GenericResource):
         return self.get_custom_resource_list(request, resource=CastVoteResource,
             queryfunc=lambda election: election.cast_votes.all(), **kwargs)
 
+    @cache_control(s_max_age=settings.MANY_CACHE_SECONDS)
     def get_delegated_votes(self, request, **kwargs):
         '''
         List votes in this agora
@@ -586,13 +609,16 @@ class ElectionResource(GenericResource):
         return self.get_custom_resource_list(request, resource=CastVoteResource,
             queryfunc=lambda election: election.get_delegated_votes(), **kwargs)
 
+    @cache_control(s_max_age=settings.MANY_CACHE_SECONDS)
     def get_votes_from_delegates(self, request, **kwargs):
         '''
         List votes in this agora
         '''
         return self.get_custom_resource_list(request, resource=CastVoteResource,
-            queryfunc=lambda election: election.get_votes_from_delegates(), **kwargs)
+            queryfunc=lambda election: self.filter_user(request, election.get_votes_from_delegates()),
+            **kwargs)
 
+    @cache_control(s_max_age=settings.MANY_CACHE_SECONDS)
     def get_direct_votes(self, request, **kwargs):
         '''
         List votes in this agora

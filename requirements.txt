@@ -12,15 +12,15 @@ django-crispy-forms
 easy_thumbnails
 pil
 django-haystack
-django-endless-pagination
 django-debug-toolbar
 textile
 simplejson
 pygeoip
 celery==3.0.12
 django-celery==3.0.11
+pytz>dev
 django-tastypie==0.9.12
-whoosh
+whoosh==2.4.1
 sphinx
 git+https://github.com/edulix/django-jsgettext.git
 sphinxcontrib-httpdomain

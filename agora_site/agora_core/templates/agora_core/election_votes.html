@@ -1,6 +1,5 @@
 {% extends 'agora_core/election_delegates.html' %}
 {% load i18n %}
-{% load endless %}
 {% load agora_utils %}
 
 {% block title %}{% trans "Votes" %} - {{ election.pretty_name }} - {{ election.agora.creator.username }}/{{ election.agora.name }}{% endblock %}
@@ -9,6 +8,7 @@
 {% block content %}
     <div class="row election-content-row">
         <div class="span8 agora-left-side">
+            {% include "agora_core/filter.html" %}
             <div class="activity-list" id="user-list"
                 data-url="/api/v1/election/{{ election.id }}/all_votes/"
                 data-method="get" data-margin="300">

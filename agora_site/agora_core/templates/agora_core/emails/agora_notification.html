@@ -1,12 +1,9 @@
 {% load i18n %}
 {% load agora_utils %}
 {% autoescape off %}
-{% blocktrans with to_username=to.username  %}
-<p>Hello {{ to_username }},</p>
+<p>{% blocktrans with to_username=to.username %}Hello {{ to_username }},{% endblocktrans %}</p>
 
 <p>{{ notification_text }}.</p>
-
-{% endblocktrans %}
 
 {% if extra_urls %}
     {% for url_title, url in extra_urls %}
@@ -14,12 +11,10 @@
     {% endfor %}
 {% endif %}
 
-{% blocktrans with agora_url=agora.get_link site_domain=site.domain other_user_url=other_user.get_profile.get_link %}
-<p>Agora URL: <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_full_name }}</a></p>
+<p>{% blocktrans with site_domain=site.domain agora_url=agora.get_link agora_full_name=agora.get_full_name %}Agora URL: <a href="{{ agora_url }}">{{ agora_full_name }}</a>{% endblocktrans %}</p>
 
-<p>User URL: <a href="{{ protocol }}://{{ site_domain }}{{ other_user_url }}">{{ other_user_name }}</a></p>
+<p>{% blocktrans with site_domain=site.domain other_user_url=other_user.get_profile.get_link other_user_name=other_user.username %}User URL: <a href="{{ protocol }}://{{ site_domain }}{{ other_user_url }}">{{ other_user_name }}</a>{% endblocktrans %}</p>
 
-{% endblocktrans %}
 <p>--<br/>
 {% blocktrans with to_email=to.username site_name=site.name site_domain=site.domain %}This message was sent to {{ to_email }}. If you want to stop receiving these message from <a href="{{ protocol }}://{{ site_domain }}">{{ site_name }}</a>, please <a href="{{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}">click here</a>
 {% endblocktrans %}</p>{% endautoescape %}

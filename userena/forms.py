@@ -38,6 +38,8 @@ class SignupForm(forms.Form):
                                                            render_value=False),
                                 label=_("Repeat password"))
 
+    request = None
+
     def clean_username(self):
         """
         Validate that the username is alphanumeric and is not already in use.

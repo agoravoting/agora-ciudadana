@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% load endless %}
 {% load agora_utils %}
 
 {% block title %}{{ user_shown.username }}{% endblock %}
@@ -32,7 +31,8 @@
         </li>
         <li {% ifactivetab "user-nav" "elections" %}class="active"{% endifactivetab %}>
             <a href="{% url user-elections user_shown.username 'participated' %}">{% trans "Elections" %}
-            <span class="badge badge-info">{{ user_shown.get_profile.get_participated_elections.count }}</span></a>
+             <span class="badge badge-info participated_elections_badge"></span>
+            </a>
         </li>
         {% endblock %}
     </ul>

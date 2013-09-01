@@ -66,6 +66,7 @@ def signup(request, signup_form=SignupForm,
 
     if request.method == 'POST':
         form = signup_form(request.POST, request.FILES)
+        form.request = request
         if form.is_valid():
             user = form.save()
 

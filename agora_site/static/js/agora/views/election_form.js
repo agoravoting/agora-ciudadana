@@ -121,12 +121,7 @@
             'click .add_option_btn': 'userAddAnswer',
             'keyup .add_option': 'userAddAnswerEnter',
             'click .remove_option': 'userRemoveAnswer',
-            'click .create_election_btn': 'saveElection'
-        },
-
-        saveElection:  function(e) {
-            $("#main-election-tab a").tab('show');
-            $("#create_election_form").nod().massCheck();
+            'click .create_question_btn': 'createQuestion'
         },
 
         getMetrics: function() {
@@ -222,9 +217,11 @@
             });
 
             this.resetAnswers();
-            this.$el.find("form").nod(this.getMetrics(),
-                {silentSubmit: true, broadcastError: true});
-            this.$el.find("form").on('silentSubmit', this.createQuestion);
+            this.$el.find("form").nod(this.getMetrics(), {
+                silentSubmit: true,
+                broadcastError: true,
+                submitBtnSelector: ".hidden-input"
+            });
             this.$el.find("form").submit(function (e) { e.preventDefault(); });
             return this;
         },
@@ -240,9 +237,11 @@
 
         userAddAnswerEnter: function(e) {
             e.preventDefault();
+            e.stopPropagation();
             if (e.keyCode == 13) { // <Enter>
                 this.userAddAnswer();
             }
+            return false;
         },
 
         userAddAnswer: function() {
@@ -319,6 +318,9 @@
         },
 
         createQuestion: function(e) {
+            if (!this.$el.find("form").nod().formIsErrorFree()) {
+                return;
+            }
             // create the question
             this.updateModel();
             var model = this.model.clone();
@@ -334,6 +336,8 @@
         el: "div.top-form",
 
         initData: {},
+
+        __initialLoading: false,
 
         getMetrics: function() {
             var self = this;
@@ -369,6 +373,7 @@
             'click #show_add_question_tab_btn': 'showAddQuestionTab',
             'click #schedule_voting_label': 'checkSchedule',
             'click .remove_question_btn': 'removeQuestion',
+            'click .create_election_btn': 'saveElection',
         },
 
         getInitModel: function() {
@@ -400,12 +405,17 @@
 
             // add question tab-content
             this.addQuestionView = new Agora.QuestionEditView({
-                model: new Agora.QuestionModel({'question_num': 0})});
+                model: new Agora.QuestionModel({'question_num': 0}),
+                electionFormView: this
+            });
             this.$el.find('.tab-content').append(this.addQuestionView.render().el);
 
             // load initial models and listen to new ones
             this.listenTo(this.model.get('questions'), 'add', this.addQuestion);
+            // prevents tabs to be shown as they are being added
+            this.__initialLoading = true;
             this.model.get('questions').each(this.addQuestion);
+            this.__initialLoading = false;
 
             // update button on model changes and initialize
             this.listenTo(this.model, 'change', this.updateButtonsShown);
@@ -415,8 +425,7 @@
 
             // do various setup calls
             this.$el.find("#create_election_form").nod(this.getMetrics(),
-                {silentSubmit: true})
-            this.$el.find("#create_election_form").on('silentSubmit', this.saveElection);
+                {silentSubmit: true, submitBtnSelector: ".hidden-input"});
             this.$el.find("form").submit(function (e) { e.preventDefault(); });
 
             $('.datetimepicker').datetimepicker();
@@ -452,10 +461,18 @@
 
         addQuestion: function(questionModel) {
             var i = questionModel.get('question_num');
-            this.$el.find('#add-question-navtab').before(this.templateNavtab({question_num: i}));
+            var newTab = this.templateNavtab({question_num: i});
+            this.$el.find('#add-question-navtab').before(newTab);
 
-            var view = new Agora.QuestionEditView({model: questionModel});
+            var view = new Agora.QuestionEditView({
+                model: questionModel, electionFormView: this
+            });
             this.$el.find('.tab-content').append(view.render().el);
+
+            // if we're not loading the initial tabs, show the added question
+            if (!this.__initialLoading) {
+                $("#question-navtab-" + i +" a").tab('show');
+            }
         },
 
         toggleScheduleVoting: function(e) {
@@ -484,26 +501,31 @@
 
         saveElection: function(e) {
             e.preventDefault();
+
             // if we are already sending do nothing
-            if (!$("#main-election-tab").hasClass("active")) {
-                $("#main-election-tab a").tab('show');
-                $("#create_election_form [type=submit]").click();
+            if (this.sendingData) {
                 return;
             }
 
-            if (this.sendingData) {
+            // check that main election tab is being shown
+            if (!$("#main-election-tab").hasClass("active")) {
+                $("#main-election-tab a").tab('show');
+            }
+
+            // check that form is error free
+            if (!this.$el.find("#create_election_form").nod().formIsErrorFree()) {
                 return;
             }
 
             this.updateModel();
 
-            // look for a question whose data is invalid
+            // look for a question whose data is invalid, if any
             var failingQuestion = this.model.get('questions').find(function (question) {
                 question.questionView.updateModel();
                 return !question.questionView.$el.find("form").nod().formIsErrorFree();
             });
 
-            // if found, switch to that question
+            // if found, switch to that question and return
             if (failingQuestion) {
                 var question_num =failingQuestion.get('question_num');
                 var selector = "#question-navtab-" + question_num + " a";
@@ -527,10 +549,15 @@
                 type: 'POST',
             })
             .done(function(e) { window.location.href = e.url; })
-            .fail(function() {
+            .fail(function(e) {
                 self.sendingData = false;
                 $(".create_election_btn").removeClass("disabled");
-                alert("Error creating the election");
+                var response = $.parseJSON(e.responseText);
+                if (response.errors) {
+                    alert(response.errors.__all__);
+                } else {
+                    alert(gettext("Error creating the election"));
+                }
             });
 
             return false;
@@ -593,14 +620,16 @@
                 return;
             }
 
+            if (!this.$el.find("#create_election_form").nod().formIsErrorFree()) {
+                return;
+            }
+
             this.updateModel();
 
             // look for a question whose data is invalid
             var failingQuestion = this.model.get('questions').find(function (question) {
-                question.formValid = false;
-                question.questionView.$el.find("[type=submit]").click();
-                return question.formValid == false;
                 question.questionView.updateModel();
+                return !question.questionView.$el.find("form").nod().formIsErrorFree();
             });
 
             // if found, switch to that question

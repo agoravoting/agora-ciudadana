@@ -6,8 +6,8 @@
 
 {% block title %}{{ agora.creator.username }}/{{ agora.name }} / {% trans "Comments" %}{% endblock %}
 
-{% block agora-navigation %}{% activetab "agora-nav" "comments" %}{{ block.super }}{% endblock %}
 {% block content-wrapper-class %}comments{% endblock %}
+{% block agora-tab-name %}comments{% endblock %}
 
 {% block agora-activity-url %}/api/v1/agora/{{ agora.id }}/comments/{% endblock %}
 

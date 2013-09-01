@@ -1,8 +1,10 @@
 import re
 import datetime
 
+from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.views.decorators.cache import cache_control
 from django.forms import ModelForm
 from django.core.urlresolvers import reverse
 from django.conf.urls.defaults import url
@@ -31,17 +33,14 @@ from guardian.shortcuts import assign, remove_perm
 
 from agora_site.agora_core.models import Agora
 from agora_site.agora_core.tasks.agora import (send_request_membership_mails,
-    send_request_admin_membership_mails, )
-from agora_site.agora_core.resources.user import UserResource
+    send_request_admin_membership_mails, send_mail_to_members)
+from agora_site.agora_core.resources.user import TinyUserResource
 from agora_site.agora_core.forms import PostCommentForm, CreateElectionForm
 from agora_site.agora_core.forms.agora import DelegateVoteForm
 from agora_site.agora_core.views import AgoraActionJoinView
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.misc.decorators import permission_required
 from agora_site.misc.utils import (geolocate_ip, get_base_email_context)
-
-ELECTION_RESOURCE = 'agora_site.agora_core.resources.election.ElectionResource'
-
 
 class TinyAgoraResource(GenericResource):
     '''
@@ -52,16 +51,13 @@ class TinyAgoraResource(GenericResource):
     '''
 
     content_type = fields.CharField(default="agora")
-    url = fields.CharField()
     full_name = fields.CharField()
     mugshot_url = fields.CharField()
 
     class Meta(GenericMeta):
-        queryset = Agora.objects.all()
-        fields = ['name', 'pretty_name', 'id', 'short_description']
-
-    def dehydrate_url(self, bundle):
-        return bundle.obj.get_link()
+        queryset = Agora.objects.select_related("creator").all()
+        fields = ['name', 'pretty_name', 'id', 'short_description', 'url',
+                  'full_name', 'mugshot_url']
 
     def dehydrate_full_name(self, bundle):
         return bundle.obj.get_full_name()
@@ -79,6 +75,7 @@ class CreateAgoraForm(ModelForm):
         model = Agora
         fields = ('pretty_name', 'short_description', 'is_vote_secret')
 
+
 class AgoraAdminForm(ModelForm):
     '''
     Form used to validate agora administration details.
@@ -86,38 +83,9 @@ class AgoraAdminForm(ModelForm):
     class Meta(GenericMeta):
         model = Agora
         fields = ('pretty_name', 'short_description', 'is_vote_secret',
-            'biography', 'membership_policy', 'comments_policy')
+            'biography', 'membership_policy', 'comments_policy',
+            'delegation_policy')
 
-
-class AgoraUserResource(UserResource):
-    agora_permissions = fields.ApiField() # agora permissions
-    agora = None
-    request_user = None
-
-    def dehydrate_agora_permissions(self, bundle):
-        if not self.agora.has_perms('admin', self.request_user):
-            perms = []
-        else:
-            perms = self.agora.get_perms(bundle.obj)
-
-        # add also receive_mail permission from the user
-        if not self.request_user.is_anonymous() and\
-            self.request_user.get_profile().has_perms('receive_mail',
-                bundle.request.user):
-            perms.append('receive_mail')
-
-        return perms
-
-def user_resource_for_agora(agora, request_user):
-    '''
-    Generates a custom user resource that has an agora_permissions property
-    listing the user permissions in the given agora, if the requesting user is
-    an admin
-    '''
-    resource = AgoraUserResource()
-    resource.agora = agora
-    resource.request_user = request_user
-    return resource
 
 class AgoraValidation(Validation):
     '''
@@ -143,27 +111,34 @@ class AgoraValidation(Validation):
         form = CleanedDataFormValidation(form_class=CreateAgoraForm)
         return form.is_valid(bundle, request)
 
+
 class AgoraResource(GenericResource):
     '''
     Resource for representing agoras.
     '''
-    creator = fields.ForeignKey(UserResource, 'creator', full=True)
-    url = fields.CharField()
+    creator = fields.ForeignKey(TinyUserResource, 'creator', full=True)
     full_name = fields.CharField()
     mugshot_url = fields.CharField()
+    open_elections_count = fields.IntegerField()
+    members_count = fields.IntegerField()
 
     class Meta(GenericMeta):
-        queryset = Agora.objects.all()
+        queryset = Agora.objects.select_related(depth=1).all()
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post', 'put', 'delete']
         validation = AgoraValidation()
         filtering = { "name": ALL, }
 
-    def dehydrate_url(self, bundle):
-        return bundle.obj.get_link()
+    get_list = TinyAgoraResource().get_list
 
     def dehydrate_full_name(self, bundle):
         return bundle.obj.get_full_name()
+
+    def dehydrate_open_elections_count(self, bundle):
+        return bundle.obj.open_elections().count()
+
+    def dehydrate_members_count(self, bundle):
+        return bundle.obj.members.count()
 
     def dehydrate_mugshot_url(self, bundle):
         return bundle.obj.get_mugshot_url()
@@ -184,7 +159,8 @@ class AgoraResource(GenericResource):
                       is_vote_secret=is_vote_secret)
         agora.create_name(bundle.request.user)
         agora.creator = bundle.request.user
-        agora.url = bundle.request.build_absolute_uri(agora.get_link())
+        agora.url = bundle.request.build_absolute_uri(reverse('agora-view',
+            kwargs=dict(username=agora.creator.username, agoraname=agora.name)))
 
         # we need to save before add members
         agora.save()
@@ -273,6 +249,11 @@ class AgoraResource(GenericResource):
             url(r"^(?P<resource_name>%s)/(?P<agora>\d+)/add_comment%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('add_comment'), name="api_agora_add_comment"),
+
+            url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/detail%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_detail'), name="api_agora_detail"),
+
         ]
 
     def get_comments(self, request, **kwargs):
@@ -290,76 +271,88 @@ class AgoraResource(GenericResource):
         '''
         return self.wrap_form(PostCommentForm)(request, **kwargs)
 
+    def filter_user(self, request, query):
+        u_filter = request.GET.get('username', '')
+        if u_filter:
+            q = (Q(username__icontains=u_filter) |
+                 Q(first_name__icontains=u_filter) |
+                 Q(last_name__icontains=u_filter))
+            return query.filter(q)
+        return query
+
     def get_admin_list(self, request, **kwargs):
         '''
         List admin members of this agora
         '''
         return self.get_custom_resource_list(request,
-            resourcefunc=user_resource_for_agora,
-            queryfunc=lambda agora: agora.admins.all(), **kwargs)
+            resource=TinyUserResource,
+            queryfunc=lambda agora: self.filter_user(request, agora.admins.all()),
+            **kwargs)
 
     def get_member_list(self, request, **kwargs):
         '''
         List the members of this agora
         '''
         return self.get_custom_resource_list(request,
-            resourcefunc=user_resource_for_agora,
-            queryfunc=lambda agora: agora.members.all(), **kwargs)
+            resource=TinyUserResource,
+            queryfunc=lambda agora: self.filter_user(request, agora.members.all()),
+            **kwargs)
 
     def get_active_delegates_list(self, request, **kwargs):
         '''
         List currently active delegates in this agora
         '''
         return self.get_custom_resource_list(request,
-            resourcefunc=user_resource_for_agora,
-            queryfunc=lambda agora: agora.active_delegates(), **kwargs)
+            resource=TinyUserResource,
+            queryfunc=lambda agora: self.filter_user(request, agora.active_delegates()),
+            **kwargs)
 
     def get_all_elections_list(self, request, **kwargs):
         '''
         List all elections in an agora
         '''
-        from agora_site.agora_core.resources.election import ElectionResource
-        return self.get_custom_resource_list(request, resource=ElectionResource,
+        from agora_site.agora_core.resources.election import TinyElectionResource
+        return self.get_custom_resource_list(request, resource=TinyElectionResource,
             queryfunc=lambda agora: agora.all_elections(), **kwargs)
 
     def get_tallied_elections_list(self, request, **kwargs):
         '''
         List elections that have been already tallied in an agora
         '''
-        from agora_site.agora_core.resources.election import ElectionResource
-        return self.get_custom_resource_list(request, resource=ElectionResource,
+        from agora_site.agora_core.resources.election import ResultsElectionResource
+        return self.get_custom_resource_list(request, resource=ResultsElectionResource,
             queryfunc=lambda agora: agora.get_tallied_elections(), **kwargs)
 
     def get_open_elections_list(self, request, **kwargs):
         '''
         List the elections that are currently opened in an agora
         '''
-        from agora_site.agora_core.resources.election import ElectionResource
-        return self.get_custom_resource_list(request, resource=ElectionResource,
+        from agora_site.agora_core.resources.election import TinyElectionResource
+        return self.get_custom_resource_list(request, resource=TinyElectionResource,
             queryfunc=lambda agora: agora.get_open_elections(), **kwargs)
 
     def get_requested_elections_list(self, request, **kwargs):
         '''
         List the elections that are currently requested in an agora
         '''
-        from agora_site.agora_core.resources.election import ElectionResource
-        return self.get_custom_resource_list(request, resource=ElectionResource,
+        from agora_site.agora_core.resources.election import TinyElectionResource
+        return self.get_custom_resource_list(request, resource=TinyElectionResource,
             queryfunc=lambda agora: agora.requested_elections(), **kwargs)
 
     def get_archived_elections_list(self, request, **kwargs):
         '''
         List the elections that have been archived in an agora
         '''
-        from agora_site.agora_core.resources.election import ElectionResource
-        return self.get_custom_resource_list(request, resource=ElectionResource,
+        from agora_site.agora_core.resources.election import TinyElectionResource
+        return self.get_custom_resource_list(request, resource=TinyElectionResource,
             queryfunc=lambda agora: agora.archived_elections(), **kwargs)
 
     def get_approved_elections_list(self, request, **kwargs):
         '''
         List the elections that are currently opened in an agora
         '''
-        from agora_site.agora_core.resources.election import ElectionResource
-        return self.get_custom_resource_list(request, resource=ElectionResource,
+        from agora_site.agora_core.resources.election import TinyElectionResource
+        return self.get_custom_resource_list(request, resource=TinyElectionResource,
             queryfunc=lambda agora: agora.approved_elections(), **kwargs)
 
     def get_request_list(self, request, **kwargs):
@@ -375,9 +368,10 @@ class AgoraResource(GenericResource):
             return queryset
 
         return self.get_custom_resource_list(request, queryfunc=get_queryset,
-            resourcefunc=user_resource_for_agora, **kwargs)
+            resource=TinyUserResource, **kwargs)
 
     @permission_required('admin', (Agora, 'id', 'agoraid'))
+    @cache_control(no_cache=True)
     def get_admin_request_list(self, request, **kwargs):
         '''
         List agora admin membership requests
@@ -391,7 +385,7 @@ class AgoraResource(GenericResource):
             return queryset
 
         return self.get_custom_resource_list(request, queryfunc=get_queryset,
-            resourcefunc=user_resource_for_agora, **kwargs)
+            resource=TinyUserResource, **kwargs)
 
     def get_custom_resource_list(self, request, queryfunc, resource=None,
         resourcefunc=None, **kwargs):
@@ -452,6 +446,7 @@ class AgoraResource(GenericResource):
         actions = {
             'get_permissions': self.get_permissions_action,
             'test': self.test_action,
+            'mail_to_members': self.mail_to_members,
 
             'request_membership': self.request_membership_action,
             'cancel_membership_request': self.cancel_membership_request_action,
@@ -500,8 +495,41 @@ class AgoraResource(GenericResource):
         '''
         Returns the permissions the user that requested it has
         '''
+        user = request.user
+        if 'userid' in kwargs:
+            if not agora.has_perms('admin', request.user):
+                return self.create_response(request,
+                    dict(permissions=[]))
+            user = get_object_or_404(User, id=kwargs['userid'])
+
         return self.create_response(request,
-            dict(permissions=agora.get_perms(request.user)))
+            dict(permissions=agora.get_perms(user)))
+
+    @permission_required('admin', (Agora, 'id', 'agoraid'))
+    def mail_to_members(self, request, agora, receivers, subject, body, **kwargs):
+        '''
+        Mail to members
+        '''
+        if receivers not in ['members', 'admins', 'delegates',
+            'non-delegates', 'requested-membership']:
+            raise ImmediateHttpResponse(response=http.HttpBadRequest())
+
+        if not isinstance(subject, basestring) or len(subject) == 0 or\
+                not isinstance(body, basestring) or len(body) == 0:
+            raise ImmediateHttpResponse(response=http.HttpBadRequest())
+
+        kwargs=dict(
+            agora_id=agora.id,
+            user_id=request.user.id,
+            is_secure=request.is_secure(),
+            receivers=receivers,
+            subject=subject,
+            body=body,
+            site_id=Site.objects.get_current().id,
+            remote_addr=request.META.get('REMOTE_ADDR')
+        )
+        send_mail_to_members.apply_async(kwargs=kwargs)
+        return self.create_response(request, dict(status="success"))
 
     @permission_required('request_membership', (Agora, 'id', 'agoraid'))
     def request_membership_action(self, request, agora, **kwargs):
@@ -537,7 +565,7 @@ class AgoraResource(GenericResource):
         remove_perm('requested_membership', request.user, agora)
 
         # create an action for the event
-        action.send(request.user, verb='cancelled requested membership',
+        action.send(request.user, verb='canceled requested membership',
             action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
             target=request.user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
@@ -549,7 +577,7 @@ class AgoraResource(GenericResource):
             context.update(dict(
                 agora=agora,
                 other_user=request.user,
-                notification_text=_('Your cancelled your membership request at '
+                notification_text=_('You canceled your membership request at '
                     '%(agora)s') % dict(
                         agora=agora.get_full_name()
                     ),
@@ -557,7 +585,7 @@ class AgoraResource(GenericResource):
             ))
 
             email = EmailMultiAlternatives(
-                subject=_('%(site)s - cancelled your membership request at '
+                subject=_('%(site)s - canceled your membership request at '
                         '%(agora)s') % dict(
                         site=Site.objects.get_current().domain,
                         agora=agora.get_full_name()
@@ -579,43 +607,7 @@ class AgoraResource(GenericResource):
         '''
         Action that an user can execute to join an agora if it has permissions
         '''
-        agora.members.add(request.user)
-        agora.save()
-
-        action.send(request.user, verb='joined', action_object=agora,
-            ipaddr=request.META.get('REMOTE_ADDR'),
-            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
-
-        if not is_following(request.user, agora):
-            follow(request.user, agora, actor_only=False, request=request)
-
-        # Mail to the user
-        user = request.user
-        if user.get_profile().has_perms('receive_email_updates'):
-            translation.activate(user.get_profile().lang_code)
-            context = get_base_email_context(request)
-            context.update(dict(
-                agora=agora,
-                other_user=user,
-                notification_text=_('You just joined %(agora)s. '
-                    'Congratulations!') % dict(agora=agora.get_full_name()),
-                to=user
-            ))
-
-            email = EmailMultiAlternatives(
-                subject=_('%(site)s - you are now member of %(agora)s') % dict(
-                            site=Site.objects.get_current().domain,
-                            agora=agora.get_full_name()
-                        ),
-                body=render_to_string('agora_core/emails/agora_notification.txt',
-                    context),
-                to=[user.email])
-
-            email.attach_alternative(
-                render_to_string('agora_core/emails/agora_notification.html',
-                    context), "text/html")
-            email.send()
-            translation.deactivate()
+        request.user.get_profile().add_to_agora(agora_id=agora.id, request=request)
 
         return self.create_response(request, dict(status="success"))
 
@@ -734,7 +726,7 @@ class AgoraResource(GenericResource):
         Adds a member (specified with username) to this agora, sending a
         welcome message to this new member via email
         '''
-        if not re.match("^[a-zA-Z0-9_]+$", username):
+        if not re.match("^[a-zA-Z0-9-_]+$", username):
             raise ImmediateHttpResponse(response=http.HttpBadRequest())
         user = get_object_or_404(User, username=username)
 
@@ -757,13 +749,13 @@ class AgoraResource(GenericResource):
                 agora=agora,
                 other_user=user,
                 notification_text=_('As administrator of %(agora)s, %(user)s has '
-                    'himself added you to this agora. You can remove your '
+                    'added you to this agora. You can remove your '
                     'membership at anytime, and if you think he is spamming '
                     'you please contact with this website '
-                    'administrators.\n\n') % dict(
+                    'administrators.') % dict(
                         agora=agora.get_full_name(),
                         user=request.user.username
-                    ) + welcome_message,
+                    ) + '\n\n' + welcome_message,
                 to=user
             ))
 
@@ -816,16 +808,15 @@ class AgoraResource(GenericResource):
             context.update(dict(
                 agora=agora,
                 other_user=user,
-                notification_text=_('Your have been removed from membership '
-                    'from %(agora)s . Sorry about that!\n\n') % dict(
+                notification_text=_('Your membership of %(agora)s has been removed. '
+                            'Sorry about that!') % dict(
                             agora=agora.get_full_name()
-                        ) + goodbye_message,
+                        ) + '\n\n' + goodbye_message,
                 to=user
             ))
 
             email = EmailMultiAlternatives(
-                subject=_('%(site)s - membership removed from '
-                    '%(agora)s') % dict(
+                subject=_('%(site)s - membership of %(agora)s removed') % dict(
                         site=Site.objects.get_current().domain,
                         agora=agora.get_full_name()
                     ),
@@ -874,7 +865,7 @@ class AgoraResource(GenericResource):
         remove_perm('requested_admin_membership', request.user, agora)
 
         # create an action for the event
-        action.send(request.user, verb='cancelled requested admin membership',
+        action.send(request.user, verb='canceled requested admin membership',
             action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
             target=request.user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
@@ -886,7 +877,7 @@ class AgoraResource(GenericResource):
             context.update(dict(
                 agora=agora,
                 other_user=request.user,
-                notification_text=_('Your cancelled your admin membership request at '
+                notification_text=_('You canceled your admin membership request at '
                     '%(agora)s') % dict(
                         agora=agora.get_full_name()
                     ),
@@ -894,7 +885,7 @@ class AgoraResource(GenericResource):
             ))
 
             email = EmailMultiAlternatives(
-                subject=_('%(site)s - cancelled your admin membership request at '
+                subject=_('%(site)s - canceled your admin membership request at '
                         '%(agora)s') % dict(
                         site=Site.objects.get_current().domain,
                         agora=agora.get_full_name()
@@ -1099,13 +1090,13 @@ class AgoraResource(GenericResource):
                 agora=agora,
                 other_user=user,
                 notification_text=_('As administrator of %(agora)s, %(user)s has '
-                    'himself promoted you to admin of this agora. You can remove '
+                    'promoted you to admin of this agora. You can remove '
                     'your admin membership at anytime, and if you think he is '
                     'spamming you please contact with this website '
-                    'administrators.\n\n') % dict(
+                    'administrators.') % dict(
                         agora=agora.get_full_name(),
                         user=request.user.username
-                    ) + welcome_message,
+                    ) + '\n\n' + welcome_message,
                 to=user
             ))
 
@@ -1146,7 +1137,7 @@ class AgoraResource(GenericResource):
         agora.save()
 
         # create an action for the event
-        action.send(request.user, verb='removed admin permissions',
+        action.send(request.user, verb='revoked admin permissions',
             action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
             target=user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
@@ -1158,15 +1149,14 @@ class AgoraResource(GenericResource):
             context.update(dict(
                 agora=agora,
                 other_user=user,
-                notification_text=_('Your have been removed admin permissions '
-                    'from %(agora)s . Sorry about that!\n\n') % dict(
+                notification_text=_('Your admin permissions on %(agora)s have been revoked. Sorry about that!') % dict(
                             agora=agora.get_full_name()
-                        ) + goodbye_message,
+                        ) + '\n\n' + goodbye_message,
                 to=user
             ))
 
             email = EmailMultiAlternatives(
-                subject=_('%(site)s - admin permissions removed from '
+                subject=_('%(site)s - admin permissions revoked on '
                     '%(agora)s') % dict(
                         site=Site.objects.get_current().domain,
                         agora=agora.get_full_name()
@@ -1193,7 +1183,7 @@ class AgoraResource(GenericResource):
         agora.save()
 
         # create an action for the event
-        action.send(request.user, verb='left admin permissions',
+        action.send(request.user, verb='gave up admin permissions',
             action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
@@ -1204,15 +1194,15 @@ class AgoraResource(GenericResource):
             context.update(dict(
                 agora=agora,
                 other_user=request.user,
-                notification_text=_('Your hav removed your admin permissions '
-                    'from %(agora)s') % dict(
+                notification_text=_('You have given up your admin permissions '
+                    'on %(agora)s') % dict(
                             agora=agora.get_full_name()
                         ),
                 to=request.user
             ))
 
             email = EmailMultiAlternatives(
-                subject=_('%(site)s - admin permissions removed from '
+                subject=_('%(site)s - admin permissions given up on '
                     '%(agora)s') % dict(
                         site=Site.objects.get_current().domain,
                         agora=agora.get_full_name()
@@ -1264,7 +1254,7 @@ class AgoraResource(GenericResource):
         vote.save()
 
         # create an action for the event
-        action.send(request.user, verb='cancelled vote delegation',
+        action.send(request.user, verb='canceled vote delegation',
             action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
@@ -1275,7 +1265,7 @@ class AgoraResource(GenericResource):
             context.update(dict(
                 agora=agora,
                 other_user=request.user,
-                notification_text=_('Your hav removed your vote delegation '
+                notification_text=_('You have removed your vote delegation '
                     'from %(agora)s') % dict(
                             agora=agora.get_full_name()
                         ),
@@ -1283,7 +1273,7 @@ class AgoraResource(GenericResource):
             ))
 
             email = EmailMultiAlternatives(
-                subject=_('%(site)s - admin permissions removed from '
+                subject=_('%(site)s - vote delegation removed from '
                     '%(agora)s') % dict(
                         site=Site.objects.get_current().domain,
                         agora=agora.get_full_name()

@@ -19,6 +19,9 @@
             // for each election
             for (var i = 0; i < ajax_data.tallied_elections.objects.length; i++) {
                 var election = ajax_data.tallied_elections.objects[i];
+                if (!election.result) {
+                    continue;
+                }
                 election.result.is_simple = false;
 
                 election.result.participation_percentage = 
@@ -99,6 +102,8 @@
             this.tallied_user_elections_view = new Agora.TalliedUserElectionsView();
             this.user_agoras_list_view = new Agora.UserAgorasListView();
             this.user_delegate_in_actions_view = new Agora.UserDelegateInActionsView();
+
+            $(".participated_elections_badge").html(ajax_data.tallied_elections.meta.total_count);
         }
     });
 }).call(this)
