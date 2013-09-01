@@ -348,6 +348,10 @@
             Agora.renderAgoraTabs();
             Agora.renderAgoraCalendar();
 
+            var text = $("#agora_short_description").text();
+            var converter = new Showdown.converter();
+            $("#agora_short_description").html(converter.makeHtml(text));
+
             // Only initialize on correct section of page exists.
             if ($("#activity-list").length > 0) {
                 this.activityListView = new Agora.ActivityListView();

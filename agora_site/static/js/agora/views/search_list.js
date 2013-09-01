@@ -9,8 +9,10 @@
         var SearchInfiniteView = Agora.GenericListView.extend({
             el: "#activity-list",
             templateEl: "#template-search-item",
+            converter: null,
 
             setup: function() {
+                this.converter = new Showdown.converter();
                 Agora.GenericListView.prototype.setup.apply(this);
                 this.params = {q: this.$el.data('query')};
 
@@ -36,6 +38,8 @@
                             'electionname': json.pretty_name,
                             'agora_full_name': json.agora.full_name
                         }, true);
+                } else if (ctype == 'agora') {
+                    json.short_description = this.converter.makeHtml(json.short_description);
                 }
                 var ret = template(json);
                 return ret;
