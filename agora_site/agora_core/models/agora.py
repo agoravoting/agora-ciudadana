@@ -10,6 +10,8 @@ from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.db.models.signals import post_save
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
 from guardian.shortcuts import *
 
@@ -203,6 +205,16 @@ class Agora(models.Model):
             id__in=CastVote.objects.filter(is_counted=True, is_direct=True, is_public=True,
                 invalidated_at_date=None, election__agora__id=self.id).values('voter').query)
 
+    def non_delegates(self):
+        '''
+        This will return those users not included by active_delegates()
+        '''
+        from agora_site.agora_core.models import CastVote
+
+        return User.objects.exclude(
+            id__in=CastVote.objects.filter(is_counted=True, is_direct=True, is_public=True,
+                invalidated_at_date=None, election__agora__id=self.id).values('voter').query)
+
     def active_nonmembers_delegates(self):
         '''
         Same as active_delegates but all of those who are not currently a member
@@ -326,6 +338,18 @@ class Agora(models.Model):
         elif permission_name == 'leave_admin':
             return self.creator != user and is_admin()
 
+        # NOTE: this is similar to asking "does this userhave an email and is
+        # a member of this agora?". But it's not same as "does this user have
+        # 'receive_mail' permission from XX user, because we have not been given
+        # the second user. This second condition is only true if the first
+        # question is true and the second user is an admin of this agora.
+        elif permission_name == 'receive_mail':
+            try:
+                validate_email(user.email)
+            except ValidationError:
+                return False
+            return is_member()
+
         elif permission_name == 'comment':
             if self.comments_policy == Agora.COMMENTS_PERMS[0][0]:
                 return True
@@ -408,7 +432,8 @@ class Agora(models.Model):
         return [perm for perm in ('join', 'request_membership', 'admin',
             'cancel_membership_request', 'request_admin_membership', 'delete',
             'cancel_admin_membership_request', 'leave', 'leave_admin',
-            'comment', 'create_election', 'delegate', 'cancel_vote_delegation')
+            'comment', 'create_election', 'delegate', 'cancel_vote_delegation',
+            'receive_mail')
                 if self.__has_perms(perm, user, isanon, opc_perms, is_member,
                     is_admin, isarchived, requires_membership_approval)]
 

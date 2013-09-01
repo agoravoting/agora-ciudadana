@@ -80,4 +80,4 @@ class RegisterCompleteInviteView(FormView):
         else:
             messages.add_message(request, messages.ERROR, _('Invalid activation link.'))
             return redirect('/')
-        return super(RegisterCompleteInviteView, self).dispatch(*args, **kwargs)
+        return super(RegisterCompleteInviteView, self).dispatch(request, *args, **kwargs)

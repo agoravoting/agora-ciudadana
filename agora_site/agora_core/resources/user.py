@@ -322,25 +322,24 @@ class UserResource(GenericResource):
                                           'username': user.username,
                                           'welcome_message': welcome_message},
                                     method="POST",
-                                    request=request, use_esi=False)
+                                    request=request)
                 if status != 200:
                     raise ImmediateHttpResponse(response=http.HttpBadRequest())
             else:
                 # send invitation
                 username = str(uuid4())
                 password = str(uuid4())
-                new_user = UserenaSignup.objects.create_user(username,
+                user = UserenaSignup.objects.create_user(username,
                                                 email,
                                                 password,
                                                 False,
                                                 False)
-                profile = new_user.get_profile()
+                profile = user.get_profile()
                 profile.lang_code = request.user.get_profile().lang_code
-                profile.extra = {'join_agora_ids': join_agora_ids}
+                profile.extra = {'join_agora_id': agoraid}
                 profile.save()
 
                 # Mail to the user
-                user = new_user
                 translation.activate(user.get_profile().lang_code)
                 context = get_base_email_context(request)
                 context.update(dict(

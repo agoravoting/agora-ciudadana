@@ -75,11 +75,15 @@
 {% endblock %}
 
 {% block script-block %}
-{% include "agora_core/client/calendar_elections.html" %}
 {% include "agora_core/include-js-template-agora.html" %}
+{% include "agora_core/client/calendar_elections.html" %}
 {% include "agora_core/client/all_actions.html" %}
 {% include "agora_core/client/action_list.html" %}
+{% include "agora_core/client/modal_dialog.html" %}
+{% include "agora_core/client/mail_to_members.html" %}
 {% include "agora_core/client/tallied_elections_view.html" %}
+{% include "agora_core/client/add_members_modal_dialog.html" %}
+{% include "agora_core/client/send_mail.html" %}
 {% include "agora_core/client/agora_tabs.html" %}
 {% include "agora_core/client/agora_calendar.html" %}
 <script>

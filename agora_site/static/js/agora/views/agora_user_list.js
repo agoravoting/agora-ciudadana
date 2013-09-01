@@ -85,6 +85,9 @@
             $(e.target).closest('.dropdown').find('.dropdown-toggle').dropdown('toggle');
             var user_id = $(e.target).closest("div.row.bottom-bordered").data('id');
             var user_fullname = $(e.target).closest("div.row.bottom-bordered").data('fullname');
+            if (!user_fullname.length) {
+                user_fullname = $(e.target).closest("div.row.bottom-bordered").data('username');
+            }
 
             app.sendMessageDialog = new Agora.ModalDialogView();
             var title = interpolate(gettext('Send a message to %s'), [user_fullname]);
@@ -133,6 +136,9 @@
         initialize: function() {
             _.bindAll(this);
             this.infiniteListView = new AgoraUserInfiniteView();
+            this.agoraActionListView = new Agora.AgoraActionListView();
+            app.modalDialog = new Agora.ModalDialogView();
+
             this.filter = '';
             var obj = this;
 
@@ -155,52 +161,6 @@
             });
             $("#filter-button").click(function() {
                 obj.filterList();
-            });
-
-            app.addMembersDialog = new Agora.ModalDialogView();
-            $("#manual-member").click(function() {
-                var title = gettext('Add members manually');
-                var body = _.template($("#template-add_members_modal_dialog_body").html())();
-                var footer = _.template($("#template-add_members_modal_dialog_footer").html())();
-
-                app.addMembersDialog.populate(title, body, footer);
-                app.addMembersDialog.show();
-
-                $("#add-members-action").click(function(e) {
-                    e.preventDefault();
-                    if ($("#add-members-action").hasClass("disabled")) {
-                        return false;
-                    }
-                    var json = {
-                        agoraid: ajax_data.agora.id,
-                        emails: $("#add_members_textarea").val(),
-                        welcome_message: gettext('Welcome to this agora')
-                    }
-
-                    if (json.emails.length == 0) {
-                        return false;
-                    }
-
-                    json.emails = json.emails.split(",");
-
-                    $("#add-members-action").addClass("disabled");
-
-                    var jqxhr = $.ajax("/api/v1/user/invite/", {
-                        data: JSON.stringifyCompat(json),
-                        contentType : 'application/json',
-                        type: 'POST',
-                    })
-                    .done(function() {
-                        $("#modal_dialog").modal('hide');
-                    })
-                    .fail(function() {
-                        $("#add-members-action").removeClass("disabled");
-                        alert(gettext("Error sending the invitations, please check the input data"));
-                    });
-                    return false;
-                });
-
-                return false;
             });
         },
 

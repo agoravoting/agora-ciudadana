@@ -1,0 +1,25 @@
+<script id="template-mail_to_members_modal_dialog_footer" type="text/underscore-template">
+    <a href="#" class="btn btn-primary" id="send-mail-action"><%= gettext("Send email to members") %></a>
+</script>
+
+<script id="template-mail_to_members_modal_dialog_body" type="text/underscore-template">
+    <p>
+    <%= gettext("Email subject:") %>
+    </p>
+    <input type="text" class="input-block-level" id="mail_subject"/>
+    <p>
+    <p>
+    <%= gettext("Email body:") %>
+    </p>
+    <textarea class="input-block-level" id="mail_body"></textarea>
+    <p>
+    <%= gettext("Mail receivers:") %>
+    </p>
+    <select id="mail_receivers" class="input-block-level">
+        <option value="members"><%= gettext("All members") %></option>
+        <option value="admins"><%= gettext("Admins only") %></option>
+        <option value="delegates"><%= gettext("Delegates") %></option>
+        <option value="non-delegates"><%= gettext("Non-delegates") %></option>
+        <option value="requested-membership"><%= gettext("Requested membership") %></option>
+    </select>
+</script>
