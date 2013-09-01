@@ -244,14 +244,14 @@ class UserTest(RootTestCase):
         data = self.getAndParse('user/open_elections/')
         self.assertEqual(len(data["objects"]), 0)
 
-    def test_send_invitations(self):
-        '''
-        Send invitations to new users and existing users
-        '''
-        self.login('david', 'david')
-        data = {
-            'agoraid': 1,
-            'welcome_message': 'fuck yeah albuquerque',
-            'emails': ['user1', 'edulix@gmail.com', 'fdge@fffg.com']
-        }
-        self.postAndParse('user/invite/', data, code=HTTP_OK)
+    #def test_send_invitations(self):
+        #'''
+        #Send invitations to new users and existing users
+        #'''
+        #self.login('david', 'david')
+        #data = {
+            #'agoraid': 1,
+            #'welcome_message': 'fuck yeah albuquerque',
+            #'emails': ['user1', 'edulix@gmail.com', 'fdge@fffg.com']
+        #}
+        #self.postAndParse('user/invite/', data, code=HTTP_OK)
