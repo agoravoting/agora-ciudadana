@@ -21,6 +21,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import forms as auth_forms
 from django.contrib.sites.models import Site
 from django import forms as django_forms

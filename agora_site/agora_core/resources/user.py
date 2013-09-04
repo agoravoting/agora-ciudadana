@@ -33,7 +33,7 @@ from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.misc.utils import rest, validate_email
 from agora_site.misc.decorators import permission_required
 from agora_site.agora_core.forms.user import (UsernameAvailableForm, LoginForm,
-    SendMailForm, UserSettingsForm, CustomAvatarForm)
+    SendMailForm, UserSettingsForm, CustomAvatarForm, APISignupForm)
 from agora_site.agora_core.models import Profile
 from agora_site.agora_core.models import Agora
 
@@ -68,6 +68,13 @@ class TinyUserResource(GenericResource):
     def dehydrate_short_description(self, bundle):
         return bundle.obj.get_profile().get_short_description()
 
+
+class ActivationUserResource(TinyUserResource):
+    activation_url = fields.CharField()
+
+    def dehydrate_activation_url(self, bundle):
+        return reverse("userena_activate",
+            args=(bundle.obj.username, bundle.obj.userena_signup.activation_key))
 
 class TinyProfileResource(GenericResource):
     '''
@@ -167,7 +174,7 @@ class UserResource(GenericResource):
 
             url(r"^(?P<resource_name>%s)/register%s$" \
                 % (self._meta.resource_name, trailing_slash()),
-                self.wrap_form(form_class=userena_forms.SignupForm,
+                self.wrap_form(form_class=APISignupForm,
                 method="POST"), name="api_user_register"),
 
             url(r"^(?P<resource_name>%s)/login%s$" % (self._meta.resource_name,

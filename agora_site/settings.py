@@ -308,7 +308,7 @@ USERENA_FORBIDDEN_USERNAMES = (
     'agora', 'staff', 'agoraciudadana', 'agoravoting', 'root', 'administrator',
     'adminstrador', 'hostmaster', 'info', 'ssladmin', 'sysadmin', 'webmaster',
     'no-reply', 'mail', 'email', 'accounts', 'misc', 'api', 'search',
-    'settings', 'edit'
+    'settings', 'edit', 'list', 'login'
 )
 
 USERENA_MUGSHOT_SIZE = 50
@@ -381,6 +381,21 @@ AGORA_USE_HTTPS = False
 
 USE_ESI = False
 
+# This indicates if the user is allowed to use FNMT certificates as a login or
+# authentication method. Disabled by default because this is a spanish thingie.
+#
+# See INSTALL.md for more details
+AGORA_ALLOW_FNMT_CERTIFICATE = False
+
+# Allow users registered via the API to be activated with a link
+AGORA_ALLOW_API_AUTO_ACTIVATION = False
+
+# the API caller will have to provide this secret to be able to do API
+# auto-activation
+AGORA_API_AUTO_ACTIVATION_SECRET = 'change the activation secret'
+
+AGORA_FNMT_BASE_URL = "https://fnmt.local.dev"
+AGORA_BASE_URL = "https://local.dev"
 
 # sets default value for max age in cache.
 # set to zero (no-cache) by default
