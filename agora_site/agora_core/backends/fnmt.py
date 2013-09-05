@@ -18,6 +18,7 @@ from uuid import uuid4
 
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 
 from userena.models import UserenaSignup
 
@@ -39,11 +40,12 @@ class FNMTBackend(object):
         self.full_name = full_name
         self.email = email
         self.nif = nif
-        user = User.objects.filter(email=self.email)
+        if email is not None:
+            user = User.objects.filter(email=self.email)
 
         # if we find an user with that email, login the user with that account,
         # setting NIF and full_name if needed
-        if user.exists():
+        if email and user.exists():
             user = user[0]
             profile = user.get_profile()
             modified = False
@@ -86,7 +88,7 @@ class FNMTBackend(object):
                     user.is_active = True
                     modified = True
                 if not isinstance(profile.extra, dict) or\
-                        profile.extra.get("fnmt_cert", '') != self.fnmt_cert:
+                        profile.extra.get("fnmt_cert", '') != self.cert_pem:
                     modified = True
                     if not isinstance(profile.extra, dict):
                         profile.extra = dict()
@@ -98,16 +100,23 @@ class FNMTBackend(object):
 
         # in all other cases, we need to register this as a new user
 
-        # generate a valid new username
-        base_username = username = self.email.split('@')[0]
-        while User.objects.filter(username=username).exists():
-            username = base_username + random.randint(0, 100)
+        activate_user = email is not None
+
+        if email is not None:
+            # generate a valid new username
+            base_username = username = slugify(self.email.split('@')[0])
+            while User.objects.filter(username=username).exists():
+                username = base_username + random.randint(0, 100)
+        else:
+            username = str(uuid4())
+            email = "%s@example.com" % str(uuid4())
+
 
         # generate a new password (just because it's needed - user will only
         # login using the fnmt login method by default)
-        password =str(uuid4())
+        password = str(uuid4())
         new_user = UserenaSignup.objects.create_user(username, self.email,
-            password, True, False)
+            password, activate_user, False)
         new_user.first_name = self.full_name
         new_user.save()
 
@@ -122,3 +131,78 @@ class FNMTBackend(object):
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
+
+def fnmt_data_from_pem(pem):
+    '''
+    given an FNMT PEM certificate, returns the relevant data from it:
+    returns nif, full_name, email
+
+    The certificate might not contain an email - in that case it will return
+    None for the email.
+
+    If there's any error processing the certificate, it will throw an exception
+    '''
+
+    import OpenSSL
+    from pyasn1.type.base import AbstractConstructedAsn1Item
+    from pyasn1.type.char import IA5String
+    from pyasn1.codec.der.decoder import decode
+    from pyasn1_modules.rfc2459 import SubjectAltName, AttributeTypeAndValue, GeneralName
+
+    cert = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, pem)
+
+    # sanity check
+    components = cert.get_subject().get_components()
+    assert components[0][0].lower() == 'c'
+    assert components[0][1].lower() == 'es'
+
+    assert components[1][0].lower() == 'o'
+    assert components[1][1].lower() == 'fnmt'
+
+    assert components[2][0].lower() == 'ou'
+    assert components[2][1].lower() == 'fnmt clase 2 ca'
+
+    assert components[4][0].lower() == 'cn'
+
+    def visit_asn(data, item):
+        '''
+        visits asn items locating and saving relevant data
+        '''
+        if isinstance(item, IA5String):
+            data['email'] = str(item).lower()
+        elif isinstance(item, AttributeTypeAndValue):
+            item_type = str(item[0])
+            if item_type == '1.3.6.1.4.1.5734.1.1':
+                data['name'] = str(decode(item[1])[0])
+            elif item_type == '1.3.6.1.4.1.5734.1.2':
+                data['surname1'] = str(decode(item[1])[0])
+            elif item_type == '1.3.6.1.4.1.5734.1.3':
+                data['surname2'] = str(decode(item[1])[0])
+            elif item_type == '1.3.6.1.4.1.5734.1.4':
+                data['nif'] = str(decode(item[1])[0])
+        elif isinstance(item, AbstractConstructedAsn1Item) or isinstance(item, tuple):
+            for child_item in item:
+                visit_asn(data, child_item)
+
+    # find subjectAltName, which should contain user's email address
+    for i in xrange(cert.get_extension_count()):
+        ext = cert.get_extension(i)
+        if ext.get_short_name() == 'subjectAltName':
+            alt_name = decode(ext.get_data(), asn1Spec=SubjectAltName())
+
+            data = dict()
+            visit_asn(data, alt_name)
+
+            # check that everything was found
+            assert data.has_key('nif')
+            assert data.has_key('surname1')
+            assert data.has_key('surname2')
+            assert data.has_key('name')
+            # email might not be found
+
+            full_name = "%s %s %s" % (data['name'], data['surname1'], data['surname2'])
+            full_name = " ".join([i.capitalize() for i in full_name.split(" ")])
+
+            return data['nif'], full_name, data.get('email', None)
+
+    raise Exception("subjectAltName not found in the certificate")

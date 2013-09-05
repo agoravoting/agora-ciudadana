@@ -16,7 +16,7 @@
 import datetime
 
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.conf.urls import patterns, url, include
@@ -50,6 +50,8 @@ from haystack.views import SearchView as HaystackSearchView
 
 from agora_site.agora_core.templatetags.agora_utils import get_delegate_in_agora
 from agora_site.agora_core.models import Agora, Election, Profile, CastVote
+
+from agora_site.agora_core.backends.fnmt import fnmt_data_from_pem
 from agora_site.agora_core.forms import *
 from agora_site.agora_core.tasks import *
 from agora_site.misc.utils import *
@@ -2126,9 +2128,7 @@ class FNMTLoginView(TemplateView):
             next = settings.LOGIN_REDIRECT_URL
         return http.HttpResponseRedirect(next)
 
-    def invalid_login(self, message):
-        # TODO show an error
-        self.message = message
+    def invalid_login(self):
         return super(FNMTLoginView, self).get(self.request)
 
     def get(self, request, *args, **kwargs):
@@ -2146,68 +2146,24 @@ class FNMTLoginView(TemplateView):
         cert_pem = self.request.META.get('X-Sender-SSL-Certificate', '').replace('\t', '')
         verify = self.request.META.get('X-Sender-SSL-Verify', 'NONE')
         if verify != "SUCCESS":
-            return self.invalid_login("Invalid certificate")
+            return self.invalid_login()
         try:
-            import OpenSSL
-            from pyasn1.codec.der.decoder import decode
-            from pyasn1_modules.rfc2459 import SubjectAltName
-
-            cert = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, cert_pem)
-
-            # sanity check
-            components = cert.get_subject().get_components()
-            assert components[0][0] == 'C'
-            assert components[0][1] == 'es'
-
-            assert components[1][0] == 'O'
-            assert components[1][1] == 'FNMT'
-
-            assert components[2][0] == 'OU'
-            assert components[2][1] == 'FNMT CLASE 2 CA'
-
-            # retrieve dni number
-            assert components[4][0] == 'CN'
-
-            # find subjectAltName, which should contain user's email address
-            found = False
-            for i in xrange(cert.get_extension_count()):
-                ext = cert.get_extension(i)
-                if ext.get_short_name() == 'subjectAltName':
-                    alt_name = decode(ext.get_data(), asn1Spec=SubjectAltName())
-
-                    # some sanity checks
-                    assert str(alt_name[0][1][4][0][0][0][0]) == '1.3.6.1.4.1.5734.1.4'
-                    assert str(alt_name[0][1][4][0][1][0][0]) == '1.3.6.1.4.1.5734.1.3'
-                    assert str(alt_name[0][1][4][0][2][0][0]) == '1.3.6.1.4.1.5734.1.2'
-                    assert str(alt_name[0][1][4][0][3][0][0]) == '1.3.6.1.4.1.5734.1.1'
-
-                    nif = str(decode(alt_name[0][1][4][0][0][0][1])[0])
-                    surname2 = decode(alt_name[0][1][4][0][1][0][1])[0]
-                    surname1 = decode(alt_name[0][1][4][0][2][0][1])[0]
-                    name = decode(alt_name[0][1][4][0][3][0][1])[0]
-                    email = str(alt_name[0][0][1]).lower()
-
-                    found = True
-                    break
-            if not found:
-                return self.invalid_login("No email in the certificate")
-
-            full_name = "%s %s %s" % (name, surname1, surname2)
-            full_name = " ".join([i.capitalize() for i in full_name.split(" ")])
+            nif, full_name, email = fnmt_data_from_pem(cert_pem)
 
             user = authenticate(cert_pem=cert_pem, full_name=full_name,
                 email=email, nif=nif)
 
             if user is None:
-                return self.invalid_login("Couldn't authenticate with the FNMT certificate")
+                return self.invalid_login()
+
+            # show a form requesting the user its email
+            if not email and not user.is_active:
+                logout(request)
+                return redirect(settings.AGORA_BASE_URL + reverse('register-complete-fnmt',
+                    kwargs=dict(activation_key=user.userena_signup.activation_key)))
 
             login(request, user)
             return self.go_next()
 
         except:
-            return self.invalid_login("Error: Couldn't load the certificate")
-
-    def get_context_data(self, **kwargs):
-        context = super(FNMTLoginView, self).get_context_data(**kwargs)
-        context['messsage'] = self.message
-        return context
+            return self.invalid_login()

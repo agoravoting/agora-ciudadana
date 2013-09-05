@@ -5,6 +5,24 @@
 {% block running-board-wrapper-class %}auth-board{% endblock %}
 {% block running-board  %}
 <div class="row">
-<h2>{{message}}</h2>
+<h2>{% trans "Authentication failed" %}</h2>
 </div>
+
+{% endblock %}
+{% block content %}
+<div class="row hero-unit">
+<p><strong>{% trans "The authentication in the website using the FNMT certificate has failed. What could have happen is any of these options, please check if:" %}</strong></p>
+
+<ul>
+    <li><p>{% trans "Your FNMT <strong>certificate has expired</strong>. In this case, please request a new one, then try again." %}</p>
+    </li>
+    <li><p>{% trans "You <strong>chose another certificate</strong>. In this case, you'll need to try again, probably restarting the web browser (close it then open it again)." %}</p>
+    </li>
+    <li><p>{% trans "In this same browser session, you <strong>mistakenly chose not to send your certificate and indicated the browser to remember this choice</strong>. In this case, you need to restart the web browser (close it then open it again)." %}</p>
+    </li>
+</ul>
+{% url contact as contact_url %}
+<p>{% blocktrans %}Most of the time restarting the browser solves the problem. If nothing of the above helps, then please <a href="{{contact_url}}">contact us</a>.{% endblocktrans %}</p>
+</div>
+
 {% endblock %}
