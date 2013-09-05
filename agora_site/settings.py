@@ -117,6 +117,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'agora_site.misc.context_processor.settings.SITE_NAME',
     'agora_site.misc.context_processor.settings.DEBUG',
     'agora_site.misc.context_processor.settings.MEDIA_URL',
+    'agora_site.misc.context_processor.settings.AUTHENTICATION_BACKENDS',
+    'agora_site.misc.context_processor.settings.AGORA_FNMT_BASE_URL',
 )
 
 ROOT_URLCONF = 'agora_site.urls'
@@ -244,6 +246,7 @@ ENDLESS_PAGINATION_PER_PAGE = 20
 
 # Settings for django-social auth
 AUTHENTICATION_BACKENDS = (
+    #'agora_site.agora_core.backends.fnmt.FNMTBackend',
     'social_auth.backends.twitter.TwitterBackend',
     #'social_auth.backends.facebook.FacebookBackend',
     #'social_auth.backends.google.GoogleOAuthBackend',

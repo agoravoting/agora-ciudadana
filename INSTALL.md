@@ -139,6 +139,16 @@ cities data base and put it where the settings.py will look it for:
     $ wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
     $ gunzip GeoLiteCity.dat.gz
 
+### FNMT configuration
+
+TODO: needs more detailed instructions!
+
+To allow FNMT login you'll have to configure your server properly. You'll have
+to download the CA certificate from https://www.cert.fnmt.es/index.php?cha=cit&sec=4&page=139&lang=es
+and then convert it to PEM format:
+
+    $ openssl x509 -inform DER -in FNMTClase2CA.crt -text -fingerprint > ca.pem
+
 ### Contribute
 
 We would be happy to consider any additions or bugfixes that you would like to

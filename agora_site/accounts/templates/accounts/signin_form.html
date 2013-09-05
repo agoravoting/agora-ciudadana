@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load crispy_forms_tags %}
+{% load agora_utils %}
 
 {% block title %}
 {% ifequal action 'login' %}
@@ -19,7 +20,7 @@
      $(document).ready(function() {
         $(".span3").bind("click", function(e) {
             $(".auth-highlight").removeClass("auth-highlight");
-            $(this).addClass("auth-highlight");            
+            $(this).addClass("auth-highlight");
         });
     });
 </script>
@@ -40,16 +41,31 @@
 
 
     <div class="span3 use-account">
-        <h3>{% trans "Use your account in.." %}</h3>
-        <p>{% trans "You can log in using your account in Twitter." %}</p>
-        <div>
-        <a href="{% url socialauth_begin 'twitter' %}">
-            <img src="{{ STATIC_URL }}img/sign-in-with-twitter-l.png" />
-        </a>
-        </div>
-        <strong>{% trans "Privacy" %}</strong>
-        <small>{% trans "We won't give any private data to Twitter and we will not use your profile to post anything without your permission." %}</small>
-        </a>
+        {% if AUTHENTICATION_BACKENDS|list_contains:"social_auth.backends.twitter.TwitterBackend" %}
+            <h3>{% trans "Use your account in.." %}</h3>
+            <p>{% trans "You can log in using your account in Twitter." %}</p>
+            <div>
+            <a href="{% url socialauth_begin 'twitter' %}">
+                <img src="{{ STATIC_URL }}img/sign-in-with-twitter-l.png" />
+            </a>
+            </div>
+            <strong>{% trans "Privacy" %}</strong>
+            <small>{% trans "We won't give any private data to Twitter and we will not use your profile to post anything without your permission." %}</small>
+        {% elif AUTHENTICATION_BACKENDS|list_contains:'agora_site.agora_core.backends.fnmt.FNMTBackend' %}
+            <h3>{% trans "Enter with FNMT" %}</h3>
+            <p>
+            {% trans 'You can enter this site using your FNMT certificate. <a href="#">More information here</a>.' %}</p>
+            <div>
+            <p>
+            <a href="{{AGORA_FNMT_BASE_URL}}/user/login/fnmt/" class="btn btn-primary">
+                {% trans "Enter using FNMT certificate" %}
+            </a>
+            </p>
+            </div>
+            <strong>{% trans "Terms of service" %}</strong>
+            <small>
+            {% url terms-of-service as tos_url %}{% blocktrans %}When you enter using the FNMT certificate you're accepting our <a href="{{tos_url}}">Terms of Service.</a>{% endblocktrans %}</small>
+        {% endif %}
     </div>
 </div>
 

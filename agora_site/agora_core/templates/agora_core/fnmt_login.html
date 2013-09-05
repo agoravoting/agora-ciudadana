@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load agora_utils %}
+
+{% block running-board-wrapper-class %}auth-board{% endblock %}
+{% block running-board  %}
+<div class="row">
+<h2>{{message}}</h2>
+</div>
+{% endblock %}

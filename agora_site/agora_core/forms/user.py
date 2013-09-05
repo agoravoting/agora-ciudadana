@@ -317,6 +317,7 @@ class APISignupForm(django_forms.Form):
     be accepted.
 
     """
+    first_name = django_forms.CharField(required=True)
     username = django_forms.RegexField(regex=userena_forms.USERNAME_RE,
                                 max_length=30, required=True,
                                 error_messages={'invalid': _('Username must contain only letters, numbers, dots and underscores.')})
@@ -384,6 +385,8 @@ class APISignupForm(django_forms.Form):
         else:
             new_user = UserenaSignup.objects.create_user(username, email,
                 password, False, False)
+
+        new_user.first_name = self.cleaned_data['first_name']
         return new_user
 
     def bundle_obj(self, obj, request):
