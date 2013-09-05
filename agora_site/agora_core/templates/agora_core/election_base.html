@@ -86,6 +86,7 @@
 <ul class="nav nav-tabs">
     {% block election-navigation %}
     {% block election-navigation-base %}
+    
     <li {% ifactivetab "election-nav" "activity" %}class="active"{% endifactivetab %}>
         <a href="{% url election-view election.agora.creator.username election.agora.name election.name %}">{% trans "Activity" %}</a>
     </li>
@@ -98,6 +99,8 @@
         {% get_comment_count for election as comment_count %}
         <span class="badge badge-info">{{ comment_count }}</span></a>
     </li>
+    
+    {% if election.agora.delegation_policy == election.agora.DELEGATION_TYPE.0.0 %}
     <li {% ifactivetab "election-nav" "delegates" %}class="active"{% endifactivetab %}>
         <a href="{% url election-delegates election.agora.creator.username election.agora.name election.name %}">{% trans "Delegates" %}
         <span class="badge badge-info">{{ election.get_votes_from_delegates.count }}</span></a>
@@ -106,6 +109,7 @@
         <a href="{% url election-graph election.agora.creator.username election.agora.name election.name %}">{% trans "Visual" %}
         <span class="badge badge-warning">{% trans "beta" %}</span></a>
     </li>
+    {% endif %}
 		
     {% if "edit_details" in permissions %}
     <li {% ifactivetab "election-nav" "edit" %}class="active"{% endifactivetab %}>
@@ -137,8 +141,8 @@
 {% block content %}
 
 <div class="row election-content-row">
-    <div class="content">
-        {% block election_content %}
+    <div class="content">        
+        {% block election_content %}                    
             <div class="main-description">
                 {{ election.description|urlify_markdown|markdown:"safe" }}
             </div>
@@ -178,10 +182,12 @@
                     <span>{{ participation|getitem:"direct_votes" }}</span>
                     {% blocktrans with percent=participation|getitem:"percentage_of_direct_participation"|floatformat:"-2" %}DIRECT VOTES ({{ percent }}% of the electorate){% endblocktrans %}
                 </strong>
+                {% if election.agora.delegation_policy == election.agora.DELEGATION_TYPE.0.0 %}
                 <strong class="counter">
                     <span>{{ participation|getitem:"delegated_votes" }}</span>
                     {% trans "DELEGATED VOTES" %}
                 </strong>
+                {% endif %}
                 {% endwith %}
             {% endif %}
             <div class="highlight-sidebar">
@@ -218,7 +224,7 @@
                                 {% if vote_from_user and vote_from_user.is_direct %}
                                     {% trans "Change my position as non-member delegate" %}
                                 {% else %}
-                                    {% trans "Stablish my position as non-member delegate" %}
+                                    {% trans "Establish my position as non-member delegate" %}
                                 {% endif %}
                             {% endif %}
                             </a>

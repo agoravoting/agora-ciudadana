@@ -245,7 +245,7 @@
                 }
             }
             $("#vote_info").html(this.templateVoteInfo(model));
-            if(delegate == true)
+            if(self.delegate == true)
             {
                 $("#vote_info .delegate_vote").click(this.delegateVote);
             }

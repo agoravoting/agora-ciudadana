@@ -229,10 +229,13 @@
             <% } %>
             <label class="checkbox public-warning">
                 <input name="user_vote_is_public" id="user_vote_is_public" type="checkbox">
-                <div class="mainlabel"><%= gettext("Vote in public as a delegate") %></div>
+                <div class="mainlabel"><%= gettext("Vote publicly") %></div>
                 <span class="optional">
                     <strong><%= gettext("NOTE") %></strong>
-                    <%= gettext("Choosing this will make your vote <strong>public</strong>, allowing others to delegate their vote in you for this election.") %>
+                    <%= gettext("Choosing this will allow other users to <strong>view your vote</strong>.") %>
+                    <% if (agora.delegation_policy == "ALLOW_DELEGATION") { %>
+                        <%= gettext("Others users may <strong>delegate</strong> their vote to you for elections in this agora.") %>
+                    <% } %>
                 </span>
                 <span class="mandatory hide">
                     <strong><%= gettext("NOTE") %></strong>
@@ -260,7 +263,7 @@
             </a>
         </div>
         <div class="modal-header hero-vote vote-cast">
-            <% if (!user_has_delegated) { %>
+            <% if ( (!user_has_delegated) && (agora.delegation_policy == "ALLOW_DELEGATION") ) { %>
                 <p><%= interpolate(gettext("You can <strong>delegate your vote</strong> so that <strong>in future elections in this agora</strong> <a href=\"%s\">%s</a> this delegate votes for you if you don't find the time to vote"),
                 [agora.url, agora.full_name]) %>.</p>
 

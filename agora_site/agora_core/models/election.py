@@ -334,6 +334,7 @@ class Election(models.Model):
         common in different has_perms checks, to make get_perms call more
         efficient.
         '''
+        
         if permission_name == 'edit_details':
             return not self.has_started() and isadminorcreator and\
                 not isarchived and not isfrozen
@@ -361,15 +362,14 @@ class Election(models.Model):
                 return False
         elif permission_name == 'emit_direct_vote':
             canemit = ismember() or\
-                self.agora.has_perms('join', user)
+                (self.agora.has_perms('join', user) and self.agora.delegation_policy == Agora.DELEGATION_TYPE[0][0])
             return canemit and not isarchived and\
                 isfrozen and self.has_started() and not self.has_ended()
         elif permission_name == 'vote_counts':
             return ismember() and not isarchived
         elif permission_name == 'emit_delegate_vote':
             can_emit = ismember() or\
-                self.agora.has_perms('join', user) or\
-                self.agora.membership_policy == Agora.MEMBERSHIP_TYPE[1][0]
+                (self.agora.has_perms('join', user) and self.agora.delegation_policy == Agora.DELEGATION_TYPE[0][0])                
             return can_emit and not isarchived and isfrozen and\
                 self.has_started() and not self.has_ended()
 
@@ -680,17 +680,18 @@ class Election(models.Model):
         ).values('voter__id').query
 
         # Query with the delegated votes
-        self.delegated_votes = CastVote.objects.filter(
-            election=self.agora.delegation_election,
-            is_direct=False,
-            is_counted=True,
-            invalidated_at_date=None
-            # we exclude from this query the people who voted directly so that
-            # you cannot vote twice
-        ).exclude(
-            is_direct=False,
-            voter__id__in=q
-        )
+        if self.agora.delegation_policy == Agora.DELEGATION_TYPE[0][0]:
+            self.delegated_votes = CastVote.objects.filter(
+                election=self.agora.delegation_election,
+                is_direct=False,
+                is_counted=True,
+                invalidated_at_date=None
+                # we exclude from this query the people who voted directly so that
+                # you cannot vote twice
+            ).exclude(
+                is_direct=False,
+                voter__id__in=q
+            )
 
         # These are all the people that can vote in this election
         self.electorate = self.agora.members.all()
