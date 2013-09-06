@@ -37,7 +37,7 @@ urlpatterns += patterns('',
     url(r'^$', HomeView.as_view(), name='home'),
 
     #TODO: create a robots.txt
-    #(r'^robots\.txt$', 'django.views.generic.simple.direct_to_template', {'template': 'agora_core/robots.txt', 'mimetype': 'text/plain'}),
+    (r'^robots\.txt$', 'django.views.generic.simple.direct_to_template', {'template': 'agora_core/robots.txt', 'mimetype': 'text/plain'}),
 
     (r'^404/?$', 'django.views.generic.simple.direct_to_template', {'template': '404.html'}),
 

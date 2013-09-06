@@ -1,0 +1,13 @@
+User-agent: *
+Disallow: /api/
+Disallow: /js-gettext/
+Disallow: /user/login/
+Disallow: /404/
+Disallow: /500/
+Disallow: /user/settings/
+Disallow: /user/cancel_email_updates/
+Disallow: /misc/link/
+Disallow: /accounts/
+
+User-agent: Mediapartners-Google
+Disallow:
