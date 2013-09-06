@@ -153,7 +153,7 @@
 
             return [
                 ['.name', 'presence', gettext('This field is required')],
-                ['.name', 'between:4:140', gettext('Must be between 4 and 140 characters long')],
+                ['.name', 'min-length:4', gettext('Must have at least 4 characters')],
                 ['.num_winners', 'presence', gettext('This field is required')],
                 ['.min_num_choices', 'presence', gettext('This field is required')],
                 ['.max_num_choices', 'presence', gettext('This field is required')],
@@ -356,8 +356,7 @@
 
             return [
                 ['#pretty_name', 'presence', gettext('This field is required')],
-                ['#pretty_name', 'between:4:140', gettext('Must be between 4 and 140 characters long')],
-
+                ['#pretty_name', 'min-length:4', gettext('Must have at least 4 characters')],
                 ['#description', 'presence', gettext('This field is required')],
                 ['#description',  'min-length:4', gettext('Must be at least 4 characters long')],
 
