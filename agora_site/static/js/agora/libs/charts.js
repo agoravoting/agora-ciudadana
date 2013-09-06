@@ -50,20 +50,19 @@
          .duration(2000)
          .each("end", function(d, i) {
             d3.select(this)
-             .on('mouseover', Charts._arc_mouseover(this, arc2, key_selector))
+             .on('mouseover', Charts._arc_mouseover(this, arc2, svg, key_selector))
              .on('mouseout', Charts._arc_mouseout(this, arc));
          })
          .attrTween("d", sweep);
     },
 
-    Charts._arc_mouseover = function(o, arc2, key_selector) {
+    Charts._arc_mouseover = function(o, arc2, svg, key_selector) {
         var obj = d3.select(o);
         var key = key_selector(obj.data()[0].data);
         if (key.length >= 35) {
             key = key.slice(0, 35) + '...';
         }
         var val = obj.data()[0].value;
-        var svg = d3.select('svg');
         var width = svg.attr("width");
         var height = svg.attr("height");
         return function () {
@@ -71,14 +70,14 @@
             .attr("d", arc2)
             .duration(200);
 
-            d3.select("g").append("text")
+            svg.select("g").append("text")
                 .attr("class", "textg")
                 .attr("dy", "-3em")
                 .attr("text-anchor", "middle")
                 .style("font", "300 24px Sans Serif") 
                 .text(key);
 
-            d3.select("g").append("text")
+            svg.select("g").append("text")
                 .attr("class", "textg")
                 .attr("dy", "-1em")
                 .attr("text-anchor", "middle")
