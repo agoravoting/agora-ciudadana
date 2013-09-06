@@ -14,7 +14,7 @@
 
     {{ election.description|striptags }}
 
-{% else %}
+{% elif allow_delegation %}
     <p>{% blocktrans with to_username=to.username %}Hello {{ to_username }},{% endblocktrans %}</p>
 
     <p>{% blocktrans with election_name=election.pretty_name agora_username=election.agora.creator.username agora_name=election.agora.name site_domain=site.domain %}Election <a href="{{ protocol }}://{{ site_domain }}{{ election_url }}">{{ election_name }}</a> at <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_username }}/{{ agora_name }}</a> has started, and now you can vote on it. Check it out! Don't forget to check what is the position of available delegates. If you don't want to track all elections in this agora, we recommend you to delegate your vote.{% endblocktrans %}</p>
@@ -22,7 +22,14 @@
     <h3>{% blocktrans %}Election description{% endblocktrans %}</h3>
 
     {{ election.description|textile }}
+{% else %}
+    <p>{% blocktrans with to_username=to.username %}Hello {{ to_username }},{% endblocktrans %}</p>
 
+    <p>{% blocktrans with election_name=election.pretty_name agora_username=election.agora.creator.username agora_name=election.agora.name site_domain=site.domain %}Election <a href="{{ protocol }}://{{ site_domain }}{{ election_url }}">{{ election_name }}</a> at <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_username }}/{{ agora_name }}</a> has started, and now you can vote on it. {% endblocktrans %}</p>
+
+    <h3>{% blocktrans %}Election description{% endblocktrans %}</h3>
+
+    {{ election.description|textile }}
 {% endif %}
 <p>
     --<br/>
