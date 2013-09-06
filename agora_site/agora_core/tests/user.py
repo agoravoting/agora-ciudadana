@@ -125,14 +125,14 @@ class UserTest(RootTestCase):
         # http://docs.django-userena.org/en/latest/faq.html#i-get-a-permission-matching-query-does-not-exist-exception
         call_command('check_permissions', verbosity=0, interactive=False)
 
-        # test 2^4 combinations
-        ps = self.powerset([{'email': 'hohoho@hoho.com'}, {'password1': 'hello'}, {'password2': 'hello'}, {'username': 'username'}])
+        # test 2^5 combinations
+        ps = self.powerset([{'email': 'hohoho@hoho.com'}, {'password1': 'hello'}, {'password2': 'hello'}, {'username': 'username'}, {'first_name': 'Pepito'}])
         for i in ps:
             params = {}
             if(len(i) > 0):
                 params = reduce(self.merge, i)
 
-            if(len(i) == 4):
+            if(len(i) == 5):
                 data = self.postAndParse('user/register/', params, code=HTTP_OK)
             else:
                 data = self.postAndParse('user/register/', params,

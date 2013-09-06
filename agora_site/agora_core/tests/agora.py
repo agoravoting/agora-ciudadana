@@ -210,7 +210,7 @@ class AgoraTest(RootTestCase):
         data = self.postAndParse('agora/1/action/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
         self.assertEquals(set(data["permissions"]), set(['admin', 'delete',
-            'comment', 'create_election', 'delegate']))
+            'comment', 'create_election', 'delegate', 'receive_mail']))
 
         orig_data = {'pretty_name': "updated name",
                      'short_description': "new desc",
@@ -227,7 +227,7 @@ class AgoraTest(RootTestCase):
         data = self.postAndParse('agora/1/action/', data=orig_data,
             code=HTTP_OK, content_type='application/json')
         self.assertEquals(set(data["permissions"]), set(['admin', 'delete',
-            'comment', 'create_election']))
+            'comment', 'create_election', 'receive_mail']))
 
 
     def test_agora_request_membership(self):
