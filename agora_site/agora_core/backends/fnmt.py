@@ -80,9 +80,6 @@ class FNMTBackend(object):
             # and nif authenticate with it
             if isinstance(profile.extra, dict) and\
                     profile.extra.get('nif', '') == self.nif:
-                if not user.is_active:
-                    user.is_active = True
-                    modified = True
                 if not isinstance(profile.extra, dict) or\
                         profile.extra.get("fnmt_cert", '') != self.cert_pem:
                     modified = True
