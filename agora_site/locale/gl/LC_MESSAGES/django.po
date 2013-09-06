@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-06 12:17+0200\n"
+"POT-Creation-Date: 2013-09-06 16:35+0200\n"
 "PO-Revision-Date: 2013-08-31 10:43+0200\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -28,10 +28,6 @@ msgstr "English"
 #: settings.py:72
 msgid "Galician"
 msgstr "Galego"
-
-#: settings.py:305
-msgid "a month"
-msgstr "un mes"
 
 #: accounts/forms.py:52 accounts/forms.py:132
 #: accounts/templates/accounts/profile_detail.html:24
@@ -134,9 +130,11 @@ msgstr ""
 "procure non volvelo esquecer.</p>"
 
 #: accounts/views.py:36
+#, fuzzy
 msgid ""
 "Registration successful! We have sent the activation link to your email "
-"address, look it up."
+"address, look it up. If you don't receive the email, please try to locate it "
+"in the SPAM folder."
 msgstr ""
 "O proceso de rexistro completouse correctamente. Siga a ligazón que lle "
 "chegará por correo."
@@ -3280,6 +3278,9 @@ msgstr "Seguirnos en Identi.ca"
 #: templates/base.html:163
 msgid "Powered by"
 msgstr "Co apoio de"
+
+#~ msgid "a month"
+#~ msgstr "un mes"
 
 #~ msgid "Remember me for a %(days)s"
 #~ msgstr "Recordarme por %(days)s"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-06 12:17+0200\n"
+"POT-Creation-Date: 2013-09-06 16:35+0200\n"
 "PO-Revision-Date: 2013-06-04 17:44-0000\n"
 "Last-Translator: \n"
 "Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-"
@@ -32,10 +32,6 @@ msgstr "Inglés"
 #: settings.py:72
 msgid "Galician"
 msgstr "Gallego"
-
-#: settings.py:305
-msgid "a month"
-msgstr "un mes"
 
 #: accounts/forms.py:52 accounts/forms.py:132
 #: accounts/templates/accounts/profile_detail.html:24
@@ -138,12 +134,15 @@ msgstr ""
 "trata de no olvidarla esta vez.</p>"
 
 #: accounts/views.py:36
+#, fuzzy
 msgid ""
 "Registration successful! We have sent the activation link to your email "
-"address, look it up."
+"address, look it up. If you don't receive the email, please try to locate it "
+"in the SPAM folder."
 msgstr ""
 "¡Te has registrado con éxito! Hemos enviado el enlace de activación a tu "
-"dirección de email, míralo."
+"dirección de email, míralo. Si no recibes el email, por favor comprueba "
+"la carpeta de SPAM, puede que se haya colado ahí."
 
 #: accounts/views.py:43
 msgid ""
@@ -3304,6 +3303,9 @@ msgstr "Seguir en Identi.ca"
 #: templates/base.html:163
 msgid "Powered by"
 msgstr "Funciona con"
+
+#~ msgid "a month"
+#~ msgstr "un mes"
 
 #~ msgid "Your cancelled your membership request at %(agora)s"
 #~ msgstr "Has cancelado tu petición para ser miembro de %(agora)s"
