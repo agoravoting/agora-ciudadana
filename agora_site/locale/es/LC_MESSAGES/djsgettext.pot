@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-06 10:11+0200\n"
+"POT-Creation-Date: 2013-09-06 12:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -425,102 +425,106 @@ msgid "started following"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:5
-msgid "created"
+msgid "started voting period"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:6
-msgid "published results"
+msgid "created"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:7
-msgid "joined"
+msgid "published results"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:8
-msgid "delegated"
+msgid "joined"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:9
-msgid "frozen"
+msgid "delegated"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:10
-msgid "approved"
+msgid "frozen"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:11
-msgid "proposed"
+msgid "approved"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:12
-msgid "commented"
+msgid "proposed"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:13
-msgid "vote canceled"
+msgid "commented"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:14
-msgid "archived"
+msgid "vote canceled"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:15
-msgid "requested membership"
+msgid "archived"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:16
-msgid "denied membership request"
+msgid "requested membership"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:17
-msgid "added member"
+msgid "denied membership request"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:18
-msgid "left"
+msgid "added member"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:19
-msgid "denied admin membership request"
+msgid "left"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:20
-msgid "added admin"
+msgid "denied admin membership request"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:21
-msgid "removed admin permissions"
+msgid "added admin"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:22
-msgid "left admin permissions"
+msgid "removed admin permissions"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:23
-msgid "canceled voto delegation"
+msgid "left admin permissions"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:24
-msgid "edited"
+msgid "canceled voto delegation"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:25
-msgid "canceled requested admin membership"
+msgid "edited"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:26
-msgid "canceled his/her membership request"
+msgid "canceled requested admin membership"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:27
-msgid "made admin"
+msgid "canceled his/her membership request"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:28
-msgid "settings updated"
+msgid "made admin"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:29
+msgid "settings updated"
+msgstr ""
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:30
 msgid "voted"
 msgstr ""
 
