@@ -119,6 +119,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'agora_site.misc.context_processor.settings.MEDIA_URL',
     'agora_site.misc.context_processor.settings.AUTHENTICATION_BACKENDS',
     'agora_site.misc.context_processor.settings.AGORA_FNMT_BASE_URL',
+    'agora_site.misc.context_processor.settings.AGORA_BASE_URL',
 )
 
 ROOT_URLCONF = 'agora_site.urls'

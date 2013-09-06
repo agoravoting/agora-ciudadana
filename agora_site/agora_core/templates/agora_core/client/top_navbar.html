@@ -2,85 +2,14 @@
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-                <a href="/" class="brand" alt="<%= gettext("Home") %>">
-                    <img alt="Agora"  src="{{ STATIC_URL }}img/agora-small.png" />
+                <a href="{{AGORA_BASE_URL}}" class="brand" alt="Congreso Transparente">
+                    <img alt="Congreso Transparente"  src="{{ STATIC_URL }}img/congreso_transparente.png" />
                 </a>
-                <ul class="nav">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <%= gettext("Agoras") %>
-                            <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <% if (agoras.length > 0) { %>
-                                    <li class="nav-header"><%= gettext("My Agoras") %></li>
-                                <% } %>
-                                <% for (var i = 0; i < agoras.objects.length; i++) { %>
-                                    <li>
-                                        <a href="<%= agoras.objects[i].url %>">
-                                            <%= agoras.objects[i].full_name %>
-                                        </a>
-                                    </li>
-                                <% } %>
-                                <% if (agoras.objects.length > 0) { %>
-                                    <li class="divider"></li>
-                                <% } %>
-                                <li>
-                                    <a href="/agora/list/">
-                                        <i class="icon-search"></i>
-                                        <%= gettext("Explore existing agoras..") %>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/agora/new/">
-                                        <i class="icon-plus"></i>
-                                        <%= gettext("Create an Agora") %>
-                                    </a>
-                                </li>
-                            </ul>
-                    </li>
-                    <% if (open_elections.objects.length > 0) { %>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <%= gettext("Elections") %>
-                                <b class="caret"></b>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <% if (open_elections.objects.length > 0) { %>
-                                        <li class="nav-header"><%= gettext("Active elections") %></li>
-                                    <% } %>
-                                    <% for (var i = 0; i < open_elections.objects.length; i++) { %>
-                                        <li>
-                                            <a href="<%= open_elections.objects[i].url %>">
-                                                <%= open_elections.objects[i].pretty_name %>
-                                            </a>
-                                        </li>
-                                    <% } %>
-                                    <% if (open_elections.objects.length > 0) { %>
-                                        <li class="divider"></li>
-                                    <% } %>
-                                    <li>
-                                        <a href="/elections/list/">
-                                            <i class="icon-search"></i>
-                                            <%= gettext("Explore other elections") %>
-                                        </a>
-                                    </li>
-                                </ul>
-                        </li>
-                    <% } else { %>
-                        <li>
-                            <a href="/elections/list/"><%= gettext("Elections") %></a>
-                        </li>
-                    <% } %>
-                    <li>
-                        <a href="/user/list/"><%= gettext("People") %></a>
-                    </li>
-                </ul>
 
                 <ul class="nav pull-right">
                     <% if (user.id < 0) { %>
                         <li>
-                            <a class="link-green" href="/accounts/signin/"><%= gettext("Enter") %></a>
+                            <a class="link-green" href="/accounts/signin/" id="show-login-modal"><%= gettext("Enter") %></a>
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -126,9 +55,17 @@
                         </li>
                     <% } %>
                 </ul>
-                <form id="search-form" class="nav-search pull-right" action="/search">
-                    <input type="text" class="span2 search-query"  value="" placeholder="<%= gettext("Search") %>" name="q" />
-                </form>
+                <div class="pull-right">
+                    <a href="http://coaliciocompromis.net" class="brand" alt="Coalició Compromís">
+                        <img alt="Coalició Compromís"  src="{{ STATIC_URL }}img/coalicio_compromis.png" />
+                    </a>
+                    <a href="http://partidoequo.com" class="brand" alt="Partido Equo">
+                        <img alt="Partido Equo"  src="{{ STATIC_URL }}img/equo.png" />
+                    </a>
+                    <a href="https://agoravoting.com" class="brand" alt="Agora Voting">
+                        <img alt="Agora Voting"  src="{{ STATIC_URL }}img/agoralogo.png" />
+                    </a>
+                </div>
             </div>
         </div>
     </div>
