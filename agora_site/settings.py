@@ -141,6 +141,7 @@ MEDIA_URL = '/media/'
 
 LOCALE_PATHS = (
     os.path.join(ROOT_PATH, 'locale'),
+    os.path.join(os.path.dirname(ROOT_PATH), 'userena', 'locale'),
 )
 
 # IP database geolocalization:

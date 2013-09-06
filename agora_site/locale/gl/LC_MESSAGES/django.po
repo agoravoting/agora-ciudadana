@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-06 10:11+0200\n"
+"POT-Creation-Date: 2013-09-06 12:17+0200\n"
 "PO-Revision-Date: 2013-08-31 10:43+0200\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -28,6 +28,10 @@ msgstr "English"
 #: settings.py:72
 msgid "Galician"
 msgstr "Galego"
+
+#: settings.py:305
+msgid "a month"
+msgstr "un mes"
 
 #: accounts/forms.py:52 accounts/forms.py:132
 #: accounts/templates/accounts/profile_detail.html:24
@@ -1865,7 +1869,7 @@ msgstr "%(site)s — Aprobouse a votación «%(election)s»"
 msgid "Welcome to this agora"
 msgstr "Reciba a benvida a esta ágora"
 
-#: agora_core/resources/user.py:362
+#: agora_core/resources/user.py:363
 #, python-format
 msgid "%(site)s - invitation to join %(agora)s"
 msgstr "%(site)s — Invitación para unirse á ágora %(agora)s"
@@ -2908,8 +2912,8 @@ msgid ""
 "Delegator URL: <a href=\"%(protocol)s://%(site_domain)s%(delegator_url)s\">"
 "%(delegator_name)s</a>"
 msgstr ""
-"URL do delegador: <a href=\"%(protocol)s://%(site_domain)s%(delegator_url)s\">"
-"%(delegator_name)s</a>"
+"URL do delegador: <a href=\"%(protocol)s://%(site_domain)s%(delegator_url)s"
+"\">%(delegator_name)s</a>"
 
 #: agora_core/templates/agora_core/emails/new_delegation.html:13
 #: agora_core/templates/agora_core/emails/vote_cancelled.html:14
@@ -3276,6 +3280,9 @@ msgstr "Seguirnos en Identi.ca"
 #: templates/base.html:163
 msgid "Powered by"
 msgstr "Co apoio de"
+
+#~ msgid "Remember me for a %(days)s"
+#~ msgstr "Recordarme por %(days)s"
 
 #~ msgid "Add members manually"
 #~ msgstr "Engadir membros manualmente"
