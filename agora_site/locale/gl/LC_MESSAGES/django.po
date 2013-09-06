@@ -2198,17 +2198,17 @@ msgstr ""
 #: agora_core/templates/agora_core/election_base.html:172
 #, python-format
 msgid "VOTES (%(percent)s%% of the electorate)"
-msgstr "Votos (%(participation)s%% do electorado)"
+msgstr "Votos (%(percent)s%% do electorado)"
 
 #: agora_core/templates/agora_core/election_base.html:176
 #, python-format
 msgid "DELEGATED VOTES (%(percent)s%% of the votes)"
-msgstr "Votos delegados (%(participation)s%% do electorado)"
+msgstr "Votos delegados (%(percent)s%% do electorado)"
 
 #: agora_core/templates/agora_core/election_base.html:183
 #, python-format
 msgid "DIRECT VOTES (%(percent)s%% of the electorate)"
-msgstr "Votos directos (%(participation)s%% do electorado)"
+msgstr "Votos directos (%(percent)s%% do electorado)"
 
 #: agora_core/templates/agora_core/election_base.html:188
 msgid "DELEGATED VOTES"
@@ -2253,7 +2253,7 @@ msgid ""
 "You delegated to <a href=\"%(delegate_url)s\">%(delegate_username)s</a> who "
 "answered <strong>%(answer)s</strong> to <em>%(question)s</em>"
 msgstr ""
-"Delegou en <a href=\"(delegate_url)s\">%(delegate_username)s</a>, que "
+"Delegou en <a href=\"%(delegate_url)s\">%(delegate_username)s</a>, que "
 "respondeu <strong>%(answer)s</strong> á cuestión «<em>%(question)s</em>»."
 
 #: agora_core/templates/agora_core/election_base.html:279
@@ -2659,7 +2659,7 @@ msgid ""
 "Election %(election_name)s at %(agora_username)s/%(agora_name)s has been "
 "archived."
 msgstr ""
-"A votación «(election_name)s», na ágora %(agora_username)s/%(agora_name)s», "
+"A votación «%(election_name)s», na ágora %(agora_username)s/%(agora_name)s», "
 "foi arquivada."
 
 #: agora_core/templates/agora_core/emails/election_archived.txt:5
@@ -2908,8 +2908,8 @@ msgid ""
 "Delegator URL: <a href=\"%(protocol)s://%(site_domain)s%(delegator_url)s\">"
 "%(delegator_name)s</a>"
 msgstr ""
-"URL do delegador: <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">"
-"%(agora_full_name)s</a>"
+"URL do delegador: <a href=\"%(protocol)s://%(site_domain)s%(delegator_url)s\">"
+"%(delegator_name)s</a>"
 
 #: agora_core/templates/agora_core/emails/new_delegation.html:13
 #: agora_core/templates/agora_core/emails/vote_cancelled.html:14

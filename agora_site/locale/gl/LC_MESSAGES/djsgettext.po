@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-06 10:11+0200\n"
+"POT-Creation-Date: 2013-09-06 12:02+0200\n"
 "PO-Revision-Date: 2013-08-31 15:19+0200\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -444,106 +444,111 @@ msgid "started following"
 msgstr "comezou a seguir a"
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:5
+#, fuzzy
+msgid "started voting period"
+msgstr "Planificar a data de comezo e fin da votación"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:6
 msgid "created"
 msgstr "creou"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:6
+#: agora_core/templates/agora_core/client/actions_i18n.html:7
 msgid "published results"
 msgstr "publicou os resultados"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:7
+#: agora_core/templates/agora_core/client/actions_i18n.html:8
 msgid "joined"
 msgstr "uniuse"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:8
+#: agora_core/templates/agora_core/client/actions_i18n.html:9
 msgid "delegated"
 msgstr "delegou"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:9
+#: agora_core/templates/agora_core/client/actions_i18n.html:10
 msgid "frozen"
 msgstr "conxelou"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:10
+#: agora_core/templates/agora_core/client/actions_i18n.html:11
 msgid "approved"
 msgstr "aprobou"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:11
+#: agora_core/templates/agora_core/client/actions_i18n.html:12
 msgid "proposed"
 msgstr "propuxo"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:12
+#: agora_core/templates/agora_core/client/actions_i18n.html:13
 msgid "commented"
 msgstr "comentou"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:13
+#: agora_core/templates/agora_core/client/actions_i18n.html:14
 #, fuzzy
 msgid "vote canceled"
 msgstr "voto cancelado"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:14
+#: agora_core/templates/agora_core/client/actions_i18n.html:15
 msgid "archived"
 msgstr "arquivou"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:15
+#: agora_core/templates/agora_core/client/actions_i18n.html:16
 msgid "requested membership"
 msgstr "solicitou unirse"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:16
+#: agora_core/templates/agora_core/client/actions_i18n.html:17
 msgid "denied membership request"
 msgstr "denegou a solicitude de admisión"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:17
+#: agora_core/templates/agora_core/client/actions_i18n.html:18
 msgid "added member"
 msgstr "engadiu un membro"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:18
+#: agora_core/templates/agora_core/client/actions_i18n.html:19
 msgid "left"
 msgstr "marchou"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:19
+#: agora_core/templates/agora_core/client/actions_i18n.html:20
 msgid "denied admin membership request"
 msgstr "denegou a solicitude de status de administrador"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:20
+#: agora_core/templates/agora_core/client/actions_i18n.html:21
 msgid "added admin"
 msgstr "concedeu o status de administrador"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:21
+#: agora_core/templates/agora_core/client/actions_i18n.html:22
 msgid "removed admin permissions"
 msgstr "revogou os permisos de administrador"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:22
+#: agora_core/templates/agora_core/client/actions_i18n.html:23
 msgid "left admin permissions"
 msgstr "renunciou aos permisos de administrador"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:23
+#: agora_core/templates/agora_core/client/actions_i18n.html:24
 #, fuzzy
 msgid "canceled voto delegation"
 msgstr "cancelou a delegación de voto"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:24
+#: agora_core/templates/agora_core/client/actions_i18n.html:25
 msgid "edited"
 msgstr "editou"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:25
+#: agora_core/templates/agora_core/client/actions_i18n.html:26
 #, fuzzy
 msgid "canceled requested admin membership"
 msgstr "cancelou a solicitude do status de administrador"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:26
+#: agora_core/templates/agora_core/client/actions_i18n.html:27
 #, fuzzy
 msgid "canceled his/her membership request"
 msgstr "Cancelou a súa solicitude de membro"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:27
+#: agora_core/templates/agora_core/client/actions_i18n.html:28
 msgid "made admin"
 msgstr "feito administrador"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:28
+#: agora_core/templates/agora_core/client/actions_i18n.html:29
 msgid "settings updated"
 msgstr "actualizouse a configuración"
 
-#: agora_core/templates/agora_core/client/actions_i18n.html:29
+#: agora_core/templates/agora_core/client/actions_i18n.html:30
 #, fuzzy
 msgid "voted"
 msgstr "%s votos"
