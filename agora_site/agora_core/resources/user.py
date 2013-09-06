@@ -334,7 +334,8 @@ class UserResource(GenericResource):
                     raise ImmediateHttpResponse(response=http.HttpBadRequest())
             else:
                 # send invitation
-                username = str(uuid4())
+                # maximum 30 characters in username
+                username = str(uuid4())[:30]
                 password = str(uuid4())
                 user = UserenaSignup.objects.create_user(username,
                                                 email,
