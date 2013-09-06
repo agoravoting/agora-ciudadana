@@ -9,11 +9,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-03 17:35+0200\n"
+"POT-Creation-Date: 2013-09-06 10:11+0200\n"
 "PO-Revision-Date: 2013-06-04 17:44-0000\n"
 "Last-Translator: \n"
 "Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-"
 "devel@googlegroups.com>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -32,28 +33,28 @@ msgstr "Inglés"
 msgid "Galician"
 msgstr "Gallego"
 
-#: accounts/forms.py:47 accounts/forms.py:122
+#: accounts/forms.py:52 accounts/forms.py:132
 #: accounts/templates/accounts/profile_detail.html:24
 msgid "Name"
 msgstr "Nombre"
 
-#: accounts/forms.py:51 accounts/forms.py:123
+#: accounts/forms.py:56 accounts/forms.py:133 accounts/forms.py:217
 msgid "Sign up"
 msgstr "Registrarme"
 
-#: accounts/forms.py:66
+#: accounts/forms.py:76
 #, python-format
 msgid "<a href=\"%(url)s\">Forgot your "
 msgstr "<a href=\"%(url)s\">Olvidaste tu"
 
-#: accounts/forms.py:69 accounts/templates/accounts/auth_forms.html:9
+#: accounts/forms.py:79 accounts/templates/accounts/auth_forms.html:9
 #: accounts/templates/accounts/auth_forms.html:31
-#: accounts/templates/accounts/signin_form.html:7
-#: accounts/templates/accounts/signin_form.html:30
+#: accounts/templates/accounts/signin_form.html:8
+#: accounts/templates/accounts/signin_form.html:31
 msgid "Log in"
 msgstr "Iniciar sesión"
 
-#: accounts/forms.py:76 accounts/templates/accounts/email_form.html:12
+#: accounts/forms.py:86 accounts/templates/accounts/email_form.html:12
 #: accounts/templates/accounts/email_form.html:19
 #: accounts/templates/accounts/password_form.html:14
 #: accounts/templates/accounts/profile_detail.html:17
@@ -62,66 +63,66 @@ msgstr "Iniciar sesión"
 msgid "Change email"
 msgstr "Cambiar email"
 
-#: accounts/forms.py:84
+#: accounts/forms.py:94
 msgid "Reset Password"
 msgstr "Recuperar Contraseña"
 
-#: accounts/forms.py:85 accounts/urls.py:70 accounts/urls.py:88
+#: accounts/forms.py:95 accounts/urls.py:70 accounts/urls.py:91
 msgid "Reset password"
 msgstr "Recuperar Contraseña"
 
-#: accounts/forms.py:91
+#: accounts/forms.py:101
 msgid "Set new Password"
 msgstr "Nueva contraseña"
 
-#: accounts/forms.py:92
+#: accounts/forms.py:102
 msgid "Set new password"
 msgstr "Nueva contraseña"
 
-#: accounts/forms.py:106
+#: accounts/forms.py:116
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: accounts/forms.py:107
+#: accounts/forms.py:117 agora_core/forms/user.py:336
 msgid "Username must contain only letters, numbers, dots and underscores."
 msgstr ""
 "El nombre de usuario solo puede contener letras, números, guiones bajos y "
 "puntos"
 
-#: accounts/forms.py:110
+#: accounts/forms.py:120
 msgid "Create password"
 msgstr "Crear contraseña"
 
-#: accounts/forms.py:113
+#: accounts/forms.py:123
 msgid "Repeat password"
 msgstr "Repetir contraseña"
 
-#: accounts/forms.py:137
+#: accounts/forms.py:147 agora_core/forms/user.py:356
 msgid "This username is already taken."
 msgstr "Este nombre de usuario ya está en uso."
 
-#: accounts/forms.py:139
+#: accounts/forms.py:149 agora_core/forms/user.py:358
 msgid "This username is not allowed."
 msgstr "Este nombre de usuario no está permitido."
 
-#: accounts/forms.py:151 agora_core/forms/__init__.py:200
+#: accounts/forms.py:161 agora_core/forms/__init__.py:200
+#: agora_core/forms/user.py:384
 msgid "The two password fields didn't match."
 msgstr "Las contraseñas no coinciden."
 
-#: accounts/forms.py:191 agora_core/resources/agora.py:600
-#, python-format
-msgid "You just joined %(agora)s. Congratulations!"
-msgstr "Acaba de unirse a %(agora)s. ¡Enhorabuena!"
-
-#: accounts/forms.py:197 agora_core/views.py:1193
-#: agora_core/resources/agora.py:606 agora_core/resources/agora.py:661
-#, python-format
-msgid "%(site)s - you are now member of %(agora)s"
-msgstr "%(site)s - ahora eres miembro de %(agora)s"
-
-#: accounts/forms.py:217
+#: accounts/forms.py:195 accounts/forms.py:263
 msgid "Your account has been activated and you have been signed in."
 msgstr "Hemos activado tu cuenta y has iniciado la sesión"
+
+#: accounts/forms.py:208 accounts/templates/accounts/profile_detail.html:27
+#: agora_core/forms/__init__.py:107
+msgid "Email"
+msgstr "Email"
+
+#: accounts/forms.py:229
+#, fuzzy
+msgid "This email is already taken."
+msgstr "Este nombre de usuario ya está en uso."
 
 #: accounts/urls.py:71
 msgid ""
@@ -148,15 +149,16 @@ msgstr ""
 "Te hemos enviado un email con las indicaciones para restablecer tu contraseña"
 
 #: accounts/views.py:49
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"Your password has been reset, you can now <a href=\"%(url)s\">login</a> with "
-"your new password"
+"Your password has been reset, you can now <a href=\"%(url)s\">log in</a> "
+"with your new password"
 msgstr ""
 "Hemos restablecido tu contraseña, ahora puedes <a href=\"%(url)s\">iniciar "
 "sesión</a> con la nueva contraseña"
 
 #: accounts/views.py:75 accounts/views.py:78 accounts/views.py:81
+#: accounts/views.py:107 accounts/views.py:110 accounts/views.py:113
 msgid "Invalid activation link."
 msgstr "Enlace de activación no válido."
 
@@ -185,44 +187,44 @@ msgstr ""
 "contáctanos si piensas que algo ha ido mal."
 
 #: accounts/templates/accounts/auth_forms.html:11
-#: accounts/templates/accounts/signin_form.html:9
+#: accounts/templates/accounts/signin_form.html:10
 msgid "Register"
 msgstr "Registrarme"
 
 #: accounts/templates/accounts/auth_forms.html:32
-#: accounts/templates/accounts/signin_form.html:31
+#: accounts/templates/accounts/signin_form.html:32
 msgid "Please log in to continue."
 msgstr "Por favor inicia sesión para continuar."
 
 #: accounts/templates/accounts/auth_forms.html:37
-#: accounts/templates/accounts/signin_form.html:36
+#: accounts/templates/accounts/signin_form.html:37
 #, python-format
 msgid "New to %(SITE_NAME)s?"
 msgstr "¿Nuevo en %(SITE_NAME)s?"
 
 #: accounts/templates/accounts/auth_forms.html:38
-#: accounts/templates/accounts/signin_form.html:37
+#: accounts/templates/accounts/signin_form.html:38
 #, python-format
 msgid "An account in %(SITE_NAME)s is required to continue."
 msgstr "Se requiere una cuenta en %(SITE_NAME)s para continuar."
 
 #: accounts/templates/accounts/auth_forms.html:44
-#: accounts/templates/accounts/signin_form.html:43
+#: accounts/templates/accounts/signin_form.html:45
 msgid "Use your account in.."
 msgstr "Usa tu cuenta en.."
 
 #: accounts/templates/accounts/auth_forms.html:45
-#: accounts/templates/accounts/signin_form.html:44
+#: accounts/templates/accounts/signin_form.html:46
 msgid "You can log in using your account in Twitter."
 msgstr "Puedes entrar usando tu cuenta de Twitter."
 
 #: accounts/templates/accounts/auth_forms.html:51
-#: accounts/templates/accounts/signin_form.html:50
+#: accounts/templates/accounts/signin_form.html:52
 msgid "Privacy"
 msgstr "Privacidad"
 
 #: accounts/templates/accounts/auth_forms.html:52
-#: accounts/templates/accounts/signin_form.html:51
+#: accounts/templates/accounts/signin_form.html:53
 msgid ""
 "We won't give any private data to Twitter and we will not use your profile "
 "to post anything without your permission."
@@ -230,9 +232,19 @@ msgstr ""
 "No daremos ningún dato privado a Twitter y no usaremos tu perfil para "
 "publicar nada sin tu permiso."
 
+#: accounts/templates/accounts/complete_registration_fnmt_form.html:6
 #: accounts/templates/accounts/complete_registration_invite_form.html:6
 msgid "Finish registration"
 msgstr "Finalizar registro"
+
+#: accounts/templates/accounts/complete_registration_fnmt_form.html:12
+#, fuzzy
+msgid "FNMT Certificate - Finish Registration"
+msgstr "Finalizar registro"
+
+#: accounts/templates/accounts/complete_registration_fnmt_form.html:16
+msgid "Please provide your email address to complete the registration."
+msgstr ""
 
 #: accounts/templates/accounts/complete_registration_invite_form.html:12
 msgid "Finish Registration"
@@ -280,7 +292,7 @@ msgstr ""
 "filtro antispam se equivoca."
 
 #: accounts/templates/accounts/disabled.html:13
-#: agora_core/forms/__init__.py:636 agora_core/forms/__init__.py:638
+#: agora_core/forms/__init__.py:644 agora_core/forms/__init__.py:646
 #: agora_core/templates/agora_core/contact_form.html:5
 msgid "Contact"
 msgstr "Contacto"
@@ -431,11 +443,6 @@ msgstr "Editar detalles"
 msgid "Your mugshot"
 msgstr "Tu foto"
 
-#: accounts/templates/accounts/profile_detail.html:27
-#: agora_core/forms/__init__.py:107
-msgid "Email"
-msgstr "Email"
-
 #: accounts/templates/accounts/profile_detail.html:30
 msgid "Age"
 msgstr "Edad"
@@ -485,6 +492,32 @@ msgstr ""
 #: accounts/templates/accounts/profile_list.html:31
 msgid "next"
 msgstr "siguiente"
+
+#: accounts/templates/accounts/signin_form.html:55
+msgid "Enter with FNMT"
+msgstr ""
+
+#: accounts/templates/accounts/signin_form.html:57
+msgid ""
+"You can enter this site using your FNMT certificate. <a href=\"#\">More "
+"information here</a>."
+msgstr ""
+
+#: accounts/templates/accounts/signin_form.html:61
+msgid "Enter using FNMT certificate"
+msgstr ""
+
+#: accounts/templates/accounts/signin_form.html:65
+#, fuzzy
+msgid "Terms of service"
+msgstr "Términos del Servicio"
+
+#: accounts/templates/accounts/signin_form.html:67
+#, python-format
+msgid ""
+"When you enter using the FNMT certificate you're accepting our <a href="
+"\"%(tos_url)s\">Terms of Service.</a>"
+msgstr ""
 
 #: accounts/templates/accounts/emails/activation_email_message.txt:2
 #: accounts/templates/accounts/emails/confirmation_email_message_new.txt:2
@@ -586,15 +619,15 @@ msgstr "Fechas importantes"
 msgid "Groups"
 msgstr "Grupos"
 
-#: agora_core/views.py:79
+#: agora_core/views.py:78
 msgid "You tried to execute an action improperly."
 msgstr "Has intentado ejecutar una acción incorrectamente"
 
-#: agora_core/views.py:301 agora_core/views.py:311
+#: agora_core/views.py:250 agora_core/views.py:260
 msgid "Sorry, but you don't have permission to create agoras"
 msgstr "Lo siento, pero no tienes permiso para crear ágoras."
 
-#: agora_core/views.py:324
+#: agora_core/views.py:273
 #, python-format
 msgid ""
 "Creation of Agora %(agoraname)s successful! Now start to configure and use "
@@ -603,7 +636,7 @@ msgstr ""
 "¡Creación del ágora %(agoraname)s exitosa! Ahora puedes configurarla y "
 "usarla."
 
-#: agora_core/views.py:363
+#: agora_core/views.py:312
 #, python-format
 msgid ""
 "Creation of Election <a href=\"%(election_url)s\">%(electionname)s</a> in "
@@ -612,7 +645,7 @@ msgstr ""
 "¡Votación <a href=\"%(election_url)s\">%(electionname)s</a> en %(agora_url)s "
 "creada con éxito!"
 
-#: agora_core/views.py:367
+#: agora_core/views.py:316
 #, python-format
 msgid ""
 "Creation of Election <a href=\"%(election_url)s\">%(electionname)s</a> in "
@@ -623,55 +656,55 @@ msgstr ""
 "creada con éxito! Ahora se encuentra <strong>a la espera de la aprobación de "
 "los administradores</strong>."
 
-#: agora_core/views.py:433
+#: agora_core/views.py:400
 #, python-format
 msgid ""
 "Sorry, but you don't have permissions to vote on <em>%(electionname)s</em>."
 msgstr ""
 "Lo sentimos, pero no tienes permiso para votar en <em>%(electionname)s</em>"
 
-#: agora_core/views.py:453 agora_core/views.py:466
+#: agora_core/views.py:428 agora_core/views.py:441
 #, python-format
 msgid ""
 "Sorry, but you don't have edit permissions on <em>%(electionname)s</em>."
 msgstr ""
 "Lo siento, pero no tienes permisos de edición en <em>%(electionname)s</em>"
 
-#: agora_core/views.py:480
+#: agora_core/views.py:455
 #, python-format
 msgid "Election %(electionname)s edited."
 msgstr "Votación %(electionname)s editada."
 
-#: agora_core/views.py:524
+#: agora_core/views.py:499
 msgid "You don't have permission to approve the election."
 msgstr "No tienes permiso para aprobar la votación."
 
-#: agora_core/views.py:549
+#: agora_core/views.py:524
 msgid "You don't have permission to freeze the election."
 msgstr "No tienes permiso para congelar la votación."
 
-#: agora_core/views.py:574
+#: agora_core/views.py:549
 msgid "You don't have permission to start the election."
 msgstr "No tienes permiso para iniciar la votación."
 
-#: agora_core/views.py:607
+#: agora_core/views.py:582
 msgid "You don't have permission to stop the election."
 msgstr "No tienes permiso para detener la votación."
 
-#: agora_core/views.py:638
+#: agora_core/views.py:613
 msgid "You don't have permission to archive the election."
 msgstr "No tienes permiso para archivar la votación."
 
-#: agora_core/views.py:643
+#: agora_core/views.py:618
 msgid "Election is already archived."
 msgstr "La votación ya ha sido archivada."
 
-#: agora_core/views.py:686
+#: agora_core/views.py:661
 #, python-format
 msgid "Election archived: %s"
 msgstr "Votación archivada: %s"
 
-#: agora_core/views.py:721
+#: agora_core/views.py:696
 msgid ""
 "Your vote was correctly casted! Now you could share this election in "
 "Facebook, Google Plus, Twitter, etc."
@@ -679,35 +712,35 @@ msgstr ""
 "¡Tu voto se emitió correctamente! Ahora podrías compartir esta votación en "
 "Facebook, Google Plus, Twitter, etc."
 
-#: agora_core/views.py:742 agora_core/forms/election.py:173
+#: agora_core/views.py:717 agora_core/forms/election.py:173
 #, python-format
 msgid "Vote casted for election %s"
 msgstr "Voto emitido para la votación %s"
 
-#: agora_core/views.py:779
+#: agora_core/views.py:754
 msgid "Sorry, election is closed and thus you cannot vote."
 msgstr "Lo sentimos, la votación está cerrada, por lo que no puedes votar."
 
-#: agora_core/views.py:795
+#: agora_core/views.py:770
 msgid "Sorry, but you cannot delegate to yourself ;-)."
 msgstr "Lo sentimos pero no puedes delegar en ti mismo/a ;)"
 
-#: agora_core/views.py:801
+#: agora_core/views.py:776
 msgid ""
 "Sorry, but you cannot delegate if you're not a member of the agora first."
 msgstr "Lo sentimos pero no puedes delegar si no eres miembro del ágora."
 
-#: agora_core/views.py:867 agora_core/forms/agora.py:149
+#: agora_core/views.py:842 agora_core/forms/agora.py:149
 #, python-format
 msgid "%(site)s - You delegated your vote in %(agora)s"
 msgstr "%(site)s - Has delegado tu voto en %(agora)s"
 
-#: agora_core/views.py:885 agora_core/forms/agora.py:169
+#: agora_core/views.py:860 agora_core/forms/agora.py:169
 #, python-format
 msgid "%(site)s - You have a new delegation in %(agora)s"
 msgstr "%(site)s - Tienes un nuevo voto delegado en %(agora)s"
 
-#: agora_core/views.py:899
+#: agora_core/views.py:874
 #, python-format
 msgid ""
 "You delegated your vote in %(agora)s to %(username)s! Now you could share "
@@ -716,16 +749,16 @@ msgstr ""
 "¡En el ágora %(agora)s has delegado en %(username)s! Ya puedes compartirlo "
 "en Facebook, Google Plus, Twitter, etc."
 
-#: agora_core/views.py:921
+#: agora_core/views.py:896
 #, python-format
 msgid "Guess what, you are already a member of %(agora)s!"
 msgstr "¡Adivina qué, ya eres miembro de %(agora)s!"
 
-#: agora_core/views.py:930
+#: agora_core/views.py:905
 msgid "Sorry, you don't have permission to join this agora."
 msgstr "Lo sentimos, pero no todavía tienes permiso para unirte a este ágora. "
 
-#: agora_core/views.py:943
+#: agora_core/views.py:918
 #, python-format
 msgid ""
 "You joined %(agora)s. Now you could take a look at what elections are "
@@ -734,7 +767,7 @@ msgstr ""
 "Te has unido a %(agora)s. Ahora podrías echarle un vistazo a las votaciones "
 "disponibles en este ágora."
 
-#: agora_core/views.py:957
+#: agora_core/views.py:932
 #, python-format
 msgid ""
 "You requested membership in %(agora)s. Soon the admins of this agora will "
@@ -743,7 +776,7 @@ msgstr ""
 "Has solicitado ser miembro de %(agora)s. Pronto los administradores de este "
 "ágora decidirán tu petición."
 
-#: agora_core/views.py:967 agora_core/tasks/agora.py:30
+#: agora_core/views.py:942 agora_core/tasks/agora.py:32
 #, python-format
 msgid ""
 "%(username)s has requested membership at %(agora)s. Please review this "
@@ -752,16 +785,16 @@ msgstr ""
 "%(username)s ha solicitado ser miembro de %(agora)s. Por favor revisa esta "
 "petición pendiente."
 
-#: agora_core/views.py:973
+#: agora_core/views.py:948 agora_core/tasks/agora.py:38
 msgid "List of membership requests"
 msgstr "Lista de solicitudes para ser miembro"
 
-#: agora_core/views.py:990 agora_core/tasks/agora.py:63
+#: agora_core/views.py:965 agora_core/tasks/agora.py:57
 #, python-format
 msgid "%(site)s - New membership request at %(agora)s"
 msgstr "%(site)s - Nueva solicitud para ser miembro en %(agora)s."
 
-#: agora_core/views.py:1020
+#: agora_core/views.py:995
 #, python-format
 msgid ""
 "Sorry but you need to be a member of %(agora)s to request admin membership!"
@@ -769,14 +802,14 @@ msgstr ""
 "Lo siento pero debes ser miembro de %(agora)s para solicitar ser "
 "administrador."
 
-#: agora_core/views.py:1026
+#: agora_core/views.py:1001
 msgid ""
 "Sorry, you don't have permission to request admin membership in this agora."
 msgstr ""
 "Lo siento, pero no tienes permiso para solicitar ser administrador en este "
 "ágora."
 
-#: agora_core/views.py:1041 agora_core/tasks/agora.py:89
+#: agora_core/views.py:1016 agora_core/tasks/agora.py:83
 #, python-format
 msgid ""
 "%(username)s has requested admin membership at %(agora)s. Please review this "
@@ -785,16 +818,16 @@ msgstr ""
 "%(username)s ha solicitado ser administrador de %(agora)s. Por favor revisa "
 "esta petición pendiente."
 
-#: agora_core/views.py:1047
+#: agora_core/views.py:1022 agora_core/tasks/agora.py:89
 msgid "List of admin membership requests"
 msgstr "Lista de solicitudes para ser administrador"
 
-#: agora_core/views.py:1064 agora_core/tasks/agora.py:122
+#: agora_core/views.py:1039 agora_core/tasks/agora.py:108
 #, python-format
 msgid "%(site)s - New admin membership request at %(agora)s"
 msgstr "%(site)s - Nueva solicitud para ser administrador en %(agora)s"
 
-#: agora_core/views.py:1078
+#: agora_core/views.py:1053
 #, python-format
 msgid ""
 "You requested admin membership in %(agora)s. Soon the admins of this agora "
@@ -803,7 +836,7 @@ msgstr ""
 "Has solicitado ser administrador de %(agora)s. Pronto los administradores de "
 "este ágora decidirán sobre tu petición."
 
-#: agora_core/views.py:1095
+#: agora_core/views.py:1070
 msgid ""
 "Sorry, you don't have permission to cancel admin membership request in this "
 "agora."
@@ -811,19 +844,19 @@ msgstr ""
 "Lo siento, pero no tienes permiso para cancelar la solicitud para ser "
 "administrador en este ágora."
 
-#: agora_core/views.py:1105
+#: agora_core/views.py:1080
 #, python-format
 msgid "Your admin membership in %(agora)s was cancelled."
 msgstr "Has cancelado tu función de administrador en %(agora)s."
 
-#: agora_core/views.py:1114
+#: agora_core/views.py:1089
 #, python-format
 msgid ""
 "%(username)s has cancelled his/her requested admin membership at %(agora)s."
 msgstr ""
 "%(username)s ha cancelado su petición para ser administrador en %(agora)s. "
 
-#: agora_core/views.py:1127
+#: agora_core/views.py:1102
 #, python-format
 msgid ""
 "%(site)s - %(username)s cancelled his/her admin membership request at "
@@ -832,61 +865,67 @@ msgstr ""
 "%(site)s - %(username)s ha cancelado su petición para ser administrador en "
 "%(agora)s. "
 
-#: agora_core/views.py:1156 agora_core/views.py:1220 agora_core/views.py:1284
-#: agora_core/views.py:1397 agora_core/views.py:1463 agora_core/views.py:1530
-#: agora_core/views.py:1624
+#: agora_core/views.py:1131 agora_core/views.py:1195 agora_core/views.py:1259
+#: agora_core/views.py:1372 agora_core/views.py:1438 agora_core/views.py:1505
+#: agora_core/views.py:1599
 msgid "Sorry, you don't have admin permissions in this agora."
 msgstr "Lo sentimos, pero no tienes permisos de administrador en este ágora."
 
-#: agora_core/views.py:1161
+#: agora_core/views.py:1136
 msgid "Sorry, you cannot accept this user's  membership request."
 msgstr ""
 "Lo sentimos pero no puedes aceptar la petición para ser miembro de este "
 "usuario."
 
-#: agora_core/views.py:1174
+#: agora_core/views.py:1149
 #, python-format
 msgid "You accepted  %(username)s membership request in %(agora)s."
 msgstr "Has aceptado la petición para ser miembro de %(username)s en %(agora)s"
 
-#: agora_core/views.py:1185 agora_core/resources/agora.py:653
+#: agora_core/views.py:1160 agora_core/resources/agora.py:645
 #, python-format
 msgid "Your membership has been accepted at %(agora)s. Congratulations!"
 msgstr "Has sido aceptado como miembro de %(agora)s. ¡Enhorabuena!"
 
-#: agora_core/views.py:1225
+#: agora_core/views.py:1168 agora_core/models/__init__.py:133
+#: agora_core/resources/agora.py:653
+#, python-format
+msgid "%(site)s - you are now member of %(agora)s"
+msgstr "%(site)s - ahora eres miembro de %(agora)s"
+
+#: agora_core/views.py:1200
 msgid "Sorry, you cannot make admin to this user."
 msgstr ""
 "Lo sentimos, pero no tienes permiso para hacer administrador a este usuario."
 
-#: agora_core/views.py:1237
+#: agora_core/views.py:1212
 #, python-format
 msgid "You made admin to %(username)s admin in %(agora)s."
 msgstr "Has hecho administrador a %(username)s en %(agora)s."
 
-#: agora_core/views.py:1248
+#: agora_core/views.py:1223
 #, python-format
 msgid "You've been promoted to admin at %(agora)s. Congratulations!"
 msgstr "Has sido designado administrador de %(agora)s. ¡Enhorabuena!"
 
-#: agora_core/views.py:1256 agora_core/views.py:1322
+#: agora_core/views.py:1231 agora_core/views.py:1297
 #, python-format
 msgid "%(site)s - you've been promoted to admin at %(agora)s"
 msgstr "%(site)s - has sido designado administrador de %(agora)s"
 
-#: agora_core/views.py:1289
+#: agora_core/views.py:1264
 msgid "Sorry, you cannot accept this user's  admin membership request."
 msgstr ""
 "Lo sentimos pero no puedes aceptar la petición para ser administrador de "
 "este usuario."
 
-#: agora_core/views.py:1302
+#: agora_core/views.py:1277
 #, python-format
 msgid "You accepted  %(username)s admin membership request in %(agora)s."
 msgstr ""
 "Has aceptado la petición para ser administrador de %(username)s en %(agora)s."
 
-#: agora_core/views.py:1313
+#: agora_core/views.py:1288
 #, python-format
 msgid ""
 "Your admin membership has been accepted  so you've been promoted to admin at "
@@ -895,56 +934,56 @@ msgstr ""
 "Tu petición para ser administrador ha sido aceptada, por lo que has sido "
 "designado admin de %(agora)s. ¡Enhorabuena!"
 
-#: agora_core/views.py:1353 agora_core/views.py:1595
+#: agora_core/views.py:1328 agora_core/views.py:1570
 msgid "Sorry, you don't have permission to leave this agora."
 msgstr "Lo siento, pero no tienes permiso para dejar este ágora."
 
-#: agora_core/views.py:1365
+#: agora_core/views.py:1340
 #, python-format
 msgid "You left %(agora)s."
 msgstr "Has abandonado %(agora)s"
 
-#: agora_core/views.py:1375
+#: agora_core/views.py:1350
 #, python-format
 msgid "You cancelled your membership request at %(agora)s."
 msgstr "Has cancelado tu petición para ser miembro de %(agora)s."
 
-#: agora_core/views.py:1402
+#: agora_core/views.py:1377
 msgid "Sorry, you cannot dismiss this user's  membership request."
 msgstr ""
 "Lo siento, no puedes descartar la petición de membresía de este usuario."
 
-#: agora_core/views.py:1413
+#: agora_core/views.py:1388
 #, python-format
 msgid "You dismissed %(username)s membership request at %(agora)s."
 msgstr ""
 "Has descartado la petición para ser miembro en %(agora)s de %(username)s."
 
-#: agora_core/views.py:1424
+#: agora_core/views.py:1399
 #, python-format
 msgid ""
 "Your membership request at %(agora)s has been dismissed. Sorry about that!"
 msgstr "Tu petición de membresía en %(agora)s ha sido descartada. ¡Lo siento!"
 
-#: agora_core/views.py:1432
+#: agora_core/views.py:1407
 #, python-format
 msgid "%(site)s - membership request dismissed at %(agora)s"
 msgstr "%(site)s - solicitud de membresía descartada en %(agora)s"
 
-#: agora_core/views.py:1468
+#: agora_core/views.py:1443
 msgid "Sorry, you cannot dismiss this user's  admin membership request."
 msgstr ""
 "Lo siento, no puedes descartar la petición para ser administrador de este "
 "usuario."
 
-#: agora_core/views.py:1479
+#: agora_core/views.py:1454
 #, python-format
 msgid "You dismissed %(username)s admin membership request at %(agora)s."
 msgstr ""
 "Has descartado la petición para ser administrador en %(agora)s de "
 "%(username)s."
 
-#: agora_core/views.py:1490
+#: agora_core/views.py:1465
 #, python-format
 msgid ""
 "Your admin membership request at %(agora)s  has been dismissed. Sorry about "
@@ -952,44 +991,43 @@ msgid ""
 msgstr ""
 "¡Vaya! Tu petición para ser administrador de %(agora)s ha sido descartada."
 
-#: agora_core/views.py:1498
+#: agora_core/views.py:1473
 #, python-format
 msgid "%(site)s - admin membership request dismissed at %(agora)s"
 msgstr "%(site)s - petición para ser administrador descartada en %(agora)s"
 
-#: agora_core/views.py:1535 agora_core/views.py:1629
+#: agora_core/views.py:1510 agora_core/views.py:1604
 msgid "Sorry, this user doesn't have permission to leave this agora."
 msgstr ""
 "Lo siento, pero este usuario no tiene permiso para abandonar este ágora."
 
-#: agora_core/views.py:1546
+#: agora_core/views.py:1521
 #, python-format
 msgid "You removed membership from %(agora)s to %(username)s."
 msgstr "Has hecho que %(username)s deje de ser miembro en %(agora)s."
 
-#: agora_core/views.py:1557
+#: agora_core/views.py:1532
 #, python-format
 msgid ""
 "Your have been removed from membership from %(agora)s . Sorry about that!"
 msgstr "Lo siento, pero se te ha retirado la membresía en %(agora)s."
 
-#: agora_core/views.py:1565 agora_core/resources/agora.py:827
-#: agora_core/resources/agora.py:943
+#: agora_core/views.py:1540 agora_core/resources/agora.py:934
 #, python-format
 msgid "%(site)s - membership removed from %(agora)s"
 msgstr "%(site)s - membresía retirada en %(agora)s"
 
-#: agora_core/views.py:1607
+#: agora_core/views.py:1582
 #, python-format
 msgid "You removed your admin membership at %(agora)s."
 msgstr "Has eliminado tu función de administrador en %(agora)s."
 
-#: agora_core/views.py:1641
+#: agora_core/views.py:1616
 #, python-format
 msgid "You removed  admin membership from %(agora)s to %(username)s."
 msgstr "Has hecho que %(username)s deje de ser administrador en %(agora)s."
 
-#: agora_core/views.py:1652
+#: agora_core/views.py:1627
 #, python-format
 msgid ""
 "Your have been removed from admin membership from %(agora)s . Sorry about "
@@ -998,50 +1036,50 @@ msgstr ""
 "Lo siento, pero se te ha retirado la membresía como administrador de "
 "%(agora)s."
 
-#: agora_core/views.py:1660
+#: agora_core/views.py:1635
 #, python-format
 msgid "%(site)s - admin membership removed from %(agora)s"
 msgstr "%(site)s - membresía de administrador retirada en %(agora)s."
 
-#: agora_core/views.py:1735 agora_core/views.py:1811
+#: agora_core/views.py:1710 agora_core/views.py:1786
 msgid "Your comment was successfully posted."
 msgstr "Tu comentario ha sido publicado con éxito."
 
-#: agora_core/views.py:1748
+#: agora_core/views.py:1723
 #, python-format
 msgid ""
 "Sorry, but you don't have comment permissions on <em>%(electionname)s</em>."
 msgstr ""
 "Lo siento, pero no tienes permisos para comentar en <em>%(electionname)s</em>"
 
-#: agora_core/views.py:1827
+#: agora_core/views.py:1802
 #, python-format
 msgid "Sorry, but you don't have comment permissions on %(agora)s."
 msgstr "Lo sentimos, pero no tienes permisos para comentar en %(agora)s."
 
-#: agora_core/views.py:1854
+#: agora_core/views.py:1829
 msgid "You can't cancel a vote in a closed election."
 msgstr "No puedes cancelar un voto en una votación ya cerrada."
 
-#: agora_core/views.py:1861 agora_core/resources/election.py:523
+#: agora_core/views.py:1836 agora_core/resources/election.py:538
 msgid "You didn't participate in this election."
 msgstr "No participaste en esta votación."
 
-#: agora_core/views.py:1886 agora_core/resources/election.py:546
+#: agora_core/views.py:1861 agora_core/resources/election.py:561
 #, python-format
 msgid "Vote cancelled for election %s"
 msgstr "Voto cancelado para la votación %s"
 
-#: agora_core/views.py:1952
+#: agora_core/views.py:1927
 msgid "User settings updated."
 msgstr "Configuración de Usuario actualizada."
 
-#: agora_core/views.py:2082 agora_core/views.py:2094
+#: agora_core/views.py:1984 agora_core/views.py:1996
 #, python-format
 msgid "Sorry, but you don't have admin permissions on %(agoraname)s."
 msgstr "Lo sentimos, pero no tienes permisos administrativos en %(agoraname)s."
 
-#: agora_core/views.py:2109
+#: agora_core/views.py:2011
 #, python-format
 msgid "Agora settings changed for %(agoraname)s."
 msgstr "Cambiada la configuración de Ágora para %(agoraname)s."
@@ -1051,7 +1089,7 @@ msgstr "Cambiada la configuración de Ágora para %(agoraname)s."
 msgid "Create Agora"
 msgstr "Crear Ágora"
 
-#: agora_core/forms/__init__.py:94 agora_core/forms/user.py:131
+#: agora_core/forms/__init__.py:94 agora_core/forms/user.py:132
 msgid "Avatar"
 msgstr "Avatar"
 
@@ -1063,8 +1101,8 @@ msgstr "Subir una imagen para usar como avatar en vez la del servicio gravatar"
 msgid "Remove this avatar"
 msgstr "Eliminar este avatar"
 
-#: agora_core/forms/__init__.py:99 agora_core/models/__init__.py:174
-#: agora_core/models/agora.py:78 agora_core/models/election.py:207
+#: agora_core/forms/__init__.py:99 agora_core/models/__init__.py:240
+#: agora_core/models/agora.py:87 agora_core/models/election.py:207
 msgid "Short Description"
 msgstr "Descripción Breve"
 
@@ -1072,12 +1110,11 @@ msgstr "Descripción Breve"
 msgid "Say something about yourself (140 chars max)"
 msgstr "Di algo sobre ti mismo (140 caracteres máximo)"
 
-#: agora_core/forms/__init__.py:102 agora_core/forms/user.py:175
-#: agora_core/models/__init__.py:176 agora_core/models/agora.py:80
+#: agora_core/forms/__init__.py:102 agora_core/forms/user.py:176
+#: agora_core/models/__init__.py:242 agora_core/models/agora.py:89
 #: agora_core/templates/agora_core/agora_bio.html:5
-#: agora_core/templates/agora_core/agora_view.html:32
-#: agora_core/templates/agora_core/user_bio.html:6
-#: agora_core/templates/agora_core/user_view.html:31
+#: agora_core/templates/agora_core/user_bio.html:5
+#: agora_core/templates/agora_core/user_view.html:30
 msgid "Biography"
 msgstr "Biografía"
 
@@ -1085,7 +1122,7 @@ msgstr "Biografía"
 msgid "Tell us about you, use as much text as needed"
 msgstr "Cuéntanos acerca de tí, usa tanto espacio como necesites"
 
-#: agora_core/forms/__init__.py:109 agora_core/models/__init__.py:187
+#: agora_core/forms/__init__.py:109 agora_core/models/__init__.py:253
 msgid "Receive email updates"
 msgstr "Recibe actualizaciones por email"
 
@@ -1114,24 +1151,25 @@ msgstr "Repite la nueva contraseña"
 msgid "Profile"
 msgstr "Perfil"
 
-#: agora_core/forms/__init__.py:146 templates/base.html:270
+#: agora_core/forms/__init__.py:146 templates/base.html:137
 msgid "Security"
 msgstr "Seguridad"
 
 #: agora_core/forms/__init__.py:153 agora_core/forms/__init__.py:215
-#: agora_core/forms/__init__.py:431
+#: agora_core/forms/__init__.py:439
 msgid "Save settings"
 msgstr "Guardar configuración"
 
-#: agora_core/forms/__init__.py:182 agora_core/forms/user.py:240
+#: agora_core/forms/__init__.py:182 agora_core/forms/user.py:241
+#: agora_core/forms/user.py:364
 msgid "This email is already in use. Please supply a different email."
 msgstr "Este email ya está en uso. Escribe un email distinto por favor."
 
-#: agora_core/forms/__init__.py:188 agora_core/forms/user.py:265
+#: agora_core/forms/__init__.py:188 agora_core/forms/user.py:266
 msgid "Invalid password."
 msgstr "Contraseña inválida."
 
-#: agora_core/forms/__init__.py:214 agora_core/forms/__init__.py:430
+#: agora_core/forms/__init__.py:214 agora_core/forms/__init__.py:438
 msgid "General settings"
 msgstr "Configuración general"
 
@@ -1143,33 +1181,31 @@ msgid "Invalid questions format"
 msgstr "Formato de pregunta no válido"
 
 #: agora_core/forms/__init__.py:254 agora_core/models/election.py:236
-#: agora_core/resources/election.py:75
+#: agora_core/resources/election.py:91
 msgid "Questions"
 msgstr "Preguntas"
 
-#: agora_core/forms/__init__.py:257 agora_core/forms/__init__.py:411
-#: agora_core/resources/election.py:77
+#: agora_core/forms/__init__.py:257 agora_core/forms/__init__.py:419
+#: agora_core/resources/election.py:93
 msgid "Start voting"
 msgstr "Comenzar votación"
 
-#: agora_core/forms/__init__.py:258 agora_core/forms/__init__.py:412
+#: agora_core/forms/__init__.py:258 agora_core/forms/__init__.py:420
 msgid "Not required, you can choose to start the voting period manually"
 msgstr ""
 "No requerido, puedes elegir comenzar el periodo de votación manualmente"
 
-#: agora_core/forms/__init__.py:259 agora_core/forms/__init__.py:415
-#: agora_core/resources/election.py:78
+#: agora_core/forms/__init__.py:259 agora_core/forms/__init__.py:423
+#: agora_core/resources/election.py:94
 msgid "End voting"
 msgstr "Finalizar votación"
 
-#: agora_core/forms/__init__.py:260 agora_core/forms/__init__.py:416
+#: agora_core/forms/__init__.py:260 agora_core/forms/__init__.py:424
 msgid "Not required, you can choose to end the voting period manually"
 msgstr ""
 "No es necesario, puedes elegir finalizar el periodo de votación manualmente"
 
 #: agora_core/forms/__init__.py:270
-#: agora_core/templates/agora_core/agora_view.html:77
-#: agora_core/templates/agora_core/home_loggedin_activity.html:101
 msgid "Create election"
 msgstr "Crear votación"
 
@@ -1178,72 +1214,72 @@ msgstr "Crear votación"
 msgid "Create Election"
 msgstr "Crear Votación"
 
-#: agora_core/forms/__init__.py:293 agora_core/forms/__init__.py:443
+#: agora_core/forms/__init__.py:293 agora_core/forms/__init__.py:451
 msgid "You need to either provide none or both start and end voting dates"
 msgstr ""
 "Puedes no establecer ninguna fecha o establecer ambas, la de comienzo y "
 "finalización de la votación"
 
-#: agora_core/forms/__init__.py:297 agora_core/forms/__init__.py:447
-#: agora_core/resources/election.py:102
+#: agora_core/forms/__init__.py:297 agora_core/forms/__init__.py:455
+#: agora_core/resources/election.py:118
 msgid "Invalid start date, must be in the future"
 msgstr "Fecha de comienzo inválida, debe situarse en el futuro"
 
-#: agora_core/forms/__init__.py:301 agora_core/forms/__init__.py:451
-#: agora_core/resources/election.py:106
+#: agora_core/forms/__init__.py:301 agora_core/forms/__init__.py:459
+#: agora_core/resources/election.py:122
 msgid "Voting time must be at least 1 hour"
 msgstr "El tiempo de votación debe ser al menos de 1 hora"
 
-#: agora_core/forms/__init__.py:369 agora_core/tasks/election.py:256
+#: agora_core/forms/__init__.py:377 agora_core/tasks/election.py:257
 #, python-format
 msgid "Election %s created"
 msgstr "Elección %s creada"
 
-#: agora_core/forms/__init__.py:523
+#: agora_core/forms/__init__.py:531
 msgid "Vote secretly"
 msgstr "Votar de forma secreta"
 
-#: agora_core/forms/__init__.py:525
+#: agora_core/forms/__init__.py:533
 msgid "Vote in public as a delegate"
 msgstr "Votar públicamente como delegado"
 
-#: agora_core/forms/__init__.py:528 agora_core/forms/__init__.py:536
+#: agora_core/forms/__init__.py:536 agora_core/forms/__init__.py:544
 msgid "Vote in public as a non-member delegate"
 msgstr "Votar públicamente como delegado no-miembro"
 
-#: agora_core/forms/__init__.py:533
-#: agora_core/templates/agora_core/election_base.html:214
-#: agora_core/templates/agora_core/election_base.html:223
+#: agora_core/forms/__init__.py:541
+#: agora_core/templates/agora_core/election_base.html:211
+#: agora_core/templates/agora_core/election_base.html:220
 msgid "Vote"
 msgstr "Vota"
 
-#: agora_core/forms/__init__.py:612
+#: agora_core/forms/__init__.py:620
 msgid ""
 "Explain your public position on the vote if you want and if your vote is "
 "public"
 msgstr "Explica si quieres tu posición públicamente y si tu voto es público"
 
-#: agora_core/forms/__init__.py:624
+#: agora_core/forms/__init__.py:632
 msgid "Your name"
 msgstr "Tu nombre"
 
-#: agora_core/forms/__init__.py:626
+#: agora_core/forms/__init__.py:634
 msgid "Your contact email"
 msgstr "Tu email de contacto"
 
-#: agora_core/forms/__init__.py:627
+#: agora_core/forms/__init__.py:635
 msgid "Subject"
 msgstr "Asunto"
 
-#: agora_core/forms/__init__.py:629
+#: agora_core/forms/__init__.py:637
 msgid "Message"
 msgstr "Mensaje"
 
-#: agora_core/forms/__init__.py:639
+#: agora_core/forms/__init__.py:647
 msgid "Send message"
 msgstr "Enviar mensaje"
 
-#: agora_core/forms/__init__.py:651
+#: agora_core/forms/__init__.py:659
 #, python-format
 msgid ""
 "[%(site)s] Message from %(name)s <%(email)s>: \n"
@@ -1254,7 +1290,7 @@ msgstr ""
 "\n"
 "%(msg)s"
 
-#: agora_core/forms/__init__.py:660
+#: agora_core/forms/__init__.py:668
 msgid "You have contacted us, we'll answer you as soon as possible."
 msgstr "Has contactado con nosotros, te contestaremos lo antes posible."
 
@@ -1266,37 +1302,61 @@ msgstr "Publica un comentario aquí..."
 msgid "Send"
 msgstr "Enviar"
 
-#: agora_core/forms/comment.py:128 agora_core/forms/user.py:111
+#: agora_core/forms/comment.py:120
+#, fuzzy
+msgid "You must be authenticated to post a comment"
+msgstr "Debes autenticarte"
+
+#: agora_core/forms/comment.py:128 agora_core/forms/user.py:112
 #, python-format
 msgid "Watch your mouth! The word %s is not allowed here."
 msgid_plural "Watch your mouth! The words %s are not allowed here."
 msgstr[0] "¡Cuida tu lenguaje! Las palabras %s no están permitidas aquí."
 msgstr[1] "¡Cuida tu lenguaje! La palabra %s no está permitida aquí."
 
-#: agora_core/forms/user.py:81
+#: agora_core/forms/user.py:82
 #, python-format
 msgid "Message from %s"
 msgstr "Mensaje de %s"
 
-#: agora_core/forms/user.py:253
+#: agora_core/forms/user.py:254
 msgid "This username is already in use. Please supply a different username."
 msgstr ""
 "Este nombre de usuario ya está en uso. Escribe otro nombre de usuario por "
 "favor."
 
-#: agora_core/forms/user.py:279
+#: agora_core/forms/user.py:280
 msgid "The two password fields didn't match or are insecure."
 msgstr "Las contraseñas no coinciden o no son seguras."
 
-#: agora_core/forms/user.py:289
+#: agora_core/forms/user.py:294
+msgid "FNMT users cannot change their names."
+msgstr ""
+
+#: agora_core/forms/user.py:303
 msgid "You need to be authenticated"
 msgstr "Debes autenticarte"
+
+#: agora_core/forms/user.py:370
+#, fuzzy
+msgid "Invalid activation secret. "
+msgstr "Enlace de activación no válido."
+
+#: agora_core/forms/user.py:372
+#, fuzzy
+msgid "Auto activation not allowed."
+msgstr "Fallo al activar la cuenta."
 
 #: agora_core/migrations/0003_auto__del_field_election_delegated_votes_result.py:34
 msgid "Simple one choice result type of election"
 msgstr "Votación simple con resultado de una sola opción"
 
-#: agora_core/models/__init__.py:129
+#: agora_core/models/__init__.py:127
+#, python-format
+msgid "You just joined %(agora)s. Congratulations!"
+msgstr "Acaba de unirse a %(agora)s. ¡Enhorabuena!"
+
+#: agora_core/models/__init__.py:191
 #, python-format
 msgid ""
 "Is a member of %(num_agoras)d agoras and has emitted  %(num_votes)d direct "
@@ -1305,87 +1365,101 @@ msgstr ""
 "Es un miembro de %(num_agoras)d ágoras y ha emitido %(num_votes)d votos "
 "directos."
 
-#: agora_core/models/__init__.py:181
+#: agora_core/models/__init__.py:247
 msgid "Last Activity Read Date"
 msgstr "Fecha de la Última Actividad de Lectura"
 
-#: agora_core/models/__init__.py:185
+#: agora_core/models/__init__.py:251
 msgid "Language Code"
 msgstr "Código de Idioma"
 
-#: agora_core/models/__init__.py:191
+#: agora_core/models/__init__.py:257
 msgid "Extra"
 msgstr "Extra"
 
-#: agora_core/models/agora.py:24
+#: agora_core/models/agora.py:26
 msgid "Simple election for delegates where only one delegate can be chosen"
 msgstr ""
 "Votación simple para delegados donde sólo un delegado puede ser elegido"
 
-#: agora_core/models/agora.py:28
+#: agora_core/models/agora.py:30
 msgid "Anyone can join"
 msgstr "Cualquiera puede participar"
 
-#: agora_core/models/agora.py:29
+#: agora_core/models/agora.py:31
 msgid "Joining requires admins approval, allow non-member delegates"
 msgstr "Votar públicamente como delegado"
 
-#: agora_core/models/agora.py:30
+#: agora_core/models/agora.py:32
 msgid "Joining requires admins approval and delegates must be agora members"
 msgstr ""
 "Ser miembro requiere la aprobación de los administradores y los delegados "
 "deben ser miembros del ágora"
 
-#: agora_core/models/agora.py:36
+#: agora_core/models/agora.py:38
 msgid "Anyone can comment"
 msgstr "Cualquiera puede comentar"
 
-#: agora_core/models/agora.py:37
+#: agora_core/models/agora.py:39
 msgid "Only members can comment"
 msgstr "Sólo los miembros pueden comentar"
 
-#: agora_core/models/agora.py:38
+#: agora_core/models/agora.py:40
 msgid "Only admins can comment"
 msgstr "Sólo los admins pueden comentar"
 
-#: agora_core/models/agora.py:39
+#: agora_core/models/agora.py:41
 msgid "No comments"
 msgstr "Sin comentarios"
 
-#: agora_core/models/agora.py:43 agora_core/models/election.py:107
+#: agora_core/models/agora.py:45
+#, fuzzy
+msgid "Allow delegation"
+msgstr "Aprobar votación"
+
+#: agora_core/models/agora.py:46
+#, fuzzy
+msgid "Disallow delegation"
+msgstr "Listando votaciones"
+
+#: agora_core/models/agora.py:50 agora_core/models/election.py:107
 msgid "Creator"
 msgstr "Creador"
 
-#: agora_core/models/agora.py:54
+#: agora_core/models/agora.py:61
 msgid "Delegation Election"
 msgstr "Votación de delegación"
 
-#: agora_core/models/agora.py:56 agora_core/models/delegateelectioncount.py:39
+#: agora_core/models/agora.py:63 agora_core/models/delegateelectioncount.py:39
 #: agora_core/models/election.py:120
 msgid "Created at date"
 msgstr "Creado en fecha"
 
-#: agora_core/models/agora.py:59 agora_core/models/election.py:141
+#: agora_core/models/agora.py:66 agora_core/models/election.py:141
 msgid "Archived at Date"
 msgstr "Archivado en Fecha"
 
-#: agora_core/models/agora.py:62 agora_core/models/election.py:205
+#: agora_core/models/agora.py:69 agora_core/models/election.py:205
 msgid "name"
 msgstr "nombre"
 
-#: agora_core/models/agora.py:64 agora_core/models/election.py:203
+#: agora_core/models/agora.py:71 agora_core/models/election.py:203
 msgid "Pretty Name"
 msgstr "Nombre bonito"
 
-#: agora_core/models/agora.py:82
+#: agora_core/models/agora.py:73
+msgid "Url"
+msgstr ""
+
+#: agora_core/models/agora.py:91
 msgid "Image Url"
 msgstr "Url de la imagen"
 
-#: agora_core/models/agora.py:142
+#: agora_core/models/agora.py:151
 msgid "Is delegation secret"
 msgstr "¿Es el voto delegado secreto?"
 
-#: agora_core/models/agora.py:143
+#: agora_core/models/agora.py:152
 msgid ""
 "if activated, when you delegate to someone, nobody will know who you "
 "delegated to"
@@ -1393,37 +1467,36 @@ msgstr ""
 "Si está activado, cuando delegues en alguien, nadie sabrá en quien has "
 "delegado"
 
-#: agora_core/models/agora.py:164
-#: agora_core/templates/agora_core/agora_members.html:6
-#: agora_core/templates/agora_core/agora_members.html:33
-#: agora_core/templates/agora_core/agora_view.html:43
+#: agora_core/models/agora.py:176
+#: agora_core/templates/agora_core/agora_members.html:5
+#: agora_core/templates/agora_core/agora_members.html:26
 msgid "Members"
 msgstr "Miembros"
 
-#: agora_core/models/agora.py:167
+#: agora_core/models/agora.py:179
 msgid "Administrators"
 msgstr "Administradores"
 
-#: agora_core/models/agora.py:170 agora_core/models/election.py:259
+#: agora_core/models/agora.py:182 agora_core/models/election.py:259
 msgid "Extra Data"
 msgstr "Datos adicionales"
 
-#: agora_core/models/agora.py:178
-#: agora_core/templates/agora_core/agora_members.html:49
+#: agora_core/models/agora.py:190
+#: agora_core/templates/agora_core/agora_members.html:42
 msgid "Requested membership"
 msgstr "Solicitado ser miembro"
 
-#: agora_core/models/agora.py:179
+#: agora_core/models/agora.py:191
 msgid "Invited to membership"
 msgstr "Invitación para ser miembro"
 
-#: agora_core/models/agora.py:180
-#: agora_core/templates/agora_core/agora_members.html:54
+#: agora_core/models/agora.py:192
+#: agora_core/templates/agora_core/agora_members.html:47
 msgid "Requested admin membership"
 msgstr "Solicitado ser administrador"
 
 #: agora_core/models/castvote.py:24
-#: agora_core/templates/agora_core/election_votes_graph.html:29
+#: agora_core/templates/agora_core/election_votes_graph.html:32
 msgid "Voter"
 msgstr "Votante"
 
@@ -1453,7 +1526,6 @@ msgid "Data"
 msgstr "Datos"
 
 #: agora_core/models/delegateelectioncount.py:23
-#: agora_core/templates/agora_core/election_choose_delegate.html:8
 msgid "Delegate"
 msgstr "Delegar"
 
@@ -1537,11 +1609,11 @@ msgstr "Descripción extendida de la votación"
 msgid "Delegated votes"
 msgstr "Votos delegados"
 
-#: agora_core/models/election.py:578
+#: agora_core/models/election.py:602
 msgid "This election allows everyone to vote. "
 msgstr "Esta votación permite a todo el mundo votar. "
 
-#: agora_core/models/election.py:581
+#: agora_core/models/election.py:605
 msgid ""
 "This election only allows agora members to vote, but any delegate can emit "
 "their position. "
@@ -1549,59 +1621,59 @@ msgstr ""
 "Esta votación sólo permite votar a los miembros del ágora, pero cualquier "
 "delegado puede emitir su intención de voto. "
 
-#: agora_core/models/election.py:584
+#: agora_core/models/election.py:608
 msgid "This election only allows agora members to vote. "
 msgstr "Esta votación sólo permite votar a los miembros del ágora. "
 
-#: agora_core/models/election.py:588
+#: agora_core/models/election.py:612
 msgid "Vote is secret (public for delegates). "
 msgstr "El voto es secreto (público para los delegados). "
 
-#: agora_core/models/election.py:591
+#: agora_core/models/election.py:615
 msgid "Vote is public. "
 msgstr "El voto es público. "
 
-#: agora_core/models/election.py:600
+#: agora_core/models/election.py:624
 #, python-format
 msgid "The election has been approved and was frozen  %(frozen_date)s. "
 msgstr "La votación ha sido aprobada y fue congelada %(frozen_date)s. "
 
-#: agora_core/models/election.py:604
+#: agora_core/models/election.py:628
 msgid "The election has been approved and is not frozen yet. "
 msgstr "La votación ha sido aprobada y no está congelada todavía."
 
-#: agora_core/models/election.py:607
+#: agora_core/models/election.py:631
 #, python-format
 msgid ""
 "The election has not been approved yet and was frozen  %(frozen_date)s. "
 msgstr ""
 "La votación no ha sido probada todavía y fue congelada %(frozen_date)s. "
 
-#: agora_core/models/election.py:611
+#: agora_core/models/election.py:635
 msgid "The election has been not approved and is not frozen yet. "
 msgstr "La votación no ha sido aprobada ni congelada todavía. "
 
-#: agora_core/models/election.py:616
+#: agora_core/models/election.py:640
 #, python-format
 msgid "Voting will start  %(start_date)s and finish %(end_date)s. "
 msgstr "La votación se iniciará %(start_date)s y terminará %(end_date)s. "
 
-#: agora_core/models/election.py:621
+#: agora_core/models/election.py:645
 #, python-format
 msgid "Voting will start %(start_date)s. "
 msgstr "La votación se iniciará %(start_date)s. "
 
-#: agora_core/models/election.py:626
+#: agora_core/models/election.py:650
 #, python-format
 msgid "Voting started %(start_date)s and will finish %(end_date)s. "
 msgstr "La votación comenzó %(start_date)s y terminará %(end_date)s. "
 
-#: agora_core/models/election.py:631
+#: agora_core/models/election.py:655
 #, python-format
 msgid "Voting started %(start_date)s. "
 msgstr "La votación comenzó %(start_date)s. "
 
-#: agora_core/models/election.py:635
+#: agora_core/models/election.py:659
 #, python-format
 msgid ""
 "Voting started %(start_date)s and finished %(end_date)s. Results available "
@@ -1610,11 +1682,11 @@ msgstr ""
 "La votación comenzó %(start_date)s y terminó %(end_date)s. Los resultados "
 "disponibles %(tally_date)s. "
 
-#: agora_core/models/election.py:642
+#: agora_core/models/election.py:666
 msgid "Start date for voting is not set yet. "
 msgstr "La fecha de inicio de la votación no ha sido establecido aún. "
 
-#: agora_core/models/election.py:646
+#: agora_core/models/election.py:670
 msgid "Election is <b>archived and dismissed</b>."
 msgstr "La votación está <b>archivada y descartada</b>."
 
@@ -1646,35 +1718,34 @@ msgstr ""
 "Selecciona una lista entre las múltiples opciones - Nombre técnico: VUT de "
 "Wright (Voto Único Transferible)"
 
-#: agora_core/resources/agora.py:552
-#, python-format
-msgid "Your cancelled your membership request at %(agora)s"
-msgstr "Has cancelado tu petición para ser miembro de %(agora)s"
+#: agora_core/resources/agora.py:580
+#, fuzzy, python-format
+msgid "You canceled your membership request at %(agora)s"
+msgstr "Has cancelado tu petición para ser miembro de %(agora)s."
 
-#: agora_core/resources/agora.py:560
-#, python-format
-msgid "%(site)s - cancelled your membership request at %(agora)s"
+#: agora_core/resources/agora.py:588
+#, fuzzy, python-format
+msgid "%(site)s - canceled your membership request at %(agora)s"
 msgstr ""
 "%(site)s ha cancelado tu solicitud de ser miembro en el ágora %(agora)s"
 
-#: agora_core/resources/agora.py:706
+#: agora_core/resources/agora.py:698
 #, python-format
 msgid "Your membership request at %(agora)s has been denied. Sorry about that!"
 msgstr ""
 "Lo siento, pero tu petición de membresía en %(agora)s ha sido descartada."
 
-#: agora_core/resources/agora.py:714
+#: agora_core/resources/agora.py:706
 #, python-format
 msgid "%(site)s - membership request denied at %(agora)s"
 msgstr "%(site)s - solicitud de membresía descartada en %(agora)s"
 
-#: agora_core/resources/agora.py:759
-#, python-format
+#: agora_core/resources/agora.py:751
+#, fuzzy, python-format
 msgid ""
-"As administrator of %(agora)s, %(user)s has himself added you to this agora. "
-"You can remove your membership at anytime, and if you think he is spamming "
-"you please contact with this website administrators.\n"
-"\n"
+"As administrator of %(agora)s, %(user)s has added you to this agora. You can "
+"remove your membership at anytime, and if you think he is spamming you "
+"please contact with this website administrators."
 msgstr ""
 "El usuario %(user)s es administrador del ágora %(agora)s y te ha añadido a "
 "este ágora. Puedes dejar de ser miembro en cualquier momento, si consideras "
@@ -1682,64 +1753,65 @@ msgstr ""
 "administradores del sitio.\n"
 "\n"
 
-#: agora_core/resources/agora.py:771
+#: agora_core/resources/agora.py:763
 #, python-format
 msgid "%(site)s - Added as member to %(agora)s"
 msgstr "%(site)s - Ahora eres miembro de %(agora)s"
 
-#: agora_core/resources/agora.py:819
-#, python-format
-msgid ""
-"Your have been removed from membership from %(agora)s . Sorry about that!\n"
-"\n"
+#: agora_core/resources/agora.py:811
+#, fuzzy, python-format
+msgid "Your membership of %(agora)s has been removed. Sorry about that!"
 msgstr ""
-"Lo siento, pero se te ha retirado la membresía en %(agora)s.\n"
-"\n"
+"Lo siento, pero tu petición de membresía en %(agora)s ha sido descartada."
 
-#: agora_core/resources/agora.py:889
-#, python-format
-msgid "You cancelled your admin membership request at %(agora)s"
+#: agora_core/resources/agora.py:819
+#, fuzzy, python-format
+msgid "%(site)s - membership of %(agora)s removed"
+msgstr "%(site)s - membresía retirada en %(agora)s"
+
+#: agora_core/resources/agora.py:880
+#, fuzzy, python-format
+msgid "You canceled your admin membership request at %(agora)s"
 msgstr "Has cancelado tu solicitud de miembro administrador en %(agora)s."
 
-#: agora_core/resources/agora.py:897
-#, python-format
-msgid "%(site)s - cancelled your admin membership request at %(agora)s"
+#: agora_core/resources/agora.py:888
+#, fuzzy, python-format
+msgid "%(site)s - canceled your admin membership request at %(agora)s"
 msgstr "%(site)s - ha cancelado tu solicitud para ser miembro de %(agora)s"
 
-#: agora_core/resources/agora.py:935
+#: agora_core/resources/agora.py:926
 #, python-format
 msgid "You have removed your membership from %(agora)s"
 msgstr "Has eliminado tu membresía de %(agora)s."
 
-#: agora_core/resources/agora.py:992
+#: agora_core/resources/agora.py:983
 #, python-format
 msgid "Your admin membership has been accepted at %(agora)s. Congratulations!"
 msgstr "Has sido aceptado como administrador de %(agora)s. ¡Enhorabuena!"
 
-#: agora_core/resources/agora.py:1000
+#: agora_core/resources/agora.py:991
 #, python-format
 msgid "%(site)s - you are now admin of %(agora)s"
 msgstr "%(site)s - ahora eres administrador de %(agora)s"
 
-#: agora_core/resources/agora.py:1047
+#: agora_core/resources/agora.py:1038
 #, python-format
 msgid ""
 "Your admin membership request at %(agora)s has been denied. Sorry about that!"
 msgstr ""
 "¡Vaya! Tu petición para ser administrador de %(agora)s ha sido descartada."
 
-#: agora_core/resources/agora.py:1055
+#: agora_core/resources/agora.py:1046
 #, python-format
 msgid "%(site)s - admin membership request denied at %(agora)s"
 msgstr "%(site)s - petición para ser administrador descartada en %(agora)s"
 
-#: agora_core/resources/agora.py:1101
-#, python-format
+#: agora_core/resources/agora.py:1092
+#, fuzzy, python-format
 msgid ""
-"As administrator of %(agora)s, %(user)s has himself promoted you to admin of "
-"this agora. You can remove your admin membership at anytime, and if you "
-"think he is spamming you please contact with this website administrators.\n"
-"\n"
+"As administrator of %(agora)s, %(user)s has promoted you to admin of this "
+"agora. You can remove your admin membership at anytime, and if you think he "
+"is spamming you please contact with this website administrators."
 msgstr ""
 "Como administrador de %(agora)s, %(user)s te ha designado administrador de "
 "este ágora. Puedes eliminar tu membresía como administrador en cualquier "
@@ -1747,85 +1819,76 @@ msgstr ""
 "con los administradores de esta web\n"
 "\n"
 
-#: agora_core/resources/agora.py:1113
+#: agora_core/resources/agora.py:1104
 #, python-format
 msgid "%(site)s - Promoted to admin of agora %(agora)s"
 msgstr "%(site)s - Has sido designado administrador de %(agora)s"
 
-#: agora_core/resources/agora.py:1161
-#, python-format
+#: agora_core/resources/agora.py:1152
+#, fuzzy, python-format
 msgid ""
-"Your have been removed admin permissions from %(agora)s . Sorry about that!\n"
-"\n"
+"Your admin permissions on %(agora)s have been revoked. Sorry about that!"
 msgstr ""
-"Lo siento, pero se te han retirado los permisos como administrador de "
-"%(agora)s.\n"
-"\n"
+"¡Vaya! Tu petición para ser administrador de %(agora)s ha sido descartada."
 
-#: agora_core/resources/agora.py:1169 agora_core/resources/agora.py:1215
-#: agora_core/resources/agora.py:1286
-#, python-format
-msgid "%(site)s - admin permissions removed from %(agora)s"
+#: agora_core/resources/agora.py:1159
+#, fuzzy, python-format
+msgid "%(site)s - admin permissions revoked on %(agora)s"
 msgstr "%(site)s - permisos de administrador retirados de %(agora)s."
 
-#: agora_core/resources/agora.py:1207
-#, python-format
-msgid "Your hav removed your admin permissions from %(agora)s"
+#: agora_core/resources/agora.py:1197
+#, fuzzy, python-format
+msgid "You have given up your admin permissions on %(agora)s"
 msgstr "Has eliminado tu función de administrador de %(agora)s."
 
-#: agora_core/resources/agora.py:1258
+#: agora_core/resources/agora.py:1205
+#, fuzzy, python-format
+msgid "%(site)s - admin permissions given up on %(agora)s"
+msgstr "%(site)s - permisos de administrador retirados de %(agora)s."
+
+#: agora_core/resources/agora.py:1248
 msgid "Your vote is not currently delegated."
 msgstr "Actualmente no estás delegando el voto."
 
-#: agora_core/resources/agora.py:1278
-#, python-format
-msgid "Your have removed your vote delegation from %(agora)s"
+#: agora_core/resources/agora.py:1268
+#, fuzzy, python-format
+msgid "You have removed your vote delegation from %(agora)s"
 msgstr "Has retirado tu delegación de voto de %(agora)s"
 
-#: agora_core/resources/election.py:399
+#: agora_core/resources/agora.py:1276
+#, fuzzy, python-format
+msgid "%(site)s - vote delegation removed from %(agora)s"
+msgstr "%(site)s - membresía retirada en %(agora)s"
+
+#: agora_core/resources/election.py:414
 #, python-format
 msgid "Election %(election)s approved at agora %(agora)s. Congratulations!"
 msgstr "Votación %(election)s aprobada en ágora %(agora)s. ¡Enhorabuena!"
 
-#: agora_core/resources/election.py:406
+#: agora_core/resources/election.py:421
 msgid "Election URL"
 msgstr "URL de la votación"
 
-#: agora_core/resources/election.py:412
+#: agora_core/resources/election.py:427
 #, python-format
 msgid "%(site)s - Election %(election)s approved"
 msgstr "%(site)s - Votación %(election)s aprobada"
 
-#: agora_core/resources/user.py:285
+#: agora_core/resources/user.py:306
 msgid "Welcome to this agora"
 msgstr "Bienvenido a este ágora"
 
-#: agora_core/resources/user.py:343
+#: agora_core/resources/user.py:362
 #, python-format
 msgid "%(site)s - invitation to join %(agora)s"
 msgstr "%(site)s - invitación para unirte a %(agora)s"
 
-#: agora_core/tasks/agora.py:36
-#: agora_core/templates/agora_core/user_item.html:21
-msgid "Accept membership request"
-msgstr "Aceptar solicitud para ser miembro"
-
-#: agora_core/tasks/agora.py:44 agora_core/tasks/agora.py:103
-#: agora_core/templates/agora_core/user_item.html:27
-msgid "Dismiss membership request"
-msgstr "Rechazar solicitud para ser miembro"
-
-#: agora_core/tasks/agora.py:95
-#: agora_core/templates/agora_core/user_item.html:35
-msgid "Accept admin membership request"
-msgstr "Aceptar solicitud para ser administrador"
-
-#: agora_core/tasks/election.py:76 agora_core/tasks/election.py:93
+#: agora_core/tasks/election.py:77 agora_core/tasks/election.py:94
 #, python-format
 msgid "Vote in election %s"
 msgstr "Vota en la votación %s"
 
-#: agora_core/tasks/election.py:166 agora_core/tasks/election.py:214
+#: agora_core/tasks/election.py:167 agora_core/tasks/election.py:215
 #, python-format
 msgid "Election results for %s"
 msgstr "Resultados de la votación para %s"
@@ -1870,17 +1933,15 @@ msgstr ""
 "agora-ciudadana-devel@googlegroups.com\">envíanos un email</a>."
 
 #: agora_core/templates/agora_core/agora_activity.html:5
-#: agora_core/templates/agora_core/agora_view.html:28
 #: agora_core/templates/agora_core/election_activity.html:6
-#: agora_core/templates/agora_core/election_base.html:93
-#: agora_core/templates/agora_core/user_activity.html:6
-#: agora_core/templates/agora_core/user_view.html:28
+#: agora_core/templates/agora_core/election_base.html:91
+#: agora_core/templates/agora_core/user_activity.html:5
+#: agora_core/templates/agora_core/user_view.html:27
 msgid "Activity"
 msgstr "Actividad"
 
 #: agora_core/templates/agora_core/agora_add_members.html:6
 #: agora_core/templates/agora_core/agora_admin.html:6
-#: agora_core/templates/agora_core/agora_view.html:48
 msgid "Admin"
 msgstr "Administrador"
 
@@ -1898,30 +1959,26 @@ msgstr ""
 "está prohibido hacer spam."
 
 #: agora_core/templates/agora_core/agora_bio.html:15
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"\n"
-"            This biography is empty! now you have the opportunity to <a href="
-"\"%(edit_bio_url)s\">start writing it</a>.\n"
-"            "
+"This biography is empty! now you have the opportunity to <a href="
+"\"%(edit_bio_url)s\">start writing it</a>."
 msgstr ""
 "\n"
 "            ¡Esta biografía está vacía! ahora tienes la oportunidad de <a "
 "href=\"%(edit_bio_url)s\">comenzar a escribirla</a>.\n"
 "            "
 
-#: agora_core/templates/agora_core/agora_bio.html:19
-#: agora_core/templates/agora_core/user_bio.html:19
+#: agora_core/templates/agora_core/agora_bio.html:17
+#: agora_core/templates/agora_core/user_bio.html:18
 msgid "This biography is empty, sorry about that."
 msgstr "Esta biografía está vacía, sentimos las molestias."
 
-#: agora_core/templates/agora_core/agora_bio.html:26
-#, python-format
+#: agora_core/templates/agora_core/agora_bio.html:24
+#, fuzzy, python-format
 msgid ""
-"\n"
-"            This biography is a bit short, perhaps you can <a href="
-"\"%(edit_bio_url)s\">improve it adding some additional information</a>.\n"
-"            "
+"This biography is a bit short, perhaps you can <a href=\"%(edit_bio_url)s"
+"\">improve it adding some additional information</a>."
 msgstr ""
 "\n"
 "            Esta biografía es un poco corta, quizás podrías <a href="
@@ -1929,145 +1986,120 @@ msgstr ""
 "            "
 
 #: agora_core/templates/agora_core/agora_comments.html:7
-#: agora_core/templates/agora_core/agora_view.html:36
-#: agora_core/templates/agora_core/election_base.html:100
+#: agora_core/templates/agora_core/election_base.html:98
 #: agora_core/templates/agora_core/election_comments.html:8
 msgid "Comments"
 msgstr "Comentarios:"
 
 #: agora_core/templates/agora_core/agora_elections.html:5
-#: agora_core/templates/agora_core/agora_view.html:39
 #: agora_core/templates/agora_core/user_elections.html:5
-#: agora_core/templates/agora_core/user_view.html:34 templates/base.html:72
-#: templates/base.html.py:99
+#: agora_core/templates/agora_core/user_view.html:33
 msgid "Elections"
 msgstr "Votaciones"
 
-#: agora_core/templates/agora_core/agora_elections.html:16
-#: agora_core/templates/agora_core/agora_list.html:29
-#: agora_core/templates/agora_core/agora_members.html:19
-#: agora_core/templates/agora_core/agora_view.html:67
-#: agora_core/templates/agora_core/election_base.html:159
+#: agora_core/templates/agora_core/agora_elections.html:14
+#: agora_core/templates/agora_core/agora_list.html:28
+#: agora_core/templates/agora_core/agora_members.html:17
+#: agora_core/templates/agora_core/agora_view.html:42
+#: agora_core/templates/agora_core/election_base.html:160
 #: agora_core/templates/agora_core/election_delegates.html:18
-#: agora_core/templates/agora_core/election_list.html:29
+#: agora_core/templates/agora_core/election_list.html:28
 #: agora_core/templates/agora_core/election_votes.html:17
 #: agora_core/templates/agora_core/home_loggedin_activity.html:90
 #: agora_core/templates/agora_core/user_elections.html:16
-#: agora_core/templates/agora_core/user_listing.html:29
+#: agora_core/templates/agora_core/user_listing.html:28
 #: agora_core/templates/agora_core/user_view.html:51
-#: agora_core/templates/search/search.html:35
+#: agora_core/templates/search/search.html:34
 msgid "more"
 msgstr "más"
 
-#: agora_core/templates/agora_core/agora_elections.html:17
-#: agora_core/templates/agora_core/agora_list.html:30
-#: agora_core/templates/agora_core/agora_members.html:20
-#: agora_core/templates/agora_core/agora_view.html:68
-#: agora_core/templates/agora_core/election_base.html:160
+#: agora_core/templates/agora_core/agora_elections.html:15
+#: agora_core/templates/agora_core/agora_list.html:29
+#: agora_core/templates/agora_core/agora_members.html:18
+#: agora_core/templates/agora_core/agora_view.html:43
+#: agora_core/templates/agora_core/election_base.html:161
 #: agora_core/templates/agora_core/election_delegates.html:19
-#: agora_core/templates/agora_core/election_list.html:30
+#: agora_core/templates/agora_core/election_list.html:29
 #: agora_core/templates/agora_core/election_votes.html:18
 #: agora_core/templates/agora_core/home_loggedin_activity.html:91
 #: agora_core/templates/agora_core/user_elections.html:17
-#: agora_core/templates/agora_core/user_listing.html:30
+#: agora_core/templates/agora_core/user_listing.html:29
 #: agora_core/templates/agora_core/user_view.html:52
-#: agora_core/templates/search/search.html:36
+#: agora_core/templates/search/search.html:35
 msgid "Loading..."
 msgstr "Cargando..."
 
-#: agora_core/templates/agora_core/agora_elections.html:25
+#: agora_core/templates/agora_core/agora_elections.html:23
 msgid "Open"
 msgstr "Abiertas"
 
-#: agora_core/templates/agora_core/agora_elections.html:30
+#: agora_core/templates/agora_core/agora_elections.html:28
 msgid "Tallied"
 msgstr "Recontado"
 
-#: agora_core/templates/agora_core/agora_elections.html:35
+#: agora_core/templates/agora_core/agora_elections.html:33
 msgid "Approved"
 msgstr "Aprobadas"
 
-#: agora_core/templates/agora_core/agora_elections.html:40
+#: agora_core/templates/agora_core/agora_elections.html:38
 msgid "Requested"
 msgstr "Solicitadas"
 
-#: agora_core/templates/agora_core/agora_elections.html:45
+#: agora_core/templates/agora_core/agora_elections.html:43
 msgid "Archived"
 msgstr "Archivadas"
 
-#: agora_core/templates/agora_core/agora_elections.html:50
+#: agora_core/templates/agora_core/agora_elections.html:48
 msgid "All"
 msgstr "Todas"
 
-#: agora_core/templates/agora_core/agora_list.html:6
+#: agora_core/templates/agora_core/agora_list.html:5
+#: agora_core/templates/agora_core/agora_list.html:13
 msgid "Agora list"
 msgstr "Ágoras"
 
-#: agora_core/templates/agora_core/agora_list.html:14
-msgid "Agoras list"
-msgstr "Ágoras"
-
-#: agora_core/templates/agora_core/agora_list.html:16
+#: agora_core/templates/agora_core/agora_list.html:15
 msgid "Listing all agoras"
 msgstr "Listando todas las ágoras"
 
-#: agora_core/templates/agora_core/agora_members.html:27
-msgid "Add members manually"
-msgstr "Añadir miembros manualmente"
-
-#: agora_core/templates/agora_core/agora_members.html:38
+#: agora_core/templates/agora_core/agora_members.html:31
 msgid "Admins"
 msgstr "Admins"
 
-#: agora_core/templates/agora_core/agora_members.html:43
+#: agora_core/templates/agora_core/agora_members.html:36
 #: agora_core/templates/agora_core/election_base.html:105
-#: agora_core/templates/agora_core/election_delegates.html:6
+#: agora_core/templates/agora_core/election_delegates.html:5
 msgid "Delegates"
 msgstr "Delegados"
 
 #: agora_core/templates/agora_core/agora_view.html:11
-#: agora_core/templates/agora_core/election_base.html:11
+#: agora_core/templates/agora_core/election_base.html:12
 #, python-format
 msgid "%(name)s logo"
 msgstr "logo de %(name)s"
 
-#: agora_core/templates/agora_core/agora_view.html:76
-#: agora_core/templates/agora_core/home_loggedin_activity.html:98
-msgid "Calendar"
-msgstr "Calendario"
-
-#: agora_core/templates/agora_core/agora_view.html:78
-#: agora_core/templates/agora_core/home_loggedin_activity.html:114
-msgid "Search..."
-msgstr "Buscar..."
-
-#: agora_core/templates/agora_core/agora_view.html:86
-msgid "No elections yet, perhaps you want to create one?"
-msgstr "Aun no hay votaciones, ¿a lo mejor quieres crear una?"
-
-#: agora_core/templates/agora_core/agora_view.html:95
-#: agora_core/templates/agora_core/election_base.html:321
+#: agora_core/templates/agora_core/agora_view.html:56
+#: agora_core/templates/agora_core/election_base.html:311
 msgid "Share on Twitter"
 msgstr "Compartir en Twitter"
 
-#: agora_core/templates/agora_core/agora_view.html:98
-#: agora_core/templates/agora_core/election_base.html:325
+#: agora_core/templates/agora_core/agora_view.html:59
+#: agora_core/templates/agora_core/election_base.html:315
 msgid "Share on Facebook"
 msgstr "Compartir en Facebook"
 
-#: agora_core/templates/agora_core/agora_view.html:101
-#: agora_core/templates/agora_core/election_base.html:328
+#: agora_core/templates/agora_core/agora_view.html:62
+#: agora_core/templates/agora_core/election_base.html:318
 msgid "Share on Identica"
 msgstr "Compartir en Identica"
 
-#: agora_core/templates/agora_core/agora_view.html:104
-#: agora_core/templates/agora_core/election_base.html:331
+#: agora_core/templates/agora_core/agora_view.html:65
+#: agora_core/templates/agora_core/election_base.html:321
 msgid "Share on Google Plus"
 msgstr "Compartir en Google Plus"
 
 #: agora_core/templates/agora_core/create_agora_form.html:19
 #: agora_core/templates/agora_core/create_agora_form.html:21
-#: templates/base.html:64
 msgid "Create an Agora"
 msgstr "Crea un Ágora"
 
@@ -2077,7 +2109,6 @@ msgstr "Crear un sitio web para tu grupo donde tendrán lugar las votaciones"
 
 #: agora_core/templates/agora_core/delegated_vote_item.html:11
 #: agora_core/templates/agora_core/delegated_vote_item.html:30
-#: agora_core/templates/agora_core/election_choose_delegate.html:26
 #: agora_core/templates/agora_core/user_item.html:76
 #: agora_core/templates/agora_core/vote_from_delegate_item.html:19
 msgid "User mugshot"
@@ -2094,19 +2125,16 @@ msgid "Vote is secret"
 msgstr "El voto es secreto"
 
 #: agora_core/templates/agora_core/delegated_vote_item.html:42
-#: agora_core/templates/agora_core/election_choose_delegate.html:34
 #: agora_core/templates/agora_core/vote_from_delegate_item.html:30
 msgid "Answers:"
 msgstr "Respuestas: "
 
-#: agora_core/templates/agora_core/election_base.html:18
-#, python-format
+#: agora_core/templates/agora_core/election_base.html:19
+#, fuzzy, python-format
 msgid ""
-"\n"
-"            Election created by <a href=\"%(user_url)s\">"
-"%(election_creator_username)s</a> in <a href=\"%(agora_view_url)s\">"
-"%(agora_creator_username)s/%(agora_name)s</a>\n"
-"            "
+"Election created by <a href=\"%(user_url)s\">%(election_creator_username)s</"
+"a> in <a href=\"%(agora_view_url)s\">%(agora_creator_username)s/"
+"%(agora_name)s</a>"
 msgstr ""
 "\n"
 "            Votación creada por <a href=\"%(user_url)s\">"
@@ -2114,14 +2142,12 @@ msgstr ""
 "%(agora_creator_username)s/%(agora_name)s</a>\n"
 "            "
 
-#: agora_core/templates/agora_core/election_base.html:23
-#, python-format
+#: agora_core/templates/agora_core/election_base.html:22
+#, fuzzy, python-format
 msgid ""
-"\n"
-"            Election proposed by <a href=\"%(user_url)s\">"
-"%(election_creator_username)s</a> in <a href=\"%(agora_view_url)s\">"
-"%(agora_creator_username)s/%(agora_name)s</a>\n"
-"            "
+"Election proposed by <a href=\"%(user_url)s\">%(election_creator_username)s</"
+"a> in <a href=\"%(agora_view_url)s\">%(agora_creator_username)s/"
+"%(agora_name)s</a>"
 msgstr ""
 "\n"
 "            Votación propuesta por <a href=\"%(user_url)s\">"
@@ -2129,45 +2155,45 @@ msgstr ""
 "%(agora_creator_username)s/%(agora_name)s</a>\n"
 "            "
 
-#: agora_core/templates/agora_core/election_base.html:35
+#: agora_core/templates/agora_core/election_base.html:32
 msgid "Quick actions"
 msgstr "Acciones rápidas"
 
-#: agora_core/templates/agora_core/election_base.html:43
-#: agora_core/templates/agora_core/election_base.html:244
+#: agora_core/templates/agora_core/election_base.html:40
+#: agora_core/templates/agora_core/election_base.html:241
 msgid "Approve election"
 msgstr "Aprobar votación"
 
-#: agora_core/templates/agora_core/election_base.html:51
-#: agora_core/templates/agora_core/election_base.html:256
+#: agora_core/templates/agora_core/election_base.html:48
+#: agora_core/templates/agora_core/election_base.html:253
 msgid "Freeze election"
 msgstr "Congelar votación"
 
-#: agora_core/templates/agora_core/election_base.html:59
-#: agora_core/templates/agora_core/election_base.html:250
+#: agora_core/templates/agora_core/election_base.html:56
+#: agora_core/templates/agora_core/election_base.html:247
 msgid "Start voting period"
 msgstr "Comenzar el periodo de votación"
 
-#: agora_core/templates/agora_core/election_base.html:67
-#: agora_core/templates/agora_core/election_base.html:262
+#: agora_core/templates/agora_core/election_base.html:64
+#: agora_core/templates/agora_core/election_base.html:259
 msgid "Stop voting period and publish results"
 msgstr "Parar el periodo de votación y publicar los resultados"
 
-#: agora_core/templates/agora_core/election_base.html:75
+#: agora_core/templates/agora_core/election_base.html:72
 msgid "Dismiss and archive election"
 msgstr "Descartar y archivar la votación"
 
-#: agora_core/templates/agora_core/election_base.html:84
+#: agora_core/templates/agora_core/election_base.html:81
 msgid "Join this agora now"
 msgstr "Unirme a este ágora"
 
-#: agora_core/templates/agora_core/election_base.html:96
-#: agora_core/templates/agora_core/election_votes.html:6
+#: agora_core/templates/agora_core/election_base.html:94
+#: agora_core/templates/agora_core/election_votes.html:5
 msgid "Votes"
 msgstr "Votos"
 
 #: agora_core/templates/agora_core/election_base.html:109
-#: agora_core/templates/agora_core/election_votes_graph.html:7
+#: agora_core/templates/agora_core/election_votes_graph.html:6
 msgid "Visual"
 msgstr "Visual"
 
@@ -2175,105 +2201,89 @@ msgstr "Visual"
 msgid "beta"
 msgstr "beta"
 
-#: agora_core/templates/agora_core/election_base.html:115
+#: agora_core/templates/agora_core/election_base.html:116
 #: agora_core/templates/agora_core/election_edit.html:7
 msgid "Edit"
 msgstr "Editar"
 
-#: agora_core/templates/agora_core/election_base.html:130
+#: agora_core/templates/agora_core/election_base.html:131
 msgid "This election is archived and dismissed."
 msgstr "Esta elección ha sido archivada y descartada."
 
-#: agora_core/templates/agora_core/election_base.html:131
+#: agora_core/templates/agora_core/election_base.html:132
 msgid "This usually means that this election results are not valid."
 msgstr ""
 "Normalmente significa que los resultados de estas elecciones no son válidos"
 
-#: agora_core/templates/agora_core/election_base.html:171
-#, python-format
-msgid ""
-"\n"
-"                    VOTES (%(percent)s%% of the electorate)\n"
-"                    "
+#: agora_core/templates/agora_core/election_base.html:172
+#, fuzzy, python-format
+msgid "VOTES (%(percent)s%% of the electorate)"
 msgstr ""
 "\n"
 "                VOTOS (%(percent)s%% del electorado)\n"
 "                "
 
-#: agora_core/templates/agora_core/election_base.html:177
-#, python-format
-msgid ""
-"\n"
-"                    DELEGATED VOTES (%(percent)s%% of the votes)\n"
-"                    "
+#: agora_core/templates/agora_core/election_base.html:176
+#, fuzzy, python-format
+msgid "DELEGATED VOTES (%(percent)s%% of the votes)"
 msgstr ""
 "\n"
 "                VOTOS DELEGADOS (%(percent)s%% de los votos)\n"
 "                "
 
-#: agora_core/templates/agora_core/election_base.html:186
-#, python-format
-msgid ""
-"\n"
-"                    DIRECT VOTES (%(percent)s%% of the electorate)\n"
-"                    "
+#: agora_core/templates/agora_core/election_base.html:183
+#, fuzzy, python-format
+msgid "DIRECT VOTES (%(percent)s%% of the electorate)"
 msgstr ""
 "\n"
 "                VOTOS DIRECTOS (%(percent)s%% del electorado)\n"
 "                "
 
-#: agora_core/templates/agora_core/election_base.html:192
+#: agora_core/templates/agora_core/election_base.html:188
 msgid "DELEGATED VOTES"
 msgstr "VOTOS DELEGADOS"
 
-#: agora_core/templates/agora_core/election_base.html:207
+#: agora_core/templates/agora_core/election_base.html:204
 msgid "Request agora membership"
 msgstr "Solicitar ser miembro del ágora"
 
-#: agora_core/templates/agora_core/election_base.html:221
+#: agora_core/templates/agora_core/election_base.html:218
 msgid "Change my vote"
 msgstr "Cambiar mi voto"
 
-#: agora_core/templates/agora_core/election_base.html:228
+#: agora_core/templates/agora_core/election_base.html:225
 msgid "Change my position as non-member delegate"
 msgstr "Cambiar mi intención de voto como delegado no-miembro"
 
-#: agora_core/templates/agora_core/election_base.html:230
-msgid "Stablish my position as non-member delegate"
+#: agora_core/templates/agora_core/election_base.html:227
+#, fuzzy
+msgid "Establish my position as non-member delegate"
 msgstr "Votar públicamente como delegado no-miembro"
 
-#: agora_core/templates/agora_core/election_base.html:237
+#: agora_core/templates/agora_core/election_base.html:234
 msgid "Your membership request in this election's agora is pending"
 msgstr ""
 "Tu petición de membresía en el ágora de esta votación está pendiente de "
 "aprobación"
 
-#: agora_core/templates/agora_core/election_base.html:270
+#: agora_core/templates/agora_core/election_base.html:267
 msgid "Your vote"
 msgstr "Tu voto"
 
-#: agora_core/templates/agora_core/election_base.html:275
-#, python-format
-msgid ""
-"\n"
-"                            <p class=\"answer\">You answered <strong>"
-"%(answer)s</strong> to <em>%(question)s</em></p>\n"
-"                            "
+#: agora_core/templates/agora_core/election_base.html:272
+#, fuzzy, python-format
+msgid "You answered <strong>%(answer)s</strong> to <em>%(question)s</em>"
 msgstr ""
 "\n"
 "                            <p class=\"answer\">Has respondido <strong>"
 "%(answer)s</strong> a la pregunta <em>%(question)s</em></p>\n"
 "                            "
 
-#: agora_core/templates/agora_core/election_base.html:282
-#, python-format
+#: agora_core/templates/agora_core/election_base.html:277
+#, fuzzy, python-format
 msgid ""
-"\n"
-"                                You delegated to <a href=\"%(delegate_url)s"
-"\">%(delegate_username)s</a> who answered\n"
-"                                <strong>%(answer)s</strong> to <em>"
-"%(question)s</em></p>\n"
-"                                "
+"You delegated to <a href=\"%(delegate_url)s\">%(delegate_username)s</a> who "
+"answered <strong>%(answer)s</strong> to <em>%(question)s</em>"
 msgstr ""
 "\n"
 "                                Delegaste en <a href=\"%(delegate_url)s\">"
@@ -2282,86 +2292,46 @@ msgstr ""
 "%(question)s</em></p>\n"
 "                                "
 
-#: agora_core/templates/agora_core/election_base.html:287
-#, python-format
-msgid ""
-"\n"
-"                                You delegated to <a href=\"%(delegate_url)s"
-"\">%(delegate_username)s</a>.\n"
-"                                "
+#: agora_core/templates/agora_core/election_base.html:279
+#, fuzzy, python-format
+msgid "You delegated to <a href=\"%(delegate_url)s\">%(delegate_username)s</a>"
 msgstr ""
 "\n"
 "                                Has delegado en<a href=\"%(delegate_url)s\">"
 "%(delegate_username)s</a>.\n"
 "                                "
 
-#: agora_core/templates/agora_core/election_base.html:293
+#: agora_core/templates/agora_core/election_base.html:283
 msgid "You delegated your vote, and your vote is secret"
 msgstr "Has delegado tu voto, y tu voto es secreto"
 
-#: agora_core/templates/agora_core/election_base.html:298
-#: agora_core/templates/agora_core/election_base.html:310
+#: agora_core/templates/agora_core/election_base.html:288
+#: agora_core/templates/agora_core/election_base.html:300
 msgid "Cancel direct vote"
 msgstr "Cancelar mi voto directo"
 
-#: agora_core/templates/agora_core/election_base.html:303
+#: agora_core/templates/agora_core/election_base.html:293
 msgid "Cancel vote?"
 msgstr "¿Cancelar el voto?"
 
-#: agora_core/templates/agora_core/election_base.html:306
+#: agora_core/templates/agora_core/election_base.html:296
 msgid "Do you really want to cancel your vote in this election?"
 msgstr "¿Realmente quieres cancelar tu voto en esta votación?"
 
-#: agora_core/templates/agora_core/election_base.html:309
-#: templates/base.html:193
+#: agora_core/templates/agora_core/election_base.html:299
+#: templates/base.html:60
 msgid "Close"
 msgstr "Cerrar"
 
-#: agora_core/templates/agora_core/election_base.html:320
+#: agora_core/templates/agora_core/election_base.html:310
 #, python-format
 msgid "Participate in %(electionname)s"
 msgstr "Participar en %(electionname)s"
 
-#: agora_core/templates/agora_core/election_base.html:327
+#: agora_core/templates/agora_core/election_base.html:317
 #, python-format
 msgid "Participate in %(electionname)s at Agora Ciudadana"
 msgstr "Participar en %(electionname)s en Ágora Ciudadana."
-
-#: agora_core/templates/agora_core/election_choose_delegate.html:15
-#, python-format
-msgid ""
-"\n"
-"                Election created by <a href=\"%(user_view_url)s\">"
-"%(election_creator_username)s</a> in <a href=\"%(agora_view_url)s\">"
-"%(agora_creator_username)s/%(agora_name)s</a>\n"
-"            "
-msgstr ""
-"\n"
-"                Votación creada por <a href=\"%(user_view_url)s\">"
-"%(election_creator_username)s</a> en <a href=\"%(agora_view_url)s\">"
-"%(agora_creator_username)s/%(agora_name)s</a>\n"
-"            "
-
-#: agora_core/templates/agora_core/election_choose_delegate.html:43
-#, python-format
-msgid "Delegate to %(username)s"
-msgstr "Delegar en %(username)s"
-
-#: agora_core/templates/agora_core/election_choose_delegate.html:48
-msgid "Who represents you?"
-msgstr "¿Quién te representa?"
-
-#: agora_core/templates/agora_core/election_choose_delegate.html:49
-msgid ""
-"If you don't know what to vote or you'd rather not have to be aware of all "
-"the elections of this Agora, you can delegate your vote to someone you trust."
-msgstr ""
-"Si no sabes qué votar o prefieres no estar al tanto de todas las votaciones "
-"en éste Ágora, puedes delegar tu voto en alguien en quien confíes."
-
-#: agora_core/templates/agora_core/election_choose_delegate.html:50
-msgid "View other delegates..."
-msgstr "Ver otros delegados..."
 
 #: agora_core/templates/agora_core/election_edit.html:16
 msgid "Did you know..?"
@@ -2381,36 +2351,73 @@ msgstr ""
 msgid "Election mugshot"
 msgstr "Foto de la votación"
 
-#: agora_core/templates/agora_core/election_list.html:6
-#: agora_core/templates/agora_core/election_list.html:14
+#: agora_core/templates/agora_core/election_list.html:5
+#: agora_core/templates/agora_core/election_list.html:13
 msgid "Election list"
 msgstr "Votaciones"
 
-#: agora_core/templates/agora_core/election_list.html:16
+#: agora_core/templates/agora_core/election_list.html:15
 msgid "Listing all elections"
 msgstr "Listando votaciones"
 
-#: agora_core/templates/agora_core/election_list_page.html:16
-msgid "Sorry, this election list is empty."
-msgstr "Lo siento, esta lista de votaciones está vacía."
-
-#: agora_core/templates/agora_core/election_votes_graph.html:30
+#: agora_core/templates/agora_core/election_votes_graph.html:33
 msgid "Choice"
 msgstr "Opción"
 
-#: agora_core/templates/agora_core/election_votes_graph.html:31
+#: agora_core/templates/agora_core/election_votes_graph.html:34
 msgid "Winner"
 msgstr "Ganador"
 
-#: agora_core/templates/agora_core/election_votes_graph.html:33
+#: agora_core/templates/agora_core/election_votes_graph.html:36
 msgid "tally (client-side)"
 msgstr "recuento de votos (lado cliente)"
 
-#: agora_core/templates/agora_core/election_votes_graph.html:35
+#: agora_core/templates/agora_core/election_votes_graph.html:38
 msgid "Mouse wheel to zoom, click and drag the canvas to pan (editing is ON)"
 msgstr ""
 "Gira la rueda del ratón para aumentar, haz clic en el borde de la ventana y "
 "arrástralo para ampliar (la edición está activada)"
+
+#: agora_core/templates/agora_core/filter.html:5
+msgid "Filter..."
+msgstr ""
+
+#: agora_core/templates/agora_core/fnmt_login.html:8
+#, fuzzy
+msgid "Authentication failed"
+msgstr "Fallo al activar la cuenta."
+
+#: agora_core/templates/agora_core/fnmt_login.html:14
+msgid ""
+"The authentication in the website using the FNMT certificate has failed. "
+"What could have happen is any of these options, please check if:"
+msgstr ""
+
+#: agora_core/templates/agora_core/fnmt_login.html:17
+msgid ""
+"Your FNMT <strong>certificate has expired</strong>. In this case, please "
+"request a new one, then try again."
+msgstr ""
+
+#: agora_core/templates/agora_core/fnmt_login.html:19
+msgid ""
+"You <strong>chose another certificate</strong>. In this case, you'll need to "
+"try again, probably restarting the web browser (close it then open it again)."
+msgstr ""
+
+#: agora_core/templates/agora_core/fnmt_login.html:21
+msgid ""
+"In this same browser session, you <strong>mistakenly chose not to send your "
+"certificate and indicated the browser to remember this choice</strong>. In "
+"this case, you need to restart the web browser (close it then open it again)."
+msgstr ""
+
+#: agora_core/templates/agora_core/fnmt_login.html:25
+#, python-format
+msgid ""
+"Most of the time restarting the browser solves the problem. If nothing of "
+"the above helps, then please <a href=\"%(contact_url)s\">contact us</a>."
+msgstr ""
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:16
 msgid "Create a new agora"
@@ -2454,12 +2461,12 @@ msgid "Follow a friend. Create a delegate. Comment. Participate."
 msgstr "Sigue a un amigo. Crea un delegado. Comenta. Participa."
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:70
-#: templates/base.html:282
+#: templates/base.html:149
 msgid "Follow on Twitter"
 msgstr "Seguir en Twitter"
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:71
-#: templates/base.html:285
+#: templates/base.html:152
 msgid "Like in Facebook"
 msgstr "Me gusta en Facebook"
 
@@ -2468,15 +2475,11 @@ msgid "Follow in Identi.ca"
 msgstr "Seguir en Identi.ca"
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:73
-#: templates/base.html:291
+#: templates/base.html:158
 msgid "+1 in Google Plus"
 msgstr "+1 en Google Plus"
 
-#: agora_core/templates/agora_core/home_loggedin_activity.html:120
-msgid "No elections found in the calendar"
-msgstr "No se encontró ninguna votación"
-
-#: agora_core/templates/agora_core/user_bio.html:15
+#: agora_core/templates/agora_core/user_bio.html:14
 #, python-format
 msgid ""
 "\n"
@@ -2488,7 +2491,7 @@ msgstr ""
 "                ¡Esta biografía está vacía! ahora tienes la oportunidad de "
 "<a href=\"%(edit_bio_url)s\">comenzar a escribirla</a>"
 
-#: agora_core/templates/agora_core/user_bio.html:25
+#: agora_core/templates/agora_core/user_bio.html:24
 #, python-format
 msgid ""
 "\n"
@@ -2503,6 +2506,18 @@ msgstr ""
 #: agora_core/templates/agora_core/user_item.html:13
 msgid "Actions"
 msgstr "Acciones"
+
+#: agora_core/templates/agora_core/user_item.html:21
+msgid "Accept membership request"
+msgstr "Aceptar solicitud para ser miembro"
+
+#: agora_core/templates/agora_core/user_item.html:27
+msgid "Dismiss membership request"
+msgstr "Rechazar solicitud para ser miembro"
+
+#: agora_core/templates/agora_core/user_item.html:35
+msgid "Accept admin membership request"
+msgstr "Aceptar solicitud para ser administrador"
 
 #: agora_core/templates/agora_core/user_item.html:41
 msgid "Dismiss admin membership request"
@@ -2522,12 +2537,12 @@ msgstr "Eliminar administrador"
 
 #: agora_core/templates/agora_core/user_list.html:3
 #: agora_core/templates/agora_core/user_list.html:4
-#: agora_core/templates/agora_core/user_listing.html:6
-#: agora_core/templates/agora_core/user_listing.html:14
+#: agora_core/templates/agora_core/user_listing.html:5
+#: agora_core/templates/agora_core/user_listing.html:13
 msgid "User list"
 msgstr "Lista de usuarios"
 
-#: agora_core/templates/agora_core/user_listing.html:16
+#: agora_core/templates/agora_core/user_listing.html:15
 msgid "Listing all users"
 msgstr "Listando todos los usuarios"
 
@@ -2535,7 +2550,7 @@ msgstr "Listando todos los usuarios"
 msgid "User settings"
 msgstr "Preferencias de usuario"
 
-#: agora_core/templates/agora_core/user_view.html:13
+#: agora_core/templates/agora_core/user_view.html:12
 #, python-format
 msgid "%(username)s logo"
 msgstr "Logo de %(username)s"
@@ -2558,30 +2573,45 @@ msgid "Voting Booth"
 msgstr "Cabina de votación"
 
 #: agora_core/templates/agora_core/emails/agora_notification.html:4
-#, python-format
-msgid ""
-"\n"
-"<p>Hello %(to_username)s,</p>\n"
-"\n"
-"<p>%(notification_text)s.</p>\n"
-"\n"
-msgstr ""
-"\n"
-"<p>Hola %(to_username)s,</p>\n"
-"\n"
-"<p>%(notification_text)s.</p>\n"
-"\n"
+#: agora_core/templates/agora_core/emails/agora_notification.txt:2
+#: agora_core/templates/agora_core/emails/election_archived.html:6
+#: agora_core/templates/agora_core/emails/election_archived.txt:1
+#: agora_core/templates/agora_core/emails/election_created.html:9
+#: agora_core/templates/agora_core/emails/election_created.html:15
+#: agora_core/templates/agora_core/emails/election_created.txt:1
+#: agora_core/templates/agora_core/emails/election_created.txt:8
+#: agora_core/templates/agora_core/emails/election_results.html:6
+#: agora_core/templates/agora_core/emails/election_results.txt:1
+#: agora_core/templates/agora_core/emails/election_started.html:7
+#: agora_core/templates/agora_core/emails/election_started.html:18
+#: agora_core/templates/agora_core/emails/election_started.html:26
+#: agora_core/templates/agora_core/emails/election_started.txt:1
+#: agora_core/templates/agora_core/emails/election_started.txt:11
+#: agora_core/templates/agora_core/emails/election_started.txt:18
+#: agora_core/templates/agora_core/emails/new_delegation.html:4
+#: agora_core/templates/agora_core/emails/new_delegation.txt:2
+#: agora_core/templates/agora_core/emails/user_delegated.html:7
+#: agora_core/templates/agora_core/emails/user_delegated.html:16
+#: agora_core/templates/agora_core/emails/user_delegated.txt:2
+#: agora_core/templates/agora_core/emails/user_delegated.txt:11
+#: agora_core/templates/agora_core/emails/vote_cancelled.html:5
+#: agora_core/templates/agora_core/emails/vote_cancelled.txt:2
+#: agora_core/templates/agora_core/emails/vote_casted.html:5
+#: agora_core/templates/agora_core/emails/vote_casted.txt:2
+#, fuzzy, python-format
+msgid "Hello %(to_username)s,"
+msgstr "Delegar en %(username)s"
 
-#: agora_core/templates/agora_core/emails/agora_notification.html:17
+#: agora_core/templates/agora_core/emails/agora_notification.html:14
 #, python-format
+msgid "Agora URL: <a href=\"%(agora_url)s\">%(agora_full_name)s</a>"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/agora_notification.html:16
+#, fuzzy, python-format
 msgid ""
-"\n"
-"<p>Agora URL: <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">"
-"%(agora_full_name)s</a></p>\n"
-"\n"
-"<p>User URL: <a href=\"%(protocol)s://%(site_domain)s%(other_user_url)s\">"
-"%(other_user_name)s</a></p>\n"
-"\n"
+"User URL: <a href=\"%(protocol)s://%(site_domain)s%(other_user_url)s\">"
+"%(other_user_name)s</a>"
 msgstr ""
 "\n"
 "<p>URL del Ágora: <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">"
@@ -2591,11 +2621,8 @@ msgstr ""
 "%(other_user_url)s\">%(other_user_name)s</a></p>\n"
 "\n"
 
-#: agora_core/templates/agora_core/emails/agora_notification.html:24
-#: agora_core/templates/agora_core/emails/new_delegation.html:15
-#: agora_core/templates/agora_core/emails/user_delegated.html:25
-#: agora_core/templates/agora_core/emails/vote_cancelled.html:16
-#: agora_core/templates/agora_core/emails/vote_casted.html:16
+#: agora_core/templates/agora_core/emails/agora_notification.html:19
+#: agora_core/templates/agora_core/emails/user_delegated.html:24
 #, python-format
 msgid ""
 "This message was sent to %(to_email)s. If you want to stop receiving these "
@@ -2608,59 +2635,40 @@ msgstr ""
 "por favor <a href=\"%(protocol)s://%(site_domain)s%(cancel_emails_url)s"
 "\">haz clic aquí</a>\n"
 
-#: agora_core/templates/agora_core/emails/agora_notification.txt:2
-#, python-format
-msgid ""
-"Hello %(to_username)s,\n"
-"\n"
-"%(notification_text)s."
-msgstr ""
-"Hola %(to_username)s,\n"
-"\n"
-"%(notification_text)s."
-
 #: agora_core/templates/agora_core/emails/agora_notification.txt:8
 #, python-format
-msgid ""
-"Agora URL: %(protocol)s://%(site_domain)s%(agora_url)s\n"
-"\n"
-"User URL: %(protocol)s://%(site_domain)s%(other_user_url)s\n"
-"\n"
+msgid "Agora URL: %(agora_url)s"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/agora_notification.txt:10
+#, fuzzy, python-format
+msgid "User URL: %(protocol)s://%(site_domain)s%(other_user_url)s"
 msgstr ""
 "URL del Ágora: %(protocol)s://%(site_domain)s%(agora_url)s\n"
 "\n"
 "URL del Usuario: %(protocol)s://%(site_domain)s%(other_user_url)s\n"
 "\n"
 
-#: agora_core/templates/agora_core/emails/agora_notification.txt:14
-#: agora_core/templates/agora_core/emails/new_delegation.txt:12
-#: agora_core/templates/agora_core/emails/user_delegated.txt:19
-#: agora_core/templates/agora_core/emails/vote_cancelled.txt:12
-#: agora_core/templates/agora_core/emails/vote_casted.txt:12
-#, python-format
+#: agora_core/templates/agora_core/emails/agora_notification.txt:13
+#: agora_core/templates/agora_core/emails/new_delegation.txt:11
+#: agora_core/templates/agora_core/emails/vote_cancelled.txt:11
+#: agora_core/templates/agora_core/emails/vote_casted.txt:11
+#, fuzzy, python-format
 msgid ""
 "This message was sent to %(to_email)s. If you want to stop receiving these "
 "message from %(site_name)s, please click here: %(protocol)s://%(site_domain)s"
-"%(cancel_emails_url)s\n"
+"%(cancel_emails_url)s"
 msgstr ""
 "Este mensaje fue enviado a %(to_email)s. Si quieres dejar de recibir estos "
 "mensajes de %(site_name)s, por favor haz clic aquí: %(protocol)s://"
 "%(site_domain)s%(cancel_emails_url)s\n"
 
-#: agora_core/templates/agora_core/emails/election_archived.html:6
-#, python-format
+#: agora_core/templates/agora_core/emails/election_archived.html:8
+#, fuzzy, python-format
 msgid ""
-"\n"
-"    <p>Hello %(to_username)s,</p>\n"
-"\n"
-"    <p>Election <a href=\"%(protocol)s://%(site_domain)s%(election_url)s\">"
+"Election <a href=\"%(protocol)s://%(site_domain)s%(election_url)s\">"
 "%(election_name)s</a> at <a href=\"%(protocol)s://%(site_domain)s"
-"%(agora_url)s\">%(agora_username)s/%(agora_name)s</a> has been archived.</"
-"p>\n"
-"\n"
-"    <h3>Election description</h3>\n"
-"\n"
-"    %(election_description)s\n"
+"%(agora_url)s\">%(agora_username)s/%(agora_name)s</a> has been archived."
 msgstr ""
 "\n"
 "<p>Hola %(to_username)s,</p>\n"
@@ -2674,70 +2682,71 @@ msgstr ""
 "\n"
 "%(election_description)s\n"
 
-#: agora_core/templates/agora_core/emails/election_archived.html:17
-#: agora_core/templates/agora_core/emails/election_results.html:17
-#: agora_core/templates/agora_core/emails/election_started.html:31
-#, python-format
-msgid ""
-"\n"
-"            This message was sent to %(to_email)s. If you want to stop "
-"receiving these messages from %(site_name)s, please click here: "
-"%(protocol)s://%(site_domain)s%(cancel_emails_url)s\n"
-"        "
-msgstr ""
-"\n"
-"            Este mensaje fue enviado a %(to_email)s. Si quieres dejar de "
-"recibir estos mensajes de %(site_name)s, por favor haz clic aquí: "
-"%(protocol)s://%(site_domain)s%(cancel_emails_url)s"
+#: agora_core/templates/agora_core/emails/election_archived.html:10
+#: agora_core/templates/agora_core/emails/election_results.html:10
+#: agora_core/templates/agora_core/emails/election_started.html:13
+#: agora_core/templates/agora_core/emails/election_started.html:22
+#: agora_core/templates/agora_core/emails/election_started.html:30
+#, fuzzy
+msgid "Election description"
+msgstr "Resultado de la votación"
 
-#: agora_core/templates/agora_core/emails/election_archived.txt:1
-#, python-format
-msgid ""
-"Hello %(to_username)s,\n"
-"\n"
-"Election %(election_name)s at %(agora_username)s/%(agora_name)s has been "
-"archived.\n"
-"\n"
-"Election URL: %(protocol)s://%(site_domain)s%(election_url)s\n"
-"\n"
-"Election description: %(election_description)s\n"
-"\n"
-msgstr ""
-"Hola %(to_username)s,\n"
-"\n"
-"La votación %(election_name)s en %(agora_username)s/%(agora_name)s ha sido "
-"archivada.\n"
-"\n"
-"URL de la votación: %(protocol)s://%(site_domain)s%(election_url)s\n"
-"\n"
-"Descripción de la votación: %(election_description)s\n"
-
-#: agora_core/templates/agora_core/emails/election_archived.txt:11
+#: agora_core/templates/agora_core/emails/election_archived.html:16
+#: agora_core/templates/agora_core/emails/election_archived.txt:10
 #: agora_core/templates/agora_core/emails/election_created.txt:16
-#: agora_core/templates/agora_core/emails/election_results.txt:11
-#: agora_core/templates/agora_core/emails/election_started.txt:20
-#, python-format
+#: agora_core/templates/agora_core/emails/election_results.html:16
+#: agora_core/templates/agora_core/emails/election_results.txt:10
+#: agora_core/templates/agora_core/emails/election_started.html:36
+#: agora_core/templates/agora_core/emails/election_started.txt:27
+#, fuzzy, python-format
 msgid ""
 "This message was sent to %(to_email)s. If you want to stop receiving these "
 "messages from %(site_name)s, please click here: %(protocol)s://"
-"%(site_domain)s%(cancel_emails_url)s\n"
+"%(site_domain)s%(cancel_emails_url)s"
 msgstr ""
 "Este mensaje fue enviado a %(to_email)s. Si quieres dejar de recibir estos "
 "mensajes de %(site_name)s, por favor haz clic aquí: %(protocol)s://"
 "%(site_domain)s%(cancel_emails_url)s\n"
 
-#: agora_core/templates/agora_core/emails/election_created.html:8
+#: agora_core/templates/agora_core/emails/election_archived.txt:3
 #, python-format
 msgid ""
-"\n"
-"<p>Hello %(to_username)s,</p>\n"
-"\n"
-"<p><a href=\"%(protocol)s://%(site_domain)s%(action_user_url)s\">"
+"Election %(election_name)s at %(agora_username)s/%(agora_name)s has been "
+"archived."
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/election_archived.txt:5
+#: agora_core/templates/agora_core/emails/election_created.txt:5
+#: agora_core/templates/agora_core/emails/election_created.txt:12
+#: agora_core/templates/agora_core/emails/election_results.txt:5
+#: agora_core/templates/agora_core/emails/election_started.txt:7
+#: agora_core/templates/agora_core/emails/election_started.txt:15
+#: agora_core/templates/agora_core/emails/election_started.txt:22
+#: agora_core/templates/agora_core/emails/vote_cancelled.txt:6
+#: agora_core/templates/agora_core/emails/vote_casted.txt:6
+#, python-format
+msgid "Election URL: %(protocol)s://%(site_domain)s%(election_url)s"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/election_archived.txt:7
+#: agora_core/templates/agora_core/emails/election_results.txt:7
+#: agora_core/templates/agora_core/emails/election_started.txt:9
+#: agora_core/templates/agora_core/emails/election_started.txt:17
+#: agora_core/templates/agora_core/emails/election_started.txt:24
+#: agora_core/templates/agora_core/emails/vote_cancelled.txt:8
+#: agora_core/templates/agora_core/emails/vote_casted.txt:8
+#, python-format
+msgid "Election description: %(election_description)s"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/election_created.html:11
+#, fuzzy, python-format
+msgid ""
+"<a href=\"%(protocol)s://%(site_domain)s%(action_user_url)s\">"
 "%(action_username)s</a> has created election <a href=\"%(protocol)s://"
 "%(site_domain)s%(election_url)s\">%(election_name)s</a> at <a href="
 "\"%(protocol)s://%(site_domain)s%(agora_url)s\">%(agora_username)s/"
-"%(agora_name)s</a>. Check it out!</p>\n"
-"\n"
+"%(agora_name)s</a>. Check it out!"
 msgstr ""
 "\n"
 "<p>Hola %(to_username)s,</p>\n"
@@ -2748,18 +2757,14 @@ msgstr ""
 "\"%(protocol)s://%(site_domain)s%(agora_url)s\">%(agora_username)s/"
 "%(agora_name)s</a>. ¡Échale un vistazo!</p>\n"
 
-#: agora_core/templates/agora_core/emails/election_created.html:16
-#, python-format
+#: agora_core/templates/agora_core/emails/election_created.html:17
+#, fuzzy, python-format
 msgid ""
-"\n"
-"<p>Hello %(to_username)s,</p>\n"
-"\n"
-"<p><a href=\"%(protocol)s://%(site_domain)s%(action_user_url)s\">"
+"<a href=\"%(protocol)s://%(site_domain)s%(action_user_url)s\">"
 "%(action_username)s</a> has created election <a href=\"%(protocol)s://"
 "%(site_domain)s%(election_url)s\">%(election_name)s</a> at <a href="
 "\"%(protocol)s://%(site_domain)s%(agora_url)s\">%(agora_username)s/"
-"%(agora_name)s</a>, but it's not approved yet. Check it out!</p>\n"
-"\n"
+"%(agora_name)s</a>, but it's not approved yet. Check it out!"
 msgstr ""
 "\n"
 "<p>Hola %(to_username)s,</p>\n"
@@ -2770,29 +2775,23 @@ msgstr ""
 "\"%(protocol)s://%(site_domain)s%(agora_url)s\">%(agora_username)s/"
 "%(agora_name)s</a>, pero aun no ha sido aprobada. ¡Échale un vistazo!</p>\n"
 
-#: agora_core/templates/agora_core/emails/election_created.html:24
-#, python-format
+#: agora_core/templates/agora_core/emails/election_created.html:21
+#, fuzzy, python-format
 msgid ""
-"\n"
 "This message was sent to %(to_username)s. If you want to stop receiving "
 "these messages from %(site_name)s, please <a href=\"%(protocol)s://"
-"%(site_domain)s%(cancel_emails_url)s\">click here</a>\n"
+"%(site_domain)s%(cancel_emails_url)s\">click here</a>"
 msgstr ""
 "\n"
 "Este mensaje fue enviado a %(to_username)s. Si quieres dejar de recibir "
 "estos mensajes de  %(site_name)s, por favor <a href=\"%(protocol)s://"
 "%(site_domain)s%(cancel_emails_url)s\">haz clic aquí</a>\n"
 
-#: agora_core/templates/agora_core/emails/election_created.txt:1
-#, python-format
+#: agora_core/templates/agora_core/emails/election_created.txt:3
+#, fuzzy, python-format
 msgid ""
-"Hello %(to_username)s,\n"
-"\n"
 "%(action_username)s has created election %(election_name)s at "
-"%(agora_username)s/%(agora_name)s. Check it out!\n"
-"\n"
-"Election URL: %(protocol)s://%(site_domain)s%(election_url)s\n"
-"\n"
+"%(agora_username)s/%(agora_name)s. Check it out!"
 msgstr ""
 "Hola %(to_username)s,\n"
 "\n"
@@ -2801,17 +2800,11 @@ msgstr ""
 "\n"
 "URL de la votación: %(protocol)s://%(site_domain)s%(election_url)s\n"
 
-#: agora_core/templates/agora_core/emails/election_created.txt:7
-#, python-format
+#: agora_core/templates/agora_core/emails/election_created.txt:10
+#, fuzzy, python-format
 msgid ""
-"\n"
-"Hello %(to_username)s,\n"
-"\n"
 "%(action_username)s has created election %(election_name)s at "
-"%(agora_username)s/%(agora_name)s, but it's not approved yet. Check it out!\n"
-"\n"
-"Election URL: %(protocol)s://%(site_domain)s%(election_url)s\n"
-"\n"
+"%(agora_username)s/%(agora_name)s, but it's not approved yet. Check it out!"
 msgstr ""
 "\n"
 "Hola %(to_username)s,\n"
@@ -2822,20 +2815,13 @@ msgstr ""
 "\n"
 "URL de la votación: %(protocol)s://%(site_domain)s%(election_url)s\n"
 
-#: agora_core/templates/agora_core/emails/election_results.html:6
-#, python-format
+#: agora_core/templates/agora_core/emails/election_results.html:8
+#, fuzzy, python-format
 msgid ""
-"\n"
-"    <p>Hello %(to_username)s,</p>\n"
-"\n"
-"    <p>Election <a href=\"%(protocol)s://%(site_domain)s%(election_url)s\">"
+"Election <a href=\"%(protocol)s://%(site_domain)s%(election_url)s\">"
 "%(election_name)s</a> at <a href=\"%(protocol)s://%(site_domain)s"
 "%(agora_url)s\">%(agora_username)s/%(agora_name)s</a> has been tallied, and "
-"now you can see the results. Check it out!</p>\n"
-"\n"
-"    <h3>Election description</h3>\n"
-"\n"
-"    %(election_description)s\n"
+"now you can see the results. Check it out!"
 msgstr ""
 "\n"
 "<p>Hola %(to_username)s,</p>\n"
@@ -2849,18 +2835,11 @@ msgstr ""
 "\n"
 "%(election_description)s\n"
 
-#: agora_core/templates/agora_core/emails/election_results.txt:1
-#, python-format
+#: agora_core/templates/agora_core/emails/election_results.txt:3
+#, fuzzy, python-format
 msgid ""
-"Hello %(to_username)s,\n"
-"\n"
 "Election %(election_name)s at %(agora_username)s/%(agora_name)s has been "
-"tallied, and now you can see the results. Check it out!\n"
-"\n"
-"Election URL: %(protocol)s://%(site_domain)s%(election_url)s\n"
-"\n"
-"Election description: %(election_description)s\n"
-"\n"
+"tallied, and now you can see the results. Check it out!"
 msgstr ""
 "Hola %(to_username)s,\n"
 "\n"
@@ -2871,57 +2850,43 @@ msgstr ""
 "\n"
 "Descripción de la votación: %(election_description)s\n"
 
-#: agora_core/templates/agora_core/emails/election_started.html:7
-#, python-format
+#: agora_core/templates/agora_core/emails/election_started.html:9
+#, fuzzy, python-format
 msgid ""
-"\n"
-"        <p>Hello %(to_username)s,</p>\n"
-"\n"
-"        <p>Election <a href=\"%(protocol)s://%(site_domain)s%(election_url)s"
-"\">%(election_name)s</a> at <a href=\"%(protocol)s://%(site_domain)s"
+"Election <a href=\"%(protocol)s://%(site_domain)s%(election_url)s\">"
+"%(election_name)s</a> at <a href=\"%(protocol)s://%(site_domain)s"
 "%(agora_url)s\">%(agora_username)s/%(agora_name)s</a> has started, and now "
-"you can vote on it. Check it out!</p>\n"
-"\n"
-"        <p>%(delegate_username)s is your delegate in this agora, so if you "
-"don't vote, he may vote for you.</p>\n"
-"\n"
-"        <h3>Election description</h3>\n"
-"\n"
-"        %(election_description)s \n"
-"    "
+"you can vote on it. Check it out!"
 msgstr ""
 "\n"
 "<p>Hola %(to_username)s,</p>\n"
 "\n"
 "<p>La votación <a href=\"%(protocol)s://%(site_domain)s%(election_url)s\">"
 "%(election_name)s</a> en <a href=\"%(protocol)s://%(site_domain)s"
-"%(agora_url)s\">%(agora_username)s/%(agora_name)s</a> ha comenzado y ahora "
-"puedes votar en ella. ¡Échale un vistazo!</p>\n"
-"\n"
-"<p>%(delegate_username)s es tu delegado en este ágora, por lo que si no "
-"votas, él/ella votará por tí.</p>\n"
+"%(agora_url)s\">%(agora_username)s/%(agora_name)s</a> ha terminado, y ahora "
+"puedes ver los resultados. ¡Échales un vistazo!.</p>\n"
 "\n"
 "<h3>Descripción de la votación</h3>\n"
 "\n"
-"%(election_description)s "
+"%(election_description)s\n"
 
-#: agora_core/templates/agora_core/emails/election_started.html:19
+#: agora_core/templates/agora_core/emails/election_started.html:11
+#: agora_core/templates/agora_core/emails/election_started.txt:5
 #, python-format
 msgid ""
-"\n"
-"        <p>Hello %(to_username)s,</p>\n"
-"\n"
-"        <p>Election <a href=\"%(protocol)s://%(site_domain)s%(election_url)s"
-"\">%(election_name)s</a> at <a href=\"%(protocol)s://%(site_domain)s"
+"%(delegate_username)s is your delegate in this agora, so if you don't vote, "
+"he may vote for you."
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/election_started.html:20
+#, fuzzy, python-format
+msgid ""
+"Election <a href=\"%(protocol)s://%(site_domain)s%(election_url)s\">"
+"%(election_name)s</a> at <a href=\"%(protocol)s://%(site_domain)s"
 "%(agora_url)s\">%(agora_username)s/%(agora_name)s</a> has started, and now "
 "you can vote on it. Check it out! Don't forget to check what is the position "
 "of available delegates. If you don't want to track all elections in this "
-"agora, we recommend you to delegate your vote.</p>\n"
-"\n"
-"        <h3>Election description</h3>\n"
-"\n"
-"        %(election_description)s\n"
-"    "
+"agora, we recommend you to delegate your vote."
 msgstr ""
 "\n"
 "<p>Hola %(to_username)s,</p>\n"
@@ -2938,72 +2903,78 @@ msgstr ""
 "\n"
 "%(election_description)s"
 
-#: agora_core/templates/agora_core/emails/election_started.txt:1
-#, python-format
+#: agora_core/templates/agora_core/emails/election_started.html:28
+#, fuzzy, python-format
 msgid ""
-"Hello %(to_username)s,\n"
+"Election <a href=\"%(protocol)s://%(site_domain)s%(election_url)s\">"
+"%(election_name)s</a> at <a href=\"%(protocol)s://%(site_domain)s"
+"%(agora_url)s\">%(agora_username)s/%(agora_name)s</a> has started, and now "
+"you can vote on it. "
+msgstr ""
 "\n"
+"<p>Hola %(to_username)s,</p>\n"
+"\n"
+"<p>La votación <a href=\"%(protocol)s://%(site_domain)s%(election_url)s\">"
+"%(election_name)s</a> en <a href=\"%(protocol)s://%(site_domain)s"
+"%(agora_url)s\">%(agora_username)s/%(agora_name)s</a> ha sido archivada.</"
+"p>\n"
+"\n"
+"<h3>Descripción de la votación</h3>\n"
+"\n"
+"%(election_description)s\n"
+
+#: agora_core/templates/agora_core/emails/election_started.txt:3
+#: agora_core/templates/agora_core/emails/election_started.txt:20
+#, fuzzy, python-format
+msgid ""
 "Election %(election_name)s at %(agora_username)s/%(agora_name)s has started, "
-"and now you can vote on it. Check it out!\n"
-"\n"
-"%(delegate_username)s is your delegate in this agora, so if you don't vote, "
-"he may vote for you.\n"
-"\n"
-"Election URL: %(protocol)s://%(site_domain)s%(election_url)s\n"
-"\n"
-"Election description: %(election_description)s\n"
-"\n"
+"and now you can vote on it. Check it out!"
 msgstr ""
 "Hola %(to_username)s,\n"
 "\n"
 "La votación %(election_name)s en %(agora_username)s/%(agora_name)s ha "
 "comenzado, y ahora puedes votar en ella. ¡Échale un vistazo!\n"
-"\n"
-"%(delegate_username)s es tu delegado en este ágora, así que si no votas, él "
-"votará por tí.\n"
 "\n"
 "URL de la votación: %(protocol)s://%(site_domain)s%(election_url)s\n"
 "\n"
 "Descripción de la votación: %(election_description)s\n"
 
-#: agora_core/templates/agora_core/emails/election_started.txt:11
-#, python-format
+#: agora_core/templates/agora_core/emails/election_started.txt:13
+#, fuzzy, python-format
 msgid ""
-"Hello %(to_username)s,\n"
-"\n"
 "Election %(election_name)s at %(agora_username)s/%(agora_name)s has started, "
-"and now you can vote on it. Check it out!\n"
-"\n"
-"Election URL: %(protocol)s://%(site_domain)s%(election_url)s\n"
-"\n"
-"Election description: %(election_description)s\n"
+"and now you can vote on it. Check it out! Don't forget to check what is the "
+"position of available delegates. If you don't want to track all elections in "
+"this agora, we recommend you to delegate your vote."
 msgstr ""
-"Hola %(to_username)s,\n"
 "\n"
-"La votación %(election_name)s en %(agora_username)s/%(agora_name)s ha "
-"comenzado, y ahora puedes votar en ella. ¡Échale un vistazo!\n"
+"<p>Hola %(to_username)s,</p>\n"
 "\n"
-"URL de la votación: %(protocol)s://%(site_domain)s%(election_url)s\n"
+"<p>La votación <a href=\"%(protocol)s://%(site_domain)s%(election_url)s\">"
+"%(election_name)s</a> en <a href=\"%(protocol)s://%(site_domain)s"
+"%(agora_url)s\">%(agora_username)s/%(agora_name)s</a> ha comenzado, y ahora "
+"puedes votar en ella. ¡Échale un vistazo! No te olvides de comprobar cuál es "
+"la posición de los distintos delegados en esta votación. Si no quieres "
+"seguir todas las votaciones en esta ágora, te recomendamos que delegues tu "
+"voto.</p>\n"
 "\n"
-"Descripción de la votación: %(election_description)s\n"
+"<h3>Descripción de la votación</h3>\n"
+"\n"
+"%(election_description)s"
 
 #: agora_core/templates/agora_core/emails/join_invitation.html:4
+#: agora_core/templates/agora_core/emails/join_invitation.txt:2
 #, python-format
+msgid "Hello %(to_email)s,"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/join_invitation.html:6
+#, fuzzy, python-format
 msgid ""
-"\n"
-"<p>Hello %(to_email)s,</p>\n"
-"\n"
-"<p>%(inviter)s has invited you to join him/her at <a href=\"%(protocol)s://"
+"%(inviter)s has invited you to join him/her at <a href=\"%(protocol)s://"
 "%(site_domain)s%(agora_url)s\">%(agora_fullname)s</a>. Please <a href="
-"\"%(protocol)s://%(site_domain)s%(agora_url)s\">click in this activation "
-"link</a>, where you will be able to complete your registration and join the "
-"agora:</p>\n"
-"\n"
-"<p><a href=\"%(protocol)s://%(site_domain)s%(invitation_link)s\">"
-"%(protocol)s://%(site_domain)s%(invitation_link)s</a></p>\n"
-"\n"
-"<p>%(welcome_message)s</p>.\n"
-"\n"
+"\"%(protocol)s://%(site_domain)s%(agora_url)s\">follow this link</a> to "
+"complete your registration and join the agora:"
 msgstr ""
 "\n"
 "<p>Hola %(to_email)s,</p>\n"
@@ -3019,24 +2990,19 @@ msgstr ""
 "<p>%(welcome_message)s</p>.\n"
 "\n"
 
-#: agora_core/templates/agora_core/emails/join_invitation.html:15
-#: agora_core/templates/agora_core/emails/join_invitation.txt:11
+#: agora_core/templates/agora_core/emails/join_invitation.html:13
+#: agora_core/templates/agora_core/emails/join_invitation.txt:10
+#: agora_core/templates/agora_core/emails/user_mail.html:14
+#: agora_core/templates/agora_core/emails/user_mail.txt:10
 #, python-format
-msgid "This message was sent to %(to_email)s.\n"
-msgstr "Se ha enviado este mensaje a %(to_email)s.\n"
+msgid "This message was sent to %(to_email)s."
+msgstr "Se ha enviado este mensaje a %(to_email)s."
 
-#: agora_core/templates/agora_core/emails/join_invitation.txt:2
-#, python-format
+#: agora_core/templates/agora_core/emails/join_invitation.txt:4
+#, fuzzy, python-format
 msgid ""
-"Hello %(to_email)s,\n"
-"\n"
 "%(inviter)s has invited you to join him/her at %(agora_fullname)s. Please "
-"click in the following activation link, where you will be able to complete "
-"your registration:\n"
-"\n"
-"%(protocol)s://%(site_domain)s%(invitation_link)s\n"
-"\n"
-"%(welcome_message)s.\n"
+"follow this link to complete your registration:"
 msgstr ""
 "\"Hola %(to_email)s,\n"
 "\n"
@@ -3047,79 +3013,75 @@ msgstr ""
 "\n"
 "%(welcome_message)s.\n"
 
-#: agora_core/templates/agora_core/emails/new_delegation.html:4
-#, python-format
+#: agora_core/templates/agora_core/emails/new_delegation.html:6
+#: agora_core/templates/agora_core/emails/new_delegation.txt:4
+#, fuzzy, python-format
 msgid ""
-"\n"
-"<p>Hello %(to_username)s,</p>\n"
-"\n"
-"<p>%(delegator_name)s has  delegated to you at agora %(agora_full_name)s. "
-"Congratulations!</p>\n"
-"\n"
-"<p>Agora URL: <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">"
-"%(agora_full_name)s</a></p>\n"
-"\n"
-"<p>Delegator URL: <a href=\"%(protocol)s://%(site_domain)s%(delegator_url)s"
-"\">%(delegator_name)s</a></p>\n"
-"\n"
-msgstr ""
-"\n"
-"<p>Hola %(to_username)s,</p>\n"
-"\n"
-"<p>%(delegator_name)s ha delegado en ti en el ágora %(agora_full_name)s. "
-"¡Enhorabuena!</p>\n"
-"\n"
-"<p>URL del Ágora: <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">"
-"%(agora_full_name)s</a></p>\n"
-"\n"
-"<p>URL del delegado: <a href=\"%(protocol)s://%(site_domain)s"
-"%(delegator_url)s\">%(delegator_name)s</a></p>\n"
-"\n"
-
-#: agora_core/templates/agora_core/emails/new_delegation.txt:2
-#, python-format
-msgid ""
-"Hello %(to_username)s,\n"
-"\n"
 "%(delegator_name)s has  delegated to you at agora %(agora_full_name)s. "
-"Congratulations!\n"
-"\n"
-"Agora URL: %(protocol)s://%(site_domain)s%(agora_url)s\n"
-"\n"
-"Delegator URL: %(protocol)s://%(site_domain)s%(delegator_url)s\n"
-"\n"
+"Congratulations!"
+msgstr "Votación %(election)s aprobada en ágora %(agora)s. ¡Enhorabuena!"
+
+#: agora_core/templates/agora_core/emails/new_delegation.html:8
+#: agora_core/templates/agora_core/emails/user_delegated.html:11
+#: agora_core/templates/agora_core/emails/user_delegated.html:20
+#, fuzzy, python-format
+msgid ""
+"Agora URL: <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">"
+"%(agora_full_name)s</a>"
 msgstr ""
-"Hola %(to_username)s,\n"
-"\n"
-"%(delegator_name)s ha delegado en ti en el ágora %(agora_full_name)s. "
-"¡Enhorabuena!\n"
-"\n"
 "URL del Ágora: %(protocol)s://%(site_domain)s%(agora_url)s\n"
 "\n"
-"URL del Delegado: %(protocol)s://%(site_domain)s%(delegator_url)s\n"
+"URL del Usuario: %(protocol)s://%(site_domain)s%(other_user_url)s\n"
 "\n"
 
-#: agora_core/templates/agora_core/emails/user_delegated.html:7
+#: agora_core/templates/agora_core/emails/new_delegation.html:10
 #, python-format
 msgid ""
+"Delegator URL: <a href=\"%(protocol)s://%(site_domain)s%(delegator_url)s\">"
+"%(delegator_name)s</a>"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/new_delegation.html:13
+#: agora_core/templates/agora_core/emails/vote_cancelled.html:14
+#: agora_core/templates/agora_core/emails/vote_casted.html:14
+#, fuzzy, python-format
+msgid ""
+"This message was sent to %(to_email)s. If you want to stop receiving these "
+"message from <a href=\"%(protocol)s://%(site_domain)s\">%(site_name)s</a>, "
+"please <a href=\"%(protocol)s://%(site_domain)s%(cancel_emails_url)s\">click "
+"here</a>"
+msgstr ""
+"Este mensaje se envió a %(to_email)s. Si quieres dejar de recibir estos "
+"mensajes de <a href=\"%(protocol)s://%(site_domain)s\">%(site_name)s</a>, "
+"por favor <a href=\"%(protocol)s://%(site_domain)s%(cancel_emails_url)s"
+"\">haz clic aquí</a>\n"
+
+#: agora_core/templates/agora_core/emails/new_delegation.txt:6
+#: agora_core/templates/agora_core/emails/user_delegated.txt:6
+#: agora_core/templates/agora_core/emails/user_delegated.txt:15
+#, fuzzy, python-format
+msgid "Agora URL: %(protocol)s://%(site_domain)s%(agora_url)s"
+msgstr ""
+"URL del Ágora: %(protocol)s://%(site_domain)s%(agora_url)s\n"
 "\n"
-"<p>Hello %(to_username)s,</p>\n"
+"URL del Usuario: %(protocol)s://%(site_domain)s%(other_user_url)s\n"
 "\n"
-"<p>We have recorded your delegation at agora <a href=\"%(protocol)s://"
+
+#: agora_core/templates/agora_core/emails/new_delegation.txt:8
+#, python-format
+msgid "Delegator URL: %(protocol)s://%(site_domain)s%(delegator_url)s"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/user_delegated.html:9
+#, fuzzy, python-format
+msgid ""
+"We have recorded your delegation at agora <a href=\"%(protocol)s://"
 "%(site_domain)s%(agora_url)s\">%(agora_full_name)s</a> to <a href="
 "\"%(protocol)s://%(site_domain)s%(delegate_url)s\">%(delegate_name)s</a>. "
 "This means that in future elections of this agora, if you don't directly "
 "vote in them, <strong>%(delegate_name)s</strong> will vote for you. You may "
 "change your delegation or cancel it at any time. We advise to delegate only "
-"in a someone you trust, and to actively review his vote record  frequently.</"
-"p>\n"
-"\n"
-"<p>Agora URL: <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">"
-"%(agora_full_name)s</a></p>\n"
-"\n"
-"<p>Delegate URL: <a href=\"%(protocol)s://%(site_domain)s%(delegate_url)s\">"
-"%(delegate_name)s</a></p>\n"
-"\n"
+"in a someone you trust, and to actively review his vote record  frequently."
 msgstr ""
 "\n"
 "<p>Hola %(to_username)s,</p>\n"
@@ -3140,21 +3102,22 @@ msgstr ""
 "\">%(delegate_name)s</a></p>\n"
 "\n"
 
-#: agora_core/templates/agora_core/emails/user_delegated.html:17
+#: agora_core/templates/agora_core/emails/user_delegated.html:13
 #, python-format
 msgid ""
-"<p>Hello %(to_username)s,</p>\n"
-"\n"
-"<p>We have recorded your delegation at agora <a href=\"%(protocol)s://"
+"Delegate URL: <a href=\"%(protocol)s://%(site_domain)s%(delegate_url)s\">"
+"%(delegate_name)s</a>"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/user_delegated.html:18
+#, fuzzy, python-format
+msgid ""
+"We have recorded your delegation at agora <a href=\"%(protocol)s://"
 "%(site_domain)s%(agora_url)s\">%(agora_full_name)s</a> and your delegation "
 "is secret. This means that in future elections of this agora, if you don't "
 "directly vote in them, your delegate will vote for you. You may change your "
 "delegation or cancel it at any time. We advise to delegate only in a someone "
-"you trust, and to actively review his vote record  frequently.</p>\n"
-"\n"
-"<p>Agora URL: <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">"
-"%(agora_full_name)s</a></p>\n"
-"\n"
+"you trust, and to actively review his vote record  frequently."
 msgstr ""
 "<p>Hola %(to_username)s,</p>\n"
 "\n"
@@ -3170,49 +3133,14 @@ msgstr ""
 "%(agora_full_name)s</a></p>\n"
 "\n"
 
-#: agora_core/templates/agora_core/emails/user_delegated.txt:2
-#, python-format
+#: agora_core/templates/agora_core/emails/user_delegated.txt:4
+#, fuzzy, python-format
 msgid ""
-"Hello %(to_username)s,\n"
-"\n"
 "We have recorded your delegation at agora %(agora_full_name)s to "
 "%(delegate_name)s. This means that in future elections of this agora, if you "
 "don't directly vote in them, %(delegate_name)s will vote for you. You may "
 "change your delegation or cancel it at any time. We advise to delegate only "
-"in a someone you trust, and to actively review his vote record  frequently.\n"
-"\n"
-"Agora URL: %(protocol)s://%(site_domain)s%(agora_url)s\n"
-"\n"
-"Delegate URL: %(protocol)s://%(site_domain)s%(delegate_url)s\n"
-"\n"
-msgstr ""
-"Hola %(to_username)s,\n"
-"\n"
-"Hemos registrado tu voto en el ágora %(agora_full_name)s a "
-"%(delegate_name)s. Esto significa que en futuras votaciones dentro de este "
-"ágora, si no votas directamente en ellas, %(delegate_name)s votará por tí. "
-"Puedes cambiar tu delegado o cancelarlo en cualquier momento. Aconsejamos "
-"delegar únicamente en alguien en quien confíes y activamente revisar su "
-"registro de votaciones frecuentemente.\n"
-"\n"
-"URL del Ágora: %(protocol)s://%(site_domain)s%(agora_url)s\n"
-"\n"
-"URL del Delegado: %(protocol)s://%(site_domain)s%(delegate_url)s\n"
-"\n"
-
-#: agora_core/templates/agora_core/emails/user_delegated.txt:11
-#, python-format
-msgid ""
-"Hello %(to_username)s,\n"
-"\n"
-"We have recorded your delegation at agora %(agora_full_name)s and your "
-"delegation is secret. This means that in future elections of this agora, if "
-"you don't directly vote in them, your delegate will vote for you. You may "
-"change your delegation or cancel it at any time. We advise to delegate only "
-"in a someone you trust, and to actively review his vote record  frequently.\n"
-"\n"
-"Agora URL: %(protocol)s://%(site_domain)s%(agora_url)s\n"
-"\n"
+"in a someone you trust, and to actively review his vote record  frequently."
 msgstr ""
 "Hola %(to_username)s,\n"
 "\n"
@@ -3226,52 +3154,54 @@ msgstr ""
 "URL del Ágora: %(protocol)s://%(site_domain)s%(agora_url)s\n"
 "\n"
 
+#: agora_core/templates/agora_core/emails/user_delegated.txt:8
+#, python-format
+msgid "Delegate URL: %(protocol)s://%(site_domain)s%(delegate_url)s"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/user_delegated.txt:13
+#, fuzzy, python-format
+msgid ""
+"We have recorded your delegation at agora %(agora_full_name)s and your "
+"delegation is secret. This means that in future elections of this agora, if "
+"you don't directly vote in them, your delegate will vote for you. You may "
+"change your delegation or cancel it at any time. We advise to delegate only "
+"in a someone you trust, and to actively review his vote record  frequently."
+msgstr ""
+"Hola %(to_username)s,\n"
+"\n"
+"Hemos registrado tu voto en el ágora %(agora_full_name)s y tu delegación es "
+"secreta. Esto significa que en futuras votaciones dentro de este ágora, si "
+"no votas directamente en ellas, tu delegado votará por tí. Puedes cambiar tu "
+"delegado o cancelarlo en cualquier momento. Aconsejamos delegar únicamente "
+"en alguien en quien confíes y activamente revisar su registro de votaciones "
+"frecuentemente.\n"
+"\n"
+"URL del Ágora: %(protocol)s://%(site_domain)s%(agora_url)s\n"
+"\n"
+
+#: agora_core/templates/agora_core/emails/user_delegated.txt:19
+#, python-format
+msgid ""
+"This message was sent to %(to_email)s. If you want to stop receiving these "
+"message from %(site_name)s, please click here: %(protocol)s://%(site_domain)s"
+"%(cancel_emails_url)s\n"
+msgstr ""
+"Este mensaje fue enviado a %(to_email)s. Si quieres dejar de recibir estos "
+"mensajes de %(site_name)s, por favor haz clic aquí: %(protocol)s://"
+"%(site_domain)s%(cancel_emails_url)s\n"
+
 #: agora_core/templates/agora_core/emails/user_mail.html:5
-#, python-format
-msgid ""
-"Hello %(to_fullname)s,\n"
-"\n"
-"<p>%(from_fullname)s has sent you the following message through <a href="
-"\"%(protocol)s://%(site_domain)s\">%(site_domain)s</a>:</p>\n"
-"\n"
-"<blockquote>%(comment)s</blockquote>\n"
-"\n"
-"<p>This is %(from_fullname)s profile in the website: <a href="
-"\"%(protocol)s://%(site_domain)s%(from_url)s\">%(protocol)s://%(site_domain)s"
-"%(from_url)s</a></p>\n"
-msgstr ""
-"Hola %(to_fullname)s,\n"
-"\n"
-"<p>%(from_fullname)s te ha enviado un mensaje a través de <a href="
-"\"%(protocol)s://%(site_domain)s\">%(site_domain)s</a>:</p>\n"
-"\n"
-"<blockquote>%(comment)s</blockquote>\n"
-"\n"
-"<p>Este es el perfil de %(from_fullname)s en el sitio web: <a href="
-"\"%(protocol)s://%(site_domain)s%(from_url)s\">%(protocol)s://%(site_domain)s"
-"%(from_url)s</a></p>\n"
-
-#: agora_core/templates/agora_core/emails/user_mail.html:14
-#, python-format
-msgid ""
-"\n"
-"    This message was sent to %(to_email)s.\n"
-msgstr ""
-"\n"
-"    Se ha enviado este mensaje a %(to_email)s.\n"
-
 #: agora_core/templates/agora_core/emails/user_mail.txt:1
-#, python-format
+#, fuzzy, python-format
+msgid "Hello %(to_fullname)s,"
+msgstr "Hola %(first_name)s,"
+
+#: agora_core/templates/agora_core/emails/user_mail.html:7
+#, fuzzy, python-format
 msgid ""
-"Hello %(to_fullname)s,\n"
-"\n"
-"%(from_fullname)s has sent you the following message through "
-"%(site_domain)s:\n"
-"\n"
-"%(comment)s\n"
-"\n"
-"This is %(from_fullname)s profile in the website: %(protocol)s://"
-"%(site_domain)s%(from_url)s\n"
+"%(from_fullname)s has sent you the following message through <a href="
+"\"%(protocol)s://%(site_domain)s\">%(site_domain)s</a>:"
 msgstr ""
 "Hola %(to_fullname)s,\n"
 "\n"
@@ -3283,57 +3213,83 @@ msgstr ""
 "Este es el perfil de %(from_fullname)s en el sitio web: %(protocol)s://"
 "%(site_domain)s%(from_url)s\n"
 
-#: agora_core/templates/agora_core/emails/user_mail.txt:10
-#, python-format
-msgid "This message was sent to %(to_email)s."
-msgstr "Se ha enviado este mensaje a %(to_email)s."
+#: agora_core/templates/agora_core/emails/user_mail.html:11
+#, fuzzy, python-format
+msgid ""
+"This is %(from_fullname)s’s profile in the website: <a href=\"%(protocol)s://"
+"%(site_domain)s%(from_url)s\">%(protocol)s://%(site_domain)s%(from_url)s</a>"
+msgstr ""
+"URL del Ágora: %(protocol)s://%(site_domain)s%(agora_url)s\n"
+"\n"
+"URL del Usuario: %(protocol)s://%(site_domain)s%(other_user_url)s\n"
+"\n"
 
-#: agora_core/templates/agora_core/emails/vote_cancelled.html:5
+#: agora_core/templates/agora_core/emails/user_mail.txt:3
 #, python-format
 msgid ""
+"%(from_fullname)s has sent you the following message through %(site_domain)s:"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/user_mail.txt:7
+#, fuzzy, python-format
+msgid ""
+"This is %(from_fullname)s’s profile in the website: %(protocol)s://"
+"%(site_domain)s%(from_url)s"
+msgstr ""
+"Hola %(to_fullname)s,\n"
 "\n"
-"<p>Hello %(to_username)s,</p>\n"
+"%(from_fullname)s te ha enviado el siguiente mensaje a través de "
+"%(site_domain)s:\n"
 "\n"
-"<p>As you requested, we have cancelled your vote at election <a href="
+"%(comment)s\n"
+"\n"
+"Este es el perfil de %(from_fullname)s en el sitio web: %(protocol)s://"
+"%(site_domain)s%(from_url)s\n"
+
+#: agora_core/templates/agora_core/emails/vote_cancelled.html:7
+#, fuzzy, python-format
+msgid ""
+"As you requested, we have cancelled your vote at election <a href="
 "\"%(protocol)s://%(site_domain)s%(election_url)s\">%(election_name)s</a> at "
 "<a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">%(agora_username)s/"
 "%(agora_name)s</a>. You may re-vote if you wish: only your last vote counts."
-"</p>\n"
-"\n"
-"<p>Election URL: <a href=\"%(protocol)s://%(site_domain)s%(election_url)s\">"
-"%(protocol)s://%(site_domain)s%(election_url)s</a></p>\n"
-"\n"
-"<p>Election description: <strong>%(election_description)s</strong></p>\n"
-"\n"
 msgstr ""
 "\n"
 "<p>Hola %(to_username)s,</p>\n"
 "\n"
-"<p>Como pediste, hemos cancelado tu voto en la votación <a href="
-"\"%(protocol)s://%(site_domain)s%(election_url)s\">%(election_name)s</a> en "
-"<a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">%(agora_username)s/"
-"%(agora_name)s</a>. Puedes volver a votar si quieres: sólo tu último voto "
-"cuenta.\n"
-"\n"
-"<p>URL de la votación: <a href=\"%(protocol)s://%(site_domain)s"
-"%(election_url)s\">%(protocol)s://%(site_domain)s%(election_url)s</a></p>\n"
-"\n"
-"<p>Descripción de la votación: <strong>%(election_description)s</strong></"
+"<p>La votación <a href=\"%(protocol)s://%(site_domain)s%(election_url)s\">"
+"%(election_name)s</a> en <a href=\"%(protocol)s://%(site_domain)s"
+"%(agora_url)s\">%(agora_username)s/%(agora_name)s</a> ha sido archivada.</"
 "p>\n"
-
-#: agora_core/templates/agora_core/emails/vote_cancelled.txt:2
-#, python-format
-msgid ""
-"Hello %(to_username)s,\n"
 "\n"
+"<h3>Descripción de la votación</h3>\n"
+"\n"
+"%(election_description)s\n"
+
+#: agora_core/templates/agora_core/emails/vote_cancelled.html:9
+#: agora_core/templates/agora_core/emails/vote_casted.html:9
+#, fuzzy, python-format
+msgid ""
+"Election URL: <a href=\"%(protocol)s://%(site_domain)s%(election_url)s\">"
+"%(protocol)s://%(site_domain)s%(election_url)s</a>"
+msgstr ""
+"URL del Ágora: %(protocol)s://%(site_domain)s%(agora_url)s\n"
+"\n"
+"URL del Usuario: %(protocol)s://%(site_domain)s%(other_user_url)s\n"
+"\n"
+
+#: agora_core/templates/agora_core/emails/vote_cancelled.html:11
+#: agora_core/templates/agora_core/emails/vote_casted.html:11
+#, python-format
+msgid "Election description: <strong>%(election_description)s</strong>"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/vote_cancelled.txt:4
+#, fuzzy, python-format
+msgid ""
 "As you requested, we have cancelled your vote at election %(election_name)s "
 "at %(agora_username)s/%(agora_name)s. You may re-vote if you wish: only your "
-"last vote counts.\n"
-"\n"
-"Election URL: %(protocol)s://%(site_domain)s%(election_url)s\n"
-"\n"
-"Election description: %(election_description)s\n"
-"\n"
+"last vote counts."
 msgstr ""
 "Hola %(to_username)s,\n"
 "\n"
@@ -3345,52 +3301,32 @@ msgstr ""
 "\n"
 "Descripción de la votación: %(election_description)s\n"
 
-#: agora_core/templates/agora_core/emails/vote_casted.html:5
-#, python-format
+#: agora_core/templates/agora_core/emails/vote_casted.html:7
+#, fuzzy, python-format
 msgid ""
-"\n"
-"<p>Hello %(to_username)s,</p>\n"
-"\n"
-"<p>We have recorded your vote at election <a href=\"%(protocol)s://"
+"We have recorded your vote at election <a href=\"%(protocol)s://"
 "%(site_domain)s%(election_url)s\">%(election_name)s</a> at <a href="
 "\"%(protocol)s://%(site_domain)s%(agora_url)s\">%(agora_username)s/"
 "%(agora_name)s</a>. You may re-vote if you wish: only your last vote counts."
-"</p>\n"
-"\n"
-"<p>Election URL: <a href=\"%(protocol)s://%(site_domain)s%(election_url)s\">"
-"%(protocol)s://%(site_domain)s%(election_url)s</a></p>\n"
-"\n"
-"<p>Election description: <strong>%(election_description)s</strong></p>\n"
-"\n"
 msgstr ""
 "\n"
 "<p>Hola %(to_username)s,</p>\n"
 "\n"
-"<p>Hemos registrado tu voto en la votación <a href=\"%(protocol)s://"
-"%(site_domain)s%(election_url)s\">%(election_name)s</a> en <a href="
-"\"%(protocol)s://%(site_domain)s%(agora_url)s\">%(agora_username)s/"
-"%(agora_name)s</a>. Puedes cambiar tu voto si quieres: únicamente tu último "
-"voto cuenta.</p>\n"
-"\n"
-"<p>URL de la votación: <a href=\"%(protocol)s://%(site_domain)s"
-"%(election_url)s\">%(protocol)s://%(site_domain)s%(election_url)s</a></p>\n"
-"\n"
-"<p>Descripción de la votación: <strong>%(election_description)s</strong></"
+"<p>La votación <a href=\"%(protocol)s://%(site_domain)s%(election_url)s\">"
+"%(election_name)s</a> en <a href=\"%(protocol)s://%(site_domain)s"
+"%(agora_url)s\">%(agora_username)s/%(agora_name)s</a> ha sido archivada.</"
 "p>\n"
-
-#: agora_core/templates/agora_core/emails/vote_casted.txt:2
-#, python-format
-msgid ""
-"Hello %(to_username)s,\n"
 "\n"
+"<h3>Descripción de la votación</h3>\n"
+"\n"
+"%(election_description)s\n"
+
+#: agora_core/templates/agora_core/emails/vote_casted.txt:4
+#, fuzzy, python-format
+msgid ""
 "We have recorded your vote at election %(election_name)s at "
 "%(agora_username)s/%(agora_name)s. You may re-vote if you wish: only your "
-"last vote counts.\n"
-"\n"
-"Election URL: %(protocol)s://%(site_domain)s%(election_url)s\n"
-"\n"
-"Election description: %(election_description)s\n"
-"\n"
+"last vote counts."
 msgstr ""
 "Hola %(to_username)s,\n"
 "\n"
@@ -3402,16 +3338,16 @@ msgstr ""
 "\n"
 "Descripción de la votación: %(election_description)s\n"
 
-#: agora_core/templates/search/search.html:13 templates/base.html:159
+#: agora_core/templates/search/search.html:12
 msgid "Search"
 msgstr "Buscar"
 
-#: agora_core/templates/search/search.html:16
+#: agora_core/templates/search/search.html:15
 #, python-format
 msgid "%(num_results)s matches for '%(query)s'"
 msgstr "%(num_results)s resultados para %(query)s"
 
-#: agora_core/templates/search/search.html:18
+#: agora_core/templates/search/search.html:17
 #, python-format
 msgid "%(num_results)s matches"
 msgstr "%(num_results)s resultados"
@@ -3439,7 +3375,7 @@ msgstr ""
 "emitido %(num_votes)s votos directos.\n"
 "                            "
 
-#: agora_core/templatetags/agora_utils.py:128
+#: agora_core/templatetags/agora_utils.py:142
 msgid ""
 "Internationalized format for a date, see python documentation for strftime "
 "for more details."
@@ -3447,88 +3383,43 @@ msgstr ""
 "Formato internacional para una fecha, ver la documentación de python para "
 "strftime para más detalles."
 
-#: misc/utils.py:82
+#: misc/utils.py:84
 msgid "Enter valid JSON"
 msgstr "Introduce JSON válido"
 
-#: templates/base.html:32
-msgid "Home"
-msgstr "Inicio"
-
-#: templates/base.html:38
-msgid "Agoras"
-msgstr "Ágoras"
-
-#: templates/base.html:43
-msgid "My Agoras"
-msgstr "Mis ágoras"
-
-#: templates/base.html:58
-msgid "Explore existing agoras.."
-msgstr "Explorar otras ágoras..."
-
-#: templates/base.html:77
-msgid "Active elections"
-msgstr "Votaciones activas"
-
-#: templates/base.html:92
-msgid "Explore other elections"
-msgstr "Explorar otras votaciones"
-
-#: templates/base.html:103
-msgid "People"
-msgstr "Gente"
-
-#: templates/base.html:110
-msgid "Enter"
-msgstr "Entrar"
-
-#: templates/base.html:139
-msgid "Log out"
-msgstr "Salir"
-
-#: templates/base.html:145
-msgid "View my profile"
-msgstr "Ver mi perfil"
-
-#: templates/base.html:151
-#, fuzzy
-msgid "Account settings"
-msgstr "Configuración de cuenta"
-
-#: templates/base.html:175
+#: templates/base.html:42
 msgid "Heads Up!"
 msgstr "¡Atención!"
 
-#: templates/base.html:176
+#: templates/base.html:43
 msgid "Well done!"
 msgstr "¡Bien hecho!"
 
-#: templates/base.html:177
+#: templates/base.html:44
 msgid "Be aware!"
 msgstr "¡Cuidado!"
 
-#: templates/base.html:178
+#: templates/base.html:45
 msgid "Oh snap!"
 msgstr "¡Oh vaya!"
 
-#: templates/base.html:187
+#: templates/base.html:54
 msgid "Heads up!"
 msgstr "¡Atención!"
 
-#: templates/base.html:211
+#: templates/base.html:78
 msgid "<p>A new way of</p><h1>Making group decisions</h1>"
 msgstr "<p>Una nueva forma de</p><h1>Tomar decisiones en grupo</h1>"
 
-#: templates/base.html:214
+#: templates/base.html:81
 msgid "Participate"
 msgstr "Participar"
 
-#: templates/base.html:215
+#: templates/base.html:82
 msgid "Explore"
 msgstr "Explorar"
 
-#: templates/base.html:220
+#: templates/base.html:87
 msgid ""
 "An indispensable tool to lead an organization in a democratic manner. Its "
 "delegation system reflects trust relationships"
@@ -3536,61 +3427,449 @@ msgstr ""
 "Una herramienta indispensable para llevar una organización de una forma "
 "democrática. Su sistema de delegación refleja las relaciones de confianza"
 
-#: templates/base.html:222
+#: templates/base.html:89
 msgid "Eduardo Robles Elvira, Cofounder of Wadobo"
 msgstr "Eduardo Robles Elvira, Cofundador de Wadobo"
 
-#: templates/base.html:243
+#: templates/base.html:110
 msgid "Discover"
 msgstr "Descubre"
 
-#: templates/base.html:246
+#: templates/base.html:113
 msgid "About"
 msgstr "Acerca de"
 
-#: templates/base.html:249
+#: templates/base.html:116
 msgid "Libre Software"
 msgstr "Software Libre"
 
-#: templates/base.html:252
+#: templates/base.html:119
 msgid "Blog"
 msgstr "Blog"
 
-#: templates/base.html:255
+#: templates/base.html:122
 msgid "Status"
 msgstr "Estado"
 
-#: templates/base.html:261
+#: templates/base.html:128
 msgid "Serious Stuff"
 msgstr "Cosas Serias"
 
-#: templates/base.html:264
+#: templates/base.html:131
 msgid "Terms of Service"
 msgstr "Términos del Servicio"
 
-#: templates/base.html:267
+#: templates/base.html:134
 msgid "Privacy Policy"
 msgstr "Política de Privacidad"
 
-#: templates/base.html:273
+#: templates/base.html:140
 msgid "Contact Us"
 msgstr "Contáctanos"
 
-#: templates/base.html:279
+#: templates/base.html:146
 msgid "Be Social"
 msgstr "Socializa"
 
-#: templates/base.html:288
+#: templates/base.html:155
 msgid "Follow in Indenti.ca"
 msgstr "Seguir en Identi.ca"
 
-#: templates/base.html:296
+#: templates/base.html:163
 msgid "Powered by"
 msgstr "Funciona con"
 
-#: templates/base.html:297
-msgid "Wadobo Labs"
-msgstr "Wadobo Labs"
+#~ msgid "Your cancelled your membership request at %(agora)s"
+#~ msgstr "Has cancelado tu petición para ser miembro de %(agora)s"
+
+#~ msgid ""
+#~ "Your have been removed from membership from %(agora)s . Sorry about "
+#~ "that!\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Lo siento, pero se te ha retirado la membresía en %(agora)s.\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Your have been removed admin permissions from %(agora)s . Sorry about "
+#~ "that!\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Lo siento, pero se te han retirado los permisos como administrador de "
+#~ "%(agora)s.\n"
+#~ "\n"
+
+#~ msgid "Agoras list"
+#~ msgstr "Ágoras"
+
+#~ msgid "Add members manually"
+#~ msgstr "Añadir miembros manualmente"
+
+#~ msgid "Calendar"
+#~ msgstr "Calendario"
+
+#~ msgid "Search..."
+#~ msgstr "Buscar..."
+
+#~ msgid "No elections yet, perhaps you want to create one?"
+#~ msgstr "Aun no hay votaciones, ¿a lo mejor quieres crear una?"
+
+#~ msgid ""
+#~ "\n"
+#~ "                Election created by <a href=\"%(user_view_url)s\">"
+#~ "%(election_creator_username)s</a> in <a href=\"%(agora_view_url)s\">"
+#~ "%(agora_creator_username)s/%(agora_name)s</a>\n"
+#~ "            "
+#~ msgstr ""
+#~ "\n"
+#~ "                Votación creada por <a href=\"%(user_view_url)s\">"
+#~ "%(election_creator_username)s</a> en <a href=\"%(agora_view_url)s\">"
+#~ "%(agora_creator_username)s/%(agora_name)s</a>\n"
+#~ "            "
+
+#~ msgid "Who represents you?"
+#~ msgstr "¿Quién te representa?"
+
+#~ msgid ""
+#~ "If you don't know what to vote or you'd rather not have to be aware of "
+#~ "all the elections of this Agora, you can delegate your vote to someone "
+#~ "you trust."
+#~ msgstr ""
+#~ "Si no sabes qué votar o prefieres no estar al tanto de todas las "
+#~ "votaciones en éste Ágora, puedes delegar tu voto en alguien en quien "
+#~ "confíes."
+
+#~ msgid "View other delegates..."
+#~ msgstr "Ver otros delegados..."
+
+#~ msgid "Sorry, this election list is empty."
+#~ msgstr "Lo siento, esta lista de votaciones está vacía."
+
+#~ msgid "No elections found in the calendar"
+#~ msgstr "No se encontró ninguna votación"
+
+#~ msgid ""
+#~ "\n"
+#~ "<p>Hello %(to_username)s,</p>\n"
+#~ "\n"
+#~ "<p>%(notification_text)s.</p>\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "<p>Hola %(to_username)s,</p>\n"
+#~ "\n"
+#~ "<p>%(notification_text)s.</p>\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Hello %(to_username)s,\n"
+#~ "\n"
+#~ "%(notification_text)s."
+#~ msgstr ""
+#~ "Hola %(to_username)s,\n"
+#~ "\n"
+#~ "%(notification_text)s."
+
+#~ msgid ""
+#~ "\n"
+#~ "            This message was sent to %(to_email)s. If you want to stop "
+#~ "receiving these messages from %(site_name)s, please click here: "
+#~ "%(protocol)s://%(site_domain)s%(cancel_emails_url)s\n"
+#~ "        "
+#~ msgstr ""
+#~ "\n"
+#~ "            Este mensaje fue enviado a %(to_email)s. Si quieres dejar de "
+#~ "recibir estos mensajes de %(site_name)s, por favor haz clic aquí: "
+#~ "%(protocol)s://%(site_domain)s%(cancel_emails_url)s"
+
+#~ msgid ""
+#~ "Hello %(to_username)s,\n"
+#~ "\n"
+#~ "Election %(election_name)s at %(agora_username)s/%(agora_name)s has been "
+#~ "archived.\n"
+#~ "\n"
+#~ "Election URL: %(protocol)s://%(site_domain)s%(election_url)s\n"
+#~ "\n"
+#~ "Election description: %(election_description)s\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Hola %(to_username)s,\n"
+#~ "\n"
+#~ "La votación %(election_name)s en %(agora_username)s/%(agora_name)s ha "
+#~ "sido archivada.\n"
+#~ "\n"
+#~ "URL de la votación: %(protocol)s://%(site_domain)s%(election_url)s\n"
+#~ "\n"
+#~ "Descripción de la votación: %(election_description)s\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "        <p>Hello %(to_username)s,</p>\n"
+#~ "\n"
+#~ "        <p>Election <a href=\"%(protocol)s://%(site_domain)s"
+#~ "%(election_url)s\">%(election_name)s</a> at <a href=\"%(protocol)s://"
+#~ "%(site_domain)s%(agora_url)s\">%(agora_username)s/%(agora_name)s</a> has "
+#~ "started, and now you can vote on it. Check it out!</p>\n"
+#~ "\n"
+#~ "        <p>%(delegate_username)s is your delegate in this agora, so if "
+#~ "you don't vote, he may vote for you.</p>\n"
+#~ "\n"
+#~ "        <h3>Election description</h3>\n"
+#~ "\n"
+#~ "        %(election_description)s \n"
+#~ "    "
+#~ msgstr ""
+#~ "\n"
+#~ "<p>Hola %(to_username)s,</p>\n"
+#~ "\n"
+#~ "<p>La votación <a href=\"%(protocol)s://%(site_domain)s%(election_url)s\">"
+#~ "%(election_name)s</a> en <a href=\"%(protocol)s://%(site_domain)s"
+#~ "%(agora_url)s\">%(agora_username)s/%(agora_name)s</a> ha comenzado y "
+#~ "ahora puedes votar en ella. ¡Échale un vistazo!</p>\n"
+#~ "\n"
+#~ "<p>%(delegate_username)s es tu delegado en este ágora, por lo que si no "
+#~ "votas, él/ella votará por tí.</p>\n"
+#~ "\n"
+#~ "<h3>Descripción de la votación</h3>\n"
+#~ "\n"
+#~ "%(election_description)s "
+
+#~ msgid ""
+#~ "Hello %(to_username)s,\n"
+#~ "\n"
+#~ "Election %(election_name)s at %(agora_username)s/%(agora_name)s has "
+#~ "started, and now you can vote on it. Check it out!\n"
+#~ "\n"
+#~ "%(delegate_username)s is your delegate in this agora, so if you don't "
+#~ "vote, he may vote for you.\n"
+#~ "\n"
+#~ "Election URL: %(protocol)s://%(site_domain)s%(election_url)s\n"
+#~ "\n"
+#~ "Election description: %(election_description)s\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Hola %(to_username)s,\n"
+#~ "\n"
+#~ "La votación %(election_name)s en %(agora_username)s/%(agora_name)s ha "
+#~ "comenzado, y ahora puedes votar en ella. ¡Échale un vistazo!\n"
+#~ "\n"
+#~ "%(delegate_username)s es tu delegado en este ágora, así que si no votas, "
+#~ "él votará por tí.\n"
+#~ "\n"
+#~ "URL de la votación: %(protocol)s://%(site_domain)s%(election_url)s\n"
+#~ "\n"
+#~ "Descripción de la votación: %(election_description)s\n"
+
+#~ msgid "This message was sent to %(to_email)s.\n"
+#~ msgstr "Se ha enviado este mensaje a %(to_email)s.\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "<p>Hello %(to_username)s,</p>\n"
+#~ "\n"
+#~ "<p>%(delegator_name)s has  delegated to you at agora %(agora_full_name)s. "
+#~ "Congratulations!</p>\n"
+#~ "\n"
+#~ "<p>Agora URL: <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">"
+#~ "%(agora_full_name)s</a></p>\n"
+#~ "\n"
+#~ "<p>Delegator URL: <a href=\"%(protocol)s://%(site_domain)s"
+#~ "%(delegator_url)s\">%(delegator_name)s</a></p>\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "<p>Hola %(to_username)s,</p>\n"
+#~ "\n"
+#~ "<p>%(delegator_name)s ha delegado en ti en el ágora %(agora_full_name)s. "
+#~ "¡Enhorabuena!</p>\n"
+#~ "\n"
+#~ "<p>URL del Ágora: <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">"
+#~ "%(agora_full_name)s</a></p>\n"
+#~ "\n"
+#~ "<p>URL del delegado: <a href=\"%(protocol)s://%(site_domain)s"
+#~ "%(delegator_url)s\">%(delegator_name)s</a></p>\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Hello %(to_username)s,\n"
+#~ "\n"
+#~ "%(delegator_name)s has  delegated to you at agora %(agora_full_name)s. "
+#~ "Congratulations!\n"
+#~ "\n"
+#~ "Agora URL: %(protocol)s://%(site_domain)s%(agora_url)s\n"
+#~ "\n"
+#~ "Delegator URL: %(protocol)s://%(site_domain)s%(delegator_url)s\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Hola %(to_username)s,\n"
+#~ "\n"
+#~ "%(delegator_name)s ha delegado en ti en el ágora %(agora_full_name)s. "
+#~ "¡Enhorabuena!\n"
+#~ "\n"
+#~ "URL del Ágora: %(protocol)s://%(site_domain)s%(agora_url)s\n"
+#~ "\n"
+#~ "URL del Delegado: %(protocol)s://%(site_domain)s%(delegator_url)s\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Hello %(to_username)s,\n"
+#~ "\n"
+#~ "We have recorded your delegation at agora %(agora_full_name)s to "
+#~ "%(delegate_name)s. This means that in future elections of this agora, if "
+#~ "you don't directly vote in them, %(delegate_name)s will vote for you. You "
+#~ "may change your delegation or cancel it at any time. We advise to "
+#~ "delegate only in a someone you trust, and to actively review his vote "
+#~ "record  frequently.\n"
+#~ "\n"
+#~ "Agora URL: %(protocol)s://%(site_domain)s%(agora_url)s\n"
+#~ "\n"
+#~ "Delegate URL: %(protocol)s://%(site_domain)s%(delegate_url)s\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Hola %(to_username)s,\n"
+#~ "\n"
+#~ "Hemos registrado tu voto en el ágora %(agora_full_name)s a "
+#~ "%(delegate_name)s. Esto significa que en futuras votaciones dentro de "
+#~ "este ágora, si no votas directamente en ellas, %(delegate_name)s votará "
+#~ "por tí. Puedes cambiar tu delegado o cancelarlo en cualquier momento. "
+#~ "Aconsejamos delegar únicamente en alguien en quien confíes y activamente "
+#~ "revisar su registro de votaciones frecuentemente.\n"
+#~ "\n"
+#~ "URL del Ágora: %(protocol)s://%(site_domain)s%(agora_url)s\n"
+#~ "\n"
+#~ "URL del Delegado: %(protocol)s://%(site_domain)s%(delegate_url)s\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Hello %(to_fullname)s,\n"
+#~ "\n"
+#~ "<p>%(from_fullname)s has sent you the following message through <a href="
+#~ "\"%(protocol)s://%(site_domain)s\">%(site_domain)s</a>:</p>\n"
+#~ "\n"
+#~ "<blockquote>%(comment)s</blockquote>\n"
+#~ "\n"
+#~ "<p>This is %(from_fullname)s profile in the website: <a href="
+#~ "\"%(protocol)s://%(site_domain)s%(from_url)s\">%(protocol)s://"
+#~ "%(site_domain)s%(from_url)s</a></p>\n"
+#~ msgstr ""
+#~ "Hola %(to_fullname)s,\n"
+#~ "\n"
+#~ "<p>%(from_fullname)s te ha enviado un mensaje a través de <a href="
+#~ "\"%(protocol)s://%(site_domain)s\">%(site_domain)s</a>:</p>\n"
+#~ "\n"
+#~ "<blockquote>%(comment)s</blockquote>\n"
+#~ "\n"
+#~ "<p>Este es el perfil de %(from_fullname)s en el sitio web: <a href="
+#~ "\"%(protocol)s://%(site_domain)s%(from_url)s\">%(protocol)s://"
+#~ "%(site_domain)s%(from_url)s</a></p>\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "    This message was sent to %(to_email)s.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "    Se ha enviado este mensaje a %(to_email)s.\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "<p>Hello %(to_username)s,</p>\n"
+#~ "\n"
+#~ "<p>As you requested, we have cancelled your vote at election <a href="
+#~ "\"%(protocol)s://%(site_domain)s%(election_url)s\">%(election_name)s</a> "
+#~ "at <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">"
+#~ "%(agora_username)s/%(agora_name)s</a>. You may re-vote if you wish: only "
+#~ "your last vote counts.</p>\n"
+#~ "\n"
+#~ "<p>Election URL: <a href=\"%(protocol)s://%(site_domain)s%(election_url)s"
+#~ "\">%(protocol)s://%(site_domain)s%(election_url)s</a></p>\n"
+#~ "\n"
+#~ "<p>Election description: <strong>%(election_description)s</strong></p>\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "<p>Hola %(to_username)s,</p>\n"
+#~ "\n"
+#~ "<p>Como pediste, hemos cancelado tu voto en la votación <a href="
+#~ "\"%(protocol)s://%(site_domain)s%(election_url)s\">%(election_name)s</a> "
+#~ "en <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">"
+#~ "%(agora_username)s/%(agora_name)s</a>. Puedes volver a votar si quieres: "
+#~ "sólo tu último voto cuenta.\n"
+#~ "\n"
+#~ "<p>URL de la votación: <a href=\"%(protocol)s://%(site_domain)s"
+#~ "%(election_url)s\">%(protocol)s://%(site_domain)s%(election_url)s</a></"
+#~ "p>\n"
+#~ "\n"
+#~ "<p>Descripción de la votación: <strong>%(election_description)s</strong></"
+#~ "p>\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "<p>Hello %(to_username)s,</p>\n"
+#~ "\n"
+#~ "<p>We have recorded your vote at election <a href=\"%(protocol)s://"
+#~ "%(site_domain)s%(election_url)s\">%(election_name)s</a> at <a href="
+#~ "\"%(protocol)s://%(site_domain)s%(agora_url)s\">%(agora_username)s/"
+#~ "%(agora_name)s</a>. You may re-vote if you wish: only your last vote "
+#~ "counts.</p>\n"
+#~ "\n"
+#~ "<p>Election URL: <a href=\"%(protocol)s://%(site_domain)s%(election_url)s"
+#~ "\">%(protocol)s://%(site_domain)s%(election_url)s</a></p>\n"
+#~ "\n"
+#~ "<p>Election description: <strong>%(election_description)s</strong></p>\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "<p>Hola %(to_username)s,</p>\n"
+#~ "\n"
+#~ "<p>Hemos registrado tu voto en la votación <a href=\"%(protocol)s://"
+#~ "%(site_domain)s%(election_url)s\">%(election_name)s</a> en <a href="
+#~ "\"%(protocol)s://%(site_domain)s%(agora_url)s\">%(agora_username)s/"
+#~ "%(agora_name)s</a>. Puedes cambiar tu voto si quieres: únicamente tu "
+#~ "último voto cuenta.</p>\n"
+#~ "\n"
+#~ "<p>URL de la votación: <a href=\"%(protocol)s://%(site_domain)s"
+#~ "%(election_url)s\">%(protocol)s://%(site_domain)s%(election_url)s</a></"
+#~ "p>\n"
+#~ "\n"
+#~ "<p>Descripción de la votación: <strong>%(election_description)s</strong></"
+#~ "p>\n"
+
+#~ msgid "Home"
+#~ msgstr "Inicio"
+
+#~ msgid "Agoras"
+#~ msgstr "Ágoras"
+
+#~ msgid "My Agoras"
+#~ msgstr "Mis ágoras"
+
+#~ msgid "Explore existing agoras.."
+#~ msgstr "Explorar otras ágoras..."
+
+#~ msgid "Active elections"
+#~ msgstr "Votaciones activas"
+
+#~ msgid "Explore other elections"
+#~ msgstr "Explorar otras votaciones"
+
+#~ msgid "People"
+#~ msgstr "Gente"
+
+#~ msgid "Enter"
+#~ msgstr "Entrar"
+
+#~ msgid "Log out"
+#~ msgstr "Salir"
+
+#~ msgid "View my profile"
+#~ msgstr "Ver mi perfil"
+
+#, fuzzy
+#~ msgid "Account settings"
+#~ msgstr "Configuración de cuenta"
+
+#~ msgid "Wadobo Labs"
+#~ msgstr "Wadobo Labs"
 
 #~ msgid "You are the owner"
 #~ msgstr "Eres el propietario"
