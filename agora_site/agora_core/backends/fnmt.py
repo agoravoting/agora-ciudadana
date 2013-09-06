@@ -65,10 +65,6 @@ class FNMTBackend(object):
                     profile.extra = dict()
                 profile.extra["fnmt_cert"] = self.cert_pem
 
-            if not user.is_active:
-                user.is_active = True
-                modified = True
-
             if modified:
                 user.save()
                 profile.save()
