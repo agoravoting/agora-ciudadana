@@ -117,6 +117,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'agora_site.misc.context_processor.settings.SITE_NAME',
     'agora_site.misc.context_processor.settings.DEBUG',
     'agora_site.misc.context_processor.settings.MEDIA_URL',
+    'agora_site.misc.context_processor.settings.AUTHENTICATION_BACKENDS',
+    'agora_site.misc.context_processor.settings.AGORA_FNMT_BASE_URL',
 )
 
 ROOT_URLCONF = 'agora_site.urls'
@@ -244,6 +246,7 @@ ENDLESS_PAGINATION_PER_PAGE = 20
 
 # Settings for django-social auth
 AUTHENTICATION_BACKENDS = (
+    #'agora_site.agora_core.backends.fnmt.FNMTBackend',
     'social_auth.backends.twitter.TwitterBackend',
     #'social_auth.backends.facebook.FacebookBackend',
     #'social_auth.backends.google.GoogleOAuthBackend',
@@ -308,7 +311,7 @@ USERENA_FORBIDDEN_USERNAMES = (
     'agora', 'staff', 'agoraciudadana', 'agoravoting', 'root', 'administrator',
     'adminstrador', 'hostmaster', 'info', 'ssladmin', 'sysadmin', 'webmaster',
     'no-reply', 'mail', 'email', 'accounts', 'misc', 'api', 'search',
-    'settings', 'edit'
+    'settings', 'edit', 'list', 'login'
 )
 
 USERENA_MUGSHOT_SIZE = 50
@@ -381,6 +384,21 @@ AGORA_USE_HTTPS = False
 
 USE_ESI = False
 
+# This indicates if the user is allowed to use FNMT certificates as a login or
+# authentication method. Disabled by default because this is a spanish thingie.
+#
+# See INSTALL.md for more details
+AGORA_ALLOW_FNMT_CERTIFICATE = False
+
+# Allow users registered via the API to be activated with a link
+AGORA_ALLOW_API_AUTO_ACTIVATION = False
+
+# the API caller will have to provide this secret to be able to do API
+# auto-activation
+AGORA_API_AUTO_ACTIVATION_SECRET = 'change the activation secret'
+
+AGORA_FNMT_BASE_URL = "https://fnmt.local.dev"
+AGORA_BASE_URL = "https://local.dev"
 
 # sets default value for max age in cache.
 # set to zero (no-cache) by default

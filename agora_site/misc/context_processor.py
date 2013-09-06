@@ -35,7 +35,7 @@ def base(request):
         'languages': json.dumps(
             dict(
                 current=get_language(),
-                objects=[dict(lang_code=lang_code, name=name.decode()) for lang_code, name in settings.LANGUAGES]
+                objects=[dict(lang_code=lang_code, name=unicode(name)) for lang_code, name in settings.LANGUAGES]
             )
         ),
     }

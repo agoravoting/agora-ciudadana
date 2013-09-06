@@ -33,7 +33,7 @@ from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.misc.utils import rest, validate_email
 from agora_site.misc.decorators import permission_required
 from agora_site.agora_core.forms.user import (UsernameAvailableForm, LoginForm,
-    SendMailForm, UserSettingsForm, CustomAvatarForm)
+    SendMailForm, UserSettingsForm, CustomAvatarForm, APISignupForm)
 from agora_site.agora_core.models import Profile
 from agora_site.agora_core.models import Agora
 
@@ -68,6 +68,13 @@ class TinyUserResource(GenericResource):
     def dehydrate_short_description(self, bundle):
         return bundle.obj.get_profile().get_short_description()
 
+
+class ActivationUserResource(TinyUserResource):
+    activation_url = fields.CharField()
+
+    def dehydrate_activation_url(self, bundle):
+        return reverse("userena_activate",
+            args=(bundle.obj.username, bundle.obj.userena_signup.activation_key))
 
 class TinyProfileResource(GenericResource):
     '''
@@ -167,7 +174,7 @@ class UserResource(GenericResource):
 
             url(r"^(?P<resource_name>%s)/register%s$" \
                 % (self._meta.resource_name, trailing_slash()),
-                self.wrap_form(form_class=userena_forms.SignupForm,
+                self.wrap_form(form_class=APISignupForm,
                 method="POST"), name="api_user_register"),
 
             url(r"^(?P<resource_name>%s)/login%s$" % (self._meta.resource_name,
@@ -322,25 +329,24 @@ class UserResource(GenericResource):
                                           'username': user.username,
                                           'welcome_message': welcome_message},
                                     method="POST",
-                                    request=request, use_esi=False)
+                                    request=request)
                 if status != 200:
                     raise ImmediateHttpResponse(response=http.HttpBadRequest())
             else:
                 # send invitation
                 username = str(uuid4())
                 password = str(uuid4())
-                new_user = UserenaSignup.objects.create_user(username,
+                user = UserenaSignup.objects.create_user(username,
                                                 email,
                                                 password,
                                                 False,
                                                 False)
-                profile = new_user.get_profile()
+                profile = user.get_profile()
                 profile.lang_code = request.user.get_profile().lang_code
-                profile.extra = {'join_agora_ids': join_agora_ids}
+                profile.extra = {'join_agora_id': agoraid}
                 profile.save()
 
                 # Mail to the user
-                user = new_user
                 translation.activate(user.get_profile().lang_code)
                 context = get_base_email_context(request)
                 context.update(dict(

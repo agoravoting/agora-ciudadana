@@ -1,0 +1,10 @@
+<script id="template-send_mail_modal_dialog_footer" type="text/underscore-template">
+    <a href="#" class="btn btn-primary" id="send-mail-action"><%= gettext("Send mail") %></a>
+</script>
+
+<script id="template-send_mail_modal_dialog_body" type="text/underscore-template">
+    <p>
+    <%= interpolate(gettext("Content of the email to %s:"), [user_fullname]) %>
+    </p>
+    <textarea class="input-block-level" id="mail_content"></textarea>
+</script>

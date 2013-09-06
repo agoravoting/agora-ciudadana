@@ -15,9 +15,8 @@
 
 import datetime
 
-
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.conf.urls import patterns, url, include
@@ -51,6 +50,8 @@ from haystack.views import SearchView as HaystackSearchView
 
 from agora_site.agora_core.templatetags.agora_utils import get_delegate_in_agora
 from agora_site.agora_core.models import Agora, Election, Profile, CastVote
+
+from agora_site.agora_core.backends.fnmt import fnmt_data_from_pem
 from agora_site.agora_core.forms import *
 from agora_site.agora_core.tasks import *
 from agora_site.misc.utils import *
@@ -2111,3 +2112,58 @@ class ContactView(FormView):
         form.send()
         return super(ContactView, self).form_valid(form)
 
+class FNMTLoginView(TemplateView):
+    '''
+    Used to authenticate or register users using the FNMT client certificate
+    '''
+    template_name = "agora_core/fnmt_login.html"
+
+    def go_next(self):
+        '''
+        Does its best effort to return a redirect to the page that was
+        previously being shown
+        '''
+        next = self.request.REQUEST.get('next', None)
+        if not next:
+            next = settings.LOGIN_REDIRECT_URL
+        return http.HttpResponseRedirect(next)
+
+    def invalid_login(self):
+        return super(FNMTLoginView, self).get(self.request)
+
+    def get(self, request, *args, **kwargs):
+        self.request = request
+
+        if request.user.is_authenticated() and not request.user.is_anonymous():
+            return self.go_next()
+
+        # NOTE: nginx adds \t to the certificate because otherwise it would be not
+        # possible to send it as a proxy header, so we have to remove those tabs.
+        # A PEM certificate does never contain tabs, so this replace is safe anyway.
+        # For more details see:
+        # - https://www.ruby-forum.com/topic/155918 and
+        # - http://nginx.org/en/docs/http/ngx_http_ssl_module.html
+        cert_pem = self.request.META.get('X-Sender-SSL-Certificate', '').replace('\t', '')
+        verify = self.request.META.get('X-Sender-SSL-Verify', 'NONE')
+        if verify != "SUCCESS":
+            return self.invalid_login()
+        try:
+            nif, full_name, email = fnmt_data_from_pem(cert_pem)
+
+            user = authenticate(cert_pem=cert_pem, full_name=full_name,
+                email=email, nif=nif)
+
+            if user is None:
+                return self.invalid_login()
+
+            # show a form requesting the user its email
+            if not email and not user.is_active:
+                logout(request)
+                return redirect(settings.AGORA_BASE_URL + reverse('register-complete-fnmt',
+                    kwargs=dict(activation_key=user.userena_signup.activation_key)))
+
+            login(request, user)
+            return self.go_next()
+
+        except:
+            return self.invalid_login()

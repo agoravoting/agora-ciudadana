@@ -81,6 +81,16 @@
                         icon: "icon-edit"
                     },
                     {
+                        id: "add-members-manually",
+                        name: gettext("Add members manually.."),
+                        icon: "icon-plus"
+                    },
+                    {
+                        id: "send-email-to-members",
+                        name: gettext("Send email to members.."),
+                        icon: "icon-envelope"
+                    },
+                    {
                         id: "remove-my-admin-membership",
                         name: gettext("Remove my admin membership"),
                         icon: "icon-remove"
@@ -166,6 +176,18 @@
                 window.location.href = ajax_data.agora.url + "/admin";
                 return;
                 break;
+            case "add-members-manually":
+                a.removeClass("disabled");
+                this.sendingData = false;
+
+                this.addMembersManually();
+                return;
+            case "send-email-to-members":
+                a.removeClass("disabled");
+                this.sendingData = false;
+
+                this.showMailToMembersDialog();
+                return;
             case "remove-my-admin-membership":
                 data = {action: "leave_admin_membership"};
                 break;
@@ -210,6 +232,96 @@
                 location.reload();
             });
         },
+
+        addMembersManually: function() {
+            var title = gettext('Add members manually');
+            var body = _.template($("#template-add_members_modal_dialog_body").html())();
+            var footer = _.template($("#template-add_members_modal_dialog_footer").html())();
+
+            app.modalDialog.populate(title, body, footer);
+            app.modalDialog.show();
+
+            $("#add-members-action").click(function(e) {
+                e.preventDefault();
+                if ($("#add-members-action").hasClass("disabled")) {
+                    return false;
+                }
+                var json = {
+                    agoraid: ajax_data.agora.id,
+                    emails: $("#add_members_textarea").val(),
+                    welcome_message: gettext('Welcome to this agora')
+                }
+
+                if (json.emails.length == 0) {
+                    return false;
+                }
+
+                json.emails = json.emails.split(",");
+
+                $("#add-members-action").addClass("disabled");
+
+                var jqxhr = $.ajax("/api/v1/user/invite/", {
+                    data: JSON.stringifyCompat(json),
+                    contentType : 'application/json',
+                    type: 'POST',
+                })
+                .done(function() {
+                    $("#modal_dialog").modal('hide');
+                })
+                .fail(function() {
+                    $("#add-members-action").removeClass("disabled");
+                    alert(gettext("Error sending the invitations, please check the input data"));
+                });
+                return false;
+            });
+
+            return false;
+        },
+
+        showMailToMembersDialog: function() {
+            var title = gettext('Send email to agora members');
+            var body = _.template($("#template-mail_to_members_modal_dialog_body").html())();
+            var footer = _.template($("#template-mail_to_members_modal_dialog_footer").html())();
+
+            app.modalDialog.populate(title, body, footer);
+            app.modalDialog.show();
+
+            $("#send-mail-action").click(function(e) {
+                e.preventDefault();
+                if ($("#send-mail-action").hasClass("disabled")) {
+                    return false;
+                }
+                var json = {
+                    action: "mail_to_members",
+                    receivers: $("#mail_receivers").val(),
+                    subject: $("#mail_subject").val(),
+                    body: $("#mail_body").val()
+                }
+
+                if (json.subject.length == 0 || json.body.length == 0) {
+                    return false;
+                }
+
+                $("#send-mail-action").addClass("disabled");
+
+                var path = "/api/v1/agora/" + ajax_data.agora.id + "/action/";
+                var jqxhr = $.ajax(path, {
+                    data: JSON.stringifyCompat(json),
+                    contentType : 'application/json',
+                    type: 'POST',
+                })
+                .done(function() {
+                    $("#modal_dialog").modal('hide');
+                })
+                .fail(function() {
+                    $("#send-mail-action").removeClass("disabled");
+                    alert(gettext("Error sending the mail, please check the input data"));
+                });
+                return false;
+            });
+
+            return false;
+        }
     });
 
     Agora.renderAgoraTabs = function() {
@@ -231,9 +343,14 @@
 
             this.calendarView = new Agora.CalendarWidgetView();
             this.agoraActionListView = new Agora.AgoraActionListView();
+            app.modalDialog = new Agora.ModalDialogView();
 
             Agora.renderAgoraTabs();
             Agora.renderAgoraCalendar();
+
+            var text = $("#agora_short_description").text();
+            var converter = new Showdown.converter();
+            $("#agora_short_description").html(converter.makeHtml(text));
 
             // Only initialize on correct section of page exists.
             if ($("#activity-list").length > 0) {

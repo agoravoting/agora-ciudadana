@@ -90,6 +90,18 @@ class UserTest(RootTestCase):
         # TODO can we test that the operation worked?
 
     def test_send_mail(self):
+        # request fails because david is not admin in an agora of this user
+        self.login('david', 'david')
+        data = self.post('user/1/send_mail/',
+        {'comment': 'holaaaaaaaaaaaa'}, code=HTTP_FORBIDDEN)
+
+        # user1 joins an agora administered by david
+        self.login('user1', '123')
+        orig_data = {'action': "join", }
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # now the email is sent successfully
         self.login('david', 'david')
         data = self.postAndParse('user/1/send_mail/',
         {'comment': 'holaaaaaaaaaaaa'}, code=HTTP_OK)
@@ -145,6 +157,30 @@ class UserTest(RootTestCase):
                 'username': 'username'
             }, code=HTTP_BAD_REQUEST)
 
+    def test_register_activation_url(self):
+        '''
+        Register an user receiving an activation url
+        '''
+        # TODO: fix user registration in unit tests
+
+        data = self.postAndParse('user/register/',
+            {
+                'email': 'tester@example.com',
+                'password1': 'hello',
+                'password2': 'hello',
+                'username': 'tester',
+                'activation_secret': 'invalid activation secret'
+            }, code=HTTP_BAD_REQUEST)
+
+        # TODO: fix user registration in unit tests
+        #data = self.postAndParse('user/register/',
+            #{
+                #'email': 'tester@example.com',
+                #'password1': 'hello',
+                #'password2': 'hello',
+                #'username': 'tester',
+                #'activation_secret': 'change the activation secret'
+            #}, code=HTTP_OK)
 
     def test_login(self):
         """
@@ -231,3 +267,15 @@ class UserTest(RootTestCase):
         self.login('david', 'david')
         data = self.getAndParse('user/open_elections/')
         self.assertEqual(len(data["objects"]), 0)
+
+    #def test_send_invitations(self):
+        #'''
+        #Send invitations to new users and existing users
+        #'''
+        #self.login('david', 'david')
+        #data = {
+            #'agoraid': 1,
+            #'welcome_message': 'fuck yeah albuquerque',
+            #'emails': ['user1', 'edulix@gmail.com', 'fdge@fffg.com']
+        #}
+        #self.postAndParse('user/invite/', data, code=HTTP_OK)

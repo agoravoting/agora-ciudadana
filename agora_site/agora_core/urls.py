@@ -85,9 +85,6 @@ urlpatterns += patterns('',
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/members/(?P<members_filter>members|admins|active_delegates|membership_requests|admin_membership_requests)/?$',
         AgoraMembersView.as_view(), name='agora-members'),
 
-    #url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/members/add/?$',
-    #    AgoraAddMembersView.as_view(), name='agora-add-members'),
-
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/comments/?$',
         AgoraCommentsView.as_view(), name='agora-comments'),
 
@@ -223,6 +220,11 @@ urlpatterns += patterns('',
         url= "https://blog.agoravoting.com"), name='status'
     ),
 )
+
+if settings.AGORA_ALLOW_FNMT_CERTIFICATE:
+    urlpatterns += patterns('',
+        url(r'^user/login/fnmt/?$', FNMTLoginView.as_view(), name='fnmt-login'),
+    )
 
 urlpatterns += patterns('django.contrib.flatpages.views',
     url(r'^misc/page/about/?$', 'flatpage', {'url': '/about/'}, name='about'),

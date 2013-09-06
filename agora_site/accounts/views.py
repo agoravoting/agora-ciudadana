@@ -29,7 +29,7 @@ from django.views.generic.edit import FormView
 
 from userena.models import UserenaSignup
 from userena.managers import SHA1_RE
-from .forms import RegisterCompleteInviteForm
+from .forms import RegisterCompleteInviteForm, RegisterCompleteFNMTForm
 
 class SignUpCompleteView(TemplateView):
     def get(self, request, username):
@@ -80,4 +80,36 @@ class RegisterCompleteInviteView(FormView):
         else:
             messages.add_message(request, messages.ERROR, _('Invalid activation link.'))
             return redirect('/')
-        return super(RegisterCompleteInviteView, self).dispatch(*args, **kwargs)
+        return super(RegisterCompleteInviteView, self).dispatch(request, *args, **kwargs)
+
+
+class RegisterCompleteFNMTView(FormView):
+    template_name = 'accounts/complete_registration_fnmt_form.html'
+    form_class = RegisterCompleteFNMTForm
+    success_url = '/'
+
+    def get_form_kwargs(self):
+        kwargs = super(RegisterCompleteFNMTView, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        kwargs.update({'userena_signup_obj': self.userena_signup_obj})
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return redirect(settings.LOGIN_REDIRECT_URL)
+
+    def dispatch(self, request, *args, **kwargs):
+        self.activation_key = kwargs['activation_key']
+        if SHA1_RE.search(self.activation_key):
+            try:
+                self.userena_signup_obj = UserenaSignup.objects.get(activation_key=self.activation_key)
+            except:
+                messages.add_message(request, messages.ERROR, _('Invalid activation link.'))
+                return redirect('/')
+            if self.userena_signup_obj.activation_key_expired():
+                messages.add_message(request, messages.ERROR, _('Invalid activation link.'))
+                return redirect('/')
+        else:
+            messages.add_message(request, messages.ERROR, _('Invalid activation link.'))
+            return redirect('/')
+        return super(RegisterCompleteFNMTView, self).dispatch(request, *args, **kwargs)

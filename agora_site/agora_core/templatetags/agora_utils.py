@@ -123,6 +123,14 @@ def getindex(item, index):
     '''
     return item[index]
 
+
+@register.filter
+def list_contains(l, item):
+    '''
+    Returns if a list contains an item
+    '''
+    return item in l
+
 @register.filter
 def getvote(action):
     return CastVote.objects.get(action_id=action.id)

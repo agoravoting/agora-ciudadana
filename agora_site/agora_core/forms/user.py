@@ -15,6 +15,7 @@ from django.shortcuts import get_object_or_404
 
 from userena import settings as userena_settings
 from userena import forms as userena_forms
+from userena.models import UserenaSignup
 
 from agora_site.misc.utils import FormRequestMixin
 from agora_site.agora_core.forms.comment import COMMENT_MAX_LENGTH
@@ -281,6 +282,19 @@ class UserSettingsForm(django_forms.ModelForm):
 
         return self.cleaned_data['password1']
 
+    def clean_first_name(self):
+        '''
+        Validates first_name field (which is actually user's full name). If its
+        a FNMT authenticated user, this user cannot change the first name.
+        '''
+        profile = self.request.user.get_profile()
+        if isinstance(profile.extra, dict) and\
+                profile.extra.has_key('fnmt_cert') and\
+                self.request.user.first_name != self.cleaned_data['first_name']:
+            raise django_forms.ValidationError(_('FNMT users cannot change their names.'))
+
+        return self.cleaned_data['first_name']
+
     def clean(self):
         """
         Validates that the values entered into the two password fields match.
@@ -306,3 +320,102 @@ class UserSettingsForm(django_forms.ModelForm):
         )
 
         return ret_kwargs
+
+class APISignupForm(django_forms.Form):
+    """
+    Form for creating a new user account.
+
+    Validates that the requested username and e-mail is not already in use.
+    Also requires the password to be entered twice and the Terms of Service to
+    be accepted.
+
+    """
+    first_name = django_forms.CharField(required=True)
+    username = django_forms.RegexField(regex=userena_forms.USERNAME_RE,
+                                max_length=30, required=True,
+                                error_messages={'invalid': _('Username must contain only letters, numbers, dots and underscores.')})
+    email = django_forms.EmailField(max_length=75, required=True)
+    password1 = django_forms.CharField(required=True)
+    password2 = django_forms.CharField(required=True)
+    activation_secret = django_forms.CharField(required=False)
+
+    request = None
+
+    def clean_username(self):
+        """
+        Validate that the username is alphanumeric and is not already in use.
+        Also validates that the username is not listed in
+        ``USERENA_FORBIDDEN_USERNAMES`` list.
+
+        """
+        try:
+            user = User.objects.get(username__iexact=self.cleaned_data['username'])
+        except User.DoesNotExist:
+            pass
+        else:
+            raise django_forms.ValidationError(_('This username is already taken.'))
+        if self.cleaned_data['username'].lower() in userena_settings.USERENA_FORBIDDEN_USERNAMES:
+            raise django_forms.ValidationError(_('This username is not allowed.'))
+        return self.cleaned_data['username']
+
+    def clean_email(self):
+        """ Validate that the e-mail address is unique. """
+        if User.objects.filter(email__iexact=self.cleaned_data['email']):
+            raise django_forms.ValidationError(_('This email is already in use. Please supply a different email.'))
+        return self.cleaned_data['email']
+
+    def clean_activation_secret(self):
+        if len(self.cleaned_data['activation_secret']) > 0:
+            if self.cleaned_data['activation_secret'] != settings.AGORA_API_AUTO_ACTIVATION_SECRET:
+                raise django_forms.ValidationError(_('Invalid activation secret. ' + settings.AGORA_API_AUTO_ACTIVATION_SECRET + "!= " + self.cleaned_data['activation_secret']))
+            if not settings.AGORA_ALLOW_API_AUTO_ACTIVATION:
+                raise django_forms.ValidationError(_('Auto activation not allowed.'))
+        return self.cleaned_data['activation_secret']
+
+    def clean(self):
+        """
+        Validates that the values entered into the two password fields match.
+        Note that an error here will end up in ``non_field_errors()`` because
+        it doesn't apply to a single field.
+
+        """
+        if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
+            if self.cleaned_data['password1'] != self.cleaned_data['password2']:
+                raise django_forms.ValidationError(_('The two password fields didn\'t match.'))
+        return self.cleaned_data
+
+    def save(self):
+        """ Creates a new user and account. Returns the newly created user. """
+        username, email, password = (self.cleaned_data['username'],
+                                     self.cleaned_data['email'],
+                                     self.cleaned_data['password1'])
+
+        if not self.cleaned_data['activation_secret']:
+            new_user = UserenaSignup.objects.create_user(username, email,
+                password,
+                not userena_settings.USERENA_ACTIVATION_REQUIRED,
+                userena_settings.USERENA_ACTIVATION_REQUIRED)
+        else:
+            new_user = UserenaSignup.objects.create_user(username, email,
+                password, False, False)
+
+        new_user.first_name = self.cleaned_data['first_name']
+        return new_user
+
+    def bundle_obj(self, obj, request):
+        '''
+        Bundles the object for the api showing activation url if needed
+        '''
+        from agora_site.agora_core.resources.user import (
+            ActivationUserResource, TinyUserResource)
+
+        if not self.cleaned_data['activation_secret']:
+            ur = TinyUserResource()
+            bundle = ur.build_bundle(obj=obj, request=request)
+            bundle = ur.full_dehydrate(bundle)
+            return bundle
+        else:
+            ur = ActivationUserResource()
+            bundle = ur.build_bundle(obj=obj, request=request)
+            bundle = ur.full_dehydrate(bundle)
+            return bundle

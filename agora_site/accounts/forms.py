@@ -13,14 +13,18 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import random
+
 from django.contrib import messages
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import forms as auth_forms
 from django.contrib.sites.models import Site
 from django import forms as django_forms
@@ -190,3 +194,72 @@ class RegisterCompleteInviteForm(django_forms.Form):
         if userena_settings.USERENA_USE_MESSAGES:
             messages.success(self.request, _('Your account has been activated and you have been signed in.'), fail_silently=True)
         return user
+
+
+class RegisterCompleteFNMTForm(django_forms.Form):
+    """
+    Form for creating a new user account.
+
+    Validates that the requested e-mail is not already in use.
+    Also requires the Terms of Service to be accepted.
+
+    """
+    email = django_forms.EmailField(max_length=40,
+                                label=_("Email"))
+
+    def __init__(self, *args, **kwargs):
+        self.userena_signup_obj = kwargs['userena_signup_obj']
+        self.request = kwargs['request']
+        del kwargs['userena_signup_obj']
+        del kwargs['request']
+        super(RegisterCompleteFNMTForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', _('Sign up'), css_class='btn btn-success btn-large'))
+
+    def clean_email(self):
+        """
+        Validate that the email is not already in use.
+
+        """
+        try:
+            user = User.objects.get(email__iexact=self.cleaned_data['email'])
+        except User.DoesNotExist:
+            pass
+        else:
+            raise django_forms.ValidationError(_('This email is already taken.'))
+        return self.cleaned_data['email']
+
+    def save(self):
+        """ Creates a new user and account. Returns the newly created user. """
+        email = self.cleaned_data['email']
+
+        user = self.userena_signup_obj.user
+        self.userena_signup_obj.activation_key = userena_settings.USERENA_ACTIVATED
+        # generate a valid new username
+        base_username = username = slugify(email.split('@')[0])
+        while User.objects.filter(username=username).exists():
+            username = base_username + random.randint(0, 100)
+
+
+        user.is_active = True
+        user.username = username
+        user.email = email
+        profile = user.get_profile()
+
+        user.save()
+        profile.save()
+        self.userena_signup_obj.save()
+
+        # add user to the default agoras if any
+        for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
+            profile.add_to_agora(agora_name=agora_name, request=self.request)
+
+        # Sign the user in.
+        auth_user = authenticate(identification=user.email,
+                                check_password=False)
+        login(self.request, auth_user)
+
+        if userena_settings.USERENA_USE_MESSAGES:
+            messages.success(self.request, _('Your account has been activated and you have been signed in.'), fail_silently=True)
+        return user
+
