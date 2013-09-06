@@ -230,7 +230,12 @@
             })
             .done(function(e) {
                 location.reload();
-            });
+            })
+           .fail(function(jqxhr) {
+               if( (action_id == 'join') && (jqxhr.status==403) ) {
+                   window.location.href = "/accounts/signin/";
+               }
+           });
         },
 
         addMembersManually: function() {
