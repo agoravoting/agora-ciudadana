@@ -222,7 +222,8 @@
         hoverUser: function(e) {
             if (!this.templateVoteInfo) {
                 this.templateVoteInfo = _.template($(this.templateVoteInfoEl).html());
-            }
+            }            
+            
             var id = $(e.target).closest('.row').data('id');
             var self = this;
             var agora = ajax_data.election.agora;
@@ -231,7 +232,8 @@
                 vote: this.collection.get(id).toJSON(),
                 election: ajax_data.election,
                 delegation: self.delegate,
-                extra_data: ajax_data.extra_data
+                extra_data: ajax_data.extra_data,
+                choose_delegate: _.contains(ajax_data.election.user_perms, "choose_delegate")
             };
             if (model.election.result_tallied_at_date) {
                 model.num_delegated_votes = 0;

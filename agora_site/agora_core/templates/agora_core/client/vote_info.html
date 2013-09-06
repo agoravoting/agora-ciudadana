@@ -41,7 +41,7 @@
                 <%= vote.voter.short_description %>
             <% } %>
         </blockquote>
-        <% if (delegation == true) { %>
+        <% if ( (delegation == true) && (choose_delegate) ) { %>
         <a class="btn btn-large btn-block btn-primary delegate_vote" href="#"
             data-agora="<%- JSON.stringifyCompat(election.agora) %>"
             data-delegate="<%- JSON.stringifyCompat(vote.voter) %>"

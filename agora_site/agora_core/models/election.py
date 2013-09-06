@@ -3,15 +3,12 @@ import uuid
 import hashlib
 import simplejson
 
-import markdown
-
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
 from django.template.defaultfilters import slugify
-from django.template.defaultfilters import truncatewords_html
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
@@ -21,7 +18,6 @@ from agora_site.misc.utils import JSONField, rest
 from agora_site.agora_core.models.agora import Agora
 from agora_site.agora_core.models.voting_systems.base import (
     parse_voting_methods, get_voting_system_by_id)
-from agora_site.agora_core.templatetags.string_tags import urlify_markdown
 
 
 class Election(models.Model):
@@ -371,6 +367,8 @@ class Election(models.Model):
                 isfrozen and self.has_started() and not self.has_ended()
         elif permission_name == 'vote_counts':
             return ismember() and not isarchived
+        elif permission_name == 'choose_delegate':
+            return ismember()
         elif permission_name == 'emit_delegate_vote':
             can_emit = ismember() or\
                 (self.agora.has_perms('join', user) and self.agora.delegation_policy == Agora.DELEGATION_TYPE[0][0])                
@@ -412,7 +410,7 @@ class Election(models.Model):
         return [perm for perm in ('edit_details', 'approve_election',
             'begin_election', 'freeze_election', 'end_election',
             'archive_election', 'comment', 'emit_direct_vote',
-            'emit_delegate_vote', 'vote_counts') if self.__has_perms(perm,
+            'emit_delegate_vote', 'vote_counts', 'choose_delegate') if self.__has_perms(perm,
                 user, isanon, isadmin, isadminorcreator, isarchived, isfrozen,
                 ismember)]
 
