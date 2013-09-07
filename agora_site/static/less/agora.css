@@ -5935,6 +5935,10 @@ ul.list-container li.agora-user-item.simple > a.agora i {
 /*     color: #6EB43F; */
 }
 
+.home .hero-unit h1.home-loggedin {
+    margin-top: 20px;
+}
+
 .home .hero-unit li {
     font-size: 18px;
 }
