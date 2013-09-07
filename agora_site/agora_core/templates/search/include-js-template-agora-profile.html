@@ -47,6 +47,12 @@
             <%= gettext("Dismiss membership request") %>
         </a>
     </li>
+    <li>
+        <a href="<%= agora_path %>/action/download-user-id/<%= username %>" target="_blank" class="action-form-link">
+            <i class="icon-remove"></i>
+            <%= gettext("Descargar DNI escaneado") %>
+        </a>
+    </li>
     <% } %>
     <% if (_.contains(permissions, "cancel_admin_membership_request")) { %>
     <li>

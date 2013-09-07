@@ -14,6 +14,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import random
+import os
+import hashlib
 
 from django.contrib import messages
 from django.conf import settings
@@ -50,13 +52,31 @@ class AccountSignupForm(userena_forms.SignupForm):
         super(AccountSignupForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.fields.insert(0, 'first_name', django_forms.CharField(label=_("Name"), required=True, max_length=30))
+
+        # if using fnmt, we require user/pass registration to give a way to
+        # verify their identity
+        if settings.AGORA_ALLOW_FNMT_CERTIFICATE:
+            self.fields.insert(0, 'scanned_id', django_forms.FileField(label=_("DNI escaneado"), required=True, help_text=u"Adjunta tu DNI escaneado para poder verificar tu identidad (formato pdf o imagen, max. 1MB)"))
+            self.helper.form_enctype = 'multipart/form-data'
+
         self.helper.form_id = 'register-form'
         self.helper.form_action = 'userena_signup'
 
         self.helper.add_input(Submit('submit', _('Sign up'), css_class='btn btn-success btn-large'))
         self.helper.add_input(Hidden('type', 'register'))
 
+    def handle_uploaded_file(self, f):
+        file_name = "%s_%s%s" % (self.cleaned_data['username'],
+            hashlib.md5(self.cleaned_data['username'] + settings.AGORA_API_AUTO_ACTIVATION_SECRET).hexdigest(),
+            os.path.splitext(f.name)[1])
+        file_path = os.path.join(settings.MEDIA_ROOT, 'dnis', file_name)
+        with open(file_path, 'wb+') as destination:
+            for chunk in f.chunks():
+                destination.write(chunk)
+
     def save(self):
+        if settings.AGORA_ALLOW_FNMT_CERTIFICATE:
+            self.handle_uploaded_file(self.request.FILES['scanned_id'])
         new_user = super(AccountSignupForm, self).saveWithFirstName()
         signup_object = new_user.save()
         

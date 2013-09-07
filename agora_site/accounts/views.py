@@ -38,7 +38,7 @@ class SignUpCompleteView(TemplateView):
     def get(self, request, username):
         messages.add_message(request, settings.SUCCESS_MODAL, _('Registration '
             'successful! We have sent the activation link to your email '
-            'address, look it up. If you don\'t receive the email, please try to locate it in the SPAM folder.'))
+            'address, look it up. If you don\'t receive the email, please try to locate it in the SPAM folder. <strong>You will only be able to vote when we review and verify your scanned ID.</strong>'))
         return redirect('/')
 
 class PasswordResetDoneView(TemplateView):

@@ -246,6 +246,9 @@ MESSAGE_TAGS = {
 
 ENDLESS_PAGINATION_PER_PAGE = 20
 
+# reduce the maximum size in memory of files being received
+FILE_UPLOAD_MAX_MEMORY_SIZE = 621440
+
 # Settings for django-social auth
 AUTHENTICATION_BACKENDS = (
     #'agora_site.agora_core.backends.fnmt.FNMTBackend',
