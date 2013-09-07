@@ -142,6 +142,12 @@
             if ($("#activity-list").length > 0) {
                 this.activityListView = new Agora.HomeActivtyList();
             }
+
+            $(".show-login").click(function(e) {
+                e.preventDefault();
+                $("#show-login-link").click();
+                return false;
+            });
         },
     });
 }).call(this)

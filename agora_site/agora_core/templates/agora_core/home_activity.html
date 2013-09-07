@@ -2,29 +2,319 @@
 {% load i18n %}
 {% load agora_utils %}
 
-{% block content-wrapper-class %}home{% endblock %}
+{% block content-wrapper-class %}hidden{% endblock %}
 
-{% block content %}
-        <div class="row election-content-row">
-            <div class="activity-list hide" id="activity-list"
-                data-url="/api/v1/action/">
-            </div>
-            <div class="content">
-                <div id="activity_items">
-                <!-- here will appear the activity items stream -->
-                </div>
-                <div id="activity_fadeout">
-                </div>
-            </div>
-            <div class="sidebar">
-                <div class="row-fluid">
-                    <div id="home_worldmap_canvas">
+{% block background-wrapper %}
+<div class="background-wrapper home">
+    <div class="container-fluid {% block running-board-wrapper-class %}hero-unit{% endblock %}" id="running-board-wrapper">
+        <div class="container">
+            <div class="row">
+                {% block running-board  %}
+                    <div class="span7">
+                        <p class="top-p">Democracia Directa en el Congreso de los Diputados</p><h1>Vota la Ley de Transparencia en 3 sencillos pasos</h1>
+                        <ol>
+                            <li>Revisa abajo los bloques de la ley (abajo)
+                            </li>
+                            <li><a href="/accounts/signin/" class="show-login btn btn-success">Régistrate / Entra</a>
+                            </li>
+                            <li>Vota la ley
+                            </li>
+                            <li>Baldoví votará en el Congreso lo que los ciudadanos decidamos
+                            </li>
+                        </ol>
                     </div>
-                </div>
+                    <div class="span5">
+                        <img class="youtube" src="{{STATIC_URL}}img/baldo_ytn.jpg" />
+                    </div>
+                {% endblock %}
             </div>
         </div>
-{% endblock %}
+    </div>
+    <div class="home-main container">
+        <p class="motiv">Hemos divido la ley en <strong>ocho bloques</strong> que resumen las principales propuestas y sentido de las enmiendas que los distintos grupos han presentado. Cada uno de esos bloques contienue una serie de elementos sobre los que decidir: </p>
+<div class="accordion" id="bloques">
+    <div class="accordion-group">
+        <div class="accordion-heading dcho_fundamental"><span class="badge">1</span>
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#bloques" href="#dcho_fundamental">Derecho a la informaci&oacute;n como derecho fundamental</a>
+        </div>
+        <div id="dcho_fundamental" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <div class="inner_txt">
+            <p>El Proyecto Legal reconoce el derecho de acceso a la informaci&oacute;n como un derecho vinculado al art&iacute;culo 105 de la Constituci&oacute;n. Esto quiere decir que se considera un derecho administrativo. Concretamente,&nbsp; se alude a una sentencia del Tribunal Supremo de la sala tercera, de 19 mayo de 2003, en la que se se&ntilde;ala expresamente que en este caso lo que nos encontramos es ante un derecho de configuraci&oacute;n legal, como determina el art&iacute;culo 105. b) de la Constituci&oacute;n, que debe calificarse como un derecho subjetivo a la informaci&oacute;n que, sin embargo, en el caso enjuiciado con lo que tiene vinculaci&oacute;n es con los derechos de los ciudadanos a los archivos y registros administrativos</p>
+<p>Para el gobierno, eso no quiere decir que el derecho no tenga la m&aacute;xima garant&iacute;a y protecci&oacute;n posible, que al fin y al cabo es de lo que se trata, que la ley y los derechos que se ampl&iacute;an y reconocen no est&eacute;n protegidos de la manera m&aacute;s extensa por los tribunales.</p>
+<p>Todos los grupos, excepto el Grupo Popular, plantean en sus enmiendas parciales, el reconocimiento del derecho de acceso a la informaci&oacute;n como un derecho fundamental, tal y como reconocen ya los convenios internacionales que se han firmado en los &uacute;ltimos a&ntilde;os, haci&eacute;ndolo as&iacute;, un derecho homologable al de la Protecci&oacute;n de Datos, ya que le confiere as&iacute; mayor protecci&oacute;n y garant&iacute;a.</p>
+<p>Tambi&eacute;n la Coalici&oacute;n Pro-Acceso, plataforma que engloba a las principales organizaciones sociales que trabajan en el campo de la transparencia y acceso a la informaci&oacute;n, se&ntilde;ala en el primer punto de su dec&aacute;logo lo siguiente: &ldquo;El acceso a la informaci&oacute;n es un derecho de toda persona, que debe aplicarse sin discriminaci&oacute;n por raz&oacute;n de nacionalidad o car&aacute;cter del solicitante y que debe poder ejercerse sin necesidad de justificar las razones por las que se solicita la informaci&oacute;n&rdquo;.</p>
+<p>Por lo tanto:</p></div>
 
+<div class="control-group">
+    <label class="control-label" for="inputIcon">&iquest;Est&aacute;s a favor de que el proyecto de ley reconozca el derecho de acceso a la informaci&oacute;n como un derecho fundamental?</label>
+    <div class="controls">
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span1' type="text" value="Si">
+    </div>
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span1' type="text" value="No">
+    </div>
+    </div>
+    </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-group">
+        <div class="accordion-heading sujetos_obligados">
+        <span class="badge">2</span>
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#bloques" href="#sujetos_obligados">
+        Sujetos Obligados
+        </a>
+        </div>
+        <div id="sujetos_obligados" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <div class="inner_txt">
+            <p>En el &uacute;ltimo borrador del Proyecto de ley se han incorporado ya instituciones y entidades que se hab&iacute;an quedado fuera, tales como la Corona, los partidos pol&iacute;ticos, los sindicatos y las organizaciones empresariales y determinadas entidades de derecho p&uacute;blico.</p>
+<p>Sin embargo, todav&iacute;a quedan instituciones fuera. La relaci&oacute;n que aparecen en las enmiendas parciales de los distintos grupos son las que se relacionan a continuaci&oacute;n. Se&ntilde;ala tus opciones:</p>
+<p>Entidades que directa o indirectamente reciben fondos p&uacute;blicos (independientemente de la cuant&iacute;a). La redacci&oacute;n que finalmente aparece en el proyecto de ley es la siguiente: &ldquo;Las entidades privadas que perciban durante el periodo de un a&ntilde;o ayudas o subvenciones p&uacute;blicas en cuant&iacute;a superior a 100.000 euros o cuando, al menos el 40% del total de sus ingresos anuales tengan car&aacute;cter de ayuda o subvenci&oacute;n p&uacute;blica siempre que alcancen como m&iacute;nimo 3.000 euros.&rdquo;<br />
+    Los &oacute;rganos de gobierno de juzgados y tribunales<br />
+    El Fondo de Reestructuraci&oacute;n Ordenada Bancaria (FROB) y el Instituto de Cr&eacute;dito Oficial (ICO) as&iacute; como las entidades que reciben estos fondos<br />
+    La iglesia y dem&aacute;s confesiones religiosas reconocidas</p>
+</div>
+
+    <div class="control-group">
+    <label class="control-label" for="inputIcon">&iquest;Eres partidario de incluir los sujetos que a&uacute;n est&aacute;n fuera del proyecto de ley?</label>
+    <div class="controls">
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span1' type="text" value="Si">
+    </div>
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span1' type="text" value="No">
+    </div>
+    </div>
+    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-group">
+        <div class="accordion-heading reg_lobbies">
+        <span class="badge">3</span>
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#bloques" href="#reg_lobbies">
+        Regulaci&oacute;n de Lobbies
+        </a>
+        </div>
+        <div id="reg_lobbies" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <div class="inner_txt">
+            <p>Se plantea por la mayor&iacute;a de los Grupos Parlamentarios la regulaci&oacute;n de la actividad de los lobbies en l&iacute;nea con la regulaci&oacute;n sobre representaci&oacute;n de intereses en otros estados miembros de la UE, ya que se considera que es un elemento fundamental de buen gobierno.</p>
+<p>El proyecto de ley, en su &uacute;ltima versi&oacute;n, sigue sin contemplar la regulaci&oacute;n de intereses. En las enmiendas parciales de los grupos parlamentarios se plantea en algunos casos como art&iacute;culo espec&iacute;fico y en otras como disposici&oacute;n adicional para tener una norma espec&iacute;fica</p></div>
+
+
+
+<div class="control-group">
+    <label class="control-label" for="inputIcon">&iquest;Estas a favor de que se regule la actividad de los lobbies a trav&eacute;s de esta u otra ley?</label>
+    <div class="controls">
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span1' type="text" value="Si">
+    </div>
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span1' type="text" value="No">
+    </div>
+    </div>
+    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-group">
+        <div class="accordion-heading formatos_informacion">
+        <span class="badge">4</span>
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#bloques" href="#formatos_informacion">
+        Formatos de informaci&oacute;n
+        </a>
+        </div>
+        <div id="formatos_informacion" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <div class="inner_txt">
+                <p>La definici&oacute;n de informaci&oacute;n p&uacute;blica que hace la ley no menciona que toda la informaci&oacute;n ser&aacute; accesible, sin importar el formato. La informaci&oacute;n p&uacute;blica debe ser comprensible, de acceso f&aacute;cil y gratuito y que tenga en a las personas con discapacidad</p>
+    <p>Adem&aacute;s, partimos de la base de que no s&oacute;lo estamos regulando la capacidad de acceder a esa informaci&oacute;n p&uacute;blica sino tambi&eacute;n la posibilidad de reutilizarla por lo tanto los formatos deben ser abiertos</p>
+    </div>
+    <div class="control-group">
+    <label class="control-label" for="inputIcon">&iquest;Est&aacute;s a favor de que la ley recoja expresamente que la informaci&oacute;n p&uacute;blica debe estar en cualquier formato que posibilite la informaci&oacute;n, la utilizaci&oacute;n y el uso de los datos?</label>
+    <div class="controls">
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span1' type="text" value="Si">
+    </div>
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span1' type="text" value="No">
+    </div>
+    </div>
+    </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-group">
+        <div class="accordion-heading causas_inadmision">
+        <span class="badge">5</span>
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#bloques" href="#causas_inadmision">
+        Causas de inadmisión
+        </a>
+        </div>
+        <div id="causas_inadmision" class="accordion-body collapse">
+            <div class="accordion-inner">
+           <div class="inner_txt">
+            <p>La mayor&iacute;a de las enmiendas planteadas proponen la supresi&oacute;n de las causas de inadmisi&oacute;n porque introducen nuevos l&iacute;mites que van en contra de los est&aacute;ndares internacionales.</p>
+            </div>
+
+                <div class="control-group">
+    <label class="control-label" for="inputIcon">En el caso de que esa sea tu opini&oacute;n tambi&eacute;n, se&ntilde;ala qu&eacute; causas mantendr&iacute;as:</label>
+    <div class="controls">
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span9' type="text" value="Que se refieran a informaciones en curso o de publicaci&oacute;n general">
+    </div>
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span9' type="text" value="Referidas a informaci&oacute;n que tengan car&aacute;cter auxiliar o de apoyo como la contenida en las notas, borradores, opiniones, res&uacute;menes, comunicaciones o informes previos">
+    </div>
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span9' type="text" value="Relativas a informaci&oacute;n para cuya divulgaci&oacute;n sea necesaria una acci&oacute;n previa de reelaboraci&oacute;n">
+    </div>
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span9' type="text" value="Que sean manifiestamente repetitivas o tengan un car&aacute;cter abusivo no justificado con la finalidad de transparencia de la ley">
+    </div>
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span9' type="text" value="No mantendr&iacute;a ninguna y suprimir&iacute;a el art&iacute;culo">
+    </div>
+    </div>
+    </div>
+                        </div>
+        </div>
+    </div>
+
+    <div class="accordion-group">
+        <div class="accordion-heading silencio">
+        <span class="badge">6</span>
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#bloques" href="#silencio">
+        Silencio Administrativo Negativo
+        </a>
+        </div>
+        <div id="silencio" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <div class="inner_txt">
+           <p>El proyecto de ley plantea lo siguiente: &ldquo;Transcurrido el plazo m&aacute;ximo para resolver sin que haya dictado y notificado resoluci&oacute;n expresa se entender&aacute; que la solicitud ha sido desestimada&rdquo;. Esto es lo que se conoce como silencio administrativo negativo y a nuestro juicio hace completamente ineficaz el derecho de acceso a la informaci&oacute;n, por lo que se plantea que la desestimaci&oacute;n de una solicitud debe ser motivada y notificada, no s&oacute;lo para garantizar el efectivo ejercicio del derecho sino tambi&eacute;n para contemplar la posibilidad de recurso de esa inadmisi&oacute;n.</p>
+<p>El gobierno plantea que el silencio administrativo positivo, es decir, entender el silencio como causa de admisi&oacute;n, puede provocar perjuicio a los particulares, a la protecci&oacute;n de datos personales.</p>
+
+</div>
+<div class="control-group">
+    <label class="control-label" for="inputIcon">&iquest;Estas a favor de que se suprima la figura del silencio administrativo negativo, teniendo la administraci&oacute;n que motivar y notificar las causas de inadmisi&oacute;n de una solitciud?</label>
+    <div class="controls">
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span1' type="text" value="Si">
+    </div>
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span1' type="text" value="No">
+    </div>
+    </div>
+    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-group">
+        <div class="accordion-heading organo">
+        <span class="badge">7</span>
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#bloques" href="#organo">
+        &Oacute;rgano de transparencia
+        </a>
+        </div>
+        <div id="organo" class="accordion-body collapse">
+            <div class="accordion-inner"><div class="inner_txt">
+            <p>En la &uacute;ltima versi&oacute;n del proyecto de Ley se propone como &oacute;rgano de control el Consejo de Transparencia y Buen Gobierno.</p>
+<p>Art&iacute;culo 7 bis. (Nuevo art&iacute;culo 9). Control<br />
+    a) El Cumplimiento por la Administraci&oacute;n General del Estado de las obligaciones contenidas en este cap&iacute;tulo ser&aacute; objeto de control por parte del Consejo de Transparencia y Buen Gobierno.<br />
+    b) En ejercicio de la competencia prevista en el apartado anterior el Consejo de Transparencia y Buen Gobierno, de acuerdo con el procedimiento que se prevea reglamentariamente, podr&aacute; dictar resoluci&oacute;n en la que se establezcan las medidas que sea necesario adoptar para el cese del incumplimiento y el inicio de las actuaciones disciplinarias que procedan. El incumplimiento reiterado de las obligaciones de publicidad activa reguladas en este cap&iacute;tulo tendr&aacute; la consideraci&oacute;n de infracci&oacute;n grave a los efectos de aplicaci&oacute;n a sus responsables del r&eacute;gimen disciplinario previsto en la correspondiente normativa reguladora.</p>
+<p>Seg&uacute;n la Coalici&oacute;n ProAcceso, &ldquo;sigue siendo un organismo no independiente, muy politizado. No se especifican qu&eacute; poderes tendr&aacute; para conocer de las reclamaciones que reciba, no sabemos si tendr&aacute; poder vinculante y teniendo en cuenta que habr&aacute; una persona encargada de responder las reclamaciones (el presidente) es claramente insuficiente y augura que se har&aacute; mucho uso del silencio negativo doble, porque tambi&eacute;n hay silencio negativo cuando se reclama&rdquo;.</p>
+<p>El problema de la &uacute;ltima versi&oacute;n del Proyecto de Ley es que los Grupos Parlamentarios no han podido presentar enmiendas a este Nuevo Consejo de Transparencia y Buen Gobierno ya que no estaba en el proyecto original. Por lo tanto, no hay enmiendas que podamos votar para cambiar o mantener. Sin embargo, queremos someter a tu consideraci&oacute;n la propuesta de la Coalici&oacute;n Pro-Acceso:</p>
+<p>&ldquo;Consideramos que Las Cortes Espa&ntilde;olas deber&iacute;an replantear la naturaleza y las funciones del organismo encargado de velar por la protecci&oacute;n del derecho de acceso a la informaci&oacute;n.&nbsp; Este organismo debe ser independiente y contar con el poder y funciones suficientes para implementar de forma r&aacute;pida y consistente el derecho de acceso a la informaci&oacute;n en todo el&nbsp; territorio Este organismo tendr&iacute;a competencia para velar por el derecho de acceso ante cualquier sujeto obligado, recibir quejas tanto por denegaciones de acceso a la informaci&oacute;n p&uacute;blica, como por incumplimiento de la obligaci&oacute;n de publicidad activa y promover el derecho de acceso y la transparencia. Ser&iacute;a recomendable que reuniera en un mismo organismo las competencias de protecci&oacute;n de datos y las correspondientes a la transparencia y acceso a la informaci&oacute;n p&uacute;blica&rdquo;.</p>
+
+</div>
+
+
+
+<div class="control-group">
+    <label class="control-label" for="inputIcon">&iquest;Est&aacute;s a favor de la propuesta de &Oacute;rgano de Transparencia y Buen Gobierno de la Coalici&oacute;n Pro-Acceso?</label>
+    <div class="controls">
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span1' type="text" value="Si">
+    </div>
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span1' type="text" value="No">
+    </div>
+    </div>
+    </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="accordion-group">
+        <div class="accordion-heading votacion">
+        <span class="badge">8</span>
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#bloques" href="#votacion">
+        Votaci&oacute;n final a la ley
+        </a>
+        </div>
+        <div id="votacion" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <div class="inner_txt">
+         <p>Una &uacute;ltima pregunta. Una vez discutidas las enmiendas se votar&aacute; el texto final. Imag&iacute;nate que no aceptan ninguna y el proyecto de ley se queda c&oacute;mo est&aacute;. El argumento ser&iacute;a: Es mejor tener ley de transparencia que no tenerla o preferimos no tener ley a tener una que no cumpla los est&aacute;ndares.</p>
+<p></p>
+</div>
+ <div class="control-group">
+    <label class="control-label" for="inputIcon">Piensas que Joan Baldov&iacute; debe votar a favor del proyecto de ley aunque no recoja ninguna de las enmiendas planteadas?</label>
+    <div class="controls">
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span1' type="text" value="Si">
+    </div>
+    <div class="input-prepend">
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <input class='span1' type="text" value="No">
+    </div>
+    </div>
+    </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+        <p class="motiv">¿Ya te has leído los bloques? Entonces <a href="/accounts/signin/" class="btn btn-success show-login">Regístrate / Entra</a> para poder votar.</p>
+
+    </div>
+</div>
+{% endblock %}
 
 {% block script-block %}
     {% include "agora_core/client/all_actions.html" %}

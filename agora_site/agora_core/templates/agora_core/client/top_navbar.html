@@ -8,8 +8,13 @@
 
                 <ul class="nav pull-right">
                     <% if (user.id < 0) { %>
-                        <li>
-                            <a class="link-green" href="/accounts/signin/" id="show-login-modal"><%= gettext("Enter") %></a>
+                        <li class="dropdown">
+                            <a class="link-green dropdown-toggle" id="show-login-link" data-toggle="dropdown" href="#">
+                                <%= gettext("Enter") %>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu enter-ul">
+                            </ul>
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
