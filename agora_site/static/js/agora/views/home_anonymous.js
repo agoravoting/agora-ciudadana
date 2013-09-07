@@ -148,6 +148,10 @@
                 $("#show-login-link").click();
                 return false;
             });
+
+            $('#login-dropdown').click(function(e) {
+                e.stopPropagation();
+            });
         },
     });
 }).call(this)

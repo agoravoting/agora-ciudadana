@@ -13,7 +13,32 @@
                                 <%= gettext("Enter") %>
                                 <b class="caret"></b>
                             </a>
-                            <ul class="dropdown-menu enter-ul">
+                            <ul class="dropdown-menu row-fluid" id="login-dropdown">
+                                <form method="post" class="span6" id="login-form" action="/accounts/signin/">
+                                    {% csrf_token %}
+                                    <input type="text" maxlength="75" name="identification" class="required textinput textInput" id="id_identification" placeholder="Email o nombre de usuario" />
+
+                                    <input type="password" name="password" class="required textinput textInput" id="id_password" placeholder="Contraseña"/>
+                                    <div class="text-links"><a href="/accounts/password/reset/">¿Olvidaste tu contraseña?</a> | <a href="/accounts/signup/">Regístrate</a></div>
+
+                                    <input type="submit" id="submit-id-submit" class="btn btn-primary btn btn-success btn-large" value="Log in" name="submit">
+
+                                    <input type="hidden" value="login" name="type">
+                                </form>
+                                <div class="span6 use-account">
+                                    <h3>Entrar con FNMT</h3>
+                                    <p><a href="https://www.youtube.com/watch?v=CiTqUZG0E_s" target="_blank">Más información en éste vídeo</a></p>
+                                    <div>
+                                    <p>
+                                    <a class="btn btn-primary" href="https://fnmt.local.dev/user/login/fnmt/">
+                                        Entra con el certificado FNMT
+                                    </a>
+                                    </p>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                                <div class="text-links">
+                                Al entrar con tu usuario estás aceptando nuestros <a href="/misc/page/terms-of-service" class="inline">Términos de servicio</a>.</div>
                             </ul>
                         </li>
                         <li class="dropdown">

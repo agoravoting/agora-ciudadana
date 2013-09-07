@@ -5909,9 +5909,10 @@ ul.list-container li.agora-user-item.simple > a.agora i {
 }
 
 .home #running-board-wrapper {
-  background: url("../img/congreso_puntos_naranja_small.png") no-repeat scroll right top #EA7F1E;
-
-/*   background: url("../img/congreso_puntos_gris_small.png") no-repeat scroll right top #EAEBF0; */
+/*   background: url("../img/congreso_puntos_naranja_small.png") no-repeat scroll right top #EA7F1E; */
+  background: url("../img/congreso_puntos_gris_oscuro_small.png") no-repeat scroll right top #aaa;
+  text-shadow: #666 0.1em 0.1em 0.2em;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
@@ -5972,10 +5973,6 @@ ul.list-container li.agora-user-item.simple > a.agora i {
     font-size: 1.1em;
 }
 
-.enter-ul {
-    min-height: 100px;
-    min-width: 150px;
-}
 
 .home .accordion-heading a:hover, .accordion-heading a:active{
   opacity: 0.9;
@@ -6121,4 +6118,30 @@ ul.list-container li.agora-user-item.simple > a.agora i {
   max-height: 150px;
   overflow: auto;
   padding: 0.5em;
+}
+
+/* top login */
+
+
+#login-dropdown {
+    width: 450px;
+    padding: 10px;
+    color: #333;
+}
+
+#login-dropdown a.btn {
+    color: white;
+    text-shadow: none;
+}
+
+#login-dropdown .text-links a {
+    display: inline-block;
+    color: #0088CC;
+    clear: none;
+    padding: 0;
+    line-height: 1em;
+}
+
+#login-dropdown .text-links {
+    font-size: 12px;
 }
