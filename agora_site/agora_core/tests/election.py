@@ -735,7 +735,8 @@ class ElectionTest(RootTestCase):
         orig_data = dict(action='get_permissions')
         data = self.postAndParse('election/%d/action/' % election_id, data=orig_data,
             code=HTTP_OK, content_type='application/json')
-        self.assertEqual(data["permissions"], [])
+        self.assertFalse('archive_election' in data["permissions"])
+        # self.assertEqual(data["permissions"], [])
 
         # because start date has been reset
         data = self.getAndParse('election/%s/' % election_id, code=HTTP_OK)
