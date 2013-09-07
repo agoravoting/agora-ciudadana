@@ -94,7 +94,7 @@ class AutoJoinActivateView(TemplateView):
             profile = new_user.get_profile()
             for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
                 agora = Agora.objects.filter(name = agora_name)
-                if agora.Agora.MEMBERSHIP_TYPE[0][0]:
+                if agora.membership_policy == Agora.MEMBERSHIP_TYPE[0][0]:
                     profile.add_to_agora(agora_name=agora_name, request=self.request)                    
                 else:
                     # request membership here
