@@ -1,3 +1,5 @@
+import hashlib
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
@@ -172,7 +174,7 @@ class UserenaSignup(models.Model):
             return True
         return False
 
-    def send_activation_email(self, auto_join_secret = ''):
+    def send_activation_email(self, auto_join_secret = False):
         """
         Sends a activation email to the user.
 
@@ -180,22 +182,25 @@ class UserenaSignup(models.Model):
         user.
 
         """
+
+        if not auto_join_secret:
+            activation_url = reverse('userena_activate', args=(self.user.username, self.activation_key))
+        else:
+            auto_join_key = hashlib.md5(self.activation_key +
+                settings.AGORA_API_AUTO_ACTIVATION_SECRET).hexdigest()
+            activation_url = reverse('auto_join_activate', args=(self.user.username, auto_join_key))
+
         context= {'user': self.user,
                   'protocol': get_protocol(),
                   'activation_days': userena_settings.USERENA_ACTIVATION_DAYS,
-                  'activation_key': self.activation_key,
-                  'auto_join_key': md5(self.activation_key + auto_join_secret),
+                  'activation_url': activation_url,
                   'site': Site.objects.get_current()}
 
         subject = render_to_string('accounts/emails/activation_email_subject.txt',
                                    context)
         subject = ''.join(subject.splitlines())
 
-        if(auto_join_secret == ''):
-            message = render_to_string('accounts/emails/activation_email_message.txt',
-                                   context)
-        else:
-            message = render_to_string('accounts/emails/auto_join_activation_email_message.txt',
+        message = render_to_string('accounts/emails/activation_email_message.txt',
                                    context)
         
         send_mail(subject,

@@ -108,11 +108,11 @@ urlpatterns = patterns('',
        name='userena_activate'),
 
     # Activate with auto join
-    url(r'^(?P<username>[\.\w]+)/auto-join-activate/(?P<activation_key>\w+)/(?P<auto_join_activation_key>\w+)/$',
+    url(r'^(?P<username>[\.\w]+)/auto-join-activate/(?P<activation_key>\w+)/$',
        accounts_views.AutoJoinActivateView.as_view(),
        {'success_url': '/',
         'template_name': 'accounts/activate_fail.html'},
-       name='auto_join_activate'),    
+       name='auto_join_activate'),
     
     # Change email and confirm it
     url(r'^(?P<username>[\.\w]+)/email/$',

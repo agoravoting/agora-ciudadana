@@ -77,13 +77,8 @@ class AccountSignupForm(userena_forms.SignupForm):
     def save(self):
         if settings.AGORA_ALLOW_FNMT_CERTIFICATE:
             self.handle_uploaded_file(self.request.FILES['scanned_id'])
-        new_user = super(AccountSignupForm, self).saveWithFirstName()
+        new_user = super(AccountSignupForm, self).saveWithFirstName(auto_join_secret=True)
         signup_object = new_user.save()
-        
-        # add user to the default agoras if any
-        profile = new_user.get_profile()
-        for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
-            profile.add_to_agora(agora_name=agora_name, request=self.request)
         return new_user
 
 class AcccountAuthForm(userena_forms.AuthenticationForm):

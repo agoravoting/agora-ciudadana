@@ -29,7 +29,7 @@ class UserenaManager(UserManager):
     """ Extra functionality for the Userena model. """
     
     def create_user(self, username, email, password, active=False,
-                    send_email=True, firstname='', auto_join_secret=''):
+                    send_email=True, firstname='', auto_join_secret=False):
         """
         A simple wrapper that creates a new :class:`User`.
 

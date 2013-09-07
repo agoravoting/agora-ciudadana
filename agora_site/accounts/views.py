@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import hashlib
+
 from django import http
 from django.conf import settings
 from django.conf.urls import patterns, url, include
@@ -26,6 +28,7 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from django.views.generic import ListView
 from django.views.generic.edit import FormView
+from guardian.shortcuts import assign, remove_perm
 
 from userena.models import UserenaSignup
 from userena.managers import SHA1_RE
@@ -33,6 +36,8 @@ from .forms import RegisterCompleteInviteForm, RegisterCompleteFNMTForm
 
 from userena import views as userena_views
 from agora_site.misc.utils import rest
+from django.shortcuts import get_object_or_404
+from agora_site.agora_core.models.agora import Agora
 
 class SignUpCompleteView(TemplateView):
     def get(self, request, username):
@@ -87,27 +92,29 @@ class RegisterCompleteInviteView(FormView):
 
 
 class AutoJoinActivateView(TemplateView):
-    def get(self, request, username, activation_key, auto_join_activation_key, **kwargs):        
-        if(auto_join_activation_key == md5(activation_key + settings.AUTO_JOIN_SECRET)):
-            # auto join logic
-            user = User.objects.filter(name = username)
-            profile = new_user.get_profile()
-            for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
-                agora = Agora.objects.filter(name = agora_name)
-                if agora.membership_policy == Agora.MEMBERSHIP_TYPE[0][0]:
-                    profile.add_to_agora(agora_name=agora_name, request=self.request)                    
-                else:
-                    # request membership here
-                    resp = rest('/agora/%s/action/' % agora.id, 
-                        data={'action': 'add_membership',
-                        'username': user.username,
-                        'welcome_message': _("Welcome to this agora")},
-                        method="POST",
-                        request=request)                    
-            userena_views.activate(request, username, activation_key, kwargs['template_name'], kwargs['success_url'])
-        else:            
-            userena_views.activate(activation_key='bogus')                      
-        
+    def get(self, request, username, activation_key, **kwargs):
+        try:
+            userena = UserenaSignup.objects.get(user__username=username)
+        except:
+            return userena_views.activate(request, username=username, activation_key='bogus')
+
+        hashed_key = hashlib.md5(userena.activation_key + settings.AGORA_API_AUTO_ACTIVATION_SECRET).hexdigest()
+        if hashed_key != activation_key:
+            return userena_views.activate(request, username=username, activation_key='bogus')
+
+        user = User.objects.get(username=username)
+        profile = user.get_profile()
+        for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
+            username2, agoraname = agora_name.split("/")
+            agora = get_object_or_404(Agora, name=agoraname,
+                creator__username=username2)
+            if agora.membership_policy == Agora.MEMBERSHIP_TYPE[0][0]:
+                profile.add_to_agora(agora_name=agora_name, request=self.request)
+            else:
+                # request membership here
+                assign('requested_membership', user, agora)
+        return userena_views.activate(request, username, userena.activation_key, kwargs['template_name'], kwargs['success_url'])
+
 class RegisterCompleteFNMTView(FormView):
     template_name = 'accounts/complete_registration_fnmt_form.html'
     form_class = RegisterCompleteFNMTForm

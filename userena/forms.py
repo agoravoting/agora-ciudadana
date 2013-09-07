@@ -89,7 +89,7 @@ class SignupForm(forms.Form):
         return new_user
         
         
-    def saveWithFirstName(self, auto_join_secret=''):
+    def saveWithFirstName(self, auto_join_secret=False):
         """ Creates a new user and account. Returns the newly created user. """
         username, email, password, firstname = (self.cleaned_data['username'],
                                      self.cleaned_data['email'],

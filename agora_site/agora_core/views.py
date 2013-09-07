@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
+import hashlib
 import os
 
 from django.contrib import messages
@@ -1439,12 +1440,12 @@ class AgoraActionDownloadUserIdView(FormActionView):
                 'don\'t have admin permissions in this agora.'))
             return self.go_next(request)
 
-        file_name = "%s_%s%s" % (username2,
+        file_name = "%s_%s" % (username2,
             hashlib.md5(username2 + settings.AGORA_API_AUTO_ACTIVATION_SECRET).hexdigest())
 
-        for f in os.listdir(settings.MEDIA_ROOT):
+        for f in os.listdir(os.path.join(settings.MEDIA_ROOT, 'dnis')):
             if f.startswith(file_name):
-                return redirect('/media/' + f)
+                return redirect('/media/dnis/' + f)
 
         messages.add_message(request, messages.ERROR, _('Sorry, file not found'))
         return self.go_next(request)
