@@ -29,7 +29,7 @@ class UserenaManager(UserManager):
     """ Extra functionality for the Userena model. """
     
     def create_user(self, username, email, password, active=False,
-                    send_email=True, firstname=''):
+                    send_email=True, firstname='', auto_join_secret=''):
         """
         A simple wrapper that creates a new :class:`User`.
 
@@ -80,7 +80,7 @@ class UserenaManager(UserManager):
             assign(perm[0], new_user, new_user)
 
         if send_email:
-            userena_profile.send_activation_email()
+            userena_profile.send_activation_email(auto_join_secret)
 
         # Send the signup complete signal
         userena_signals.signup_complete.send(sender=None,

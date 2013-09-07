@@ -31,6 +31,9 @@ from userena.models import UserenaSignup
 from userena.managers import SHA1_RE
 from .forms import RegisterCompleteInviteForm, RegisterCompleteFNMTForm
 
+from userena import views as userena_views
+from agora_site.misc.utils import rest
+
 class SignUpCompleteView(TemplateView):
     def get(self, request, username):
         messages.add_message(request, settings.SUCCESS_MODAL, _('Registration '
@@ -83,6 +86,28 @@ class RegisterCompleteInviteView(FormView):
         return super(RegisterCompleteInviteView, self).dispatch(request, *args, **kwargs)
 
 
+class AutoJoinActivateView(TemplateView):
+    def get(self, request, username, activation_key, auto_join_activation_key, **kwargs):        
+        if(auto_join_activation_key == md5(activation_key + settings.AUTO_JOIN_SECRET)):
+            # auto join logic
+            user = User.objects.filter(name = username)
+            profile = new_user.get_profile()
+            for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
+                agora = Agora.objects.filter(name = agora_name)
+                if agora.Agora.MEMBERSHIP_TYPE[0][0]:
+                    profile.add_to_agora(agora_name=agora_name, request=self.request)                    
+                else:
+                    # request membership here
+                    resp = rest('/agora/%s/action/' % agora.id, 
+                        data={'action': 'add_membership',
+                        'username': user.username,
+                        'welcome_message': _("Welcome to this agora")},
+                        method="POST",
+                        request=request)                    
+            userena_views.activate(request, username, activation_key, kwargs['template_name'], kwargs['success_url'])
+        else:            
+            userena_views.activate(activation_key='bogus')                      
+        
 class RegisterCompleteFNMTView(FormView):
     template_name = 'accounts/complete_registration_fnmt_form.html'
     form_class = RegisterCompleteFNMTForm

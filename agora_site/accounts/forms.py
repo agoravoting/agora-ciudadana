@@ -58,8 +58,8 @@ class AccountSignupForm(userena_forms.SignupForm):
 
     def save(self):
         new_user = super(AccountSignupForm, self).saveWithFirstName()
-        new_user.save()
-
+        signup_object = new_user.save()
+        
         # add user to the default agoras if any
         profile = new_user.get_profile()
         for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:

@@ -172,7 +172,7 @@ class UserenaSignup(models.Model):
             return True
         return False
 
-    def send_activation_email(self):
+    def send_activation_email(self, auto_join_secret = ''):
         """
         Sends a activation email to the user.
 
@@ -184,14 +184,20 @@ class UserenaSignup(models.Model):
                   'protocol': get_protocol(),
                   'activation_days': userena_settings.USERENA_ACTIVATION_DAYS,
                   'activation_key': self.activation_key,
+                  'auto_join_key': md5(self.activation_key + auto_join_secret),
                   'site': Site.objects.get_current()}
 
         subject = render_to_string('accounts/emails/activation_email_subject.txt',
                                    context)
         subject = ''.join(subject.splitlines())
 
-        message = render_to_string('accounts/emails/activation_email_message.txt',
+        if(auto_join_secret == ''):
+            message = render_to_string('accounts/emails/activation_email_message.txt',
                                    context)
+        else:
+            message = render_to_string('accounts/emails/auto_join_activation_email_message.txt',
+                                   context)
+        
         send_mail(subject,
                   message,
                   settings.DEFAULT_FROM_EMAIL,
