@@ -2388,7 +2388,7 @@ msgid ""
 "certificate and indicated the browser to remember this choice</strong>. In "
 "this case, you need to restart the web browser (close it then open it again)."
 msgstr ""
-"En la misma sesión del navegador, has <strong>elegido por error no envar tu "
+"En la misma sesión del navegador, has <strong>elegido por error no enviar tu "
 "certificado y has indicado al navegador que recuerde esta opción</strong>. "
 "En este caso, deberás reiniciar el navegador (cerrar y abrir de nuevo)."
 
