@@ -6092,6 +6092,9 @@ ul.list-container li.agora-user-item.simple > a.agora i {
   color: white;
   text-shadow: none;
 }
+#login-dropdown .btn-success {
+  width: 100%;
+}
 #login-dropdown .text-links a {
   display: inline-block;
   color: #0088CC;
