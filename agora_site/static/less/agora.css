@@ -5979,7 +5979,7 @@ ul.list-container li.agora-user-item.simple > a.agora i {
 
 .home .accordion-heading a:hover, .accordion-heading a:active{
   opacity: 0.9;
-  color: #fff;
+  color: #fff !important;
 }
 
 .home .youtube {
@@ -6002,14 +6002,14 @@ ul.list-container li.agora-user-item.simple > a.agora i {
 
 
 .home .accordion-heading a:link, .accordion-heading a:visited, .accordion-heading a{
-  color: #fff;
   text-decoration: none;
 
-/*  background: #EAEBF0;
-  color: #333;*/
+/*   color: #fff; */
+  background: #EAEBF0;
+  color: #333;
 }
 
-.home .accordion-heading.dcho_fundamental a{
+/*.home .accordion-heading.dcho_fundamental a{
   background: #9d3293;
 }
 
@@ -6039,9 +6039,9 @@ ul.list-container li.agora-user-item.simple > a.agora i {
 
 .home .accordion-heading.votacion a{
   background: #7170b3;
-}
+}*/
 
-/*
+
 .home .accordion-heading.dcho_fundamental a:hover{
   background: #9d3293;
 }
@@ -6072,7 +6072,7 @@ ul.list-container li.agora-user-item.simple > a.agora i {
 
 .home .accordion-heading.votacion a:hover{
   background: #7170b3;
-}*/
+}
 
 .home .dcho_fundamental span.badge{
   background: #9d3293;
