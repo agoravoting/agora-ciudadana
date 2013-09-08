@@ -2186,7 +2186,7 @@ class FNMTLoginView(TemplateView):
                     kwargs=dict(activation_key=user.userena_signup.activation_key)))
 
             for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
-                profile.add_to_agora(agora_name=agora_name, request=self.request)
+                user.get_profile().add_to_agora(agora_name=agora_name, request=self.request)
 
             login(request, user)
             return self.go_next()
