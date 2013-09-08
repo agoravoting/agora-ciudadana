@@ -218,6 +218,10 @@ class Profile(UserenaLanguageBaseProfile):
             from django.core.exceptions import ValidationError
             if user.is_anonymous():
                 return False
+            # HACK TODO a big hack yes it is
+            if settings.AGORA_CREATION_PERMISSIONS == "superusers-only" and\
+                    user.administrated_agoras.count() > 1:
+                return True
             # only admins of the agora the user is in can send the user an email
             if not user.administrated_agoras.only('id').filter(
                     id__in=self.user.agoras.only('id').all().query).exists():
