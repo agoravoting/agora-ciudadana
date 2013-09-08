@@ -629,9 +629,9 @@ class ContactForm(django_forms.Form):
     can send it. Hence, we need information about the sender to be able to get
     back to it, and a captcha to avoid spammers.
     '''
-    name = django_forms.CharField(label=_("Your name"), required=True,
-        min_length=3, max_length=30)
-    email = django_forms.EmailField(label=_(u"Your contact email"), required=True)
+    name = django_forms.CharField(label=_("Your name"), required=False,
+                max_length=30)
+    email = django_forms.EmailField(label=_(u"Your contact email"), required=False)
     subject = django_forms.CharField(label=_("Subject"), required=True,
         min_length=5, max_length=200)
     message = django_forms.CharField(label=_(u"Message"), required=True,
@@ -646,6 +646,19 @@ class ContactForm(django_forms.Form):
             self.helper.layout = Layout(Fieldset(_('Contact'), 'subject', 'message'))
         self.helper.add_input(Submit('submit', _('Send message'), css_class='btn btn-success btn-large'))
         super(ContactForm, self).__init__(*args, **kwargs)
+
+    def clean_name(self):
+        if self.request.user.is_authenticated():
+            return self.cleaned_data['name']
+
+        if len(self.cleaned_data['name']) < 4:
+            raise django_forms.ValidationError("Sorry, you have to provide a name (at least 4 characters).")
+        return self.cleaned_data['name']
+
+    def clean_email(self):
+        if len(self.cleaned_data['email']) == 0 and not self.request.user.is_authenticated():
+            raise django_forms.ValidationError("Sorry, you have to provide a contact email.")
+        return self.cleaned_data['email']
 
     def send(self):
         subject = self.cleaned_data['subject']
