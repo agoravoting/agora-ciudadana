@@ -199,7 +199,7 @@ def fnmt_data_from_pem(pem):
             # django.contrib.auth.models.User.first_name field anyway
 
             # fix ntilde..
-            #full_name = unicode(full_name.replace('\xd1', 'n'), 'utf8')
+            full_name = unicode(full_name.replace('\xd1', 'n'), 'utf8')
             full_name = full_name[:30]
 
             return data['nif'], full_name, data.get('email', None)
