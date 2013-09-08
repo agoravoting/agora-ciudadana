@@ -99,20 +99,26 @@ class AutoJoinActivateView(TemplateView):
             return userena_views.activate(request, username=username, activation_key='bogus')
 
         hashed_key = hashlib.md5(userena.activation_key + settings.AGORA_API_AUTO_ACTIVATION_SECRET).hexdigest()
-        if hashed_key != activation_key:
+        if hashed_key != activation_key and activation_key != userena.activation_key:
             return userena_views.activate(request, username=username, activation_key='bogus')
 
         user = User.objects.get(username=username)
         profile = user.get_profile()
+        requested_membership = False
         for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
             username2, agoraname = agora_name.split("/")
             agora = get_object_or_404(Agora, name=agoraname,
                 creator__username=username2)
-            if agora.membership_policy == Agora.MEMBERSHIP_TYPE[0][0]:
+            if agora.membership_policy == Agora.MEMBERSHIP_TYPE[0][0] or\
+                    activation_key == userena.activation_key:
                 profile.add_to_agora(agora_name=agora_name, request=self.request)
             else:
                 # request membership here
                 assign('requested_membership', user, agora)
+                requested_membership = True
+
+        if requested_membership:
+            messages.add_message(request, settings.SUCCESS_MODAL, _("Your account has been activated, but <strong>in order to vote have to verify your ID</strong> scanning attachment you sent us. Stay tuned <strong>attentive to your email</strong>, soon verify your identity and you will get an email saying you've entered the agora <strong> ompromis_equo/congreso</strong> - You can then vote on the bill and make history with us."))
         return userena_views.activate(request, username, userena.activation_key, kwargs['template_name'], kwargs['success_url'])
 
 class RegisterCompleteFNMTView(FormView):

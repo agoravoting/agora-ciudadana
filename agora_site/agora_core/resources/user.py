@@ -73,8 +73,8 @@ class ActivationUserResource(TinyUserResource):
     activation_url = fields.CharField()
 
     def dehydrate_activation_url(self, bundle):
-        return reverse("userena_activate",
-            args=(bundle.obj.username, bundle.obj.userena_signup.activation_key))
+        return reverse('auto_join_activate', args=(bundle.obj.username,
+            bundle.obj.userena_signup.activation_key))
 
 class TinyProfileResource(GenericResource):
     '''
