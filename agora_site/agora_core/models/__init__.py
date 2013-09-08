@@ -103,10 +103,14 @@ class Profile(UserenaLanguageBaseProfile):
             username, agoraname = agora_name.split("/")
             agora = get_object_or_404(Agora, name=agoraname,
                 creator__username=username)
+            if agora.members.filter(pk=self.user.id).exists():
+                return
             agora.members.add(self.user)
             agora.save()
         else:
             agora = get_object_or_404(Agora, pk=agora_id)
+            if agora.members.filter(pk=self.user.id).exists():
+                return
             agora.members.add(self.user)
             agora.save()
 

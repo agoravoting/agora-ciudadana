@@ -197,6 +197,9 @@ def fnmt_data_from_pem(pem):
             full_name = " ".join([i.capitalize() for i in full_name.split(" ")])
             # we can only store 30 chars in
             # django.contrib.auth.models.User.first_name field anyway
+
+            # fix ntilde..
+            #full_name = unicode(full_name.replace('\xd1', 'n'), 'utf8')
             full_name = full_name[:30]
 
             return data['nif'], full_name, data.get('email', None)
