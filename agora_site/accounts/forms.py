@@ -253,7 +253,7 @@ class RegisterCompleteFNMTForm(django_forms.Form):
         # generate a valid new username
         base_username = username = slugify(email.split('@')[0])
         while User.objects.filter(username=username).exists():
-            username = base_username + random.randint(0, 100)
+            username = base_username + str(random.randint(0, 100))
 
 
         user.is_active = True
