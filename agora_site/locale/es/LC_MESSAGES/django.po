@@ -1952,7 +1952,7 @@ msgstr ""
 "Error Interno en el Servidor: Al carajo con esto, ¡me voy a París!</p><p><a "
 "href=\"%(home_url)s\">Ve a la página de inicio</a> si no sabes qué otra cosa "
 "hacer. Y ahora en serio, si el problema persiste, por favor <a href=\"mailto:"
-"agora-ciudadana-devel@googlegroups.com\">envíanos un email</a>."
+"info@congresotransparente.com\">envíanos un email</a>."
 
 #: agora_core/templates/agora_core/agora_activity.html:5
 #: agora_core/templates/agora_core/election_activity.html:6
