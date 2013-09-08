@@ -59,7 +59,7 @@
     <script>
 
     var ajax_data = {
-        'agora': {% rest request '/agora/' agora.id %},
+        'agora': {% rest request '/agora/' agora.id '/' %},
         'user_permissions': {% custom_rest request "POST" '{"action":"get_permissions"}' '/agora/' agora.id '/action/' %}
     };
     var current_tab = "elections";
