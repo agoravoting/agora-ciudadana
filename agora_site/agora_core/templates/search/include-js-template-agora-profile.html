@@ -54,6 +54,14 @@
         </a>
     </li>
     <% } %>
+    <% if (_.contains(permissions, "request_admin_membership")) { %>
+    <li>
+        <a href="<%= agora_path %>/action/download-user-id/<%= username %>" class="action-form-link">
+            <i class="icon-remove"></i>
+            <%= gettext("Descargar DNI escaneado") %>
+        </a>
+    </li>
+    <% } %>
     <% if (_.contains(permissions, "cancel_admin_membership_request")) { %>
     <li>
         <a href="<%= agora_path %>/action/accept-admin-membership-request/<%= username %>" class="action-form-link">
