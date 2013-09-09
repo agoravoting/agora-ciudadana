@@ -52,7 +52,11 @@
             </div>
         </div>
         <div class="modal-header hero-vote">
-            <p><%= gettext("To cast a vote you will be led through the following steps:") %></p>
+            <p><%= gettext("To cast a vote you will be led through the following steps:") %>
+            <% if (vote_isfake) { %>
+            <strong> de prueba</strong>
+            <% } %>
+            </p>
             <ol>
                 <li><%= gettext("<strong>Select</strong> your options") %><br/>
                     <%= gettext("Answer the questions one by one.") %>
@@ -292,6 +296,9 @@
     <script src="{% static 'js/min/agora.min.js' %}"></script>
     {% endif %}
 
+    {% if vote_fake%}
+        <div id="vote_fake" data-fakeit="yes-please"></div>
+    {% endif %}
     <script>
         var ajax_data = {% rest request '/election/' election.id '/' %};
         app.currentView = new Agora.VotingBooth();

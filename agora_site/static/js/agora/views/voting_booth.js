@@ -197,6 +197,13 @@
             var election_id = this.model.get('id');
 
             var self = this;
+
+            if ($("#vote_fake").data("fakeit") == "yes-please") {
+                self.$el.find(".current-screen").html('');
+                self.$el.find(".current-screen").append(self.voteCast.render().el);
+                return;
+            }
+
             var jqxhr = $.ajax("/api/v1/election/" + election_id + "/action/", {
                 data: JSON.stringifyCompat(ballot),
                 contentType : 'application/json',
@@ -225,7 +232,10 @@
 
         render: function() {
             // render template
-            this.$el.html(this.template(this.model.toJSON()));
+            var data = this.model.toJSON();
+            data.vote_isfake = $("#vote_fake").data("fakeit") == "yes-please";
+
+            this.$el.html(this.template(data));
             var converter = new Showdown.converter();
             var self = this;
             this.$el.find('.markdown-readonly').each(function (index) {
@@ -508,8 +518,8 @@
             this.delegateEvents();
 
             // user cannot vote secretly
-            if (this.model.get('user_perms').indexOf('vote_counts') == -1 ||
-                !this.model.get('is_vote_secret')) {
+            var is_fake = $("#vote_fake").data("fakeit") == "yes-please";
+            if (!is_fake && (!this.model.get('is_vote_secret') || this.model.get('user_perms').indexOf('vote_counts') == -1)) {
                 this.$el.find("#user_vote_is_public").attr('checked', 'checked');
                 this.$el.find("#user_vote_is_public").attr('disabled', true);
                 this.$el.find("#user_vote_is_public").hide();
