@@ -317,9 +317,4 @@
 {% block script-block %}
     {% include "agora_core/client/all_actions.html" %}
     <script>app.currentView = new Agora.HomeAnonymousView();</script>
-    <script>
-        if (_.contains(navigator.language.split("-"), 'ca')) {
-            $("#youtube-video").html('<iframe width="370" height="220" frameborder="0" allowfullscreen="" src="//www.youtube.com/embed/qfSmge--abI" style="margin-bottom: -10px;"></iframe>');
-        }
-    </script>
 {% endblock %}
