@@ -245,9 +245,9 @@ class Profile(UserenaLanguageBaseProfile):
         return [perm for perm in ('receive_email_updates', 'receive_mail')
                 if self.has_perms(perm, user)]
 
-    short_description = models.CharField(_('Short Description'), max_length=140)
+    short_description = models.CharField(_('Short Description'), max_length=140, null=True, blank=True, default='')
 
-    biography = models.TextField(_('Biography'))
+    biography = models.TextField(_('Biography'), null=True, blank=True, default='')
 
     # This marks the date of the last activity item known to be read by the user
     # so that later on we can for example send to the user update email only
@@ -256,13 +256,13 @@ class Profile(UserenaLanguageBaseProfile):
 
     # Saving the user language allows sending emails to him in his desired
     # language (among other things)
-    lang_code = models.CharField(_("Language Code"), max_length=10, default='')
+    lang_code = models.CharField(_("Language Code"), max_length=10, default='', null=True, blank=True)
 
     email_updates = models.BooleanField(_("Receive email updates"),
         default=True)
 
     # Stores extra data
-    extra = JSONField(_('Extra'), null=True)
+    extra = JSONField(_('Extra'), null=True, blank=True, default='')
 
     def get_open_elections(self, searchquery = None):
         '''

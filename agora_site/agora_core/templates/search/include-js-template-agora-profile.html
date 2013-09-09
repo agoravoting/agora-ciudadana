@@ -116,6 +116,12 @@
         </a>
     </li>
     <% } %>
+    <li>
+        <a href="/admin/auth/user/<%= id %>/">
+            <i class="icon-tags"></i>
+            Editar nombre de usuario
+        </a>
+    </li>
     <% if (permissions.length == 0) { %>
         <li><%= gettext("no actions") %></li>
     <% } %>
