@@ -413,6 +413,7 @@ class VotingBoothView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(VotingBoothView, self).get_context_data(**kwargs)
         context['election'] = self.election
+        context['vote_fake'] = False
         return context
 
     def get(self, request, *args, **kwargs):
@@ -434,6 +435,32 @@ class VotingBoothView(TemplateView):
             name=electionname, agora__name=agoraname,
             agora__creator__username=username)
         return super(VotingBoothView, self).dispatch(*args, **kwargs)
+
+class FakeVotingBoothView(TemplateView):
+    '''
+    Shows an election voting booth that is fake is a 4 USD$ bill
+    '''
+    template_name = 'agora_core/voting_booth.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(FakeVotingBoothView, self).get_context_data(**kwargs)
+        context['election'] = self.election
+        context['vote_fake'] = True
+        return context
+
+    def get(self, request, *args, **kwargs):
+        return super(FakeVotingBoothView, self).get(request, *args, **kwargs)
+
+    def dispatch(self, *args, **kwargs):
+        self.kwargs = kwargs
+
+        username = kwargs['username']
+        agoraname = kwargs['agoraname']
+        electionname = kwargs['electionname']
+        self.election = get_object_or_404(Election,
+            name=electionname, agora__name=agoraname,
+            agora__creator__username=username)
+        return super(FakeVotingBoothView, self).dispatch(*args, **kwargs)
 
 class EditElectionView(UpdateView):
     '''
