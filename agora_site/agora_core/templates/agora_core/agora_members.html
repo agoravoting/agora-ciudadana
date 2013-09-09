@@ -42,6 +42,11 @@
                             {% trans "Requested membership" %} ({{ agora.users_who_requested_membership.count }})
                         </a>
                     </li>
+                    <li{% ifequal filter 'denied_membership_requests' %} class="active"{% endifequal %}>
+                        <a href="{% url agora-members agora.creator.username agora.name 'denied_membership_requests' %}">
+                            {% trans "Miembros rechazados" %} ({{ agora.users_with_denied_request_membership.count }})
+                        </a>
+                    </li>
                     <li{% ifequal filter 'admin_membership_requests' %} class="active"{% endifequal %}>
                         <a href="{% url agora-members agora.creator.username agora.name 'admin_membership_requests' %}">
                             {% trans "Requested admin membership" %} ({{ agora.users_who_requested_admin_membership.count }})
