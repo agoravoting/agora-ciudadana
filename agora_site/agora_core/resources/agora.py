@@ -231,6 +231,10 @@ class AgoraResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_request_list'), name="api_agora_request_list"),
 
+            url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/denied_membership_requests%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_denied_request_list'), name="api_agora_denied_request_list"),
+
             url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/admin_membership_requests%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_admin_request_list'), name="api_agora_admin_request_list"),
@@ -395,6 +399,21 @@ class AgoraResource(GenericResource):
             from guardian.shortcuts import get_users_with_perms
             users = get_users_with_perms(agora, attach_perms=True)
             users = [k.username for k, v in users.items() if "requested_membership" in v]
+            queryset = User.objects.filter(username__in=users)
+            return queryset
+
+        return self.get_custom_resource_list(request, queryfunc=get_queryset,
+            resource=TinyUserResource, **kwargs)
+
+    def get_denied_request_list(self, request, **kwargs):
+        '''
+        List agora denied membership requests
+        '''
+
+        def get_queryset(agora):
+            from guardian.shortcuts import get_users_with_perms
+            users = get_users_with_perms(agora, attach_perms=True)
+            users = [k.username for k, v in users.items() if "denied_requested_membership" in v]
             queryset = User.objects.filter(username__in=users)
             return queryset
 
@@ -660,6 +679,7 @@ class AgoraResource(GenericResource):
 
         # remve the request membership status and add user to the agora
         remove_perm('requested_membership', user, agora)
+        remove_perm('denied_requested_membership', user, agora)
         agora.members.add(user)
         agora.save()
 
@@ -713,46 +733,10 @@ class AgoraResource(GenericResource):
         if not agora.has_perms('cancel_membership_request', user):
             raise ImmediateHttpResponse(response=http.HttpForbidden())
 
-        # remove the request membership status and add user to the agora
+
+        # remove the request membership status
         remove_perm('requested_membership', user, agora)
-
-        # create an action for the event
-        action.send(request.user, verb='denied membership request',
-            action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
-            target=user,
-            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
-
-        # Mail to the user
-        if user.get_profile().has_perms('receive_email_updates'):
-            translation.activate(user.get_profile().lang_code)
-            context = get_base_email_context(request)
-            context.update(dict(
-                agora=agora,
-                other_user=user,
-                notification_text=_('Your membership request at %(agora)s '
-                    'has been denied. Sorry about that!') % dict(
-                        agora=agora.get_full_name()
-                    ),
-                to=user
-            ))
-
-            email = EmailMultiAlternatives(
-                subject=_('%(site)s - membership request denied at '
-                    '%(agora)s') % dict(
-                        site=Site.objects.get_current().domain,
-                        agora=agora.get_full_name()
-                    ),
-                body=render_to_string('agora_core/emails/agora_notification.txt',
-                    context),
-                to=[user.email])
-
-            email.attach_alternative(
-                render_to_string('agora_core/emails/agora_notification.html',
-                    context), "text/html")
-            email.send()
-            translation.deactivate()
-
-        return self.create_response(request, dict(status="success"))
+        assign('denied_requested_membership', user, agora)
 
     @permission_required('admin', (Agora, 'id', 'agoraid'))
     def add_membership_action(self, request, agora, username, welcome_message, **kwargs):

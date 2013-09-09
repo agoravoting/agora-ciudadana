@@ -1212,6 +1212,7 @@ class AgoraActionAcceptMembershipRequestView(FormActionView):
             return self.go_next(request)
 
         remove_perm('requested_membership', user, agora)
+        remove_perm('denied_requested_membership', user, agora)
         agora.members.add(user)
         agora.save()
 
@@ -1453,47 +1454,7 @@ class AgoraActionDismissMembershipRequestView(FormActionView):
             return self.go_next(request)
 
         remove_perm('requested_membership', user, agora)
-
-        action.send(request.user, verb='dismissed membership request',
-            action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
-            target=user,
-            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
-
-        messages.add_message(request, messages.SUCCESS, _('You '
-            'dismissed %(username)s membership request at %(agora)s.') % dict(
-                username=username2,
-                agora=agora.creator.username+'/'+agora.name))
-
-        # Mail to the user
-        if user.get_profile().has_perms('receive_email_updates'):
-            context = get_base_email_context(self.request)
-            context.update(dict(
-                agora=agora,
-                other_user=user,
-                notification_text=_('Your membership request at %(agora)s '
-                    'has been dismissed. Sorry about that!') % dict(
-                            agora=agora.get_full_name()
-                        ),
-                to=user
-            ))
-
-            email = EmailMultiAlternatives(
-                subject=_('%(site)s - membership request dismissed at '
-                    '%(agora)s') % dict(
-                        site=Site.objects.get_current().domain,
-                        agora=agora.get_full_name()
-                    ),
-                body=render_to_string('agora_core/emails/agora_notification.txt',
-                    context),
-                to=[user.email])
-
-            email.attach_alternative(
-                render_to_string('agora_core/emails/agora_notification.html',
-                    context), "text/html")
-            email.send()
-
-        if is_following(self.request.user, agora):
-            unfollow(self.request.user, agora, request=self.request)
+        assign('denied_requested_membership', user, agora)
 
         return self.go_next(request)
 

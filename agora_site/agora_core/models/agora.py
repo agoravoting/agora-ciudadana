@@ -219,6 +219,7 @@ class Agora(models.Model):
         unique_together = (('name', 'creator'),)
         permissions = (
             ('requested_membership', _('Requested membership')),
+            ('denied_requested_membership', _('Denied requested membership')),
             ('invited_to_membership', _('Invited to membership')),
             ('requested_admin_membership', _('Requested admin membership')),
         )
@@ -265,6 +266,12 @@ class Agora(models.Model):
         Returns those users who requested membership in this Agora
         '''
         return get_users_with_perm(self, 'requested_membership')
+
+    def users_with_denied_request_membership(self):
+        '''
+        Returns those users who requested membership in this Agora and were denied
+        '''
+        return get_users_with_perm(self, 'denied_requested_membership')
 
     def users_who_requested_admin_membership(self):
         '''
@@ -345,11 +352,13 @@ class Agora(models.Model):
         elif permission_name == 'request_membership':
             return requires_membership_approval and\
                 not is_member() and not isarchived and\
-                'requested_membership' not in opc_perms
+                'requested_membership' not in opc_perms and\
+                'denied_requested_membership' not in opc_perms
 
         elif permission_name == "cancel_membership_request":
             return requires_membership_approval and not is_member() and\
-                'requested_membership' in opc_perms
+                ('requested_membership' in opc_perms or
+                'denied_requested_membership' in opc_perms)
 
         elif permission_name == 'request_admin_membership':
             return is_member() and not is_admin() and\
