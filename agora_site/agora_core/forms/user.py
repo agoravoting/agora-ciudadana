@@ -408,13 +408,13 @@ class APISignupForm(django_forms.Form):
         else:
             new_user = UserenaSignup.objects.create_user(username, email,
                 password, False, False)
-            new_user.first_name = self.cleaned_data['first_name']
+            new_user.first_name = self.cleaned_data['first_name'][:30]
             new_user.save()
             profile = new_user.get_profile()
             profile.extra = dict(auto_activation=True)
             profile.save()
 
-        new_user.first_name = self.cleaned_data['first_name']
+        new_user.first_name = self.cleaned_data['first_name'][:30]
         return new_user
 
     def bundle_obj(self, obj, request):
