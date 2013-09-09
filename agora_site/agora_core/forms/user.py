@@ -4,6 +4,7 @@ from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
 from django import forms as django_forms
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from django.utils.encoding import force_unicode
@@ -360,8 +361,17 @@ class APISignupForm(django_forms.Form):
 
     def clean_email(self):
         """ Validate that the e-mail address is unique. """
-        if User.objects.filter(email__iexact=self.cleaned_data['email']):
-            raise django_forms.ValidationError(_('This email is already in use. Please supply a different email.'))
+        user = User.objects.filter(email__iexact=self.cleaned_data['email'])
+        if user.exists():
+            user = user[0]
+            if user.is_active:
+                raise django_forms.ValidationError(_('This email is already in use. Please supply a different email.'))
+            else:
+                # sending activation email
+                user.userena_signup.send_activation_email(False)
+                link = settings.AGORA_BASE_URL + reverse('userena_activate',
+                    args=(user.username, user.userena_signup.activation_key))
+                raise django_forms.ValidationError('This email is already in use but not activated, we have sent to the user\'s email the activation link: ' + link)
         return self.cleaned_data['email']
 
     def clean_activation_secret(self):
