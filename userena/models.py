@@ -186,8 +186,12 @@ class UserenaSignup(models.Model):
         if not auto_join_secret:
             activation_url = reverse('userena_activate', args=(self.user.username, self.activation_key))
         else:
-            auto_join_key = hashlib.md5(self.activation_key +
-                settings.AGORA_API_AUTO_ACTIVATION_SECRET).hexdigest()
+            if isinstance(auto_join_secret, basestring):
+                auto_join_key = auto_join_secret
+            else:
+                auto_join_key = hashlib.md5(self.activation_key +
+                    settings.AGORA_API_AUTO_ACTIVATION_SECRET).hexdigest()
+
             activation_url = reverse('auto_join_activate', args=(self.user.username, auto_join_key))
 
         context= {'user': self.user,
