@@ -124,6 +124,9 @@ class HomeView(TemplateView):
         return super(HomeView, self).get(request, *args, **kwargs)
 
 
+class DemoHomeView(TemplateView):
+    template_name = 'agora_core/home_demo.html'
+
 class AgoraView(TemplateView):
     '''
     Shows an agora main page

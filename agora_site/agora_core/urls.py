@@ -36,6 +36,8 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     url(r'^$', HomeView.as_view(), name='home'),
 
+    url(r'^demo/?$', DemoHomeView.as_view(), name='home-demo'),
+
     #TODO: create a robots.txt
     (r'^robots\.txt$', 'django.views.generic.simple.direct_to_template', {'template': 'agora_core/robots.txt', 'mimetype': 'text/plain'}),
 
@@ -154,7 +156,7 @@ urlpatterns += patterns('',
         VotingBoothView.as_view(), name='election-voting-booth'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/fake_vote/?$',
-        FakeVotingBoothView.as_view(), name='election-voting-booth'),
+        FakeVotingBoothView.as_view(), name='election-voting-booth-fake'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/edit/?$',
         EditElectionView.as_view(), name='election-edit'),
