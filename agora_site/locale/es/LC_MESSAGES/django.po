@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-08 11:49+0200\n"
+"POT-Creation-Date: 2013-09-09 13:06+0200\n"
 "PO-Revision-Date: 2013-06-04 17:44-0000\n"
 "Last-Translator: \n"
 "Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-"
@@ -21,22 +21,25 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.5\n"
 
-#: settings.py:70
+#: custom_settings.py:70 settings.py:70
 msgid "Spanish"
 msgstr "Español"
 
-#: settings.py:71
+#: custom_settings.py:71 settings.py:71
 msgid "English"
 msgstr "Inglés"
 
-#: settings.py:72
+#: custom_settings.py:72 settings.py:72
 msgid "Galician"
 msgstr "Gallego"
 
-#: accounts/forms.py:54 accounts/forms.py:147
-#: accounts/templates/accounts/profile_detail.html:24
-msgid "Name"
-msgstr "Nombre"
+#: settings.py:73
+msgid "Valencian"
+msgstr "Valencià"
+
+#: accounts/forms.py:54
+msgid "Nombre y DOS APELLIDOS"
+msgstr ""
 
 #: accounts/forms.py:59
 msgid "DNI escaneado"
@@ -51,8 +54,8 @@ msgstr "Registrarme"
 msgid "<a href=\"%(url)s\">Forgot your "
 msgstr "<a href=\"%(url)s\">Olvidaste tu "
 
-#: accounts/forms.py:94 accounts/templates/accounts/auth_forms.html:9
-#: accounts/templates/accounts/auth_forms.html:31
+#: accounts/forms.py:94 accounts/templates/accounts/auth_forms.html:10
+#: accounts/templates/accounts/auth_forms.html:32
 #: accounts/templates/accounts/signin_form.html:8
 #: accounts/templates/accounts/signin_form.html:31
 msgid "Log in"
@@ -100,6 +103,10 @@ msgstr "Crear contraseña"
 #: accounts/forms.py:138
 msgid "Repeat password"
 msgstr "Repetir contraseña"
+
+#: accounts/forms.py:147 accounts/templates/accounts/profile_detail.html:24
+msgid "Name"
+msgstr "Nombre"
 
 #: accounts/forms.py:162 agora_core/forms/user.py:356
 msgid "This username is already taken."
@@ -208,44 +215,44 @@ msgstr ""
 "Por favor trata de registrarte otra vez, de reactivar tu cuenta o "
 "contáctanos si piensas que algo ha ido mal.istrador"
 
-#: accounts/templates/accounts/auth_forms.html:11
+#: accounts/templates/accounts/auth_forms.html:12
 #: accounts/templates/accounts/signin_form.html:10
 msgid "Register"
 msgstr "Registrarme"
 
-#: accounts/templates/accounts/auth_forms.html:32
+#: accounts/templates/accounts/auth_forms.html:33
 #: accounts/templates/accounts/signin_form.html:32
 msgid "Please log in to continue."
 msgstr "Por favor inicia sesión para continuar."
 
-#: accounts/templates/accounts/auth_forms.html:37
+#: accounts/templates/accounts/auth_forms.html:38
 #: accounts/templates/accounts/signin_form.html:37
 #, python-format
 msgid "New to %(SITE_NAME)s?"
 msgstr "¿Tu primera vez en %(SITE_NAME)s?"
 
-#: accounts/templates/accounts/auth_forms.html:38
+#: accounts/templates/accounts/auth_forms.html:39
 #: accounts/templates/accounts/signin_form.html:38
 #, python-format
 msgid "An account in %(SITE_NAME)s is required to continue."
 msgstr "Se requiere una cuenta en %(SITE_NAME)s para continuar."
 
-#: accounts/templates/accounts/auth_forms.html:44
+#: accounts/templates/accounts/auth_forms.html:46
 #: accounts/templates/accounts/signin_form.html:45
 msgid "Use your account in.."
 msgstr "Usa tu cuenta en.."
 
-#: accounts/templates/accounts/auth_forms.html:45
+#: accounts/templates/accounts/auth_forms.html:47
 #: accounts/templates/accounts/signin_form.html:46
 msgid "You can log in using your account in Twitter."
 msgstr "Puedes entrar usando tu cuenta de Twitter."
 
-#: accounts/templates/accounts/auth_forms.html:51
+#: accounts/templates/accounts/auth_forms.html:53
 #: accounts/templates/accounts/signin_form.html:52
 msgid "Privacy"
 msgstr "Privacidad"
 
-#: accounts/templates/accounts/auth_forms.html:52
+#: accounts/templates/accounts/auth_forms.html:54
 #: accounts/templates/accounts/signin_form.html:53
 msgid ""
 "We won't give any private data to Twitter and we will not use your profile "
@@ -253,6 +260,40 @@ msgid ""
 msgstr ""
 "No daremos ningún dato privado a Twitter y no usaremos tu perfil para "
 "publicar nada sin tu permiso."
+
+#: accounts/templates/accounts/auth_forms.html:56
+#: accounts/templates/accounts/signin_form.html:55
+msgid "Enter with FNMT"
+msgstr "Entrar con FNMT"
+
+#: accounts/templates/accounts/auth_forms.html:58
+#: accounts/templates/accounts/signin_form.html:57
+msgid ""
+"You can enter this site using your FNMT certificate. <a href=\"#\">More "
+"information here</a>."
+msgstr ""
+"Puedes registrarte en el sitio con el certificado FNMT. <a href=\"#\">Más "
+"información aquí</a>."
+
+#: accounts/templates/accounts/auth_forms.html:62
+#: accounts/templates/accounts/signin_form.html:61
+msgid "Enter using FNMT certificate"
+msgstr "Entra con el certificado FNMT"
+
+#: accounts/templates/accounts/auth_forms.html:66
+#: accounts/templates/accounts/signin_form.html:65
+msgid "Terms of service"
+msgstr "Términos del Servicio"
+
+#: accounts/templates/accounts/auth_forms.html:68
+#: accounts/templates/accounts/signin_form.html:67
+#, python-format
+msgid ""
+"When you enter using the FNMT certificate you're accepting our <a href="
+"\"%(tos_url)s\">Terms of Service.</a>"
+msgstr ""
+"Si entras con el certificado FNMT estás aceptando nuestros <a href="
+"\"%(tos_url)s\">Términos de servicio.</a>"
 
 #: accounts/templates/accounts/complete_registration_fnmt_form.html:6
 #: accounts/templates/accounts/complete_registration_invite_form.html:6
@@ -515,36 +556,8 @@ msgstr ""
 msgid "next"
 msgstr "siguiente"
 
-#: accounts/templates/accounts/signin_form.html:55
-msgid "Enter with FNMT"
-msgstr "Entrar con FNMT"
-
-#: accounts/templates/accounts/signin_form.html:57
-msgid ""
-"You can enter this site using your FNMT certificate. <a href=\"#\">More "
-"information here</a>."
-msgstr ""
-"Puedes registrarte en el sitio con el certificado FNMT. <a href=\"#\">Más "
-"información aquí</a>."
-
-#: accounts/templates/accounts/signin_form.html:61
-msgid "Enter using FNMT certificate"
-msgstr "Entra con el certificado FNMT"
-
-#: accounts/templates/accounts/signin_form.html:65
-msgid "Terms of service"
-msgstr "Términos del Servicio"
-
-#: accounts/templates/accounts/signin_form.html:67
-#, python-format
-msgid ""
-"When you enter using the FNMT certificate you're accepting our <a href="
-"\"%(tos_url)s\">Terms of Service.</a>"
-msgstr ""
-"Si entras con el certificado FNMT estás aceptando nuestros <a href="
-"\"%(tos_url)s\">Términos de servicio.</a>"
-
 #: accounts/templates/accounts/emails/activation_email_message.txt:2
+#: accounts/templates/accounts/emails/auto_join_activation_email_message.txt:2
 #: accounts/templates/accounts/emails/confirmation_email_message_new.txt:2
 #: accounts/templates/accounts/emails/confirmation_email_message_old.txt:2
 #, python-format
@@ -552,15 +565,18 @@ msgid "Dear %(first_name)s,"
 msgstr "Hola %(first_name)s,"
 
 #: accounts/templates/accounts/emails/activation_email_message.txt:4
+#: accounts/templates/accounts/emails/auto_join_activation_email_message.txt:4
 #, python-format
 msgid "Thank you for signing up at %(site)s."
 msgstr "Gracias por registrarte en %(site)s."
 
 #: accounts/templates/accounts/emails/activation_email_message.txt:6
+#: accounts/templates/accounts/emails/auto_join_activation_email_message.txt:6
 msgid "To activate your account you should click on the link below:"
 msgstr "Para activar tu cuenta debes hacer clic en el siguiente enlace:"
 
 #: accounts/templates/accounts/emails/activation_email_message.txt:10
+#: accounts/templates/accounts/emails/auto_join_activation_email_message.txt:10
 #: accounts/templates/accounts/emails/confirmation_email_message_new.txt:11
 #: accounts/templates/accounts/emails/confirmation_email_message_old.txt:8
 #: accounts/templates/accounts/emails/password_reset_message.txt:10
@@ -568,6 +584,7 @@ msgid "Thanks for using our site!"
 msgstr "¡Gracias por usar nuestra página!"
 
 #: accounts/templates/accounts/emails/activation_email_message.txt:12
+#: accounts/templates/accounts/emails/auto_join_activation_email_message.txt:12
 #: accounts/templates/accounts/emails/confirmation_email_message_new.txt:13
 #: accounts/templates/accounts/emails/confirmation_email_message_old.txt:10
 #: accounts/templates/accounts/emails/password_reset_message.txt:12
@@ -648,11 +665,11 @@ msgstr "Grupos"
 msgid "You tried to execute an action improperly."
 msgstr "Has intentado ejecutar una acción incorrectamente"
 
-#: agora_core/views.py:252 agora_core/views.py:262
+#: agora_core/views.py:255 agora_core/views.py:265
 msgid "Sorry, but you don't have permission to create agoras"
 msgstr "Lo siento, pero no tienes permiso para crear ágoras."
 
-#: agora_core/views.py:275
+#: agora_core/views.py:278
 #, python-format
 msgid ""
 "Creation of Agora %(agoraname)s successful! Now start to configure and use "
@@ -661,7 +678,7 @@ msgstr ""
 "¡Has creado el ágora %(agoraname)s con éxito! Ahora ya puedes configurarlo y "
 "utilizarlo."
 
-#: agora_core/views.py:314
+#: agora_core/views.py:317
 #, python-format
 msgid ""
 "Creation of Election <a href=\"%(election_url)s\">%(electionname)s</a> in "
@@ -670,7 +687,7 @@ msgstr ""
 "¡Votación <a href=\"%(election_url)s\">%(electionname)s</a> en %(agora_url)s "
 "creada con éxito!"
 
-#: agora_core/views.py:318
+#: agora_core/views.py:321
 #, python-format
 msgid ""
 "Creation of Election <a href=\"%(election_url)s\">%(electionname)s</a> in "
@@ -681,55 +698,55 @@ msgstr ""
 "creada con éxito! Ahora está <strong>pendiente de la aprobación de los "
 "administradores</strong>."
 
-#: agora_core/views.py:402
+#: agora_core/views.py:406
 #, python-format
 msgid ""
 "Sorry, but you don't have permissions to vote on <em>%(electionname)s</em>."
 msgstr ""
 "Lo sentimos, pero no tienes permiso para votar en <em>%(electionname)s</em>"
 
-#: agora_core/views.py:430 agora_core/views.py:443
+#: agora_core/views.py:460 agora_core/views.py:473
 #, python-format
 msgid ""
 "Sorry, but you don't have edit permissions on <em>%(electionname)s</em>."
 msgstr ""
 "Lo siento, pero no tienes permisos de edición en <em>%(electionname)s</em>"
 
-#: agora_core/views.py:457
+#: agora_core/views.py:487
 #, python-format
 msgid "Election %(electionname)s edited."
 msgstr "Votación %(electionname)s editada."
 
-#: agora_core/views.py:501
+#: agora_core/views.py:531
 msgid "You don't have permission to approve the election."
 msgstr "No tienes permiso para aprobar la votación."
 
-#: agora_core/views.py:526
+#: agora_core/views.py:556
 msgid "You don't have permission to freeze the election."
 msgstr "No tienes permiso para congelar la votación."
 
-#: agora_core/views.py:551
+#: agora_core/views.py:581
 msgid "You don't have permission to start the election."
 msgstr "No tienes permiso para iniciar la votación."
 
-#: agora_core/views.py:584
+#: agora_core/views.py:614
 msgid "You don't have permission to stop the election."
 msgstr "No tienes permiso para detener la votación."
 
-#: agora_core/views.py:615
+#: agora_core/views.py:645
 msgid "You don't have permission to archive the election."
 msgstr "No tienes permiso para archivar la votación."
 
-#: agora_core/views.py:620
+#: agora_core/views.py:650
 msgid "Election is already archived."
 msgstr "La votación ya ha sido archivada."
 
-#: agora_core/views.py:663
+#: agora_core/views.py:693
 #, python-format
 msgid "Election archived: %s"
 msgstr "Votación archivada: %s"
 
-#: agora_core/views.py:698
+#: agora_core/views.py:728
 msgid ""
 "Your vote was correctly casted! Now you could share this election in "
 "Facebook, Google Plus, Twitter, etc."
@@ -737,35 +754,35 @@ msgstr ""
 "¡Has emitido el voto correctamente! Puedes compartir esta votación en "
 "Facebook, Google Plus, Twitter, etc."
 
-#: agora_core/views.py:719 agora_core/forms/election.py:173
+#: agora_core/views.py:749 agora_core/forms/election.py:173
 #, python-format
 msgid "Vote casted for election %s"
 msgstr "Voto emitido para la votación %s"
 
-#: agora_core/views.py:756
+#: agora_core/views.py:786
 msgid "Sorry, election is closed and thus you cannot vote."
 msgstr "Lo sentimos, la votación está cerrada, por lo que no puedes votar."
 
-#: agora_core/views.py:772
+#: agora_core/views.py:802
 msgid "Sorry, but you cannot delegate to yourself ;-)."
 msgstr "Lo sentimos pero no puedes delegar en ti mismo/a ;)"
 
-#: agora_core/views.py:778
+#: agora_core/views.py:808
 msgid ""
 "Sorry, but you cannot delegate if you're not a member of the agora first."
 msgstr "Lo sentimos pero no puedes delegar si no eres miembro del ágora."
 
-#: agora_core/views.py:844 agora_core/forms/agora.py:149
+#: agora_core/views.py:874 agora_core/forms/agora.py:149
 #, python-format
 msgid "%(site)s - You delegated your vote in %(agora)s"
 msgstr "%(site)s - Has delegado tu voto en %(agora)s"
 
-#: agora_core/views.py:862 agora_core/forms/agora.py:169
+#: agora_core/views.py:892 agora_core/forms/agora.py:169
 #, python-format
 msgid "%(site)s - You have a new delegation in %(agora)s"
 msgstr "%(site)s - Tienes un nuevo voto delegado en %(agora)s"
 
-#: agora_core/views.py:876
+#: agora_core/views.py:906
 #, python-format
 msgid ""
 "You delegated your vote in %(agora)s to %(username)s! Now you could share "
@@ -774,16 +791,16 @@ msgstr ""
 "¡Has delegado tu voto en el ágora %(agora)s en el usuario %(username)s! "
 "Puedes compartir esta votación en Facebook, Google Plus, Twitter, etc."
 
-#: agora_core/views.py:898
+#: agora_core/views.py:928
 #, python-format
 msgid "Guess what, you are already a member of %(agora)s!"
 msgstr "¡Adivina qué, ya eres miembro de %(agora)s!"
 
-#: agora_core/views.py:907
+#: agora_core/views.py:937
 msgid "Sorry, you don't have permission to join this agora."
 msgstr "Lo sentimos, pero no todavía tienes permiso para unirte a este ágora."
 
-#: agora_core/views.py:920
+#: agora_core/views.py:950
 #, python-format
 msgid ""
 "You joined %(agora)s. Now you could take a look at what elections are "
@@ -792,7 +809,7 @@ msgstr ""
 "Te has unido a %(agora)s. Ahora podrías echarle un vistazo a las votaciones "
 "disponibles en este ágora."
 
-#: agora_core/views.py:934
+#: agora_core/views.py:964
 #, python-format
 msgid ""
 "You requested membership in %(agora)s. Soon the admins of this agora will "
@@ -801,7 +818,7 @@ msgstr ""
 "Has solicitado ser miembro de %(agora)s. Pronto los administradores de este "
 "ágora decidirán tu petición."
 
-#: agora_core/views.py:944 agora_core/tasks/agora.py:32
+#: agora_core/views.py:974 agora_core/tasks/agora.py:32
 #, python-format
 msgid ""
 "%(username)s has requested membership at %(agora)s. Please review this "
@@ -810,16 +827,16 @@ msgstr ""
 "%(username)s ha solicitado ser miembro de %(agora)s. Por favor revisa esta "
 "petición pendiente."
 
-#: agora_core/views.py:950 agora_core/tasks/agora.py:38
+#: agora_core/views.py:980 agora_core/tasks/agora.py:38
 msgid "List of membership requests"
 msgstr "Lista de solicitudes para ser miembro"
 
-#: agora_core/views.py:967 agora_core/tasks/agora.py:57
+#: agora_core/views.py:997 agora_core/tasks/agora.py:57
 #, python-format
 msgid "%(site)s - New membership request at %(agora)s"
 msgstr "%(site)s - Nueva solicitud para ser miembro en %(agora)s."
 
-#: agora_core/views.py:997
+#: agora_core/views.py:1027
 #, python-format
 msgid ""
 "Sorry but you need to be a member of %(agora)s to request admin membership!"
@@ -827,14 +844,14 @@ msgstr ""
 "Lo siento pero debes ser miembro de %(agora)s para solicitar ser "
 "administrador."
 
-#: agora_core/views.py:1003
+#: agora_core/views.py:1033
 msgid ""
 "Sorry, you don't have permission to request admin membership in this agora."
 msgstr ""
 "Lo siento, pero no tienes permiso para solicitar ser administrador en este "
 "ágora."
 
-#: agora_core/views.py:1018 agora_core/tasks/agora.py:83
+#: agora_core/views.py:1048 agora_core/tasks/agora.py:83
 #, python-format
 msgid ""
 "%(username)s has requested admin membership at %(agora)s. Please review this "
@@ -843,16 +860,16 @@ msgstr ""
 "%(username)s ha solicitado ser administrador de %(agora)s. Por favor revisa "
 "esta petición pendiente."
 
-#: agora_core/views.py:1024 agora_core/tasks/agora.py:89
+#: agora_core/views.py:1054 agora_core/tasks/agora.py:89
 msgid "List of admin membership requests"
 msgstr "Lista de solicitudes para ser administrador"
 
-#: agora_core/views.py:1041 agora_core/tasks/agora.py:108
+#: agora_core/views.py:1071 agora_core/tasks/agora.py:108
 #, python-format
 msgid "%(site)s - New admin membership request at %(agora)s"
 msgstr "%(site)s - Nueva solicitud para ser administrador en %(agora)s"
 
-#: agora_core/views.py:1055
+#: agora_core/views.py:1085
 #, python-format
 msgid ""
 "You requested admin membership in %(agora)s. Soon the admins of this agora "
@@ -861,7 +878,7 @@ msgstr ""
 "Has solicitado ser administrador de %(agora)s. Pronto los administradores de "
 "este ágora decidirán sobre tu petición."
 
-#: agora_core/views.py:1072
+#: agora_core/views.py:1102
 msgid ""
 "Sorry, you don't have permission to cancel admin membership request in this "
 "agora."
@@ -869,19 +886,19 @@ msgstr ""
 "Lo siento, pero no tienes permiso para cancelar la solicitud para ser "
 "administrador en este ágora."
 
-#: agora_core/views.py:1082
+#: agora_core/views.py:1112
 #, python-format
 msgid "Your admin membership in %(agora)s was cancelled."
 msgstr "Has cancelado tu función de administrador en %(agora)s."
 
-#: agora_core/views.py:1091
+#: agora_core/views.py:1121
 #, python-format
 msgid ""
 "%(username)s has cancelled his/her requested admin membership at %(agora)s."
 msgstr ""
 "%(username)s ha cancelado su petición para ser administrador en %(agora)s."
 
-#: agora_core/views.py:1104
+#: agora_core/views.py:1134
 #, python-format
 msgid ""
 "%(site)s - %(username)s cancelled his/her admin membership request at "
@@ -890,67 +907,67 @@ msgstr ""
 "%(site)s - %(username)s ha cancelado su petición para ser administrador en "
 "%(agora)s."
 
-#: agora_core/views.py:1133 agora_core/views.py:1197 agora_core/views.py:1261
-#: agora_core/views.py:1374 agora_core/views.py:1439 agora_core/views.py:1461
-#: agora_core/views.py:1528 agora_core/views.py:1622
+#: agora_core/views.py:1163 agora_core/views.py:1227 agora_core/views.py:1291
+#: agora_core/views.py:1404 agora_core/views.py:1469 agora_core/views.py:1491
+#: agora_core/views.py:1558 agora_core/views.py:1652
 msgid "Sorry, you don't have admin permissions in this agora."
 msgstr "Lo sentimos, pero no tienes permisos de administrador en este ágora."
 
-#: agora_core/views.py:1138
+#: agora_core/views.py:1168
 msgid "Sorry, you cannot accept this user's  membership request."
 msgstr ""
 "Lo sentimos pero no puedes aceptar la petición para ser miembro de este "
 "usuario."
 
-#: agora_core/views.py:1151
+#: agora_core/views.py:1181
 #, python-format
 msgid "You accepted  %(username)s membership request in %(agora)s."
 msgstr "Has aceptado la petición para ser miembro de %(username)s en %(agora)s"
 
-#: agora_core/views.py:1162 agora_core/resources/agora.py:645
+#: agora_core/views.py:1192 agora_core/resources/agora.py:645
 #, python-format
 msgid "Your membership has been accepted at %(agora)s. Congratulations!"
 msgstr "Has sido aceptado como miembro de %(agora)s. ¡Enhorabuena!"
 
-#: agora_core/views.py:1170 agora_core/models/__init__.py:133
+#: agora_core/views.py:1200 agora_core/models/__init__.py:137
 #: agora_core/resources/agora.py:653
 #, python-format
 msgid "%(site)s - you are now member of %(agora)s"
 msgstr "%(site)s - ahora eres miembro de %(agora)s"
 
-#: agora_core/views.py:1202
+#: agora_core/views.py:1232
 msgid "Sorry, you cannot make admin to this user."
 msgstr ""
 "Lo sentimos, pero no tienes permiso para hacer administrador a este usuario."
 
-#: agora_core/views.py:1214
+#: agora_core/views.py:1244
 #, python-format
 msgid "You made admin to %(username)s admin in %(agora)s."
 msgstr "Has hecho administrador a %(username)s en %(agora)s."
 
-#: agora_core/views.py:1225
+#: agora_core/views.py:1255
 #, python-format
 msgid "You've been promoted to admin at %(agora)s. Congratulations!"
 msgstr "Has sido designado administrador de %(agora)s. ¡Enhorabuena!"
 
-#: agora_core/views.py:1233 agora_core/views.py:1299
+#: agora_core/views.py:1263 agora_core/views.py:1329
 #, python-format
 msgid "%(site)s - you've been promoted to admin at %(agora)s"
 msgstr "%(site)s - has sido designado administrador de %(agora)s"
 
-#: agora_core/views.py:1266
+#: agora_core/views.py:1296
 msgid "Sorry, you cannot accept this user's  admin membership request."
 msgstr ""
 "Lo sentimos pero no puedes aceptar la petición para ser administrador de "
 "este usuario."
 
-#: agora_core/views.py:1279
+#: agora_core/views.py:1309
 #, python-format
 msgid "You accepted  %(username)s admin membership request in %(agora)s."
 msgstr ""
 "Has aceptado la petición para ser administrador de %(username)s en %(agora)s."
 
-#: agora_core/views.py:1290
+#: agora_core/views.py:1320
 #, python-format
 msgid ""
 "Your admin membership has been accepted  so you've been promoted to admin at "
@@ -959,60 +976,60 @@ msgstr ""
 "Tu petición para ser administrador ha sido aceptada, por lo que has sido "
 "designado admin de %(agora)s. ¡Enhorabuena!"
 
-#: agora_core/views.py:1330 agora_core/views.py:1593
+#: agora_core/views.py:1360 agora_core/views.py:1623
 msgid "Sorry, you don't have permission to leave this agora."
 msgstr "Lo siento, pero no tienes permiso para dejar este ágora."
 
-#: agora_core/views.py:1342
+#: agora_core/views.py:1372
 #, python-format
 msgid "You left %(agora)s."
 msgstr "Has abandonado %(agora)s"
 
-#: agora_core/views.py:1352
+#: agora_core/views.py:1382
 #, python-format
 msgid "You cancelled your membership request at %(agora)s."
 msgstr "Has cancelado tu petición para ser miembro de %(agora)s."
 
-#: agora_core/views.py:1379
+#: agora_core/views.py:1409
 msgid "Sorry, you cannot dismiss this user's  membership request."
 msgstr ""
 "Lo siento, no puedes descartar la petición de membresía de este usuario."
 
-#: agora_core/views.py:1390
+#: agora_core/views.py:1420
 #, python-format
 msgid "You dismissed %(username)s membership request at %(agora)s."
 msgstr ""
 "Has descartado la petición para ser miembro en %(agora)s de %(username)s."
 
-#: agora_core/views.py:1401
+#: agora_core/views.py:1431
 #, python-format
 msgid ""
 "Your membership request at %(agora)s has been dismissed. Sorry about that!"
 msgstr "Tu petición de membresía en %(agora)s ha sido descartada. ¡Lo siento!"
 
-#: agora_core/views.py:1409
+#: agora_core/views.py:1439
 #, python-format
 msgid "%(site)s - membership request dismissed at %(agora)s"
 msgstr "%(site)s - solicitud de membresía descartada en %(agora)s"
 
-#: agora_core/views.py:1450
+#: agora_core/views.py:1480
 msgid "Sorry, file not found"
 msgstr ""
 
-#: agora_core/views.py:1466
+#: agora_core/views.py:1496
 msgid "Sorry, you cannot dismiss this user's  admin membership request."
 msgstr ""
 "Lo siento, no puedes descartar la petición para ser administrador de este "
 "usuario."
 
-#: agora_core/views.py:1477
+#: agora_core/views.py:1507
 #, python-format
 msgid "You dismissed %(username)s admin membership request at %(agora)s."
 msgstr ""
 "Has descartado la petición para ser administrador en %(agora)s de "
 "%(username)s."
 
-#: agora_core/views.py:1488
+#: agora_core/views.py:1518
 #, python-format
 msgid ""
 "Your admin membership request at %(agora)s  has been dismissed. Sorry about "
@@ -1020,43 +1037,43 @@ msgid ""
 msgstr ""
 "¡Vaya! Tu petición para ser administrador de %(agora)s ha sido descartada."
 
-#: agora_core/views.py:1496
+#: agora_core/views.py:1526
 #, python-format
 msgid "%(site)s - admin membership request dismissed at %(agora)s"
 msgstr "%(site)s - petición para ser administrador descartada en %(agora)s"
 
-#: agora_core/views.py:1533 agora_core/views.py:1627
+#: agora_core/views.py:1563 agora_core/views.py:1657
 msgid "Sorry, this user doesn't have permission to leave this agora."
 msgstr ""
 "Lo siento, pero este usuario no tiene permiso para abandonar este ágora."
 
-#: agora_core/views.py:1544
+#: agora_core/views.py:1574
 #, python-format
 msgid "You removed membership from %(agora)s to %(username)s."
 msgstr "Has hecho que %(username)s deje de ser miembro en %(agora)s."
 
-#: agora_core/views.py:1555
+#: agora_core/views.py:1585
 #, python-format
 msgid ""
 "Your have been removed from membership from %(agora)s . Sorry about that!"
 msgstr "Lo siento, pero se te ha retirado la membresía en %(agora)s."
 
-#: agora_core/views.py:1563 agora_core/resources/agora.py:934
+#: agora_core/views.py:1593 agora_core/resources/agora.py:934
 #, python-format
 msgid "%(site)s - membership removed from %(agora)s"
 msgstr "%(site)s - membresía retirada en %(agora)s"
 
-#: agora_core/views.py:1605
+#: agora_core/views.py:1635
 #, python-format
 msgid "You removed your admin membership at %(agora)s."
 msgstr "Has eliminado tu función de administrador en %(agora)s."
 
-#: agora_core/views.py:1639
+#: agora_core/views.py:1669
 #, python-format
 msgid "You removed  admin membership from %(agora)s to %(username)s."
 msgstr "Has hecho que %(username)s deje de ser administrador en %(agora)s."
 
-#: agora_core/views.py:1650
+#: agora_core/views.py:1680
 #, python-format
 msgid ""
 "Your have been removed from admin membership from %(agora)s . Sorry about "
@@ -1065,50 +1082,50 @@ msgstr ""
 "Lo siento, pero se te ha retirado la membresía como administrador de "
 "%(agora)s."
 
-#: agora_core/views.py:1658
+#: agora_core/views.py:1688
 #, python-format
 msgid "%(site)s - admin membership removed from %(agora)s"
 msgstr "%(site)s - membresía de administrador retirada en %(agora)s."
 
-#: agora_core/views.py:1733 agora_core/views.py:1809
+#: agora_core/views.py:1763 agora_core/views.py:1839
 msgid "Your comment was successfully posted."
 msgstr "Tu comentario ha sido publicado con éxito."
 
-#: agora_core/views.py:1746
+#: agora_core/views.py:1776
 #, python-format
 msgid ""
 "Sorry, but you don't have comment permissions on <em>%(electionname)s</em>."
 msgstr ""
 "Lo siento, pero no tienes permisos para comentar en <em>%(electionname)s</em>"
 
-#: agora_core/views.py:1825
+#: agora_core/views.py:1855
 #, python-format
 msgid "Sorry, but you don't have comment permissions on %(agora)s."
 msgstr "Lo sentimos, pero no tienes permisos para comentar en %(agora)s."
 
-#: agora_core/views.py:1852
+#: agora_core/views.py:1882
 msgid "You can't cancel a vote in a closed election."
 msgstr "No puedes cancelar un voto en una votación ya cerrada."
 
-#: agora_core/views.py:1859 agora_core/resources/election.py:538
+#: agora_core/views.py:1889 agora_core/resources/election.py:538
 msgid "You didn't participate in this election."
 msgstr "No participaste en esta votación."
 
-#: agora_core/views.py:1884 agora_core/resources/election.py:561
+#: agora_core/views.py:1914 agora_core/resources/election.py:561
 #, python-format
 msgid "Vote cancelled for election %s"
 msgstr "Voto cancelado para la votación %s"
 
-#: agora_core/views.py:1950
+#: agora_core/views.py:1980
 msgid "User settings updated."
 msgstr "Configuración de Usuario actualizada."
 
-#: agora_core/views.py:2007 agora_core/views.py:2019
+#: agora_core/views.py:2037 agora_core/views.py:2049
 #, python-format
 msgid "Sorry, but you don't have admin permissions on %(agoraname)s."
 msgstr "Lo sentimos, pero no tienes permisos administrativos en %(agoraname)s."
 
-#: agora_core/views.py:2034
+#: agora_core/views.py:2064
 #, python-format
 msgid "Agora settings changed for %(agoraname)s."
 msgstr "Cambiada la configuración de Ágora para %(agoraname)s."
@@ -1130,7 +1147,7 @@ msgstr "Subir una imagen para usar como avatar en vez la del servicio gravatar"
 msgid "Remove this avatar"
 msgstr "Eliminar este avatar"
 
-#: agora_core/forms/__init__.py:99 agora_core/models/__init__.py:240
+#: agora_core/forms/__init__.py:99 agora_core/models/__init__.py:248
 #: agora_core/models/agora.py:87 agora_core/models/election.py:207
 msgid "Short Description"
 msgstr "Descripción Breve"
@@ -1140,7 +1157,7 @@ msgid "Say something about yourself (140 chars max)"
 msgstr "Di algo sobre ti mismo (140 caracteres máximo)"
 
 #: agora_core/forms/__init__.py:102 agora_core/forms/user.py:176
-#: agora_core/models/__init__.py:242 agora_core/models/agora.py:89
+#: agora_core/models/__init__.py:250 agora_core/models/agora.py:89
 #: agora_core/templates/agora_core/agora_bio.html:5
 #: agora_core/templates/agora_core/user_bio.html:5
 #: agora_core/templates/agora_core/user_view.html:30
@@ -1151,7 +1168,7 @@ msgstr "Biografía"
 msgid "Tell us about you, use as much text as needed"
 msgstr "Cuéntanos acerca de tí, usa tanto espacio como necesites"
 
-#: agora_core/forms/__init__.py:109 agora_core/models/__init__.py:253
+#: agora_core/forms/__init__.py:109 agora_core/models/__init__.py:261
 msgid "Receive email updates"
 msgstr "Recibe actualizaciones por email"
 
@@ -1180,7 +1197,7 @@ msgstr "Repite la nueva contraseña"
 msgid "Profile"
 msgstr "Perfil"
 
-#: agora_core/forms/__init__.py:146 templates/base.html:140
+#: agora_core/forms/__init__.py:146 templates/base.html:137
 msgid "Security"
 msgstr "Seguridad"
 
@@ -1308,7 +1325,7 @@ msgstr "Mensaje"
 msgid "Send message"
 msgstr "Enviar mensaje"
 
-#: agora_core/forms/__init__.py:659
+#: agora_core/forms/__init__.py:672
 #, python-format
 msgid ""
 "[%(site)s] Message from %(name)s <%(email)s>: \n"
@@ -1319,7 +1336,7 @@ msgstr ""
 "\n"
 " %(msg)s"
 
-#: agora_core/forms/__init__.py:668
+#: agora_core/forms/__init__.py:681
 msgid "You have contacted us, we'll answer you as soon as possible."
 msgstr "Has contactado con nosotros, te contestaremos lo antes posible."
 
@@ -1377,12 +1394,12 @@ msgstr "No se permite la activación automática."
 msgid "Simple one choice result type of election"
 msgstr "Votación simple con resultado de una sola opción"
 
-#: agora_core/models/__init__.py:127
+#: agora_core/models/__init__.py:131
 #, python-format
 msgid "You just joined %(agora)s. Congratulations!"
 msgstr "Acaba de unirse a %(agora)s. ¡Enhorabuena!"
 
-#: agora_core/models/__init__.py:191
+#: agora_core/models/__init__.py:195
 #, python-format
 msgid ""
 "Is a member of %(num_agoras)d agoras and has emitted  %(num_votes)d direct "
@@ -1391,15 +1408,15 @@ msgstr ""
 "Es un miembro de %(num_agoras)d ágoras y ha emitido %(num_votes)d votos "
 "directos."
 
-#: agora_core/models/__init__.py:247
+#: agora_core/models/__init__.py:255
 msgid "Last Activity Read Date"
 msgstr "Fecha de la Última Actividad de Lectura"
 
-#: agora_core/models/__init__.py:251
+#: agora_core/models/__init__.py:259
 msgid "Language Code"
 msgstr "Código de Idioma"
 
-#: agora_core/models/__init__.py:257
+#: agora_core/models/__init__.py:265
 msgid "Extra"
 msgstr ""
 
@@ -2424,6 +2441,319 @@ msgstr ""
 "Si ninguna de las anteriores soluciones funciona, <a href=\"%(contact_url)s"
 "\">contáctanos</a>."
 
+#: agora_core/templates/agora_core/home_activity.html:14
+msgid ""
+"Democracia Directa en el Congreso de los Diputados</p><h1>Vota la Ley de "
+"Transparencia en 3 sencillos pasos</h1>"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:16
+msgid "Régistrate / Entra"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:18
+msgid "Revisa abajo los ocho bloques de la ley y <strong>vota</strong>"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:20
+msgid "Baldoví votará en el Congreso lo que los ciudadanos decidamos"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:25
+msgid "//www.youtube.com/embed/LS678iuekqM"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:32
+msgid ""
+"Hemos divido la ley en <strong>ocho bloques</strong> que resumen las "
+"principales propuestas y sentido de las enmiendas que los distintos grupos "
+"han presentado. Cada uno de esos bloques contiene una serie de elementos "
+"sobre los que decidir: </p>"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:36
+msgid "Derecho a la informaci&oacute;n como derecho fundamental"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:41
+msgid ""
+"<p>El Proyecto Legal reconoce el derecho de acceso a la informaci&oacute;n "
+"como un derecho vinculado al art&iacute;culo 105 de la Constituci&oacute;n. "
+"Esto quiere decir que se considera un derecho administrativo. Concretamente,"
+"&nbsp; se alude a una sentencia del Tribunal Supremo de la sala tercera, de "
+"19 mayo de 2003, en la que se se&ntilde;ala expresamente que en este caso lo "
+"que nos encontramos es ante un derecho de configuraci&oacute;n legal, como "
+"determina el art&iacute;culo 105. b) de la Constituci&oacute;n, que debe "
+"calificarse como un derecho subjetivo a la informaci&oacute;n que, sin "
+"embargo, en el caso enjuiciado con lo que tiene vinculaci&oacute;n es con "
+"los derechos de los ciudadanos a los archivos y registros administrativos</"
+"p>\n"
+"<p>Para el gobierno, eso no quiere decir que el derecho no tenga la m&aacute;"
+"xima garant&iacute;a y protecci&oacute;n posible, que al fin y al cabo es de "
+"lo que se trata, que la ley y los derechos que se ampl&iacute;an y reconocen "
+"no est&eacute;n protegidos de la manera m&aacute;s extensa por los "
+"tribunales.</p>\n"
+"<p>Todos los grupos, excepto el Grupo Popular, plantean en sus enmiendas "
+"parciales, el reconocimiento del derecho de acceso a la informaci&oacute;n "
+"como un derecho fundamental, tal y como reconocen ya los convenios "
+"internacionales que se han firmado en los &uacute;ltimos a&ntilde;os, "
+"haci&eacute;ndolo as&iacute;, un derecho homologable al de la "
+"Protecci&oacute;n de Datos, ya que le confiere as&iacute; mayor "
+"protecci&oacute;n y garant&iacute;a.</p>\n"
+"<p>Tambi&eacute;n la Coalici&oacute;n Pro-Acceso, plataforma que engloba a "
+"las principales organizaciones sociales que trabajan en el campo de la "
+"transparencia y acceso a la informaci&oacute;n, se&ntilde;ala en el primer "
+"punto de su dec&aacute;logo lo siguiente: &ldquo;El acceso a la "
+"informaci&oacute;n es un derecho de toda persona, que debe aplicarse sin "
+"discriminaci&oacute;n por raz&oacute;n de nacionalidad o car&aacute;cter del "
+"solicitante y que debe poder ejercerse sin necesidad de justificar las "
+"razones por las que se solicita la informaci&oacute;n&rdquo;.</p>\n"
+"<p>Por lo tanto:</p>"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:48
+msgid ""
+"&iquest;Est&aacute;s a favor de que el proyecto de ley reconozca el derecho "
+"de acceso a la informaci&oacute;n como un derecho fundamental?"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:69
+msgid "Sujetos Obligados"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:75
+#, python-format
+msgid ""
+"<p>En el &uacute;ltimo borrador del Proyecto de ley se han incorporado ya "
+"instituciones y entidades que se hab&iacute;an quedado fuera, tales como la "
+"Corona, los partidos pol&iacute;ticos, los sindicatos y las organizaciones "
+"empresariales y determinadas entidades de derecho p&uacute;blico.</p>\n"
+"<p>Sin embargo, todav&iacute;a quedan instituciones fuera. La relaci&oacute;"
+"n que aparecen en las enmiendas parciales de los distintos grupos son las "
+"que se relacionan a continuaci&oacute;n. Se&ntilde;ala tus opciones:</p>\n"
+"<p>Entidades que directa o indirectamente reciben fondos p&uacute;blicos "
+"(independientemente de la cuant&iacute;a). La redacci&oacute;n que "
+"finalmente aparece en el proyecto de ley es la siguiente: &ldquo;Las "
+"entidades privadas que perciban durante el periodo de un a&ntilde;o ayudas o "
+"subvenciones p&uacute;blicas en cuant&iacute;a superior a 100.000 euros o "
+"cuando, al menos el 40%% del total de sus ingresos anuales tengan car&aacute;"
+"cter de ayuda o subvenci&oacute;n p&uacute;blica siempre que alcancen como "
+"m&iacute;nimo 3.000 euros.&rdquo;<br />\n"
+"    Los &oacute;rganos de gobierno de juzgados y tribunales<br />\n"
+"    El Fondo de Reestructuraci&oacute;n Ordenada Bancaria (FROB) y el "
+"Instituto de Cr&eacute;dito Oficial (ICO) as&iacute; como las entidades que "
+"reciben estos fondos<br />\n"
+"    La iglesia y dem&aacute;s confesiones religiosas reconocidas</p>"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:84
+msgid ""
+"&iquest;Eres partidario de incluir los sujetos que a&uacute;n est&aacute;n "
+"fuera del proyecto de ley?"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:104
+msgid "Regulaci&oacute;n de Lobbies"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:110
+msgid ""
+"<p>Se plantea por la mayor&iacute;a de los Grupos Parlamentarios la "
+"regulaci&oacute;n de la actividad de los lobbies en l&iacute;nea con la "
+"regulaci&oacute;n sobre representaci&oacute;n de intereses en otros estados "
+"miembros de la UE, ya que se considera que es un elemento fundamental de "
+"buen gobierno.</p>\n"
+"<p>El proyecto de ley, en su &uacute;ltima versi&oacute;n, sigue sin "
+"contemplar la regulaci&oacute;n de intereses. En las enmiendas parciales de "
+"los grupos parlamentarios se plantea en algunos casos como art&iacute;culo "
+"espec&iacute;fico y en otras como disposici&oacute;n adicional para tener "
+"una norma espec&iacute;fica</p>"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:116
+msgid ""
+"&iquest;Estas a favor de que se regule la actividad de los lobbies a "
+"trav&eacute;s de esta u otra ley?"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:136
+msgid "Formatos de informaci&oacute;n"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:142
+msgid ""
+"<p>La definici&oacute;n de informaci&oacute;n p&uacute;blica que hace la ley "
+"no menciona que toda la informaci&oacute;n ser&aacute; accesible, sin "
+"importar el formato. La informaci&oacute;n p&uacute;blica debe ser "
+"comprensible, de acceso f&aacute;cil y gratuito y que tenga en a las "
+"personas con discapacidad</p>\n"
+"    <p>Adem&aacute;s, partimos de la base de que no s&oacute;lo estamos "
+"regulando la capacidad de acceder a esa informaci&oacute;n p&uacute;blica "
+"sino tambi&eacute;n la posibilidad de reutilizarla por lo tanto los formatos "
+"deben ser abiertos</p>"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:146
+msgid ""
+"&iquest;Est&aacute;s a favor de que la ley recoja expresamente que la "
+"informaci&oacute;n p&uacute;blica debe estar en cualquier formato que "
+"posibilite la informaci&oacute;n, la utilizaci&oacute;n y el uso de los "
+"datos?"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:167
+msgid "Causas de inadmisión"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:173
+msgid ""
+"<p>La mayor&iacute;a de las enmiendas planteadas proponen la supresi&oacute;"
+"n de las causas de inadmisi&oacute;n porque introducen nuevos l&iacute;mites "
+"que van en contra de los est&aacute;ndares internacionales.</p>"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:177
+msgid ""
+"En el caso de que esa sea tu opini&oacute;n tambi&eacute;n, se&ntilde;ala "
+"qu&eacute; causas mantendr&iacute;as:"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:181
+msgid ""
+"Que se refieran a informaciones en curso o de publicaci&oacute;n general"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:185
+msgid ""
+"Referidas a informaci&oacute;n que tengan car&aacute;cter auxiliar o de "
+"apoyo como la contenida en las notas, borradores, opiniones, res&uacute;"
+"menes, comunicaciones o informes previos"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:189
+msgid ""
+"Relativas a informaci&oacute;n para cuya divulgaci&oacute;n sea necesaria "
+"una acci&oacute;n previa de reelaboraci&oacute;n"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:193
+msgid ""
+"Que sean manifiestamente repetitivas o tengan un car&aacute;cter abusivo no "
+"justificado con la finalidad de transparencia de la ley"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:197
+msgid "No mantendr&iacute;a ninguna y suprimir&iacute;a el art&iacute;culo"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:209
+msgid "Silencio Administrativo Negativo"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:215
+msgid ""
+"<p>El proyecto de ley plantea lo siguiente: &ldquo;Transcurrido el plazo "
+"m&aacute;ximo para resolver sin que haya dictado y notificado "
+"resoluci&oacute;n expresa se entender&aacute; que la solicitud ha sido "
+"desestimada&rdquo;. Esto es lo que se conoce como silencio administrativo "
+"negativo y a nuestro juicio hace completamente ineficaz el derecho de acceso "
+"a la informaci&oacute;n, por lo que se plantea que la desestimaci&oacute;n "
+"de una solicitud debe ser motivada y notificada, no s&oacute;lo para "
+"garantizar el efectivo ejercicio del derecho sino tambi&eacute;n para "
+"contemplar la posibilidad de recurso de esa inadmisi&oacute;n.</p>\n"
+"<p>El gobierno plantea que el silencio administrativo positivo, es decir, "
+"entender el silencio como causa de admisi&oacute;n, puede provocar perjuicio "
+"a los particulares, a la protecci&oacute;n de datos personales.</p>"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:220
+msgid ""
+"&iquest;Estas a favor de que se suprima la figura del silencio "
+"administrativo negativo, teniendo la administraci&oacute;n que motivar y "
+"notificar las causas de inadmisi&oacute;n de una solitciud?"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:245
+msgid ""
+"<p>En la &uacute;ltima versi&oacute;n del proyecto de Ley se propone como "
+"&oacute;rgano de control el Consejo de Transparencia y Buen Gobierno.</p>\n"
+"<p>Art&iacute;culo 7 bis. (Nuevo art&iacute;culo 9). Control<br />\n"
+"    a) El Cumplimiento por la Administraci&oacute;n General del Estado de "
+"las obligaciones contenidas en este cap&iacute;tulo ser&aacute; objeto de "
+"control por parte del Consejo de Transparencia y Buen Gobierno.<br />\n"
+"    b) En ejercicio de la competencia prevista en el apartado anterior el "
+"Consejo de Transparencia y Buen Gobierno, de acuerdo con el procedimiento "
+"que se prevea reglamentariamente, podr&aacute; dictar resoluci&oacute;n en "
+"la que se establezcan las medidas que sea necesario adoptar para el cese del "
+"incumplimiento y el inicio de las actuaciones disciplinarias que procedan. "
+"El incumplimiento reiterado de las obligaciones de publicidad activa "
+"reguladas en este cap&iacute;tulo tendr&aacute; la consideraci&oacute;n de "
+"infracci&oacute;n grave a los efectos de aplicaci&oacute;n a sus "
+"responsables del r&eacute;gimen disciplinario previsto en la correspondiente "
+"normativa reguladora.</p>\n"
+"<p>Seg&uacute;n la Coalici&oacute;n ProAcceso, &ldquo;sigue siendo un "
+"organismo no independiente, muy politizado. No se especifican qu&eacute; "
+"poderes tendr&aacute; para conocer de las reclamaciones que reciba, no "
+"sabemos si tendr&aacute; poder vinculante y teniendo en cuenta que "
+"habr&aacute; una persona encargada de responder las reclamaciones (el "
+"presidente) es claramente insuficiente y augura que se har&aacute; mucho uso "
+"del silencio negativo doble, porque tambi&eacute;n hay silencio negativo "
+"cuando se reclama&rdquo;.</p>\n"
+"<p>El problema de la &uacute;ltima versi&oacute;n del Proyecto de Ley es que "
+"los Grupos Parlamentarios no han podido presentar enmiendas a este Nuevo "
+"Consejo de Transparencia y Buen Gobierno ya que no estaba en el proyecto "
+"original. Por lo tanto, no hay enmiendas que podamos votar para cambiar o "
+"mantener. Sin embargo, queremos someter a tu consideraci&oacute;n la "
+"propuesta de la Coalici&oacute;n Pro-Acceso:</p>\n"
+"<p>&ldquo;Consideramos que Las Cortes Espa&ntilde;olas deber&iacute;an "
+"replantear la naturaleza y las funciones del organismo encargado de velar "
+"por la protecci&oacute;n del derecho de acceso a la informaci&oacute;n."
+"&nbsp; Este organismo debe ser independiente y contar con el poder y "
+"funciones suficientes para implementar de forma r&aacute;pida y consistente "
+"el derecho de acceso a la informaci&oacute;n en todo el&nbsp; territorio "
+"Este organismo tendr&iacute;a competencia para velar por el derecho de "
+"acceso ante cualquier sujeto obligado, recibir quejas tanto por denegaciones "
+"de acceso a la informaci&oacute;n p&uacute;blica, como por incumplimiento de "
+"la obligaci&oacute;n de publicidad activa y promover el derecho de acceso y "
+"la transparencia. Ser&iacute;a recomendable que reuniera en un mismo "
+"organismo las competencias de protecci&oacute;n de datos y las "
+"correspondientes a la transparencia y acceso a la informaci&oacute;n "
+"p&uacute;blica&rdquo;.</p>"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:258
+msgid ""
+"&iquest;Est&aacute;s a favor de la propuesta de &Oacute;rgano de "
+"Transparencia y Buen Gobierno de la Coalici&oacute;n Pro-Acceso?"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:282
+msgid "Votaci&oacute;n final a la ley"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:288
+msgid ""
+"<p>Una &uacute;ltima pregunta. Una vez discutidas las enmiendas se "
+"votar&aacute; el texto final. Imag&iacute;nate que no aceptan ninguna y el "
+"proyecto de ley se queda c&oacute;mo est&aacute;. El argumento ser&iacute;a: "
+"Es mejor tener ley de transparencia que no tenerla o preferimos no tener ley "
+"a tener una que no cumpla los est&aacute;ndares.</p>"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:292
+msgid ""
+"Piensas que Joan Baldov&iacute; debe votar a favor del proyecto de ley "
+"aunque no recoja ninguna de las enmiendas planteadas?"
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:311
+msgid "¿Ya te has leído los bloques? Entonces "
+msgstr ""
+
+#: agora_core/templates/agora_core/home_activity.html:311
+msgid "Regístrate / Entra</a> para poder votar.</p>"
+msgstr ""
+
 #: agora_core/templates/agora_core/user_bio.html:14
 #, python-format
 msgid ""
@@ -3235,48 +3565,47 @@ msgid "Blog"
 msgstr ""
 
 #: templates/base.html:122
-msgid "Status"
-msgstr "Estado"
-
-#: templates/base.html:125
 msgid "Press"
 msgstr "Prensa"
 
-#: templates/base.html:131
+#: templates/base.html:128
 msgid "Serious Stuff"
 msgstr "Cosas Serias"
 
-#: templates/base.html:134
+#: templates/base.html:131
 msgid "Terms of Service"
 msgstr "Condiciones de Uso"
 
-#: templates/base.html:137
+#: templates/base.html:134
 msgid "Privacy Policy"
 msgstr "Aviso Legal"
 
-#: templates/base.html:143
+#: templates/base.html:140
 msgid "Contact Us"
 msgstr "Contáctanos"
 
-#: templates/base.html:149
+#: templates/base.html:146
 msgid "Be Social"
 msgstr "Socializa"
 
-#: templates/base.html:152
+#: templates/base.html:149
 msgid "Follow on Twitter"
 msgstr "Seguir en Twitter"
 
-#: templates/base.html:155
+#: templates/base.html:152
 msgid "Like in Facebook"
 msgstr "Me gusta en Facebook"
 
-#: templates/base.html:158
+#: templates/base.html:155
 msgid "+1 in Google Plus"
 msgstr "+1 en Google Plus"
 
-#: templates/base.html:163
+#: templates/base.html:160
 msgid "Powered by"
 msgstr "Funciona con"
+
+#~ msgid "Status"
+#~ msgstr "Estado"
 
 #~ msgid "Create a new agora"
 #~ msgstr "Crear un nuevo ágora."
