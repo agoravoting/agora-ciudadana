@@ -63,11 +63,11 @@ urlpatterns += patterns('',
 
     url(r'^user/cancel_email_updates/?$', UserSettingsView.as_view(), name='cancel-email-updates'),
 
-    url(r'^user/(?P<username>[\.\w]+)/?$', UserView.as_view(), name='user-view'),
+    url(r'^user/(?P<username>[\.\w-]+)/?$', UserView.as_view(), name='user-view'),
 
-    url(r'^user/(?P<username>[\.\w]+)/biography/?$', UserBiographyView.as_view(), name='user-bio'),
+    url(r'^user/(?P<username>[\.\w-]+)/biography/?$', UserBiographyView.as_view(), name='user-bio'),
 
-    url(r'^user/(?P<username>[\.\w]+)/elections/(?P<election_filter>open|participated|requested)/?$',
+    url(r'^user/(?P<username>[\.\w-]+)/elections/(?P<election_filter>open|participated|requested)/?$',
         UserElectionsView.as_view(), name='user-elections'),
 
     url(r'^(?P<username>[\.\w]+)/(?P<agoraname>[\-\.\w]+)/?$',
