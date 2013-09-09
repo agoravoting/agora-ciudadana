@@ -205,7 +205,8 @@ msgid ""
 "link has aged."
 msgstr ""
 "Tu cuenta no pudo ser activada. Esto podría ser porque tu enlace de "
-"activación ha caducado."
+"activación ha caducado. <strong>También puede ser porque tu cuenta ya está, "
+"activada prueba a entrar con tu usuario y contraseña.</strong>"
 
 #: accounts/templates/accounts/activate_fail.html:9
 msgid ""
@@ -213,7 +214,7 @@ msgid ""
 "us if you think something went wrong."
 msgstr ""
 "Por favor trata de registrarte otra vez, de reactivar tu cuenta o "
-"contáctanos si piensas que algo ha ido mal.istrador"
+"contáctanos si piensas que algo ha ido mal."
 
 #: accounts/templates/accounts/auth_forms.html:12
 #: accounts/templates/accounts/signin_form.html:10
