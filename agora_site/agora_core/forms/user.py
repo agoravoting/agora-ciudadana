@@ -288,12 +288,14 @@ class UserSettingsForm(django_forms.ModelForm):
         a FNMT authenticated user, this user cannot change the first name.
         '''
         profile = self.request.user.get_profile()
-        if isinstance(profile.extra, dict) and\
-                profile.extra.has_key('fnmt_cert') and\
-                self.request.user.first_name != self.cleaned_data['first_name']:
-            raise django_forms.ValidationError(_('FNMT users cannot change their names.'))
+        
+        #if isinstance(profile.extra, dict) and\
+        #        profile.extra.has_key('fnmt_cert') and\
+        #        self.request.user.first_name != self.cleaned_data['first_name']:
+        
+        raise django_forms.ValidationError(_('For security reasons, users\' names cannot be changed'))
 
-        return self.cleaned_data['first_name']
+        # return self.cleaned_data['first_name']
 
     def clean(self):
         """
