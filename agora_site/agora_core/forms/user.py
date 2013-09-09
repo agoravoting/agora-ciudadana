@@ -368,8 +368,8 @@ class APISignupForm(django_forms.Form):
                 raise django_forms.ValidationError(_('This email is already in use. Please supply a different email.'))
             else:
                 # sending activation email
-                user.userena_signup.send_activation_email(False)
-                link = settings.AGORA_BASE_URL + reverse('userena_activate',
+                user.userena_signup.send_activation_email(user.userena_signup.activation_key)
+                link = settings.AGORA_BASE_URL + reverse('auto_join_activate',
                     args=(user.username, user.userena_signup.activation_key))
                 raise django_forms.ValidationError('This email is already in use but not activated, we have sent to the user\'s email the activation link: ' + link)
         return self.cleaned_data['email']
