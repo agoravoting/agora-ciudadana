@@ -53,9 +53,6 @@
         </div>
         <div class="modal-header hero-vote">
             <p><%= gettext("To cast a vote you will be led through the following steps:") %>
-            <% if (vote_isfake) { %>
-            <strong> de prueba</strong>
-            <% } %>
             </p>
             <ol>
                 <li><%= gettext("<strong>Select</strong> your options") %><br/>
@@ -70,6 +67,12 @@
             </ol>
             <% if (user_has_delegated) { %>
                 <p><%= gettext("Currently, you have delegated your vote in this agora. So if you don't vote, this delegate can vote for you.") %></p>
+            <% } %>
+            <% if (vote_isfake) { %>
+                <div class="alert alert-block">
+                    <h4>Atención</h4>
+                    Esta es una demo de la votación, <a href="/">haz clic aquí para acceder a la votación real</a>
+                </div>
             <% } %>
             <button class="btn btn-large btn-block btn-primary btn-start-voting" type="button">
                 <%= gettext("Start voting") %>
