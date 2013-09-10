@@ -159,6 +159,7 @@ def send_mail_to_members(agora_id, user_id, is_secure, site_id, remote_addr,
 
         translation.activate(receiver.get_profile().lang_code)
         context['to'] = receiver
+        context_html['to'] = receiver
 
         email = EmailMultiAlternatives(
             subject=subject,
