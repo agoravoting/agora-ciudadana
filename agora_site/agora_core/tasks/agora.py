@@ -127,6 +127,8 @@ def send_mail_to_members(agora_id, user_id, is_secure, site_id, remote_addr,
     sender = User.objects.get(pk=user_id)
     agora = Agora.objects.get(pk=agora_id)
 
+    base_tmpl = 'agora_core/emails/agora_notification'
+
     if receivers == 'members':
         receivers = agora.members.all()
     elif receivers == 'admins':
@@ -135,6 +137,9 @@ def send_mail_to_members(agora_id, user_id, is_secure, site_id, remote_addr,
         receivers = agora.active_delegates()
     elif receivers == 'non-delegates':
         receivers = agora.non_delegates()
+    elif receivers == 'non-voters':
+        receivers = agora.non_voters()
+        base_tmpl = 'agora_core/emails/non_voters'
     elif receivers == 'requested-membership':
         receivers = agora.users_who_requested_membership()
 
@@ -157,12 +162,12 @@ def send_mail_to_members(agora_id, user_id, is_secure, site_id, remote_addr,
 
         email = EmailMultiAlternatives(
             subject=subject,
-            body=render_to_string('agora_core/emails/agora_notification.txt',
+            body=render_to_string(base_tmpl + '.txt',
                 context),
             to=[receiver.email])
 
         email.attach_alternative(
-            render_to_string('agora_core/emails/agora_notification.html',
+            render_to_string(base_tmpl + '.html',
                 context_html), "text/html")
         email.send()
 
