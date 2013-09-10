@@ -135,6 +135,8 @@ def send_mail_to_members(agora_id, user_id, is_secure, site_id, remote_addr,
         receivers = agora.active_delegates()
     elif receivers == 'non-delegates':
         receivers = agora.non_delegates()
+    elif receivers == 'non-voters':
+        receivers = agora.non_voters()
     elif receivers == 'requested-membership':
         receivers = agora.users_who_requested_membership()
 
