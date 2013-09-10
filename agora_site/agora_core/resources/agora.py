@@ -366,9 +366,10 @@ class AgoraResource(GenericResource):
 
         def get_queryset(agora):
             from guardian.shortcuts import get_users_with_perms
+            u_filter = request.GET.get('username', '')            
             users = get_users_with_perms(agora, attach_perms=True)
-            users = [k.username for k, v in users.items() if "requested_membership" in v]
-            queryset = User.objects.filter(username__in=users)
+            users = [k.username for k, v in users.items() if "requested_membership" in v]                       
+            queryset = self.filter_user(request, User.objects.filter(username__in=users))
             return queryset
 
         return self.get_custom_resource_list(request, queryfunc=get_queryset,
@@ -383,7 +384,7 @@ class AgoraResource(GenericResource):
             from guardian.shortcuts import get_users_with_perms
             users = get_users_with_perms(agora, attach_perms=True)
             users = [k.username for k, v in users.items() if "denied_requested_membership" in v]
-            queryset = User.objects.filter(username__in=users)
+            queryset = self.filter_user(request, User.objects.filter(username__in=users))
             return queryset
 
         return self.get_custom_resource_list(request, queryfunc=get_queryset,
@@ -400,7 +401,7 @@ class AgoraResource(GenericResource):
             from guardian.shortcuts import get_users_with_perms
             users = get_users_with_perms(agora, attach_perms=True)
             users = [k.username for k, v in users.items() if "requested_admin_membership" in v]
-            queryset = User.objects.filter(username__in=users)
+            queryset = self.filter_user(request, User.objects.filter(username__in=users))
             return queryset
 
         return self.get_custom_resource_list(request, queryfunc=get_queryset,
