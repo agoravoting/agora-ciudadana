@@ -6019,6 +6019,19 @@ ul.list-container li.agora-user-item.simple > a.agora i {
 .home .accordion-heading.votacion a{
   background: #7170b3;
 }*/
+.home .accordion-heading .results {
+  text-align: right;
+  float: right;
+  width: auto;
+  font-weight: bold;
+  font-size: 1em;
+}
+.home .accordion-heading a:hover .winner {
+  color: white;
+}
+.home .accordion-heading .winner {
+  color: #5EBC5E;
+}
 .home .accordion-heading.dcho_fundamental a:hover {
   background: #9d3293;
 }
@@ -6108,4 +6121,8 @@ ul.list-container li.agora-user-item.simple > a.agora i {
 .voting-booth-description {
   max-height: 300px;
   overflow-y: auto;
+  text-align: justify;
+}
+.voting-booth-body {
+  padding-top: 0px;
 }
