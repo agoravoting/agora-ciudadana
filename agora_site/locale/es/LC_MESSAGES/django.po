@@ -673,6 +673,11 @@ msgid ""
 "Sorry, but you don't have permissions to vote on <em>%(electionname)s</em>."
 msgstr ""
 "Lo sentimos, pero no tienes permiso para votar en <em>%(electionname)s</em>"
+"<br/><br/>Lo más probable es que te acabes de registrar y tu DNI escaneado no "
+"haya sido verificado aun. En ese caso, por favor espera a que te enviemos un "
+"email confirmando tu entrada en el ágora para poder votar. <br/><br/>Si el "
+"problema persiste, por favor no dudes en contactarnos por email en "
+"<a href=\"mailto:info@congresotransparente.com\">info@congresotransparente.com</a>."
 
 #: agora_core/views.py:447 agora_core/views.py:460
 #, python-format
