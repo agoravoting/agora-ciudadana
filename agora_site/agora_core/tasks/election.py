@@ -152,29 +152,29 @@ def end_election(election_id, is_secure, site_id, remote_addr, user_id):
     # (subject, text, html, from_email, recipient)
     datatuples = []
 
-    for vote in election.get_all_votes():
+    #for vote in election.get_all_votes():
 
-        if not vote.voter.get_profile().has_perms('receive_email_updates'):
-            continue
+        #if not vote.voter.get_profile().has_perms('receive_email_updates'):
+            #continue
 
-        translation.activate(vote.voter.get_profile().lang_code)
-        context['to'] = vote.voter
-        try:
-            context['delegate'] = get_delegate_in_agora(vote.voter, election.agora)
-        except:
-            pass
-        datatuples.append((
-            _('Election results for %s') % election.pretty_name,
-            render_to_string('agora_core/emails/election_results.txt',
-                context),
-            render_to_string('agora_core/emails/election_results.html',
-                context),
-            None,
-            [vote.voter.email]))
+        #translation.activate(vote.voter.get_profile().lang_code)
+        #context['to'] = vote.voter
+        #try:
+            #context['delegate'] = get_delegate_in_agora(vote.voter, election.agora)
+        #except:
+            #pass
+        #datatuples.append((
+            #_('Election results for %s') % election.pretty_name,
+            #render_to_string('agora_core/emails/election_results.txt',
+                #context),
+            #render_to_string('agora_core/emails/election_results.html',
+                #context),
+            #None,
+            #[vote.voter.email]))
 
-    translation.deactivate()
+    #translation.deactivate()
 
-    send_mass_html_mail(datatuples)
+    #send_mass_html_mail(datatuples)
 
     action.send(user, verb='published results', action_object=election,
         target=election.agora, ipaddr=remote_addr,

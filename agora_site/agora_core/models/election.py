@@ -827,10 +827,13 @@ class Election(models.Model):
             tally.pre_tally(result)
 
         num_delegated_votes = 0
+        tot_votes = 0
+        import ipdb; ipdb.set_trace()
         def add_vote(user_answers, is_delegated):
             '''
             Given the answers of a vote, update the result
             '''
+            tot_votes += 1
             for tally in tallies:
                 tally.add_vote(voter_answers=user_answers, result=result,
                     is_delegated=is_delegated)
@@ -929,6 +932,7 @@ class Election(models.Model):
 
         if not self.extra_data:
             self.extra_data = dict()
+        import ipdb; ipdb.set_trace()
 
         # post process the tally
         for tally in tallies:
