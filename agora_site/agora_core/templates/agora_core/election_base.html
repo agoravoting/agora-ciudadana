@@ -92,7 +92,7 @@
     </li>
     <li {% ifactivetab "election-nav" "votes" %}class="active"{% endifactivetab %}>
         <a href="{% url election-votes election.agora.creator.username election.agora.name election.name %}">{% trans "Votes" %}
-        <span class="badge badge-info">{{ election.get_participation|getitem:"total_votes" }}</span></a>
+        <span class="badge badge-info">{{ election.get_direct_votes.count }}</span></a>
     </li>
     <li {% ifactivetab "election-nav" "comments" %}class="active"{% endifactivetab %}>
         <a href="{% url election-comments election.agora.creator.username election.agora.name election.name %}">{% trans "Comments" %}
