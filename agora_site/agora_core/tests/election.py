@@ -1139,6 +1139,132 @@ class ElectionTest(RootTestCase):
         data = self.post('election/%d/action/' % election_id, data=orig_data,
             code=HTTP_FORBIDDEN, content_type='application/json')
 
+    def test_cancel_vote_by_leaving_agora(self):
+        '''
+        when an user leaves an agora, the votes of this user are set to not
+        count for all open (untallied) elections
+        '''
+        # create election as admin
+        self.login('david', 'david')
+        data = self.postAndParse('agora/1/action/', data=self.base_election_data,
+            code=HTTP_OK, content_type='application/json')
+        election_id = data['id']
+
+        # start election
+        orig_data = dict(action='start')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # user1 joins the agora
+        self.login('user1', '123')
+        orig_data = dict(action='join')
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # vote as user1
+        vote_data = {
+            'is_vote_secret': False,
+            'question0': "bar",
+            'action': 'vote',
+            'reason': "becuase of .. yes"
+        }
+        data = self.postAndParse('election/%d/action/' % election_id,
+            data=vote_data, code=HTTP_OK, content_type='application/json')
+        vote_id = data['id']
+
+        # vote appears in direct votes
+        data = self.getAndParse('election/%d/direct_votes/' %  election_id,
+            code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 1)
+
+        # user1 leaves the agora and thus his vote is set to not counting
+        orig_data = dict(action="leave")
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # vote doesn't appear in direct votes
+        data = self.getAndParse('election/%d/direct_votes/' %  election_id,
+            code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 0)
+
+        # but appears in cast_votes, because there not counting votes are also
+        # shown as long as they are not invalid
+        data = self.getAndParse('election/%d/cast_votes/' %  election_id,
+            code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 1)
+
+        # and vote can be consulted and it's not counted
+        data = self.getAndParse('castvote/%d/' % vote_id, code=HTTP_OK)
+        self.assertEqual(data["is_public"], True)
+        self.assertEqual(data["is_direct"], True)
+        self.assertEqual(data["is_counted"], False)
+        self.assertTrue(data["invalidated_at_date"] is None)
+
+        # admin stop the election
+        self.login('david', 'david')
+        orig_data = dict(action='stop')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+    def test_cancel_vote_by_removing_membership(self):
+        # create election as admin
+        self.login('david', 'david')
+        data = self.postAndParse('agora/1/action/', data=self.base_election_data,
+            code=HTTP_OK, content_type='application/json')
+        election_id = data['id']
+
+        # start election
+        orig_data = dict(action='start')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # user1 joins the agora
+        self.login('user1', '123')
+        orig_data = dict(action='join')
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # vote as user1
+        vote_data = {
+            'is_vote_secret': False,
+            'question0': "bar",
+            'action': 'vote',
+            'reason': "becuase of .. yes"
+        }
+        data = self.postAndParse('election/%d/action/' % election_id,
+            data=vote_data, code=HTTP_OK, content_type='application/json')
+        vote_id = data['id']
+
+        # vote appears in direct votes
+        data = self.getAndParse('election/%d/direct_votes/' %  election_id,
+            code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 1)
+
+        # admin removes user1 membership and thus makes his vote not count
+        self.login('david', 'david')
+        orig_data = dict(action='remove_membership', username='user1',
+            goodbye_message="Goodbye!")
+        data = self.post('agora/1/action/', data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # vote doesn't appear in direct votes
+        data = self.getAndParse('election/%d/direct_votes/' %  election_id,
+            code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 0)
+
+        # but appears in cast_votes, because there not counting votes are also
+        # shown as long as they are not invalid
+        data = self.getAndParse('election/%d/cast_votes/' %  election_id,
+            code=HTTP_OK)
+        self.assertEqual(len(data['objects']), 1)
+
+        # and vote can be consulted and it's not counted
+        data = self.getAndParse('castvote/%d/' % vote_id, code=HTTP_OK)
+        self.assertEqual(data["is_public"], True)
+        self.assertEqual(data["is_direct"], True)
+        self.assertEqual(data["is_counted"], False)
+        self.assertTrue(data["invalidated_at_date"] is None)
+
     def test_meek_stv(self):
         election_data = {
             'action': "create_election",
