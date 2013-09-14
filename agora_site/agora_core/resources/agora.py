@@ -901,6 +901,14 @@ class AgoraResource(GenericResource):
             action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
+        # cancel user votes in active untallied elections in this agora
+        # so that they don't count
+        for e in agora.get_open_elections():
+            for vote in CastVote.filter(voter=request.user, is_counted=True,
+                is_direct=True, invalidated_at_date=None):
+                vote.is_counted = False
+                vote.save()
+
         # Mail to the user
         if request.user.get_profile().has_perms('receive_email_updates'):
             translation.activate(request.user.get_profile().lang_code)
