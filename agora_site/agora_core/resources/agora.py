@@ -32,7 +32,7 @@ from actstream.signals import action
 
 from guardian.shortcuts import assign, remove_perm
 
-from agora_site.agora_core.models import Agora
+from agora_site.agora_core.models import Agora, CastVote
 from agora_site.agora_core.tasks.agora import (send_request_membership_mails,
     send_request_admin_membership_mails, send_mail_to_members)
 from agora_site.agora_core.resources.user import TinyUserResource
@@ -815,6 +815,15 @@ class AgoraResource(GenericResource):
         agora.members.remove(user)
         agora.save()
 
+
+        # cancel user votes in active untallied elections in this agora
+        # so that they don't count
+        for e in agora.get_open_elections():
+            for vote in CastVote.objects.filter(voter=user, election=e,
+                is_counted=True, is_direct=True, invalidated_at_date=None):
+                vote.is_counted = False
+                vote.save()
+
         # create an action for the event
         action.send(request.user, verb='removed member',
             action_object=agora, ipaddr=request.META.get('REMOTE_ADDR'),
@@ -939,8 +948,8 @@ class AgoraResource(GenericResource):
         # cancel user votes in active untallied elections in this agora
         # so that they don't count
         for e in agora.get_open_elections():
-            for vote in CastVote.filter(voter=request.user, is_counted=True,
-                is_direct=True, invalidated_at_date=None):
+            for vote in CastVote.objects.filter(voter=request.user, election=e,
+                is_counted=True, is_direct=True, invalidated_at_date=None):
                 vote.is_counted = False
                 vote.save()
 
