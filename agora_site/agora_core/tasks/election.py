@@ -30,11 +30,13 @@ def start_election(election_id, is_secure, site_id, remote_addr, user_id):
     if election.extra_data and "started" in election.extra_data:
         return
 
-    if not election.voting_starts_at_date or not election.frozen_at_date or\
-        election.voting_starts_at_date > timezone.now():
+    if not election.voting_starts_at_date or\
+            election.voting_starts_at_date > timezone.now():
         return
 
     election.voting_starts_at_date = timezone.now()
+    if election.frozen_at_date is None:
+        election.frozen_at_date = election.voting_starts_at_date
     election.create_hash()
     if not election.extra_data:
         election.extra_data = dict(started=True)
