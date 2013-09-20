@@ -40,9 +40,8 @@
         {% crispy register_form %}
     </div>
 
-
-    <div class="span3 use-account">
-        {% if AUTHENTICATION_BACKENDS|list_contains:"social_auth.backends.twitter.TwitterBackend" %}
+    {% if AUTHENTICATION_BACKENDS|list_contains:"social_auth.backends.twitter.TwitterBackend" %}
+        <div class="span3 use-account">
             <h3>{% trans "Use your account in.." %}</h3>
             <p>{% trans "You can log in using your account in Twitter." %}</p>
             <div>
@@ -52,7 +51,10 @@
             </div>
             <strong>{% trans "Privacy" %}</strong>
             <small>{% trans "We won't give any private data to Twitter and we will not use your profile to post anything without your permission." %}</small>
-        {% elif AUTHENTICATION_BACKENDS|list_contains:'agora_site.agora_core.backends.fnmt.FNMTBackend' %}
+        </div>
+    {% endif %}
+    {% if AUTHENTICATION_BACKENDS|list_contains:'agora_site.agora_core.backends.fnmt.FNMTBackend' %}
+        <div class="span3 use-account">
             <h3>{% trans "Enter with FNMT" %}</h3>
             <p>
             {% trans 'You can enter this site using your FNMT certificate. <a href="#">More information here</a>.' %}</p>
@@ -66,8 +68,8 @@
             <strong>{% trans "Terms of service" %}</strong>
             <small>
             {% url terms-of-service as tos_url %}{% blocktrans %}When you enter using the FNMT certificate you're accepting our <a href="{{tos_url}}">Terms of Service.</a>{% endblocktrans %}</small>
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}
