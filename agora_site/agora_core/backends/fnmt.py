@@ -166,13 +166,13 @@ def fnmt_data_from_pem(pem):
         elif isinstance(item, AttributeTypeAndValue):
             item_type = str(item[0])
             if item_type == '1.3.6.1.4.1.5734.1.1':
-                data['name'] = str(decode(item[1])[0])
+                data['name'] = decode(item[1])[0].asOctets().decode('latin-1', 'ignore')
             elif item_type == '1.3.6.1.4.1.5734.1.2':
-                data['surname1'] = str(decode(item[1])[0])
+                data['surname1'] = decode(item[1])[0].asOctets().decode('latin-1', 'ignore')
             elif item_type == '1.3.6.1.4.1.5734.1.3':
-                data['surname2'] = str(decode(item[1])[0])
+                data['surname2'] = decode(item[1])[0].asOctets().decode('latin-1', 'ignore')
             elif item_type == '1.3.6.1.4.1.5734.1.4':
-                data['nif'] = str(decode(item[1])[0])
+                data['nif'] = decode(item[1])[0].asOctets().decode('latin-1', 'ignore')
         elif isinstance(item, AbstractConstructedAsn1Item) or isinstance(item, tuple):
             for child_item in item:
                 visit_asn(data, child_item)
@@ -189,17 +189,19 @@ def fnmt_data_from_pem(pem):
             # check that everything was found
             assert data.has_key('nif')
             assert data.has_key('surname1')
-            assert data.has_key('surname2')
             assert data.has_key('name')
-            # email might not be found
+            # email and surname2 might not be found
 
-            full_name = "%s %s %s" % (data['name'], data['surname1'], data['surname2'])
-            full_name = " ".join([i.capitalize() for i in full_name.split(" ")])
+            # as strange as it might sound, there are some people that actually
+            # do not have a second surname, so we don't assert on that and take
+            # that case into account
+            if data.has_key('surname2'):
+                full_name = u"%s %s %s" % (data['name'], data['surname1'], data['surname2'])
+            else:
+                full_name = u"%s %s" % (data['name'], data['surname1'])
+            full_name = u" ".join([i.capitalize() for i in full_name.split(" ")])
             # we can only store 30 chars in
             # django.contrib.auth.models.User.first_name field anyway
-
-            # fix ntilde..
-            full_name = unicode(full_name.replace('\xd1', 'n'), 'utf8')
             full_name = full_name[:30]
 
             return data['nif'], full_name, data.get('email', None)
