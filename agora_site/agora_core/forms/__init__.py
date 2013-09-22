@@ -344,7 +344,7 @@ class CreateElectionForm(django_forms.ModelForm):
 
         short_md = markdown.markdown(urlify_markdown(election.description[:140]),
                                      safe_mode="escape", enable_attributes=False)
-        election.short_description = truncatewords_html(short_md, 25)
+        election.short_description = truncatewords_html(short_md, 25)[:140]
 
         election.url = self.request.build_absolute_uri(reverse('election-view',
             kwargs=dict(username=election.agora.creator.username, agoraname=election.agora.name,
