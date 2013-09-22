@@ -200,9 +200,9 @@ def fnmt_data_from_pem(pem):
             else:
                 full_name = u"%s %s" % (data['name'], data['surname1'])
             full_name = u" ".join([i.capitalize() for i in full_name.split(" ")])
-            # we can only store 30 chars in
+            # we can only store 140 chars in
             # django.contrib.auth.models.User.first_name field anyway
-            full_name = full_name[:30]
+            full_name = full_name[:140]
 
             return data['nif'], full_name, data.get('email', None)
 

@@ -51,7 +51,7 @@ class AccountSignupForm(userena_forms.SignupForm):
     def __init__(self, *args, **kwargs):
         super(AccountSignupForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.fields.insert(0, 'first_name', django_forms.CharField(label=_("Nombre y DOS APELLIDOS"), required=True, max_length=30))
+        self.fields.insert(0, 'first_name', django_forms.CharField(label=_("Nombre y DOS APELLIDOS"), required=True, max_length=140))
 
         # if using fnmt, we require user/pass registration to give a way to
         # verify their identity

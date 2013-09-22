@@ -355,3 +355,13 @@ post_save.connect(create_user_profile, sender=User)
 from tastypie.models import create_api_key
 post_save.connect(create_api_key, sender=User)
 
+
+from django.db.models.signals import class_prepared
+def modify_auth_user(sender, *args, **kwargs):
+    # You can't just do `if sender == django.contrib.auth.models.User`
+    # because you would have to import the model
+    # You have to test using __name__ and __module__
+    if sender.__name__ == "User" and sender.__module__ == "django.contrib.auth.models":
+        sender._meta.get_field("first_name").max_length = 140
+
+class_prepared.connect(modify_auth_user)
