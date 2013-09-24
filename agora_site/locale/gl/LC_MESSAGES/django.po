@@ -29,6 +29,10 @@ msgstr "English"
 msgid "Galician"
 msgstr "Galego"
 
+#: settings.py:73
+msgid "Basque"
+msgstr "Éuscaro"
+
 #: accounts/forms.py:52 accounts/forms.py:132
 #: accounts/templates/accounts/profile_detail.html:24
 msgid "Name"

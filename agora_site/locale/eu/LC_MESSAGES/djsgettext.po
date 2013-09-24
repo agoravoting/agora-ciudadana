@@ -1,0 +1,1063 @@
+# Spanish Translation for client side i18n strings
+# Copyright (C) 2013 Agora Ciudadana Translation Team
+# This file is distributed under the same license as the agora-ciudadana package.
+#
+# Luis Cuerdo <email@luiscuerdo.com>, 2013
+# Eduardo Robles Elvira <edulix@gmail.com>, 2013
+msgid ""
+msgstr "Project-Id-Version: 2.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-06 12:02+0200\n"
+"PO-Revision-Date: 2013-06-04 17:45-0000\n"
+"Last-Translator: \n"
+"Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-devel@googlegroups.com>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.5.5\n"
+
+#: agora_core/templates/agora_core/user_settings.html:19
+#: agora_core/templates/agora_core/user_settings.html:32
+msgid "Profile"
+msgstr "Profila"
+
+#: agora_core/templates/agora_core/user_settings.html:22
+msgid "User settings"
+msgstr "Erabiltzailearen ezarpenak"
+
+#: agora_core/templates/agora_core/user_settings.html:25
+msgid "Account"
+msgstr "Kontua"
+
+#: agora_core/templates/agora_core/user_settings.html:36
+msgid "Full name"
+msgstr "Izen osoa"
+
+#: agora_core/templates/agora_core/user_settings.html:45
+msgid "Example: Pepito de los Palotes"
+msgstr "Adibidea: Iker Arregi"
+
+#: agora_core/templates/agora_core/user_settings.html:52
+msgid "Short Description"
+msgstr "Aurkezpen laburra"
+
+#: agora_core/templates/agora_core/user_settings.html:62
+msgid "Say something about yourself (140 chars max)"
+msgstr "Esaguzu zerbait zuri buruz (gehienez 140 karaktere)"
+
+#: agora_core/templates/agora_core/user_settings.html:69
+#: agora_core/templates/agora_core/client/agora_tabs.html:6
+msgid "Biography"
+msgstr "Biografia"
+
+#: agora_core/templates/agora_core/user_settings.html:76
+msgid "Tell us about you, use as much text as needed"
+msgstr "Esaguzu nahi duzuna zuri buruz, nahi bezain beste leku duzu hemen!"
+
+#: agora_core/templates/agora_core/user_settings.html:85
+msgid "Save profile"
+msgstr "Gorde profila"
+
+#: agora_core/templates/agora_core/user_settings.html:93
+msgid "User picture"
+msgstr "Erabiltzailearen irudia"
+
+#: agora_core/templates/agora_core/user_settings.html:114
+msgid "Use gravatar"
+msgstr "Erabiltzailearen Gravatar"
+
+#: agora_core/templates/agora_core/user_settings.html:131
+msgid "Use initials"
+msgstr "Erabiltzailearen inizialak"
+
+#: agora_core/templates/agora_core/user_settings.html:138
+msgid "Upload a new image"
+msgstr "Igo irudi berri bat"
+
+#: agora_core/templates/agora_core/user_settings.html:157
+msgid "Language"
+msgstr "Hizkuntza"
+
+#: agora_core/templates/agora_core/user_settings.html:166
+#: agora_core/templates/agora_core/user_settings.html:173
+msgid "Spanish"
+msgstr "Euskara"
+
+#: agora_core/templates/agora_core/user_settings.html:179
+msgid "English"
+msgstr "Ingelesa"
+
+#: agora_core/templates/agora_core/user_settings.html:189
+msgid "Email settings"
+msgstr "Posta elektronikoaren ezarpenak"
+
+#: agora_core/templates/agora_core/user_settings.html:194
+msgid "Email"
+msgstr "Helbide elektronikoa"
+
+#: agora_core/templates/agora_core/user_settings.html:203
+msgid "Email is visible by agora admins"
+msgstr "Agorako administratzaileek ikus dezakete helbide elektronikoa"
+
+#: agora_core/templates/agora_core/user_settings.html:216
+msgid "Receive email updates"
+msgstr "Jaso egunerapenak mezu elektronikoaren bidez"
+
+#: agora_core/templates/agora_core/user_settings.html:225
+msgid "Save email settings"
+msgstr "Gorde posta elektronikoaren ezarpenak"
+
+#: agora_core/templates/agora_core/user_settings.html:235
+#: agora_core/templates/agora_core/user_settings.html:286
+msgid "Change password"
+msgstr "Aldatu pasahitza"
+
+#: agora_core/templates/agora_core/user_settings.html:240
+msgid "Current password"
+msgstr "Uneko pasahitza"
+
+#: agora_core/templates/agora_core/user_settings.html:249
+msgid "Provide your current password for security, required field"
+msgstr "Idatzi zure uneko pasahitza segurtasuna bermatzeko, beharrezkoa da eremu hau betetzea"
+
+#: agora_core/templates/agora_core/user_settings.html:257
+msgid "New password"
+msgstr "Pasahitza berria"
+
+#: agora_core/templates/agora_core/user_settings.html:266
+msgid "Specify your new password if you want to change it, or leave it blank"
+msgstr "Idatzi zure pasahitza berria, aldatu nahi ez baduzu, utzi eremu hau hutsik"
+
+#: agora_core/templates/agora_core/user_settings.html:273
+msgid "Repeat new password"
+msgstr "Errepikatu pasahitza"
+
+#: agora_core/templates/agora_core/user_settings.html:294
+#: agora_core/templates/agora_core/user_settings.html:304
+msgid "Change username"
+msgstr "Aldatu erabiltzaile-izena"
+
+#: agora_core/templates/agora_core/user_settings.html:298
+#: agora_core/templates/agora_core/client/confirm_change_username_modal_dialog.html:6
+msgid "Changing your username can have unintended side effects."
+msgstr "Erabiltzaile-izena aldatzeak ustekabeko ondorioak eduki ditzake"
+
+#: agora_core/templates/agora_core/voting_booth.html:26
+msgid "Agora Voting Booth"
+msgstr "Agorako bozketa-gunea"
+
+#: agora_core/templates/agora_core/voting_booth.html:27
+msgid "Help!"
+msgstr "Laguntza!"
+
+#: agora_core/templates/agora_core/voting_booth.html:34
+#: agora_core/templates/agora_core/client/election_form.html:9
+msgid "Election"
+msgstr "Bozketa:"
+
+#: agora_core/templates/agora_core/voting_booth.html:34
+#: agora_core/templates/agora_core/client/action_ao_election.html:15
+#: agora_core/templates/agora_core/client/action_ao_election_v_voted.html:17
+#: agora_core/templates/agora_core/client/action_ao_election_v_voted_public.html:17
+#: agora_core/templates/agora_core/client/action_ao_election_v_voted_public_reason.html:17
+msgctxt "<election> at <agora>"
+msgid "at"
+msgstr "Agora:"
+
+#: agora_core/templates/agora_core/voting_booth.html:38
+msgid "Election fingerprint:"
+msgstr "Bozketaren hatz-marka"
+
+#: agora_core/templates/agora_core/voting_booth.html:55
+msgid "To cast a vote you will be led through the following steps:"
+msgstr "Botoa igortzeko hurrengo urratsak jarraitu behar dituzu"
+
+#: agora_core/templates/agora_core/voting_booth.html:57
+msgid "<strong>Select</strong> your options"
+msgstr "<strong>Hautatu</strong> zure aukerak"
+
+#: agora_core/templates/agora_core/voting_booth.html:58
+msgid "Answer the questions one by one."
+msgstr "Erantzun galderei banan banan"
+
+#: agora_core/templates/agora_core/voting_booth.html:60
+msgid "<strong>Review</strong> your choices"
+msgstr "<strong>Berrikusi</strong> zure aukerak"
+
+#: agora_core/templates/agora_core/voting_booth.html:61
+msgid "All your choices will be presented to you for review."
+msgstr "Zure aukera guztiak erakutsiko dizkizugu berrikusteko"
+
+#: agora_core/templates/agora_core/voting_booth.html:63
+msgid "<strong>Submit</strong> your ballot"
+msgstr "<strong>Bidali</strong> botoa"
+
+#: agora_core/templates/agora_core/voting_booth.html:64
+msgid "Proceed to cast your ballot for tallying."
+msgstr "Bidali botoa kontaketan erabiltzeko."
+
+#: agora_core/templates/agora_core/voting_booth.html:68
+msgid ""
+"Currently, you have delegated your vote in this agora. So if you don't vote, "
+"this delegate can vote for you."
+msgstr "Unean zure botoa ordezkatu duzu agora honetan. Bozkatzen ez baduzu, zure ordezkariak bozkatuko du zure ordez."
+
+#: agora_core/templates/agora_core/voting_booth.html:71
+msgid "Start voting"
+msgstr "Hasi bozketa"
+
+#: agora_core/templates/agora_core/voting_booth.html:81
+#: agora_core/templates/agora_core/voting_booth.html:134
+#: agora_core/templates/agora_core/voting_booth.html:196
+msgid "1. Select"
+msgstr "1. Hautatu"
+
+#: agora_core/templates/agora_core/voting_booth.html:82
+#: agora_core/templates/agora_core/voting_booth.html:135
+#: agora_core/templates/agora_core/voting_booth.html:197
+msgid "2. Review"
+msgstr "2. Berrikuspena"
+
+#: agora_core/templates/agora_core/voting_booth.html:83
+#: agora_core/templates/agora_core/voting_booth.html:136
+#: agora_core/templates/agora_core/voting_booth.html:198
+msgid "3. Submit"
+msgstr "3. Bidali"
+
+#: agora_core/templates/agora_core/voting_booth.html:91
+#: agora_core/templates/agora_core/voting_booth.html:144
+#, php-format
+msgid "Question #%s of %s"
+msgstr "#%s/%s galdera"
+
+#: agora_core/templates/agora_core/voting_booth.html:95
+msgid "Select up to one answer"
+msgstr "Hautatu gehienez aukera bat"
+
+#: agora_core/templates/agora_core/voting_booth.html:97
+msgid "Select one answer"
+msgstr "Hautatu aukera bat"
+
+#: agora_core/templates/agora_core/voting_booth.html:108
+msgid "Remove selection"
+msgstr "Kendu hautapena"
+
+#: agora_core/templates/agora_core/voting_booth.html:114
+msgid ""
+"You haven't chosen an option. Please select one, it's mandatory for this "
+"question."
+msgstr "Ez duzu aukerarik hautatu. Hautatu bat, beharrezkoa da galdera honetan."
+
+#: agora_core/templates/agora_core/voting_booth.html:117
+#: agora_core/templates/agora_core/voting_booth.html:186
+msgid "Continue"
+msgstr "Jarraitu"
+
+#: agora_core/templates/agora_core/voting_booth.html:148
+#: agora_core/templates/agora_core/client/election_results.html:14
+#, php-format
+msgid "Select up to %s answers"
+msgstr "Hautatu gehienez %s erantzun"
+
+#: agora_core/templates/agora_core/voting_booth.html:150
+#: agora_core/templates/agora_core/client/election_results.html:16
+#, php-format
+msgid "Select from %s to %s answers"
+msgstr "Hautatu %s eta %s erantzun artean"
+
+#: agora_core/templates/agora_core/voting_booth.html:154
+#: agora_core/templates/agora_core/client/election_results.html:11
+#, php-format
+msgid "%s winners"
+msgstr "%s irabazle"
+
+#: agora_core/templates/agora_core/voting_booth.html:160
+msgid "Available choices"
+msgstr "Aukerak"
+
+#: agora_core/templates/agora_core/voting_booth.html:161
+msgid "Click to add/remove to your ballot"
+msgstr "Egin klik zure botoa gehitu/kentzeko"
+
+#: agora_core/templates/agora_core/voting_booth.html:174
+msgid "Your ballot:"
+msgstr "Zure botoa:"
+
+#: agora_core/templates/agora_core/voting_booth.html:180
+#, php-format
+msgid "It's mandatory to select at least %s choices in this question."
+msgstr "Beharrezkoa da galdera honetan gutxienez %s aukera hautatzea."
+
+#: agora_core/templates/agora_core/voting_booth.html:183
+#, php-format
+msgid ""
+"You reached the maximum number of allowed choices (%s). You can change your "
+"choices removing current choices first."
+msgstr "Baimendutako aukera-kopuruen gehiengora heldu zara (%s). Zure aukerak aldatzeko, kendu aurrena orain arte hautatutakoak."
+
+#: agora_core/templates/agora_core/voting_booth.html:203
+msgid "Review your choices"
+msgstr "Berrikusi zure aukerak"
+
+#: agora_core/templates/agora_core/voting_booth.html:208
+#, php-format
+msgid "Question #%s"
+msgstr "%s. galdera"
+
+#: agora_core/templates/agora_core/voting_booth.html:210
+msgid "Change choices"
+msgstr "Aldatu aukerak"
+
+#: agora_core/templates/agora_core/voting_booth.html:224
+msgid "&lt;Blank vote&gt;"
+msgstr "&lt;Boto zuria&gt;"
+
+#: agora_core/templates/agora_core/voting_booth.html:232
+msgid "Vote publicly"
+msgstr "Boto publikoa"
+
+#: agora_core/templates/agora_core/voting_booth.html:234
+#: agora_core/templates/agora_core/voting_booth.html:241
+msgid "NOTE"
+msgstr "OHARRA"
+
+#: agora_core/templates/agora_core/voting_booth.html:235
+msgid ""
+"Choosing this will allow other users to <strong>view your vote</strong>."
+msgstr "Honek esan nahi du beste erabiltzaileek <strong>zure botoa ikus dezaketela</strong>."
+
+#: agora_core/templates/agora_core/voting_booth.html:237
+msgid ""
+"Others users may <strong>delegate</strong> their vote to you for elections "
+"in this agora."
+msgstr "Beste kideen <strong>ordezkaria</strong> izan zaitezke agora honetako bozketetan."
+
+#: agora_core/templates/agora_core/voting_booth.html:242
+msgid ""
+"This will make your vote <strong>public</strong>. You cannot vote in secret "
+"in this election. This might be because of different reasons: maybe you are "
+"not a member in this agora, or perhaps this election allows only public vote."
+msgstr "Zure botoa <strong>publikoa</strong> izango da. Ezin duzu isilpean bozkatu hauteskunde honetan. Hainbat arrazoi egon daitezke horretarako: agian ez zara agora honetako kidea edo agian hauteskunde honek boto publikoak bakarrik onartzen ditu."
+
+#: agora_core/templates/agora_core/voting_booth.html:245
+msgid "Why did you vote this way? (optional)"
+msgstr "Zer bozkatu duzun azaldu nahi duzu? (aukerazkoa)"
+
+#: agora_core/templates/agora_core/voting_booth.html:247
+msgid "Confirm choices and cast ballot"
+msgstr "Baieztatu aukerak eta igorri botoa"
+
+#: agora_core/templates/agora_core/voting_booth.html:255
+msgid "Vote Successfully Cast"
+msgstr "Botoa behar bezala igorri duzu"
+
+#: agora_core/templates/agora_core/voting_booth.html:260
+msgid ""
+"Congratulations, your vote has been <strong>successfully cast</strong>. You "
+"will soon receive a confirmation email"
+msgstr "Zorionak, zure botoa <strong>ongi igorri duzu</strong>. Laster jasoko duzu mezu bat baieztapenarekin"
+
+#: agora_core/templates/agora_core/voting_booth.html:262
+msgid "Go back to the election page"
+msgstr "Itzuli bozketaren orrira"
+
+#: agora_core/templates/agora_core/voting_booth.html:267
+#, php-format
+msgid ""
+"You can <strong>delegate your vote</strong> so that <strong>in future "
+"elections in this agora</strong> <a href=\"%s\">%s</a> this delegate votes "
+"for you if you don't find the time to vote"
+msgstr "<strong>Ordezkari bat aukera dezakezu</strong> <strong>Agora honetako etorkizuneko bozketetarako</strong>. Ordezkariak zure ordez bozkatuko du <a href=\"%s\">%s</a>zuk bozkatzen ez baduzu"
+
+#: agora_core/templates/agora_core/voting_booth.html:271
+#, php-format
+msgid "Choose a delegate for agora %s"
+msgstr "Hautatu ordezkari bat %s agoran"
+
+#: agora_core/templates/agora_core/client/action_ao_agora.html:14
+#: agora_core/templates/agora_core/client/action_t_agora.html:15
+#: agora_core/templates/agora_core/client/action_t_agora_ao_comment.html:15
+msgctxt "<verb> agora <agora>"
+msgid "agora"
+msgstr "ágora"
+
+#: agora_core/templates/agora_core/client/action_ao_agora_t_user.html:14
+msgctxt "at agora <agora>"
+msgid "at agora"
+msgstr "Agora:"
+
+#: agora_core/templates/agora_core/client/action_ao_election.html:14
+msgctxt "election <election>"
+msgid "election"
+msgstr "bozketa"
+
+#: agora_core/templates/agora_core/client/action_ao_election_v_voted.html:15
+#: agora_core/templates/agora_core/client/action_ao_election_v_voted_public.html:15
+#: agora_core/templates/agora_core/client/action_ao_election_v_voted_public_reason.html:15
+msgctxt "<verb> on election <election>"
+msgid "on election"
+msgstr "bozketa:"
+
+#: agora_core/templates/agora_core/client/action_ao_election_v_voted_public.html:25
+#: agora_core/templates/agora_core/client/action_ao_election_v_voted_public_reason.html:25
+msgid "Answered:"
+msgstr "Erantzuna:"
+
+#: agora_core/templates/agora_core/client/action_t_election.html:15
+#: agora_core/templates/agora_core/client/action_t_election_ao_comment.html:15
+msgctxt "<verb> election <election>"
+msgid "election"
+msgstr "bozketa"
+
+#: agora_core/templates/agora_core/client/action_t_election.html:17
+#: agora_core/templates/agora_core/client/action_t_election_ao_comment.html:17
+msgctxt "<election> at agora <agora>"
+msgid "at agora"
+msgstr "Agora:"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:3
+msgid "changed settings"
+msgstr "aldatu ezarpenak"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:4
+msgid "started following"
+msgstr "kideak hau jarraitzen du:"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:5
+msgid "started voting period"
+msgstr "bozketa hasi du"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:6
+msgid "created"
+msgstr "kideak hau sortu du:"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:7
+msgid "published results"
+msgstr "kideak emaitzak argitaratu ditu"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:8
+msgid "joined"
+msgstr "kidea hona elkartu da"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:9
+msgid "delegated"
+msgstr "kideak ordezkari hau hautatu du:"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:10
+msgid "frozen"
+msgstr "izoztuta"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:11
+msgid "approved"
+msgstr "kideak hau onartu du:"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:12
+msgid "proposed"
+msgstr "kideak hau proposatu du"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:13
+msgid "commented"
+msgstr "kideak honi buruz idatzi du:"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:14
+msgid "vote canceled"
+msgstr "botoa ezeztatuta"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:15
+msgid "archived"
+msgstr "kideak hau artxibatu du"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:16
+msgid "requested membership"
+msgstr "kideak kidetza eskatu du hemen:"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:17
+msgid "denied membership request"
+msgstr "kideak kidetza-eskaera ukatu du"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:18
+msgid "added member"
+msgstr "kideak kide hau gehitu du"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:19
+msgid "left"
+msgstr "kideak hau utzi du"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:20
+msgid "denied admin membership request"
+msgstr "kideak administratzaile izateko eskaera ukatu du"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:21
+msgid "added admin"
+msgstr "administratzailea gehitu du"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:22
+msgid "removed admin permissions"
+msgstr "administratzaile baimenak kendu ditu"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:23
+msgid "left admin permissions"
+msgstr "ez da jada administratzailea"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:24
+msgid "canceled voto delegation"
+msgstr "botoaren ordezkatzea ezeztatu du"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:25
+msgid "edited"
+msgstr "kideak hau editatu du"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:26
+msgid "canceled requested admin membership"
+msgstr "administratzailea izateko eskaera ezeztatu du"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:27
+msgid "canceled his/her membership request"
+msgstr "kide izateko eskaera ezeztatu du"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:28
+msgid "made admin"
+msgstr "administratzaile bihurtu da"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:29
+msgid "settings updated"
+msgstr "ezarpenak eguneratuta"
+
+#: agora_core/templates/agora_core/client/actions_i18n.html:30
+msgid "voted"
+msgstr "kideak hau bozkatu du:"
+
+#: agora_core/templates/agora_core/client/add_members_modal_dialog.html:2
+msgid "Add members"
+msgstr "Gehitu kideak"
+
+#: agora_core/templates/agora_core/client/add_members_modal_dialog.html:6
+msgid ""
+"Write the emails or usernames of the people you wants to invite, separated "
+"by commas. If an user exists in agora with a given email or username, it "
+"will be added as a member of this agora directly. Otherwise, an email with "
+"an invitation will be sent if it's a valid email address."
+msgstr "Idatzi gonbidatu nahi duzun jendearen helbide elektronikoa edo erabiltzaile-izena, banandu koma bidez. Erabiltzaile bat badago idatzitako erabiltzaile-izen edo helbide elektronikoarekin, kide gisa gehituko da zuzenean agora honetara. Bestela, gonbidapen bat bidaliko zaio bere helbide elektronikora, helbidea zuzena bada."
+
+#: agora_core/templates/agora_core/client/agora_calendar.html:3
+#: agora_core/templates/agora_core/client/calendar_elections.html:18
+msgid "Calendar"
+msgstr "Egutegia"
+
+#: agora_core/templates/agora_core/client/agora_calendar.html:4
+#: agora_core/templates/agora_core/client/calendar_elections.html:21
+#: agora_core/templates/agora_core/client/election_form.html:5
+#: agora_core/templates/agora_core/client/election_form.html:62
+#: agora_core/templates/agora_core/client/election_form.html:183
+msgid "Create election"
+msgstr "Sortu bozketa"
+
+#: agora_core/templates/agora_core/client/agora_calendar.html:5
+#: agora_core/templates/agora_core/client/calendar_elections.html:34
+msgid "Search..."
+msgstr "Bilatu..."
+
+#: agora_core/templates/agora_core/client/agora_calendar.html:13
+msgid "No elections yet, perhaps you want to create one?"
+msgstr "Oraindik ez dago bozketarik, bozketa bat sortu nahi duzu?"
+
+#: agora_core/templates/agora_core/client/agora_tabs.html:3
+msgid "Activity"
+msgstr "Jarduera"
+
+#: agora_core/templates/agora_core/client/agora_tabs.html:9
+msgid "Comments"
+msgstr "Iruzkinak"
+
+#: agora_core/templates/agora_core/client/agora_tabs.html:12
+#: agora_core/templates/agora_core/client/top_navbar.html:45
+#: agora_core/templates/agora_core/client/top_navbar.html:72
+msgid "Elections"
+msgstr "Bozketak"
+
+#: agora_core/templates/agora_core/client/agora_tabs.html:16
+msgid "Members"
+msgstr "Kideak"
+
+#: agora_core/templates/agora_core/client/agora_tabs.html:21
+msgid "Admin"
+msgstr "Administratzailea"
+
+#: agora_core/templates/agora_core/client/calendar_elections.html:31
+msgid "Find an agora to create an election"
+msgstr "Bilatu bozketa bat sortzeko agora bat"
+
+#: agora_core/templates/agora_core/client/calendar_elections.html:40
+msgid "No elections found in the calendar"
+msgstr "Ez da hauteskunderik aurkitu egutegian"
+
+#: agora_core/templates/agora_core/client/confirm_change_username_modal_dialog.html:2
+msgid "I understand, let's change my username"
+msgstr "Ados, aldatu erabiltzaile-izena"
+
+#: agora_core/templates/agora_core/client/confirm_change_username_modal_dialog.html:11
+msgid "Really want to change your username??"
+msgstr "Benetan aldatu nahi duzu zure erabiltzaile-izena?"
+
+#: agora_core/templates/agora_core/client/confirm_change_username_modal_dialog.html:17
+msgid "Change my username"
+msgstr "Aldatu erabiltzaile-izena"
+
+#: agora_core/templates/agora_core/client/confirm_change_username_modal_dialog.html:28
+msgid "Enter a new username"
+msgstr "Sartu erabiltzaile-izen berri bat"
+
+#: agora_core/templates/agora_core/client/confirm_delegate_modal_dialog.html:2
+msgid "Yes"
+msgstr "Bai"
+
+#: agora_core/templates/agora_core/client/confirm_delegate_modal_dialog.html:3
+msgid "No"
+msgstr "Ez"
+
+#: agora_core/templates/agora_core/client/confirm_delegate_modal_dialog.html:7
+#, php-format
+msgid ""
+"When you choose someone as your delegate, he/she will vote in your name. Do "
+"you want to choose %s as delegate on agora %s?"
+msgstr "Norbait ordezkari gisa hautatzen baduzu, berak zure izenean bozkatuko du. %s kidea ordezkari gisa hautatu nahi duzu %s agoran?"
+
+#: agora_core/templates/agora_core/client/election_form.html:11
+#: agora_core/templates/agora_core/client/election_form.html:56
+#: agora_core/templates/agora_core/client/election_form.html:177
+msgid "Add question"
+msgstr "Gehitu galdera"
+
+#: agora_core/templates/agora_core/client/election_form.html:17
+msgid "Name"
+msgstr "Izena"
+
+#: agora_core/templates/agora_core/client/election_form.html:19
+msgid "Election name"
+msgstr "Bozketaren izena"
+
+#: agora_core/templates/agora_core/client/election_form.html:23
+msgid "Description"
+msgstr "Azalpena"
+
+#: agora_core/templates/agora_core/client/election_form.html:25
+msgid "Election description"
+msgstr "Bozketaren azalpena"
+
+#: agora_core/templates/agora_core/client/election_form.html:31
+msgid "Allow secret voting"
+msgstr "Baimendu isilpeko botoa"
+
+#: agora_core/templates/agora_core/client/election_form.html:35
+msgid "All votes are public"
+msgstr "Boto guztiak publikoak dira"
+
+#: agora_core/templates/agora_core/client/election_form.html:41
+msgid "Schedule start/end voting period"
+msgstr "Antolatu bozketa-aldiaren hasiera eta amaiera"
+
+#: agora_core/templates/agora_core/client/election_form.html:41
+msgid "Optional"
+msgstr "Aukerakoa"
+
+#: agora_core/templates/agora_core/client/election_form.html:46
+msgid "Start voting at.."
+msgstr "Bozketaren hasiera:"
+
+#: agora_core/templates/agora_core/client/election_form.html:49
+msgid "End voting at.."
+msgstr "Bozketaren amaiera:"
+
+#: agora_core/templates/agora_core/client/election_form.html:64
+#: agora_core/templates/agora_core/client/election_form.html:185
+msgid "Save election"
+msgstr "Gorde bozketa"
+
+#: agora_core/templates/agora_core/client/election_form.html:87
+msgid "Question #"
+msgstr "Galdera zenbakia"
+
+#: agora_core/templates/agora_core/client/election_form.html:95
+#: agora_core/templates/agora_core/client/election_form.html:97
+msgid "Question text"
+msgstr "Galderaren testua"
+
+#: agora_core/templates/agora_core/client/election_form.html:101
+msgid "Voting system"
+msgstr "Bozketa-sistema"
+
+#: agora_core/templates/agora_core/client/election_form.html:109
+msgid "Classic vote (Plurality)"
+msgstr "Boto arrunta (gehiengo erlatiboa)"
+
+#: agora_core/templates/agora_core/client/election_form.html:115
+msgid "Classic vote"
+msgstr "Boto arrunta"
+
+#: agora_core/templates/agora_core/client/election_form.html:116
+msgid ""
+"Each <strong>voter chooses only one candidate</strong> and the candidate "
+"with more votes wins."
+msgstr "<strong>Hautesle bakoitzak aukera bakarra hautatzen du</strong> eta boto gehien dituen aukerak irabazten du."
+
+#: agora_core/templates/agora_core/client/election_form.html:118
+#: agora_core/templates/agora_core/client/election_form.html:133
+msgid "Technical name"
+msgstr "Izen teknikoa"
+
+#: agora_core/templates/agora_core/client/election_form.html:118
+msgid "Plurality"
+msgstr "Gehiengo erlatiboa"
+
+#: agora_core/templates/agora_core/client/election_form.html:122
+msgid "Elect a list (Meek-STV)"
+msgstr "Hautatu zerrenda bat (Meek-STV)"
+
+#: agora_core/templates/agora_core/client/election_form.html:128
+msgid "Elect a list"
+msgstr "Hautatu zerrenda bat"
+
+#: agora_core/templates/agora_core/client/election_form.html:129
+msgid ""
+"Each <strong>voter choose a ranked list of candidates</strong>. This method "
+"allows to elect a list of winners."
+msgstr "<strong>Hautesle bakoitzak sailkatutako aukeren zerrenda bat hautatzen du</strong>. Metodo honen bidez irabazleen zerrenda bat aukera dezake."
+
+#: agora_core/templates/agora_core/client/election_form.html:131
+msgid ""
+"Under Single Transferable Vote, an elector has a single vote that is "
+"initially allocated to his most preferred candidate, and then, as the count "
+"proceeds and candidates are either elected or eliminated, the <strong>vote "
+"is transferred to other candidates</strong> according to the voter's stated "
+"preferences."
+msgstr "Single Transferable Vote sistemaren bidez, hautesleak boto bakar bat du, hau bere aukera gogokoenari emango dio eta gero, kontaketa burutzen den bitartean, aukerak hautatu edo kentzen dira, orduan bere hautaketa <strong>beste aukeretara transferitzen da</strong>, hautesleak adierazitako sailkapenaren arabera."
+
+#: agora_core/templates/agora_core/client/election_form.html:133
+msgid "Single Transferable Vote - Meek's method (Meek-STV)"
+msgstr "Single Transferable Vote - Meek metodoa (VUT-STV)"
+
+#: agora_core/templates/agora_core/client/election_form.html:142
+msgid "Elect a list of"
+msgstr "Hautatu zerrendan"
+
+#: agora_core/templates/agora_core/client/election_form.html:144
+msgid "winners"
+msgstr "aukera"
+
+#: agora_core/templates/agora_core/client/election_form.html:147
+msgid "A voter selects from"
+msgstr "Hautesleak "
+
+#: agora_core/templates/agora_core/client/election_form.html:149
+msgid "to"
+msgstr "eta"
+
+#: agora_core/templates/agora_core/client/election_form.html:151
+msgid "choices"
+msgstr "arteko aukera aukeratzen ditu"
+
+#: agora_core/templates/agora_core/client/election_form.html:155
+msgid "Choices"
+msgstr "Aukerak"
+
+#: agora_core/templates/agora_core/client/election_form.html:157
+msgid "Add a choice"
+msgstr "Gehitu aukera"
+
+#: agora_core/templates/agora_core/client/election_form.html:166
+msgid "A question needs at least two choices"
+msgstr "Galdera batek gutxienez bi erantzun behar ditu"
+
+#: agora_core/templates/agora_core/client/election_form.html:173
+msgid "Remove question"
+msgstr "Kendu erantzuna"
+
+#: agora_core/templates/agora_core/client/election_results.html:3
+msgid "Questions"
+msgstr "Galderak"
+
+#: agora_core/templates/agora_core/client/election_results.html:34
+msgid "Tally"
+msgstr "Kontaketa"
+
+#: agora_core/templates/agora_core/client/election_results.html:40
+msgid "Winners: "
+msgstr "Irabazleak: "
+
+#: agora_core/templates/agora_core/client/election_results.html:49
+msgid "Candidates"
+msgstr "Hautagaiak"
+
+#: agora_core/templates/agora_core/client/election_results.html:53
+#, php-format
+msgid "%sº round"
+msgstr "%s. txanda"
+
+#: agora_core/templates/agora_core/client/election_results.html:57
+msgid "Final"
+msgstr "Azkena"
+
+#: agora_core/templates/agora_core/client/election_results.html:77
+msgid "winner"
+msgstr "irabazlea"
+
+#: agora_core/templates/agora_core/client/election_results.html:92
+msgid "Winner: "
+msgstr "Irabazlea: "
+
+#: agora_core/templates/agora_core/client/election_results.html:98
+#, php-format
+msgid "%s votes"
+msgstr "%s boto"
+
+#: agora_core/templates/agora_core/client/mail_to_members.html:2
+msgid "Send email to members"
+msgstr "Bidali mezu elektroniko bat kideei"
+
+#: agora_core/templates/agora_core/client/mail_to_members.html:7
+msgid "Email subject:"
+msgstr "Mezuaren gaia:"
+
+#: agora_core/templates/agora_core/client/mail_to_members.html:12
+msgid "Email body:"
+msgstr "Mezuaren gorputza:"
+
+#: agora_core/templates/agora_core/client/mail_to_members.html:16
+msgid "Mail receivers:"
+msgstr "Mezuaren hartzaileak:"
+
+#: agora_core/templates/agora_core/client/mail_to_members.html:19
+msgid "All members"
+msgstr "Kide guztiak"
+
+#: agora_core/templates/agora_core/client/mail_to_members.html:20
+msgid "Admins only"
+msgstr "Administratzaileak bakarrik"
+
+#: agora_core/templates/agora_core/client/mail_to_members.html:21
+msgid "Delegates"
+msgstr "Ordezkariak"
+
+#: agora_core/templates/agora_core/client/mail_to_members.html:22
+msgid "Non-delegates"
+msgstr "Ez ordezkariak"
+
+#: agora_core/templates/agora_core/client/mail_to_members.html:23
+msgid "Requested membership"
+msgstr "Eskatu kidetza"
+
+#: agora_core/templates/agora_core/client/send_mail.html:2
+#: agora_core/templates/search/include-js-template-agora-profile.html:91
+msgid "Send mail"
+msgstr "Bidali mezu elektronikoa"
+
+#: agora_core/templates/agora_core/client/send_mail.html:7
+#, php-format
+msgid "Content of the email to %s:"
+msgstr "%s kideari bidaltzeko mezua:"
+
+#: agora_core/templates/agora_core/client/tallied_elections_view.html:3
+msgid "Last elections"
+msgstr "Azken bozketak"
+
+#: agora_core/templates/agora_core/client/tallied_elections_view.html:16
+#: agora_core/templates/agora_core/client/tallied_user_elections_view.html:16
+#, php-format
+msgid "(%s votes)"
+msgstr "(%s boto)"
+
+#: agora_core/templates/agora_core/client/tallied_elections_view.html:26
+#: agora_core/templates/agora_core/client/tallied_user_elections_view.html:26
+msgid "%s questions, %s votes, %s% participation"
+msgstr "%s galdera, %s boto, partaidetza: %s%"
+
+#: agora_core/templates/agora_core/client/tallied_elections_view.html:37
+msgid "No tallied elections yet"
+msgstr "Ez da bozketen kontaketarik osatu"
+
+#: agora_core/templates/agora_core/client/tallied_elections_view.html:44
+#: agora_core/templates/agora_core/client/tallied_user_elections_view.html:44
+msgid "... and more"
+msgstr "... eta gehiago"
+
+#: agora_core/templates/agora_core/client/tallied_user_elections_view.html:3
+msgid "Recent elections"
+msgstr "Azken bozketak"
+
+#: agora_core/templates/agora_core/client/tallied_user_elections_view.html:37
+msgid "Didn't participate in any tallied election yet"
+msgstr "Ez dago parte hartu duzun eta kontaketa amaitu duen bozketarik"
+
+#: agora_core/templates/agora_core/client/top_navbar.html:5
+msgid "Home"
+msgstr "Orrialde nagusia"
+
+#: agora_core/templates/agora_core/client/top_navbar.html:11
+#: agora_core/templates/agora_core/client/user-agora-list.html:3
+msgid "Agoras"
+msgstr "Agorak"
+
+#: agora_core/templates/agora_core/client/top_navbar.html:16
+msgid "My Agoras"
+msgstr "Nire Agorak"
+
+#: agora_core/templates/agora_core/client/top_navbar.html:31
+msgid "Explore existing agoras.."
+msgstr "Arakatu agorak..."
+
+#: agora_core/templates/agora_core/client/top_navbar.html:37
+msgid "Create an Agora"
+msgstr "Sortu Agora bat"
+
+#: agora_core/templates/agora_core/client/top_navbar.html:50
+msgid "Active elections"
+msgstr "Hauteskunde aktiboak"
+
+#: agora_core/templates/agora_core/client/top_navbar.html:65
+msgid "Explore other elections"
+msgstr "Arakatu hauteskundeak"
+
+#: agora_core/templates/agora_core/client/top_navbar.html:76
+msgid "People"
+msgstr "Jendea"
+
+#: agora_core/templates/agora_core/client/top_navbar.html:83
+msgid "Enter"
+msgstr "Sartu"
+
+#: agora_core/templates/agora_core/client/top_navbar.html:110
+msgid "Log out"
+msgstr "Itxi saioa"
+
+#: agora_core/templates/agora_core/client/top_navbar.html:116
+msgid "View my profile"
+msgstr "Ikusi nire profila"
+
+#: agora_core/templates/agora_core/client/top_navbar.html:122
+msgid "Account settings"
+msgstr "Kontuaren ezarpenak"
+
+#: agora_core/templates/agora_core/client/top_navbar.html:130
+msgid "Search"
+msgstr "Bilatu"
+
+#: agora_core/templates/agora_core/client/user-agora-list.html:15
+msgid "Delegate"
+msgstr "Ordeztu"
+
+#: agora_core/templates/agora_core/client/user-agora-list.html:24
+msgid "No agoras found"
+msgstr "Ez da agorarik aurkitu"
+
+#: agora_core/templates/agora_core/client/user_delegate_in_actions.html:6
+#, php-format
+msgid "Choose %s as delegate for.."
+msgstr "Hautatu %s zure ordezkari gisa"
+
+#: agora_core/templates/agora_core/client/user_delegate_in_actions.html:16
+#, php-format
+msgid "Choose as delegate in %s"
+msgstr "Hautatu ordezkari bat %s agoran"
+
+#: agora_core/templates/agora_core/client/vote_info.html:23
+msgid "Delegated votes in this election"
+msgstr "Ordeztutako botoak bozketa honetan"
+
+#: agora_core/templates/agora_core/client/vote_info.html:27
+msgid "Most influential delegate in this election"
+msgstr "Ordezkari nagusiena bozketa honetan"
+
+#: agora_core/templates/agora_core/client/vote_info.html:33
+msgid ""
+"A vote might not be counted because at the time the user emitted the vote "
+"this user was not a member of the Agora or was not part of the electorate, "
+"for example. However, if the vote is public, members of the electorate might "
+"delegate in this vote, and those delegations would be counted."
+msgstr "Baliteke boto bat ez kontatzea erabiltzaileak botoa igorritakoan erabiltzailea ez zelako agorako kidea edo ez zelako hautesleetako bat. Halere, bozketa publikoa bada, hautesleek boto hau aukera dezakete ordezkari gisa eta ordezkatze hauek bai kontatuko direla."
+
+#: agora_core/templates/agora_core/client/vote_info.html:33
+msgid "This vote is not counted"
+msgstr "Boto hau ez da kontatuko"
+
+#: agora_core/templates/agora_core/client/vote_info.html:49
+#, php-format
+msgid "Choose %s as my delegate for agora %s"
+msgstr "Hautatu %s zure ordezkari gisa %s agoran"
+
+#: agora_core/templates/agora_core/client/vote_info.html:58
+#, php-format
+msgid "%s answers in this election"
+msgstr "%s erantzun hauteskunde honetan"
+
+#: agora_core/templates/agora_core/client/vote_info.html:74
+#, php-format
+msgid "%s delegated his vote"
+msgstr "%s kideak ordezkari bat hautatu du"
+
+#: agora_core/templates/agora_core/client/vote_info.html:79
+#, php-format
+msgid "%s's vote is secret"
+msgstr "%s kidearen botoa isilpekoa da"
+
+#: agora_core/templates/agora_core/client/vote_info.html:81
+#, php-format
+msgid "%s delegation is secret"
+msgstr "%s kidearen ordezkaritza isilpekoa da"
+
+#: agora_core/templates/search/include-js-template-agora-profile.html:21
+msgid "Loading.."
+msgstr "Kargatzen..."
+
+#: agora_core/templates/search/include-js-template-agora-profile.html:41
+msgid "Accept membership request"
+msgstr "Onartu kide izateko eskaera"
+
+#: agora_core/templates/search/include-js-template-agora-profile.html:47
+msgid "Dismiss membership request"
+msgstr "Ukatu kide izateko eskaera"
+
+#: agora_core/templates/search/include-js-template-agora-profile.html:55
+msgid "Accept admin membership request"
+msgstr "Onartu administratzailea izateko eskaera"
+
+#: agora_core/templates/search/include-js-template-agora-profile.html:61
+msgid "Dismiss admin membership request"
+msgstr "Baztertu administratzailea izateko eskaera"
+
+#: agora_core/templates/search/include-js-template-agora-profile.html:69
+msgid "Remove membership"
+msgstr "Kendu kidetza"
+
+#: agora_core/templates/search/include-js-template-agora-profile.html:75
+msgid "Make admin"
+msgstr "Bihurtu administratzaile"
+
+#: agora_core/templates/search/include-js-template-agora-profile.html:83
+msgid "Remove admin membership"
+msgstr "Kendu administratzaile-funtzioa"
+
+#: agora_core/templates/search/include-js-template-agora-profile.html:101
+msgid "Choose as my delegate"
+msgstr "Hautatu ordezkari gisa"
+
+#: agora_core/templates/search/include-js-template-agora-profile.html:106
+msgid "no actions"
+msgstr "ekintzarik ez"
+
+#~ msgid "Choices available"
+#~ msgstr "Opciones disponibles"
+
+#~ msgid "Vote in public as a delegate"
+#~ msgstr "Votar en público como delegado"
+
+#~ msgid ""
+#~ "Choosing this will make your vote <strong>public</strong>, allowing "
+#~ "others to delegate their vote in you for this election."
+#~ msgstr ""
+#~ "Si seleccionas esta opción tu voto será <strong>público</strong>, por lo "
+#~ "que los demás usuarios podrán delegar su voto en ti en esta votación."
+
+#~ msgid "Delegate in %s for agora %s"
+#~ msgstr "Delega en %s en el ágora %s"
