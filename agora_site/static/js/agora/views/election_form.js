@@ -400,7 +400,10 @@
             this.model = this.getInitModel();
 
             // render initial template
-            this.$el.html(this.template(this.modelToJsonForTemplate()));
+            var dataModel = this.modelToJsonForTemplate();
+            dataModel.languages = user_data.languages;
+
+            this.$el.html(this.template(dataModel));
 
             // add question tab-content
             this.addQuestionView = new Agora.QuestionEditView({

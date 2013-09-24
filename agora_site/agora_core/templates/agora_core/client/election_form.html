@@ -10,6 +10,32 @@
             </li>
             <li id="add-question-navtab"><a href="#question-tab-0" data-toggle="tab"><i class="icon-plus"></i> <%= gettext("Add question") %></a></li>
         </ul>
+        <div class="navbar translations">
+            <div class="navbar-inner">
+                <a class="brand" href="#"><%= gettext("Translations:") %></a>
+                <ul class="nav">
+                    <li class="active"><a href="#"><%= gettext(languages.current) %></a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown"
+                            href="#">
+                            add translation
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <% for (var i=0; i < languages.objects.length; i++) { %>
+                                <% if (languages.objects[i].name != languages.current) { %>
+                                    <li>
+                                        <a href="#" data-lang-code="<%= languages.objects[i].lang_code %>">
+                                        <%= languages.objects[i].name %>
+                                        </a>
+                                    </li>
+                                <% } %>
+                            <% } %>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <div class="tab-content">
             <div class="tab-pane active" id="election-tab">
                 <form id="create_election_form"><fieldset>
