@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-06 12:02+0200\n"
-"PO-Revision-Date: 2013-08-31 15:19+0200\n"
+"PO-Revision-Date: 2013-09-27 07:43+0200\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: gl\n"
@@ -279,9 +279,8 @@ msgid "%s winners"
 msgstr "%s gañadores"
 
 #: agora_core/templates/agora_core/voting_booth.html:160
-#, fuzzy
 msgid "Available choices"
-msgstr "Cambiar as escollas"
+msgstr "Escollas dispoñíbeis"
 
 #: agora_core/templates/agora_core/voting_booth.html:161
 msgid "Click to add/remove to your ballot"
@@ -323,9 +322,8 @@ msgid "&lt;Blank vote&gt;"
 msgstr "&lt;Voto en branco&gt;"
 
 #: agora_core/templates/agora_core/voting_booth.html:232
-#, fuzzy
 msgid "Vote publicly"
-msgstr "Todos os votos son públicos"
+msgstr "Votar publicamente"
 
 #: agora_core/templates/agora_core/voting_booth.html:234
 #: agora_core/templates/agora_core/voting_booth.html:241
@@ -336,12 +334,15 @@ msgstr "Nota"
 msgid ""
 "Choosing this will allow other users to <strong>view your vote</strong>."
 msgstr ""
+"Esta opción permitirá que outros usuarios <strong>vexan o que vota</strong>."
 
 #: agora_core/templates/agora_core/voting_booth.html:237
 msgid ""
 "Others users may <strong>delegate</strong> their vote to you for elections "
 "in this agora."
 msgstr ""
+"Isto permitiralle a outros usuarios <strong>delegar</strong> o seu voto en "
+"vostede para as votacións desta ágora."
 
 #: agora_core/templates/agora_core/voting_booth.html:242
 msgid ""
@@ -356,7 +357,7 @@ msgstr ""
 
 #: agora_core/templates/agora_core/voting_booth.html:245
 msgid "Why did you vote this way? (optional)"
-msgstr ""
+msgstr "Cales foron os motivos do seu voto? (opcional)"
 
 #: agora_core/templates/agora_core/voting_booth.html:247
 msgid "Confirm choices and cast ballot"
@@ -444,9 +445,8 @@ msgid "started following"
 msgstr "comezou a seguir a"
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:5
-#, fuzzy
 msgid "started voting period"
-msgstr "Planificar a data de comezo e fin da votación"
+msgstr "iniciou a votación"
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:6
 msgid "created"
@@ -481,7 +481,6 @@ msgid "commented"
 msgstr "comentou"
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:14
-#, fuzzy
 msgid "vote canceled"
 msgstr "voto cancelado"
 
@@ -522,7 +521,6 @@ msgid "left admin permissions"
 msgstr "renunciou aos permisos de administrador"
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:24
-#, fuzzy
 msgid "canceled voto delegation"
 msgstr "cancelou a delegación de voto"
 
@@ -531,14 +529,12 @@ msgid "edited"
 msgstr "editou"
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:26
-#, fuzzy
 msgid "canceled requested admin membership"
 msgstr "cancelou a solicitude do status de administrador"
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:27
-#, fuzzy
 msgid "canceled his/her membership request"
-msgstr "Cancelou a súa solicitude de membro"
+msgstr "cancelou a súa solicitude de membro"
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:28
 msgid "made admin"
@@ -549,9 +545,8 @@ msgid "settings updated"
 msgstr "actualizouse a configuración"
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:30
-#, fuzzy
 msgid "voted"
-msgstr "%s votos"
+msgstr "votou"
 
 #: agora_core/templates/agora_core/client/add_members_modal_dialog.html:2
 msgid "Add members"
@@ -573,7 +568,7 @@ msgstr ""
 #: agora_core/templates/agora_core/client/agora_calendar.html:3
 #: agora_core/templates/agora_core/client/calendar_elections.html:18
 msgid "Calendar"
-msgstr ""
+msgstr "Calendario"
 
 #: agora_core/templates/agora_core/client/agora_calendar.html:4
 #: agora_core/templates/agora_core/client/calendar_elections.html:21
@@ -586,44 +581,42 @@ msgstr "Nova votación"
 #: agora_core/templates/agora_core/client/agora_calendar.html:5
 #: agora_core/templates/agora_core/client/calendar_elections.html:34
 msgid "Search..."
-msgstr ""
+msgstr "Buscar…"
 
 #: agora_core/templates/agora_core/client/agora_calendar.html:13
 msgid "No elections yet, perhaps you want to create one?"
 msgstr ""
+"Aínda non houbo ningunha votación. Que lle parece se crea unha vostede?"
 
 #: agora_core/templates/agora_core/client/agora_tabs.html:3
 msgid "Activity"
-msgstr ""
+msgstr "Actividade"
 
 #: agora_core/templates/agora_core/client/agora_tabs.html:9
-#, fuzzy
 msgid "Comments"
-msgstr "comentou"
+msgstr "Comentarios"
 
 #: agora_core/templates/agora_core/client/agora_tabs.html:12
 #: agora_core/templates/agora_core/client/top_navbar.html:45
 #: agora_core/templates/agora_core/client/top_navbar.html:72
-#, fuzzy
 msgid "Elections"
-msgstr "Votación"
+msgstr "Votacións"
 
 #: agora_core/templates/agora_core/client/agora_tabs.html:16
-#, fuzzy
 msgid "Members"
-msgstr "Engadir membros"
+msgstr "Membros"
 
 #: agora_core/templates/agora_core/client/agora_tabs.html:21
 msgid "Admin"
-msgstr ""
+msgstr "Administrador"
 
 #: agora_core/templates/agora_core/client/calendar_elections.html:31
 msgid "Find an agora to create an election"
-msgstr ""
+msgstr "Atopar unha ágora na que crear unha votación"
 
 #: agora_core/templates/agora_core/client/calendar_elections.html:40
 msgid "No elections found in the calendar"
-msgstr ""
+msgstr "Non se atoparon votacións no calendario."
 
 #: agora_core/templates/agora_core/client/confirm_change_username_modal_dialog.html:2
 msgid "I understand, let's change my username"
@@ -856,47 +849,40 @@ msgid "%s votes"
 msgstr "%s votos"
 
 #: agora_core/templates/agora_core/client/mail_to_members.html:2
-#, fuzzy
 msgid "Send email to members"
-msgstr "Enviar o correo"
+msgstr "Enviar un correo ao membro seleccionado"
 
 #: agora_core/templates/agora_core/client/mail_to_members.html:7
-#, fuzzy
 msgid "Email subject:"
-msgstr "Configuración do correo electrónico"
+msgstr "Asunto do correo:"
 
 #: agora_core/templates/agora_core/client/mail_to_members.html:12
-#, fuzzy
 msgid "Email body:"
-msgstr "Correo electrónico"
+msgstr "Corpo:"
 
 #: agora_core/templates/agora_core/client/mail_to_members.html:16
 msgid "Mail receivers:"
-msgstr ""
+msgstr "Destinatarios:"
 
 #: agora_core/templates/agora_core/client/mail_to_members.html:19
-#, fuzzy
 msgid "All members"
-msgstr "Engadir membros"
+msgstr "Todos os membros"
 
 #: agora_core/templates/agora_core/client/mail_to_members.html:20
 msgid "Admins only"
-msgstr ""
+msgstr "Só os administradores"
 
 #: agora_core/templates/agora_core/client/mail_to_members.html:21
-#, fuzzy
 msgid "Delegates"
-msgstr "Delegar"
+msgstr "Delegados"
 
 #: agora_core/templates/agora_core/client/mail_to_members.html:22
-#, fuzzy
 msgid "Non-delegates"
-msgstr "delegou"
+msgstr "Non delegados"
 
 #: agora_core/templates/agora_core/client/mail_to_members.html:23
-#, fuzzy
 msgid "Requested membership"
-msgstr "solicitou unirse"
+msgstr "Solicitou unirse"
 
 #: agora_core/templates/agora_core/client/send_mail.html:2
 #: agora_core/templates/search/include-js-template-agora-profile.html:91
@@ -942,7 +928,7 @@ msgstr "Aínda non participou en ningunha votación contabilizada."
 
 #: agora_core/templates/agora_core/client/top_navbar.html:5
 msgid "Home"
-msgstr ""
+msgstr "Inicio"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:11
 #: agora_core/templates/agora_core/client/user-agora-list.html:3
@@ -950,54 +936,48 @@ msgid "Agoras"
 msgstr "Ágoras"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:16
-#, fuzzy
 msgid "My Agoras"
 msgstr "Ágoras"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:31
 msgid "Explore existing agoras.."
-msgstr ""
+msgstr "Explorar as ágoras…"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:37
-#, fuzzy
 msgid "Create an Agora"
-msgstr "na ágora"
+msgstr "Cree unha ágora"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:50
-#, fuzzy
 msgid "Active elections"
-msgstr "Gardar a votación"
+msgstr "Votacións activas"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:65
-#, fuzzy
 msgid "Explore other elections"
-msgstr "Nova votación"
+msgstr "Atopar outras votacións"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:76
 msgid "People"
-msgstr ""
+msgstr "Persoas"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:83
 msgid "Enter"
-msgstr ""
+msgstr "Acceder"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:110
 msgid "Log out"
-msgstr ""
+msgstr "Saír"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:116
-#, fuzzy
 msgid "View my profile"
-msgstr "Gravar o perfil"
+msgstr "Ver o perfil"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:122
-#, fuzzy
 msgid "Account settings"
-msgstr "cambiou a configuración"
+msgstr "Configuración da conta"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:130
 msgid "Search"
-msgstr ""
+msgstr "Buscar"
 
 #: agora_core/templates/agora_core/client/user-agora-list.html:15
 msgid "Delegate"
@@ -1008,7 +988,7 @@ msgid "No agoras found"
 msgstr "Non se atopou ningunha ágora."
 
 #: agora_core/templates/agora_core/client/user_delegate_in_actions.html:6
-#, fuzzy, php-format
+#, php-format
 msgid "Choose %s as delegate for.."
 msgstr "Escoller a %s como delegado en…"
 
@@ -1058,7 +1038,7 @@ msgid "%s delegated his vote"
 msgstr "%s delegou o seu voto"
 
 #: agora_core/templates/agora_core/client/vote_info.html:79
-#, fuzzy, php-format
+#, php-format
 msgid "%s's vote is secret"
 msgstr "O voto de %s é secreto"
 
@@ -1069,7 +1049,7 @@ msgstr "A delegación de %s é secreta"
 
 #: agora_core/templates/search/include-js-template-agora-profile.html:21
 msgid "Loading.."
-msgstr ""
+msgstr "Cargando…"
 
 #: agora_core/templates/search/include-js-template-agora-profile.html:41
 msgid "Accept membership request"
@@ -1104,9 +1084,8 @@ msgid "Choose as my delegate"
 msgstr "Escoller como delegado"
 
 #: agora_core/templates/search/include-js-template-agora-profile.html:106
-#, fuzzy
 msgid "no actions"
-msgstr "na votación"
+msgstr "ningunha acción"
 
 #~ msgid "Choices available"
 #~ msgstr "Opcións dispoñíbeis"

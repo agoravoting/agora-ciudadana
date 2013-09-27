@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-06 16:35+0200\n"
-"PO-Revision-Date: 2013-08-31 10:43+0200\n"
+"POT-Creation-Date: 2013-09-27 07:38+0200\n"
+"PO-Revision-Date: 2013-09-27 07:34+0200\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: gl\n"
@@ -119,9 +119,8 @@ msgid "Email"
 msgstr "Correo:"
 
 #: accounts/forms.py:229
-#, fuzzy
 msgid "This email is already taken."
-msgstr "Este nome de usuario xa está collido."
+msgstr "Este enderezo de correo electrónico xa está collido."
 
 #: accounts/urls.py:71
 msgid ""
@@ -134,14 +133,14 @@ msgstr ""
 "procure non volvelo esquecer.</p>"
 
 #: accounts/views.py:36
-#, fuzzy
 msgid ""
 "Registration successful! We have sent the activation link to your email "
 "address, look it up. If you don't receive the email, please try to locate it "
 "in the SPAM folder."
 msgstr ""
 "O proceso de rexistro completouse correctamente. Siga a ligazón que lle "
-"chegará por correo."
+"chegará por correo. Se non recibe a mensaxe, asegúrese de que non a ten no "
+"cartafol do correo non desexado."
 
 #: accounts/views.py:43
 msgid ""
@@ -238,13 +237,13 @@ msgid "Finish registration"
 msgstr "Completar o rexistro"
 
 #: accounts/templates/accounts/complete_registration_fnmt_form.html:12
-#, fuzzy
 msgid "FNMT Certificate - Finish Registration"
-msgstr "Completar o rexistro"
+msgstr "Certificado FNMT — Completar o rexistro"
 
 #: accounts/templates/accounts/complete_registration_fnmt_form.html:16
 msgid "Please provide your email address to complete the registration."
 msgstr ""
+"Forneza o seu enderezo de correo electrónico para completar o rexistro."
 
 #: accounts/templates/accounts/complete_registration_invite_form.html:12
 msgid "Finish Registration"
@@ -495,20 +494,21 @@ msgstr "Seguinte"
 
 #: accounts/templates/accounts/signin_form.html:55
 msgid "Enter with FNMT"
-msgstr ""
+msgstr "Acceder con FNMT"
 
 #: accounts/templates/accounts/signin_form.html:57
 msgid ""
 "You can enter this site using your FNMT certificate. <a href=\"#\">More "
 "information here</a>."
 msgstr ""
+"Pode acceder ao sitio empregando o seu certificado FNMT. <a href=\"#\">Máis "
+"información</a>."
 
 #: accounts/templates/accounts/signin_form.html:61
 msgid "Enter using FNMT certificate"
-msgstr ""
+msgstr "Acceder usando un certificado FNMT"
 
 #: accounts/templates/accounts/signin_form.html:65
-#, fuzzy
 msgid "Terms of service"
 msgstr "Condicións de uso"
 
@@ -518,6 +518,8 @@ msgid ""
 "When you enter using the FNMT certificate you're accepting our <a href="
 "\"%(tos_url)s\">Terms of Service.</a>"
 msgstr ""
+"Ao acceder usando un certificado FMNT, está a aceptar as <a href="
+"\"%(tos_url)s\">condicións de uso</a>."
 
 #: accounts/templates/accounts/emails/activation_email_message.txt:2
 #: accounts/templates/accounts/emails/confirmation_email_message_new.txt:2
@@ -1229,7 +1231,7 @@ msgstr "A data de inicio non é correcta. Debe escoller unha data futura."
 msgid "Voting time must be at least 1 hour"
 msgstr "O tempo de votación non pode ser inferior a unha hora."
 
-#: agora_core/forms/__init__.py:377 agora_core/tasks/election.py:257
+#: agora_core/forms/__init__.py:377 agora_core/tasks/election.py:259
 #, python-format
 msgid "Election %s created"
 msgstr "Creouse a votación %s."
@@ -1332,21 +1334,19 @@ msgstr "Os contrasinais non coincidían ou non son seguros."
 
 #: agora_core/forms/user.py:294
 msgid "FNMT users cannot change their names."
-msgstr ""
+msgstr "Os usuarios FNMT non poden cambiar de nome."
 
 #: agora_core/forms/user.py:303
 msgid "You need to be authenticated"
 msgstr "Primeiro ten que acceder ao sitio."
 
 #: agora_core/forms/user.py:370
-#, fuzzy
 msgid "Invalid activation secret. "
-msgstr "A ligazón de activación é incorrecta."
+msgstr "O segredo de activación é incorrecto."
 
 #: agora_core/forms/user.py:372
-#, fuzzy
 msgid "Auto activation not allowed."
-msgstr "Non foi posíbel activar a conta."
+msgstr "Non pode activar a súa propia conta."
 
 #: agora_core/migrations/0003_auto__del_field_election_delegated_votes_result.py:34
 msgid "Simple one choice result type of election"
@@ -1876,12 +1876,12 @@ msgstr "Reciba a benvida a esta ágora"
 msgid "%(site)s - invitation to join %(agora)s"
 msgstr "%(site)s — Invitación para unirse á ágora %(agora)s"
 
-#: agora_core/tasks/election.py:77 agora_core/tasks/election.py:94
+#: agora_core/tasks/election.py:79 agora_core/tasks/election.py:96
 #, python-format
 msgid "Vote in election %s"
 msgstr "Votar en «%s»"
 
-#: agora_core/tasks/election.py:167 agora_core/tasks/election.py:215
+#: agora_core/tasks/election.py:169 agora_core/tasks/election.py:217
 #, python-format
 msgid "Election results for %s"
 msgstr "Resultados da votación «%s»"
@@ -2233,9 +2233,8 @@ msgid "Change my position as non-member delegate"
 msgstr "Cambiar de postura como delegado externo"
 
 #: agora_core/templates/agora_core/election_base.html:227
-#, fuzzy
 msgid "Establish my position as non-member delegate"
-msgstr "Anunciar a postura como delegado externo"
+msgstr "Establecer a postura como delegado externo"
 
 #: agora_core/templates/agora_core/election_base.html:234
 msgid "Your membership request in this election's agora is pending"
@@ -2349,27 +2348,33 @@ msgid "Filter..."
 msgstr "Filtro…"
 
 #: agora_core/templates/agora_core/fnmt_login.html:8
-#, fuzzy
 msgid "Authentication failed"
-msgstr "Non foi posíbel activar a conta."
+msgstr "Fallou a autenticación"
 
 #: agora_core/templates/agora_core/fnmt_login.html:14
 msgid ""
 "The authentication in the website using the FNMT certificate has failed. "
 "What could have happen is any of these options, please check if:"
 msgstr ""
+"Non foi posíbel autenticarse no sitio usando o certificado FNMT. Comprobe as "
+"seguintes posíbeis causas:"
 
 #: agora_core/templates/agora_core/fnmt_login.html:17
 msgid ""
 "Your FNMT <strong>certificate has expired</strong>. In this case, please "
 "request a new one, then try again."
 msgstr ""
+"O seu <strong>certificado FNMT caducou</strong>. Se este é o seu caso, "
+"solicite un novo certificado e vólvao intentar."
 
 #: agora_core/templates/agora_core/fnmt_login.html:19
 msgid ""
 "You <strong>chose another certificate</strong>. In this case, you'll need to "
 "try again, probably restarting the web browser (close it then open it again)."
 msgstr ""
+"<strong>Escolleu outro certificado</strong>. Se este é o seu caso, vólvao "
+"intentar. Pode que teña que reiniciar o navegador web (pechalo e volvelo "
+"abrir)."
 
 #: agora_core/templates/agora_core/fnmt_login.html:21
 msgid ""
@@ -2377,6 +2382,10 @@ msgid ""
 "certificate and indicated the browser to remember this choice</strong>. In "
 "this case, you need to restart the web browser (close it then open it again)."
 msgstr ""
+"Durante a sesión de navegación actual, <strong>equivocouse e escoller non "
+"enviar o certificado e indicoulle ao navegador que lembrase a súa escolla</"
+"strong>. Se este é o seu caso, debe reiniciar o navegador web (pechalo e "
+"volvelo abrir)."
 
 #: agora_core/templates/agora_core/fnmt_login.html:25
 #, python-format
@@ -2384,6 +2393,9 @@ msgid ""
 "Most of the time restarting the browser solves the problem. If nothing of "
 "the above helps, then please <a href=\"%(contact_url)s\">contact us</a>."
 msgstr ""
+"Na meirande parte dos casos reiniciar o navegador web soluciona o problema. "
+"Se ningún dos consellos anteriores lle serve de axuda, <a href="
+"\"%(contact_url)s\">contacte connosco</a>."
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:16
 msgid "Create a new agora"
@@ -2570,11 +2582,9 @@ msgid "Hello %(to_username)s,"
 msgstr "Ola, %(to_username)s."
 
 #: agora_core/templates/agora_core/emails/agora_notification.html:14
-#, fuzzy, python-format
+#, python-format
 msgid "Agora URL: <a href=\"%(agora_url)s\">%(agora_full_name)s</a>"
-msgstr ""
-"URL da ágora: <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">"
-"%(agora_full_name)s</a>"
+msgstr "URL da ágora: <a href=\"%(agora_url)s\">%(agora_full_name)s</a>"
 
 #: agora_core/templates/agora_core/emails/agora_notification.html:16
 #, python-format
@@ -2600,9 +2610,9 @@ msgstr ""
 "a>\n"
 
 #: agora_core/templates/agora_core/emails/agora_notification.txt:8
-#, fuzzy, python-format
+#, python-format
 msgid "Agora URL: %(agora_url)s"
-msgstr "URL da ágora: %(protocol)s://%(site_domain)s%(agora_url)s"
+msgstr "URL da ágora: %(agora_url)s"
 
 #: agora_core/templates/agora_core/emails/agora_notification.txt:10
 #, python-format
@@ -2815,7 +2825,7 @@ msgstr ""
 "recomendámoslle que delegue o seu voto."
 
 #: agora_core/templates/agora_core/emails/election_started.html:28
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Election <a href=\"%(protocol)s://%(site_domain)s%(election_url)s\">"
 "%(election_name)s</a> at <a href=\"%(protocol)s://%(site_domain)s"
@@ -2825,7 +2835,7 @@ msgstr ""
 "Iniciouse a votación «<a href=\"%(protocol)s://%(site_domain)s"
 "%(election_url)s\">%(election_name)s</a>», na ágora <a href=\"%(protocol)s://"
 "%(site_domain)s%(agora_url)s\">%(agora_username)s/%(agora_name)s</a>, e xa "
-"pode participar nela. Bótelle unha ollada!"
+"pode participar nela. "
 
 #: agora_core/templates/agora_core/emails/election_started.txt:3
 #: agora_core/templates/agora_core/emails/election_started.txt:20
@@ -2838,19 +2848,17 @@ msgstr ""
 "%(agora_name)s, e xa pode participar nela. Bótelle unha ollada!"
 
 #: agora_core/templates/agora_core/emails/election_started.txt:13
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Election %(election_name)s at %(agora_username)s/%(agora_name)s has started, "
 "and now you can vote on it. Check it out! Don't forget to check what is the "
 "position of available delegates. If you don't want to track all elections in "
 "this agora, we recommend you to delegate your vote."
 msgstr ""
-"Iniciouse a votación «<a href=\"%(protocol)s://%(site_domain)s"
-"%(election_url)s\">%(election_name)s</a>», na ágora <a href=\"%(protocol)s://"
-"%(site_domain)s%(agora_url)s\">%(agora_username)s/%(agora_name)s</a>, e xa "
-"pode votar. Bótelle unha ollada! Non esqueza comprobar cal é a postura dos "
-"delegados dispoñíbeis. Se non quere seguir todas as votacións desta ágora, "
-"recomendámoslle que delegue o seu voto."
+"Iniciouse a votación «%(election_name)s», na ágora %(agora_username)s/"
+"%(agora_name)s, e xa pode votar. Bótelle unha ollada! Non esqueza comprobar "
+"cal é a postura dos delegados dispoñíbeis. Se non quere seguir todas as "
+"votacións desta ágora, recomendámoslle que delegue o seu voto."
 
 #: agora_core/templates/agora_core/emails/join_invitation.html:4
 #: agora_core/templates/agora_core/emails/join_invitation.txt:2
