@@ -30,6 +30,7 @@ from agora_site.misc.utils import (JSONField, geolocate_ip, send_action,
 from agora import Agora
 from election import Election
 from castvote import CastVote
+from authority import Authority
 from delegateelectioncount import DelegateElectionCount
 
 

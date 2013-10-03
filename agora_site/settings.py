@@ -73,6 +73,8 @@ LANGUAGES = (
     ('eu', _('Basque')),
 )
 
+SOUTH_TESTS_MIGRATE = False
+
 SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
