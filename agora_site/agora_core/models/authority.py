@@ -18,22 +18,29 @@ import simplejson
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
+from agora_site.agora_core.models.agora import Agora
 
 class Authority(models.Model):
     '''
     Represent an election authority. Authorities can be created and modified
     by superusers through django-admin.
     '''
-    name = models.CharField(_('Name'), max_length=255, unique=True)
+    name = models.CharField(_('Name'), max_length=255)
 
-    url = models.CharField(_('URL'), max_length=255, unique=True)
+    url = models.CharField(_('URL'), max_length=255)
+
+    public_url = models.CharField(_('Public URL'), max_length=255,
+                                  null=True, blank=True)
 
     description = models.TextField(_('Description'), null=True, blank=True)
 
     ssl_certificate = models.TextField(_('SSL Certificate'))
 
     is_active = models.BooleanField(_('Is active'))
+
+    # if set, this authority will only be shown to the mentioned agora
+    agora = models.ForeignKey('Agora', related_name='agora_local_authorities',
+        verbose_name=_('Related Agora'), null=True, default=None)
 
     class Meta:
         app_label = 'agora_core'

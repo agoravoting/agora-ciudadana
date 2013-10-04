@@ -5,15 +5,256 @@
 
 {% block title %}{{ agora.creator.username }}/{{ agora.name }} / {% trans "Admin" %}{% endblock %}
 
-{% block agora-tab-name %}admin{% endblock %}
-
 {% block content %}
+    <div class="tabbable tabs-left row" id="agora-settings-form">
+        <!-- here goes the settings form -->
+    </div>
 
-    <div class="row">
-        <div class="span8 agora-left-side">
-            <div class="form-data admin-form">
-            {% crispy form %}
-            </div>
+<script id="template-agora-settings-form" type="text/underscore-template">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#tab-profile" data-toggle="tab"><%= gettext("Profile") %></a>
+        </li>
+        <li>
+            <a href="#tab-configuration" data-toggle="tab"><%= gettext("Configuration") %></a>
+        </li>
+        <li>
+            <a href="#tab-authorities" data-toggle="tab"><%= gettext("Authorities") %></a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab-profile" class="tab-pane active form-data admin-form span7">
+            <form>
+                <fieldset>
+                    <legend><%= gettext("Profile") %></legend>
+
+                    <div class="control-group" id="div_id_pretty_name">
+                        <label class="control-label" for="id_pretty_name">
+                            <%= gettext("Pretty name") %>
+                        </label>
+
+                        <div class="controls">
+                            <input class="textinput textInput" id="id_pretty_name"
+                            maxlength="70" name="pretty_name" type="text"
+                            value="<%= ajax_data.agora.pretty_name %>">
+
+                            <p class="help-block" id="hint_id_pretty_name">
+                                <%= gettext("Example: The Important Agora") %>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="control-group" id="div_id_short_description">
+                        <label class="control-label" for="id_short_description">
+                            <%= gettext("Short Description") %>
+                        </label>
+
+                        <div class="controls">
+                            <input class="textinput textInput" id="id_short_description"
+                            maxlength="140" name="short_description" type="text"
+                            value="<%= ajax_data.agora.short_description%>">
+
+                            <p class="help-block" id="hint_id_short_description">
+                                <%= gettext("Example: Agora where stuff that matter is decided upon") %>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="control-group" id="div_id_biography">
+                        <label class="control-label" for="id_biography">
+                            <%= gettext("Biography") %>
+                        </label>
+
+                        <div class="controls">
+                            <textarea class="textarea" name="biography" cols="40" rows="10" id="id_biography"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" id="save_profile" class="btn btn-large btn-block btn-success">
+                                <%= gettext("Save profile") %>
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div id="tab-configuration" class="tab-pane form-data admin-form span7">
+            <form>
+                <fieldset>
+                    <legend><%= gettext("Configuration") %></legend>
+
+                    <div class="control-group" id="div_id_delegation_policy">
+                        <label class="control-label requiredField" for="id_delegation_policy">
+                            <%= gettext("Delegation policy") %><span class="asteriskField">*</span>
+                        </label>
+
+                        <div class="controls">
+                            <select name="delegation_policy" class="select" id="id_delegation_policy">
+                                <option selected="selected" value="ALLOW_DELEGATION">
+                                    <%= gettext("Allow delegation") %>
+                                </option>
+                                <option value="DISALLOW_DELEGATION">
+                                    <%= gettext("Disallow delegation") %>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control-group" id="div_id_is_vote_secret">
+                        <div class="controls">
+                            <label class="checkbox" for="id_is_vote_secret">
+                                <input type="checkbox" name="is_vote_secret" class="checkboxinput" id="id_is_vote_secret" />
+                                <%= gettext("Is delegation secret") %>
+                                <p class="help-block" id="hint_id_is_vote_secret">
+                                    <%= gettext("if activated, when you delegate to someone, nobody will know who you delegated to") %>
+                                </p>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="control-group" id="div_id_membership_policy">
+                        <label class="control-label requiredField" for="id_membership_policy">
+                            <%= gettext("Membership policy") %>
+                            <span class="asteriskField">*</span>
+                        </label>
+
+                        <div class="controls">
+                            <select name="membership_policy" class="select" id="membership_policy">
+                                <option selected="selected" value="ANYONE_CAN_JOIN">
+                                    <%= gettext("Anyone can join") %>
+                                </option>
+                                <option value="JOINING_REQUIRES_ADMINS_APPROVAL_ANY_DELEGATE">
+                                    <%= gettext("Joining requires admins approval, allow non-member delegates") %>
+                                </option>
+                                <option value="JOINING_REQUIRES_ADMINS_APPROVAL">
+                                    <%= gettext("Joining requires admins approval and delegates must be agora members") %>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control-group" id="div_id_comments_policy">
+                        <label class="control-label requiredField" for="id_comments_policy">
+                            <%= gettext("Comments policy") %>
+                            <span class="asteriskField">*</span>
+                        </label>
+
+                        <div class="controls">
+                            <select name="comments_policy" class="select" id="comments_policy">
+                                <option selected="selected" value="ANYONE_CAN_COMMENT">
+                                    <%= gettext("Anyone can comment") %>
+                                </option>
+                                <option value="ONLY_MEMBERS_CAN_COMMENT">
+                                    <%= gettext("Only members can comment") %>
+                                </option>
+                                <option value="ONLY_ADMINS_CAN_COMMENT">
+                                    <%= gettext("Only admins can comment") %>
+                                </option>
+                                <option value="NO_COMMENTS">
+                                    <%= gettext("No comments") %>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" id="save_configuration" class="btn btn-large btn-block btn-success">
+                                <%= gettext("Save configuration") %>
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div id="tab-authorities" class="tab-pane form-data admin-form span7">
+            <form>
+                <fieldset>
+                    <legend><%= gettext("Configuration") %></legend>
+                    <div class="row-fluid ranked-form">
+                        <div class="span6 available-choices">
+                            <p>
+                            <strong><%= gettext("Available authorities") %>:</strong>
+                            <%= gettext("Click to add/remove to your list of authorities") %></p>
+                            <ul class="nav nav-list sidenav">
+                                <% for (var i = 0; i < available_authorities.length; i++) { %>
+                                <li data-value="<%= available_authorities[i].value %>">
+                                    <a href="#">
+                                        <i class="icon-chevron-right"></i>
+                                        <%= available_authorities[i].name %>
+                                    </a>
+                                </li>
+                                <% } %>
+                            </ul>
+                        </div>
+                        <div class="span6 user-choices">
+                            <p><strong><%= gettext("Selected authorities:") %></strong></p>
+                            <ul class="nav nav-list sidenav">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="select-info need-select-more error hide">
+                        <%= interpolate(gettext("It's mandatory to select at least %s choices in this question."), [min_authorities]) %>
+                    </div>
+                    <div class="select-info cannot-select-more info hide">
+                        <%= interpolate(gettext("You reached the maximum number of allowed choices (%s). You can change your choices removing current choices first."), [max_authorities]) %>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" id="save_authorities" class="btn btn-large btn-block btn-success">
+                                <%= gettext("Save authorities") %>
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
         </div>
     </div>
+</script>
+{% endblock %}
+
+{% block script-block %}
+{% include "agora_core/client/modal_dialog.html" %}
+{% include "agora_core/client/mail_to_members.html" %}
+{% include "agora_core/client/add_members_modal_dialog.html" %}
+{% include "agora_core/client/send_mail.html" %}
+{% include "agora_core/client/agora_tabs.html" %}
+<script>
+var ajax_data = {
+    'tallied_elections': {% rest request '/agora/' agora.id '/tallied_elections/?limit=3' %},
+    'agora': {% rest request '/agora/' agora.id '/' %},
+    'user_permissions': {% custom_rest request "POST" '{"action":"get_permissions"}' '/agora/' agora.id '/action/' %},
+
+    // TODO: get this from api
+    'available_authorities': [
+        {
+            'id': 1,
+            'name': 'Auth 1',
+            'public_url': 'http://example.com'
+        },
+        {
+            'id': 2,
+            'name': 'Auth 2',
+            'public_url': 'http://example.com'
+        },
+        {
+            'id': 3,
+            'name': 'Auth 3',
+            'public_url': 'http://example.com'
+        },
+    ],
+
+    // TODO: get this from settings
+    'min_authorities': 2,
+    'max_authorities': 5,
+};
+
+var current_tab = "admin";
+
+app.currentView = new Agora.AgoraSettingsView();
+
+</script>
 {% endblock %}
