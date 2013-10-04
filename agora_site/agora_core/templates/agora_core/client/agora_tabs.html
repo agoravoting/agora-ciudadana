@@ -16,7 +16,7 @@
         <a href="<%= agora.url %>/members/members/"><%= gettext("Members") %>
         <span class="badge badge-info"><%= agora.members_count %></span></a>
     </li>
-    <% if (_.contains(user_permissions, 'admin')) { %>
+    <% if (_.contains(user_permissions.permissions, 'admin')) { %>
         <li data-tabname="admin">
             <a href="<%= agora.url %>/admin/"><%= gettext("Admin") %></a>
         </li>

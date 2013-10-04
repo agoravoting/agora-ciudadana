@@ -19,7 +19,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin
-from agora_site.agora_core.models import Profile, Agora, Election, CastVote
+from agora_site.agora_core.models import (Profile, Agora, Election, CastVote,
+                                          Authority)
 
 admin.site.unregister(User)
 
@@ -44,3 +45,6 @@ admin.site.register(Agora, admin.ModelAdmin)
 admin.site.register(Election, admin.ModelAdmin)
 
 admin.site.register(CastVote, admin.ModelAdmin)
+
+admin.site.register(Authority, admin.ModelAdmin)
+
