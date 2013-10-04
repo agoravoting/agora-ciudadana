@@ -5651,37 +5651,39 @@ div.top-form .option-edit:hover {
 #voting_booth label.public-warning span.hide {
   display: none;
 }
-#voting_booth .ranked-form .span6 p {
+.ranked-form .span6 p {
   margin: 6px;
 }
-#voting_booth .ranked-form .available-choices p > strong {
+.ranked-form .available-choices p > strong {
   display: block;
 }
-#voting_booth .sidenav {
+#voting_booth .ranked-form .sidenav {
   width: 400px;
+}
+.ranked-form .sidenav {
   background-color: #FFFFFF;
   border-radius: 6px 6px 6px 6px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
   margin: 10px 0 20px 14px;
   padding: 0;
 }
-#voting_booth .sidenav > li {
+.ranked-form .sidenav > li {
   padding: 0;
 }
-#voting_booth .sidenav > li:first-child > a {
+.ranked-form .sidenav > li:first-child > a {
   border-radius: 6px 6px 0 0;
 }
-#voting_booth .sidenav > li:last-child > a {
+.ranked-form .sidenav > li:last-child > a {
   border-radius: 0 0 6px 6px;
 }
-#voting_booth .sidenav > li > a {
+.ranked-form .sidenav > li > a {
   border: 1px solid #E5E5E5;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   display: block;
   margin: 0 0 -1px;
   padding: 8px 14px;
 }
-#voting_booth .sidenav > .active > a {
+.ranked-form .sidenav > .active > a {
   border: 0 none;
   box-shadow: 1px 0 0 rgba(0, 0, 0, 0.1) inset, -1px 0 0 rgba(0, 0, 0, 0.1) inset;
   padding: 9px 15px;
@@ -5689,20 +5691,20 @@ div.top-form .option-edit:hover {
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
   z-index: 2;
 }
-#voting_booth .sidenav > .active > a:hover {
+.ranked-form .sidenav > .active > a:hover {
   background-color: #DA4F49;
 }
-#voting_booth .sidenav [class^="icon-"] {
+.ranked-form .sidenav [class^="icon-"] {
   float: right;
   margin-right: -6px;
   margin-top: 2px;
   opacity: 0.25;
 }
-#voting_booth .sidenav > .active [class^="icon-"],
-#voting_booth .sidenav > .active a:hover [class^="icon-"] {
+.ranked-form .sidenav > .active [class^="icon-"],
+.ranked-form .sidenav > .active a:hover [class^="icon-"] {
   opacity: 1;
 }
-#voting_booth .sidenav a:hover [class^="icon-"] {
+.ranked-form .sidenav a:hover [class^="icon-"] {
   opacity: 0.5;
 }
 .bottom-bordered {
