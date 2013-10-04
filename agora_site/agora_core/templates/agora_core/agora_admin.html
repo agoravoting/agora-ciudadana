@@ -73,7 +73,7 @@
                         </label>
 
                         <div class="controls">
-                            <textarea class="textarea" name="biography" cols="40" rows="10" id="id_biography"></textarea>
+                            <textarea class="textarea" name="biography" cols="40" rows="10" id="id_biography"><%= ajax_data.agora.biography %></textarea>
                         </div>
                     </div>
 
@@ -99,7 +99,7 @@
 
                         <div class="controls">
                             <select name="delegation_policy" class="select" id="id_delegation_policy">
-                                <option selected="selected" value="ALLOW_DELEGATION">
+                                <option value="ALLOW_DELEGATION">
                                     <%= gettext("Allow delegation") %>
                                 </option>
                                 <option value="DISALLOW_DELEGATION">
@@ -128,8 +128,8 @@
                         </label>
 
                         <div class="controls">
-                            <select name="membership_policy" class="select" id="membership_policy">
-                                <option selected="selected" value="ANYONE_CAN_JOIN">
+                            <select name="membership_policy" class="select" id="id_membership_policy">
+                                <option value="ANYONE_CAN_JOIN">
                                     <%= gettext("Anyone can join") %>
                                 </option>
                                 <option value="JOINING_REQUIRES_ADMINS_APPROVAL_ANY_DELEGATE">
@@ -149,8 +149,8 @@
                         </label>
 
                         <div class="controls">
-                            <select name="comments_policy" class="select" id="comments_policy">
-                                <option selected="selected" value="ANYONE_CAN_COMMENT">
+                            <select name="comments_policy" class="select" id="id_comments_policy">
+                                <option value="ANYONE_CAN_COMMENT">
                                     <%= gettext("Anyone can comment") %>
                                 </option>
                                 <option value="ONLY_MEMBERS_CAN_COMMENT">
@@ -179,7 +179,7 @@
         <div id="tab-authorities" class="tab-pane form-data admin-form span7">
             <form>
                 <fieldset>
-                    <legend><%= gettext("Configuration") %></legend>
+                    <legend><%= gettext("Authorities") %></legend>
                     <div class="row-fluid">
                         <div class="span6">
                             <strong><%= gettext("Available authorities") %></strong>

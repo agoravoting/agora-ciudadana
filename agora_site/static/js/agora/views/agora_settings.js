@@ -9,6 +9,8 @@
 
         events: {
             'click .available-choices li a': 'selectChoice',
+            'click #save_profile': 'updateProfile',
+            'click #save_configuration': 'updateConfiguration'
         },
 
         initialize: function() {
@@ -21,12 +23,32 @@
         render: function() {
             this.$el.html(this.template(ajax_data));
 
+            // restore configuration
+            this.$el.find('#id_delegation_policy option').each(function (element, index, list) {
+                if ($(this).attr('value') == ajax_data.agora.delegation_policy) {
+                    $(this).attr('selected', 'selected');
+                }
+            });
+            if (ajax_data.agora.is_vote_secret == true) {
+                this.$el.find("#id_is_vote_secret").attr("checked", "checked");
+            }
+            this.$el.find('#id_comments_policy option').each(function (element, index, list) {
+                if ($(this).attr('value') == ajax_data.agora.comments_policy) {
+                    $(this).attr('selected', 'selected');
+                }
+            });
+            this.$el.find('#id_membership_policy option').each(function (element, index, list) {
+                if ($(this).attr('value') == ajax_data.agora.membership_policy) {
+                    $(this).attr('selected', 'selected');
+                }
+            });
+
             // shuffle options
             this.$el.find('.available-choices ul').shuffle();
 
             var self = this;
             var selection = [];
-            // restore selected options from model if any
+            // restore selected authorities if any
             _.each(ajax_data.agora_authorities, function (element, index, list) {
                 var target = null;
                 self.$el.find('.available-choices ul li').each(function (index) {
@@ -45,6 +67,63 @@
 
             this.delegateEvents();
             return this;
+        },
+
+        updateData: function(what) {
+            if (this.sendingData) {
+                return;
+            }
+
+            var data = null;
+            if (what == 'profile') {
+                data = {
+                    pretty_name: this.$el.find("#id_pretty_name").val(),
+                    short_description: this.$el.find("#id_short_description").val(),
+                    biography: this.$el.find("#id_biography").val(),
+                    is_vote_secret: ajax_data.agora.is_vote_secret,
+                    membership_policy: ajax_data.agora.membership_policy,
+                    comments_policy: ajax_data.agora.comments_policy,
+                    delegation_policy: ajax_data.agora.delegation_policy
+                };
+            } else {
+                data = {
+                    pretty_name: ajax_data.agora.pretty_name,
+                    short_description: ajax_data.agora.short_description,
+                    biography: ajax_data.agora.biography,
+                    is_vote_secret: this.$el.find("#id_is_vote_secret:checked").length == 1,
+                    membership_policy: this.$el.find("#id_membership_policy").val(),
+                    comments_policy: this.$el.find("#id_comments_policy").val(),
+                    delegation_policy: this.$el.find("#id_delegation_policy").val()
+                };
+            }
+
+            this.sendingData = true;
+            this.$el.find("button[type=submit]").addClass("disabled");
+
+            var self = this;
+            var jqxhr = $.ajax("/api/v1/agora/" + ajax_data.agora.id + "/", {
+                data: JSON.stringifyCompat(data),
+                contentType : 'application/json',
+                type: 'PUT',
+            })
+            .done(function(e) {
+                window.location.reload();
+            })
+            .fail(function() {
+                self.sendingData = false;
+                self.$el.find("button[type=submit]").removeClass("disabled");
+                alert(gettext("Sorry, error saving agora settings"));
+            });
+        },
+
+        updateProfile: function(e) {
+            e.preventDefault();
+            this.updateData("profile");
+        },
+
+        updateConfiguration: function(e) {
+            e.preventDefault();
+            this.updateData("configuration");
         },
 
         /**
