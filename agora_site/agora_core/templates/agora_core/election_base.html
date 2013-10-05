@@ -100,7 +100,7 @@
         <span class="badge badge-info">{{ comment_count }}</span></a>
     </li>
     
-    {% if election.agora.delegation_policy == election.agora.DELEGATION_TYPE.0.0 %}
+    {% if election.agora.delegation_policy != election.agora.DELEGATION_TYPE.1.0 %}
     <li {% ifactivetab "election-nav" "delegates" %}class="active"{% endifactivetab %}>
         <a href="{% url election-delegates election.agora.creator.username election.agora.name election.name %}">{% trans "Delegates" %}
         <span class="badge badge-info">{{ election.get_votes_from_delegates.count }}</span></a>
@@ -182,7 +182,7 @@
                     <span>{{ participation|getitem:"direct_votes" }}</span>
                     {% blocktrans with percent=participation|getitem:"percentage_of_direct_participation"|floatformat:"-2" %}DIRECT VOTES ({{ percent }}% of the electorate){% endblocktrans %}
                 </strong>
-                {% if election.agora.delegation_policy == election.agora.DELEGATION_TYPE.0.0 %}
+                {% if election.agora.delegation_policy != election.agora.DELEGATION_TYPE.1.0 %}
                 <strong class="counter">
                     <span>{{ participation|getitem:"delegated_votes" }}</span>
                     {% trans "DELEGATED VOTES" %}

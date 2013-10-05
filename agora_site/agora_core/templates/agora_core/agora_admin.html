@@ -100,24 +100,18 @@
                         <div class="controls">
                             <select name="delegation_policy" class="select" id="id_delegation_policy">
                                 <option value="ALLOW_DELEGATION">
-                                    <%= gettext("Allow delegation") %>
+                                    <%= gettext("Allow delegation, delegation is public") %>
+                                </option>
+                                <option value="ALLOW_SECRET_DELEGATION">
+                                    <%= gettext("Allow delegation, allow secret delegation") %>
+                                </option>
+                                <option value="ALLOW_ENCRYPTED_DELEGATION">
+                                    <%= gettext("Allow delegation, allow secret and encrypted delegation") %>
                                 </option>
                                 <option value="DISALLOW_DELEGATION">
                                     <%= gettext("Disallow delegation") %>
                                 </option>
                             </select>
-                        </div>
-                    </div>
-
-                    <div class="control-group" id="div_id_is_vote_secret">
-                        <div class="controls">
-                            <label class="checkbox" for="id_is_vote_secret">
-                                <input type="checkbox" name="is_vote_secret" class="checkboxinput" id="id_is_vote_secret" />
-                                <%= gettext("Is delegation secret") %>
-                                <p class="help-block" id="hint_id_is_vote_secret">
-                                    <%= gettext("if activated, when you delegate to someone, nobody will know who you delegated to") %>
-                                </p>
-                            </label>
                         </div>
                     </div>
 
@@ -196,11 +190,11 @@
                     <div class="row-fluid ranked-form">
                         <div class="span6 available-choices">
                             <ul class="nav nav-list sidenav">
-                                <% for (var i = 0; i < available_authorities.length; i++) { %>
-                                <li data-id="<%= available_authorities[i].id %>">
+                                <% for (var i = 0; i < available_authorities.objects.length; i++) { %>
+                                <li data-id="<%= available_authorities.objects[i].id %>">
                                     <a href="#">
                                         <i class="icon-chevron-right"></i>
-                                        <%= available_authorities[i].name %>
+                                        <%= available_authorities.objects[i].name %>
                                     </a>
                                 </li>
                                 <% } %>
@@ -244,33 +238,9 @@ var ajax_data = {
     'agora': {% rest request '/agora/' agora.id '/' %},
     'user_permissions': {% custom_rest request "POST" '{"action":"get_permissions"}' '/agora/' agora.id '/action/' %},
 
-    // TODO: get this from api
-    'available_authorities': [
-        {
-            'id': 1,
-            'name': 'Auth 1',
-            'public_url': 'http://example.com'
-        },
-        {
-            'id': 2,
-            'name': 'Auth 2',
-            'public_url': 'http://example.com'
-        },
-        {
-            'id': 3,
-            'name': 'Auth 3',
-            'public_url': 'http://example.com'
-        },
-    ],
-    'agora_authorities': [
-        {
-            'id': 2,
-            'name': 'Auth 2',
-            'public_url': 'http://example.com'
-        }
-    ],
+    'available_authorities': {% rest request '/authority/' %},
+    'agora_authorities': {% rest request '/agora/' agora.id '/authorities/' %},
 
-    // TODO: get this from settings
     'min_authorities': {{ MIN_NUM_AUTHORITIES }},
     'max_authorities': {{ MAX_NUM_AUTHORITIES }},
 };

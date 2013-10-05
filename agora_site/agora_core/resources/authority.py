@@ -21,7 +21,7 @@ from agora_site.agora_core.models import Authority
 class AuthorityResource(GenericResource):
     class Meta(GenericMeta):
         queryset = Authority.objects.select_related('agora')\
-            .filter(agora=None, is_active=True)
+            .filter(is_active=True)
         list_allowed_methods = ['get']
         detail_allowed_methods = ['get']
         excludes = ['url']

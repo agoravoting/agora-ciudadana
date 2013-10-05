@@ -42,8 +42,10 @@ class Agora(models.Model):
     )
 
     DELEGATION_TYPE = (
-        ('ALLOW_DELEGATION', _('Allow delegation')),
+        ('ALLOW_DELEGATION', _('Allow delegation, delegation is public')),
         ('DISALLOW_DELEGATION', _('Disallow delegation')),
+        ('ALLOW_SECRET_DELEGATION', _('Allow delegation, delegation can be secret')),
+        ('ALLOW_ENCRYPTED_DELEGATION', _('Allow delegation, delegation can be secret and encrypted')),
     )
 
     creator = models.ForeignKey(User, related_name='created_agoras',
@@ -368,7 +370,7 @@ class Agora(models.Model):
             return True
 
         elif permission_name == 'delegate':
-            return is_member() and self.delegation_policy == Agora.DELEGATION_TYPE[0][0]
+            return is_member() and self.delegation_policy != Agora.DELEGATION_TYPE[1][0]
 
         elif permission_name == 'cancel_vote_delegation':
             return is_member() and\

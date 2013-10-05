@@ -10,7 +10,8 @@
         events: {
             'click .available-choices li a': 'selectChoice',
             'click #save_profile': 'updateProfile',
-            'click #save_configuration': 'updateConfiguration'
+            'click #save_configuration': 'updateConfiguration',
+            'click #save_authorities': 'updateAuthorities',
         },
 
         initialize: function() {
@@ -49,7 +50,7 @@
             var self = this;
             var selection = [];
             // restore selected authorities if any
-            _.each(ajax_data.agora_authorities, function (element, index, list) {
+            _.each(ajax_data.agora_authorities.objects, function (element, index, list) {
                 var target = null;
                 self.$el.find('.available-choices ul li').each(function (index) {
                     if ($(this).data('id') == element.id) {
@@ -86,14 +87,21 @@
                     delegation_policy: ajax_data.agora.delegation_policy
                 };
             } else {
+                // Make a sesible default for is_vote_secret
+                var is_vote_secret = false;
+                var delegation_policy = this.$el.find("#id_delegation_policy").val();
+                if (delegation_policy == 'ALLOW_ENCRYPTED_DELEGATION' ||
+                    delegation_policy == 'ALLOW_SECRET_DELEGATION') {
+                    is_vote_secret = true;
+                }
                 data = {
                     pretty_name: ajax_data.agora.pretty_name,
                     short_description: ajax_data.agora.short_description,
                     biography: ajax_data.agora.biography,
-                    is_vote_secret: this.$el.find("#id_is_vote_secret:checked").length == 1,
+                    is_vote_secret: is_vote_secret,
                     membership_policy: this.$el.find("#id_membership_policy").val(),
                     comments_policy: this.$el.find("#id_comments_policy").val(),
-                    delegation_policy: this.$el.find("#id_delegation_policy").val()
+                    delegation_policy: delegation_policy
                 };
             }
 
@@ -125,6 +133,38 @@
             e.preventDefault();
             this.updateData("configuration");
         },
+        updateAuthorities: function(what) {
+            if (this.sendingData) {
+                return;
+            }
+
+            var data = {
+                action: 'set_authorities',
+                authorities_ids: []
+            };
+
+             this.$el.find('.user-choices ul li').each(function (index) {
+                    data.authorities_ids = data.authorities_ids.concat([$(this).data('id')]);
+             });
+
+            this.sendingData = true;
+            this.$el.find("button[type=submit]").addClass("disabled");
+
+            var self = this;
+            var jqxhr = $.ajax("/api/v1/agora/" + ajax_data.agora.id + "/action/", {
+                data: JSON.stringifyCompat(data),
+                contentType : 'application/json',
+                type: 'POST',
+            })
+            .done(function(e) {
+                window.location.reload();
+            })
+            .fail(function() {
+                self.sendingData = false;
+                self.$el.find("button[type=submit]").removeClass("disabled");
+                alert(gettext("Sorry, error saving authorities settings"));
+            });
+        },
 
         /**
          * Selects a choice from the available choices list, adding it to the
@@ -137,7 +177,7 @@
 
             // find user choice
             var newSelection;
-            _.each(ajax_data.available_authorities, function (element, index, list) {
+            _.each(ajax_data.available_authorities.objects, function (element, index, list) {
                 if (element.id == id) {
                     newSelection = element;
                 }

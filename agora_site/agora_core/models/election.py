@@ -366,14 +366,14 @@ class Election(models.Model):
                 return False
         elif permission_name == 'emit_direct_vote':
             canemit = ismember() or\
-                (self.agora.has_perms('join', user) and self.agora.delegation_policy == Agora.DELEGATION_TYPE[0][0])
+                (self.agora.has_perms('join', user) and self.agora.delegation_policy != Agora.DELEGATION_TYPE[1][0])
             return canemit and not isarchived and\
                 isfrozen and self.has_started() and not self.has_ended()
         elif permission_name == 'vote_counts':
             return ismember() and not isarchived
         elif permission_name == 'emit_delegate_vote':
             can_emit = ismember() or\
-                (self.agora.has_perms('join', user) and self.agora.delegation_policy == Agora.DELEGATION_TYPE[0][0])                
+                (self.agora.has_perms('join', user) and self.agora.delegation_policy != Agora.DELEGATION_TYPE[1][0])
             return can_emit and not isarchived and isfrozen and\
                 self.has_started() and not self.has_ended()
 
@@ -684,7 +684,7 @@ class Election(models.Model):
         ).values('voter__id').query
 
         # Query with the delegated votes
-        if self.agora.delegation_policy == Agora.DELEGATION_TYPE[0][0]:
+        if self.agora.delegation_policy != Agora.DELEGATION_TYPE[1][0]:
             self.delegated_votes = CastVote.objects.filter(
                 election=self.agora.delegation_election,
                 is_direct=False,

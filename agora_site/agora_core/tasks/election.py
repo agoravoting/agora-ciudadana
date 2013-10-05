@@ -70,7 +70,7 @@ def start_election(election_id, is_secure, site_id, remote_addr, user_id):
 
         translation.activate(voter.get_profile().lang_code)
         context['to'] = voter
-        context['allow_delegation'] = (election.agora.delegation_policy == Agora.DELEGATION_TYPE[0][0])
+        context['allow_delegation'] = (election.agora.delegation_policy != Agora.DELEGATION_TYPE[1][0])
         try:
             context['delegate'] = get_delegate_in_agora(voter, election.agora)
         except:
