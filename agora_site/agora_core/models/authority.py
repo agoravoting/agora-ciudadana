@@ -14,7 +14,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import hashlib
-import simplejson
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -40,7 +39,7 @@ class Authority(models.Model):
 
     # if set, this authority will only be shown to the mentioned agora
     agora = models.ForeignKey('Agora', related_name='agora_local_authorities',
-        verbose_name=_('Related Agora'), null=True, default=None)
+        verbose_name=_('Related Agora'), null=True, blank=True, default=None)
 
     class Meta:
         app_label = 'agora_core'

@@ -2026,6 +2026,12 @@ class AgoraAdminView(UpdateView):
         kwargs.update({'request': self.request})
         return kwargs
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(AgoraAdminView, self).get_context_data(*args, **kwargs)
+        context['MIN_NUM_AUTHORITIES'] = settings.MIN_NUM_AUTHORITIES
+        context['MAX_NUM_AUTHORITIES'] = settings.MAX_NUM_AUTHORITIES
+        return context
+
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         username = kwargs['username']

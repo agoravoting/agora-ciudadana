@@ -15,7 +15,8 @@ HTTP_METHOD_NOT_ALLOWED = 405
 class RootTestCase(TestCase):
     fixtures = ['test_users.json',
                 'test_agoras.json',
-                'test_elections.json']
+                'test_elections.json',
+                'test_authorities.json']
 
     def login(self, user, passw):
         loggedIn = self.client.login(username=user, password=passw)

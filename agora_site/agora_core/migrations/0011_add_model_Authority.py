@@ -11,11 +11,13 @@ class Migration(SchemaMigration):
         # Adding model 'Authority'
         db.create_table('agora_core_authority', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
-            ('url', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('url', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('public_url', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
             ('description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('ssl_certificate', self.gf('django.db.models.fields.TextField')()),
             ('is_active', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('agora', self.gf('django.db.models.fields.related.ForeignKey')(default=None, related_name='agora_local_authorities', null=True, to=orm['agora_core.Agora'])),
         ))
         db.send_create_signal('agora_core', ['Authority'])
 
@@ -67,12 +69,14 @@ class Migration(SchemaMigration):
         },
         'agora_core.authority': {
             'Meta': {'object_name': 'Authority'},
+            'agora': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'related_name': "'agora_local_authorities'", 'null': 'True', 'to': "orm['agora_core.Agora']"}),
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'public_url': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'ssl_certificate': ('django.db.models.fields.TextField', [], {}),
-            'url': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
+            'url': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
         'agora_core.castvote': {
             'Meta': {'unique_together': "(('election', 'voter', 'casted_at_date'),)", 'object_name': 'CastVote'},
@@ -94,7 +98,7 @@ class Migration(SchemaMigration):
             'Meta': {'unique_together': "(('election', 'delegate'),)", 'object_name': 'DelegateElectionCount'},
             'count': ('django.db.models.fields.IntegerField', [], {}),
             'count_percentage': ('django.db.models.fields.FloatField', [], {'default': '0'}),
-            'created_at_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 10, 3, 0, 0)', 'auto_now_add': 'True', 'blank': 'True'}),
+            'created_at_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 10, 5, 0, 0)', 'auto_now_add': 'True', 'blank': 'True'}),
             'delegate': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'delegate_election_counts'", 'to': "orm['auth.User']"}),
             'delegate_vote': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'delegate_election_count'", 'null': 'True', 'to': "orm['agora_core.CastVote']"}),
             'election': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'delegate_election_counts'", 'to': "orm['agora_core.Election']"}),

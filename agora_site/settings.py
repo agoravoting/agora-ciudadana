@@ -422,3 +422,9 @@ try:
     from custom_settings import *
 except:
     pass
+
+# This is the minimum number of authorities needed to do a secure tally
+MIN_NUM_AUTHORITIES = 2
+
+# Maximum number of allowed authorities, to limit CPU usage etc
+MAX_NUM_AUTHORITIES = 5

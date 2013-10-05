@@ -7,6 +7,7 @@ from user import UserTest
 from misc import MiscTest
 from action import ActionTest
 from search import SearchTest
+from authority import AuthorityTest
 from delegateelectioncount import DelegateElectionCountTest
 
 
@@ -27,6 +28,7 @@ def suite():
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(MiscTest))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(ActionTest))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(SearchTest))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(AuthorityTest))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(DelegateElectionCountTest))
     return suite
 

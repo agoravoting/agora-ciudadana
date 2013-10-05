@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.views.decorators.cache import cache_control
 from django.forms import ModelForm
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.conf.urls.defaults import url
 from django.contrib.sites.models import Site
@@ -202,6 +203,10 @@ class AgoraResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_member_list'), name="api_agora_member_list"),
 
+            url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/authorities%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_authorities_list'), name="api_agora_authorities_list"),
+
             url(r"^(?P<resource_name>%s)/(?P<agoraid>\d+)/admins%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_admin_list'), name="api_agora_admin_list"),
@@ -296,6 +301,16 @@ class AgoraResource(GenericResource):
         return self.get_custom_resource_list(request,
             resource=TinyUserResource,
             queryfunc=lambda agora: self.filter_user(request, agora.members.all()),
+            **kwargs)
+
+    def get_authorities_list(self, request, **kwargs):
+        '''
+        List the authorities of this agora
+        '''
+        from authority import AuthorityResource
+        return self.get_custom_resource_list(request,
+            resource=AuthorityResource,
+            queryfunc=lambda agora: agora.agora_local_authorities.all(),
             **kwargs)
 
     def get_active_delegates_list(self, request, **kwargs):
@@ -438,6 +453,8 @@ class AgoraResource(GenericResource):
             * delegate_vote
             * cancel_vote_delegation
 
+            * set_authorities
+
             TODO
             * approve_election
             * deny_election
@@ -466,6 +483,7 @@ class AgoraResource(GenericResource):
             'leave_admin_membership': self.leave_admin_action,
 
             'create_election': self.create_election_action,
+            'set_authorities': self.set_authorities_action,
 
             'delegate_vote': self.delegate_vote_action,
             'cancel_vote_delegation': self.cancel_vote_delegation,
@@ -1227,6 +1245,38 @@ class AgoraResource(GenericResource):
         '''
         return self.wrap_form(CreateElectionForm)(request, **kwargs)
 
+    @permission_required('admin', (Agora, 'id', 'agoraid'))
+    def set_authorities_action(self, request, agora, authorities_ids, **kwargs):
+        '''
+        Form to create election
+        '''
+        from agora_site.agora_core.models import Authority
+
+        # check input data
+        error_data = dict(errors=_('Invalid authorities_ids.'))
+        if not isinstance(authorities_ids, list):
+            return self.raise_error(request, http.HttpBadRequest, error_data)
+
+        if len(authorities_ids) < settings.MIN_NUM_AUTHORITIES or\
+                len(authorities_ids) > settings.MAX_NUM_AUTHORITIES:
+            error_data = dict(errors=_('Invalid number of authorities.'))
+            return self.raise_error(request, http.HttpBadRequest, error_data)
+
+        for i in authorities_ids:
+            if not isinstance(i, int) or not Authority.objects.filter(pk=i).exists():
+                return self.raise_error(request, http.HttpBadRequest, error_data)
+
+        agora.agora_local_authorities = Authority.objects.filter(id__in=authorities_ids)
+        agora.save()
+
+        # for each delegated vote, expire it, as authorities have changed
+        for vote in agora.delegation_election.cast_votes\
+                .filter(is_counted=True, invalidated_at_date=None):
+            vote.invalidated_at_date = timezone.now()
+            vote.is_counted = False
+            vote.save()
+
+        return self.create_response(request, dict(status="success"))
 
     @permission_required('delegate', (Agora, 'id', 'agoraid'))
     def delegate_vote_action(self, request, agora, **kwargs):

@@ -1,0 +1,41 @@
+[
+    {
+        "pk": 1,
+        "model": "agora_core.authority",
+        "fields": {
+            "ssl_certificate": "yeah cert",
+            "name": "Wadobo",
+            "url": "https://127.0.0.1:5000/api/queues",
+            "public_url": "https://wadobo.com",
+            "is_active": true,
+            "agora": null,
+            "description": "Wadobooooo"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "agora_core.authority",
+        "fields": {
+            "ssl_certificate": "yeah cert 2",
+            "name": "Agora Voting",
+            "url": "https://127.0.0.1:5001/api/queues",
+            "public_url": "https://agoravoting.com",
+            "is_active": true,
+            "agora": null,
+            "description": "Wadobooooo"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "agora_core.authority",
+        "fields": {
+            "ssl_certificate": "yeah cert 3",
+            "name": "Congreso Transparente",
+            "url": "https://127.0.0.1:5002/api/queues",
+            "public_url": "https://congresotransparente.com",
+            "is_active": true,
+            "agora": null,
+            "description": "Wadobooooo"
+        }
+    }
+]
