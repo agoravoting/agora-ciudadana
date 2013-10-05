@@ -57,6 +57,8 @@ urlpatterns += patterns('',
 
     url(r'^search/?$', SearchView.as_view(), name='search-view'),
 
+    url(r'^available-authorities/?$', AvailableAuthoritiesView.as_view(), name='available-authorities'),
+
     url(r'^contact/?$', ContactView.as_view(), name='contact'),
 
     url(r'^user/settings/?$', UserSettingsView.as_view(), name='user-settings'),

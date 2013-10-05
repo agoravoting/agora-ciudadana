@@ -71,6 +71,7 @@ agorajs:
 					      agora_site/static/js/agora/views/user_agora_list.js \
 					      agora_site/static/js/agora/views/home.js \
 					      agora_site/static/js/agora/views/agora.js \
+					      agora_site/static/js/agora/views/available_authorities.js \
 					      agora_site/static/js/agora/views/agora_list.js \
 					      agora_site/static/js/agora/views/agora_settings.js \
 					      agora_site/static/js/agora/views/agora_user_list.js \

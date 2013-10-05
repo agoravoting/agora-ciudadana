@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load agora_utils %}
+
+{% block title %}{% trans "Available Authorities" %}{% endblock %}
+
+{% block background-wrapper %}{% endblock %}
+
+{% block content %}
+    <div id="available-authorities">
+        <!-- here goes the available authorities-->
+    </div>
+
+<script id="template-available-authorities" type="text/underscore-template">
+    <h2><%= gettext("Available authorities") %></h2>
+    <p><%= gettext("Authorities are responsible for tallying elections. An encrypted election is tallied by two or more authorities, and vote secrecy will remain uncompromised if at least one of the authorities remain secure and independent. What follows is a list of the available authorities (if you want to add one more please contact us):") %></p>
+    <div class="activity-list" id="auth-ul-list"
+        data-url="/api/v1/authority/" data-method="get" data-margin="300">
+
+        <div class="endless-container">
+            <a class="endless_more" href="#"><%= gettext("more") %></a>
+            <div class="endless_loading hidden"><% gettext("Loading...") %></div>
+        </div>
+    </div>
+</script>
+
+<script id="template-one-authority-item" type="text/underscore-template">
+    <h4><%= name %></h4>
+    <p><a href="<%= public_url %>"><%= public_url %></a></p>
+    <p><%= description %></p>
+    <hr/>
+</script>
+
+{% endblock %}
+
+{% block script-block %}
+    <script>
+    var ajax_data = {
+    };
+    app.currentView = new Agora.AvailableAuthoritiesView();
+    </script>
+{% endblock %}

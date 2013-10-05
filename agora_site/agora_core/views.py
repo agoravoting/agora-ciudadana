@@ -2173,3 +2173,7 @@ class FNMTLoginView(TemplateView):
 
         except:
             return self.invalid_login()
+
+
+class AvailableAuthoritiesView(TemplateView):
+    template_name = 'agora_core/available_authorities.html'
