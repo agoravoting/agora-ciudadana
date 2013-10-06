@@ -1269,6 +1269,8 @@ class AgoraResource(GenericResource):
         agora.agora_local_authorities = Authority.objects.filter(id__in=authorities_ids)
         agora.save()
 
+        agora.request_new_delegation_election()
+
         # for each delegated vote, expire it, as authorities have changed
         for vote in agora.delegation_election.cast_votes\
                 .filter(is_counted=True, invalidated_at_date=None):

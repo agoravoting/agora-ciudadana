@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
+import requests
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -49,7 +50,8 @@ from haystack.query import SearchQuerySet
 from haystack.views import SearchView as HaystackSearchView
 
 from agora_site.agora_core.templatetags.agora_utils import get_delegate_in_agora
-from agora_site.agora_core.models import Agora, Election, Profile, CastVote
+from agora_site.agora_core.models import (Agora, Election, Profile, CastVote,
+                                          Authority)
 
 from agora_site.agora_core.backends.fnmt import fnmt_data_from_pem
 from agora_site.agora_core.forms import *
@@ -2177,3 +2179,47 @@ class FNMTLoginView(TemplateView):
 
 class AvailableAuthoritiesView(TemplateView):
     template_name = 'agora_core/available_authorities.html'
+
+
+class UpdateAgoraDelegationElectionView(TemplateView):
+    '''
+    Receives updates from election-orchestra
+    '''
+    def post(self, request, agora_id, *args, **kwargs):
+        try:
+            data = json.loads(request.raw_post_data)
+            agora = None
+            agora = Agora.objects.get(id=agora_id)
+            ssid = data['reference']['session_id']
+            status = data['status']
+            publickey = data['data']['publickey']
+        except:
+            return http.HttpResponse()
+
+        if not isinstance(agora.delegation_status, dict) or\
+                agora.delegation_status.get('status', '') == 'success' or\
+                agora.delegation_status.get('session_id') != data['session_id']:
+            return http.HttpResponse()
+
+        if status != 'success':
+            agora.delegation_status['status'] = status
+            agora.delegation_status['updated_at'] = timezone.now().isoformat()
+            agora.save()
+            return http.HttpResponse()
+
+        director = get_object_or_404(Authority, pk=agora.delegation_status['director_id'])
+
+        # The callback comes with all the needed data, but as it so happens that
+        # it's not authenticated, so we get the data directly from the source
+        pub_url = director.get_public_data(ssid, "publicKey_native")
+        r = requests.post(director.url, data=json.dumps(payload), verify=False,
+            cert=(settings.SSL_CERT_PATH,
+                  settings.SSL_KEY_PATH))
+        if r.status != 200 or r.text != publickey:
+            return http.HttpResponse()
+
+        agora.delegation_status['status'] = 'success'
+        agora.delegation_status['pubkey'] = publickey
+        agora.delegation_status['updated_at'] = timezone.now().isoformat()
+        agora.save()
+        return http.HttpResponse()

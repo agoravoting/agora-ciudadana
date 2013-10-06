@@ -22,7 +22,21 @@
         },
 
         render: function() {
-            this.$el.html(this.template(ajax_data));
+            var data = ajax_data;
+
+            if (data.agora.delegation_status == null) {
+                data.delegation_status = {
+                    session_id: "-",
+                    status: "-",
+                    created_at: "-",
+                    updated_at: "-",
+                    pubkey: "-",
+                    director_id: -1,
+                };
+            } else {
+                data.delegation_status = ajax_data.agora.delegation_status;
+            }
+            this.$el.html(this.template(data));
 
             // restore configuration
             this.$el.find('#id_delegation_policy option').each(function (element, index, list) {

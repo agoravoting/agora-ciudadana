@@ -28,6 +28,9 @@
         <li>
             <a href="#tab-authorities" data-toggle="tab"><%= gettext("Authorities") %></a>
         </li>
+        <li class="delegation-li">
+            <a href="#tab-delegation" data-toggle="tab"><%= gettext("Secure delegation") %></a>
+        </li>
     </ul>
     <div class="tab-content">
         <div id="tab-profile" class="tab-pane active form-data admin-form span7">
@@ -174,7 +177,7 @@
             <form>
                 <fieldset>
                     <legend><%= gettext("Authorities") %></legend>
-                    <p><%= gettext("Authorities encrypt the secret direct votes in elections and secret delegated votes in an agora. When you change the authorities, <strong>all previous delegated votes expire</strong> and need to be renewed.") %></p>
+                    <p><%= gettext("Authorities encrypt the secret direct votes in elections and secret delegated votes in an agora. ") %></p>
                     <div class="row-fluid">
                         <div class="span6">
                             <strong><%= gettext("Available authorities") %></strong>
@@ -215,7 +218,11 @@
 
                     <div class="control-group">
                         <div class="controls">
-                            <button type="submit" id="save_authorities" class="btn btn-large btn-block btn-success">
+                            <!-- TODO: put this text in a modal -->
+                            <div class="alert alert-block">
+                            <p><%= gettext("<strong>Warning!</strong> When you change authorities, all previous delegated votes will be lost and will need to be renewed, and vote delegation won't be available until authorities verify your request.") %></p>
+                            </div>
+                            <button type="submit" id="save_authorities" class="btn btn-large btn-block btn-warning">
                                 <%= gettext("Save authorities") %>
                             </button>
                         </div>
@@ -223,6 +230,35 @@
                 </fieldset>
             </form>
         </div>
+        <div id="tab-delegation" class="tab-pane form-data admin-form span7">
+            <legend><%= gettext("Secure delegation") %></legend>
+            <p><%= gettext("Status of the secure delegation support. If you have disabled delegation, all this data will be empty and of no interest. If you have enabled secret and encrypted delegation, until status doesn't reach <strong>success</strong>, vote delegation will be disabled.") %></p>
+            <p><%= gettext("If there was some error and you want to try again, go to Authorities tab and click in Save Authorities to request a new session id to authorities.") %></p>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td><strong><%= gettext("Session Id") %></strong></td>
+                        <td><%= delegation_status.session_id %></td>
+                    </tr>
+                    <tr>
+                        <td><strong><%= gettext("Status") %></strong></td>
+                        <td><%= delegation_status.status %></td>
+                    </tr>
+                    <tr>
+                        <td><strong><%= gettext("Creation date") %></strong></td>
+                        <td><%= delegation_status.created_at %></td>
+                    </tr>
+                    <tr>
+                        <td><strong><%= gettext("Last update") %></strong></td>
+                        <td><%= delegation_status.updated_at %></td>
+                    </tr>
+                    <tr>
+                        <td><strong><%= gettext("Public Key") %></strong></td>
+                        <td><%= delegation_status.pubkey %></td>
+                    </tr>
+                <tbody>
+            </table>
+        </div
     </div>
 </script>
 {% endblock %}

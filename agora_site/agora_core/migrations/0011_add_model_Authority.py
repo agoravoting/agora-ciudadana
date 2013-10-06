@@ -17,14 +17,22 @@ class Migration(SchemaMigration):
             ('description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('ssl_certificate', self.gf('django.db.models.fields.TextField')()),
             ('is_active', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('agora', self.gf('django.db.models.fields.related.ForeignKey')(default=None, related_name='agora_local_authorities', null=True, to=orm['agora_core.Agora'])),
+            ('agora', self.gf('django.db.models.fields.related.ForeignKey')(default=None, related_name='agora_local_authorities', null=True, blank=True, to=orm['agora_core.Agora'])),
         ))
         db.send_create_signal('agora_core', ['Authority'])
+
+        # Adding field 'Agora.delegation_status'
+        db.add_column('agora_core_agora', 'delegation_status',
+                      self.gf('agora_site.misc.utils.JSONField')(null=True),
+                      keep_default=False)
 
 
     def backwards(self, orm):
         # Deleting model 'Authority'
         db.delete_table('agora_core_authority')
+
+        # Deleting field 'Agora.delegation_status'
+        db.delete_column('agora_core_agora', 'delegation_status')
 
 
     models = {
@@ -54,6 +62,7 @@ class Migration(SchemaMigration):
             'creator': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'created_agoras'", 'to': "orm['auth.User']"}),
             'delegation_election': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'delegation_agora'", 'null': 'True', 'to': "orm['agora_core.Election']"}),
             'delegation_policy': ('django.db.models.fields.CharField', [], {'default': "'ALLOW_DELEGATION'", 'max_length': '50'}),
+            'delegation_status': ('agora_site.misc.utils.JSONField', [], {'null': 'True'}),
             'election_type': ('django.db.models.fields.CharField', [], {'default': "'SIMPLE_DELEGATION'", 'max_length': '50'}),
             'eligibility': ('agora_site.misc.utils.JSONField', [], {'null': 'True'}),
             'extra_data': ('agora_site.misc.utils.JSONField', [], {'null': 'True'}),
@@ -69,7 +78,7 @@ class Migration(SchemaMigration):
         },
         'agora_core.authority': {
             'Meta': {'object_name': 'Authority'},
-            'agora': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'related_name': "'agora_local_authorities'", 'null': 'True', 'to': "orm['agora_core.Agora']"}),
+            'agora': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'related_name': "'agora_local_authorities'", 'null': 'True', 'blank': 'True', 'to': "orm['agora_core.Agora']"}),
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
@@ -98,7 +107,7 @@ class Migration(SchemaMigration):
             'Meta': {'unique_together': "(('election', 'delegate'),)", 'object_name': 'DelegateElectionCount'},
             'count': ('django.db.models.fields.IntegerField', [], {}),
             'count_percentage': ('django.db.models.fields.FloatField', [], {'default': '0'}),
-            'created_at_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 10, 5, 0, 0)', 'auto_now_add': 'True', 'blank': 'True'}),
+            'created_at_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 10, 6, 0, 0)', 'auto_now_add': 'True', 'blank': 'True'}),
             'delegate': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'delegate_election_counts'", 'to': "orm['auth.User']"}),
             'delegate_vote': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'delegate_election_count'", 'null': 'True', 'to': "orm['agora_core.CastVote']"}),
             'election': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'delegate_election_counts'", 'to': "orm['agora_core.Election']"}),

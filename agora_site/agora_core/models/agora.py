@@ -1,5 +1,7 @@
 import datetime
 import uuid
+import json
+from random import choice
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -14,6 +16,7 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
 from guardian.shortcuts import *
+import requests
 
 from agora_site.misc.utils import JSONField, get_users_with_perm
 from agora_site.agora_core.models.voting_systems.base import parse_voting_methods
@@ -91,6 +94,17 @@ class Agora(models.Model):
     biography = models.TextField(_('Biography'), default='', blank=True)
 
     image_url = models.URLField(_('Image Url'), default='', blank=True)
+
+    # stores delegation status data in the following format:
+    # {
+    #     'session_id': "",
+    #     'created_at': "",
+    #     'updated_at': "",
+    #     'status': "",
+    #     'pubkey': "",
+    #     'director_id': 2,
+    # }
+    delegation_status = JSONField(null=True)
 
     def delete(self, *args, **kwargs):
         '''
@@ -370,7 +384,14 @@ class Agora(models.Model):
             return True
 
         elif permission_name == 'delegate':
-            return is_member() and self.delegation_policy != Agora.DELEGATION_TYPE[1][0]
+            allow = is_member() and self.delegation_policy != Agora.DELEGATION_TYPE[1][0]
+            if not allow:
+                return False
+
+            # if encrypted, we need a pubkey
+            if self.delegation_policy == Agora.DELEGATION_TYPE[3][0]:
+                return isinstance(self.delegation_status, dict) and\
+                    self.delegation_status.get('status', None) == 'success'
 
         elif permission_name == 'cancel_vote_delegation':
             return is_member() and\
@@ -481,6 +502,66 @@ class Agora(models.Model):
                 username=self.creator.username,
                 agoraname=self.name
             )
+
+    def request_new_delegation_election(self):
+        '''
+        Requests a new delegation election, with a new Session ID, to election
+        authorities
+        '''
+        auths = self.agora_local_authorities.all()
+        if len(auths) < settings.MIN_NUM_AUTHORITIES or\
+                len(auths) > settings.MAX_NUM_AUTHORITIES:
+            raise Exception("Invalid number of authorities")
+
+        director = choice(auths)
+        callback_url = '%s/api/v1/update/agora/%d/delegation_election/' %\
+            (settings.AGORA_BASE_URL, self.id)
+
+        now = datetime.datetime.utcnow().isoformat()
+        payload = {
+            "session_id": str(uuid.uuid4()),
+            "is_recurring": True,
+            "callback_url": callback_url,
+            "extra": [],
+            "title": self.name,
+            "url": self.url,
+            "description": self.short_description,
+            "question_data": {
+                "tally_type": "DELEGATION_ELECTION"
+            },
+            "voting_start_date": now,
+            # very long expiration date for delegation election
+            "voting_end_date": "2050-12-06T18:17:14.457000",
+            "authorities": [
+                {
+                    "name": auth.name,
+                    "orchestra_url": auth.url,
+                    "ssl_cert": auth.ssl_certificate
+                } for auth in auths
+            ]
+        }
+
+        r = requests.post(director.get_public_url('election'),
+            data=json.dumps(payload), verify=False,
+            cert=(settings.SSL_CERT_PATH,
+                settings.SSL_KEY_PATH))
+
+        pubkey = ""
+        if r.status_code != 202:
+            status = "error requesting"
+            pubkey = r.text
+        else:
+            status = 'requested'
+
+        self.delegation_status = {
+            'session_id': payload["session_id"],
+            'created_at': now,
+            'updated_at': now,
+            'status': status,
+            'pubkey': pubkey,
+            'director_id': director.id,
+        }
+        self.save()
 
 
 def create_delegation_election(sender, instance, created, **kwargs):

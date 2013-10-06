@@ -428,3 +428,7 @@ MIN_NUM_AUTHORITIES = 2
 
 # Maximum number of allowed authorities, to limit CPU usage etc
 MAX_NUM_AUTHORITIES = 5
+
+# Used to connect with authorities
+SSL_CERT_PATH = '%s/certs/cert.pem' % os.path.dirname(ROOT_PATH)
+SSL_KEY_PATH = '%s/certs/key-nopass.pem' % os.path.dirname(ROOT_PATH)

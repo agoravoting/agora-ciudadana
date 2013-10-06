@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import hashlib
+from urlparse import urlparse
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -37,9 +38,23 @@ class Authority(models.Model):
 
     is_active = models.BooleanField(_('Is active'))
 
-    # if set, this authority will only be shown to the mentioned agora
     agora = models.ForeignKey('Agora', related_name='agora_local_authorities',
         verbose_name=_('Related Agora'), null=True, blank=True, default=None)
 
     class Meta:
         app_label = 'agora_core'
+
+    def get_public_url(self, action='election'):
+        '''
+        Returns the url of a public action.
+        Currently existing actions are: election, tally.
+        '''
+        u = urlparse(self.url)
+        return "https://%s/public_api/%s" % (u.netloc, action)
+
+    def get_public_data(self, session_id, filename):
+        '''
+        Return the url of public data
+        '''
+        u = urlparse(self.url)
+        return "https://%s/public_data/%s/%s" % (u.netloc, session_id, filename)
