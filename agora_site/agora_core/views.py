@@ -16,6 +16,7 @@
 import datetime
 import requests
 
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -2198,7 +2199,7 @@ class UpdateAgoraDelegationElectionView(TemplateView):
 
         if not isinstance(agora.delegation_status, dict) or\
                 agora.delegation_status.get('status', '') == 'success' or\
-                agora.delegation_status.get('session_id') != data['session_id']:
+                agora.delegation_status.get('session_id') != ssid:
             return http.HttpResponse()
 
         if status != 'success':
@@ -2223,3 +2224,8 @@ class UpdateAgoraDelegationElectionView(TemplateView):
         agora.delegation_status['updated_at'] = timezone.now().isoformat()
         agora.save()
         return http.HttpResponse()
+
+    @csrf_exempt
+    def dispatch(self, *args, **kwargs):
+        return super(UpdateAgoraDelegationElectionView, self).dispatch(*args,
+            **kwargs)

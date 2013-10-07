@@ -21,6 +21,7 @@ from django.utils.translation import ugettext_lazy  as _
 
 from agora_site.agora_core.views import *
 from agora_site.misc.utils import RequestCreateView
+from django.views.decorators.csrf import csrf_exempt
 from .api import v1
 
 if 'rosetta' in settings.INSTALLED_APPS:
