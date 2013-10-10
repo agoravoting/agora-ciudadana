@@ -195,7 +195,7 @@ class BaseSTVTally(BaseTally):
     def init(self):
         import os
         import uuid
-        self.ballots_path = os.path.join(settings.MEDIA_ROOT, 'elections',
+        self.ballots_path = os.path.join(settings.PRIVATE_DATA_ROOT, 'elections',
             (str(uuid.uuid4()) + '.blt'))
         self.ballots = []
         self.answer_to_ids_dict = dict()
@@ -205,6 +205,9 @@ class BaseSTVTally(BaseTally):
         Function called once before the tally begins
         '''
         import codecs
+        import os
+        if not os.path.exists(self.ballots_path):
+            os.makedirs(os.path.dirname(self.ballots_path))
         self.ballots_file = codecs.open(self.ballots_path, encoding='utf-8', mode='w')
 
         question = result[self.question_num]

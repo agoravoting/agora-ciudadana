@@ -36,7 +36,7 @@
         defaults: {
             'pretty_name': '',
             'description': '',
-            'is_vote_secret': true,
+            'security_policy': 'PUBLIC_VOTING',
             'questions': [],
             'from_date': '',
             'to_date': ''
@@ -360,8 +360,6 @@
                 ['#description', 'presence', gettext('This field is required')],
                 ['#description',  'min-length:4', gettext('Must be at least 4 characters long')],
 
-                ['[name=is_vote_secret]',  'presence', gettext('You must choose if vote is secret')],
-
                 ['#start_voting_date', checkIntervalDate, gettext('Invalid dates')],
                 ['#end_voting_date', checkIntervalDate, gettext('Invalid dates')],
             ];
@@ -415,6 +413,14 @@
             this.__initialLoading = true;
             this.model.get('questions').each(this.addQuestion);
             this.__initialLoading = false;
+
+            // set selected security policy
+            var self = this;
+            this.$el.find("#id_voting_policy option").each(function() {
+                if ($(this).attr('value') == self.model.get('security_policy')) {
+                    $(this).attr('selected', 'selected');
+                }
+            })
 
             // update button on model changes and initialize
             this.listenTo(this.model, 'change', this.updateButtonsShown);
@@ -490,10 +496,10 @@
             }
             this.model.set('pretty_name', this.$el.find('#pretty_name').val());
             this.model.set('description', this.$el.find('#description').val());
-            this.model.set('short_description', this.model.get('description').substr(0, 140));
-
-            var is_vote_secret = $("#is_vote_secret_yes").attr('checked') == 'checked';
-            this.model.set('is_vote_secret', is_vote_secret);
+            this.model.set('short_description',
+                this.model.get('description').substr(0, 140));
+            this.model.set('security_policy',
+                this.$el.find('#id_security_policy').val());
         },
 
         sendingData: false,
@@ -596,7 +602,7 @@
                 pretty_name: ajax_data.pretty_name,
                 description: ajax_data.description,
                 comments_policy: ajax_data.comments_policy,
-                is_vote_secret: ajax_data.is_vote_secret,
+                security_policy: ajax_data.security_policy,
                 questions: ajax_data.questions,
                 from_date: from_date,
                 to_date: to_date,

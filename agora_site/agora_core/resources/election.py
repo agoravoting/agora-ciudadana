@@ -96,7 +96,7 @@ class ElectionAdminForm(ModelForm):
     class Meta(GenericMeta):
         model = Election
         fields = ('pretty_name', 'short_description', 'description',
-            'is_vote_secret', 'comments_policy')
+            'security_policy', 'comments_policy')
 
     def __init__(self, **kwargs):
         self.request = kwargs.get('request', None)
@@ -347,6 +347,7 @@ class ElectionResource(GenericResource):
             * get_permissions
             * approve
             * start
+            * freeze
             * stop
             * archive
             * vote
@@ -356,6 +357,7 @@ class ElectionResource(GenericResource):
         actions = {
             'get_permissions': self.get_permissions_action,
             'approve': self.approve_action,
+            'freeze': self.freeze_action,
             'start': self.start_action,
             'stop': self.stop_action,
             'archive': self.archive_action,
@@ -398,6 +400,7 @@ class ElectionResource(GenericResource):
         Requests membership from authenticated user to an agora
         '''
         election.is_approved = True
+        election.approved_at_date = election.last_modified_at_date = timezone.now()
         election.save()
 
         action.send(request.user, verb='approved', action_object=election,
@@ -437,6 +440,22 @@ class ElectionResource(GenericResource):
                     context), "text/html")
             email.send()
             translation.deactivate()
+
+        return self.create_response(request, dict(status="success"))
+
+    @permission_required('freeze_election', (Election, 'id', 'electionid'))
+    def freeze_action(self, request, election, **kwargs):
+        '''
+        Requests membership from authenticated user to an agora
+        '''
+        election.frozen_at_date = election.last_modified_at_date = timezone.now()
+        election.save()
+        if election.is_secure():
+            election.request_pubkeys()
+
+        action.send(request.user, verb='froze', action_object=election,
+            target=election.agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
         return self.create_response(request, dict(status="success"))
 

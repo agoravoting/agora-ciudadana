@@ -41,7 +41,7 @@ class AgoraTest(RootTestCase):
                 ]
             }
         ],
-        'is_vote_secret': True,
+        'security_policy': 'ALLOW_SECRET_VOTING',
         'from_date': '',
         'to_date': ''
     }
@@ -951,7 +951,7 @@ class AgoraTest(RootTestCase):
         orig_data_compare = dict(
             pretty_name=self.base_election_data['pretty_name'],
             description=self.base_election_data['description'],
-            is_vote_secret=self.base_election_data['is_vote_secret'],
+            security_policy=self.base_election_data['security_policy'],
         )
 
         self.assertTrue('id' in data)

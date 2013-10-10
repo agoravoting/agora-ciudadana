@@ -116,7 +116,7 @@ def main(argv):
 			"questions": questions,
 			"pretty_name": "Yes no or maybe" + str(e),
 			"description": "time to choose",
-			"is_vote_secret": False
+			"security_policy": 'PUBLIC_VOTING'
 		}		
 		
 		r = s.post('http://127.0.0.1:8000/api/v1/agora/' + agoraId + '/action/', headers=header, data=json.dumps(payload) )

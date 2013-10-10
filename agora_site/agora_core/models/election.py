@@ -2,8 +2,10 @@ import datetime
 import uuid
 import hashlib
 import simplejson
+import json
 
 import markdown
+import requests
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -19,6 +21,7 @@ from guardian.shortcuts import *
 
 from agora_site.misc.utils import JSONField, rest
 from agora_site.agora_core.models.agora import Agora
+from agora_site.agora_core.models.authority import Authority
 from agora_site.agora_core.models.voting_systems.base import (
     parse_voting_methods, get_voting_system_by_id)
 from agora_site.agora_core.templatetags.string_tags import urlify_markdown
@@ -31,10 +34,37 @@ class Election(models.Model):
     Recurrent elections are created as linked elections
     to a parent one. Parent election should always be the first in time in a group
     of recurrent/linked elections, i.e. the one with no parent election.
+
+    The general succesion of statuses for an election:
+
+    created
+      \/
+    approved
+      \/
+    frozen
+      \/
+    pubkey created
+      \/
+    started
+      \/
+    finished
+      \/
+    tallied
+      \/
+    tally released
+
+    Some of those states are not required or may change positions. Additionally,
+    the election could change to archived state at any time.
     '''
 
     # Prohibited because the urls would be a mess
     PROHIBITED_ELECTION_NAMES = ('new', 'delete', 'remove', 'election', 'admin', 'view', 'edit')
+
+    SECURITY_POLICY = (
+        ('PUBLIC_VOTING', _('Vote is public')),
+        ('ALLOW_SECRET_VOTING', _('Allow secret voting')),
+        ('ALLOW_ENCRYPTED_VOTING', _('Allow secret and encrypted voting')),
+    )
 
     # cache the hash of the election. It will be null until frozen
     hash = models.CharField(max_length=100, unique=True, null=True)
@@ -66,8 +96,9 @@ class Election(models.Model):
             'agora_name': self.agora.name,
             'url': self.url,
             'uuid': self.uuid,
-            'is_vote_secret': self.is_vote_secret,
+            'security_policy': self.security_policy,
             'created_at_date': self.created_at_date.isoformat(),
+            'is_vote_secret': self.is_vote_secret(),
             'questions': self.questions,
             'election_type': self.election_type,
             'name': self.name,
@@ -119,7 +150,8 @@ class Election(models.Model):
 
     created_at_date = models.DateTimeField(_(u'Created at date'))
 
-    is_vote_secret = models.BooleanField(_('Is Vote Secret'), default=False)
+    security_policy = models.CharField(max_length=50, choices=SECURITY_POLICY,
+        default=SECURITY_POLICY[0][0])
 
     is_approved = models.BooleanField(_('Is Approved'), default=False)
 
@@ -145,6 +177,11 @@ class Election(models.Model):
     voters_frozen_at_date = models.DateTimeField(_(u'Voters Frozen at Date'), auto_now_add=False, default=None, null=True)
 
     result_tallied_at_date = models.DateTimeField(_(u'Result Tallied at Date'), auto_now_add=False, default=None, null=True)
+
+    # this is automatically set if the election is not encrypted
+    pubkey_created_at_date = models.DateTimeField(_(u'Public Key Created at Date'), auto_now_add=False, default=None, null=True)
+
+    tally_released_at_date = models.DateTimeField(_(u'Talliy Released at Date'), auto_now_add=False, default=None, null=True)
 
     # contains the actual result in JSON format
     # something like:
@@ -258,6 +295,24 @@ class Election(models.Model):
     #}
     extra_data = JSONField(_('Extra Data'), null=True)
 
+    # stores delegation status data in the following format:
+    # {
+    #     'create_election__session_ids: ['id1', 'id2', ...],
+    #     'create_election__status: 'success|requested|error requesting|error',
+    #     'create_election__director_id': <id>,
+    #     'tally_election__session_ids': ['id1', 'id2', ...],
+    #     'tally_election__status: 'success|requested|error requesting|error',
+    #     'tally_election__director_id': <id>,
+    # }
+    orchestra_status = JSONField(null=True)
+
+    # Public keys
+    # format: ['pubkey1', 'pubkey2', ...]
+    pubkeys = JSONField(null=True)
+
+    authorities = models.ManyToManyField(Authority, related_name='elections',
+        verbose_name=_('Authorities'))
+
     def get_winning_option(self):
         '''
         Returns data of the winning option for the first question or throw an exception
@@ -338,7 +393,7 @@ class Election(models.Model):
         common in different has_perms checks, to make get_perms call more
         efficient.
         '''
-        
+
         if permission_name == 'edit_details':
             return not self.has_started() and isadminorcreator and\
                 not isarchived and not isfrozen
@@ -348,8 +403,9 @@ class Election(models.Model):
             return not self.is_approved and isadmin and not isarchived and\
                 not self.has_started()
         elif permission_name == 'begin_election':
+            pk_pass = not self.is_secure() or self.pubkey_created_at_date is not None
             return not self.voting_starts_at_date and isadmin and not isarchived and\
-                self.is_approved
+                self.is_approved and pk_pass
         elif permission_name == 'end_election':
             return self.has_started() and not self.voting_ends_at_date and\
                 isadmin and not isarchived
@@ -592,6 +648,18 @@ class Election(models.Model):
         else:
             return None
 
+    def is_vote_secret(self):
+        '''
+        Returns whether vote is secret for non-delegates/direct-votes
+        '''
+        return self.security_policy != Election.SECURITY_POLICY[0][0]
+
+    def is_secure(self):
+        '''
+        Returns whether the vote is secret and encrypted
+        '''
+        return self.security_policy == Election.SECURITY_POLICY[2][0]
+
     def get_brief_description(self):
         '''
         Returns a brief description of the election
@@ -608,7 +676,7 @@ class Election(models.Model):
             desc = _('This election only allows agora members to vote. ')
             desc = desc.__unicode__()
 
-        if self.is_vote_secret:
+        if self.is_vote_secret():
             tmp = _('Vote is secret (public for delegates). ')
             desc += tmp.__unicode__()
         else:
@@ -670,6 +738,25 @@ class Election(models.Model):
             tmp = (_("Election is <b>archived and dismissed</b>."))
             desc += tmp.__unicode__()
         return desc
+
+    def request_pubkeys(self):
+        '''
+        Request the creation of the election to election authorities, in case of
+        secure encrypted elections, which returns the pubkeys.
+
+        Note: it assumes the permissions have been checked already.
+        '''
+        from agora_site.agora_core.tasks.election import create_pubkeys
+        kwargs = dict(
+            election_id=self.id
+        )
+        create_pubkeys.apply_async(kwargs=kwargs, task_id=self.task_id(create_pubkeys))
+
+    def request_tally(self):
+        '''
+        Request the tally of the encrypted votes.
+        '''
+        pass
 
     def compute_result(self):
         '''

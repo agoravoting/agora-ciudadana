@@ -1,0 +1,10 @@
+{% load i18n %}
+{% autoescape off %}
+
+<p>{% blocktrans with to_username=to.username %}Hello {{ to_username }},{% endblocktrans %}</p>
+
+<p>{% blocktrans with site_domain=site.domain agora_linksafe=ago_link|safe %}Public keys have been created successfully for secure election <a href="{{ election_url }}">{{ election_name }}</a> at {{ agora_linksafe }}. Election is now ready to start. Check it out!{% endblocktrans %}</p>
+
+<p>--<br/>
+{% blocktrans with to_username=to.username site_name=site.name site_domain=site.domain %}This message was sent to {{ to_username }}. If you want to stop receiving these messages from {{ site_name }}, please <a href="{{ protocol }}://{{ site_domain }}{{ cancel_emails_url }}">click here</a>{% endblocktrans %}</p>
+{% endautoescape %}

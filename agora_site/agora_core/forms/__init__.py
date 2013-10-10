@@ -266,9 +266,8 @@ class CreateElectionForm(django_forms.ModelForm):
         self.helper.form_class = 'form-horizontal'
         self.request = request
         self.agora = agora
-        self.fields['is_vote_secret'].initial = agora.is_vote_secret
         self.helper.layout = Layout(Fieldset(_('Create election'),
-            'pretty_name', 'description', 'question', 'answers', 'is_vote_secret', 'from_date', 'to_date'))
+            'pretty_name', 'description', 'question', 'answers', 'security_policy', 'from_date', 'to_date'))
         self.helper.add_input(Submit('submit', _('Create Election'),
             css_class='btn btn-success btn-large'))
 
@@ -321,7 +320,10 @@ class CreateElectionForm(django_forms.ModelForm):
         election.agora = self.agora
         election.create_name()
         election.uuid = str(uuid.uuid4())
+        election.security_policy = self.cleaned_data['security_policy']
         election.created_at_date = timezone.now()
+        if not election.is_secure():
+            election.pubkey_created_at_date = election.created_at_date
         election.creator = self.request.user
 
         short_md = markdown.markdown(urlify_markdown(election.description[:140]),
@@ -411,7 +413,7 @@ class CreateElectionForm(django_forms.ModelForm):
 
     class Meta:
         model = Election
-        fields = ('pretty_name', 'description', 'is_vote_secret')
+        fields = ('pretty_name', 'description', 'security_policy')
 
 class ElectionEditForm(django_forms.ModelForm):
     questions = JSONFormField(required=True, validators=[election_questions_validator])
@@ -435,7 +437,7 @@ class ElectionEditForm(django_forms.ModelForm):
             self.fields['from_date'].initial = instance.voting_starts_at_date.strftime('%m/%d/%Y %H:%M')
             self.fields['to_date'].initial = instance.voting_ends_at_date.strftime('%m/%d/%Y %H:%M')
 
-        self.helper.layout = Layout(Fieldset(_('General settings'), 'pretty_name', 'description', 'question', 'answers', 'is_vote_secret', 'comments_policy'))
+        self.helper.layout = Layout(Fieldset(_('General settings'), 'pretty_name', 'description', 'question', 'answers', 'security_policy', 'comments_policy'))
         self.helper.add_input(Submit('submit', _('Save settings'), css_class='btn btn-success btn-large'))
 
     def clean(self, *args, **kwargs):
@@ -464,7 +466,13 @@ class ElectionEditForm(django_forms.ModelForm):
         election = super(ElectionEditForm, self).save(*args, **kwargs)
 
         election.questions = self.cleaned_data['questions']
+        election.security_policy = self.cleaned_data['security_policy']
         election.last_modified_at_date = timezone.now()
+
+        if election.is_secure():
+            election.pubkey_created_at_date = None
+        else:
+            election.pubkey_created_at_date = timezone.now()
 
         # save so that in case a task is triggered, it has the correct questions
         # and last modified date
@@ -494,7 +502,7 @@ class ElectionEditForm(django_forms.ModelForm):
 
     class Meta:
         model = Election
-        fields = ('pretty_name', 'description', 'is_vote_secret', 'comments_policy')
+        fields = ('pretty_name', 'description', 'security_policy', 'comments_policy')
         widgets = {
             'comments_policy': django_forms.RadioSelect
         }
@@ -525,7 +533,7 @@ class VoteForm(django_forms.ModelForm):
                 widget=django_forms.RadioSelect(attrs={'class': 'question'})))
             i += 1
 
-        if election.is_vote_secret:
+        if election.is_vote_secret():
             if self.request.user in self.election.agora.members.all() or\
                 self.election.agora.has_perms('join', self.request.user):
                 self.helper.add_input(Submit('submit-secret', _('Vote secretly'),
@@ -588,7 +596,7 @@ class VoteForm(django_forms.ModelForm):
         vote.is_counted = self.request.user in self.election.agora.members.all()
         vote.is_direct = True
 
-        if self.election.is_vote_secret and ('submit-secret' in self.request.POST) and\
+        if self.election.is_vote_secret() and ('submit-secret' in self.request.POST) and\
             (self.request.user in self.election.agora.members.all() or\
                 self.election.agora.has_perms('join', self.request.user)):
             vote.is_public = False

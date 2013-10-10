@@ -1,4 +1,4 @@
-# Copyright (C) 2012 Eduardo Robles Elvira <edulix AT wadobo DOT com>
+# Copyright (C) 2012, 2013 Eduardo Robles Elvira <edulix AT wadobo DOT com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
+import os
 import requests
 
 from django.views.decorators.csrf import csrf_exempt
@@ -21,12 +22,14 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from django.conf.urls import patterns, url, include
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core.mail import EmailMultiAlternatives, EmailMessage, send_mass_mail
 from django.utils import simplejson as json
 from django.utils.decorators import method_decorator
+from django.utils import translation
 from django.utils.translation import ugettext as _
 from django.utils.translation import check_for_language
 from django.utils import timezone
@@ -530,6 +533,8 @@ class FreezeElectionView(FormActionView):
 
         election.frozen_at_date = timezone.now()
         election.save()
+        if election.is_secure():
+            election.request_pubkeys()
 
         action.send(self.request.user, verb='frozen', action_object=election,
             target=election.agora, ipaddr=request.META.get('REMOTE_ADDR'),
@@ -2210,10 +2215,10 @@ class UpdateAgoraDelegationElectionView(TemplateView):
 
         director = get_object_or_404(Authority, pk=agora.delegation_status['director_id'])
 
-        # The callback comes with all the needed data, but as it so happens that
+        # The callback comes with all the needed data, but it so happens that
         # it's not authenticated, so we get the data directly from the source
         pub_url = director.get_public_data(ssid, "publicKey_native")
-        r = requests.post(director.url, data=json.dumps(payload), verify=False,
+        r = requests.get(director.url, verify=False,
             cert=(settings.SSL_CERT_PATH,
                   settings.SSL_KEY_PATH))
         if r.status != 200 or r.text != publickey:
@@ -2229,3 +2234,115 @@ class UpdateAgoraDelegationElectionView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(UpdateAgoraDelegationElectionView, self).dispatch(*args,
             **kwargs)
+
+
+class UpdatePubkeyElectionView(TemplateView):
+    '''
+    Receives updates from election-orchestra
+    '''
+    def post(self, request, election_id, *args, **kwargs):
+        try:
+            data = json.loads(request.raw_post_data)
+            election = None
+            election = Election.objects.get(id=election_id)
+            ssid = data['reference']['session_id']
+            status = data['status']
+            publickey = data['data']['publickey']
+        except:
+            return http.HttpResponse()
+
+        ssid_path = os.path.exist(os.path.join(settings.PRIVATE_DATA_ROOT,
+            'elections', 'pubkeys', ssid))
+        if election.pubkey_created_at_date is not None or\
+                not isinstance(election.orchestra_status, dict) or\
+                ssid not in election.orchestra_status.get('create_election__session_ids', []) or\
+                os.path.exists(ssid_path):
+            return http.HttpResponse()
+
+        if status != 'success':
+            f = open(ssid_path, 'w')
+            f.write('error')
+            f.close()
+            election.orchestra_status['create_election__status'] = "error requesting"
+            election.save()
+            return http.HttpResponse()
+
+        director = get_object_or_404(Authority,
+            pk=election.delegation_status['create_election__director_id'])
+
+        # The callback comes with all the needed data, but it so happens that
+        # it's not authenticated, so we get the data directly from the source
+        pub_url = director.get_public_data(ssid, "publicKey_native")
+        r = requests.get(director.url, verify=False,
+            cert=(settings.SSL_CERT_PATH,
+                  settings.SSL_KEY_PATH))
+        if r.status != 200 or r.text != publickey:
+            return http.HttpResponse()
+
+        # save public key
+        f = open(ssid_path, 'w')
+        f.write(publickey)
+        f.close()
+
+        # check if we have all public keys
+        pubkeys = []
+        for a_ssid in election.orchestra_status['create_election__session_ids']:
+            ssid_path = os.path.exist(os.path.join(settings.PRIVATE_DATA_ROOT,
+            'elections', 'pubkeys', a_ssid))
+            if not os.path.exists(ssid_path):
+                f = open(ssid_path, 'w')
+                pubkey = f.read()
+                f.close()
+                pubkeys.append(pubkey)
+                if pubkey == 'failed':
+                    return http.HttpResponse()
+
+        # if we have reached here, it means we have all the public keys
+        election.pubkeys = pubkeys
+        election.orchestra_status['create_election__status'] = 'success'
+        election.pubkey_created_at_date = timezone.now()
+        election.save()
+
+        # List of emails to send. tuples are of format:
+        #
+        # (subject, text, html, from_email, recipient)
+        datatuples = []
+
+
+        is_secure=self.request.is_secure()
+        site_id=Site.objects.get_current().id
+        context = get_base_email_context_task(is_secure, site_id)
+        context.update(dict(
+            election_url=election.get_link(),
+            agora_link=election.get_full_name('link'),
+            election_name=election.pretty_name,
+            agora_name=election.get_full_name()
+        ))
+        for admin in election.agora.admins.all():
+
+            if not admin.get_profile().has_perms('receive_email_updates'):
+                continue
+
+            translation.activate(admin.get_profile().lang_code)
+            context['to'] = admin
+            datatuples.append((
+                _('Election publick keys %s created') % election.pretty_name,
+                render_to_string('agora_core/emails/election_pubkeys_created.txt',
+                    context),
+                render_to_string('agora_core/emails/election_pubkeys_created.html',
+                    context),
+                None,
+                [admin.email]))
+
+        translation.deactivate()
+
+        send_mass_html_mail(datatuples)
+
+        # send email to admins
+        return http.HttpResponse()
+
+    @csrf_exempt
+    def dispatch(self, *args, **kwargs):
+        return super(UpdateAgoraDelegationElectionView, self).dispatch(*args,
+            **kwargs)
+

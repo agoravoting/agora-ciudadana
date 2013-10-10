@@ -432,3 +432,5 @@ MAX_NUM_AUTHORITIES = 5
 # Used to connect with authorities
 SSL_CERT_PATH = '%s/certs/cert.pem' % os.path.dirname(ROOT_PATH)
 SSL_KEY_PATH = '%s/certs/key-nopass.pem' % os.path.dirname(ROOT_PATH)
+
+PRIVATE_DATA_ROOT = os.path.join(os.path.dirname(ROOT_PATH), 'private_data')

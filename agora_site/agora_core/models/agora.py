@@ -393,6 +393,8 @@ class Agora(models.Model):
                 return isinstance(self.delegation_status, dict) and\
                     self.delegation_status.get('status', None) == 'success'
 
+            return True
+
         elif permission_name == 'cancel_vote_delegation':
             return is_member() and\
                 self.delegation_election.cast_votes.filter(

@@ -43,7 +43,7 @@ class DelegateElectionCountTest(RootTestCase):
                 ]
             }
         ],
-        'is_vote_secret': True,
+        'security_policy': 'ALLOW_SECRET_VOTING',
         'from_date': '',
         'to_date': '',
     }

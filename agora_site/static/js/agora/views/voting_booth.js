@@ -44,7 +44,7 @@
         defaults: {
             'pretty_name': '',
             'description': '',
-            'is_vote_secret': true,
+            'security_policy': 'PUBLIC_VOTING',
             'user_vote_is_secret': true,
             'questions': [],
             'from_date': '',
@@ -509,7 +509,7 @@
 
             // user cannot vote secretly
             if (this.model.get('user_perms').indexOf('vote_counts') == -1 ||
-                !this.model.get('is_vote_secret')) {
+                this.model.get('security_policy') == 'PUBLIC_VOTING') {
                 this.$el.find("#user_vote_is_public").attr('checked', 'checked');
                 this.$el.find("#user_vote_is_public").attr('disabled', true);
                 this.$el.find("#user_vote_is_public").hide();

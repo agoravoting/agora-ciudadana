@@ -134,7 +134,7 @@ class VoteForm(django_forms.ModelForm):
         vote.is_direct = True
 
         # stablish if the vote is secret
-        if self.election.is_vote_secret and self.cleaned_data['is_vote_secret']:
+        if self.election.is_vote_secret() and self.cleaned_data['is_vote_secret']:
             vote.is_public = False
             vote.reason = None
         else:

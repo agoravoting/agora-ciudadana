@@ -25,16 +25,23 @@
                             <textarea rows="3" class="input-xxlarge" id="description" placeholder="<%= gettext("Election description") %>"><%= description %></textarea>
                         </div>
                     </div>
-                    <div class="control-group">
-                        <label class="control-label radio">
-                            <input type="radio" name="is_vote_secret" id="is_vote_secret_yes" value="secret" <% if (is_vote_secret) { %> checked <% } %> />
-                            <p><%= gettext("Allow secret voting") %></p>
-                        </label>
-                        <label class="radio">
-                            <input type="radio" name="is_vote_secret" id="is_vote_secret_no" value="public" <% if (!is_vote_secret) { %> checked <% } %> />
-                            <p><%= gettext("All votes are public") %></p>
-                        </label>
+
+                    <div class="control-group" id="div_id_security_policy">
+                        <div class="controls">
+                            <select name="security_policy" class="input-xxlarge select" id="id_security_policy">
+                                <option value="PUBLIC_VOTING">
+                                    <%= gettext("All votes are public") %>
+                                </option>
+                                <option value="ALLOW_SECRET_VOTING">
+                                    <%= gettext("Allow secret voting") %>
+                                </option>
+                                <option value="ALLOW_ENCRYPTED_VOTING">
+                                    <%= gettext("Allow secure secret and encrypted voting") %>
+                                </option>
+                            </select>
+                        </div>
                     </div>
+
                     <div class="control-group spaced-up-control">
                         <label class="control-label checkbox" id="schedule_voting_label">
                             <input type="checkbox" name="schedule_voting" id="schedule_voting" />

@@ -43,7 +43,7 @@ class ElectionTest(RootTestCase):
                 ]
             }
         ],
-        'is_vote_secret': True,
+        'security_policy': 'ALLOW_SECRET_VOTING',
         'from_date': '',
         'to_date': '',
     }
@@ -212,6 +212,35 @@ class ElectionTest(RootTestCase):
         # check that election is not in requested elections
         data = self.getAndParse('agora/1/requested_elections/', code=HTTP_OK)
         self.assertEqual(len(data['objects']), 0)
+
+    def test_freeze_election(self):
+        self.login('user1', '123')
+        # user1 creates an election, but remains in requested status as it's not
+        # an admin
+        data = self.postAndParse('agora/1/action/', data=self.base_election_data,
+            code=HTTP_OK, content_type='application/json')
+
+        self.assertTrue('is_approved' in data)
+        self.assertEquals(data['is_approved'], False)
+        election_id = data['id']
+
+        # approve election
+        self.login('david', 'david')
+        orig_data = dict(action='approve')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # has perms to freeze
+        orig_data = dict(action='get_permissions')
+        data = self.postAndParse('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+        self.assertTrue('freeze_election' in data["permissions"])
+
+        # freeze election
+        self.login('david', 'david')
+        orig_data = dict(action='freeze')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
 
     def test_approve_election2(self):
         self.login('user1', '123')
@@ -550,7 +579,7 @@ class ElectionTest(RootTestCase):
         self.login('david', 'david')
         orig_data = {'pretty_name': "updated name",
                      'short_description': "new desc",
-                     'is_vote_secret': True,
+                     'security_policy': 'ALLOW_SECRET_VOTING',
                      'biography': "bio",
                      'membership_policy': 'ANYONE_CAN_JOIN',
                      'comments_policy': 'ANYONE_CAN_COMMENT'}
@@ -873,7 +902,7 @@ class ElectionTest(RootTestCase):
                     ]
                 }
             ],
-            'is_vote_secret': True,
+            'security_policy': 'ALLOW_SECRET_VOTING',
             'from_date': '',
             'to_date': '',
         }
@@ -1175,7 +1204,7 @@ class ElectionTest(RootTestCase):
                     ]
                 }
             ],
-            'is_vote_secret': True,
+            'security_policy': 'ALLOW_SECRET_VOTING',
             'from_date': '',
             'to_date': '',
         }
@@ -1338,7 +1367,7 @@ class ElectionTest(RootTestCase):
         self.login('david', 'david')
         orig_data = {'pretty_name': "updated name",
                      'short_description': "new desc",
-                     'is_vote_secret': True,
+                     'security_policy': 'ALLOW_SECRET_VOTING',
                      'biography': "bio",
                      'membership_policy': 'ANYONE_CAN_JOIN',
                      'comments_policy': 'ANYONE_CAN_COMMENT'}
