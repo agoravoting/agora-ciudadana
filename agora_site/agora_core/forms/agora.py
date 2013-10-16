@@ -118,7 +118,7 @@ class DelegateVoteForm(django_forms.ModelForm):
         vote.is_direct = False
         vote.is_public = not self.agora.is_vote_secret
         vote.casted_at_date = timezone.now()
-        vote.reason = self.cleaned_data['reason'] if not self.agora.is_vote_secret else ''
+        vote.reason = clean_html(self.cleaned_data['reason']) if not self.agora.is_vote_secret else ''
         vote.create_hash()
         vote.save()
 

@@ -40,7 +40,8 @@ from agora_site.agora_core.forms.agora import DelegateVoteForm
 from agora_site.agora_core.views import AgoraActionJoinView
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.misc.decorators import permission_required
-from agora_site.misc.utils import (geolocate_ip, get_base_email_context)
+from agora_site.misc.utils import (geolocate_ip, get_base_email_context,
+                                   clean_html)
 
 class TinyAgoraResource(GenericResource):
     '''
@@ -71,6 +72,12 @@ class CreateAgoraForm(ModelForm):
     Form used to validate the user information in the
     agora creation.
     '''
+    def clean_short_description(self):
+        return clean_html(self.cleaned_data['short_description'])
+
+    def clean_pretty_name(self):
+        return clean_html(self.cleaned_data['pretty_name'])
+
     class Meta(GenericMeta):
         model = Agora
         fields = ('pretty_name', 'short_description', 'is_vote_secret')
@@ -80,6 +87,15 @@ class AgoraAdminForm(ModelForm):
     '''
     Form used to validate agora administration details.
     '''
+    def clean_short_description(self):
+        return clean_html(self.cleaned_data['short_description'])
+
+    def clean_pretty_name(self):
+        return clean_html(self.cleaned_data['pretty_name'], True)
+
+    def clean_biography(self):
+        return clean_html(self.cleaned_data['biography'])
+
     class Meta(GenericMeta):
         model = Agora
         fields = ('pretty_name', 'short_description', 'is_vote_secret',
@@ -150,8 +166,8 @@ class AgoraResource(GenericResource):
             raise ImmediateHttpResponse(response=self.error_response(
                 bundle.request, bundle.errors))
 
-        pretty_name = bundle.data['pretty_name']
-        short_description = bundle.data['short_description']
+        pretty_name = clean_html(bundle.data['pretty_name'])
+        short_description = clean_html(bundle.data['short_description'])
         is_vote_secret = bundle.data['is_vote_secret']
 
         agora = Agora(pretty_name=pretty_name,
@@ -524,7 +540,7 @@ class AgoraResource(GenericResource):
             is_secure=request.is_secure(),
             receivers=receivers,
             subject=subject,
-            body=body,
+            body=clean_html(body),
             site_id=Site.objects.get_current().id,
             remote_addr=request.META.get('REMOTE_ADDR')
         )
@@ -755,7 +771,7 @@ class AgoraResource(GenericResource):
                     'administrators.') % dict(
                         agora=agora.get_full_name(),
                         user=request.user.username
-                    ) + '\n\n' + welcome_message,
+                    ) + '\n\n' + clean_html(welcome_message),
                 to=user
             ))
 
@@ -811,7 +827,7 @@ class AgoraResource(GenericResource):
                 notification_text=_('Your membership of %(agora)s has been removed. '
                             'Sorry about that!') % dict(
                             agora=agora.get_full_name()
-                        ) + '\n\n' + goodbye_message,
+                        ) + '\n\n' + clean_html(goodbye_message),
                 to=user
             ))
 
@@ -1096,7 +1112,7 @@ class AgoraResource(GenericResource):
                     'administrators.') % dict(
                         agora=agora.get_full_name(),
                         user=request.user.username
-                    ) + '\n\n' + welcome_message,
+                    ) + '\n\n' + clean_html(welcome_message),
                 to=user
             ))
 
@@ -1151,7 +1167,7 @@ class AgoraResource(GenericResource):
                 other_user=user,
                 notification_text=_('Your admin permissions on %(agora)s have been revoked. Sorry about that!') % dict(
                             agora=agora.get_full_name()
-                        ) + '\n\n' + goodbye_message,
+                        ) + '\n\n' + clean_html(goodbye_message),
                 to=user
             ))
 

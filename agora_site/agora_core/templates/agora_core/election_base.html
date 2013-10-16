@@ -144,7 +144,7 @@
     <div class="content">        
         {% block election_content %}                    
             <div class="main-description">
-                {{ election.description|urlify_markdown|markdown:"safe" }}
+                {{ election.description|urlify_markdown|markdown }}
             </div>
             <div class="election-data">
                 <div id="election-results">

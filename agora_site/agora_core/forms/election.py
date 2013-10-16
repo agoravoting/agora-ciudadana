@@ -138,7 +138,7 @@ class VoteForm(django_forms.ModelForm):
             vote.is_public = False
             vote.reason = None
         else:
-            vote.reason = self.cleaned_data['reason']
+            vote.reason = clean_html(self.cleaned_data['reason'])
             vote.is_public = True
 
         # assign data, create hash etc

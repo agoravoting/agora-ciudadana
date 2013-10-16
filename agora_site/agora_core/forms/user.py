@@ -19,7 +19,8 @@ from userena.models import UserenaSignup
 
 from agora_site.misc.utils import FormRequestMixin
 from agora_site.agora_core.forms.comment import COMMENT_MAX_LENGTH
-from agora_site.misc.utils import send_mass_html_mail, get_base_email_context
+from agora_site.misc.utils import (send_mass_html_mail, get_base_email_context,
+                                   clean_html)
 
 class UsernameAvailableForm(django_forms.Form, FormRequestMixin):
     def __init__(self, *args, **kwargs):
@@ -77,7 +78,7 @@ class SendMailForm(django_forms.Form):
         context = get_base_email_context(self.request)
         context['to'] = self.target_user
         context['from'] = self.request.user
-        context['comment'] = self.cleaned_data['comment']
+        context['comment'] = clean_html(self.cleaned_data['comment'])
         datatuples= [(
             _('Message from %s') % self.request.user.get_profile().get_fullname(),
             render_to_string('agora_core/emails/user_mail.txt',
@@ -167,18 +168,18 @@ class CustomAvatarForm(django_forms.ModelForm):
 class UserSettingsForm(django_forms.ModelForm):
     use_gravatar = django_forms.BooleanField(required=False)
 
-    first_name = django_forms.CharField(max_length=140, required=False)
+    first_name = django_forms.RegexField(regex=r'^[_\.\w]+$', max_length=140, required=False)
 
     use_initials = django_forms.BooleanField(required=False)
 
-    short_description = django_forms.CharField(max_length=140, required=False)
+    short_description = django_forms.RegexField(regex=r'^[\.\w]+$', max_length=140, required=False)
 
     biography = django_forms.CharField(_('Biography'),
         widget=django_forms.Textarea, required=False)
 
     email = django_forms.EmailField(required=False)
 
-    username = django_forms.CharField(required=False)
+    username = django_forms.RegexField(regex=r'^[\.\w]+$', max_length=30, required=False)
 
     email_updates = django_forms.BooleanField(required=False)
 
@@ -303,6 +304,7 @@ class UserSettingsForm(django_forms.ModelForm):
             raise django_forms.ValidationError(_('You need to be '
                 'authenticated'))
 
+        self.cleaned_data['biography'] = clean_html(self.cleaned_data['biography'])
         return self.cleaned_data
 
     class Meta:
@@ -330,7 +332,7 @@ class APISignupForm(django_forms.Form):
     be accepted.
 
     """
-    first_name = django_forms.CharField(required=True)
+    first_name = django_forms.RegexField(regex=r'^[_\.\w]+$', max_length=140, required=True)
     username = django_forms.RegexField(regex=userena_forms.USERNAME_RE,
                                 max_length=30, required=True,
                                 error_messages={'invalid': _('Username must contain only letters, numbers, dots and underscores.')})

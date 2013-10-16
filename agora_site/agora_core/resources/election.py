@@ -8,7 +8,7 @@ from agora_site.agora_core.resources.castvote import CastVoteResource
 from agora_site.agora_core.forms import PostCommentForm, election_questions_validator
 from agora_site.agora_core.forms.election import VoteForm as ElectionVoteForm
 from agora_site.misc.utils import (geolocate_ip, get_base_email_context,
-    JSONFormField, JSONApiField, ISODateTimeFormField)
+    JSONFormField, JSONApiField, ISODateTimeFormField, clean_html)
 from agora_site.misc.decorators import permission_required
 
 from tastypie import fields, http
@@ -107,6 +107,10 @@ class ElectionAdminForm(ModelForm):
         cleaned_data = super(ElectionAdminForm, self).clean()
         if not self.instance.has_perms('edit_details', self.request.user):
             raise ImmediateHttpResponse(response=http.HttpForbidden())
+
+        cleaned_data['pretty_name'] = clean_html(cleaned_data['pretty_name'], True)
+        cleaned_data['short_description'] = clean_html(cleaned_data['short_description'])
+        cleaned_data['description'] = clean_html(cleaned_data['description'])
 
         from_date = cleaned_data.get("from_date", None)
         to_date = cleaned_data.get("to_date", None)

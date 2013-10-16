@@ -62,6 +62,12 @@ class CreateAgoraForm(django_forms.ModelForm):
         self.helper.layout = Layout(Fieldset(_('Create Agora'), 'pretty_name', 'short_description', 'is_vote_secret'))
         self.helper.add_input(Submit('submit', _('Create Agora'), css_class='btn btn-success btn-large'))
 
+    def clean_short_description(self):
+        return clean_html(self.cleaned_data['short_description'])
+
+    def clean_pretty_name(self):
+        return clean_html(self.cleaned_data['pretty_name'], True)
+
     def save(self, *args, **kwargs):
         agora = super(CreateAgoraForm, self).save(commit=False)
         agora.create_name(self.request.user)
@@ -214,6 +220,15 @@ class AgoraAdminForm(django_forms.ModelForm):
         self.helper.layout = Layout(Fieldset(_('General settings'), 'pretty_name', 'short_description', 'biography', 'delegation_policy', 'is_vote_secret', 'membership_policy', 'comments_policy'))
         self.helper.add_input(Submit('submit', _('Save settings'), css_class='btn btn-success btn-large'))
 
+    def clean_short_description(self):
+        return clean_html(self.cleaned_data['short_description'])
+
+    def clean_pretty_name(self):
+        return clean_html(self.cleaned_data['pretty_name'], True)
+
+    def clean_biography(self):
+        return clean_html(self.cleaned_data['biography'])
+
     class Meta:
         model = Agora
         fields = ('pretty_name', 'short_description', 'is_vote_secret', 'delegation_policy',
@@ -285,6 +300,9 @@ class CreateElectionForm(django_forms.ModelForm):
 
         from_date = cleaned_data.get("from_date", None)
         to_date = cleaned_data.get("to_date", None)
+
+        cleaned_data['pretty_name'] = clean_html(cleaned_data['pretty_name'], True)
+        cleaned_data['description'] = clean_html(cleaned_data['description'])
 
         if not from_date and not to_date:
             return cleaned_data
