@@ -206,7 +206,7 @@ class BaseSTVTally(BaseTally):
         '''
         import codecs
         import os
-        if not os.path.exists(self.ballots_path):
+        if not os.path.exists(os.path.dirname(self.ballots_path)):
             os.makedirs(os.path.dirname(self.ballots_path))
         self.ballots_file = codecs.open(self.ballots_path, encoding='utf-8', mode='w')
 
