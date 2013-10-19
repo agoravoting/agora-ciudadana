@@ -137,6 +137,12 @@ def end_election(election_id, is_secure, site_id, remote_addr, user_id):
     election.save()
     election.compute_result()
 
+@task(ignore_result=True)
+def send_election_results(election_id, is_secure, site_id, remote_addr, user_id):
+    election = Election.objects.get(pk=election_id)
+
+    user = User.objects.get(pk=user_id)
+
     context = get_base_email_context_task(is_secure, site_id)
 
     context.update(dict(
