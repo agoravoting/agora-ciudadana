@@ -256,4 +256,45 @@
             Agora.delegateVoteHandler(e, this);
         }
     });
+
+    Agora.FeaturedElectionView = Backbone.View.extend({
+        el: "#content-wrapper",
+
+        initialize: function() {
+            _.bindAll(this);
+            this.bw_template = _.template($("#template_background-wrapper-featured-election").html());
+            this.question_template = _.template($("#template_featured-election-question").html());
+            this.oc_question_template = _.template($("#template_featured-election-tallied-one-choice-question").html());
+            this.stv_question_template = _.template($("#template_featured-election-tallied-stv-question").html());
+
+            $("#background-wrapper-fe").html(this.bw_template(ajax_data));
+            if (ajax_data.election.result_tallied_at_date) {
+                for (var i = 0; i < ajax_data.election.questions.length; i++) {
+                    var data = {
+                        i: i,
+                        q: ajax_data.election.result.counts[i],
+                        q_tally: ajax_data.extra_data.tally_log[i]
+                    };
+                    if (data.q.a == "question/result/ONE_CHOICE") {
+                        $("#bloques").append(this.oc_question_template(data));
+                    } else {
+                        $("#bloques").append(this.stv_question_template(data));
+                    }
+                }
+            } else {
+                for (var i = 0; i < ajax_data.election.questions.length; i++) {
+                    var data = {
+                        i: i,
+                        q: ajax_data.election.questions[i]
+                    };
+                    $("#bloques").append(this.question_template(data));
+                }
+            }
+
+            // in case there's only on question, uncollapse it
+            if (ajax_data.election.questions.length == 1) {
+                $("#q0").addClass("in");
+            }
+        }
+    });
 }).call(this)

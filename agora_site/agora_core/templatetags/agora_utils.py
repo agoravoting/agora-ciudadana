@@ -262,7 +262,6 @@ def rest(parser, token):
     bits = token.split_contents()[2:]
     return RestNode(req, method, data, *bits)
 
-
 @register.tag
 def custom_rest(parser, token):
     req = token.split_contents()[1]

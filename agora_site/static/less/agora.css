@@ -5901,3 +5901,203 @@ ul.list-container li.agora-user-item.simple > a.agora i {
 #why_id {
   height: 25px;
 }
+/* congreso home */
+.background-wrapper.home {
+  background: white;
+}
+.home #running-board-wrapper {
+  /* background: url("../img/congreso_puntos_naranja_small.png") no-repeat scroll right top #EA7F1E; */
+
+  background: url("../img/congreso_puntos_gris_oscuro_small.png") no-repeat scroll right top #aaaaaa;
+  text-shadow: #666 0.1em 0.1em 0.2em;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  /* color: #333; */
+
+  color: white;
+}
+.home .home-main {
+  background: none repeat scroll 0% 0% rgba(255, 255, 255, 0.95);
+  margin-top: -24px;
+  padding: 20px;
+}
+.home .hero-unit .top-p {
+  margin-top: 10px;
+}
+.home .hero-unit h1 {
+  font-size: 38px;
+  /* color: #6EB43F; */
+
+}
+.home .hero-unit h1.home-loggedin {
+  margin-top: 20px;
+}
+.home .hero-unit li {
+  font-size: 18px;
+}
+.home .btn-xxlarge {
+  padding: 15px;
+}
+/* collapse */
+.home label.control-label {
+  margin-top: 10px;
+}
+.home span.badge {
+  display: inline-block;
+  margin: 0 5px 0 15px;
+  background: #000;
+}
+.home .accordion-group {
+  border: none;
+  background: none;
+}
+.home .accordion-heading {
+  background: none;
+  border: none;
+}
+.home .accordion-heading a {
+  color: white;
+  font-weight: bold;
+  width: 91%;
+  display: inline-block;
+  margin-left: 0;
+  padding-left: 10px;
+  font-size: 1.1em;
+}
+.home .accordion-heading a:hover,
+.accordion-heading a:active {
+  opacity: 0.9;
+  color: #fff !important;
+}
+.home .youtube {
+  width: 370px;
+  margin-top: 10px;
+  height: auto;
+}
+.home .home-main p.motiv {
+  display: block;
+  font-size: 1.5em;
+  line-height: 1.6em;
+  margin-left: 50px;
+}
+.home .accordion-inner {
+  border: none;
+  padding-left: 50px;
+}
+.home .accordion-heading a:link,
+.accordion-heading a:visited,
+.accordion-heading a {
+  text-decoration: none;
+  /* color: #fff; */
+
+  background: #EAEBF0;
+  color: #333;
+}
+/*.home .accordion-heading.dcho_fundamental a{
+background: #9d3293;
+}
+
+.home .accordion-heading.sujetos_obligados a{
+background: #00a9a7;
+}
+
+.home .accordion-heading.reg_lobbies a{
+background: #9c0059;
+}
+
+.home .accordion-heading.formatos_informacion a{
+background: #6eb43f;
+}
+
+.home .accordion-heading.causas_inadmision a{
+background: #ea7f1e;
+}
+
+.home .accordion-heading.silencio a{
+background: #ec008c;
+}
+
+.home .accordion-heading.organo a{
+background: #ee84b5;
+}
+
+.home .accordion-heading.votacion a{
+background: #7170b3;
+}*/
+.home .accordion-heading .results {
+  text-align: right;
+  float: right;
+  width: auto;
+  font-weight: bold;
+  font-size: 1em;
+}
+.home .accordion-heading a:hover .winner {
+  color: white;
+}
+.home .accordion-heading .winner {
+  color: #5EBC5E;
+}
+.home .accordion-heading.q-color-0 a:hover {
+  background: #9d3293;
+}
+.home .accordion-heading.q-color-1 a:hover {
+  background: #00a9a7;
+}
+.home .accordion-heading.q-color-2 a:hover {
+  background: #9c0059;
+}
+.home .accordion-heading.q-color-3 a:hover {
+  background: #6eb43f;
+}
+.home .accordion-heading.q-color-4 a:hover {
+  background: #ea7f1e;
+}
+.home .accordion-heading.q-color-5 a:hover {
+  background: #ec008c;
+}
+.home .accordion-heading.q-color-6 a:hover {
+  background: #ee84b5;
+}
+.home .accordion-heading.q-color-7 a:hover {
+  background: #7170b3;
+}
+.home .q-color-0 span.badge {
+  background: #9d3293;
+}
+.home .q-color-1 span.badge {
+  background: #00a9a7;
+}
+.home .q-color-2 span.badge {
+  background: #9c0059;
+}
+.home .q-color-3 span.badge {
+  background: #6eb43f;
+}
+.home .q-color-4 span.badge {
+  background: #ea7f1e;
+}
+.home .q-color-5 span.badge {
+  background: #ec008c;
+}
+.home .q-color-6 span.badge {
+  background: #ee84b5;
+}
+.home .q-color-7 span.badge {
+  background: #7170b3;
+}
+.home #bloques input {
+  margin-bottom: 0 !important;
+  margin-left: -3px;
+}
+.home .accordion-group .control-group label {
+  font-size: 1em;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.8em;
+}
+.home .inner_txt {
+  max-height: 150px;
+  overflow: auto;
+  padding: 0.5em;
+}

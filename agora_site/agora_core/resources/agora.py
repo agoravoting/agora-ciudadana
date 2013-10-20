@@ -85,7 +85,7 @@ class AgoraAdminForm(ModelForm):
         model = Agora
         fields = ('pretty_name', 'short_description', 'is_vote_secret',
             'biography', 'membership_policy', 'comments_policy',
-            'delegation_policy')
+            'delegation_policy', 'featured_election')
 
 
 class AgoraValidation(Validation):

@@ -125,6 +125,19 @@ class Agora(models.Model):
         else:
             return settings.STATIC_URL + 'img/agora_default_logo.png'
 
+    def get_featured_election(self):
+        '''
+        Returns the feature election
+        '''
+        if not self.featured_election:
+            return None
+        else:
+            try:
+                return self.elections.filter(is_approved=True,
+                    archived_at_date__isnull=True).order_by('-id')[0]
+            except IndexError:
+                return None
+
     def get_open_elections(self):
         '''
         Returns the list of current and future elections that will or are
@@ -173,6 +186,8 @@ class Agora(models.Model):
     # Stablishes a default option for elections
     election_type = models.CharField(max_length=50, choices=ELECTION_TYPES,
         default=ELECTION_TYPES[0][0])
+
+    featured_election = models.BooleanField(_('Is feature'), default=False)
 
     # Stablishes a default option for elections
     # eligibility is a JSON field, which lists auth_systems and eligibility details for that auth_system, e.g.

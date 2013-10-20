@@ -133,10 +133,18 @@ class AgoraView(TemplateView):
     Shows an agora main page
     '''
     template_name = 'agora_core/agora_activity.html'
+    featured_election = None
 
     def get_context_data(self, **kwargs):
         context = super(AgoraView, self).get_context_data(**kwargs)
         context['agora'] = self.agora
+        classic = self.request.REQUEST.get('classic', False)
+        if not classic:
+            self.featured_election = self.agora.get_featured_election()
+
+        if self.featured_election:
+            context['election'] = self.featured_election
+            self.template_name = 'agora_core/featured_election.html'
         return context
 
     def dispatch(self, *args, **kwargs):
@@ -147,6 +155,7 @@ class AgoraView(TemplateView):
         self.agora = get_object_or_404(Agora, name=agoraname,
             creator__username=username)
         return super(AgoraView, self).dispatch(*args, **kwargs)
+
 
 class AgoraBiographyView(TemplateView):
     '''
@@ -340,26 +349,6 @@ class CreateElectionView(RequestCreateView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(CreateElectionView, self).dispatch(*args, **kwargs)
-
-class AgoraView(TemplateView):
-    '''
-    Shows an agora main page
-    '''
-    template_name = 'agora_core/agora_activity.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(AgoraView, self).get_context_data(**kwargs)
-        context['agora'] = self.agora
-        return context
-
-    def dispatch(self, *args, **kwargs):
-        self.kwargs = kwargs
-        username = self.kwargs["username"]
-        agoraname = self.kwargs["agoraname"]
-
-        self.agora = get_object_or_404(Agora, name=agoraname,
-            creator__username=username)
-        return super(AgoraView, self).dispatch(*args, **kwargs)
 
 class ElectionView(TemplateView):
     '''

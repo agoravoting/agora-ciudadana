@@ -58,6 +58,10 @@
                 }
             });
 
+            if (ajax_data.agora.featured_election == true) {
+                $("#id_featured_election").attr("checked", "checked");
+            }
+
             // shuffle options
             this.$el.find('.available-choices ul').shuffle();
 
@@ -113,6 +117,7 @@
                     short_description: ajax_data.agora.short_description,
                     biography: ajax_data.agora.biography,
                     is_vote_secret: is_vote_secret,
+                    featured_election: this.$el.find("#id_featured_election:checked").length > 0,
                     membership_policy: this.$el.find("#id_membership_policy").val(),
                     comments_policy: this.$el.find("#id_comments_policy").val(),
                     delegation_policy: delegation_policy

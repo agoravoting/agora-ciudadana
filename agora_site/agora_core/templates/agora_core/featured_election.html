@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load agora_utils %}
+
+{% block background-wrapper %}
+<div id="background-wrapper-fe" class="home">
+</div>
+{% endblock %}
+
+{% block content-wrapper-class %}hidden{% endblock %}
+
+{% block script-block %}
+    <script id="template_featured-election-question" type="text/underscore-template">
+        <div class="accordion-group">
+            <div class="accordion-heading q-color-<%= i % 8 %>">
+                <span class="badge">1</span>
+                <a class="accordion-toggle" data-toggle="collapse"
+                    data-parent="#bloques" href="#q<%= i %>">
+                    <%= q.question %>
+                </a>
+            </div>
+            <div id="q<%= i %>" class="accordion-body collapse">
+                <div class="accordion-inner">
+                    <!--<div class="inner_txt"></div>-->
+
+                    <div class="control-group">
+                        <label class="control-label" for="inputIcon">
+                            <%= q.question %>
+                        </label>
+
+                        <table class="question-stv table table-bordered">
+                            <thead><tr>
+                                <th><%= gettext("Options") %></th>
+                            </tr></thead>
+                            <tbody>
+                                <% for (var j = 0; j < q.answers.length; j++) { %>
+                                <tr>
+                                    <td class="candidate">
+                                        <strong><%= q.answers[i].value %></strong>
+                                    </td>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="template_featured-election-tallied-one-choice-question" type="text/underscore-template">
+        <div class="accordion-group">
+            <div class="accordion-heading q-color-<%= i % 8 %>">
+                <span class="badge">1</span>
+                <a class="accordion-toggle" data-toggle="collapse"
+                    data-parent="#bloques" href="#q<%= i %>">
+                    <%= q.question %>
+
+                    <% if (q.winners.length == 1) { %>
+                        <div class="results">
+                            <% for (var j = 0; j < q.answers.length; j++) { %>
+                                <% if (q.winners.indexOf(q.answers[j].value) != -1) { %>
+                                    <span><%= q.answers[j].value.substr(0, 50) %></span>
+                                    <span class="winner">
+                                        <%= q.answers[j].total_count_percentage %>%
+                                        (<%= interpolate(gettext("%s votes"), [q.answers[j].total_count]) %>)</span>
+                                <% } %>
+                            <% } %>
+                        </div>
+                    <% } %>
+                </a>
+            </div>
+            <div id="q<%= i %>" class="accordion-body collapse">
+                <div class="accordion-inner">
+                    <!--<div class="inner_txt"></div>-->
+
+                    <div class="control-group">
+                        <label class="control-label" for="inputIcon">
+                            <%= q.question %>
+                        </label>
+
+                        <table class="question-stv table table-bordered">
+                            <thead><tr>
+                                <th><%= gettext("Options") %></th>
+                                <th><%= gettext("Votes") %></th>
+                                <th><%= gettext("Percent") %></th>
+                            </tr></thead>
+                            <tbody>
+                                <% for (var j = 0; j < q.answers.length; j++) { %>
+                                    <tr>
+                                        <% if (q.winners.indexOf(q.answers[j].value) != -1) { %>
+                                            <td class="candidate">
+                                                <strong><%= q.answers[j].value %></strong>
+                                            </td>
+                                            <td class="won">
+                                                <%= q.answers[j].value %>
+                                            </td>
+                                            <td class="last won">
+                                                <%= q.answers[j].total_count_percentage %>%
+                                            </td>
+                                        <% } else { %>
+                                            <td class="candidate">
+                                                <strong><%= q.answers[j].value %></strong>
+                                            </td>
+                                            <td>
+                                                <%= q.answers[j].value %>
+                                            </td>
+                                            <td class="last">
+                                                <%= q.answers[j].total_count_percentage %>%
+                                            </td>
+                                        <% } %>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script id="template_featured-election-tallied-stv-question" type="text/underscore-template">
+        <div class="accordion-group">
+            <div class="accordion-heading q-color-<%= i % 8 %>">
+                <span class="badge">1</span>
+                <a class="accordion-toggle" data-toggle="collapse"
+                    data-parent="#bloques" href="#q<%= i %>">
+                    <%= q.question %>
+
+                    <% if (q.winners.length == 1) { %>
+                        <div class="results">
+                            <% for (var j = 0; j < q.answers.length; j++) { %>
+                                <% if (q.winners.indexOf(q.answers[j].value) != -1) { %>
+                                    <span><%= q.answers[j].value.substr(0, 50) %></span>
+                                    <span class="winner">
+                                        <%= interpolate(gettext("%s votes"), [parseFloat(q_tally.iterations[q_tally.iterations.length-1].candidates[j].count)]) %></span>
+                                <% } %>
+                            <% } %>
+                        </div>
+                    <% } %>
+                </a>
+            </div>
+            <div id="q<%= i %>" class="accordion-body collapse">
+                <div class="accordion-inner">
+                    <!--<div class="inner_txt"></div>-->
+
+                    <div class="control-group">
+                        <label class="control-label" for="inputIcon">
+                            <%= q.question %>
+                        </label>
+
+                        <strong class="winners">
+                            <%= gettext("Winners: ") %>
+                            <% for(var j=0; j < q.winners.length; j++) { %>
+                                <%= q.winners[j] %><% if (j + 1 <  q.winners.length) { %>,<% } %>
+                            <% } %>
+                        </strong>
+
+                        <table class="question-stv table table-bordered">
+                            <thead><tr>
+                                <th><%= gettext("Options") %></th>
+                                <% for(var j = 0; j < q_tally.iterations.length; j++) { %>
+                                <th>
+                                    <%= interpolate(gettext("%sº round"), [q_tally.iterations[j].round_stage]) %>
+                                </th>
+                                <% } %>
+                                <th>
+                                    <%= gettext("Final") %>
+                                </th>
+                            </tr></thead>
+                            <tbody>
+                                <% for(var j = 0; j < q.answers.length; j++) { %>
+                                    <tr>
+                                        <td class="candidate">
+                                        <% if (q_tally.winners.indexOf(q.answers[j].value) != -1) { %>
+                                            <strong><%= q.answers[j].value %></strong>
+                                        <% } else { %>
+                                            <%= q.answers[j].value %>
+                                        <% } %>
+                                        </td>
+                                        <% for(var k = 0; k < q_tally.iterations.length; k++) { %>
+                                            <td class="<%= q_tally.iterations[k].candidates[j].status %>">
+                                                <%= parseFloat(q_tally.iterations[k].candidates[j].count) %>
+                                            </td>
+                                        <% } %>
+                                        <% if (q_tally.winners.indexOf(q.answers[j].value) != -1) { %>
+                                            <td class="last won">
+                                                <%= gettext("winner") %>
+                                            </td>
+                                        <% } else { %>
+                                            <td class="last">
+                                            </td>
+                                        <% } %>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="template_background-wrapper-featured-election" type="text/underscore-template">
+        <div class="background-wrapper home">
+            <div class="container-fluid hero-unit" id="running-board-wrapper">
+                <div class="container">
+                    <div class="row">
+                            <div class="span7">
+                                <h1 class="home-loggedin"><%= election.pretty_name %></h1>
+
+                                <p class="motiv"><%= election.short_description %></p>
+                                <% if (election.voting_starts_at_date && moment(election.voting_starts_at_date)-moment() < 0 && !election.result_tallied_at_date) { %>
+                                    <a href="<%= election.url %>/vote" class="btn btn-success btn-large btn-xxlarge"><%= interpolate(gettext("Vote in %s"), [election.pretty_name]) %></a>
+                                <% } else { %>
+                                    <a href="<%= election.url %>/vote" class="btn btn-success btn-large btn-xxlarge"><%= interpolate(gettext("Election about %s"), [election.pretty_name]) %></a>
+                                <% } %>
+                            </div>
+                            <div class="span5" id="youtube-video">
+                                <!-- TODO: put video or default image here -->
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="home-main container">
+            <p class="motiv"><%= election.description %></p>
+
+        <div class="accordion" id="bloques">
+        </div>
+
+        <a href="?classic=true"><%= gettext("View classic agora view") %></a>
+    </script>
+
+    <script>
+        var ajax_data = {
+            'agora': {% rest request '/agora/' agora.id '/' %},
+            'election': {% rest request '/election/' election.id '/' %},
+            'extra_data': {% rest request '/election/' election.id '/extra_data/' %}
+        };
+
+        app.currentView = new Agora.FeaturedElectionView();
+    </script>
+{% endblock %}
