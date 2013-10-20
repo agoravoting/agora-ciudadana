@@ -378,6 +378,10 @@ AGORA_CREATION_PERMISSIONS="any-user"
 # registered
 AGORA_REGISTER_AUTO_JOIN = []
 
+# Front page agora to show. Together with featured election configuration inside
+# agora settings can feature the election in the front page.
+AGORA_FRONT_PAGE = None
+
 # Active voting methods in this deployment
 VOTING_METHODS = (
     'agora_site.agora_core.models.voting_systems.plurality.Plurality',

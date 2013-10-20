@@ -121,10 +121,34 @@ class HomeView(TemplateView):
     template_name = 'agora_core/home_activity.html'
     template_name_logged_in = 'agora_core/home_loggedin_activity.html'
 
+    additional_context = dict()
+
+    def get_context_data(self, **kwargs):
+        context = super(HomeView, self).get_context_data(**kwargs)
+        context.update(self.additional_context)
+        return context
+
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated() and not request.user.is_anonymous():
             # change template
             self.template_name = self.template_name_logged_in
+
+        # show featured agora, and even, feature election if appliable
+        if settings.AGORA_FRONT_PAGE is not None:
+            username, agoraname = settings.AGORA_FRONT_PAGE.split("/")
+            self.agora = get_object_or_404(Agora, name=agoraname,
+                creator__username=username)
+            self.template_name = 'agora_core/agora_activity.html'
+            self.additional_context['agora'] = self.agora
+
+            classic = self.request.REQUEST.get('classic', False)
+            if not classic:
+                self.featured_election = self.agora.get_featured_election()
+
+            if self.featured_election:
+                self.additional_context['election'] = self.featured_election
+                self.template_name = 'agora_core/featured_election.html'
+
         return super(HomeView, self).get(request, *args, **kwargs)
 
 
