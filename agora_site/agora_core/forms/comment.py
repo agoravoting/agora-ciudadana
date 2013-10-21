@@ -19,7 +19,7 @@ from actstream.models import Action
 from actstream.signals import action
 
 from agora_site.agora_core.models import Agora, Election, Profile
-from agora_site.misc.utils import geolocate_ip
+from agora_site.misc.utils import geolocate_ip, clean_html
 
 COMMENT_MAX_LENGTH = getattr(settings, 'COMMENT_MAX_LENGTH', 3000)
 
@@ -119,7 +119,7 @@ class PostCommentForm(django_forms.Form):
         if not self.request.user.is_authenticated():
             raise django_forms.ValidationError(_("You must be authenticated to post a comment"))
 
-        comment = self.cleaned_data["comment"]
+        comment = clean_html(self.cleaned_data["comment"])
         if settings.COMMENTS_ALLOW_PROFANITIES == False:
             bad_words = [w for w in settings.PROFANITIES_LIST if w in comment.lower()]
             if bad_words:

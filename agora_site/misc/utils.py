@@ -39,6 +39,8 @@ from guardian.core import ObjectPermissionChecker
 from guardian.models import UserObjectPermission, GroupObjectPermission
 from guardian.utils import get_identity
 
+from lxml.html.clean import clean_html as lxml_clean_html
+import html2text
 
 class FormRequestMixin(object):
     '''
@@ -461,3 +463,14 @@ class FakeHttpRequest(HttpRequest):
         so all FakeHttpRequests are encoded as 'none/none'.
         """
         return 'none/none'
+
+
+def clean_html(text, to_plaintext=False):
+    if not len(text.strip()):
+        return text
+
+    html = lxml_clean_html(text)
+    if not to_plaintext:
+        return html
+
+    return html2text.html2text(html).strip()

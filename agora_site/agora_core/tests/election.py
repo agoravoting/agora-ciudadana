@@ -120,7 +120,7 @@ class ElectionTest(RootTestCase):
         self.assertEqual(objects[0]['actor']['content_type'], 'user')
         self.assertEqual(objects[0]['actor']['username'], 'david')
         self.assertEqual(objects[0]['action_object']['content_type'], 'comment')
-        self.assertEqual(objects[0]['action_object']['comment'], textile(orig_data['comment']))
+        self.assertEqual(objects[0]['action_object']['comment'], textile(orig_data['comment']).strip())
 
 
     def test_change_election(self):
@@ -996,7 +996,7 @@ class ElectionTest(RootTestCase):
             'is_vote_secret': False,
             'question0': "fo\"o",
             'action': 'vote',
-            'reason': "Zy not ye?"
+            'reason': "<p>Zy not ye?</p>"
         }
         data = self.postAndParse('election/%d/action/' % election_id,
             data=vote_data, code=HTTP_OK, content_type='application/json')
@@ -1053,7 +1053,7 @@ class ElectionTest(RootTestCase):
             'is_vote_secret': False,
             'question0': "bar",
             'action': 'vote',
-            'reason': "becuase of .. yes"
+            'reason': "<p>becuase of .. yes</p>"
         }
         data = self.postAndParse('election/%d/action/' % election_id,
             data=vote_data, code=HTTP_OK, content_type='application/json')
