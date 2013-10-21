@@ -1,7 +1,6 @@
 import datetime
 import uuid
 import hashlib
-import simplejson
 import json
 
 import markdown
@@ -114,7 +113,7 @@ class Election(models.Model):
         return data
 
     def get_serialized(self):
-        return simplejson.dumps(self.get_serializable_data())
+        return json.dumps(self.get_serializable_data())
 
     def create_hash(self):
         self.hash = hashlib.sha256(self.get_serialized()).hexdigest()
@@ -157,6 +156,13 @@ class Election(models.Model):
 
     comments_policy = models.CharField(max_length=50, choices=Agora.COMMENTS_PERMS,
         default=Agora.COMMENTS_PERMS[0][0])
+
+    # If tally is set to be release automatically, the results are also sent by
+    # email to the agora members.
+    # If tally is not set to be released automatically, then the admins have to
+    # release it manually, and even then no email is sent to the agora members:
+    # that has to be done manually too.
+    release_tally_automatically = models.BooleanField(_('Release'), default=True)
 
     last_modified_at_date = models.DateTimeField(_(u'Last Modified at Date'), auto_now_add=True, editable=True)
 
@@ -409,9 +415,9 @@ class Election(models.Model):
         elif permission_name == 'end_election':
             return self.has_started() and not self.voting_ends_at_date and\
                 isadmin and not isarchived
-        elif permission_name == 'send_results':
-            return self.result_tallied_at_date and\
-                self.result_tallied_at_date < timezone.now()
+        elif permission_name == 'release_results':
+            return not self.release_tally_automatically and\
+                self.result_tallied_at_date is not None
         elif permission_name == 'archive_election':
             return isadminorcreator and not isarchived
         elif permission_name == 'comment':
@@ -470,7 +476,7 @@ class Election(models.Model):
 
         return [perm for perm in ('edit_details', 'approve_election',
             'begin_election', 'freeze_election', 'end_election',
-            'send_results', 'archive_election', 'comment', 'emit_direct_vote',
+            'release_results', 'archive_election', 'comment', 'emit_direct_vote',
             'emit_delegate_vote', 'vote_counts') if self.__has_perms(perm,
                 user, isanon, isadmin, isadminorcreator, isarchived, isfrozen,
                 ismember)]
@@ -726,12 +732,12 @@ class Election(models.Model):
             tmp = (_("Voting started %(start_date)s. ") %\
                 dict(start_date=timesince(self.voting_starts_at_date)))
             desc += tmp
-        elif self.result_tallied_at_date:
+        elif self.tally_released_at_date:
             tmp = (_("Voting started %(start_date)s and finished "
                 "%(end_date)s. Results available since %(tally_date)s. ") %\
                     dict(start_date=timesince(self.voting_starts_at_date),
                         end_date=timesince(self.voting_extended_until_date),
-                        tally_date=timesince(self.result_tallied_at_date)))
+                        tally_date=timesince(self.tally_released_at_date)))
             desc += tmp
         elif not self.voting_starts_at_date:
             tmp = (_("Start date for voting is not set yet. "))

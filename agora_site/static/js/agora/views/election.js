@@ -143,7 +143,7 @@
 
             this.questionListView = new Agora.QuestionListView();
 
-            if (ajax_data.election.result_tallied_at_date) {
+            if (ajax_data.election.tally_released_at_date) {
                 this.electionResultsView = new Agora.ElectionResultsView();
             }
         }
@@ -233,7 +233,7 @@
                 delegation: self.delegate,
                 extra_data: ajax_data.extra_data
             };
-            if (model.election.result_tallied_at_date) {
+            if (model.election.tally_released_at_date) {
                 model.num_delegated_votes = 0;
                 model.rank_in_delegates = "-";
                 if (model.vote.delegate_election_count) {
@@ -268,7 +268,7 @@
             this.stv_question_template = _.template($("#template_featured-election-tallied-stv-question").html());
 
             $("#background-wrapper-fe").html(this.bw_template(ajax_data));
-            if (ajax_data.election.result_tallied_at_date) {
+            if (ajax_data.election.tally_released_at_date) {
                 for (var i = 0; i < ajax_data.election.questions.length; i++) {
                     var data = {
                         i: i,

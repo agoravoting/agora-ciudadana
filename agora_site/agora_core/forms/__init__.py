@@ -282,7 +282,9 @@ class CreateElectionForm(django_forms.ModelForm):
         self.request = request
         self.agora = agora
         self.helper.layout = Layout(Fieldset(_('Create election'),
-            'pretty_name', 'description', 'question', 'answers', 'security_policy', 'from_date', 'to_date'))
+            'pretty_name', 'description', 'question', 'answers',
+            'security_policy', 'from_date', 'to_date',
+            'release_tally_automatically'))
         self.helper.add_input(Submit('submit', _('Create Election'),
             css_class='btn btn-success btn-large'))
 
@@ -331,6 +333,7 @@ class CreateElectionForm(django_forms.ModelForm):
 
     def save(self, *args, **kwargs):
         import markdown
+        import html2text
         from agora_site.agora_core.templatetags.string_tags import urlify_markdown
         from django.template.defaultfilters import truncatewords_html
 
@@ -344,7 +347,8 @@ class CreateElectionForm(django_forms.ModelForm):
             election.pubkey_created_at_date = election.created_at_date
         election.creator = self.request.user
 
-        short_md = markdown.markdown(urlify_markdown(election.description[:140]),
+        description_plaintext = html2text.html2text(election.description[:140]).strip()
+        short_md = markdown.markdown(urlify_markdown(description_plaintext),
                                      safe_mode="escape", enable_attributes=False)
         election.short_description = truncatewords_html(short_md, 25)
 
@@ -431,9 +435,13 @@ class CreateElectionForm(django_forms.ModelForm):
 
     class Meta:
         model = Election
-        fields = ('pretty_name', 'description', 'security_policy')
+        fields = ('pretty_name', 'description', 'security_policy',
+                  'release_tally_automatically')
 
 class ElectionEditForm(django_forms.ModelForm):
+    '''
+    DEPRECATED
+    '''
     questions = JSONFormField(required=True, validators=[election_questions_validator])
 
     from_date = django_forms.DateTimeField(label=_('Start voting'), required=False,

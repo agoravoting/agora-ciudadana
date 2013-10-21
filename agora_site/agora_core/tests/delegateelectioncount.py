@@ -44,6 +44,7 @@ class DelegateElectionCountTest(RootTestCase):
             }
         ],
         'security_policy': 'ALLOW_SECRET_VOTING',
+        'release_tally_automatically': True,
         'from_date': '',
         'to_date': '',
     }

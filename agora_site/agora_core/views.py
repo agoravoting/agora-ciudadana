@@ -624,31 +624,29 @@ class StopElectionView(FormActionView):
         return super(StopElectionView, self).dispatch(*args, **kwargs)
 
 
-class SendResultsView(FormActionView):
+class ReleaseResultsView(FormActionView):
     def post(self, request, username, agoraname, electionname, *args, **kwargs):
         election = get_object_or_404(Election,
             name=electionname, agora__name=agoraname,
             agora__creator__username=username)
 
-        if not election.has_perms('send_results', request.user):
+        if not election.has_perms('release_results', request.user):
             messages.add_message(self.request, messages.ERROR, _('You don\'t '
-                'have permission to send election results.'))
+                'have permission to release election results.'))
             return self.go_next(request)
 
-        kwargs=dict(
-            election_id=election.id,
-            is_secure=self.request.is_secure(),
-            site_id=Site.objects.get_current().id,
-            remote_addr=self.request.META.get('REMOTE_ADDR'),
-            user_id=request.user.id
-        )
-        send_election_results.apply_async(kwargs=kwargs, task_id=election.task_id(send_election_results))
+        election.tally_released_at_date = timezone.now()
+        election.save()
+
+        action.send(self.request.user, verb='published results', action_object=election,
+            target=election.agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
         return self.go_next(request)
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(SendResultsView, self).dispatch(*args, **kwargs)
+        return super(ReleaseResultsView, self).dispatch(*args, **kwargs)
 
 
 class ArchiveElectionView(FormActionView):

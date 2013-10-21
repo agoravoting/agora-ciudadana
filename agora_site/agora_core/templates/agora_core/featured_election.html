@@ -209,10 +209,10 @@
                                 <h1 class="home-loggedin"><%= election.pretty_name %></h1>
 
                                 <p class="motiv"><%= election.short_description %></p>
-                                <% if (election.voting_starts_at_date && moment(election.voting_starts_at_date)-moment() < 0 && !election.result_tallied_at_date) { %>
+                                <% if (election.voting_starts_at_date && moment(election.voting_starts_at_date)-moment() < 0 && (!election.voting_ends_at_date || moment(election.voting_ends_at_date)-moment() > 0)) { %>
                                     <a href="<%= election.url %>/vote" class="btn btn-success btn-large btn-xxlarge"><%= interpolate(gettext("Vote in %s"), [election.pretty_name]) %></a>
                                 <% } else { %>
-                                    <a href="<%= election.url %>/vote" class="btn btn-success btn-large btn-xxlarge"><%= interpolate(gettext("Election about %s"), [election.pretty_name]) %></a>
+                                    <a href="<%= election.url %>" class="btn btn-success btn-large btn-xxlarge"><%= interpolate(gettext("Election about %s"), [election.pretty_name]) %></a>
                                 <% } %>
                             </div>
                             <div class="span5" id="youtube-video">
@@ -229,7 +229,7 @@
         <div class="accordion" id="bloques">
         </div>
 
-        <a href="<%= agora.url %>?classic=true"><%= gettext("View classic agora view") %></a>
+        <a href="<%= agora.url %>?classic=true"><%= gettext("Enter classic agora view") %></a>
     </script>
 
     <script>

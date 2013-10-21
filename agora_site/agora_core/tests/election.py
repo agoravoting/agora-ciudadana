@@ -44,6 +44,7 @@ class ElectionTest(RootTestCase):
             }
         ],
         'security_policy': 'ALLOW_SECRET_VOTING',
+        'release_tally_automatically': True,
         'from_date': '',
         'to_date': '',
     }
@@ -120,7 +121,8 @@ class ElectionTest(RootTestCase):
         self.assertEqual(objects[0]['actor']['content_type'], 'user')
         self.assertEqual(objects[0]['actor']['username'], 'david')
         self.assertEqual(objects[0]['action_object']['content_type'], 'comment')
-        self.assertEqual(objects[0]['action_object']['comment'], textile(orig_data['comment']).strip())
+        self.assertEqual(objects[0]['action_object']['comment'].strip(),
+            textile(orig_data['comment']).strip())
 
 
     def test_change_election(self):
@@ -402,7 +404,9 @@ class ElectionTest(RootTestCase):
     def test_send_election_results(self):
         # create election as admin
         self.login('david', 'david')
-        data = self.postAndParse('agora/1/action/', data=self.base_election_data,
+        election_data = self.base_election_data.copy()
+        election_data['release_tally_automatically'] = False
+        data = self.postAndParse('agora/1/action/', data=election_data,
             code=HTTP_OK, content_type='application/json')
         election_id = data['id']
 
@@ -411,8 +415,8 @@ class ElectionTest(RootTestCase):
         data = self.post('election/%d/action/' % election_id, data=orig_data,
             code=HTTP_OK, content_type='application/json')
 
-        # david tries to send results before ending election
-        orig_data = dict(action='send_results')
+        # david tries to release results before ending election
+        orig_data = dict(action='release_results')
         data = self.post('election/%d/action/' % election_id, data=orig_data,
             code=HTTP_FORBIDDEN, content_type='application/json')
 
@@ -421,10 +425,16 @@ class ElectionTest(RootTestCase):
         data = self.post('election/%d/action/' % election_id, data=orig_data,
             code=HTTP_OK, content_type='application/json')
 
-        # david sends results
-        orig_data = dict(action='send_results')
+        data = self.getAndParse('election/%d/' % election_id)
+        self.assertEqual(data['result'], None)
+
+        # david release results
+        orig_data = dict(action='release_results')
         data = self.post('election/%d/action/' % election_id, data=orig_data,
             code=HTTP_OK, content_type='application/json')
+
+        data = self.getAndParse('election/%d/' % election_id)
+        self.assertTrue(data['result'] is not None)
 
     def test_tally_election(self):
         # create election as admin
@@ -1200,6 +1210,7 @@ class ElectionTest(RootTestCase):
             'action': "create_election",
             'pretty_name': "foo bar",
             'description': "foo bar foo bar",
+            'release_tally_automatically': True,
             'questions': [
                 {
                     'a': 'ballot/question',

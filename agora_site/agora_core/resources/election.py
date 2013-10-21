@@ -1,6 +1,6 @@
 from agora_site.agora_core.models import Election, CastVote
 from agora_site.agora_core.tasks.election import (start_election, end_election,
-    send_election_results, archive_election)
+    release_election_results, archive_election)
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.agora_core.resources.user import UserResource
 from agora_site.agora_core.resources.agora import AgoraResource, TinyAgoraResource
@@ -96,7 +96,7 @@ class ElectionAdminForm(ModelForm):
     class Meta(GenericMeta):
         model = Election
         fields = ('pretty_name', 'short_description', 'description',
-            'security_policy', 'comments_policy')
+            'security_policy', 'comments_policy', 'release_tally_automatically')
 
     def __init__(self, **kwargs):
         self.request = kwargs.get('request', None)
@@ -232,6 +232,8 @@ class ElectionResource(GenericResource):
 
     user_perms = JSONApiField()
 
+    result = JSONApiField()
+
     class Meta(GenericMeta):
         queryset = Election.objects\
                     .select_related(depth=1)\
@@ -247,7 +249,7 @@ class ElectionResource(GenericResource):
             'agora': ALL
         }
 
-        excludes = ['PROHIBITED_ELECTION_NAMES', 'extra_data']
+        excludes = ['PROHIBITED_ELECTION_NAMES', 'extra_data', 'result']
 
     get_list = TinyElectionResource().get_list
 
@@ -267,6 +269,12 @@ class ElectionResource(GenericResource):
 
     def dehydrate_user_perms(self, bundle):
         return bundle.obj.get_perms(bundle.request.user)
+
+    def dehydrate_result(self, bundle):
+        if bundle.obj.tally_released_at_date is not None:
+            return bundle.obj.result
+        else:
+            return None
 
     def prepend_urls(self):
         return [
@@ -325,6 +333,9 @@ class ElectionResource(GenericResource):
         except:
             raise ImmediateHttpResponse(response=http.HttpNotFound())
 
+        if election.tally_released_at_date is None:
+            return self.create_response(request, dict())
+
         return self.create_response(request, election.extra_data)
 
     def get_comments(self, request, **kwargs):
@@ -364,7 +375,7 @@ class ElectionResource(GenericResource):
             'freeze': self.freeze_action,
             'start': self.start_action,
             'stop': self.stop_action,
-            'send_results': self.send_results_action,
+            'release_results': self.release_results_action,
             'archive': self.archive_action,
             'vote': self.vote_action,
             'cancel_vote': self.cancel_vote_action,
@@ -511,8 +522,8 @@ class ElectionResource(GenericResource):
         end_election.apply_async(kwargs=tkwargs, task_id=election.task_id(end_election))
         return self.create_response(request, dict(status="success"))
 
-    @permission_required('send_results', (Election, 'id', 'electionid'))
-    def send_results_action(self, request, election, **kwargs):
+    @permission_required('release_results', (Election, 'id', 'electionid'))
+    def release_results_action(self, request, election, **kwargs):
         tkwargs=dict(
             election_id=election.id,
             is_secure=request.is_secure(),
@@ -520,7 +531,14 @@ class ElectionResource(GenericResource):
             remote_addr=request.META.get('REMOTE_ADDR'),
             user_id=request.user.id
         )
-        send_election_results.apply_async(kwargs=tkwargs, task_id=election.task_id(send_election_results))
+
+        election.tally_released_at_date = timezone.now()
+        election.save()
+
+        action.send(request.user, verb='published results', action_object=election,
+            target=election.agora, ipaddr=request.META.get('REMOTE_ADDR'),
+            geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
+
         return self.create_response(request, dict(status="success"))
 
     @permission_required('archive_election', (Election, 'id', 'electionid'))

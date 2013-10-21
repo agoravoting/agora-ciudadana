@@ -39,7 +39,8 @@
             'security_policy': 'PUBLIC_VOTING',
             'questions': [],
             'from_date': '',
-            'to_date': ''
+            'to_date': '',
+            'release_tally_automatically': true
         }
     });
 
@@ -422,6 +423,11 @@
                 }
             })
 
+            // set release_tally_automatically
+            if (this.model.get('release_tally_automatically')) {
+                $("#release_tally_automatically").attr("checked", "checked");
+            }
+
             // update button on model changes and initialize
             this.listenTo(this.model, 'change', this.updateButtonsShown);
             this.listenTo(this.model.get('questions'), 'add', this.updateButtonsShown);
@@ -485,8 +491,11 @@
         },
 
         updateModel: function() {
+            this.model.set('release_tally_automatically', $("#release_tally_automatically:checked").length > 0);
+
             var start_date = this.$el.find("#start_voting_date").val();
             var end_date = this.$el.find("#end_voting_date").val();
+
             if ($("#schedule_voting:checked").length == 0) {
                 this.model.set('from_date', '');
                 this.model.set('to_date', '');
@@ -606,6 +615,7 @@
                 questions: ajax_data.questions,
                 from_date: from_date,
                 to_date: to_date,
+                release_tally_automatically: ajax_data.release_tally_automatically
             };
             return new Agora.ElectionModel(initData);
         },

@@ -470,7 +470,8 @@ def clean_html(text, to_plaintext=False):
         return text
 
     html = lxml_clean_html(text)
-    if not to_plaintext:
-        return html
+    plaintext = html2text.html2text(html).strip()
+    if plaintext == text or to_plaintext:
+        return plaintext
 
-    return html2text.html2text(html).strip()
+    return html

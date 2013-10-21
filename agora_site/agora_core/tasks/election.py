@@ -145,11 +145,12 @@ def end_election(election_id, is_secure, site_id, remote_addr, user_id):
     election.save()
     election.compute_result()
 
-@task(ignore_result=True)
-def send_election_results(election_id, is_secure, site_id, remote_addr, user_id):
-    election = Election.objects.get(pk=election_id)
+    # do not send results if it's set to be done manually
+    if not election.release_tally_automatically:
+        return
 
-    user = User.objects.get(pk=user_id)
+    election.tally_released_at_date = timezone.now()
+    election.save()
 
     context = get_base_email_context_task(is_secure, site_id)
 
@@ -191,6 +192,20 @@ def send_election_results(election_id, is_secure, site_id, remote_addr, user_id)
     translation.deactivate()
 
     send_mass_html_mail(datatuples)
+
+    action.send(user, verb='published results', action_object=election,
+        target=election.agora, ipaddr=remote_addr,
+        geolocation=json.dumps(geolocate_ip(remote_addr)))
+
+@task(ignore_result=True)
+def release_election_results(election_id, is_secure, site_id, remote_addr, user_id):
+    election = Election.objects.get(pk=election_id)
+
+    if election.tally_released_at_date is not None:
+        return
+
+    election.tally_released_at_date = timezone.now()
+    election.save()
 
     action.send(user, verb='published results', action_object=election,
         target=election.agora, ipaddr=remote_addr,

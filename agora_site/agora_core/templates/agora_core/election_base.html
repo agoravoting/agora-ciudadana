@@ -61,15 +61,19 @@
                 <li>
                     <a class="action-form-link" href="{% url election-action-stop election.agora.creator.username election.agora.name election.name %}">
                         <i class="icon-stop"></i>
-                        {% trans "Stop voting period and publish results" %}
+                        {% if election.release_tally_automatically %}
+                            {% trans "Stop voting period and publish results" %}
+                        {% else %}
+                            {% trans "Stop voting period" %}
+                        {% endif %}
                     </a>
                 </li>
             {% endif %}
-            {% if "send_results" in permissions %}
+            {% if "release_results" in permissions %}
                 <li>
-                    <a class="action-form-link" href="{% url election-action-send-results election.agora.creator.username election.agora.name election.name %}">
+                    <a class="action-form-link" href="{% url election-action-release-results election.agora.creator.username election.agora.name election.name %}">
                         <i class="icon-stop"></i>
-                        {% trans "Send election results" %}
+                        {% trans "Release election results" %}
                     </a>
                 </li>
             {% endif %}
