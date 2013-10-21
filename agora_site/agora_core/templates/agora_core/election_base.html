@@ -65,6 +65,14 @@
                     </a>
                 </li>
             {% endif %}
+            {% if "send_results" in permissions %}
+                <li>
+                    <a class="action-form-link" href="{% url election-action-send-results election.agora.creator.username election.agora.name election.name %}">
+                        <i class="icon-stop"></i>
+                        {% trans "Send election results" %}
+                    </a>
+                </li>
+            {% endif %}
             {% if "archive_election" in permissions %}
                 <li>
                     <a class="action-form-link" href="{% url election-action-archive election.agora.creator.username election.agora.name election.name %}">
@@ -257,6 +265,12 @@
                             <a class="btn btn-success action-form-link"
                             href="{% url election-action-stop election.agora.creator.username election.agora.name election.name %}">
                             {% trans "Stop voting period and publish results" %}</a>
+                        </div>
+                        {% elif "send_results" in permissions %}
+                        <div class="button-vote">
+                            <a class="btn btn-success action-form-link"
+                            href="{% url election-action-send-results election.agora.creator.username election.agora.name election.name %}">
+                            {% trans "Send election results" %}</a>
                         </div>
                         {% endif %}
                     {% endif %}
