@@ -409,6 +409,9 @@ class Election(models.Model):
         elif permission_name == 'end_election':
             return self.has_started() and not self.voting_ends_at_date and\
                 isadmin and not isarchived
+        elif permission_name == 'send_results':
+            return self.result_tallied_at_date and\
+                self.result_tallied_at_date < timezone.now()
         elif permission_name == 'archive_election':
             return isadminorcreator and not isarchived
         elif permission_name == 'comment':
@@ -467,7 +470,7 @@ class Election(models.Model):
 
         return [perm for perm in ('edit_details', 'approve_election',
             'begin_election', 'freeze_election', 'end_election',
-            'archive_election', 'comment', 'emit_direct_vote',
+            'send_results', 'archive_election', 'comment', 'emit_direct_vote',
             'emit_delegate_vote', 'vote_counts') if self.__has_perms(perm,
                 user, isanon, isadmin, isadminorcreator, isarchived, isfrozen,
                 ismember)]

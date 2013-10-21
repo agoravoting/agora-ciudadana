@@ -624,6 +624,33 @@ class StopElectionView(FormActionView):
         return super(StopElectionView, self).dispatch(*args, **kwargs)
 
 
+class SendResultsView(FormActionView):
+    def post(self, request, username, agoraname, electionname, *args, **kwargs):
+        election = get_object_or_404(Election,
+            name=electionname, agora__name=agoraname,
+            agora__creator__username=username)
+
+        if not election.has_perms('send_results', request.user):
+            messages.add_message(self.request, messages.ERROR, _('You don\'t '
+                'have permission to send election results.'))
+            return self.go_next(request)
+
+        kwargs=dict(
+            election_id=election.id,
+            is_secure=self.request.is_secure(),
+            site_id=Site.objects.get_current().id,
+            remote_addr=self.request.META.get('REMOTE_ADDR'),
+            user_id=request.user.id
+        )
+        send_election_results.apply_async(kwargs=kwargs, task_id=election.task_id(send_election_results))
+
+        return self.go_next(request)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(SendResultsView, self).dispatch(*args, **kwargs)
+
+
 class ArchiveElectionView(FormActionView):
     def post(self, request, username, agoraname, electionname, *args, **kwargs):
         election = get_object_or_404(Election,

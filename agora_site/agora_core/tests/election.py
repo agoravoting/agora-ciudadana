@@ -399,6 +399,33 @@ class ElectionTest(RootTestCase):
         self.assertTrue('end_election' not in data["permissions"])
         self.assertTrue('emit_direct_vote' not in data["permissions"])
 
+    def test_send_election_results(self):
+        # create election as admin
+        self.login('david', 'david')
+        data = self.postAndParse('agora/1/action/', data=self.base_election_data,
+            code=HTTP_OK, content_type='application/json')
+        election_id = data['id']
+
+        # start election
+        orig_data = dict(action='start')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # david tries to send results before ending election
+        orig_data = dict(action='send_results')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_FORBIDDEN, content_type='application/json')
+
+        # end the election
+        orig_data = dict(action='stop')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
+        # david sends results
+        orig_data = dict(action='send_results')
+        data = self.post('election/%d/action/' % election_id, data=orig_data,
+            code=HTTP_OK, content_type='application/json')
+
     def test_tally_election(self):
         # create election as admin
         self.login('david', 'david')
