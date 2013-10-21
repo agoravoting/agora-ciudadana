@@ -285,6 +285,8 @@ LOGIN_ERROR_URL    = '/accounts/signin/'
 
 CRISPY_FAIL_SILENTLY = not DEBUG
 
+CRISPY_TEMPLATE_PACK = 'bootstrap'
+
 # Haystack
 
 HAYSTACK_CONNECTIONS = {
