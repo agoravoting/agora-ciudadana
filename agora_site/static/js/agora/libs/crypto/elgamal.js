@@ -314,7 +314,7 @@ ElGamal.Ciphertext = Class.extend({
   
   equals: function(other) {
     return (this.alpha.equals(other.alpha) && this.beta.equals(other.beta));
-  }
+  },
 });
 
 ElGamal.Ciphertext.fromJSONObject = function(d, pk) {
@@ -360,8 +360,26 @@ ElGamal.Plaintext = Class.extend({
   
   getM: function() {
     return this.m;
+  },
+
+    // generate a proof of knowledge of the plaintext
+  proveKnowledge: function(challenge_generator) {
+    // generate random w
+    var w = Random.getRandomInteger(this.pk.q);
+
+    // compute s = g^w for random w.
+    var s = this.pk.g.modPow(w, this.pk.p);
+
+    // get challenge
+    var challenge = challenge_generator(s);
+
+    // compute response = w +  x * challenge
+    // TODO: maybe we should use this.getPlaintext() instead of this.m? I'm not
+    // sure. it should work with this.m I guess
+    var response = w.add(this.m.multiply(challenge)).mod(this.pk.q);
+
+    return new ElGamal.DLogProof(s, challenge, response);
   }
-  
 });
 
 //

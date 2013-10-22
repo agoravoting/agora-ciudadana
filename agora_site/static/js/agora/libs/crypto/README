@@ -1,7 +1,7 @@
 JavaScript crypto.
 
-IMPORTANT: this library REQUIRES that a variable JSCRYPTO_HOME be set by an HTML file, indicating
-the complete path to the current directory
-
 NOTE: The code under this directory comes from Helios and it's under GPL v3 or later
-Authors: Ben Adida 2008-2013 <ben@adida.net>
+unless other license is specified.
+
+Authors:
+Ben Adida <ben@adida.net>
