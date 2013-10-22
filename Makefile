@@ -37,6 +37,16 @@ mainjs:
 					      agora_site/static/js/libs/showdown.js \
 					      agora_site/static/js/libs/backbone-associations.js \
 					      agora_site/static/js/libs/sortElements-jquery.js \
+					      agora_site/static/js/agora/libs/crypto/jsbn.js \
+					      agora_site/static/js/agora/libs/crypto/jsbn2.js \
+					      agora_site/static/js/agora/libs/crypto/sjcl.js \
+					      agora_site/static/js/agora/libs/crypto/class.js \
+					      agora_site/static/js/agora/libs/crypto/bigint.js \
+					      agora_site/static/js/agora/libs/crypto/random.js \
+					      agora_site/static/js/agora/libs/crypto/elgamal.js \
+					      agora_site/static/js/agora/libs/crypto/sha1.js \
+					      agora_site/static/js/agora/libs/crypto/sha2.js \
+					      agora_site/static/js/agora/libs/crypto/helios.js \
 					      -o agora_site/static/js/min/main.min.js
 	./node_modules/uglify-js/bin/uglifyjs \
 					      agora_site/static/js/libs/es5-shim.js \
@@ -60,6 +70,16 @@ mainjs:
 					      agora_site/static/js/libs/showdown.js \
 					      agora_site/static/js/libs/backbone-associations.js \
 					      agora_site/static/js/libs/sortElements-jquery.js \
+					      agora_site/static/js/agora/libs/crypto/jsbn.js \
+					      agora_site/static/js/agora/libs/crypto/jsbn2.js \
+					      agora_site/static/js/agora/libs/crypto/sjcl.js \
+					      agora_site/static/js/agora/libs/crypto/class.js \
+					      agora_site/static/js/agora/libs/crypto/bigint.js \
+					      agora_site/static/js/agora/libs/crypto/random.js \
+					      agora_site/static/js/agora/libs/crypto/elgamal.js \
+					      agora_site/static/js/agora/libs/crypto/sha1.js \
+					      agora_site/static/js/agora/libs/crypto/sha2.js \
+					      agora_site/static/js/agora/libs/crypto/helios.js \
 					      -o agora_site/static/js/min/main.compat.min.js -b
 agorajs:
 	./node_modules/uglify-js/bin/uglifyjs \
