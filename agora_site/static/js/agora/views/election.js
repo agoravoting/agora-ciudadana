@@ -305,15 +305,17 @@
         encryptAnswer: function(plain_answer, pk_json) {
             var pk = ElGamal.PublicKey.fromJSONObject(pk_json);
             var plaintext = new ElGamal.Plaintext(BigInt.fromJSONObject(plain_answer), pk, true);
-            var proof = plaintext.proveKnowledge(ElGamal.fiatshamir_dlog_challenge_generator);
             var randomness = Random.getRandomInteger(pk.q);
             var ctext = ElGamal.encrypt(pk, plaintext, randomness);
-
-            var enc_answer = JSON.stringifyCompat({
+            var proof = plaintext.proveKnowledge(randomness, ElGamal.fiatshamir_dlog_challenge_generator);
+            var enc_answer = {
                 ciphertext: ctext.toJSONObject(),
-                proof: proof
-            });
-            return enc_answer;
+                proof: proof.toJSONObject()
+            };
+
+            var verified = ctext.verifyPlaintextProof(proof, ElGamal.fiatshamir_dlog_challenge_generator);
+            console.log("is proof verified = " + new Boolean(verified).toString());
+            return JSON.stringifyCompat(enc_answer);
         }
     });
 }).call(this)

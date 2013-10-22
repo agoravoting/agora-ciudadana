@@ -158,7 +158,7 @@ ElGamal.SecretKey = Class.extend({
     
     // compute response = w +  x * challenge
     var response = w.add(this.x.multiply(challenge)).mod(this.pk.q);
-    
+
     return new ElGamal.DLogProof(s, challenge, response);
   }
 });
@@ -231,6 +231,19 @@ ElGamal.Ciphertext = Class.extend({
     var beta_over_m = this.beta.multiply(plaintext.m.modInverse(this.pk.p)).mod(this.pk.p);
     
     return proof.verify(this.pk.g, this.pk.y, this.alpha, beta_over_m, this.pk.p, this.pk.q, challenge_generator);
+  },
+
+  /**
+   *  Verifies the proof of knowledge of the plaintext
+   */
+  verifyPlaintextProof: function(proof, challenge_generator) {
+    var challenge2 = challenge_generator(proof.commitment);
+    if (!challenge2.equals(proof.challenge)) {
+        return false;
+    }
+
+    // check g^response == commitment * (g^t) ^ challenge == commitment * (alpha) ^ challenge
+    return this.pk.g.modPow(proof.response, this.pk.p).equals(this.alpha.modPow(proof.challenge, this.pk.p).multiply(proof.commitment).mod(this.pk.p));
   },
 
   verifyDecryptionProof: function(plaintext, proof, challenge_generator) {
@@ -357,28 +370,27 @@ ElGamal.Plaintext = Class.extend({
 
     return y.subtract(BigInt.ONE);
   },
-  
+
   getM: function() {
     return this.m;
   },
 
-    // generate a proof of knowledge of the plaintext
-  proveKnowledge: function(challenge_generator) {
+  // generate a proof of knowledge of the plaintext, or actually, proof of
+  // knowledge of the randomness
+  proveKnowledge: function(randomness, challenge_generator) {
     // generate random w
     var w = Random.getRandomInteger(this.pk.q);
 
-    // compute s = g^w for random w.
-    var s = this.pk.g.modPow(w, this.pk.p);
+    // compute commitment = g^w for random w.
+    var commitment = this.pk.g.modPow(w, this.pk.p);
 
     // get challenge
-    var challenge = challenge_generator(s);
+    var challenge = challenge_generator(commitment);
 
-    // compute response = w +  x * challenge
-    // TODO: maybe we should use this.getPlaintext() instead of this.m? I'm not
-    // sure. it should work with this.m I guess
-    var response = w.add(this.m.multiply(challenge)).mod(this.pk.q);
+    // compute response = w +  randomness * challenge
+    var response = w.add(randomness.multiply(challenge)).mod(this.pk.q);
 
-    return new ElGamal.DLogProof(s, challenge, response);
+    return new ElGamal.DLogProof(commitment, challenge, response);
   }
 });
 
@@ -552,5 +564,5 @@ ElGamal.fiatshamir_challenge_generator = function(commitment) {
 };
 
 ElGamal.fiatshamir_dlog_challenge_generator = function(commitment) {
-  return new BigInt(hex_sha1(commitment.toJSONObject()), 16);
+  return new BigInt(hex_sha256(commitment.toJSONObject()), 16);
 };
