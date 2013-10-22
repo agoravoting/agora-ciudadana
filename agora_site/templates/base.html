@@ -231,7 +231,11 @@
         {% endif %}
 
         // process languages
-        user_data.languages = {{ languages|safe }};
+        user_data.languages = {% if languages %}{{ languages|safe }}{% else %}{
+            'meta': {
+            },
+            'objects': []
+        }{% endif %};
         for (var i = 0; i < user_data.languages.objects.length; i++) {
             if (user_data.languages.objects[i].lang_code == user_data.languages.current) {
                 user_data.languages.current = user_data.languages.objects[i].name;

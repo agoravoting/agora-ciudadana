@@ -6101,3 +6101,30 @@ background: #7170b3;
   overflow: auto;
   padding: 0.5em;
 }
+/* election form translations */
+div.top-form .navbar.translations {
+  height: 40px;
+  margin: -18px 0 10px;
+}
+div.top-form .navbar.translations .navbar-inner {
+  height: 40px;
+  background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
+  border-radius: 0 0 4px 4px;
+}
+div.top-form .navbar.translations a.brand {
+  color: #777;
+}
+div.top-form .navbar.translations .nav li > a {
+  color: #777;
+  text-shadow: none;
+}
+div.top-form .navbar.translations .active > a,
+div.top-form .navbar.translations .active > a:hover,
+div.top-form .navbar.translations .active > a:focus {
+  background-color: #E5E5E5;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.125) inset;
+  color: #555555;
+}
+div.top-form .navbar.translations .nav .dropdown-menu li > a:hover {
+  color: white;
+}
