@@ -16,7 +16,7 @@
                 <span class="badge">1</span>
                 <a class="accordion-toggle" data-toggle="collapse"
                     data-parent="#bloques" href="#q<%= i %>">
-                    <%= q.question %>
+                    <%= gettext(q.question) %>
                 </a>
             </div>
             <div id="q<%= i %>" class="accordion-body collapse">
@@ -25,7 +25,7 @@
 
                     <div class="control-group">
                         <label class="control-label" for="inputIcon">
-                            <%= q.question %>
+                            <%= gettext(q.question) %>
                         </label>
 
                         <table class="question-stv table table-bordered">
@@ -36,7 +36,7 @@
                                 <% for (var j = 0; j < q.answers.length; j++) { %>
                                 <tr>
                                     <td class="candidate">
-                                        <strong><%= q.answers[i].value %></strong>
+                                        <strong><%= gettext(q.answers[i].value) %></strong>
                                     </td>
                                 </tr>
                                 <% } %>
@@ -54,13 +54,13 @@
                 <span class="badge">1</span>
                 <a class="accordion-toggle" data-toggle="collapse"
                     data-parent="#bloques" href="#q<%= i %>">
-                    <%= q.question %>
+                    <%= gettext(q.question) %>
 
                     <% if (q.winners.length == 1) { %>
                         <div class="results">
                             <% for (var j = 0; j < q.answers.length; j++) { %>
                                 <% if (q.winners.indexOf(q.answers[j].value) != -1) { %>
-                                    <span><%= q.answers[j].value.substr(0, 50) %></span>
+                                    <span><%= gettext(q.answers[j].value).substr(0, 50) %></span>
                                     <span class="winner">
                                         <%= q.answers[j].total_count_percentage %>%
                                         (<%= interpolate(gettext("%s votes"), [q.answers[j].total_count]) %>)</span>
@@ -76,7 +76,7 @@
 
                     <div class="control-group">
                         <label class="control-label" for="inputIcon">
-                            <%= q.question %>
+                            <%= gettext(q.question) %>
                         </label>
 
                         <table class="question-stv table table-bordered">
@@ -90,20 +90,20 @@
                                     <tr>
                                         <% if (q.winners.indexOf(q.answers[j].value) != -1) { %>
                                             <td class="candidate">
-                                                <strong><%= q.answers[j].value %></strong>
+                                                <strong><%= gettext(q.answers[j].value) %></strong>
                                             </td>
                                             <td class="won">
-                                                <%= q.answers[j].value %>
+                                                <%= q.answers[j].total_count %>
                                             </td>
                                             <td class="last won">
                                                 <%= q.answers[j].total_count_percentage %>%
                                             </td>
                                         <% } else { %>
                                             <td class="candidate">
-                                                <strong><%= q.answers[j].value %></strong>
+                                                <strong><%= gettext(q.answers[j].value) %></strong>
                                             </td>
                                             <td>
-                                                <%= q.answers[j].value %>
+                                                <%= q.answers[j].total_count %>
                                             </td>
                                             <td class="last">
                                                 <%= q.answers[j].total_count_percentage %>%
@@ -130,7 +130,7 @@
                         <div class="results">
                             <% for (var j = 0; j < q.answers.length; j++) { %>
                                 <% if (q.winners.indexOf(q.answers[j].value) != -1) { %>
-                                    <span><%= q.answers[j].value.substr(0, 50) %></span>
+                                    <span><%= gettext(q.answers[j].value).substr(0, 50) %></span>
                                     <span class="winner">
                                         <%= interpolate(gettext("%s votes"), [parseFloat(q_tally.iterations[q_tally.iterations.length-1].candidates[j].count)]) %></span>
                                 <% } %>
@@ -172,9 +172,9 @@
                                     <tr>
                                         <td class="candidate">
                                         <% if (q_tally.winners.indexOf(q.answers[j].value) != -1) { %>
-                                            <strong><%= q.answers[j].value %></strong>
+                                            <strong><%= gettext(q.answers[j].value) %></strong>
                                         <% } else { %>
-                                            <%= q.answers[j].value %>
+                                            <%= gettext(q.answers[j].value) %>
                                         <% } %>
                                         </td>
                                         <% for(var k = 0; k < q_tally.iterations.length; k++) { %>
@@ -206,13 +206,13 @@
                 <div class="container">
                     <div class="row">
                             <div class="span7">
-                                <h1 class="home-loggedin"><%= election.pretty_name %></h1>
+                                <h1 class="home-loggedin"><%= gettext(election.pretty_name) %></h1>
 
-                                <p class="motiv"><%= election.short_description %></p>
+                                <p class="motiv"><%= gettext(election.short_description) %></p>
                                 <% if (election.voting_starts_at_date && moment(election.voting_starts_at_date)-moment() < 0 && (!election.voting_ends_at_date || moment(election.voting_ends_at_date)-moment() > 0)) { %>
-                                    <a href="<%= election.url %>/vote" class="btn btn-success btn-large btn-xxlarge"><%= interpolate(gettext("Vote in %s"), [election.pretty_name]) %></a>
+                                    <a href="<%= election.url %>/vote" class="btn btn-success btn-large btn-xxlarge"><%= interpolate(gettext("Vote in %s"), [gettext(election.pretty_name)]) %></a>
                                 <% } else { %>
-                                    <a href="<%= election.url %>" class="btn btn-success btn-large btn-xxlarge"><%= interpolate(gettext("Election about %s"), [election.pretty_name]) %></a>
+                                    <a href="<%= election.url %>" class="btn btn-success btn-large btn-xxlarge"><%= interpolate(gettext("Election about %s"), [gettext(election.pretty_name)]) %></a>
                                 <% } %>
                             </div>
                             <div class="span5" id="youtube-video">
@@ -224,12 +224,15 @@
         </div>
 
         <div class="home-main container">
-            <p class="motiv"><%= election.description %></p>
+            <p class="motiv"><%= gettext(election.description) %></p>
 
         <div class="accordion" id="bloques">
         </div>
 
         <a href="<%= agora.url %>?classic=true"><%= gettext("Enter classic agora view") %></a>
+
+        <div id="congreso">
+        </div>
     </script>
 
     <script>
