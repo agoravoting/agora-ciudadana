@@ -1562,6 +1562,7 @@ class ElectionTest(RootTestCase):
             '5':1
         })
 
+    
     def test_check_proof_of_knowledge(self):
         '''
         Demonstrates how to check a proof of knowledge in python
@@ -1597,6 +1598,7 @@ class ElectionTest(RootTestCase):
         challenge_calculated = int(hash.hexdigest(), 16)
         assert challenge_calculated == challenge
 
+        # http://courses.csail.mit.edu/6.897/spring04/L19.pdf - 2.1 Proving Knowledge of Plaintext
         first_part = pow(pk_g, response, pk_p)
         second_part = (commitment * pow(alpha, challenge, pk_p)) % pk_p
 
