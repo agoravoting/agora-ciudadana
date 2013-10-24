@@ -101,7 +101,10 @@ class FNMTBackend(object):
             while User.objects.filter(username=username).exists():
                 username = base_username + random.randint(0, 100)
         else:
-            username = str(uuid4())[:30]
+            base_username = "user"
+            username = base_username + str(uuid4())[:6]
+            while User.objects.filter(username=username).exists():
+                username = base_username + str(uuid4())[:6]
             email = "%s@example.com" % str(uuid4())
 
 
