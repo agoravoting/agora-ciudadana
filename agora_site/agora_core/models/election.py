@@ -499,13 +499,14 @@ class Election(models.Model):
             return False
 
         return self.cast_votes.filter(is_counted=True, is_direct=True,
-            voter=user).count() > 0
+            voter=user, invalidated_at_date=None).count() > 0
 
     def get_direct_votes(self):
         '''
         Return the list of direct votes
         '''
-        return self.cast_votes.filter(is_counted=True, is_direct=True)
+        return self.cast_votes.filter(is_counted=True, is_direct=True,
+            invalidated_at_date=None)
 
     def get_votes_from_delegates(self):
         '''
@@ -797,10 +798,9 @@ class Election(models.Model):
         self.electorate = self.agora.members.all()
 
         # These are all the direct votes, even from those who are not elegible 
-        # to vote in this election
-        nodes = self.cast_votes.filter(is_direct=True,
-            #is_counted=True, FIXME
-            invalidated_at_date=None)
+        # to vote in this election (i.e. is_counted=False)
+        nodes = self.cast_votes.filter(is_direct=True, invalidated_at_date=None)
+
 
         # These are all the delegation votes, i.e. those that point to a delegate
         #edges = self.agora.delegation_election.cast_votes.filter(
