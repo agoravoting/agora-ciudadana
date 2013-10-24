@@ -379,7 +379,9 @@ class Agora(models.Model):
                 validate_email(user.email)
             except ValidationError:
                 return False
-            return is_member()
+            return is_member() or self.__has_perms("cancel_membership_request",
+                user, isanon, opc_perms, is_member, is_admin, isarchived, requires_membership_approval) or\
+                ('denied_requested_membership' in opc_perms)
 
         elif permission_name == 'comment':
             if self.comments_policy == Agora.COMMENTS_PERMS[0][0]:
