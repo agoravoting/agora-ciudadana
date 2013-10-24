@@ -7,7 +7,7 @@
 {% block running-board  %}
 <div class="row">
     <div class="hero-unit" style="width: 85%; height: 200px; background-color: transparent; ">
-        <img src="{{ STATIC_URL }}img/to_paris.png" alt="{% trans "To Paris" %}" style="display: block; float: left; padding-right: 15px;  margin-left: 100px;"/>
+        <img src="/static/img/to_paris.png" alt="{% trans "To Paris" %}" style="display: block; float: left; padding-right: 15px;  margin-left: 100px; height: 200px;"/>
         <h1 style="margin-top: 20px;">{% trans "ERROR! 500" %}</h1>
         {% url home as home_url %}
         <p>{% blocktrans %}Internal Server Error: Fuck this shit, I'm going to Paris!</p><p><a href="{{home_url}}">Go to the home page</a> if you don't know what else to do. And seriously, if problem persist, please <a href="mailto:agora-ciudadana-devel@googlegroups.com">send us an email</a>.{% endblocktrans %}</p>
