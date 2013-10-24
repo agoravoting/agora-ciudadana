@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import hashlib
+
 from django import http
 from django.conf import settings
 from django.conf.urls import patterns, url, include
@@ -24,21 +26,24 @@ from django.utils import simplejson as json
 from django.utils.translation import ugettext as _
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
 from django.views.generic.edit import FormView
+from guardian.shortcuts import assign, remove_perm
 
 from userena import views as userena_views
 from userena.models import UserenaSignup
 from userena.managers import SHA1_RE
 
 from agora_site.misc.utils import rest
+from agora_site.agora_core.models.agora import Agora
 from .forms import RegisterCompleteInviteForm, RegisterCompleteFNMTForm
 
 class SignUpCompleteView(TemplateView):
     def get(self, request, username):
         messages.add_message(request, settings.SUCCESS_MODAL, _('Registration '
             'successful! We have sent the activation link to your email '
-            'address, look it up. If you don\'t receive the email, please try to locate it in the SPAM folder.'))
+            'address, look it up. If you don\'t receive the email, please try to locate it in the SPAM folder. <strong>You will only be able to vote when we review and verify your scanned ID.</strong>'))
         return redirect('/')
 
 class PasswordResetDoneView(TemplateView):
@@ -88,6 +93,10 @@ class RegisterCompleteInviteView(FormView):
 
 class AutoJoinActivateView(TemplateView):
     def get(self, request, username, activation_key, **kwargs):
+        if not settings.AGORA_REGISTER_AUTO_JOIN:
+            messages.add_message(request, messages.ERROR, _('Invalid activation link.'))
+            return redirect('/')
+
         try:
             userena = UserenaSignup.objects.get(user__username=username)
         except:
@@ -113,7 +122,7 @@ class AutoJoinActivateView(TemplateView):
                 requested_membership = True
 
         if requested_membership:
-            messages.add_message(request, settings.SUCCESS_MODAL, _("Your account has been activated, but <strong>in order to vote have to verify your ID</strong> scanning attachment you sent us. Stay tuned <strong>attentive to your email</strong>, soon verify your identity and you will get an email saying you've entered the agora <strong> ompromis_equo/congreso</strong> - You can then vote on the bill and make history with us."))
+            messages.add_message(request, settings.SUCCESS_MODAL, _("Your account has been activated, but <strong>in order to vote have to verify your ID</strong> scanning attachment you sent us. Stay tuned <strong>attentive to your email</strong>, soon verify your identity and you will get an email saying you've entered the agora <strong>%s</strong> - You can then vote on the bill and make history with us.") % settings.AGORA_REGISTER_AUTO_JOIN[0])
         return userena_views.activate(request, username, userena.activation_key, kwargs['template_name'], kwargs['success_url'])
 
 

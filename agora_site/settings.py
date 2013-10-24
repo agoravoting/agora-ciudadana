@@ -122,6 +122,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'agora_site.misc.context_processor.settings.MEDIA_URL',
     'agora_site.misc.context_processor.settings.AUTHENTICATION_BACKENDS',
     'agora_site.misc.context_processor.settings.AGORA_FNMT_BASE_URL',
+    'agora_site.misc.context_processor.settings.AGORA_REQUEST_SCANNED_ID_ON_REGISTER',
 )
 
 ROOT_URLCONF = 'agora_site.urls'
@@ -247,6 +248,9 @@ MESSAGE_TAGS = {
 # Settings for endless pagination
 
 ENDLESS_PAGINATION_PER_PAGE = 20
+
+# reduce the maximum size in memory of files being received
+FILE_UPLOAD_MAX_MEMORY_SIZE = 621440
 
 # Settings for django-social auth
 AUTHENTICATION_BACKENDS = (
@@ -409,6 +413,10 @@ AGORA_REGISTER_AUTO_JOIN = []
 
 AGORA_FNMT_BASE_URL = "https://fnmt.local.dev"
 AGORA_BASE_URL = "https://local.dev"
+
+# If you want that the users that register manually scan their ID and attach
+# it to the registration, set this to True (False by default)
+AGORA_REQUEST_SCANNED_ID_ON_REGISTER = False
 
 # sets default value for max age in cache.
 # set to zero (no-cache) by default

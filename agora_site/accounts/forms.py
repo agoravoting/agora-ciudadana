@@ -14,6 +14,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import random
+import os
+import hashlib
 
 from django.contrib import messages
 from django.conf import settings
@@ -49,22 +51,34 @@ class AccountSignupForm(userena_forms.SignupForm):
     def __init__(self, *args, **kwargs):
         super(AccountSignupForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.fields.insert(0, 'first_name', django_forms.RegexField(
-            regex=r'^[ \.\w]+$', label=_("Name"), required=True, max_length=140))
+        self.fields.insert(0, 'first_name', django_forms.CharField(label=_("Nombre y DOS APELLIDOS"), required=True, max_length=140))
+
+        # if using fnmt, we require user/pass registration to give a way to
+        # verify their identity
+        if settings.AGORA_REQUEST_SCANNED_ID_ON_REGISTER:
+            self.fields.insert(0, 'scanned_id', django_forms.FileField(label=_("DNI escaneado"), required=True, help_text=u"Adjunta tu DNI escaneado para poder verificar tu identidad (formato pdf o imagen, max. 1MB)"))
+            self.helper.form_enctype = 'multipart/form-data'
+
         self.helper.form_id = 'register-form'
         self.helper.form_action = 'userena_signup'
 
         self.helper.add_input(Submit('submit', _('Sign up'), css_class='btn btn-success btn-large'))
         self.helper.add_input(Hidden('type', 'register'))
 
-    def save(self):
-        new_user = super(AccountSignupForm, self).saveWithFirstName()
-        new_user.save()
+    def handle_uploaded_file(self, f):
+        file_name = "%s_%s%s" % (self.cleaned_data['username'],
+            hashlib.md5(self.cleaned_data['username'] + settings.AGORA_API_AUTO_ACTIVATION_SECRET).hexdigest(),
+            os.path.splitext(f.name)[1])
+        file_path = os.path.join(settings.MEDIA_ROOT, 'dnis', file_name)
+        with open(file_path, 'wb+') as destination:
+            for chunk in f.chunks():
+                destination.write(chunk)
 
-        # add user to the default agoras if any
-        profile = new_user.get_profile()
-        for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
-            profile.add_to_agora(agora_name=agora_name, request=self.request)
+    def save(self):
+        if settings.AGORA_REQUEST_SCANNED_ID_ON_REGISTER:
+            self.handle_uploaded_file(self.request.FILES['scanned_id'])
+        new_user = super(AccountSignupForm, self).saveWithFirstName(auto_join_secret=True)
+        signup_object = new_user.save()
         return new_user
 
 class AcccountAuthForm(userena_forms.AuthenticationForm):

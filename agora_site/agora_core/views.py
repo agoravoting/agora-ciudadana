@@ -16,6 +16,7 @@
 import datetime
 import os
 import requests
+import hashlib
 
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
@@ -1472,6 +1473,28 @@ class AgoraActionDismissMembershipRequestView(FormActionView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(AgoraActionDismissMembershipRequestView, self).dispatch(*args, **kwargs)
+
+
+class AgoraActionDownloadUserIdView(FormActionView):
+    def post(self, request, username, agoraname, username2, *args, **kwargs):
+        agora = get_object_or_404(Agora,
+            name=agoraname, creator__username=username)
+        user = get_object_or_404(User, username=username2)
+
+        if not agora.has_perms('admin', request.user):
+            messages.add_message(request, messages.ERROR, _('Sorry, you '
+                'don\'t have admin permissions in this agora.'))
+            return self.go_next(request)
+
+        file_name = "%s_%s" % (username2,
+            hashlib.md5(username2 + settings.AGORA_API_AUTO_ACTIVATION_SECRET).hexdigest())
+
+        for f in os.listdir(os.path.join(settings.MEDIA_ROOT, 'dnis')):
+            if f.startswith(file_name):
+                return redirect('/media/dnis/' + f)
+
+        messages.add_message(request, messages.ERROR, _('Sorry, file not found'))
+        return self.go_next(request)
 
 
 class AgoraActionDismissAdminMembershipRequestView(FormActionView):

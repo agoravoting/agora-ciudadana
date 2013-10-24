@@ -19,7 +19,9 @@ from guardian.shortcuts import assign
 
 from easy_thumbnails.fields import ThumbnailerImageField
 
-import datetime, random
+import datetime
+import random
+import hashlib
 
 PROFILE_PERMISSIONS = (
             ('view_profile', 'Can view profile'),
