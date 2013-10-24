@@ -177,7 +177,7 @@
                                             <%= gettext(q.answers[j].value) %>
                                         <% } %>
                                         </td>
-                                        <% for(var k = 0; k < q_tally.iterations.length; k++) { %>
+                                        <% for (var k = 0; k < q_tally.iterations.length; k++) { %>
                                             <td class="<%= q_tally.iterations[k].candidates[j].status %>">
                                                 <%= parseFloat(q_tally.iterations[k].candidates[j].count) %>
                                             </td>
@@ -210,7 +210,19 @@
 
                                 <p class="motiv"><%= gettext(election.short_description) %></p>
                                 <% if (election.voting_starts_at_date && moment(election.voting_starts_at_date)-moment() < 0 && (!election.voting_ends_at_date || moment(election.voting_ends_at_date)-moment() > 0)) { %>
-                                    <a href="<%= election.url %>/vote" class="btn btn-success btn-large btn-xxlarge"><%= interpolate(gettext("Vote in %s"), [gettext(election.pretty_name)]) %></a>
+
+                                    <% if (!is_demo) { %>
+                                        <a href="<%= election.url %>/vote"
+                                            class="btn btn-success btn-large btn-xxlarge">
+                                            <%= interpolate(gettext("Vote in %s"), [gettext(election.pretty_name)]) %>
+                                        </a>
+                                    <% } else { %>
+                                        <a href="<%= election.url %>/fake_vote"
+                                            class="btn btn-success btn-large btn-xxlarge">
+                                            <%= interpolate(gettext("Vote in %s (DEMO)"), [gettext(election.pretty_name)]) %>
+                                        </a>
+                                    <% } %>
+
                                 <% } else { %>
                                     <a href="<%= election.url %>" class="btn btn-success btn-large btn-xxlarge"><%= interpolate(gettext("Election about %s"), [gettext(election.pretty_name)]) %></a>
                                 <% } %>

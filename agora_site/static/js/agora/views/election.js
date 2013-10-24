@@ -267,6 +267,9 @@
             this.oc_question_template = _.template($("#template_featured-election-tallied-one-choice-question").html());
             this.stv_question_template = _.template($("#template_featured-election-tallied-stv-question").html());
 
+            var data = ajax_data;
+            data.is_demo = (window.location.href.endsWith("/demo") || window.location.href.endsWith("/demo/"));
+
             $("#background-wrapper-fe").html(this.bw_template(ajax_data));
             if (ajax_data.election.tally_released_at_date) {
                 for (var i = 0; i < ajax_data.election.questions.length; i++) {

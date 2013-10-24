@@ -121,6 +121,7 @@ class HomeView(TemplateView):
     '''
     template_name = 'agora_core/home_activity.html'
     template_name_logged_in = 'agora_core/home_loggedin_activity.html'
+    template_featured_election = 'agora_core/featured_election.html'
 
     additional_context = dict()
 
@@ -148,10 +149,9 @@ class HomeView(TemplateView):
 
             if self.featured_election:
                 self.additional_context['election'] = self.featured_election
-                self.template_name = 'agora_core/featured_election.html'
+                self.template_name = self.template_featured_election
 
         return super(HomeView, self).get(request, *args, **kwargs)
-
 
 class AgoraView(TemplateView):
     '''

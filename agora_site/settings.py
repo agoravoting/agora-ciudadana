@@ -430,12 +430,6 @@ MANY_CACHE_SECONDS = 0
 # set to zero (no-cache) by default
 FEW_CACHE_SECONDS = 0
 
-try:
-    # custom settings is the file where you should set your modifications of the
-    # settings file
-    from custom_settings import *
-except:
-    pass
 
 # This is the minimum number of authorities needed to do a secure tally
 MIN_NUM_AUTHORITIES = 2
@@ -448,3 +442,11 @@ SSL_CERT_PATH = '%s/certs/cert.pem' % os.path.dirname(ROOT_PATH)
 SSL_KEY_PATH = '%s/certs/key-nopass.pem' % os.path.dirname(ROOT_PATH)
 
 PRIVATE_DATA_ROOT = os.path.join(os.path.dirname(ROOT_PATH), 'private_data')
+
+
+try:
+    # custom settings is the file where you should set your modifications of the
+    # settings file
+    from custom_settings import *
+except:
+    pass
