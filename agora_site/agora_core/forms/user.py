@@ -288,11 +288,9 @@ class UserSettingsForm(django_forms.ModelForm):
         Validates first_name field (which is actually user's full name). If its
         a FNMT authenticated user, this user cannot change the first name.
         '''
-        profile = self.request.user.get_profile()
-        if isinstance(profile.extra, dict) and\
-                profile.extra.has_key('fnmt_cert') and\
-                self.request.user.first_name != self.cleaned_data['first_name']:
-            raise django_forms.ValidationError(_('FNMT users cannot change their names.'))
+        if settings.AGORA_REQUEST_SCANNED_ID_ON_REGISTER and\
+                self.cleaned_data['first_name'] != self.request.user.first_name:
+            return self.request.user.first_name
 
         return self.cleaned_data['first_name']
 
