@@ -47,14 +47,15 @@
             <%= gettext("Dismiss membership request") %>
         </a>
     </li>
-        <!-- TODO: fix this, this client-side script shouldn't depend on the server -->
-        <li>
-            <a href="<%= agora_path %>/action/download-user-id/<%= username %>" class="action-form-link">
-                <i class="icon-remove"></i>
-                <%= gettext("Download scanned ID") %>
-            </a>
-        </li>
     <% } %>
+    <!-- TODO: fix this, this client-side script shouldn't depend on the server -->
+    <!-- NOTE: this shows the Download scanned ID action unconditionally -->
+    <li>
+        <a href="<%= agora_path %>/action/download-user-id/<%= username %>" class="action-form-link">
+            <i class="icon-remove"></i>
+            <%= gettext("Download scanned ID") %>
+        </a>
+    </li>
     <% if (_.contains(permissions, "cancel_admin_membership_request")) { %>
     <li>
         <a href="<%= agora_path %>/action/accept-admin-membership-request/<%= username %>" class="action-form-link">
