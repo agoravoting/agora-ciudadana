@@ -737,6 +737,7 @@ class AgoraResource(GenericResource):
         # remove the request membership status
         remove_perm('requested_membership', user, agora)
         assign('denied_requested_membership', user, agora)
+        return self.create_response(request, dict(status="success"))
 
     @permission_required('admin', (Agora, 'id', 'agoraid'))
     def add_membership_action(self, request, agora, username, welcome_message, **kwargs):
