@@ -245,6 +245,10 @@
         // render top navbar
         var tmpl = _.template($("#template-top-navbar").html());
         $("#top-navbar").html(tmpl(user_data));
+        // top nav bar configuration
+        $('#login-dropdown').click(function(e) {
+            e.stopPropagation();
+        });
     </script>
 
     <script>

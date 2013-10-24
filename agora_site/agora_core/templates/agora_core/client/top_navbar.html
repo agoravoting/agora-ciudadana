@@ -77,10 +77,44 @@
                     </li>
                 </ul>
 
+
                 <ul class="nav pull-right">
                     <% if (user.id < 0) { %>
-                        <li>
-                            <a class="link-green" href="/accounts/signin/"><%= gettext("Enter") %></a>
+                        <li class="dropdown">
+                            <a class="link-green dropdown-toggle" id="show-login-link" data-toggle="dropdown" href="#">
+                                <%= gettext("Enter") %>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu row-fluid" id="login-dropdown">
+                                <form method="post" class="span6" id="login-form" action="/accounts/signin/">
+                                    <h3><%= gettext("Enter with user and password") %></h3>
+                                    {% csrf_token %}
+                                    <input type="text" maxlength="75" name="identification" class="required textinput textInput" id="id_identification" placeholder="<%= gettext("Email or user name") %>" />
+
+                                    <input type="password" name="password" class="required textinput textInput" id="id_password" placeholder="<%= gettext("Password") %>"/>
+                                    <div class="text-links"><a href="/accounts/password/reset/"><%= gettext("Forgot your password?") %></a> | <a href="/accounts/signup/"><strong><%= gettext("Register") %></strong></a></div>
+
+                                    <input type="submit" id="submit-id-submit" class="btn btn btn-success btn-large" value="<%= gettext("Entrar") %>" name="submit">
+
+                                    <input type="hidden" value="login" name="type">
+                                </form>
+                                <!-- TODO: check if FNMT authentication is enabled -->
+                                <div class="span6 use-account">
+                                    <h3><%= gettext("..or enter with FNMT cert") %></h3>
+                                    <div class="text-links"><%= gettext('<a href="https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-certificado-con-dnie" target="_blank">Obtain it here</a> or <a href="https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-certificado-software" target="_blank">here with your DNIe</a>') %>
+                                    </div>
+                                    <div>
+                                    <p>
+                                    <a class="btn btn-primary" href="{{AGORA_FNMT_BASE_URL}}/user/login/fnmt/">
+                                        <%= gettext("Enter with FNMT certificate") %>
+                                    </a>
+                                    </p>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                                <div class="text-links">
+                                <%= gettext('When you login with your user you are accepting our <a href="/misc/page/terms-of-service" class="inline">Terms of Service</a>') %>.</div>
+                            </ul>
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
