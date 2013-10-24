@@ -303,6 +303,13 @@
         },
 
         encryptAnswer: function(plain_answer, pk_json) {
+            /**
+             * Here we not only just encrypt the answer but also provide a
+             * verifiable Proof of Knowledge (PoK) of the plaintext, using the
+             * Schnorr Protocol with Fiat-Shamir (which is a method of
+             * converting an interactive PoK into non interactive using a hash
+             * that substitutes the random oracle). We use sha256 for hashing.
+             */
             var pk = ElGamal.PublicKey.fromJSONObject(pk_json);
             var plaintext = new ElGamal.Plaintext(BigInt.fromJSONObject(plain_answer), pk, true);
             var randomness = Random.getRandomInteger(pk.q);
