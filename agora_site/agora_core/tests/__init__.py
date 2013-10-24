@@ -19,6 +19,8 @@ from delegateelectioncount import DelegateElectionCountTest
 # This allows to test celery tasks
 settings.CELERY_ALWAYS_EAGER = True
 settings.BROKER_BACKEND = 'memory'
+settings.AGORA_ALLOW_API_AUTO_ACTIVATION = True
+settings.AGORA_API_AUTO_ACTIVATION_SECRET = 'change the activation secret'
 
 def suite():
     suite = unittest.TestSuite()

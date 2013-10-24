@@ -195,6 +195,22 @@ class UserTest(RootTestCase):
         data = self.getAndParse('user/settings/')
         self.assertEqual(data['username'], 'david')
 
+
+    def test_secure_login(self):
+        '''
+        test secure login suplying only email
+        '''
+        data = self.getAndParse('user/settings/')
+        self.assertEqual(data['id'], -1)
+
+        data = self.post('user/email_login/',
+            {
+                'email': 'david@david.com',
+                'activation_secret': 'change the activation secret'
+            })
+        data = self.getAndParse('user/settings/')
+        self.assertEqual(data['username'], 'david')
+
     def test_logout(self):
         """
         Test that the api call logout works

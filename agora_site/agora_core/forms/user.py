@@ -63,6 +63,50 @@ class LoginForm(userena_forms.AuthenticationForm):
         '''
         return dict(request=request, data=data)
 
+
+class APIEmailLoginForm(django_forms.Form):
+    '''
+    Secure form to login using just the email of the user.
+    '''
+    email = django_forms.EmailField(max_length=75, required=True)
+    activation_secret = django_forms.CharField(max_length=100, required=True)
+
+    def __init__(self, request, data):
+        self.request = request
+        super(APIEmailLoginForm, self).__init__(data=data)
+
+    def is_valid(self):
+        if not super(APIEmailLoginForm, self).is_valid():
+            return False
+
+        if not settings.AGORA_ALLOW_API_AUTO_ACTIVATION:
+            raise django_forms.ValidationError(_('Auto activation not allowed.'))
+
+        if self.cleaned_data['activation_secret'] != settings.AGORA_API_AUTO_ACTIVATION_SECRET:
+            raise django_forms.ValidationError(_('Invalid activation secret.'))
+
+        self.user = get_object_or_404(User, email__iexact=self.cleaned_data['email'])
+
+        return True
+
+    def save(self):
+        if not self.user.is_active:
+            self.user.is_active = True
+            self.user.save()
+
+        setattr(self.user, 'backend', 'django.contrib.auth.backends.ModelBackend')
+        login(self.request, self.user)
+        self.request.session.set_expiry(userena_settings.USERENA_REMEMBER_ME_DAYS[1] * 86400)
+        return None
+
+    @staticmethod
+    def static_get_form_kwargs(request, data, *args, **kwargs):
+        '''
+        Returns the parameters that will be sent to the constructor
+        '''
+        return dict(request=request, data=data)
+
+
 class SendMailForm(django_forms.Form):
     '''
     Base comment. This is inherited by others
@@ -377,7 +421,7 @@ class APISignupForm(django_forms.Form):
     def clean_activation_secret(self):
         if len(self.cleaned_data['activation_secret']) > 0:
             if self.cleaned_data['activation_secret'] != settings.AGORA_API_AUTO_ACTIVATION_SECRET:
-                raise django_forms.ValidationError(_('Invalid activation secret. ' + settings.AGORA_API_AUTO_ACTIVATION_SECRET + "!= " + self.cleaned_data['activation_secret']))
+                raise django_forms.ValidationError(_('Invalid activation secret.'))
             if not settings.AGORA_ALLOW_API_AUTO_ACTIVATION:
                 raise django_forms.ValidationError(_('Auto activation not allowed.'))
         return self.cleaned_data['activation_secret']
