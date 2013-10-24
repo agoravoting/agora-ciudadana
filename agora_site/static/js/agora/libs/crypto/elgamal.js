@@ -243,7 +243,7 @@ ElGamal.Ciphertext = Class.extend({
     }
 
     // check g^response == commitment * (g^t) ^ challenge == commitment * (alpha) ^ challenge
-    return this.pk.g.modPow(proof.response, this.pk.p).equals(this.alpha.modPow(proof.challenge, this.pk.p).multiply(proof.commitment).mod(this.pk.p));
+    return this.pk.g.modPow(proof.response, this.pk.p).equals(this.alpha.modPow(proof.challenge, this.pk.p).multiply(proof.commitment.a).mod(this.pk.p));
   },
 
   verifyDecryptionProof: function(plaintext, proof, challenge_generator) {
@@ -375,14 +375,16 @@ ElGamal.Plaintext = Class.extend({
     return this.m;
   },
 
-  // generate a proof of knowledge of the plaintext, or actually, proof of
-  // knowledge of the randomness
-  proveKnowledge: function(randomness, challenge_generator) {
+  // generate a proof of knowledge of the plaintext (schnorr protocol)
+  // http://courses.csail.mit.edu/6.897/spring04/L19.pdf
+  proveKnowledge: function(alpha, randomness, challenge_generator) {
     // generate random w
     var w = Random.getRandomInteger(this.pk.q);
 
-    // compute commitment = g^w for random w.
-    var commitment = this.pk.g.modPow(w, this.pk.p);
+    // compute first part of commitment = g^w for random w.
+    var a = this.pk.g.modPow(w, this.pk.p);
+    
+    var commitment = new ElGamal.PlaintextCommitment(alpha, a);
 
     // get challenge
     var challenge = challenge_generator(commitment);
@@ -541,6 +543,28 @@ ElGamal.DLogProof.fromJSONObject = function(d) {
   return new ElGamal.DLogProof(BigInt.fromJSONObject(d.commitment || d.s), BigInt.fromJSONObject(d.challenge), BigInt.fromJSONObject(d.response));
 };
 
+//
+// PlaintextCommitment
+//
+ElGamal.PlaintextCommitment = Class.extend({
+  init: function(alpha, a) {
+    this.alpha = alpha;
+    this.a = a;
+  },
+  
+  toJSONObject: function() {
+    return this.a.toJSONObject();
+  },
+  
+  toString: function() {
+    return this.alpha.toJSONObject() + "/" + this.a.toJSONObject();
+  }
+});
+
+ElGamal.DLogProof.fromJSONObject = function(d) {
+  return new ElGamal.DLogProof(BigInt.fromJSONObject(d.commitment || d.s), BigInt.fromJSONObject(d.challenge), BigInt.fromJSONObject(d.response));
+};
+
 // a challenge generator based on a list of commitments of
 // proofs of knowledge of plaintext. Just appends A and B with commas.
 ElGamal.disjunctive_challenge_generator = function(commitments) {
@@ -564,5 +588,6 @@ ElGamal.fiatshamir_challenge_generator = function(commitment) {
 };
 
 ElGamal.fiatshamir_dlog_challenge_generator = function(commitment) {
-  return new BigInt(hex_sha256(commitment.toJSONObject()), 16);
+  // return new BigInt(hex_sha256(commitment.toJSONObject()), 16);
+  return new BigInt(hex_sha256(commitment.toString()), 16);
 };

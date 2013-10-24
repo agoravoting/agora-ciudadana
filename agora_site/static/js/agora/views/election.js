@@ -314,7 +314,7 @@
             var plaintext = new ElGamal.Plaintext(BigInt.fromJSONObject(plain_answer), pk, true);
             var randomness = Random.getRandomInteger(pk.q);
             var ctext = ElGamal.encrypt(pk, plaintext, randomness);
-            var proof = plaintext.proveKnowledge(randomness, ElGamal.fiatshamir_dlog_challenge_generator);
+            var proof = plaintext.proveKnowledge(ctext.alpha, randomness, ElGamal.fiatshamir_dlog_challenge_generator);
             var enc_answer = {
                 ciphertext: ctext.toJSONObject(),
                 proof: proof.toJSONObject()
