@@ -172,7 +172,8 @@ class UserenaSignup(models.Model):
             return True
         return False
 
-    def send_activation_email(self):
+
+    def send_activation_email(self, auto_join_secret = False):
         """
         Sends a activation email to the user.
 
@@ -180,10 +181,22 @@ class UserenaSignup(models.Model):
         user.
 
         """
+
+        if not auto_join_secret:
+            activation_url = reverse('userena_activate', args=(self.user.username, self.activation_key))
+        else:
+            if isinstance(auto_join_secret, basestring):
+                auto_join_key = auto_join_secret
+            else:
+                auto_join_key = hashlib.md5(self.activation_key +
+                    settings.AGORA_API_AUTO_ACTIVATION_SECRET).hexdigest()
+
+            activation_url = reverse('auto_join_activate', args=(self.user.username, auto_join_key))
+
         context= {'user': self.user,
                   'protocol': get_protocol(),
                   'activation_days': userena_settings.USERENA_ACTIVATION_DAYS,
-                  'activation_key': self.activation_key,
+                  'activation_url': activation_url,
                   'site': Site.objects.get_current()}
 
         subject = render_to_string('accounts/emails/activation_email_subject.txt',
@@ -192,6 +205,7 @@ class UserenaSignup(models.Model):
 
         message = render_to_string('accounts/emails/activation_email_message.txt',
                                    context)
+
         send_mail(subject,
                   message,
                   settings.DEFAULT_FROM_EMAIL,

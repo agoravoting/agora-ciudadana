@@ -376,10 +376,6 @@ INTERNAL_IPS = ('127.0.0.1',)
 #    will see the create agora button and will be able to create agoras.
 AGORA_CREATION_PERMISSIONS="any-user"
 
-# List of agoras to which a user will be joined automatically when they are
-# registered
-AGORA_REGISTER_AUTO_JOIN = []
-
 # Front page agora to show. Together with featured election configuration inside
 # agora settings can feature the election in the front page.
 AGORA_FRONT_PAGE = None
@@ -406,6 +402,10 @@ AGORA_ALLOW_API_AUTO_ACTIVATION = False
 # the API caller will have to provide this secret to be able to do API
 # auto-activation
 AGORA_API_AUTO_ACTIVATION_SECRET = 'change the activation secret'
+
+# List of agoras to which a user will be joined automatically when they are
+# registered
+AGORA_REGISTER_AUTO_JOIN = []
 
 AGORA_FNMT_BASE_URL = "https://fnmt.local.dev"
 AGORA_BASE_URL = "https://local.dev"
