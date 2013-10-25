@@ -31,7 +31,7 @@ def suite():
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(MiscTest))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(ActionTest))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(SearchTest))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(AuthorityTest))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(AuthorityTest))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(DelegateElectionCountTest))
     return suite
 
