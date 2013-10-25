@@ -33,6 +33,7 @@ from django.views.generic.edit import FormView
 from guardian.shortcuts import assign, remove_perm
 
 from userena import views as userena_views
+from userena import settings as userena_settings
 from userena.models import UserenaSignup
 from userena.managers import SHA1_RE
 
@@ -137,7 +138,7 @@ class AutoLoginTokenView(TemplateView):
 
         setattr(user, 'backend', 'django.contrib.auth.backends.ModelBackend')
         login(request, user)
-        request.session.set_expiry(settings.USERENA_REMEMBER_ME_DAYS[1] * 86400)
+        request.session.set_expiry(userena_settings.USERENA_REMEMBER_ME_DAYS[1] * 86400)
         return redirect('/')
 
 
