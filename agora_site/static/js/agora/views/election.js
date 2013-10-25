@@ -268,7 +268,7 @@
             this.stv_question_template = _.template($("#template_featured-election-tallied-stv-question").html());
 
             var data = ajax_data;
-            data.is_demo = (window.location.href.endsWith("/demo") || window.location.href.endsWith("/demo/"));
+            data.is_demo = (window.location.href.lastIndexOf("/demo") >= window.location.href.length - 6);
 
             $("#background-wrapper-fe").html(this.bw_template(ajax_data));
             if (ajax_data.election.tally_released_at_date) {
