@@ -21,6 +21,7 @@ settings.CELERY_ALWAYS_EAGER = True
 settings.BROKER_BACKEND = 'memory'
 settings.AGORA_ALLOW_API_AUTO_ACTIVATION = True
 settings.AGORA_API_AUTO_ACTIVATION_SECRET = 'change the activation secret'
+settings.AGORA_CREATION_PERMISSIONS = "any-user"
 
 def suite():
     suite = unittest.TestSuite()
