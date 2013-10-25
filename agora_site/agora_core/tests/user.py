@@ -206,10 +206,33 @@ class UserTest(RootTestCase):
         data = self.post('user/email_login/',
             {
                 'email': 'david@david.com',
+                'activation_secret': 'bad secret'
+            }, HTTP_BAD_REQUEST)
+
+
+        data = self.post('user/email_login/',
+            {
+                'email': 'davaaid@david.com',
+                'activation_secret': 'change the activation secret'
+            }, HTTP_NOT_FOUND)
+
+        data = self.postAndParse('user/email_login/',
+            {
+                'email': 'david@david.com',
                 'activation_secret': 'change the activation secret'
             })
-        data = self.getAndParse('user/settings/')
-        self.assertEqual(data['username'], 'david')
+        self.assertTrue('url' in data)
+        url = data['url']
+
+        # assure login url is unique
+        self.login('david', 'david')
+
+        data = self.postAndParse('user/email_login/',
+            {
+                'email': 'david@david.com',
+                'activation_secret': 'change the activation secret'
+            })
+        self.assertTrue(url != data['url'])
 
     def test_logout(self):
         """

@@ -6,6 +6,7 @@ from django import forms as django_forms
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 from django.utils.encoding import force_unicode
 from django.utils import translation, timezone
@@ -13,6 +14,7 @@ from django.contrib.markup.templatetags.markup import textile
 from django.utils.translation import gettext as _
 from django.contrib.auth import authenticate, login
 from django.shortcuts import get_object_or_404
+from django.utils.crypto import constant_time_compare
 
 from userena import settings as userena_settings
 from userena import forms as userena_forms
@@ -82,7 +84,7 @@ class APIEmailLoginForm(django_forms.Form):
         if not settings.AGORA_ALLOW_API_AUTO_ACTIVATION:
             raise django_forms.ValidationError(_('Auto activation not allowed.'))
 
-        if self.cleaned_data['activation_secret'] != settings.AGORA_API_AUTO_ACTIVATION_SECRET:
+        if not constant_time_compare(self.cleaned_data['activation_secret'], settings.AGORA_API_AUTO_ACTIVATION_SECRET):
             raise django_forms.ValidationError(_('Invalid activation secret.'))
 
         self.user = get_object_or_404(User, email__iexact=self.cleaned_data['email'])
@@ -94,10 +96,10 @@ class APIEmailLoginForm(django_forms.Form):
             self.user.is_active = True
             self.user.save()
 
-        setattr(self.user, 'backend', 'django.contrib.auth.backends.ModelBackend')
-        login(self.request, self.user)
-        self.request.session.set_expiry(userena_settings.USERENA_REMEMBER_ME_DAYS[1] * 86400)
-        return None
+        token = default_token_generator.make_token(self.user)
+        return dict(
+            url=self.request.build_absolute_uri(reverse('auto-login-token',
+                kwargs=dict(username=self.user.username, token=token))))
 
     @staticmethod
     def static_get_form_kwargs(request, data, *args, **kwargs):

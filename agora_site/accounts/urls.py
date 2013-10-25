@@ -114,6 +114,11 @@ urlpatterns = patterns('',
         'template_name': 'accounts/activate_fail.html'},
        name='auto_join_activate'),
 
+    # Auto-Login with token
+    url(r'^(?P<username>[\.\w\-]+)/auto-login-token/(?P<token>[\w\-]+)/$',
+       accounts_views.AutoLoginTokenView.as_view(),
+       name='auto-login-token'),
+
     # Change email and confirm it
     url(r'^(?P<username>[\.\w]+)/email/$',
        userena_views.email_change,

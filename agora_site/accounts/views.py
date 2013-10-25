@@ -21,6 +21,7 @@ from django.conf.urls import patterns, url, include
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
 from django.core.urlresolvers import reverse
 from django.utils import simplejson as json
 from django.utils.translation import ugettext as _
@@ -124,6 +125,20 @@ class AutoJoinActivateView(TemplateView):
         if requested_membership:
             messages.add_message(request, settings.SUCCESS_MODAL, _("Your account has been activated, but <strong>in order to vote have to verify your ID</strong> scanning attachment you sent us. Stay tuned <strong>attentive to your email</strong>, soon verify your identity and you will get an email saying you've entered the agora <strong>%s</strong> - You can then vote on the bill and make history with us.") % settings.AGORA_REGISTER_AUTO_JOIN[0])
         return userena_views.activate(request, username, userena.activation_key, kwargs['template_name'], kwargs['success_url'])
+
+
+
+class AutoLoginTokenView(TemplateView):
+    def get(self, request, username, token, **kwargs):
+        user = get_object_or_404(User, username=username)
+        if not default_token_generator.check_token(user, token):
+            messages.add_message(request, messages.ERROR, _('Invalid login link.'))
+            return redirect('/')
+
+        setattr(user, 'backend', 'django.contrib.auth.backends.ModelBackend')
+        login(request, user)
+        request.session.set_expiry(settings.USERENA_REMEMBER_ME_DAYS[1] * 86400)
+        return redirect('/')
 
 
 class RegisterCompleteFNMTView(FormView):
