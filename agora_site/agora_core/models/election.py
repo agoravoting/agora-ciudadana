@@ -303,12 +303,11 @@ class Election(models.Model):
 
     # stores delegation status data in the following format:
     # {
-    #     'create_election__session_ids: ['id1', 'id2', ...],
-    #     'create_election__status: 'success|requested|error requesting|error',
-    #     'create_election__director_id': <id>,
-    #     'tally_election__session_ids': ['id1', 'id2', ...],
-    #     'tally_election__status: 'success|requested|error requesting|error',
-    #     'tally_election__director_id': <id>,
+    #     'election_id: "",
+    #     'create_status: 'success',
+    #     'create_director_id': <id>,
+    #     'tally_status: 'success|requested|error requesting|error',
+    #     'tally_director_id': <id>,
     # }
     orchestra_status = JSONField(null=True)
 

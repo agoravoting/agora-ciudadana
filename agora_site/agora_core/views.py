@@ -20,6 +20,7 @@ import hashlib
 
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
+from django.utils.crypto import constant_time_compare
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
@@ -2259,8 +2260,8 @@ class UpdateAgoraDelegationElectionView(TemplateView):
 
         if not isinstance(agora.delegation_status, dict) or\
                 agora.delegation_status.get('status', '') == 'finished' or\
-                agora.delegation_status.get('election_id') != eid:
-            return http.HttpResponse("invalid 1")
+                not constant_time_compare(agora.delegation_status.get('election_id'), eid):
+            return http.HttpResponse()
 
         if status != 'finished':
             agora.delegation_status['status'] = status
@@ -2268,11 +2269,11 @@ class UpdateAgoraDelegationElectionView(TemplateView):
             agora.save()
             return http.HttpResponse()
 
-
         # The callback comes with all the needed data, but it so happens that
         # it's not authenticated, so we get the data directly from the source
         director = get_object_or_404(Authority, pk=agora.delegation_status['director_id'])
 
+        pub_url = director.get_public_data(eid, sid, "publicKey_json")
         r = requests.get(pub_url, verify=False,
             cert=(settings.SSL_CERT_PATH,
                 settings.SSL_KEY_PATH))
@@ -2284,7 +2285,6 @@ class UpdateAgoraDelegationElectionView(TemplateView):
 
         agora.delegation_status['status'] = 'finished'
         agora.delegation_status['pubkey'] = publickey
-        agora.delegation_status['updated_at'] = timezone.now().isoformat()
         agora.save()
         return http.HttpResponse()
 
@@ -2303,104 +2303,22 @@ class UpdatePubkeyElectionView(TemplateView):
             data = json.loads(request.raw_post_data)
             election = None
             election = Election.objects.get(id=election_id)
-            ssid = data['reference']['session_id']
-            status = data['status']
-            publickey = data['data']['publickey']
-        except:
+
+            from agora_site.agora_core.tasks.election import set_pubkeys
+            kwargs = dict(
+                election_id=election_id,
+                pubkey_data=data,
+                is_secure=self.request.is_secure(),
+                site_id=Site.objects.get_current().id
+            )
+            set_pubkeys.apply_async(kwargs=kwargs, task_id=election.task_id(set_pubkeys))
             return http.HttpResponse()
-
-        ssid_path = os.path.exist(os.path.join(settings.PRIVATE_DATA_ROOT,
-            'elections', 'pubkeys', ssid))
-        if election.pubkey_created_at_date is not None or\
-                not isinstance(election.orchestra_status, dict) or\
-                ssid not in election.orchestra_status.get('create_election__session_ids', []) or\
-                os.path.exists(ssid_path):
-            return http.HttpResponse()
-
-        if status != 'finished':
-            f = open(ssid_path, 'w')
-            f.write('error')
-            f.close()
-            election.orchestra_status['create_election__status'] = "error requesting"
-            election.save()
-            return http.HttpResponse()
-
-        director = get_object_or_404(Authority,
-            pk=election.delegation_status['create_election__director_id'])
-
-        # The callback comes with all the needed data, but it so happens that
-        # it's not authenticated, so we get the data directly from the source
-        pub_url = director.get_public_data(ssid, "publicKey_native")
-        r = requests.get(director.url, verify=False,
-            cert=(settings.SSL_CERT_PATH,
-                  settings.SSL_KEY_PATH))
-        if r.status != 200 or r.text != publickey:
-            return http.HttpResponse()
-
-        # save public key
-        f = open(ssid_path, 'w')
-        f.write(publickey)
-        f.close()
-
-        # check if we have all public keys
-        pubkeys = []
-        for a_ssid in election.orchestra_status['create_election__session_ids']:
-            ssid_path = os.path.exist(os.path.join(settings.PRIVATE_DATA_ROOT,
-            'elections', 'pubkeys', a_ssid))
-            if not os.path.exists(ssid_path):
-                f = open(ssid_path, 'w')
-                pubkey = f.read()
-                f.close()
-                pubkeys.append(pubkey)
-                if pubkey == 'failed':
-                    return http.HttpResponse()
-
-        # if we have reached here, it means we have all the public keys
-        election.pubkeys = pubkeys
-        election.orchestra_status['create_election__status'] = 'finished'
-        election.pubkey_created_at_date = timezone.now()
-        election.save()
-
-        # List of emails to send. tuples are of format:
-        #
-        # (subject, text, html, from_email, recipient)
-        datatuples = []
-
-
-        is_secure=self.request.is_secure()
-        site_id=Site.objects.get_current().id
-        context = get_base_email_context_task(is_secure, site_id)
-        context.update(dict(
-            election_url=election.get_link(),
-            agora_link=election.get_full_name('link'),
-            election_name=election.pretty_name,
-            agora_name=election.get_full_name()
-        ))
-        for admin in election.agora.admins.all():
-
-            if not admin.get_profile().has_perms('receive_email_updates'):
-                continue
-
-            translation.activate(admin.get_profile().lang_code)
-            context['to'] = admin
-            datatuples.append((
-                _('Election publick keys %s created') % election.pretty_name,
-                render_to_string('agora_core/emails/election_pubkeys_created.txt',
-                    context),
-                render_to_string('agora_core/emails/election_pubkeys_created.html',
-                    context),
-                None,
-                [admin.email]))
-
-        translation.deactivate()
-
-        send_mass_html_mail(datatuples)
-
-        # send email to admins
-        return http.HttpResponse()
+        except Exception, e:
+            import traceback
+            return http.HttpResponse(traceback.format_exc())
 
     @csrf_exempt
     def dispatch(self, *args, **kwargs):
-        return super(UpdateAgoraDelegationElectionView, self).dispatch(*args,
+        return super(UpdatePubkeyElectionView, self).dispatch(*args,
             **kwargs)
 

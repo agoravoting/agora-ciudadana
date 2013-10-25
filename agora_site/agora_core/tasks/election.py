@@ -10,9 +10,11 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
+from django.shortcuts import get_object_or_404
 from django.utils import translation, timezone
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
+from django.utils.crypto import constant_time_compare
 
 from celery.contrib import rdb
 from celery import task
@@ -299,84 +301,151 @@ def send_election_created_mails(election_id, is_secure, site_id, remote_addr, us
 
 @task(ignore_result=True)
 def create_pubkeys(election_id):
+    # {
+    #     'election_id: "",
+    #     'create_status: 'success',
+    #     'create_director_id': <id>,
+    #     'tally_status: 'success|requested|error requesting|error',
+    #     'tally_director_id': <id>,
+    # }
     election = Election.objects.get(pk=election_id)
 
-    # if some of the pubkeys have already been created, then we will just request
-    # new pubkeys for those which were not created
-    #
-    # also bear in mind that we know if pubkey has been created because the dir
-    # in the following path exists:
-    # os.path.join(settings.PRIVATE_DATA_ROOT, 'elections', 'pubkeys', session_id)
-    #
-    # and the status can be known if the file session_id + "_error" exist
-    rdb.set_trace()
-    if election.orchestra_status is not None:
-        existing_session_ids = election.orchestra_status['create_election__session_ids']
-        did = election.orchestra_status['create_election__director_id']
-        director = Authority.objects.get(pk=did)
-    else:
-        election.authorities = election.agora.agora_local_authorities.all()
-        election.save()
-        director = choice(election.authorities.all())
-        existing_session_ids = []
+    auths = election.authorities = election.agora.agora_local_authorities.all()
+    election.save()
+    if len(auths) < settings.MIN_NUM_AUTHORITIES or\
+            len(auths) > settings.MAX_NUM_AUTHORITIES:
+        raise Exception("Invalid number of authorities")
+
+    director = choice(auths)
+    callback_url = '%s/api/v1/update/election/%d/request_pubkey/' %\
+        (settings.AGORA_BASE_URL, election.id)
 
     now = datetime.datetime.utcnow().isoformat()
-    later = (datetime.datetime.utcnow() + datetime.timedelta(days=7)).isoformat()
-    session_ids = []
-    status = 'requested'
-    i = 0
-    for question in election.questions:
-        i += 1
+    def isoformat(datet):
+        if not datet:
+            return None
+        else:
+            return datet.isoformat()
 
-        # if pubkey has been created, then continue
-        if len(existing_session_ids) > i and os.path.exists(
-                os.path.join(settings.PRIVATE_DATA_ROOT, 'elections',
-                'pubkeys', existing_session_ids[i])):
-            session_ids.append(existing_session_ids[i])
-            continue
+    payload = {
+        "election_id": str(uuid.uuid4()),
+        "is_recurring": False,
+        "callback_url": callback_url,
+        "extra": [],
+        "title": election.name,
+        "url": election.url,
+        "description": election.short_description,
+        "questions_data": election.questions,
+        "voting_start_date": isoformat(election.voting_starts_at_date),
+        "voting_end_date": isoformat(election.voting_ends_at_date),
+        "authorities": [
+            {
+                "name": auth.name,
+                "orchestra_url": auth.url,
+                "ssl_cert": auth.ssl_certificate
+            } for auth in auths
+        ]
+    }
 
-        ssid = "%d_%s" % (i, str(uuid.uuid4()))
-        callback_url = '%s/api/v1/update/election/%d/request_pubkey/' %\
-            (settings.AGORA_BASE_URL, election.id)
+    r = requests.post(director.get_public_url('election'),
+        data=json.dumps(payload), verify=False,
+        cert=(settings.SSL_CERT_PATH,
+            settings.SSL_KEY_PATH))
 
-        payload = {
-            "session_id": ssid,
-            "is_recurring": False,
-            "callback_url": callback_url,
-            "extra": [],
-            "title": election.name,
-            "url": election.url,
-            "description": election.short_description,
-            "question_data": question,
-            # TODO: make election orchestra allow empty dates
-            "voting_start_date": election.voting_starts_at_date.isoformat() if election.voting_starts_at_date else now,
-            "voting_end_date": election.voting_ends_at_date.isoformat() if election.voting_ends_at_date else later,
-            "authorities": [
-                {
-                    "name": auth.name,
-                    "orchestra_url": auth.url,
-                    "ssl_cert": auth.ssl_certificate
-                } for auth in election.authorities.all()
-            ]
-        }
+    pubkey = ""
+    if r.status_code != 202:
+        status = "error requesting"
+        pubkey = r.text
+    else:
+        status = 'requested'
 
-        r = requests.post(director.get_public_url('election'),
-            data=json.dumps(payload), verify=False,
-            cert=(settings.SSL_CERT_PATH,
-                settings.SSL_KEY_PATH))
-
-        if r.status_code != 202:
-            status = "error requesting"
-
-    election.orchestra_status =  {
-        'create_election__session_ids': session_ids,
-        'create_election__status': 'requested',
-        'create_election__director_id': director.id,
-        'tally_election__session_ids': [],
-        'tally_election__status': '',
-        'tally_election__director_id': -1,
+    election.orchestra_status = {
+        'election_id': payload["election_id"],
+        'create_status': status,
+        'create_director_id': director.id,
+        'tally_status': 'not_requested_yet',
+        'tally_director_id': None,
     }
     election.save()
+
+
+@task(ignore_result=True)
+def set_pubkeys(election_id, pubkey_data, is_secure, site_id):
+    data = pubkey_data
+    election = Election.objects.get(id=election_id)
+    status = data['status']
+    eid = data['reference']['election_id']
+    now = timezone.now()
+
+    if not isinstance(election.orchestra_status, dict) or\
+            election.orchestra_status.get('create_status', '') == 'finished' or\
+            election.pubkey_created_at_date is not None or\
+            not constant_time_compare(election.orchestra_status.get('election_id'), eid):
+        raise Exception()
+
+    if status != 'finished':
+        election.orchestra_status['create_status'] = status
+        election.orchestra_status['updated_at'] = now.isoformat()
+        election.save()
+        raise Exception()
+
+    # The callback comes with all the needed data, but it so happens that
+    # it's not authenticated, so we get the data directly from the source
+    director = get_object_or_404(Authority, pk=election.orchestra_status['create_director_id'])
+
+    i = 0
+    pubkey_list = []
+    for question in election.questions:
+        sid = data['session_data'][i]['session_id']
+        publickey = data['session_data'][i]['pubkey']
+        i += 1
+        pub_url = director.get_public_data(eid, sid, "publicKey_json")
+        r = requests.get(pub_url, verify=False,
+            cert=(settings.SSL_CERT_PATH,
+                settings.SSL_KEY_PATH))
+        assert r.status_code == 200
+        pubkey_downloaded = json.loads(r.text)
+
+        if publickey != pubkey_downloaded:
+            raise Exception()
+        pubkey_list.append(publickey)
+
+    election.orchestra_status['status'] = 'finished'
+    election.orchestra_status['updated_at'] = now.isoformat()
+    election.pubkeys = pubkey_list
+    election.pubkey_created_at_date = now
+    election.save()
+
+    context = get_base_email_context_task(is_secure, site_id)
+    context.update(dict(
+        election_url=election.get_link(),
+        agora_link=election.agora.get_full_name('link'),
+        election_name=election.pretty_name,
+        agora_name=election.agora.get_full_name()
+    ))
+
+    # List of emails to send. tuples are of format:
+    #
+    # (subject, text, html, from_email, recipient)
+    datatuples = []
+    for admin in election.agora.admins.all():
+        if not admin.get_profile().has_perms('receive_email_updates'):
+            continue
+
+        translation.activate(admin.get_profile().lang_code)
+        context['to'] = admin
+        datatuples.append((
+            _('Election publick keys %s created') % election.pretty_name,
+            render_to_string('agora_core/emails/election_pubkeys_created.txt',
+                context),
+            render_to_string('agora_core/emails/election_pubkeys_created.html',
+                context),
+            None,
+            [admin.email]))
+
+    translation.deactivate()
+
+    send_mass_html_mail(datatuples)
 
 @task(ignore_result=True)
 def clean_expired_users():
