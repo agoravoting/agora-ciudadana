@@ -125,44 +125,73 @@ class BaseSTVField(JSONFormField):
         """
         error = django_forms.ValidationError(_('Invalid answer format'))
 
-        if not isinstance(value, list):
-            raise error
-
-        # check for repeated answers
-        if len(value) != len(set(value)):
-            raise error
-
-        if len(value) < self.question['min'] or len(value) > self.question['max']:
-            raise error
-
-        # find question in election
-        question = None
-        for q in self.election.questions:
-            if q['question'] == self.label:
-                question = q
-
-        # gather possible answers
-        possible_answers = [answer['value'] for answer in question['answers']]
-
-        # check the answers provided are valid
-        for i in value:
-            if i not in possible_answers:
+        if self.election.is_secure():
+            if not isinstance(value, dict):
                 raise error
 
-        # NOTE: in the future, when encryption support is added, this will be
-        # handled differently, probably in a more generic way so that
-        # BaseSTVField doesn't know anything about plaintext or encryption.
-        if len(value) > 0:
-            clean_value = super(BaseSTVField, self).clean(value)
-            return {
-                "a": "plaintext-answer",
-                "choices": clean_value,
-            }
+            elements = ["alpha", "beta", "commitment", "challenge", "response"]
+            parsed_els = dict()
+            for el in elements:
+                assert el in value and isinstance(value[el], basestring)
+                parsed_els[el] = int(value[el])
+
+            assert len(elements) == len(parsed_els.keys())
+
+            # find question in election
+            question = None
+            q_i = 0
+            for q in self.election.questions:
+                if q['question'] == self.label:
+                    question = q
+                    break
+                q_i += 1
+
+            pubkey = self.election.pubkeys[q_i]
+            pubkey_parsed = dict(
+                p=int(pubkey["p"]),
+                g=int(pubkey["g"])
+            )
+            verify_pok_plaintext(pubkey_parsed, parsed_els)
+
         else:
-            return {
-                "a": "plaintext-answer",
-                "choices": [],
-            }
+            if not isinstance(value, list):
+                raise error
+
+            # check for repeated answers
+            if len(value) != len(set(value)):
+                raise error
+
+            if len(value) < self.question['min'] or len(value) > self.question['max']:
+                raise error
+
+            # find question in election
+            question = None
+            for q in self.election.questions:
+                if q['question'] == self.label:
+                    question = q
+
+            # gather possible answers
+            possible_answers = [answer['value'] for answer in question['answers']]
+
+            # check the answers provided are valid
+            for i in value:
+                if i not in possible_answers:
+                    raise error
+
+            # NOTE: in the future, when encryption support is added, this will be
+            # handled differently, probably in a more generic way so that
+            # BaseSTVField doesn't know anything about plaintext or encryption.
+            if len(value) > 0:
+                clean_value = super(BaseSTVField, self).clean(value)
+                return {
+                    "a": "plaintext-answer",
+                    "choices": clean_value,
+                }
+            else:
+                return {
+                    "a": "plaintext-answer",
+                    "choices": [],
+                }
 
 class BaseSTVTally(BaseTally):
     '''

@@ -1723,24 +1723,24 @@ class ElectionTest(RootTestCase):
             }
         }
 
-        
+        from agora_site.misc.utils import verify_pok_plaintext
         # http://courses.csail.mit.edu/6.897/spring04/L19.pdf - 2.1 Proving Knowledge of Plaintext
         pk_p = int(pk['p'])
         pk_g = int(pk['g'])
         commitment = int(ballot['proof']['commitment'])
         response = int(ballot['proof']['response'])
         challenge =  int(ballot['proof']['challenge'])
-        alpha = int(ballot['ciphertext']['alpha'])        
+        alpha = int(ballot['ciphertext']['alpha'])
 
-        # verify the challenge is valid
-        hash = hashlib.sha256()
-        hash.update(str(alpha) + "/" + str(commitment))
-        challenge_calculated = int(hash.hexdigest(), 16)
-        assert challenge_calculated == challenge
-        
-        first_part = pow(pk_g, response, pk_p)
-        second_part = (commitment * pow(alpha, challenge, pk_p)) % pk_p
-
-        #// check g^response == commitment * (g^t) ^ challenge == commitment * (alpha) ^ challenge
-        assert first_part == second_part
+        pk = dict(
+            p=pk_p,
+            g=pk_g
+        )
+        ballot = dict(
+            commitment=commitment,
+            response=response,
+            challenge=challenge,
+            alpha=alpha
+        )
+        verify_pok_plaintext(pk, ballot)
 

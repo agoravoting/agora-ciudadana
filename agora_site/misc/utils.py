@@ -26,7 +26,7 @@ from django.shortcuts import _get_queryset
 from django.forms.fields import Field, DateTimeField
 from django.forms.util import ValidationError
 
-
+import hashlib
 import datetime
 import pygeoip
 
@@ -475,3 +475,35 @@ def clean_html(text, to_plaintext=False):
         return plaintext
 
     return html
+
+def verify_pok_plaintext(pk, ballot):
+    '''
+    verifies the proof of knowledge of the plaintext, given encrypted data and
+    the public key
+
+    Format:
+        * "ballot" must be a dictionary with keys "alpha", "beta", "commitment",
+          "challenge", "response", and values must be integers.
+        * "pk" must be a dictonary with keys "g", "p", and values must be
+          integers.
+    '''
+
+    # http://courses.csail.mit.edu/6.897/spring04/L19.pdf - 2.1 Proving Knowledge of Plaintext
+    pk_p = pk['p']
+    pk_g = pk['g']
+    commitment = ballot['commitment']
+    response = ballot['response']
+    challenge =  ballot['challenge']
+    alpha = ballot['alpha']
+
+    # verify the challenge is valid
+    hash = hashlib.sha256()
+    hash.update(str(alpha) + "/" + str(commitment))
+    challenge_calculated = int(hash.hexdigest(), 16)
+    assert challenge_calculated == challenge
+
+    first_part = pow(pk_g, response, pk_p)
+    second_part = (commitment * pow(alpha, challenge, pk_p)) % pk_p
+
+    # check g^response == commitment * (g^t) ^ challenge == commitment * (alpha) ^ challenge
+    assert first_part == second_part

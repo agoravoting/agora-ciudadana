@@ -8,6 +8,34 @@
         }
     });
 
+    Agora.encryptAnswer = function(pk_json, plain_answer) {
+        /**
+         * Here we not only just encrypt the answer but also provide a
+         * verifiable Proof of Knowledge (PoK) of the plaintext, using the
+         * Schnorr Protocol with Fiat-Shamir (which is a method of
+         * converting an interactive PoK into non interactive using a hash
+         * that substitutes the random oracle). We use sha256 for hashing.
+         */
+        var pk = ElGamal.PublicKey.fromJSONObject(pk_json);
+        var plaintext = new ElGamal.Plaintext(BigInt.fromJSONObject(plain_answer), pk, true);
+        var randomness = Random.getRandomInteger(pk.q);
+        var ctext = ElGamal.encrypt(pk, plaintext, randomness);
+        var proof = plaintext.proveKnowledge(ctext.alpha, randomness, ElGamal.fiatshamir_dlog_challenge_generator);
+        var ciphertext =  ctext.toJSONObject();
+        var proof = proof.toJSONObject();
+        var enc_answer = {
+            alpha: ciphertext.alpha,
+            beta: ciphertext.beta,
+            commitment: proof.commitment,
+            response: proof.response,
+            challenge: proof.challenge
+        };
+
+        var verified = ctext.verifyPlaintextProof(proof, ElGamal.fiatshamir_dlog_challenge_generator);
+        console.log("is proof verified = " + new Boolean(verified).toString());
+        return enc_answer;
+    }
+
     Agora.VoteQuestionModel = Backbone.AssociatedModel.extend({
         relations: [
             {
@@ -194,6 +222,21 @@
                     ballot['question' + index] = user_answers;
                 }
             });
+
+            var user_vote_is_encrypted = ajax_data.security_policy == "ALLOW_ENCRYPTED_VOTING";
+            if (user_vote_is_encrypted) {
+                this.model.get('questions').each(function (element, index, list) {
+                    _.pluck(ajax_data.questions[0].answers, "value");
+                    // TODO: add STV support
+                    var possible_answers = _.pluck(ajax_data.questions[index].answers, "value");
+                    var choice_index = possible_answers.indexOf(ballot['question' + index]);
+                    if (choice_index == -1) {
+                        console.log("!!! invalid choice");
+                    }
+                    ballot['question' + index] = Agora.encryptAnswer(
+                        ajax_data.pubkeys[index], choice_index);
+                });
+            }
             var election_id = this.model.get('id');
 
             var self = this;
@@ -519,7 +562,7 @@
 
             // user cannot vote secretly
             var is_fake = $("#vote_fake").data("fakeit") == "yes-please";
-            if (!isfake &&
+            if (!is_fake &&
                     (this.model.get('user_perms').indexOf('vote_counts') == -1 ||
                     this.model.get('security_policy') == 'PUBLIC_VOTING')) {
                 this.$el.find("#user_vote_is_public").attr('checked', 'checked');
