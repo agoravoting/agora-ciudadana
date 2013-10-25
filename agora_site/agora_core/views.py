@@ -63,6 +63,7 @@ from agora_site.agora_core.forms import *
 from agora_site.agora_core.tasks import *
 from agora_site.misc.utils import *
 
+
 class FormActionView(TemplateView):
     '''
     This is a TemplateView which doesn't allow get, only post calls (with
@@ -85,6 +86,7 @@ class FormActionView(TemplateView):
         messages.add_message(self.request, messages.ERROR, _('You tried to '
             'execute an action improperly.'))
         return redirect('/')
+
 
 class SetLanguageView(FormActionView):
     """
@@ -2248,35 +2250,39 @@ class UpdateAgoraDelegationElectionView(TemplateView):
             data = json.loads(request.raw_post_data)
             agora = None
             agora = Agora.objects.get(id=agora_id)
-            ssid = data['reference']['session_id']
             status = data['status']
-            publickey = data['data']['publickey']
-        except:
+            eid = data['reference']['election_id']
+            sid = data['session_data'][0]['session_id']
+            publickey = data['session_data'][0]['pubkey']
+        except Exception, e:
             return http.HttpResponse()
 
         if not isinstance(agora.delegation_status, dict) or\
-                agora.delegation_status.get('status', '') == 'success' or\
-                agora.delegation_status.get('session_id') != ssid:
-            return http.HttpResponse()
+                agora.delegation_status.get('status', '') == 'finished' or\
+                agora.delegation_status.get('election_id') != eid:
+            return http.HttpResponse("invalid 1")
 
-        if status != 'success':
+        if status != 'finished':
             agora.delegation_status['status'] = status
             agora.delegation_status['updated_at'] = timezone.now().isoformat()
             agora.save()
             return http.HttpResponse()
 
-        director = get_object_or_404(Authority, pk=agora.delegation_status['director_id'])
 
         # The callback comes with all the needed data, but it so happens that
         # it's not authenticated, so we get the data directly from the source
-        pub_url = director.get_public_data(ssid, "publicKey_native")
-        r = requests.get(director.url, verify=False,
+        director = get_object_or_404(Authority, pk=agora.delegation_status['director_id'])
+
+        r = requests.get(pub_url, verify=False,
             cert=(settings.SSL_CERT_PATH,
-                  settings.SSL_KEY_PATH))
-        if r.status != 200 or r.text != publickey:
+                settings.SSL_KEY_PATH))
+        assert r.status_code == 200
+        pubkey_downloaded = json.loads(r.text)
+
+        if publickey != pubkey_downloaded:
             return http.HttpResponse()
 
-        agora.delegation_status['status'] = 'success'
+        agora.delegation_status['status'] = 'finished'
         agora.delegation_status['pubkey'] = publickey
         agora.delegation_status['updated_at'] = timezone.now().isoformat()
         agora.save()
@@ -2311,7 +2317,7 @@ class UpdatePubkeyElectionView(TemplateView):
                 os.path.exists(ssid_path):
             return http.HttpResponse()
 
-        if status != 'success':
+        if status != 'finished':
             f = open(ssid_path, 'w')
             f.write('error')
             f.close()
@@ -2351,7 +2357,7 @@ class UpdatePubkeyElectionView(TemplateView):
 
         # if we have reached here, it means we have all the public keys
         election.pubkeys = pubkeys
-        election.orchestra_status['create_election__status'] = 'success'
+        election.orchestra_status['create_election__status'] = 'finished'
         election.pubkey_created_at_date = timezone.now()
         election.save()
 

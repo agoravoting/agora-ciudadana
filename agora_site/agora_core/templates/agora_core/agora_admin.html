@@ -239,13 +239,13 @@
         </div>
         <div id="tab-delegation" class="tab-pane form-data admin-form span7">
             <legend><%= gettext("Secure delegation") %></legend>
-            <p><%= gettext("Status of the secure delegation support. If you have disabled delegation, all this data will be empty and of no interest. If you have enabled secret and encrypted delegation, until status doesn't reach <strong>success</strong>, vote delegation will be disabled.") %></p>
-            <p><%= gettext("If there was some error and you want to try again, go to Authorities tab and click in Save Authorities to request a new session id to authorities.") %></p>
+            <p><%= gettext("Status of the secure delegation support. If you have disabled delegation, all this data will be empty and of no interest. If you have enabled secret and encrypted delegation, until status doesn't reach <strong>finished</strong> status, vote delegation will be disabled.") %></p>
+            <p><%= gettext("If there was some error and you want to try again, go to Authorities tab and click in Save Authorities to request a new election id to authorities.") %></p>
             <table class="table table-bordered">
                 <tbody>
                     <tr>
-                        <td><strong><%= gettext("Session Id") %></strong></td>
-                        <td><%= delegation_status.session_id %></td>
+                        <td><strong><%= gettext("Election Id") %></strong></td>
+                        <td><%= delegation_status.election_id %></td>
                     </tr>
                     <tr>
                         <td><strong><%= gettext("Status") %></strong></td>
@@ -261,7 +261,7 @@
                     </tr>
                     <tr>
                         <td><strong><%= gettext("Public Key") %></strong></td>
-                        <td><%= delegation_status.pubkey %></td>
+                        <td style="max-width:200px; word-wrap:break-word;"><%= JSON.stringifyCompat(delegation_status.pubkey) %></td>
                     </tr>
                 <tbody>
             </table>

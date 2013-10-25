@@ -97,7 +97,7 @@ class Agora(models.Model):
 
     # stores delegation status data in the following format:
     # {
-    #     'session_id': "",
+    #     'election_id': "",
     #     'created_at': "",
     #     'updated_at': "",
     #     'status': "",
@@ -547,16 +547,16 @@ class Agora(models.Model):
 
         now = datetime.datetime.utcnow().isoformat()
         payload = {
-            "session_id": str(uuid.uuid4()),
+            "election_id": str(uuid.uuid4()),
             "is_recurring": True,
             "callback_url": callback_url,
             "extra": [],
             "title": self.name,
             "url": self.url,
             "description": self.short_description,
-            "question_data": {
+            "questions_data": [{
                 "tally_type": "DELEGATION_ELECTION"
-            },
+            }],
             "voting_start_date": now,
             # very long expiration date for delegation election
             "voting_end_date": "2050-12-06T18:17:14.457000",
@@ -582,7 +582,7 @@ class Agora(models.Model):
             status = 'requested'
 
         self.delegation_status = {
-            'session_id': payload["session_id"],
+            'election_id': payload["election_id"],
             'created_at': now,
             'updated_at': now,
             'status': status,

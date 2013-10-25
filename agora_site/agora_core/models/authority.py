@@ -52,9 +52,9 @@ class Authority(models.Model):
         u = urlparse(self.url)
         return "https://%s/public_api/%s" % (u.netloc, action)
 
-    def get_public_data(self, session_id, filename):
+    def get_public_data(self, election_id, session_id, filename):
         '''
         Return the url of public data
         '''
         u = urlparse(self.url)
-        return "https://%s/public_data/%s/%s" % (u.netloc, session_id, filename)
+        return "https://%s/public_data/%s/%s/%s" % (u.netloc, election_id, session_id, filename)
