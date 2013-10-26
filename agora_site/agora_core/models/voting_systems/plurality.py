@@ -5,6 +5,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from .base import BaseVotingSystem, BaseTally
 from agora_site.misc.utils import *
+from agora_site.agora_core.models.voting_systems.base import (
+    parse_voting_methods, get_voting_system_by_id)
 
 class Plurality(BaseVotingSystem):
     '''
@@ -137,6 +139,7 @@ class PluralityField(django_forms.ChoiceField):
                 g=int(pubkey["g"])
             )
             verify_pok_plaintext(pubkey_parsed, parsed_els)
+            return value
         else:
             if value or self.question['min'] > 0:
                 clean_value = super(PluralityField, self).clean(value)

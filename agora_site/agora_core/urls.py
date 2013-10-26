@@ -48,6 +48,9 @@ urlpatterns += patterns('',
     (r'^api/v1/update/election/(?P<election_id>\d+)/request_pubkey/?$',
         UpdatePubkeyElectionView.as_view()),
 
+    (r'^api/v1/update/election/(?P<election_id>\d+)/do_tally/?$',
+        ReceiveElectionTallyView.as_view()),
+
     (r'^404/?$', 'django.views.generic.simple.direct_to_template', {'template': '404.html'}),
 
     (r'^500/?$', 'django.views.generic.simple.direct_to_template', {'template': '500.html'}),

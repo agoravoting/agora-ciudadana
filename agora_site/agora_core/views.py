@@ -2322,3 +2322,31 @@ class UpdatePubkeyElectionView(TemplateView):
         return super(UpdatePubkeyElectionView, self).dispatch(*args,
             **kwargs)
 
+
+class ReceiveElectionTallyView(TemplateView):
+    '''
+    Receive updates from election-orchestra
+    '''
+    def post(self, request, election_id, *args, **kwargs):
+        try:
+            data = json.loads(request.raw_post_data)
+            election = None
+            election = Election.objects.get(id=election_id)
+
+            from agora_site.agora_core.tasks.election import receive_tally
+            kwargs = dict(
+                election_id=election_id,
+                tally_data=data,
+                is_secure=self.request.is_secure(),
+                site_id=Site.objects.get_current().id
+            )
+            receive_tally.apply_async(kwargs=kwargs, task_id=election.task_id(receive_tally))
+            return http.HttpResponse()
+        except Exception, e:
+            import traceback
+            return http.HttpResponse(traceback.format_exc())
+
+    @csrf_exempt
+    def dispatch(self, *args, **kwargs):
+        return super(ReceiveElectionTallyView, self).dispatch(*args,
+            **kwargs)

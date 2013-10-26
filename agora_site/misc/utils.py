@@ -27,6 +27,7 @@ from django.forms.fields import Field, DateTimeField
 from django.forms.util import ValidationError
 
 import hashlib
+import sys
 import datetime
 import pygeoip
 
@@ -41,6 +42,9 @@ from guardian.utils import get_identity
 
 from lxml.html.clean import clean_html as lxml_clean_html
 import html2text
+
+BUF_SIZE = 10*1024
+
 
 class FormRequestMixin(object):
     '''
@@ -507,3 +511,15 @@ def verify_pok_plaintext(pk, ballot):
 
     # check g^response == commitment * (g^t) ^ challenge == commitment * (alpha) ^ challenge
     assert first_part == second_part
+
+def hash_file(file_path):
+    '''
+    Returns the hexdigest of the hash of the contents of a file, given the file
+    path.
+    '''
+    hash = hashlib.sha512()
+    f = open(file_path, 'r')
+    for chunk in f.read(BUF_SIZE):
+        hash.update(chunk)
+    f.close()
+    return hash.hexdigest()

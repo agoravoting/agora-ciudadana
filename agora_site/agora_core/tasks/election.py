@@ -3,6 +3,8 @@ from agora_site.agora_core.models import (Agora, Election, Profile, CastVote,
                                           Authority)
 from agora_site.misc.utils import *
 from agora_site.agora_core.templatetags.agora_utils import get_delegate_in_agora
+from agora_site.agora_core.models.voting_systems.base import (
+    parse_voting_methods, get_voting_system_by_id)
 
 from actstream.signals import action
 
@@ -20,10 +22,13 @@ from celery.contrib import rdb
 from celery import task
 
 import datetime
+import codecs
 import requests
+import tarfile
 import uuid
 import json
 import os
+import shutil
 from random import choice
 
 @task(ignore_result=True)
@@ -145,7 +150,10 @@ def end_election(election_id, is_secure, site_id, remote_addr, user_id):
     else:
         election.extra_data["ended"]=True
     election.save()
-    election.compute_result()
+    if election.is_secure():
+        launch_encrypted_tally(election)
+    else:
+        election.compute_result()
 
     # do not send results if it's set to be done manually
     if not election.release_tally_automatically:
@@ -410,7 +418,7 @@ def set_pubkeys(election_id, pubkey_data, is_secure, site_id):
             raise Exception()
         pubkey_list.append(publickey)
 
-    election.orchestra_status['status'] = 'finished'
+    election.orchestra_status['create_status'] = 'finished'
     election.orchestra_status['updated_at'] = now.isoformat()
     election.pubkeys = pubkey_list
     election.pubkey_created_at_date = now
@@ -446,6 +454,238 @@ def set_pubkeys(election_id, pubkey_data, is_secure, site_id):
     translation.deactivate()
 
     send_mass_html_mail(datatuples)
+
+
+def launch_encrypted_tally(election):
+    '''
+    Launch encrypted tally
+    '''
+
+    # stores delegation status data in the following format:
+    # {
+    #     'election_id: "",
+    #     'create_status: 'success',
+    #     'create_director_id': <id>,
+    #     'tally_status: 'success|requested|error requesting|error',
+    #     'tally_director_id': <id>,
+    # }
+    orchestra_status = JSONField(null=True)
+
+    callback_url = '%s/api/v1/update/election/%d/do_tally/' %\
+        (settings.AGORA_BASE_URL, election.id)
+    auths = election.authorities.all()
+    director = choice(auths)
+
+    # create votes file and do hash. Note: currently we do not count delegated
+    # votes
+    votes_path = os.path.join(settings.MEDIA_ROOT, 'elections', str(election.id),
+        election.orchestra_status['election_id'], 'votes')
+
+    if os.path.exists(os.path.dirname(votes_path)):
+        shutil.rmtree(os.path.dirname(votes_path))
+
+    os.makedirs(os.path.dirname(votes_path))
+
+    import codecs
+    with codecs.open(votes_path, encoding='utf-8', mode='w') as votes_file:
+        for vote in election.get_direct_votes():
+            proofs = []
+            choices = []
+            i = 0
+            for question in election.questions:
+                q_answer = vote.data['answers'][i]
+
+                proofs.append(dict(
+                    commitment=q_answer['commitment'],
+                    response=q_answer['response'],
+                    challenge=q_answer['challenge']
+                ))
+                choices.append(dict(
+                    alpha=q_answer['alpha'],
+                    beta=q_answer['beta']
+                ))
+                i += 1
+            vote_json = dict(
+                proofs=proofs,
+                choices=choices
+            )
+            votes_file.write(json.dumps(vote_json))
+
+
+    proto = "https://" if settings.AGORA_USE_HTTPS else "http://"
+    votes_url = proto + Site.objects.all()[0].domain + "/media/elections/%d/%s/votes" % (
+        election.id, election.orchestra_status['election_id'])
+    votes_hash = hash_file(votes_path)
+
+    tally_data = {
+        "election_id": election.orchestra_status['election_id'],
+        "callback_url": callback_url,
+        "extra": [],
+        "votes_url": votes_url,
+        "votes_hash":"sha512://" + votes_hash
+    }
+
+    r = requests.post(director.get_public_url('tally'),
+        data=json.dumps(tally_data), verify=False,
+        cert=(settings.SSL_CERT_PATH,
+            settings.SSL_KEY_PATH))
+
+    if r.status_code != 202:
+        status = "error requesting"
+    else:
+        status = 'requested'
+
+    election.orchestra_status['tally_status'] = status
+    election.orchestra_status['tally_director_id'] = director.id
+    election.save()
+
+
+@task(ignore_result=True)
+def receive_tally(election_id, tally_data, is_secure, site_id):
+    data = tally_data
+    election = Election.objects.get(id=election_id)
+    status = data['status']
+    eid = data['reference']['election_id']
+    now = timezone.now()
+
+    if not isinstance(election.orchestra_status, dict) or\
+            election.orchestra_status.get('tally_status', '') == 'finished' or\
+            election.voting_ends_at_date is None or\
+            election.result_tallied_at_date is not None or\
+            not constant_time_compare(election.orchestra_status.get('election_id'), eid):
+        raise Exception()
+
+    if status != 'finished':
+        election.orchestra_status['tally_status'] = status
+        election.orchestra_status['updated_at'] = now.isoformat()
+        election.save()
+        raise Exception()
+
+    # The callback comes with all the needed data, but it so happens that
+    # it's not authenticated, so we get the data directly from the source
+    director = get_object_or_404(Authority, pk=election.orchestra_status['tally_director_id'])
+
+    def download_file(url, where):
+        r = requests.get(url, verify=False, stream=True,
+            cert=(settings.SSL_CERT_PATH,
+                settings.SSL_KEY_PATH))
+
+        with open(where, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=1024):
+                if chunk: # filter out keep-alive new chunks
+                    f.write(chunk)
+                    f.flush()
+
+    pub_url = director.get_public_data(eid, "tally.tar.gz")
+    tally_path = os.path.join(settings.MEDIA_ROOT, 'elections', str(election.id),
+        'tally.tar.gz')
+
+    if os.path.exists(tally_path):
+        os.unlink(tally_path)
+
+    download_file(pub_url, tally_path)
+    if data['data']['tally_hash'] != "sha512://" + hash_file(tally_path):
+        raise Exception()
+
+    # untar the plaintexts
+    tally_gz = tarfile.open(tally_path, mode="r:gz")
+    paths = tally_gz.getnames()
+    plaintexts_paths = [path for path in paths if path.endswith("/plaintexts_json")]
+
+    i = 0
+    for plaintexts_path in plaintexts_paths:
+        member = tally_gz.getmember(plaintexts_path)
+        extract_path =os.path.join(settings.MEDIA_ROOT, 'elections',
+            str(election.id))
+        member.name = "%d_plaintexts_json" % i
+        tally_gz.extract(member, path=extract_path)
+
+    def do_tally(tally_path, election):
+        import copy
+        # result is in the same format as get_result_pretty(). Initialized here
+        result = copy.deepcopy(election.questions)
+        base_vote =[dict(choices=[]) for q in result]
+
+        # setup the initial data common to all voting system
+        i = 0
+        tallies = []
+        for question in result:
+            tally_type = election.election_type
+            if 'tally_type' in question:
+                tally_type = question['tally_type']
+            voting_system = get_voting_system_by_id(tally_type)
+            tally = voting_system.create_tally(election, i)
+            tallies.append(tally)
+
+            question['a'] = "question/result/" + voting_system.get_id()
+            question['winners'] = []
+            question['total_votes'] = 0
+
+            for answer in question['answers']:
+                answer['a'] = "answer/result/" + voting_system.get_id()
+                answer['total_count'] = 0
+                answer['total_count_percentage'] = 0
+
+            tally.pre_tally(result)
+
+            plaintexts_path = os.path.join(settings.MEDIA_ROOT, 'elections',
+                str(election.id), "%d_plaintexts_json" % i)
+            with codecs.open(plaintexts_path, encoding='utf-8', mode='r') as plaintexts_file:
+                for line in plaintexts_file.readlines():
+                    voter_answers = base_vote
+                    try:
+                        # Note line starts with " (1 character) and ends with
+                        # "\n (2 characters). It contains the index of the
+                        # option selected by the user but starting with 1
+                        # because number 0 cannot be encrypted with elgammal
+                        # so we trim beginning and end, parse the int and
+                        # substract one
+                        option_index = int(line[1:-2]) - 1
+                        if option_index < len(question['answers']):
+                            option_str = question['answers'][option_index]['value']
+
+                        # craft the voter_answers in the format admitted by
+                        # tally.add_vote
+                        voter_answers[i]['choices'] = [option_str]
+                    except:
+                        print "invalid vote: " + line
+                        print "voter_answers = " + json.dumps(voter_answers)
+                        import traceback; print traceback.format_exc()
+
+                    tally.add_vote(voter_answers=voter_answers,
+                        result=result, is_delegated=False)
+
+            i += 1
+
+
+        if not election.extra_data:
+            election.extra_data = dict()
+
+        # post process the tally
+        for tally in tallies:
+            tally.post_tally(result)
+
+        election.result = dict(
+            a= "result",
+            counts = result,
+            total_votes = result[0]['total_votes'] + result[0]['dirty_votes'],
+            electorate_count = election.electorate.count(),
+            total_delegated_votes = 0
+        )
+
+        tally_log = []
+        for tally in tallies:
+            tally_log.append(tally.get_log())
+        election.extra_data['tally_log'] = tally_log
+
+        election.delegated_votes_frozen_at_date = election.voters_frozen_at_date =\
+            election.result_tallied_at_date = timezone.now()
+
+    do_tally(tally_path, election)
+    election.orchestra_status['tally_status'] = 'finished'
+    election.orchestra_status['updated_at'] = now.isoformat()
+    election.result_tallied_at_date = now
+    election.save()
 
 @task(ignore_result=True)
 def clean_expired_users():
