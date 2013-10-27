@@ -416,7 +416,8 @@ class Election(models.Model):
                 isadmin and not isarchived
         elif permission_name == 'release_results':
             return not self.release_tally_automatically and\
-                self.result_tallied_at_date is not None
+                self.result_tallied_at_date is not None and\
+                self.tally_released_at_date is None
         elif permission_name == 'archive_election':
             return isadminorcreator and not isarchived
         elif permission_name == 'comment':
