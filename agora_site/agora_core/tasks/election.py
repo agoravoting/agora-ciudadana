@@ -665,6 +665,7 @@ def receive_tally(election_id, tally_data, is_secure, site_id):
         for tally in tallies:
             tally.post_tally(result)
 
+        election.electorate = election.agora.members.all()
         election.result = dict(
             a= "result",
             counts = result,
