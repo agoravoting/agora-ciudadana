@@ -263,9 +263,9 @@ class LoginAndVoteForm(django_forms.ModelForm):
         assert self.user
         try:
             user = authenticate(identification=self.user.username, password=cleaned_data['password'])
-            if self.is_active:
-                login(self.request, self.user)
-        except:
+            if self.user.is_active:
+                login(self.request, user)
+        except Exception, e:
             self.bad_password = True
 
         return cleaned_data
@@ -281,14 +281,14 @@ class LoginAndVoteForm(django_forms.ModelForm):
         if not self.bad_password and self.is_active:
             # invalidate older votes from the same voter to the same election
             old_votes = self.election.cast_votes.filter(is_direct=True,
-                invalidated_at_date=None, voter=self.request.user)
+                invalidated_at_date=None, voter=self.user)
             for old_vote in old_votes:
                 old_vote.invalidated_at_date = timezone.now()
                 old_vote.is_counted = False
                 old_vote.save()
 
         vote = super(LoginAndVoteForm, self).save(commit=False)
-        vote.is_counted = not self.bad_password and self.is_active
+        vote.is_counted = not self.bad_password and self.is_active and self.election.has_perms('vote_counts', self.user)
 
         # generate vote
         data = {
@@ -305,7 +305,6 @@ class LoginAndVoteForm(django_forms.ModelForm):
         # fill the vote
         vote.voter = self.user
         vote.election = self.election
-        vote.is_counted = self.election.has_perms('vote_counts', self.request.user)
         vote.is_direct = True
 
         # stablish if the vote is secret
@@ -323,7 +322,7 @@ class LoginAndVoteForm(django_forms.ModelForm):
         vote.save()
 
         # send mail
-        if vote.is_counted:
+        if  vote.is_counted:
             # create action
             actstream_action.send(self.user, verb='voted', action_object=self.election,
                 target=self.election.agora,
@@ -335,19 +334,19 @@ class LoginAndVoteForm(django_forms.ModelForm):
 
             context = get_base_email_context(self.request)
             context.update(dict(
-                to=self.request.user,
+                to=self.user,
                 election=self.election,
                 election_url=self.election.get_link(),
-                agora_url=self.election.get_link(),
+                agora_url=self.election.get_link()
             ))
 
-            if self.request.user.has_perms('receive_email_updates'):
-                translation.activate(self.request.user.get_profile().lang_code)
+            if self.user.has_perms('receive_email_updates'):
+                translation.activate(self.user.get_profile().lang_code)
                 email = EmailMultiAlternatives(
                     subject=_('Vote casted for election %s') % self.election.pretty_name,
                     body=render_to_string('agora_core/emails/vote_casted.txt',
                         context),
-                    to=[self.request.user.email])
+                    to=[self.user.email])
 
                 email.attach_alternative(
                     render_to_string('agora_core/emails/vote_casted.html',
@@ -355,13 +354,14 @@ class LoginAndVoteForm(django_forms.ModelForm):
                 email.send()
                 translation.deactivate()
 
-            if not is_following(self.request.user, self.election):
-                follow(self.request.user, self.election, actor_only=False, request=self.request)
+            if not is_following(self.user, self.election):
+                follow(self.user, self.election, actor_only=False, request=self.request)
         else:
             profile = self.user.get_profile()
             if not isinstance(profile.extra, dict):
                 profile.extra = dict()
             profile.extra['pending_ballot_id'] = vote.id
+            profile.extra['pending_ballot_status_%d' % vote.id] = 'unconfirmed'
             profile.save()
 
             token = default_token_generator.make_token(self.user)
@@ -374,7 +374,7 @@ class LoginAndVoteForm(django_forms.ModelForm):
                 to=self.user,
                 election=self.election,
                 election_url=self.election.get_link(),
-                agora_url=self.election.get_link(),
+                agora_url=self.election.agora.get_link(),
                 confirm_vote_url=confirm_vote_url
             ))
             translation.activate(self.user.get_profile().lang_code)

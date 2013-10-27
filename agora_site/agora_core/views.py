@@ -1225,16 +1225,41 @@ class AgoraActionAcceptMembershipRequestView(FormActionView):
                 username=username2,
                 agora=agora.creator.username+'/'+agora.name))
 
+
+        profile = user.get_profile()
+        vote_accepted = False
+
+        if isinstance(profile.extra, dict) and 'pending_ballot_id' in profile.extra:
+            pending_ballot_id = profile.extra['pending_ballot_id']
+            status_str = 'pending_ballot_status_%d' % pending_ballot_id
+            if status_str in profile.extra and profile.extra[status_str] == 'confirmed':
+                vote = CastVote.objects.filter(id=profile.extra['pending_ballot_id'])
+                if vote.count() > 0:
+                    vote = vote[0]
+                    vote.is_counted = True
+                    vote.save()
+                    vote_accepted = True
+                    del profile.extra['pending_ballot_id']
+                    del profile.extra[status_str]
+                    profile.save()
+
         # Mail to the user
         if user.get_profile().has_perms('receive_email_updates'):
             context = get_base_email_context(self.request)
+            if not vote_accepted:
+                notif_txt = _('Your membership has been accepted at '
+                        '%(agora)s. Congratulations!') % dict(
+                            agora=agora.get_full_name()
+                        )
+            else:
+                notif_txt = _('Your membership has been accepted at '
+                        '%(agora)s and your ballot has been finally casted. Congratulations!') % dict(
+                            agora=agora.get_full_name()
+                        )
             context.update(dict(
                 agora=agora,
                 other_user=user,
-                notification_text=_('Your membership has been accepted at '
-                    '%(agora)s. Congratulations!') % dict(
-                        agora=agora.get_full_name()
-                    ),
+                notification_text=notif_txt,
                 to=user
             ))
 

@@ -121,7 +121,7 @@ urlpatterns = patterns('',
 
     # confirm vote with token
     url(r'^(?P<username>[\.\w\-]+)/confirm-vote-token/(?P<token>[\w\-]+)/$',
-       accounts_views.AutoLoginTokenView.as_view(),
+       accounts_views.ConfirmVoteTokenView.as_view(),
        name='confirm-vote-token'),
 
     # Change email and confirm it

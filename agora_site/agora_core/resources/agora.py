@@ -690,17 +690,42 @@ class AgoraResource(GenericResource):
             target=user,
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
 
+        profile = user.get_profile()
+        vote_accepted = False
+
+        if isinstance(profile.extra, dict) and 'pending_ballot_id' in profile.extra:
+            pending_ballot_id = profile.extra['pending_ballot_id']
+            status_str = 'pending_ballot_status_%d' % pending_ballot_id
+            if status_str in profile.extra and profile.extra[status_str] == 'confirmed':
+                vote = CastVote.objects.filter(id=profile.extra['pending_ballot_id'])
+                if vote.count() > 0:
+                    vote = vote[0]
+                    vote.is_counted = True
+                    vote.save()
+                    vote_accepted = True
+                    del profile.extra['pending_ballot_id']
+                    del profile.extra[status_str]
+                    profile.save()
+
         # Mail to the user
-        if user.get_profile().has_perms('receive_email_updates'):
-            translation.activate(user.get_profile().lang_code)
+        if profile.has_perms('receive_email_updates'):
+            translation.activate(profile.lang_code)
             context = get_base_email_context(request)
+
+            if not vote_accepted:
+                notif_txt = _('Your membership has been accepted at '
+                        '%(agora)s. Congratulations!') % dict(
+                            agora=agora.get_full_name()
+                        )
+            else:
+                notif_txt = _('Your membership has been accepted at '
+                        '%(agora)s and your ballot has been finally casted. Congratulations!') % dict(
+                            agora=agora.get_full_name()
+                        )
             context.update(dict(
                 agora=agora,
                 other_user=user,
-                notification_text=_('Your membership has been accepted at '
-                    '%(agora)s. Congratulations!') % dict(
-                        agora=agora.get_full_name()
-                    ),
+                notification_text=notif_txt,
                 to=user
             ))
 

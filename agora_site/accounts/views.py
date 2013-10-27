@@ -39,6 +39,7 @@ from userena.managers import SHA1_RE
 
 from agora_site.misc.utils import rest
 from agora_site.agora_core.models.agora import Agora
+from agora_site.agora_core.models.castvote import CastVote
 from .forms import RegisterCompleteInviteForm, RegisterCompleteFNMTForm
 
 class SignUpCompleteView(TemplateView):
@@ -139,6 +140,56 @@ class AutoLoginTokenView(TemplateView):
         setattr(user, 'backend', 'django.contrib.auth.backends.ModelBackend')
         login(request, user)
         request.session.set_expiry(userena_settings.USERENA_REMEMBER_ME_DAYS[1] * 86400)
+        return redirect('/')
+
+
+class ConfirmVoteTokenView(TemplateView):
+    def get(self, request, username, token, **kwargs):
+        user = get_object_or_404(User, username=username)
+        if not default_token_generator.check_token(user, token):
+            messages.add_message(request, messages.ERROR, _('Invalid confirmation link.'))
+            return redirect('/')
+
+        if not user.is_active:
+            user.is_active = True
+            user.save()
+            for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
+                username2, agoraname = agora_name.split("/")
+                agora = get_object_or_404(Agora, name=agoraname,
+                    creator__username=username2)
+                if agora.membership_policy == Agora.MEMBERSHIP_TYPE[0][0]:
+                    profile.add_to_agora(agora_name=agora_name, request=request)
+                else:
+                    # request membership here
+                    assign('requested_membership', user, agora)
+        setattr(user, 'backend', 'django.contrib.auth.backends.ModelBackend')
+
+        profile = user.get_profile()
+        if not isinstance(profile.extra, dict) or\
+            'pending_ballot_id' not in profile.extra:
+            messages.add_message(request, messages.ERROR, _('Invalid confirmation link.'))
+            return redirect('/')
+        vote = get_object_or_404(CastVote, id=profile.extra['pending_ballot_id'])
+        status_str = 'pending_ballot_status_%d' % vote.id
+
+        login(request, user)
+        request.session.set_expiry(userena_settings.USERENA_REMEMBER_ME_DAYS[1] * 86400)
+
+        if vote.election.has_perms('vote_counts', user):
+            vote.is_counted = True
+            vote.save()
+
+            del profile.extra['pending_ballot_id']
+            if status_str in profile.extra:
+                del profile.extra[status_str]
+            profile.save()
+            messages.add_message(request, settings.SUCCESS_MODAL, _("Your ballot has been confirmed and was successfully cast"))
+            return redirect('/')
+
+        profile.extra[status_str] = 'confirmed'
+        profile.save()
+
+        messages.add_message(request, settings.SUCCESS_MODAL, _("Your email address has been confirmed, but your ballot will not be confirmed until we manually verify your identity. We'll try to do it as soon as possible, and we'll keep you posted."))
         return redirect('/')
 
 

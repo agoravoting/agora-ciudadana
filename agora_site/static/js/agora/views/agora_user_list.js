@@ -61,6 +61,7 @@
                     data.agora_path = self.$el.data('agora-path');
                     data.username = dropdown.closest('.row').data('username');
                     dropdown.data("permissions", data);
+                    data.id = json.userid;
                     var templatePerms = _.template($("#template-agora-profile-permissions").html());
                     dropdown.closest('.dropdown-toggle').next().html(
                         templatePerms(data)
