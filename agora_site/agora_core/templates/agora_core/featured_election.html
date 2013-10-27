@@ -209,7 +209,7 @@
                                 <h1 class="home-loggedin"><%= gettext(election.pretty_name) %></h1>
 
                                 <p class="motiv"><%= gettext(election.short_description) %></p>
-                                <% if (election.voting_starts_at_date && moment(election.voting_starts_at_date)-moment() < 0 && (!election.voting_ends_at_date || moment(election.voting_ends_at_date)-moment() > 0)) { %>
+                                <% if (!election.result_tallied_at_date && election.voting_starts_at_date && moment(election.voting_starts_at_date)-moment() < 0 && (!election.voting_ends_at_date || moment(election.voting_ends_at_date)-moment() > 0)) { %>
 
                                     <% if (!is_demo) { %>
                                         <a href="<%= election.url %>/vote"
