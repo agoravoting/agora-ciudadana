@@ -281,6 +281,27 @@
         </div>
     </script>
 
+
+    <script id="template-voting_booth_encrypting" type="text/underscore-template">
+        <div class="modal-header hero-vote">
+            <div class="text-center">
+                <h1><%= pretty_name %></h1>
+                <div class="voting-booth-description description markdown-readonly" data-id="description"></div>
+            </div>
+        </div>
+        <div class="modal-header hero-vote">
+            <h3>
+                <%= gettext("Encrypting and securing your ballot. This may take some minutes, please wait.") %>
+            </h3>
+            <p><strong class="hidden">
+                <%= gettext("Your browser have limitted capabilities so it might freeze during this process: please be patient.") %>
+            </strong></p>
+            <div class="progress progress-striped">
+                <div id="encrypt_progress" class="bar" style="width: 5%;"><%= gettext("5%") %></div>
+            </div>
+        </div>
+    </script>
+
     <script type="text/javascript" src="{% url jsgettext %}?language={{ LANGUAGE_CODE }}"></script>
     <!--[if lte IE 8]><script src="{% static 'js/min/main.compat.min.js' %}"></script><![endif]-->
     <!--[if gte IE 9]><!-->

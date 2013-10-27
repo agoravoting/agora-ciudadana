@@ -8,6 +8,10 @@
         }
     });
 
+    Agora.checkWebWorkersAvailable = function() {
+        return typeof(Worker) !== "undefined";
+    }
+
     Agora.encryptAnswer = function(pk_json, plain_answer) {
         /**
          * Here we not only just encrypt the answer but also provide a
@@ -31,8 +35,8 @@
             challenge: proof.challenge
         };
 
-        var verified = ctext.verifyPlaintextProof(proof, ElGamal.fiatshamir_dlog_challenge_generator);
-        console.log("is proof verified = " + new Boolean(verified).toString());
+//         var verified = ctext.verifyPlaintextProof(proof, ElGamal.fiatshamir_dlog_challenge_generator);
+//         console.log("is proof verified = " + new Boolean(verified).toString());
         return enc_answer;
     }
 
@@ -101,6 +105,7 @@
         initialize: function() {
             _.bindAll(this);
             this.template = _.template($("#template-voting_booth").html());
+            this.templateEncrypting = _.template($("#template-voting_booth_encrypting").html());
 
             // ajax_data is a global variable
             this.model = new Agora.VoteElectionModel(ajax_data);
@@ -196,58 +201,88 @@
 
             // do not set ballot twice
             this.sendingData = true;
-            $("#cast-ballot-btn").addClass("disabled");
+            var user_vote_is_encrypted = ajax_data.security_policy == "ALLOW_ENCRYPTED_VOTING";
+            if (user_vote_is_encrypted) {
+                this.$el.find(".current-screen").html('');
+                this.$el.find(".current-screen").html(this.templateEncrypting(this.model.toJSON()));
+            }
 
             var user_vote_is_secret = (this.$el.find("#user_vote_is_public:checked").length == 0);
 
-            var ballot = {
+            this.ballot = {
                 'is_vote_secret': user_vote_is_secret,
                 'action': 'vote'
             };
 
             if (!user_vote_is_secret) {
                 var why = $("#why_id").val();
-                ballot['reason'] = why;
+                this.ballot['reason'] = why;
             }
+            var self = this;
             this.model.get('questions').each(function (element, index, list) {
                 var user_answers = element.get('user_answers').pluck('value');
                 var voting_system = element.get('tally_type');
                 if (voting_system == "ONE_CHOICE") {
                     if (user_answers.length > 0) {
-                        ballot['question' + index] = user_answers[0];
+                        self.ballot['question' + index] = user_answers[0];
                     } else {
-                        ballot['question' + index] = "";
+                        self.ballot['question' + index] = "";
                     }
                 } else if (voting_system == "MEEK-STV") {
-                    ballot['question' + index] = user_answers;
+                    self.ballot['question' + index] = user_answers;
                 }
             });
 
-            var user_vote_is_encrypted = ajax_data.security_policy == "ALLOW_ENCRYPTED_VOTING";
             if (user_vote_is_encrypted) {
-                this.model.get('questions').each(function (element, index, list) {
-                    // TODO: add STV support
-                    var possible_answers = _.pluck(ajax_data.questions[index].answers, "value");
-                    var choice_index = possible_answers.indexOf(ballot['question' + index]);
-                    if (choice_index == -1) {
-                        console.log("!!! invalid choice");
-                    }
-                    ballot['question' + index] = Agora.encryptAnswer(
-                        ajax_data.pubkeys[index], choice_index);
-                });
+                console.log("web workers support = " + Agora.checkWebWorkersAvailable());
+                this.nextquestionToEncryptIndex = 0;
+                $("html").attr("style", "height: 100%; cursor: wait !important;");
+                setTimeout(this.encryptNextQuestion, 300);
+            } else {
+                this.eventVoteSealed();
             }
+        },
+
+        encryptNextQuestion: function() {
+            if (this.nextquestionToEncryptIndex >= ajax_data.questions.length) {
+                this.eventVoteSealed();
+                return;
+            }
+            var index = this.nextquestionToEncryptIndex;
+            this.nextquestionToEncryptIndex = index + 1;
+
+            var possible_answers = _.pluck(ajax_data.questions[index].answers, "value");
+            var choice_index = possible_answers.indexOf(this.ballot['question' + index]);
+            if (choice_index == -1) {
+                console.log("!!! invalid choice");
+            }
+            console.log("encrypting index = " + index);
+            var percent_num = parseInt(((index+1)*100.0)/ajax_data.questions.length);
+
+            this.ballot['question' + index] = Agora.encryptAnswer(
+                ajax_data.pubkeys[index], choice_index);
+
+            var percent = interpolate("width: %s%;",[percent_num]);
+            $("#encrypt_progress").attr("style", percent);
+            $("#encrypt_progress").html("" + percent_num + "%");
+            setTimeout(this.encryptNextQuestion, 200);
+        },
+
+
+        eventVoteSealed: function() {
+            $("html").attr("style", "");
             var election_id = this.model.get('id');
 
-            var self = this;
 
             if ($("#vote_fake").data("fakeit") == "yes-please") {
-                self.$el.find(".current-screen").html('');
-                self.$el.find(".current-screen").append(self.voteCast.render().el);
+                this.$el.find(".current-screen").html('');
+                this.$el.find(".current-screen").append(this.voteCast.render().el);
                 return;
             }
 
+            var self = this;
             var jqxhr = $.ajax("/api/v1/election/" + election_id + "/action/", {
-                data: JSON.stringifyCompat(ballot),
+                data: JSON.stringifyCompat(self.ballot),
                 contentType : 'application/json',
                 type: 'POST',
             })
@@ -260,7 +295,6 @@
                 self.$el.find("#cast-ballot-btn").removeClass("disabled");
                 alert("Error casting the ballot, try again or report this problem");
             });
-
         }
     });
 
