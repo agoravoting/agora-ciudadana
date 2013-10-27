@@ -218,32 +218,19 @@
                     </div>
                     {% endif %}
                     {% if election.ballot_is_open %}
-                        {% if not user or not user.is_authenticated %}
+                        {% if not user or not user.is_authenticated or "vote_counts" in permissions %}
                         <div class="button-vote">
-                            <a class="btn btn-success" href="{% url userena_signin %}">{% trans "Vote" %}</a>
-                        </div>
-                        {% elif "vote_counts" in permissions or "emit_delegate_vote" in permissions %}
-                        <div class="button-vote">
-                            {% if "vote_counts" in permissions %}
-                                <a class="btn btn-success" data-toggle="modal" href="{{ election.get_vote_link }}" >
+                            <a class="btn btn-success" data-toggle="modal" href="{{ election.get_vote_link }}" >
                                 {% if vote_from_user and vote_from_user.is_direct %}
                                     {% trans "Change my vote" %}
                                 {% else %}
                                     {% trans "Vote" %}
                                 {% endif %}
-                            {% else %}
-                                <a class="btn btn-success btn-medium" data-toggle="modal" href="{{ election.get_vote_link }}" >
-                                {% if vote_from_user and vote_from_user.is_direct %}
-                                    {% trans "Change my position as non-member delegate" %}
-                                {% else %}
-                                    {% trans "Establish my position as non-member delegate" %}
-                                {% endif %}
-                            {% endif %}
                             </a>
                         </div>
                         </div>
                         {% elif 'cancel_membership_request' in agora_perms %}
-                        <strong>{% trans "Your membership request in this election's agora is pending" %}</strong>
+                            <strong>{% trans "Your membership request in this election's agora is pending" %}</strong>
                         {% endif %}
                     {% else %}
                         {% if "approve_election" in permissions %}

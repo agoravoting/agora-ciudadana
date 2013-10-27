@@ -108,6 +108,7 @@
             this.templateEncrypting = _.template($("#template-voting_booth_encrypting").html());
 
             // ajax_data is a global variable
+            ajax_data.has_to_authenticate = has_to_authenticate;
             this.model = new Agora.VoteElectionModel(ajax_data);
             this.render();
 
@@ -271,8 +272,21 @@
 
         eventVoteSealed: function() {
             $("html").attr("style", "");
-            var election_id = this.model.get('id');
+            if (has_to_authenticate) {
+                this.showAuthenticationForm();
+                return;
+            }
+            this.sendBallot();
+        },
 
+        showAuthenticationForm: function() {
+            this.authenticateFormView = new Agora.AuthenticateFormView({model: this.model, votingBooth: this});
+            this.$el.find(".current-screen").html('');
+            this.$el.find(".current-screen").append(this.authenticateFormView.render().el);
+        },
+
+        sendBallot: function() {
+            var election_id = this.model.get('id');
 
             if ($("#vote_fake").data("fakeit") == "yes-please") {
                 this.$el.find(".current-screen").html('');
@@ -295,6 +309,10 @@
                 self.$el.find("#cast-ballot-btn").removeClass("disabled");
                 alert("Error casting the ballot, try again or report this problem");
             });
+        },
+
+        showVoteSent: function() {
+            // TODO
         }
     });
 
@@ -590,12 +608,13 @@
 
         render: function() {
             // render template
-            this.$el.html(this.template(this.model.toJSON()));
+            var data = this.model.toJSON();
+            this.$el.html(this.template(data));
             this.delegateEvents();
 
             // user cannot vote secretly
             var is_fake = $("#vote_fake").data("fakeit") == "yes-please";
-            if (!is_fake &&
+            if (!is_fake && !has_to_authenticate &&
                     (this.model.get('user_perms').indexOf('vote_counts') == -1 ||
                     this.model.get('security_policy') == 'PUBLIC_VOTING')) {
                 this.$el.find("#user_vote_is_public").attr('checked', 'checked');
@@ -617,6 +636,48 @@
 
         continueClicked: function(e) {
             this.votingBooth.castVote();
+        }
+    });
+
+
+    Agora.AuthenticateFormView = Backbone.View.extend({
+        events: {
+            'click a#loginAndVote': 'loginAndVote',
+            'click a#fnmtLoginAndVote': 'fnmtLoginAndVote',
+            'click a#registerAndVote': 'registerAndVote'
+        },
+
+        initialize: function() {
+            _.bindAll(this);
+
+            this.template = _.template($("#template-voting_booth_auth_screen").html());
+            this.votingBooth = this.options.votingBooth;
+
+            return this.$el;
+        },
+
+        render: function() {
+            // render template
+            this.$el.html(this.template(this.model.toJSON()));
+            this.delegateEvents();
+
+            return this;
+        },
+
+        loginAndVote: function(e) {
+            // TODO
+        },
+
+        fnmtLoginAndVote: function(e) {
+            // TODO
+        },
+
+        registerAndVote: function(e) {
+            // TODO
+        },
+
+        finished: function(e) {
+            this.votingBooth.showVoteSent();
         }
     });
 

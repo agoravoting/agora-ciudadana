@@ -61,9 +61,15 @@
                 <li><%= gettext("<strong>Review</strong> your choices") %><br/>
                     <%= gettext("All your choices will be presented to you for review.") %>
                 </li>
-                <li><%= gettext("<strong>Submit</strong> your ballot") %><br/>
-                    <%= gettext("Proceed to cast your ballot for tallying.") %>
-                </li>
+                <% if (!has_to_authenticate) { %>
+                    <li><%= gettext("<strong>Submit</strong> your ballot") %><br/>
+                        <%= gettext("Proceed to cast your ballot for tallying.") %>
+                    </li>
+                <% } else { %>
+                    <li><%= gettext("<strong>Authenticate/Register</strong> to <strong>submit</strong> your ballot") %><br/>
+                        <%= gettext("You need to authenticate or register to vote. It will take just a minute and we'll receive your ballot at the same time you login or register.") %>
+                    </li>
+                <% } %>
             </ol>
             <% if (user_has_delegated) { %>
                 <p><%= gettext("Currently, you have delegated your vote in this agora. So if you don't vote, this delegate can vote for you.") %></p>
@@ -87,7 +93,11 @@
                 <div class="btn-group">
                     <button class="btn btn-primary disabled"><%= gettext("1. Select") %></button>
                     <button class="btn disabled"><%= gettext("2. Review") %></button>
-                    <button class="btn disabled"><%= gettext("3. Submit") %></button>
+                    <% if (!has_to_authenticate) { %>
+                        <button class="btn disabled"><%= gettext("3. Submit") %></button>
+                    <% } else { %>
+                        <button class="btn disabled"><%= gettext("3. Authenticate and Submit") %></button>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -140,7 +150,11 @@
                 <div class="btn-group">
                     <button class="btn btn-primary disabled"><%= gettext("1. Select") %></button>
                     <button class="btn disabled"><%= gettext("2. Review") %></button>
-                    <button class="btn disabled"><%= gettext("3. Submit") %></button>
+                    <% if (!has_to_authenticate) { %>
+                        <button class="btn disabled"><%= gettext("3. Submit") %></button>
+                    <% } else { %>
+                        <button class="btn disabled"><%= gettext("3. Authenticate and Submit") %></button>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -202,7 +216,11 @@
                 <div class="btn-group">
                     <button class="btn disabled"><%= gettext("1. Select") %></button>
                     <button class="btn btn-primary disabled"><%= gettext("2. Review") %></button>
-                    <button class="btn disabled"><%= gettext("3. Submit") %></button>
+                    <% if (!has_to_authenticate) { %>
+                        <button class="btn disabled"><%= gettext("3. Submit") %></button>
+                    <% } else { %>
+                        <button class="btn disabled"><%= gettext("3. Authenticate and Submit") %></button>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -251,7 +269,11 @@
             </label>
                 <input type="text" id="why_id" class="btn-block" placeholder="<%= gettext("Why did you vote this way? (optional)") %>" />
             <button class="btn btn-large btn-block btn-success btn-continue" id="cast-ballot-btn" type="button">
-                <strong><%= gettext("Confirm choices and cast ballot") %></strong>
+                <% if (!has_to_authenticate) { %>
+                    <strong><%= gettext("Confirm choices and cast ballot") %></strong>
+                <% } else { %>
+                    <strong><%= gettext("Confirm choices and continue") %></strong>
+                <% } %>
             </button>
         </div>
     </script>
@@ -281,23 +303,133 @@
         </div>
     </script>
 
-
     <script id="template-voting_booth_encrypting" type="text/underscore-template">
         <div class="modal-header hero-vote">
             <div class="text-center">
                 <h1><%= pretty_name %></h1>
-                <div class="voting-booth-description description markdown-readonly" data-id="description"></div>
+                <div class="btn-group">
+                    <button class="btn disabled"><%= gettext("1. Select") %></button>
+                    <button class="btn disabled"><%= gettext("2. Review") %></button>
+                    <% if (!has_to_authenticate) { %>
+                        <button class="btn btn-primary disabled"><%= gettext("3. Submit") %></button>
+                    <% } else { %>
+                        <button class="btn btn-primary disabled"><%= gettext("3. Authenticate and Submit") %></button>
+                    <% } %>
+                </div>
             </div>
         </div>
         <div class="modal-header hero-vote">
             <h3>
                 <%= gettext("Encrypting and securing your ballot. This may take some minutes, please wait.") %>
             </h3>
-            <p><strong class="hidden">
-                <%= gettext("Your browser have limitted capabilities so it might freeze during this process: please be patient.") %>
-            </strong></p>
+            <h4>
+                <%= gettext("The web browser might freeze during this process: please be patient.") %>
+            </h4>
             <div class="progress progress-striped">
                 <div id="encrypt_progress" class="bar" style="width: 5%;"><%= gettext("5%") %></div>
+            </div>
+        </div>
+    </script>
+
+    <script id="template-voting_booth_auth_screen" type="text/underscore-template">
+        <div class="modal-header hero-vote">
+            <div class="text-center">
+                <h1><%= pretty_name %></h1>
+                <div class="btn-group">
+                    <button class="btn disabled"><%= gettext("1. Select") %></button>
+                    <button class="btn disabled"><%= gettext("2. Review") %></button>
+                    <button class="btn btn-primary disabled"><%= gettext("3. Authenticate and Submit") %></button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-header hero-vote">
+            <h3>
+                <%= gettext("Before casting your ballot: login or register to authenticate your identity.") %>
+            </h3>
+            <p></p>
+            <div class="row-fluid vote-auth-forms">
+                <div class="span4">
+                    <h2><%= gettext("Enter") %></h2>
+                    <p><%= gettext("Try this if you already have an existing user") %></p>
+                    <input type="text" maxlength="75" name="identification" class="required textinput textInput" id="id_identification" placeholder="<%= gettext("Email or user name") %>" />
+
+                    <input type="password" name="password" class="required textinput textInput" id="id_password" placeholder="<%= gettext("Password") %>" />
+
+                    <div class="clearfix"></div>
+                    <a href="#" id="loginAndVote" class="btn btn btn-success btn-large">
+                        <%= gettext("Login and vote") %>
+                    </a>
+                </div>
+                <div class="span4">
+                    <h2><%= gettext("Register") %></h2>
+                    <p><%= gettext("Try this if you are new here") %></p>
+                    <div class="clearfix"></div>
+
+                    <div class="control-group" id="div_id_scanned_id">
+                        <label class="control-label requiredField" for="id_scanned_id">
+                            <p class="help-block" id="hint_id_scanned_id">
+                                <strong><%= gettext("DNI escaneado") %></strong>
+                                <%= gettext("Adjunta tu DNI escaneado para poder verificar tu identidad (formato pdf o imagen, max. 1MB)") %>
+                            </p>
+                        </label>
+                        <div class="controls">
+                            <input type="file" name="scanned_id" class="clearablefileinput" id="id_scanned_id" />
+                        </div>
+                    </div>
+
+                    <div class="control-group" id="div_id_first_name">
+                        <div class="controls">
+                            <input type="text" maxlength="140" name="first_name" class="textinput textInput" id="id_first_name" placeholder="<%= gettext("Name and TWO SURNAMES") %>"/>
+                        </div>
+                    </div>
+                    <div class="control-group" id="div_id_username">
+                        <div class="controls">
+                            <input type="text" maxlength="30" name="username" class="required textinput textInput" id="id_username" placeholder="<%= gettext("Username") %>"/>
+                        </div>
+                    </div>
+
+                    <div class="control-group" id="div_id_email">
+                        <div class="controls">
+                            <input type="text" maxlength="75" name="email" class="required textinput textInput" id="id_email" placeholder="<%= gettext("Email") %>"/>
+                        </div>
+                    </div>
+
+                    <div class="control-group" id="div_id_password1">
+                        <div class="controls">
+                            <input type="password" name="password1" class="required textinput textInput" id="id_password1" placeholder="<%= gettext("Password") %>"/>
+                        </div>
+                    </div>
+
+                    <div class="control-group" id="div_id_password2">
+                        <div class="controls">
+                            <input type="password" name="password2" class="required textinput textInput" id="id_password2" placeholder="<%= gettext("Repeat Password") %>"/>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <a href="#" id="registerAndVote" class="btn btn btn-success btn-large">
+                        <%= gettext("Register and vote") %>
+                    </a>
+                </div>
+
+                <div class="span4 last">
+                    <h2><%= gettext("..or enter with FNMT cert") %></h2>
+                    <div class="text-links">
+                        <a target="_blank" href="https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-certificado-con-dnie"><%= gettext("Obtain it here") %></a>
+                        <%= gettext("or") %>
+                        <a target="_blank" href="https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-certificado-software"><%= gettext("here with your DNIe") %></a>
+                        <p></p>
+                    </div>
+                    <div class="clearfix"></div>
+                    <a class="btn btn-primary btn-large" id="registerAndVote" href="#">
+                        <%= gettext("Enter with FNMT certificate and vote") %>
+                    </a>
+                    <p></p>
+                    <strong><%= gettext("Terms of service") %></strong>
+                    <small>
+                        <%= gettext("When you enter using the FNMT certificate or registering, you're accepting our <a href=\"/misc/page/terms-of-service\">Terms of Service.</a>") %>
+                    </small>
+                </div>
             </div>
         </div>
     </script>
@@ -320,11 +452,13 @@
     <script src="{% static 'js/min/agora.min.js' %}"></script>
     {% endif %}
 
-    {% if vote_fake%}
+    {% if vote_fake %}
         <div id="vote_fake" data-fakeit="yes-please"></div>
     {% endif %}
     <script>
         var ajax_data = {% rest request '/election/' election.id '/' %};
+
+        var has_to_authenticate = {% if has_to_authenticate %}true{% else %}false{% endif %};
         app.currentView = new Agora.VotingBooth();
     </script>
 </body>

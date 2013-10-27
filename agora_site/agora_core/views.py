@@ -417,17 +417,13 @@ class VotingBoothView(TemplateView):
         context = super(VotingBoothView, self).get_context_data(**kwargs)
         context['election'] = self.election
         context['vote_fake'] = False
+        context['has_to_authenticate'] = self.has_to_authenticate
         return context
 
     def get(self, request, *args, **kwargs):
-        if not self.election.has_perms('emit_direct_vote', request.user):
-            messages.add_message(self.request, messages.ERROR, _('Sorry, but '
-            'you don\'t have permissions to vote on <em>%(electionname)s</em>.') %\
-                dict(electionname=self.election.pretty_name))
-            return http.HttpResponseRedirect(self.election.get_link())
+        self.has_to_authenticate = not self.election.has_perms('emit_direct_vote', request.user)
         return super(VotingBoothView, self).get(request, *args, **kwargs)
 
-    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         self.kwargs = kwargs
 
