@@ -509,7 +509,7 @@ def launch_encrypted_tally(election):
                 proofs=proofs,
                 choices=choices
             )
-            votes_file.write(json.dumps(vote_json))
+            votes_file.write(json.dumps(vote_json) + "\n")
 
 
     proto = "https://" if settings.AGORA_USE_HTTPS else "http://"
