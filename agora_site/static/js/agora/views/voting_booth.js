@@ -17,7 +17,7 @@
          * that substitutes the random oracle). We use sha256 for hashing.
          */
         var pk = ElGamal.PublicKey.fromJSONObject(pk_json);
-        var plaintext = new ElGamal.Plaintext(BigInt.fromJSONObject(plain_answer), pk, true);
+        var plaintext = new ElGamal.Plaintext(BigInt.fromInt(plain_answer), pk, true);
         var randomness = Random.getRandomInteger(pk.q);
         var ctext = ElGamal.encrypt(pk, plaintext, randomness);
         var proof = plaintext.proveKnowledge(ctext.alpha, randomness, ElGamal.fiatshamir_dlog_challenge_generator);
@@ -226,7 +226,6 @@
             var user_vote_is_encrypted = ajax_data.security_policy == "ALLOW_ENCRYPTED_VOTING";
             if (user_vote_is_encrypted) {
                 this.model.get('questions').each(function (element, index, list) {
-                    _.pluck(ajax_data.questions[0].answers, "value");
                     // TODO: add STV support
                     var possible_answers = _.pluck(ajax_data.questions[index].answers, "value");
                     var choice_index = possible_answers.indexOf(ballot['question' + index]);
