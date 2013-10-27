@@ -12,6 +12,12 @@
         return typeof(Worker) !== "undefined";
     }
 
+    Agora.emailChecker = function(v) {
+        var RFC822;
+        RFC822 = /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
+        return RFC822.test(v);
+    }
+
     Agora.encryptAnswer = function(pk_json, plain_answer) {
         /**
          * Here we not only just encrypt the answer but also provide a
@@ -245,17 +251,26 @@
         },
 
         encryptNextQuestion: function() {
-            if (this.nextquestionToEncryptIndex >= ajax_data.questions.length) {
+             if (this.nextquestionToEncryptIndex >= ajax_data.questions.length) {
                 this.eventVoteSealed();
                 return;
-            }
+             }
             var index = this.nextquestionToEncryptIndex;
             this.nextquestionToEncryptIndex = index + 1;
 
             var possible_answers = _.pluck(ajax_data.questions[index].answers, "value");
             var choice_index = possible_answers.indexOf(this.ballot['question' + index]);
             if (choice_index == -1) {
-                console.log("!!! invalid choice");
+                if (this.ballot['question' + index].length == 0) {
+                    // blank vote is codified as possible_answers.length (which is invalid)
+                    console.log("blank vote");
+                    choice_index = possible_answers.length;
+                } else {
+                    // invalid vote is codified as possible_answers.length + 1 (which is invalid)
+                    console.log("!!! invalid vote");
+                    choice_index = possible_answers.length + 1;
+                }
+
             }
             console.log("encrypting index = " + index);
             var percent_num = parseInt(((index+1)*100.0)/ajax_data.questions.length);
@@ -311,8 +326,10 @@
             });
         },
 
-        showVoteSent: function() {
-            // TODO
+        showVoteSent: function(data) {
+            this.voteCast.is_counted = data.is_counted;
+            this.$el.find(".current-screen").html('');
+            this.$el.find(".current-screen").append(this.voteCast.render().el);
         }
     });
 
@@ -656,33 +673,103 @@
             return this.$el;
         },
 
+        sendingData: false,
+
         render: function() {
             // render template
             this.$el.html(this.template(this.model.toJSON()));
             this.delegateEvents();
 
+
+            this.$el.find("#login_vote_form").nod(this.getLoginFormMetrics(), {
+                silentSubmit: true,
+                broadcastError: true,
+                submitBtnSelector: ".hidden-input"
+            });
+            this.$el.find("#login_vote_form").submit(function (e) { e.preventDefault(); });
+
+            this.$el.find("#register_vote_form").nod(this.getRegisterFormMetrics(), {
+                silentSubmit: true,
+                broadcastError: true,
+                submitBtnSelector: ".hidden-input"
+            });
+            this.$el.find("#register_vote_form").submit(function (e) { e.preventDefault(); });
+
             return this;
         },
 
-        loginAndVote: function(e) {
+        getLoginFormMetrics: function() {
+            var checkEmailOrName = function(val) {
+                var username_rx = /^[a-zA-Z0-9-_]+$/;
+                return Agora.emailChecker(val) || username_rx.test(val);
+            }
+            return [
+                ['#id_identification', 'presence', gettext('This field is required')],
+                ['#id_identification', 'min-length:3', gettext('Must have at least 3 characters')],
+                ['#id_identification', checkEmailOrName, gettext('Invalid value')],
+                ['#id_password', 'presence', gettext('This field is required')]
+            ];
+        },
+
+        getRegisterFormMetrics: function() {
             // TODO
+            return [];
+        },
+
+        startSendingData: function() {
+            this.sendingData = true;
+            this.$el.find(".btn-large").addClass("disabled");
+        },
+
+        stopSendingData: function() {
+            this.sendingData = false;
+            this.$el.find(".btn-large").removeClass("disabled");
+        },
+
+        loginAndVote: function(e) {
+            if (!this.$el.find("#login_vote_form").nod().formIsErrorFree()) {
+                return;
+            }
+
+            var ballot = this.votingBooth.ballot;
+            ballot['action'] = 'login_and_vote';
+            ballot['user_id'] = this.$el.find("#id_identification").val();
+            ballot['password'] = this.$el.find("#id_password").val();
+            this.startSendingData();
+            var self = this;
+            var election_id = this.model.get('id');
+
+            var jqxhr = $.ajax("/api/v1/election/" + election_id + "/action/", {
+                data: JSON.stringifyCompat(ballot),
+                contentType : 'application/json',
+                type: 'POST',
+            })
+            .done(function(data) {
+                // TODO: alert user if he has to check email
+                self.stopSendingData();
+                self.votingBooth.showVoteSent(data);
+            })
+            .fail(function(data) {
+                self.stopSendingData();
+                alert(gettext("Error casting the ballot, try again or report this problem"));
+            });
         },
 
         fnmtLoginAndVote: function(e) {
-            // TODO
+            alert("TODO");
         },
 
         registerAndVote: function(e) {
-            // TODO
+            if (!this.$el.find("#register_vote_form").nod().formIsErrorFree()) {
+                return;
+            }
         },
-
-        finished: function(e) {
-            this.votingBooth.showVoteSent();
-        }
     });
 
     Agora.VoteCastView = Backbone.View.extend({
         events: {},
+
+        is_counted: true,
 
         initialize: function() {
             _.bindAll(this);
@@ -694,7 +781,9 @@
 
         render: function() {
             // render template
-            this.$el.html(this.template(this.model.toJSON()));
+            var data = this.model.toJSON();
+            data.is_counted = this.is_counted;
+            this.$el.html(this.template(data));
             this.delegateEvents();
             return this;
         }

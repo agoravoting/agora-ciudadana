@@ -281,12 +281,20 @@
     <script id="template-voting_booth_vote_cast" type="text/underscore-template">
         <div class="modal-header hero-vote">
             <div class="text-center">
-                <h1><%= gettext("Vote Successfully Cast") %></h1>
+                <% if (is_counted) { %>
+                    <h1><%= gettext("Vote Successfully Cast") %></h1>
+                <% } else { %>
+                    <h1><%= gettext("Vote Received, Waiting Email Confirmation") %></h1>
+                <% } %>
                 <h3><%= pretty_name %></h3>
             </div>
         </div>
         <div class="modal-header hero-vote vote-cast">
+            <% if (is_counted) { %>
             <p><%= gettext("Congratulations, your vote has been <strong>successfully cast</strong>. You will soon receive a confirmation email") %>.</p>
+            <% } else { %>
+                <p><%= gettext("We have received your vote but for security reasons we need to check your identity. We have sent you an email with a <strong>link you need to click</strong> if you want your vote to be confirmed. Please check your email address. It might take a while to arrive, be patient. If the email doesn't seem to arrive, please check if it has gone to the SPAM folder or try again to vote.") %>
+            <% } %>
             <a class="btn btn-large btn-block btn-primary btn-goback" href="<%= url %>">
                 <strong><%= gettext("Go back to the election page") %></strong>
             </a>
@@ -351,65 +359,71 @@
                 <div class="span4">
                     <h2><%= gettext("Enter") %></h2>
                     <p><%= gettext("Try this if you already have an existing user") %></p>
-                    <input type="text" maxlength="75" name="identification" class="required textinput textInput" id="id_identification" placeholder="<%= gettext("Email or user name") %>" />
+                    <form id="login_vote_form">
+                        <input type="text" maxlength="75" name="identification" class="required textinput textInput" id="id_identification" placeholder="<%= gettext("Email or user name") %>" />
 
-                    <input type="password" name="password" class="required textinput textInput" id="id_password" placeholder="<%= gettext("Password") %>" />
+                        <input type="password" name="password" class="required textinput textInput" id="id_password" placeholder="<%= gettext("Password") %>" />
 
-                    <div class="clearfix"></div>
-                    <a href="#" id="loginAndVote" class="btn btn btn-success btn-large">
-                        <%= gettext("Login and vote") %>
-                    </a>
+                        <div class="clearfix"></div>
+                        <input type="hidden" class="hidden-input" value="" />
+                        <a href="#" id="loginAndVote" class="btn btn btn-success btn-large">
+                            <%= gettext("Login and vote") %>
+                        </a>
+                    </form>
                 </div>
                 <div class="span4">
                     <h2><%= gettext("Register") %></h2>
                     <p><%= gettext("Try this if you are new here") %></p>
                     <div class="clearfix"></div>
 
-                    <div class="control-group" id="div_id_scanned_id">
-                        <label class="control-label requiredField" for="id_scanned_id">
-                            <p class="help-block" id="hint_id_scanned_id">
-                                <strong><%= gettext("DNI escaneado") %></strong>
-                                <%= gettext("Adjunta tu DNI escaneado para poder verificar tu identidad (formato pdf o imagen, max. 1MB)") %>
-                            </p>
-                        </label>
-                        <div class="controls">
-                            <input type="file" name="scanned_id" class="clearablefileinput" id="id_scanned_id" />
+                    <form id="register_vote_form">
+                        <div class="control-group" id="div_id_scanned_id">
+                            <label class="control-label requiredField" for="id_scanned_id">
+                                <p class="help-block" id="hint_id_scanned_id">
+                                    <strong><%= gettext("DNI escaneado") %></strong>
+                                    <%= gettext("Adjunta tu DNI escaneado para poder verificar tu identidad (formato pdf o imagen, max. 1MB)") %>
+                                </p>
+                            </label>
+                            <div class="controls">
+                                <input type="file" name="scanned_id" class="clearablefileinput" id="id_scanned_id" />
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="control-group" id="div_id_first_name">
-                        <div class="controls">
-                            <input type="text" maxlength="140" name="first_name" class="textinput textInput" id="id_first_name" placeholder="<%= gettext("Name and TWO SURNAMES") %>"/>
+                        <div class="control-group" id="div_id_first_name">
+                            <div class="controls">
+                                <input type="text" maxlength="140" name="first_name" class="textinput textInput" id="id_first_name" placeholder="<%= gettext("Name and TWO SURNAMES") %>"/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="control-group" id="div_id_username">
-                        <div class="controls">
-                            <input type="text" maxlength="30" name="username" class="required textinput textInput" id="id_username" placeholder="<%= gettext("Username") %>"/>
+                        <div class="control-group" id="div_id_username">
+                            <div class="controls">
+                                <input type="text" maxlength="30" name="username" class="required textinput textInput" id="id_username" placeholder="<%= gettext("Username") %>"/>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="control-group" id="div_id_email">
-                        <div class="controls">
-                            <input type="text" maxlength="75" name="email" class="required textinput textInput" id="id_email" placeholder="<%= gettext("Email") %>"/>
+                        <div class="control-group" id="div_id_email">
+                            <div class="controls">
+                                <input type="text" maxlength="75" name="email" class="required textinput textInput" id="id_email" placeholder="<%= gettext("Email") %>"/>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="control-group" id="div_id_password1">
-                        <div class="controls">
-                            <input type="password" name="password1" class="required textinput textInput" id="id_password1" placeholder="<%= gettext("Password") %>"/>
+                        <div class="control-group" id="div_id_password1">
+                            <div class="controls">
+                                <input type="password" name="password1" class="required textinput textInput" id="id_password1" placeholder="<%= gettext("Password") %>"/>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="control-group" id="div_id_password2">
-                        <div class="controls">
-                            <input type="password" name="password2" class="required textinput textInput" id="id_password2" placeholder="<%= gettext("Repeat Password") %>"/>
+                        <div class="control-group" id="div_id_password2">
+                            <div class="controls">
+                                <input type="password" name="password2" class="required textinput textInput" id="id_password2" placeholder="<%= gettext("Repeat Password") %>"/>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="clearfix"></div>
-                    <a href="#" id="registerAndVote" class="btn btn btn-success btn-large">
-                        <%= gettext("Register and vote") %>
-                    </a>
+                        <div class="clearfix"></div>
+                        <input type="hidden" class="hidden-input" value="" />
+                        <a href="#" id="registerAndVote" class="btn btn btn-success btn-large">
+                            <%= gettext("Register and vote") %>
+                        </a>
+                    </form>
                 </div>
 
                 <div class="span4 last">

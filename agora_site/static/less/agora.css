@@ -5548,6 +5548,10 @@ div.top-form .option-edit:hover {
 #voting_booth .vote-auth-forms .span4 {
   border-right: 1px solid #ccc;
 }
+#voting_booth .vote-auth-forms .help-inline.nod_msg {
+  color: #DD1144;
+  margin-top: -20px;
+}
 #voting_booth .vote-auth-forms .span4 > p {
   padding-left: 0;
 }

@@ -33,12 +33,15 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.tokens import default_token_generator
 from django.contrib.comments.forms import CommentSecurityForm
 from django.contrib.comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_unicode
+from django.utils.crypto import constant_time_compare
 from django.utils import simplejson as json
 from django.utils import translation, timezone
 from django.contrib.sites.models import Site
@@ -47,7 +50,7 @@ from django.db import transaction
 import uuid
 import datetime
 import random
-
+import re
 
 class VoteForm(django_forms.ModelForm):
     '''
@@ -189,3 +192,208 @@ class VoteForm(django_forms.ModelForm):
     class Meta:
         model = CastVote
         fields = ('reason',)
+
+
+class LoginAndVoteForm(django_forms.ModelForm):
+    '''
+    Given an election, creates a form that lets the user choose the options
+    he want to vote
+    '''
+    is_vote_secret = django_forms.BooleanField(required=False)
+    user_id = django_forms.CharField(required=True, max_length=120)
+    password = django_forms.CharField(required=True, max_length=20)
+
+    bad_password = False
+    is_active = True
+    user = None
+
+    def __init__(self, request, election, *args, **kwargs):
+        super(LoginAndVoteForm, self).__init__(*args, **kwargs)
+        self.election = election
+        self.request = request
+
+        i = 0
+        for question in election.questions:
+            voting_system = get_voting_system_by_id(question['tally_type'])
+            field = voting_system.get_question_field(election, question)
+            self.fields.insert(0, 'question%d' % i, field)
+            i += 1
+
+    @staticmethod
+    def static_get_form_kwargs(request, data, *args, **kwargs):
+        '''
+        Returns the parameters that will be sent to the constructor
+        '''
+        election = get_object_or_404(Election, pk=kwargs["electionid"])
+        return dict(request=request, election=election, data=data)
+
+    def clean(self):
+        cleaned_data = super(LoginAndVoteForm, self).clean()
+
+        if not self.election.ballot_is_open():
+            raise forms.ValidationError("Sorry, you cannot vote in this election.")
+
+        if cleaned_data['is_vote_secret'] and not self.election.is_vote_secret:
+            raise django_forms.ValidationError("Sorry, this election allows only "
+                "public votes.")
+
+        if not 'is_vote_secret' in self.data:
+            raise forms.ValidationError("is_vote_secret is a required field.")
+
+        cleaned_data['is_vote_secret'] = bool(self.data['is_vote_secret'])
+
+        if 'user_id' not in cleaned_data:
+            raise forms.ValidationError("user_id is a required field.")
+        if 'password' not in cleaned_data:
+            raise forms.ValidationError("password is a required field.")
+
+        # check user
+        user_q = User.objects.filter(username=cleaned_data['user_id'])
+        if user_q.count() > 0:
+            self.user = user_q[0]
+        else:
+            user_q = User.objects.filter(email=cleaned_data['user_id'])
+            if user_q.count() == 0:
+                raise forms.ValidationError("User not found.")
+            self.user = user_q[0]
+
+        self.is_active = self.user.is_active
+
+        # now we have an user, try to login
+        assert self.user
+        try:
+            user = authenticate(identification=self.user.username, password=cleaned_data['password'])
+            if self.is_active:
+                login(self.request, self.user)
+        except:
+            self.bad_password = True
+
+        return cleaned_data
+
+    def bundle_obj(self, vote, request):
+        from agora_site.agora_core.resources.castvote import CastVoteResource
+        cvr = CastVoteResource()
+        bundle = cvr.build_bundle(obj=vote, request=self.request)
+        bundle = cvr.full_dehydrate(bundle)
+        return bundle
+
+    def save(self, *args, **kwargs):
+        if not self.bad_password and self.is_active:
+            # invalidate older votes from the same voter to the same election
+            old_votes = self.election.cast_votes.filter(is_direct=True,
+                invalidated_at_date=None, voter=self.request.user)
+            for old_vote in old_votes:
+                old_vote.invalidated_at_date = timezone.now()
+                old_vote.is_counted = False
+                old_vote.save()
+
+        vote = super(LoginAndVoteForm, self).save(commit=False)
+        vote.is_counted = not self.bad_password and self.is_active
+
+        # generate vote
+        data = {
+            "a": "vote",
+            "answers": [],
+            "election_hash": {"a": "hash/sha256/value", "value": self.election.hash},
+            "election_uuid": self.election.uuid
+        }
+        i = 0
+        for question in self.election.questions:
+            data["answers"] += [self.cleaned_data['question%d' % i]]
+            i += 1
+
+        # fill the vote
+        vote.voter = self.user
+        vote.election = self.election
+        vote.is_counted = self.election.has_perms('vote_counts', self.request.user)
+        vote.is_direct = True
+
+        # stablish if the vote is secret
+        if self.election.is_vote_secret() and self.cleaned_data['is_vote_secret']:
+            vote.is_public = False
+            vote.reason = None
+        else:
+            vote.reason = clean_html(self.cleaned_data['reason'])
+            vote.is_public = True
+
+        # assign data, create hash etc
+        vote.data = data
+        vote.casted_at_date = timezone.now()
+        vote.create_hash()
+        vote.save()
+
+        # send mail
+        if vote.is_counted:
+            # create action
+            actstream_action.send(self.user, verb='voted', action_object=self.election,
+                target=self.election.agora,
+                geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
+
+            vote.action_id = Action.objects.filter(actor_object_id=self.user.id,
+                verb='voted', action_object_object_id=self.election.id,
+                target_object_id=self.election.agora.id).order_by('-timestamp').all()[0].id
+
+            context = get_base_email_context(self.request)
+            context.update(dict(
+                to=self.request.user,
+                election=self.election,
+                election_url=self.election.get_link(),
+                agora_url=self.election.get_link(),
+            ))
+
+            if self.request.user.has_perms('receive_email_updates'):
+                translation.activate(self.request.user.get_profile().lang_code)
+                email = EmailMultiAlternatives(
+                    subject=_('Vote casted for election %s') % self.election.pretty_name,
+                    body=render_to_string('agora_core/emails/vote_casted.txt',
+                        context),
+                    to=[self.request.user.email])
+
+                email.attach_alternative(
+                    render_to_string('agora_core/emails/vote_casted.html',
+                        context), "text/html")
+                email.send()
+                translation.deactivate()
+
+            if not is_following(self.request.user, self.election):
+                follow(self.request.user, self.election, actor_only=False, request=self.request)
+        else:
+            profile = self.user.get_profile()
+            if not isinstance(profile.extra, dict):
+                profile.extra = dict()
+            profile.extra['pending_ballot_id'] = vote.id
+            profile.save()
+
+            token = default_token_generator.make_token(self.user)
+
+            context = get_base_email_context(self.request)
+            confirm_vote_url = self.request.build_absolute_uri(
+                reverse('confirm-vote-token',
+                    kwargs=dict(username=self.user.username, token=token)))
+            context.update(dict(
+                to=self.user,
+                election=self.election,
+                election_url=self.election.get_link(),
+                agora_url=self.election.get_link(),
+                confirm_vote_url=confirm_vote_url
+            ))
+            translation.activate(self.user.get_profile().lang_code)
+            email = EmailMultiAlternatives(
+                subject=_('Please confirm vote casted for election %s') % self.election.pretty_name,
+                body=render_to_string('agora_core/emails/confirm_vote_casted.txt',
+                    context),
+                to=[self.user.email])
+
+            email.attach_alternative(
+                render_to_string('agora_core/emails/confirm_vote_casted.html',
+                    context), "text/html")
+            email.send()
+            translation.deactivate()
+
+
+        return vote
+
+    class Meta:
+        model = CastVote
+        fields = ('reason',)
+

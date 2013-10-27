@@ -112,6 +112,7 @@ class PluralityField(django_forms.ChoiceField):
         """
         Wraps the choice field the proper way
         """
+        error = django_forms.ValidationError(_('Invalid questions format'))
         if self.election.is_secure():
             if not isinstance(value, dict):
                 raise error
