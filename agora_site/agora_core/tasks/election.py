@@ -599,6 +599,7 @@ def receive_tally(election_id, tally_data, is_secure, site_id):
             str(election.id))
         member.name = "%d_plaintexts_json" % i
         tally_gz.extract(member, path=extract_path)
+        i += 1
 
     def do_tally(tally_path, election):
         import copy
