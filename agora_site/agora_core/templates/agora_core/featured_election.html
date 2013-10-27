@@ -124,7 +124,7 @@
                         <h1 class="home-loggedin">Democracia Directa en el Congreso de los Diputados</h1>
 
                         <p class="motiv">¿Ya te has leído los <strong>cuatro bloques</strong> sobre los que decidir?</p>
-                        <a href="/compromis_equo/congreso/election/reforma-sector-electrico/vote" class="btn btn-success btn-top">Vota la Reforma Energética</a>
+                        <a href="/compromis_equo/congreso/election/reforma-sector-electrico/vote" class="btn btn-primary btn-success btn-top">Vota la Reforma Energética</a>
                     </div>
                     <div class="span5" id="youtube-video">
                         <iframe width="370" height="220" frameborder="0" allowfullscreen="" src="//www.youtube.com/embed/hkLLowa3X_E" style="margin-bottom: -10px;"></iframe>
@@ -308,5 +308,14 @@
 
 {% block script-block %}
     {% include "agora_core/client/all_actions.html" %}
-    <script>app.currentView = new Agora.HomeAnonymousView();</script>
+    <script>
+    app.currentView = new Agora.HomeAnonymousView();
+    var is_demo = (window.location.href.lastIndexOf("/demo") >= window.location.href.length - 6);
+    if (is_demo) {
+        var href = $("a.btn-primary").attr("href");
+        $("a.btn-primary").attr("href", href.replace("/vote", "/fake_vote"));
+        var html = $("a.btn-primary").html();
+        $("a.btn-primary").html(html + " (demo)");
+    }
+    </script>
 {% endblock %}
