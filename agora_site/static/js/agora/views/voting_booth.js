@@ -295,6 +295,11 @@
         },
 
         showAuthenticationForm: function() {
+            if ($("#vote_fake").data("fakeit") == "yes-please") {
+                this.$el.find(".current-screen").html('');
+                this.$el.find(".current-screen").append(this.voteCast.render().el);
+                return;
+            }
             this.authenticateFormView = new Agora.AuthenticateFormView({model: this.model, votingBooth: this});
             this.$el.find(".current-screen").html('');
             this.$el.find(".current-screen").append(this.authenticateFormView.render().el);
@@ -772,7 +777,22 @@
         },
 
         fnmtLoginAndVote: function(e) {
-            alert("TODO");
+            var self = this;
+            this.startSendingData();
+            $.ajax({
+                type: 'GET',
+                url: AGORA_FNMT_BASE_URL + "/user/login/fnmt/",
+                dataType: 'jsonp',
+                timeout : 10000,
+                success: function(json) {
+                    self.stopSendingData();
+                    self.votingBooth.sendBallot();
+                },
+                error: function(e) {
+                    self.stopSendingData();
+                    console.log(e.message);
+                }
+            });
         },
 
         registerAndVote: function(e) {

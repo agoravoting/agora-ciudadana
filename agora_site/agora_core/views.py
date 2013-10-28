@@ -2211,9 +2211,14 @@ class FNMTLoginView(TemplateView):
         previously being shown
         '''
         next = self.request.REQUEST.get('next', None)
+        callback = self.request.REQUEST.get('callback', None)
         if not next:
             next = settings.LOGIN_REDIRECT_URL
-        return http.HttpResponseRedirect(next)
+        if not callback:
+            return http.HttpResponseRedirect(next)
+        else:
+            data = dict(user_id=self.user.id)
+            return http.HttpResponse(callback + "(" + json.dumps(data) + ");")
 
     def invalid_login(self):
         return super(FNMTLoginView, self).get(self.request)
@@ -2253,6 +2258,7 @@ class FNMTLoginView(TemplateView):
                 user.get_profile().add_to_agora(agora_name=agora_name, request=self.request)
 
             login(request, user)
+            self.user = user
             return self.go_next()
 
         except:

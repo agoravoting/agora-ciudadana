@@ -437,7 +437,7 @@
                         <p></p>
                     </div>
                     <div class="clearfix"></div>
-                    <a class="btn btn-primary btn-large" id="registerAndVote" href="#">
+                    <a class="btn btn-primary btn-large" id="fnmtLoginAndVote" href="#">
                         <%= gettext("Enter with FNMT certificate and vote") %>
                     </a>
                     <p></p>
@@ -475,6 +475,7 @@
         var ajax_data = {% rest request '/election/' election.id '/' %};
 
         var has_to_authenticate = {% if has_to_authenticate %}true{% else %}false{% endif %};
+        var AGORA_FNMT_BASE_URL = "{{AGORA_FNMT_BASE_URL}}";
         app.currentView = new Agora.VotingBooth();
     </script>
 </body>
