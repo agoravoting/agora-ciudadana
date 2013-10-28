@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-28 02:44+0100\n"
+"POT-Creation-Date: 2013-10-28 07:34+0100\n"
 "PO-Revision-Date: 2013-06-04 17:45-0000\n"
 "Last-Translator: \n"
 "Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-"
@@ -725,36 +725,36 @@ msgstr "Cambiar el nombre de usuario"
 msgid "Repeat Password"
 msgstr "Repite la nueva contraseña"
 
-#: agora_core/templates/agora_core/voting_booth.html:424
+#: agora_core/templates/agora_core/voting_booth.html:426
 msgid "Register and vote"
 msgstr ""
 
-#: agora_core/templates/agora_core/voting_booth.html:430
+#: agora_core/templates/agora_core/voting_booth.html:432
 #: agora_core/templates/agora_core/client/top_navbar.html:103
 msgid "..or enter with FNMT cert"
 msgstr ""
 
-#: agora_core/templates/agora_core/voting_booth.html:432
+#: agora_core/templates/agora_core/voting_booth.html:434
 msgid "Obtain it here"
 msgstr ""
 
-#: agora_core/templates/agora_core/voting_booth.html:433
+#: agora_core/templates/agora_core/voting_booth.html:435
 msgid "or"
 msgstr ""
 
-#: agora_core/templates/agora_core/voting_booth.html:434
+#: agora_core/templates/agora_core/voting_booth.html:436
 msgid "here with your DNIe"
 msgstr ""
 
-#: agora_core/templates/agora_core/voting_booth.html:439
+#: agora_core/templates/agora_core/voting_booth.html:441
 msgid "Enter with FNMT certificate and vote"
 msgstr ""
 
-#: agora_core/templates/agora_core/voting_booth.html:442
+#: agora_core/templates/agora_core/voting_booth.html:444
 msgid "Terms of service"
 msgstr ""
 
-#: agora_core/templates/agora_core/voting_booth.html:444
+#: agora_core/templates/agora_core/voting_booth.html:446
 msgid ""
 "When you enter using the FNMT certificate or registering, you're accepting "
 "our <a href=\"/misc/page/terms-of-service\">Terms of Service.</a>"

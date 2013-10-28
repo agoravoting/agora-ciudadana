@@ -2296,17 +2296,17 @@ msgstr ""
 
 #: agora_core/templates/agora_core/featured_election.html:124
 msgid "Democracia Directa en el Congreso de los Diputados"
-msgstr ""
+msgstr "Democràcia Directa al Congrés dels Diputats"
 
 #: agora_core/templates/agora_core/featured_election.html:126
 msgid ""
 "¿Ya te has leído los <strong>cuatro bloques</strong> sobre los que decidir?"
-msgstr ""
+msgstr "Ja t'has llegit els <strong> quatre blocs </ strong> sobre els de decidir?"
 
 #: agora_core/templates/agora_core/featured_election.html:127
 #: agora_core/templates/agora_core/featured_election.html:209
 msgid "Vota la Reforma Energética"
-msgstr ""
+msgstr "Vota la Reforma Energètica"
 
 #: agora_core/templates/agora_core/featured_election.html:130
 msgid "//www.youtube.com/embed/hkLLowa3X_E"

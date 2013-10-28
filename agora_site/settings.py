@@ -71,6 +71,7 @@ LANGUAGES = (
     ('en', _('English')),
     ('gl', _('Galician')),
     ('eu', _('Basque')),
+    ('ca', _('Valencian')),
 )
 
 SOUTH_TESTS_MIGRATE = False
