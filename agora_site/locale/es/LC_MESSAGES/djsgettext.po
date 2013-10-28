@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-28 07:34+0100\n"
+"POT-Creation-Date: 2013-10-28 11:08+0100\n"
 "PO-Revision-Date: 2013-06-04 17:45-0000\n"
 "Last-Translator: \n"
 "Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-"
@@ -424,8 +424,7 @@ msgstr "Procede al envío de tu voto para el recuento de votos."
 #: agora_core/templates/agora_core/voting_booth.html:69
 msgid ""
 "<strong>Authenticate/Register</strong> to <strong>submit</strong> your ballot"
-msgstr ""
-"<strong>Entra/Regístrate</strong> para <strong>enviar</strong> tu voto"
+msgstr "<strong>Entra/Regístrate</strong> para <strong>enviar</strong> tu voto"
 
 #: agora_core/templates/agora_core/voting_booth.html:70
 msgid ""
@@ -628,12 +627,12 @@ msgid ""
 "seem to arrive, please check if it has gone to the SPAM folder or try again "
 "to vote."
 msgstr ""
-"Hemos recibido tu voto pero por razones de seguridad necesitamos comprobar tu"
-"identidad. Te hemos enviado un email con un <strong>enlace al que debes hacer "
-"clic</strong> si quieres confirmar tu voto. Por favor comprueba tu dirección "
-"de correo electrónico. Puede tomar un tiempo en llegar, por favor se paciente."
-" Si parece que no te llega el email, por favor comprueba si se ha metido en "
-"la carpeta de SPAM o vuelve a intentarlo de nuevo."
+"Hemos recibido tu voto pero por razones de seguridad necesitamos comprobar "
+"tuidentidad. Te hemos enviado un email con un <strong>enlace al que debes "
+"hacer clic</strong> si quieres confirmar tu voto. Por favor comprueba tu "
+"dirección de correo electrónico. Puede tomar un tiempo en llegar, por favor "
+"se paciente. Si parece que no te llega el email, por favor comprueba si se "
+"ha metido en la carpeta de SPAM o vuelve a intentarlo de nuevo."
 
 #: agora_core/templates/agora_core/voting_booth.html:299
 msgid "Go back to the election page"
@@ -659,11 +658,13 @@ msgstr "Selecciona un delegado en el ágora %s"
 msgid ""
 "Encrypting and securing your ballot. This may take some minutes, please wait."
 msgstr ""
-"Cifrando y garantizando tu voto. Esto puede tomar unos minutos, por favor espera."
+"Cifrando y garantizando tu voto. Esto puede tomar unos minutos, por favor "
+"espera."
 
 #: agora_core/templates/agora_core/voting_booth.html:334
 msgid "The web browser might freeze during this process: please be patient."
-msgstr "El navegador puede congelarse durante este proceso: por favor se paciente"
+msgstr ""
+"El navegador puede congelarse durante este proceso: por favor se paciente"
 
 #: agora_core/templates/agora_core/voting_booth.html:337
 msgid "5%"
@@ -676,7 +677,7 @@ msgstr ""
 "Antes de emitir tu voto: login or register to authenticate your identity."
 
 #: agora_core/templates/agora_core/voting_booth.html:360
-#: agora_core/templates/agora_core/client/top_navbar.html:85
+#: agora_core/templates/agora_core/client/top_navbar.html:13
 msgid "Enter"
 msgstr "Entrar"
 
@@ -685,13 +686,13 @@ msgid "Try this if you already have an existing user"
 msgstr "Prueba esta opción si ya tienes un usuario en el sistema"
 
 #: agora_core/templates/agora_core/voting_booth.html:363
-#: agora_core/templates/agora_core/client/top_navbar.html:92
+#: agora_core/templates/agora_core/client/top_navbar.html:20
 msgid "Email or user name"
 msgstr "Email o nombre de usuario"
 
 #: agora_core/templates/agora_core/voting_booth.html:365
 #: agora_core/templates/agora_core/voting_booth.html:411
-#: agora_core/templates/agora_core/client/top_navbar.html:94
+#: agora_core/templates/agora_core/client/top_navbar.html:22
 msgid "Password"
 msgstr "Contraseña"
 
@@ -700,7 +701,7 @@ msgid "Login and vote"
 msgstr "Entrar y votar"
 
 #: agora_core/templates/agora_core/voting_booth.html:375
-#: agora_core/templates/agora_core/client/top_navbar.html:95
+#: agora_core/templates/agora_core/client/top_navbar.html:23
 msgid "Register"
 msgstr "Registrarme"
 
@@ -735,7 +736,7 @@ msgid "Register and vote"
 msgstr "Registrarme y votar"
 
 #: agora_core/templates/agora_core/voting_booth.html:432
-#: agora_core/templates/agora_core/client/top_navbar.html:103
+#: agora_core/templates/agora_core/client/top_navbar.html:31
 msgid "..or enter with FNMT cert"
 msgstr "..o entra con el cert. de la FNMT"
 
@@ -764,8 +765,9 @@ msgid ""
 "When you enter using the FNMT certificate or registering, you're accepting "
 "our <a href=\"/misc/page/terms-of-service\">Terms of Service.</a>"
 msgstr ""
-"Cuando entras con el certificado de la FNMT o te registras, estás aceptando"
-"nuestras <a href=\"/misc/page/terms-of-service\">Condiciones de Uso.</a>"
+"Cuando entras con el certificado de la FNMT o te registras, estás "
+"aceptandonuestras <a href=\"/misc/page/terms-of-service\">Condiciones de Uso."
+"</a>"
 
 #: agora_core/templates/agora_core/client/action_ao_agora.html:14
 #: agora_core/templates/agora_core/client/action_t_agora.html:15
@@ -969,8 +971,6 @@ msgid "Comments"
 msgstr "Comentarios"
 
 #: agora_core/templates/agora_core/client/agora_tabs.html:12
-#: agora_core/templates/agora_core/client/top_navbar.html:45
-#: agora_core/templates/agora_core/client/top_navbar.html:72
 msgid "Elections"
 msgstr "Votaciones"
 
@@ -1313,52 +1313,19 @@ msgstr "Votaciones recientes"
 msgid "Didn't participate in any tallied election yet"
 msgstr "No ha participado en ninguna votación finalizada"
 
-#: agora_core/templates/agora_core/client/top_navbar.html:5
-msgid "Home"
-msgstr "Inicio"
-
-#: agora_core/templates/agora_core/client/top_navbar.html:11
-#: agora_core/templates/agora_core/client/user-agora-list.html:3
-msgid "Agoras"
-msgstr "Ágoras"
-
-#: agora_core/templates/agora_core/client/top_navbar.html:16
-msgid "My Agoras"
-msgstr "Mis ágoras"
-
-#: agora_core/templates/agora_core/client/top_navbar.html:31
-msgid "Explore existing agoras.."
-msgstr "Explorar otras votaciones"
-
-#: agora_core/templates/agora_core/client/top_navbar.html:37
-msgid "Create an Agora"
-msgstr "Crea un Ágora"
-
-#: agora_core/templates/agora_core/client/top_navbar.html:50
-msgid "Active elections"
-msgstr "Votaciones activas"
-
-#: agora_core/templates/agora_core/client/top_navbar.html:65
-msgid "Explore other elections"
-msgstr "Explorar otras votaciones"
-
-#: agora_core/templates/agora_core/client/top_navbar.html:76
-msgid "People"
-msgstr "Gente"
-
-#: agora_core/templates/agora_core/client/top_navbar.html:90
+#: agora_core/templates/agora_core/client/top_navbar.html:18
 msgid "Enter with user and password"
 msgstr "Entrar con usuario y contraseña"
 
-#: agora_core/templates/agora_core/client/top_navbar.html:95
+#: agora_core/templates/agora_core/client/top_navbar.html:23
 msgid "Forgot your password?"
 msgstr "¿Olvidaste tu contraseña?"
 
-#: agora_core/templates/agora_core/client/top_navbar.html:97
+#: agora_core/templates/agora_core/client/top_navbar.html:25
 msgid "Entrar"
 msgstr ""
 
-#: agora_core/templates/agora_core/client/top_navbar.html:104
+#: agora_core/templates/agora_core/client/top_navbar.html:32
 msgid ""
 "<a href=\"https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-"
 "certificado-con-dnie\" target=\"_blank\">Obtain it here</a> or <a href="
@@ -1370,11 +1337,11 @@ msgstr ""
 "\"https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-"
 "certificado-software\" target=\"_blank\">aquí con tu DNIe</a>"
 
-#: agora_core/templates/agora_core/client/top_navbar.html:109
+#: agora_core/templates/agora_core/client/top_navbar.html:37
 msgid "Enter with FNMT certificate"
 msgstr "Entrar con cert. de la FNMT"
 
-#: agora_core/templates/agora_core/client/top_navbar.html:116
+#: agora_core/templates/agora_core/client/top_navbar.html:44
 msgid ""
 "When you login with your user you are accepting our <a href=\"/misc/page/"
 "terms-of-service\" class=\"inline\">Terms of Service</a>"
@@ -1382,21 +1349,21 @@ msgstr ""
 "Cuando entras con tu usuario estás aceptando nuestras <a href=\"/misc/page/"
 "terms-of-service\" class=\"inline\">Condiciones de Uso</a>"
 
-#: agora_core/templates/agora_core/client/top_navbar.html:144
+#: agora_core/templates/agora_core/client/top_navbar.html:72
 msgid "Log out"
 msgstr "Salir"
 
-#: agora_core/templates/agora_core/client/top_navbar.html:150
+#: agora_core/templates/agora_core/client/top_navbar.html:78
 msgid "View my profile"
 msgstr "Ver mi perfil"
 
-#: agora_core/templates/agora_core/client/top_navbar.html:156
+#: agora_core/templates/agora_core/client/top_navbar.html:84
 msgid "Account settings"
 msgstr "Configuración de la cuenta"
 
-#: agora_core/templates/agora_core/client/top_navbar.html:164
-msgid "Search"
-msgstr "Buscar"
+#: agora_core/templates/agora_core/client/user-agora-list.html:3
+msgid "Agoras"
+msgstr "Ágoras"
 
 #: agora_core/templates/agora_core/client/user-agora-list.html:15
 msgid "Delegate"
@@ -1512,6 +1479,54 @@ msgstr ""
 #: agora_core/templates/search/include-js-template-agora-profile.html:120
 msgid "no actions"
 msgstr ""
+
+msgid "FIJACION"
+msgstr ""
+"FIJACIÃ DE PRECIOS. ¿Consideras motivo para presentar enmienda a la "
+"totalidad que no se aborde el cambio del sistema de fijación de precios "
+"de la electricidad en el proyecto de ley del gobierno?"
+
+msgid "RENOVABLES"
+msgstr ""
+"RENOVABLES. ¿Consideras que hay que presentar una enmienda a la totalidad "
+"al proyecto de ley del gobierno por las trabas que establece a las "
+"renovables?"
+
+msgid "AUTOCONSUMO"
+msgstr ""
+"AUTOCONSUMO. ¿Consideras que las condiciones y trabas que se establecen "
+"en la ley para el Autoconsumo justifican la enmienda a la totalidad?"
+
+msgid "MARCO"
+msgstr ""
+"MARCO ECONÃICO FINANCIERO. ¿Consideras que hubiera sido necesario una "
+"auditoría de costes sobre el déficit de tarifa como paso previo a la "
+"elaboración de esta ley?"
+
+
+#~ msgid "Home"
+#~ msgstr "Inicio"
+
+#~ msgid "My Agoras"
+#~ msgstr "Mis ágoras"
+
+#~ msgid "Explore existing agoras.."
+#~ msgstr "Explorar otras votaciones"
+
+#~ msgid "Create an Agora"
+#~ msgstr "Crea un Ágora"
+
+#~ msgid "Active elections"
+#~ msgstr "Votaciones activas"
+
+#~ msgid "Explore other elections"
+#~ msgstr "Explorar otras votaciones"
+
+#~ msgid "People"
+#~ msgstr "Gente"
+
+#~ msgid "Search"
+#~ msgstr "Buscar"
 
 #~ msgid "Choices available"
 #~ msgstr "Opciones disponibles"

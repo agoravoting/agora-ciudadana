@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-28 07:34+0100\n"
+"POT-Creation-Date: 2013-10-28 11:08+0100\n"
 "PO-Revision-Date: 2013-09-27 07:43+0200\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -664,7 +664,7 @@ msgid ""
 msgstr ""
 
 #: agora_core/templates/agora_core/voting_booth.html:360
-#: agora_core/templates/agora_core/client/top_navbar.html:85
+#: agora_core/templates/agora_core/client/top_navbar.html:13
 msgid "Enter"
 msgstr "Acceder"
 
@@ -673,14 +673,14 @@ msgid "Try this if you already have an existing user"
 msgstr ""
 
 #: agora_core/templates/agora_core/voting_booth.html:363
-#: agora_core/templates/agora_core/client/top_navbar.html:92
+#: agora_core/templates/agora_core/client/top_navbar.html:20
 #, fuzzy
 msgid "Email or user name"
 msgstr "Indique un novo nome de usuario"
 
 #: agora_core/templates/agora_core/voting_booth.html:365
 #: agora_core/templates/agora_core/voting_booth.html:411
-#: agora_core/templates/agora_core/client/top_navbar.html:94
+#: agora_core/templates/agora_core/client/top_navbar.html:22
 #, fuzzy
 msgid "Password"
 msgstr "Novo contrasinal:"
@@ -690,7 +690,7 @@ msgid "Login and vote"
 msgstr ""
 
 #: agora_core/templates/agora_core/voting_booth.html:375
-#: agora_core/templates/agora_core/client/top_navbar.html:95
+#: agora_core/templates/agora_core/client/top_navbar.html:23
 msgid "Register"
 msgstr ""
 
@@ -727,7 +727,7 @@ msgid "Register and vote"
 msgstr ""
 
 #: agora_core/templates/agora_core/voting_booth.html:432
-#: agora_core/templates/agora_core/client/top_navbar.html:103
+#: agora_core/templates/agora_core/client/top_navbar.html:31
 msgid "..or enter with FNMT cert"
 msgstr ""
 
@@ -960,8 +960,6 @@ msgid "Comments"
 msgstr "Comentarios"
 
 #: agora_core/templates/agora_core/client/agora_tabs.html:12
-#: agora_core/templates/agora_core/client/top_navbar.html:45
-#: agora_core/templates/agora_core/client/top_navbar.html:72
 msgid "Elections"
 msgstr "Votacións"
 
@@ -1305,52 +1303,19 @@ msgstr "Últimas votacións"
 msgid "Didn't participate in any tallied election yet"
 msgstr "Aínda non participou en ningunha votación contabilizada."
 
-#: agora_core/templates/agora_core/client/top_navbar.html:5
-msgid "Home"
-msgstr "Inicio"
-
-#: agora_core/templates/agora_core/client/top_navbar.html:11
-#: agora_core/templates/agora_core/client/user-agora-list.html:3
-msgid "Agoras"
-msgstr "Ágoras"
-
-#: agora_core/templates/agora_core/client/top_navbar.html:16
-msgid "My Agoras"
-msgstr "Ágoras"
-
-#: agora_core/templates/agora_core/client/top_navbar.html:31
-msgid "Explore existing agoras.."
-msgstr "Explorar as ágoras…"
-
-#: agora_core/templates/agora_core/client/top_navbar.html:37
-msgid "Create an Agora"
-msgstr "Cree unha ágora"
-
-#: agora_core/templates/agora_core/client/top_navbar.html:50
-msgid "Active elections"
-msgstr "Votacións activas"
-
-#: agora_core/templates/agora_core/client/top_navbar.html:65
-msgid "Explore other elections"
-msgstr "Atopar outras votacións"
-
-#: agora_core/templates/agora_core/client/top_navbar.html:76
-msgid "People"
-msgstr "Persoas"
-
-#: agora_core/templates/agora_core/client/top_navbar.html:90
+#: agora_core/templates/agora_core/client/top_navbar.html:18
 msgid "Enter with user and password"
 msgstr ""
 
-#: agora_core/templates/agora_core/client/top_navbar.html:95
+#: agora_core/templates/agora_core/client/top_navbar.html:23
 msgid "Forgot your password?"
 msgstr ""
 
-#: agora_core/templates/agora_core/client/top_navbar.html:97
+#: agora_core/templates/agora_core/client/top_navbar.html:25
 msgid "Entrar"
 msgstr ""
 
-#: agora_core/templates/agora_core/client/top_navbar.html:104
+#: agora_core/templates/agora_core/client/top_navbar.html:32
 msgid ""
 "<a href=\"https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-"
 "certificado-con-dnie\" target=\"_blank\">Obtain it here</a> or <a href="
@@ -1358,31 +1323,31 @@ msgid ""
 "certificado-software\" target=\"_blank\">here with your DNIe</a>"
 msgstr ""
 
-#: agora_core/templates/agora_core/client/top_navbar.html:109
+#: agora_core/templates/agora_core/client/top_navbar.html:37
 msgid "Enter with FNMT certificate"
 msgstr ""
 
-#: agora_core/templates/agora_core/client/top_navbar.html:116
+#: agora_core/templates/agora_core/client/top_navbar.html:44
 msgid ""
 "When you login with your user you are accepting our <a href=\"/misc/page/"
 "terms-of-service\" class=\"inline\">Terms of Service</a>"
 msgstr ""
 
-#: agora_core/templates/agora_core/client/top_navbar.html:144
+#: agora_core/templates/agora_core/client/top_navbar.html:72
 msgid "Log out"
 msgstr "Saír"
 
-#: agora_core/templates/agora_core/client/top_navbar.html:150
+#: agora_core/templates/agora_core/client/top_navbar.html:78
 msgid "View my profile"
 msgstr "Ver o perfil"
 
-#: agora_core/templates/agora_core/client/top_navbar.html:156
+#: agora_core/templates/agora_core/client/top_navbar.html:84
 msgid "Account settings"
 msgstr "Configuración da conta"
 
-#: agora_core/templates/agora_core/client/top_navbar.html:164
-msgid "Search"
-msgstr "Buscar"
+#: agora_core/templates/agora_core/client/user-agora-list.html:3
+msgid "Agoras"
+msgstr "Ágoras"
 
 #: agora_core/templates/agora_core/client/user-agora-list.html:15
 msgid "Delegate"
@@ -1499,6 +1464,30 @@ msgstr ""
 #: agora_core/templates/search/include-js-template-agora-profile.html:120
 msgid "no actions"
 msgstr "ningunha acción"
+
+#~ msgid "Home"
+#~ msgstr "Inicio"
+
+#~ msgid "My Agoras"
+#~ msgstr "Ágoras"
+
+#~ msgid "Explore existing agoras.."
+#~ msgstr "Explorar as ágoras…"
+
+#~ msgid "Create an Agora"
+#~ msgstr "Cree unha ágora"
+
+#~ msgid "Active elections"
+#~ msgstr "Votacións activas"
+
+#~ msgid "Explore other elections"
+#~ msgstr "Atopar outras votacións"
+
+#~ msgid "People"
+#~ msgstr "Persoas"
+
+#~ msgid "Search"
+#~ msgstr "Buscar"
 
 #~ msgid "Choices available"
 #~ msgstr "Opcións dispoñíbeis"
