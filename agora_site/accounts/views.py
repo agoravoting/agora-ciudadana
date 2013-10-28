@@ -198,7 +198,6 @@ class ConfirmVoteTokenView(TemplateView):
                 old_vote.invalidated_at_date = timezone.now()
                 old_vote.is_counted = False
                 old_vote.save()
-            vote = super(ConfirmVoteTokenView, self).save(commit=False)
             vote.is_counted = True
             vote.save()
 
