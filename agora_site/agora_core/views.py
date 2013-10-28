@@ -2226,8 +2226,7 @@ class FNMTLoginView(TemplateView):
         if not callback:
             return http.HttpResponseRedirect(next)
         else:
-            data = dict(user_id=self.user.id)
-            return http.HttpResponse(callback + "(" + json.dumps(data) + ");")
+            return http.HttpResponse(callback + "({});")
 
     def invalid_login(self):
         return super(FNMTLoginView, self).get(self.request)
