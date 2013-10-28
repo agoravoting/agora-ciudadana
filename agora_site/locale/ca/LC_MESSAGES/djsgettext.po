@@ -389,7 +389,7 @@ msgstr "en"
 
 #: agora_core/templates/agora_core/voting_booth.html:38
 msgid "Election fingerprint:"
-msgstr "Huella digital de votación"
+msgstr "Hash de votación"
 
 #: agora_core/templates/agora_core/voting_booth.html:55
 msgid "To cast a vote you will be led through the following steps:"
