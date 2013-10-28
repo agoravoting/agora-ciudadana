@@ -117,6 +117,9 @@ class Profile(UserenaLanguageBaseProfile):
 
         send_action(self.user, verb='joined', action_object=agora, request=request)
 
+        remove_perm('requested_membership', self.user, agora)
+        remove_perm('denied_requested_membership', self.user, agora)
+
         if not is_following(self.user, agora):
             follow(self.user, agora, actor_only=False, request=request)
 

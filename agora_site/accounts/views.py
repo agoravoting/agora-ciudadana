@@ -151,6 +151,10 @@ class AutoLoginTokenView(TemplateView):
             messages.add_message(request, messages.ERROR, _('Invalid login link.'))
             return redirect('/')
 
+        profile = user.get_profile()
+        for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
+            profile.add_to_agora(agora_name=agora_name, request=request)
+
         setattr(user, 'backend', 'django.contrib.auth.backends.ModelBackend')
         login(request, user)
         request.session.set_expiry(userena_settings.USERENA_REMEMBER_ME_DAYS[1] * 86400)
