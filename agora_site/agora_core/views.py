@@ -1236,6 +1236,15 @@ class AgoraActionAcceptMembershipRequestView(FormActionView):
                 vote = CastVote.objects.filter(id=profile.extra['pending_ballot_id'])
                 if vote.count() > 0:
                     vote = vote[0]
+                    # invalidate older votes from the same voter to the same election
+                    old_votes = vote.election.cast_votes.filter(is_direct=True,
+                        invalidated_at_date=None, voter=user)
+                    for old_vote in old_votes:
+                        if old_vote.id == vote.id:
+                            continue
+                        old_vote.invalidated_at_date = timezone.now()
+                        old_vote.is_counted = False
+                        old_vote.save()
                     vote.is_counted = True
                     vote.save()
                     vote_accepted = True

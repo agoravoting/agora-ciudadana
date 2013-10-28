@@ -26,6 +26,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.urlresolvers import reverse
 from django.utils import simplejson as json
 from django.utils.translation import ugettext as _
+from django.utils import translation, timezone
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from django.shortcuts import get_object_or_404
@@ -188,6 +189,16 @@ class ConfirmVoteTokenView(TemplateView):
         request.session.set_expiry(userena_settings.USERENA_REMEMBER_ME_DAYS[1] * 86400)
 
         if vote.election.has_perms('vote_counts', user):
+            # invalidate older votes from the same voter to the same election
+            old_votes = vote.election.cast_votes.filter(is_direct=True,
+                invalidated_at_date=None, voter=user)
+            for old_vote in old_votes:
+                if old_vote.id == vote.id:
+                    continue
+                old_vote.invalidated_at_date = timezone.now()
+                old_vote.is_counted = False
+                old_vote.save()
+            vote = super(VoteForm, self).save(commit=False)
             vote.is_counted = True
             vote.save()
 
