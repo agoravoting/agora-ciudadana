@@ -83,12 +83,12 @@ class VoteForm(django_forms.ModelForm):
         cleaned_data = super(VoteForm, self).clean()
 
         if not 'is_vote_secret' in self.data:
-            raise forms.ValidationError("is_vote_secret is a required field.")
+            raise django_forms.ValidationError("is_vote_secret is a required field.")
 
         cleaned_data['is_vote_secret'] = bool(self.data['is_vote_secret'])
 
         if not self.election.ballot_is_open():
-            raise forms.ValidationError("Sorry, you cannot vote in this election.")
+            raise django_forms.ValidationError("Sorry, you cannot vote in this election.")
 
         if cleaned_data['is_vote_secret'] and\
             not self.election.has_perms('vote_counts', self.request.user):
@@ -257,7 +257,7 @@ class LoginAndVoteForm(django_forms.ModelForm):
             else:
                 user_q = User.objects.filter(email=cleaned_data['user_id'])
                 if user_q.count() == 0:
-                    raise forms.ValidationError("User not found.")
+                    raise django_forms.ValidationError("User not found.")
                 self.user = user_q[0]
 
             self.is_active = self.user.is_active
