@@ -150,7 +150,6 @@ msgstr ""
 "trata de no olvidarla esta vez.</p>"
 
 #: accounts/views.py:49
-#, fuzzy
 msgid ""
 "Registration successful! We have sent the activation link to your email "
 "address, look it up. If you don't receive the email, please try to locate it "
@@ -193,19 +192,16 @@ msgid ""
 msgstr ""
 
 #: accounts/views.py:150
-#, fuzzy
 msgid "Invalid login link."
-msgstr "Enlace de activación no válido."
+msgstr "Enlace de entrada no válido."
 
 #: accounts/views.py:163 accounts/views.py:183
-#, fuzzy
 msgid "Invalid confirmation link."
-msgstr "Enlace de activación no válido."
+msgstr "Enlace de confirmación no válido."
 
 #: accounts/views.py:209
-#, fuzzy
 msgid "Your ballot has been confirmed and was successfully cast"
-msgstr "Tu comentario ha sido publicado con éxito."
+msgstr "Tu voto ha sido confirmado y emitido con éxito."
 
 #: accounts/views.py:215
 msgid ""
@@ -213,6 +209,9 @@ msgid ""
 "until we manually verify your identity. We'll try to do it as soon as "
 "possible, and we'll keep you posted."
 msgstr ""
+"Tu dirección de email ha sido confirmada, pero tu voto no será confirmado "
+"hasta que no verifiquemos manualmente tu identidad. Lo intentaremos hacer "
+"lo antes posible y te mantendremos informado."
 
 #: accounts/templates/accounts/activate_fail.html:4
 msgid "Account activation failed."
