@@ -422,16 +422,18 @@ msgid "Proceed to cast your ballot for tallying."
 msgstr "Procede al envío de tu voto para el recuento de votos."
 
 #: agora_core/templates/agora_core/voting_booth.html:69
-#, fuzzy
 msgid ""
 "<strong>Authenticate/Register</strong> to <strong>submit</strong> your ballot"
-msgstr "<strong>Envía</strong> tu voto"
+msgstr ""
+"<strong>Entra/Regístrate</strong> para <strong>enviar</strong> tu voto"
 
 #: agora_core/templates/agora_core/voting_booth.html:70
 msgid ""
 "You need to authenticate or register to vote. It will take just a minute and "
 "we'll receive your ballot at the same time you login or register."
 msgstr ""
+"Necesitas entrar o registrarte para votar. Tomará sólo un minuto y "
+"procesaremos tu voto a la vez que entras o te registras."
 
 #: agora_core/templates/agora_core/voting_booth.html:75
 msgid ""
@@ -474,7 +476,7 @@ msgstr "3. Enviar"
 #: agora_core/templates/agora_core/voting_booth.html:324
 #: agora_core/templates/agora_core/voting_booth.html:349
 msgid "3. Authenticate and Submit"
-msgstr ""
+msgstr "3. Autenticarte y Enviar"
 
 #: agora_core/templates/agora_core/voting_booth.html:108
 #: agora_core/templates/agora_core/voting_booth.html:165
@@ -598,9 +600,8 @@ msgid "Confirm choices and cast ballot"
 msgstr "Confirmar las opciones y emitir el voto"
 
 #: agora_core/templates/agora_core/voting_booth.html:275
-#, fuzzy
 msgid "Confirm choices and continue"
-msgstr "Confirmar las opciones y emitir el voto"
+msgstr "Confirmar las opciones y continuar"
 
 #: agora_core/templates/agora_core/voting_booth.html:285
 msgid "Vote Successfully Cast"
@@ -608,7 +609,7 @@ msgstr "El voto se ha emitido correctamente"
 
 #: agora_core/templates/agora_core/voting_booth.html:287
 msgid "Vote Received, Waiting Email Confirmation"
-msgstr ""
+msgstr "Voto Recibido, Esperando tu Confirmación por Email"
 
 #: agora_core/templates/agora_core/voting_booth.html:294
 msgid ""
@@ -627,6 +628,12 @@ msgid ""
 "seem to arrive, please check if it has gone to the SPAM folder or try again "
 "to vote."
 msgstr ""
+"Hemos recibido tu voto pero por razones de seguridad necesitamos comprobar tu"
+"identidad. Te hemos enviado un email con un <strong>enlace al que debes hacer "
+"clic</strong> si quieres confirmar tu voto. Por favor comprueba tu dirección "
+"de correo electrónico. Puede tomar un tiempo en llegar, por favor se paciente."
+" Si parece que no te llega el email, por favor comprueba si se ha metido en "
+"la carpeta de SPAM o vuelve a intentarlo de nuevo."
 
 #: agora_core/templates/agora_core/voting_booth.html:299
 msgid "Go back to the election page"
@@ -652,10 +659,11 @@ msgstr "Selecciona un delegado en el ágora %s"
 msgid ""
 "Encrypting and securing your ballot. This may take some minutes, please wait."
 msgstr ""
+"Cifrando y garantizando tu voto. Esto puede tomar unos minutos, por favor espera."
 
 #: agora_core/templates/agora_core/voting_booth.html:334
 msgid "The web browser might freeze during this process: please be patient."
-msgstr ""
+msgstr "El navegador puede congelarse durante este proceso: por favor se paciente"
 
 #: agora_core/templates/agora_core/voting_booth.html:337
 msgid "5%"
@@ -665,6 +673,7 @@ msgstr ""
 msgid ""
 "Before casting your ballot: login or register to authenticate your identity."
 msgstr ""
+"Antes de emitir tu voto: login or register to authenticate your identity."
 
 #: agora_core/templates/agora_core/voting_booth.html:360
 #: agora_core/templates/agora_core/client/top_navbar.html:85
@@ -673,33 +682,31 @@ msgstr "Entrar"
 
 #: agora_core/templates/agora_core/voting_booth.html:361
 msgid "Try this if you already have an existing user"
-msgstr ""
+msgstr "Prueba esta opción si ya tienes un usuario en el sistema"
 
 #: agora_core/templates/agora_core/voting_booth.html:363
 #: agora_core/templates/agora_core/client/top_navbar.html:92
-#, fuzzy
 msgid "Email or user name"
-msgstr "Introducir un nuevo nombre de usuario"
+msgstr "Email o nombre de usuario"
 
 #: agora_core/templates/agora_core/voting_booth.html:365
 #: agora_core/templates/agora_core/voting_booth.html:411
 #: agora_core/templates/agora_core/client/top_navbar.html:94
-#, fuzzy
 msgid "Password"
-msgstr "Nueva contraseña"
+msgstr "Contraseña"
 
 #: agora_core/templates/agora_core/voting_booth.html:370
 msgid "Login and vote"
-msgstr ""
+msgstr "Entrar y votar"
 
 #: agora_core/templates/agora_core/voting_booth.html:375
 #: agora_core/templates/agora_core/client/top_navbar.html:95
 msgid "Register"
-msgstr ""
+msgstr "Registrarme"
 
 #: agora_core/templates/agora_core/voting_booth.html:376
 msgid "Try this if you are new here"
-msgstr ""
+msgstr "Prueba esta opción si eres nuevo aquí"
 
 #: agora_core/templates/agora_core/voting_booth.html:383
 msgid "DNI escaneado"
@@ -713,52 +720,52 @@ msgstr ""
 
 #: agora_core/templates/agora_core/voting_booth.html:394
 msgid "Name and TWO SURNAMES"
-msgstr ""
+msgstr "Nombre y DOS APELLIDOS"
 
 #: agora_core/templates/agora_core/voting_booth.html:399
-#, fuzzy
 msgid "Username"
-msgstr "Cambiar el nombre de usuario"
+msgstr "Nombre de usuario"
 
 #: agora_core/templates/agora_core/voting_booth.html:417
-#, fuzzy
 msgid "Repeat Password"
-msgstr "Repite la nueva contraseña"
+msgstr "Repite la contraseña"
 
 #: agora_core/templates/agora_core/voting_booth.html:426
 msgid "Register and vote"
-msgstr ""
+msgstr "Registrarme y votar"
 
 #: agora_core/templates/agora_core/voting_booth.html:432
 #: agora_core/templates/agora_core/client/top_navbar.html:103
 msgid "..or enter with FNMT cert"
-msgstr ""
+msgstr "..o entra con el cert. de la FNMT"
 
 #: agora_core/templates/agora_core/voting_booth.html:434
 msgid "Obtain it here"
-msgstr ""
+msgstr "Obtenlo aquí"
 
 #: agora_core/templates/agora_core/voting_booth.html:435
 msgid "or"
-msgstr ""
+msgstr "o"
 
 #: agora_core/templates/agora_core/voting_booth.html:436
 msgid "here with your DNIe"
-msgstr ""
+msgstr "aquí con tu DNIe"
 
 #: agora_core/templates/agora_core/voting_booth.html:441
 msgid "Enter with FNMT certificate and vote"
-msgstr ""
+msgstr "Entra con tu certificado de la FNMT y vota"
 
 #: agora_core/templates/agora_core/voting_booth.html:444
 msgid "Terms of service"
-msgstr ""
+msgstr "Condiciones de uso"
 
 #: agora_core/templates/agora_core/voting_booth.html:446
 msgid ""
 "When you enter using the FNMT certificate or registering, you're accepting "
 "our <a href=\"/misc/page/terms-of-service\">Terms of Service.</a>"
 msgstr ""
+"Cuando entras con el certificado de la FNMT o te registras, estás aceptando"
+"nuestras <a href=\"/misc/page/terms-of-service\">Condiciones de Uso.</a>"
 
 #: agora_core/templates/agora_core/client/action_ao_agora.html:14
 #: agora_core/templates/agora_core/client/action_t_agora.html:15

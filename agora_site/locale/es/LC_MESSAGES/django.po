@@ -37,6 +37,10 @@ msgstr "Gallego"
 msgid "Basque"
 msgstr "Vasco"
 
+#: 
+msgid "Valencian"
+msgstr "Valencià"
+
 #: accounts/forms.py:53 accounts/forms.py:133
 #: accounts/templates/accounts/profile_detail.html:24
 #: agora_core/models/authority.py:28
