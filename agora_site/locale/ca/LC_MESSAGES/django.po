@@ -2310,7 +2310,7 @@ msgstr ""
 
 #: agora_core/templates/agora_core/featured_election.html:130
 msgid "//www.youtube.com/embed/hkLLowa3X_E"
-msgstr "//youtu.be/EX8wF98uB2U"
+msgstr "//www.youtube.com/watch?v=EX8wF98uB2U"
 
 #: agora_core/templates/agora_core/featured_election.html:137
 msgid ""
