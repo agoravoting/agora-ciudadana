@@ -1346,11 +1346,11 @@ msgstr "Gente"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:90
 msgid "Enter with user and password"
-msgstr ""
+msgstr "Entrar con usuario y contraseña"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:95
 msgid "Forgot your password?"
-msgstr ""
+msgstr "¿Olvidaste tu contraseña?"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:97
 msgid "Entrar"
@@ -1363,16 +1363,22 @@ msgid ""
 "\"https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-"
 "certificado-software\" target=\"_blank\">here with your DNIe</a>"
 msgstr ""
+"<a href=\"https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-"
+"certificado-con-dnie\" target=\"_blank\">Obtenlo aquí</a> o <a href="
+"\"https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-"
+"certificado-software\" target=\"_blank\">aquí con tu DNIe</a>"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:109
 msgid "Enter with FNMT certificate"
-msgstr ""
+msgstr "Entra con el cert. de la FNMT"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:116
 msgid ""
 "When you login with your user you are accepting our <a href=\"/misc/page/"
 "terms-of-service\" class=\"inline\">Terms of Service</a>"
 msgstr ""
+"Cuando entras con tu usuario estás aceptando nuestras <a href=\"/misc/page/"
+"terms-of-service\" class=\"inline\">Condiciones de Uso</a>"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:144
 msgid "Log out"
