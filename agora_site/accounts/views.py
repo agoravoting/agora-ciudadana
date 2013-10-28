@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import hashlib
+import json
 
 from django import http
 from django.conf import settings
@@ -40,7 +41,7 @@ from userena.managers import SHA1_RE
 from agora_site.misc.utils import rest
 from agora_site.agora_core.models.agora import Agora
 from agora_site.agora_core.models.castvote import CastVote
-from .forms import RegisterCompleteInviteForm, RegisterCompleteFNMTForm
+from .forms import RegisterCompleteInviteForm, RegisterCompleteFNMTForm, SignupAndVoteForm
 
 class SignUpCompleteView(TemplateView):
     def get(self, request, username):
@@ -61,6 +62,17 @@ class PasswordResetCompleteView(TemplateView):
             'been reset, you can now <a href="%(url)s">log in</a> with your '
             'new password') % dict(url=reverse('userena_signin')))
         return redirect('/')
+
+class SignupAndVoteView(FormView):
+    form_class = SignupAndVoteForm
+
+    def get_form_kwargs(self):
+        kwargs = super(SignupAndVoteView, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
+    def form_valid(self, form):
+        return http.HttpResponse(json.dumps(form.save()))
 
 class RegisterCompleteInviteView(FormView):
     template_name = 'accounts/complete_registration_invite_form.html'

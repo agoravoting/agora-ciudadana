@@ -88,18 +88,21 @@ class SignupForm(forms.Form):
                                                      userena_settings.USERENA_ACTIVATION_REQUIRED)
         return new_user
 
-    def saveWithFirstName(self, auto_join_secret=False):
+    def saveWithFirstName(self, auto_join_secret=False, send_mail=None):
         """ Creates a new user and account. Returns the newly created user. """
         username, email, password, firstname = (self.cleaned_data['username'],
                                      self.cleaned_data['email'],
                                      self.cleaned_data['password1'],
                                      self.cleaned_data['first_name'])
 
+        if send_mail is None:
+            send_mail = userena_settings.USERENA_ACTIVATION_REQUIRED
+
         new_user = UserenaSignup.objects.create_user(username,
                                                      email,
                                                      password,
                                                      not userena_settings.USERENA_ACTIVATION_REQUIRED,
-                                                     userena_settings.USERENA_ACTIVATION_REQUIRED,
+                                                     send_mail,
                                                      firstname, auto_join_secret)
         return new_user
 

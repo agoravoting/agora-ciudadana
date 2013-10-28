@@ -376,7 +376,7 @@
                     <p><%= gettext("Try this if you are new here") %></p>
                     <div class="clearfix"></div>
 
-                    <form id="register_vote_form">
+                    <form id="register_vote_form" enctype="multipart/form-data" method="post">
                         <div class="control-group" id="div_id_scanned_id">
                             <label class="control-label requiredField" for="id_scanned_id">
                                 <p class="help-block" id="hint_id_scanned_id">
@@ -420,6 +420,8 @@
 
                         <div class="clearfix"></div>
                         <input type="hidden" class="hidden-input" value="" />
+                        <input type="hidden" name="csrftoken" value="" />
+                        <input type="hidden" name="ballot_data" id="id_ballot_data" value="" />
                         <a href="#" id="registerAndVote" class="btn btn btn-success btn-large">
                             <%= gettext("Register and vote") %>
                         </a>

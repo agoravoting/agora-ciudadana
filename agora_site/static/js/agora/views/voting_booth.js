@@ -712,8 +712,25 @@
         },
 
         getRegisterFormMetrics: function() {
-            // TODO
-            return [];
+            var checkPass = function(val) {
+                return val == $("#id_password1").val();
+            };
+
+            var checkScannedId = function(val) {
+                return $("#id_scanned_id").get(0).files[0] != undefined;
+            }
+            return [
+                ['#id_first_name', 'presence', gettext('This field is required')],
+                ['#id_username', 'presence', gettext('This field is required')],
+                ['#id_username', 'min-length:3', gettext('Must have at least 3 characters')],
+                ['#id_email', 'presence', gettext('This field is required')],
+                ['#id_email', 'email', gettext('Invalid email')],
+                ['#id_password1', 'presence', gettext('This field is required')],
+                ['#id_password2', 'presence', gettext('This field is required')],
+                ['#id_password1', 'min-length:3', gettext('Must have at least 3 characters')],
+                ['#id_password2', checkPass, gettext('Passwords do not match')],
+                ['#id_scanned_id', checkScannedId, gettext('Attached a file')]
+            ];
         },
 
         startSendingData: function() {
@@ -745,13 +762,12 @@
                 type: 'POST',
             })
             .done(function(data) {
-                // TODO: alert user if he has to check email
                 self.stopSendingData();
                 self.votingBooth.showVoteSent(data);
             })
             .fail(function(data) {
                 self.stopSendingData();
-                alert(gettext("Error casting the ballot, try again or report this problem"));
+                alert(gettext("Error casting the ballot. The given username probably doesn't exist. Try again or report this problem."));
             });
         },
 
@@ -763,6 +779,33 @@
             if (!this.$el.find("#register_vote_form").nod().formIsErrorFree()) {
                 return;
             }
+
+            var ballot = this.votingBooth.ballot;
+            ballot['action'] = 'register_and_vote';
+            ballot['user_id'] = this.$el.find("#id_identification").val();
+            ballot['password'] = this.$el.find("#id_password").val();
+            this.startSendingData();
+            var self = this;
+            var election_id = this.model.get('id');
+            ballot.election_id = election_id;
+            $("#id_ballot_data").attr("value", JSON.stringifyCompat(ballot));
+
+            var jqxhr = $.ajax("/accounts/signup_and_vote/", {
+                type: 'POST',
+                data: new FormData($('#register_vote_form')[0]),
+                cache: false,
+                contentType: false,
+                processData: false
+            })
+            .done(function(data) {
+                self.stopSendingData();
+                self.votingBooth.showVoteSent(data);
+            })
+            .fail(function(data) {
+                console.log(data);
+                self.stopSendingData();
+                alert(gettext("Error casting the ballot. The given username might already exist or the attached file is too big. Try again or report this problem."));
+            });
         },
     });
 

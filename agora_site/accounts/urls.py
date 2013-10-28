@@ -45,6 +45,13 @@ urlpatterns = patterns('',
         },
         name='userena_signup'
     ),
+
+    # Signup, signin and signout
+    url(r'^signup_and_vote/$',
+        accounts_views.SignupAndVoteView.as_view(),
+        name='account_signup_and_vote'
+    ),
+
     url(r'^signin/$',
         userena_views.signin,
         {

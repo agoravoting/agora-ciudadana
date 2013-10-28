@@ -15,6 +15,7 @@
 
 import random
 import os
+import json
 import hashlib
 
 from django.contrib import messages
@@ -45,7 +46,9 @@ from userena.models import UserenaSignup
 from actstream.actions import follow
 from actstream.signals import action
 
-from agora_site.misc.utils import geolocate_ip, get_base_email_context
+from agora_site.misc.utils import geolocate_ip, get_base_email_context, JSONFormField
+from agora_site.agora_core.forms.election import LoginAndVoteForm
+from agora_site.agora_core.models.election import Election
 
 class AccountSignupForm(userena_forms.SignupForm):
     def __init__(self, *args, **kwargs):
@@ -80,6 +83,87 @@ class AccountSignupForm(userena_forms.SignupForm):
         new_user = super(AccountSignupForm, self).saveWithFirstName(auto_join_secret=True)
         signup_object = new_user.save()
         return new_user
+
+class SignupAndVoteForm(userena_forms.SignupForm):
+    existing_user = None
+
+    def __init__(self, request, *args, **kwargs):
+        self.request = request
+        super(SignupAndVoteForm, self).__init__(*args, **kwargs)
+        self.fields.insert(0, 'first_name', django_forms.CharField(label=_("Nombre y DOS APELLIDOS"), required=True, max_length=140))
+
+        # if using fnmt, we require user/pass registration to give a way to
+        # verify their identity
+        if settings.AGORA_REQUEST_SCANNED_ID_ON_REGISTER:
+            self.fields.insert(0, 'scanned_id', django_forms.FileField(label=_("DNI escaneado"), required=True, help_text=u"Adjunta tu DNI escaneado para poder verificar tu identidad (formato pdf o imagen, max. 1MB)"))
+
+    def clean_username(self):
+        """
+        Validate that the username is alphanumeric and is not already in use.
+        Also validates that the username is not listed in
+        ``USERENA_FORBIDDEN_USERNAMES`` list.
+
+        """
+        try:
+            user = User.objects.get(username__iexact=self.cleaned_data['username'])
+        except User.DoesNotExist:
+            pass
+        else:
+            self.existing_user = user
+        if self.cleaned_data['username'].lower() in userena_settings.USERENA_FORBIDDEN_USERNAMES:
+            raise forms.ValidationError(_('This username is not allowed.'))
+        return self.cleaned_data['username']
+
+    def clean_email(self):
+        """ Validate that the e-mail address is unique. """
+        user = User.objects.filter(email__iexact=self.cleaned_data['email'])
+        if user:
+            self.existing_user = user[0]
+        return self.cleaned_data['email']
+
+    def handle_uploaded_file(self, f):
+        file_name = "%s_%s%s" % (self.cleaned_data['username'],
+            hashlib.md5(self.cleaned_data['username'] + settings.AGORA_API_AUTO_ACTIVATION_SECRET).hexdigest(),
+            os.path.splitext(f.name)[1])
+        file_path = os.path.join(settings.MEDIA_ROOT, 'dnis', file_name)
+        with open(file_path, 'wb+') as destination:
+            for chunk in f.chunks():
+                destination.write(chunk)
+
+    def save(self):
+        try:
+            ballot_data_json = None
+            ballot_data_json = json.loads(self.request.POST.get('ballot_data', None))
+            election_id = ballot_data_json['election_id']
+            del ballot_data_json['election_id']
+
+            # must be set
+            ballot_data_json['password'] = "empty"
+            election = get_object_or_404(Election, pk=election_id)
+        except:
+            return dict(error="invalid ballot")
+        if not self.existing_user:
+            if settings.AGORA_REQUEST_SCANNED_ID_ON_REGISTER:
+                self.handle_uploaded_file(self.request.FILES['scanned_id'])
+            new_user = super(SignupAndVoteForm, self).saveWithFirstName(auto_join_secret=True, send_mail=False)
+            new_user.save()
+        else:
+            new_user = self.existing_user
+
+        ballot_data_json['user_id'] = new_user.username
+        login_and_vote_form = LoginAndVoteForm(request=self.request,
+            election=election, data=ballot_data_json)
+        login_and_vote_form.check_user = False
+        login_and_vote_form.cleaned_data = ballot_data_json
+        login_and_vote_form.user = new_user
+        login_and_vote_form.is_active = False
+        login_and_vote_form.bad_password = True
+        if not login_and_vote_form.clean():
+            new_user.delete()
+            return dict(error="invalid ballot")
+        login_and_vote_form.save()
+        return dict(is_counted=False)
+
 
 class AcccountAuthForm(userena_forms.AuthenticationForm):
     def __init__(self, *args, **kwargs):

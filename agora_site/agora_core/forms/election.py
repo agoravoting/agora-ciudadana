@@ -207,6 +207,8 @@ class LoginAndVoteForm(django_forms.ModelForm):
     is_active = True
     user = None
 
+    check_user = True
+
     def __init__(self, request, election, *args, **kwargs):
         super(LoginAndVoteForm, self).__init__(*args, **kwargs)
         self.election = election
@@ -231,42 +233,43 @@ class LoginAndVoteForm(django_forms.ModelForm):
         cleaned_data = super(LoginAndVoteForm, self).clean()
 
         if not self.election.ballot_is_open():
-            raise forms.ValidationError("Sorry, you cannot vote in this election.")
+            raise django_forms.ValidationError("Sorry, you cannot vote in this election.")
 
         if cleaned_data['is_vote_secret'] and not self.election.is_vote_secret:
             raise django_forms.ValidationError("Sorry, this election allows only "
                 "public votes.")
 
         if not 'is_vote_secret' in self.data:
-            raise forms.ValidationError("is_vote_secret is a required field.")
+            raise django_forms.ValidationError("is_vote_secret is a required field.")
 
         cleaned_data['is_vote_secret'] = bool(self.data['is_vote_secret'])
 
-        if 'user_id' not in cleaned_data:
-            raise forms.ValidationError("user_id is a required field.")
+        if self.check_user and 'user_id' not in cleaned_data:
+            raise django_forms.ValidationError("user_id is a required field.")
         if 'password' not in cleaned_data:
-            raise forms.ValidationError("password is a required field.")
+            raise django_forms.ValidationError("password is a required field.")
 
         # check user
-        user_q = User.objects.filter(username=cleaned_data['user_id'])
-        if user_q.count() > 0:
-            self.user = user_q[0]
-        else:
-            user_q = User.objects.filter(email=cleaned_data['user_id'])
-            if user_q.count() == 0:
-                raise forms.ValidationError("User not found.")
-            self.user = user_q[0]
+        if self.check_user:
+            user_q = User.objects.filter(username=cleaned_data['user_id'])
+            if user_q.count() > 0:
+                self.user = user_q[0]
+            else:
+                user_q = User.objects.filter(email=cleaned_data['user_id'])
+                if user_q.count() == 0:
+                    raise forms.ValidationError("User not found.")
+                self.user = user_q[0]
 
-        self.is_active = self.user.is_active
+            self.is_active = self.user.is_active
 
-        # now we have an user, try to login
-        assert self.user
-        try:
-            user = authenticate(identification=self.user.username, password=cleaned_data['password'])
-            if self.user.is_active:
-                login(self.request, user)
-        except Exception, e:
-            self.bad_password = True
+            # now we have an user, try to login
+            assert self.user
+            try:
+                user = authenticate(identification=self.user.username, password=cleaned_data['password'])
+                if self.user.is_active:
+                    login(self.request, user)
+            except Exception, e:
+                self.bad_password = True
 
         return cleaned_data
 
