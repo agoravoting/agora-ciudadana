@@ -3157,20 +3157,19 @@ msgstr ""
 "\">haz clic aquí</a>"
 
 #: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:4
-#, fuzzy, python-format
 msgid ""
 "}We have recorded a vote from you at election %(election_name)s at "
 "%(agora_username)s/%(agora_name)s. But for security reasons we need you to "
 "confirm your vote."
 msgstr ""
 "Hemos registrado tu voto en la votación %(election_name)s en "
-"%(agora_username)s/%(agora_name)s. Puedes volver a votar si quieres: sólo tu "
-"último voto cuenta."
+"%(agora_username)s/%(agora_name)s. Pero por razones de seguridad necesitamos "
+"que confirmes tu voto."
 
 #: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:8
 #, python-format
 msgid "Ballot Confirmation URL: %(confirm_vote_url)s"
-msgstr ""
+msgstr "URL para confirmar tu voto: %(confirm_vote_url)s"
 
 #: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:10
 #: agora_core/templates/agora_core/emails/election_archived.txt:7
@@ -3808,7 +3807,7 @@ msgstr ""
 
 #: templates/base.html:122
 msgid "Press"
-msgstr ""
+msgstr "Prensa"
 
 #: templates/base.html:128
 msgid "Serious Stuff"

@@ -3981,7 +3981,7 @@ msgstr ""
 
 #: templates/base.html:122
 msgid "Press"
-msgstr ""
+msgstr "Prensa"
 
 #: templates/base.html:128
 msgid "Serious Stuff"
