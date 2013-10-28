@@ -1513,17 +1513,25 @@ msgstr ""
 
 
 #:
-msgid "FIJACIÓN DE PRECIOS. ¿Consideras inadecuado el sistema de fijación de precios de la electricidad del proyecto de ley del gobierno y por tanto motivo para presentar enmienda a la totalidad?"
-msgstr "FIXACIÓ DE PREUS. Consideres que mantindre l'inadequat sistema de fixació de preus de l'electricitat és un motiu per a presentar esmena a la totalitat del projecte de llei del govern?"
+msgid "FIJACIÓN DE PRECIOS. ¿Consideras motivo para presentar enmienda a la totalidad que no se aborde el cambio del sistema de fijación de precios de la electricidad en el proyecto de ley del gobierno?"
+msgstr "FIXACIÓ DE PREUS. Consideres motiu per a presentar esmena a la totalitat que no s'aborde el canvi del sistema de fixació de preus de l'electricitat en el projecte de llei del govern?"
 
 #:
 msgid "RENOVABLES. ¿Consideras que hay que presentar una enmienda a la totalidad al proyecto de ley del gobierno por las trabas que establece a las renovables?"
 msgstr "RENOVABLES. Consideres que cal presentar una esmena a la totalitat al projecte de llei del govern pels entrebancs que estableix a les renovables?"
 
 #:
-msgid "AUTOCONSUMO. ¿Consideras justificada la enmienda a la totalidad porque hace inviable el Autoconsumo?"
-msgstr "AUTOCONSUM. Consideres justificada l'esmena a la totalitat perquè fa inviable l'autoconsum?"
+msgid "AUTOCONSUMO. ¿Consideras que las condiciones y trabas que se establecen en la ley para el Autoconsumo justifican la enmienda a la totalidad?"
+msgstr "AUTOCONSUM. Consideres que les condicions i entrebancs que s'estableixen en la llei per a l'autoconsum justifiquen l'esmena a la totalitat?"
 
 #:
-msgid "MARCO ECONÓMICO FINANCIERO. ¿Tiene sentido una ley del sector eléctrico que nace para acabar con el déficit de tarifa, pero que no ha venido precedida de la necesaria auditoría de costes que nos permita saber cómo se ha generado ese déficit?"
-msgstr "MARC ECONÒMIC FINANCER. Té sentit una llei del sector elèctric que naix per a acabar amb el dèficit de tarifa, però que no ha vingut precedida de la necessària auditoria de costos que ens permeta saber com s'ha generat eixe dèficit?"
+msgid "MARCO ECONÓMICO FINANCIERO. ¿Consideras que hubiera sido necesario una auditoría de costes sobre el déficit de tarifa como paso previo a la elaboración de esta ley?"
+msgstr "MARC ECONÒMIC FINANCER. Consideres que haguera estat necessari una auditoria de costos sobre el dèficit de tarifa com a pas previ a l'elaboració d'aquesta llei?"
+
+
+
+
+
+
+
+
