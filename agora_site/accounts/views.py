@@ -65,6 +65,7 @@ class PasswordResetCompleteView(TemplateView):
         return redirect('/')
 
 class SignupAndVoteView(FormView):
+    template_name = 'accounts/empty.html'
     form_class = SignupAndVoteForm
 
     def get_form_kwargs(self):
