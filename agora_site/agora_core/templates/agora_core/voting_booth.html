@@ -102,7 +102,7 @@
             </div>
         </div>
         <div class="modal-header hero-vote question">
-            <h2><%= question %></h2>
+            <h2><%= gettext(question) %></h2>
             <small>
             <div class="inline">
                 <%= interpolate(gettext("Question #%s of %s"), [question_num + 1, num_questions]) %> —
@@ -159,7 +159,7 @@
             </div>
         </div>
         <div class="modal-header hero-vote question">
-            <h2><%= question %></h2>
+            <h2><%= gettext(question) %></h2>
             <small>
             <div class="inline">
                 <%= interpolate(gettext("Question #%s of %s"), [question_num + 1, num_questions]) %> —
@@ -231,7 +231,7 @@
                     <thead>
                         <tr><th>
                             <%= interpolate(gettext("Question #%s"), [i + 1]) %>.
-                            <strong><%= questions[i].question %></strong>
+                            <strong><%= gettext(questions[i].question) %></strong>
                             <a href="#" data-id="<%= i %>">(<%= gettext("Change choices") %>)</a>
                         </th></tr>
                     </thead>
