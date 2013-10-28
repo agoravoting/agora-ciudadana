@@ -397,7 +397,7 @@ class AgoraResource(GenericResource):
 
         def get_queryset(agora):
             from guardian.shortcuts import get_users_with_perms
-            u_filter = request.GET.get('username', '')            
+            u_filter = request.GET.get('username', '')
             users = get_users_with_perms(agora, attach_perms=True)
             users = [k.username for k, v in users.items() if "requested_membership" in v]                       
             queryset = self.filter_user(request, User.objects.filter(username__in=users))
