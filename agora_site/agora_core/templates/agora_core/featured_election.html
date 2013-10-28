@@ -121,154 +121,140 @@
             <div class="row">
                 {% block running-board  %}
                     <div class="span7">
-                        <h1 class="home-loggedin">Democracia Directa en el Congreso de los Diputados</h1>
+                        <h1 class="home-loggedin">{% blocktrans %}Democracia Directa en el Congreso de los Diputados{% endblocktrans %}</h1>
 
-                        <p class="motiv">¿Ya te has leído los <strong>cuatro bloques</strong> sobre los que decidir?</p>
-                        <a href="/compromis_equo/congreso/election/reforma-energetica/vote" class="btn btn-primary btn-success btn-top">Vota la Reforma Energética</a>
+                        <p class="motiv">{% blocktrans %}¿Ya te has leído los <strong>cuatro bloques</strong> sobre los que decidir?{% endblocktrans %}</p>
+                        <a href="/compromis_equo/congreso/election/reforma-energetica/vote" class="btn btn-primary btn-success btn-top">{% blocktrans %}Vota la Reforma Energética{% endblocktrans %}</a>
                     </div>
                     <div class="span5" id="youtube-video">
-                        <iframe width="370" height="220" frameborder="0" allowfullscreen="" src="//www.youtube.com/embed/hkLLowa3X_E" style="margin-bottom: -10px;"></iframe>
+                        <iframe width="370" height="220" frameborder="0" allowfullscreen="" src="{% blocktrans %}//www.youtube.com/embed/hkLLowa3X_E{% endblocktrans %}" style="margin-bottom: -10px;"></iframe>
                     </div>
                 {% endblock %}
             </div>
         </div>
     </div>
     <div class="home-main container">
-        <p class="motiv2">{% blocktrans %}Hemos dividido en <strong>cuatro bloques</strong> los aspectos que consideramos más significativos de la propuesta de reforma del sector eléctrico. Informáte y participa votando, dinos si consideras que son razones suficientes para presentar una enmienda a la totalidad de este proyecto de ley</p>{% endblocktrans %}
+        <p class="motiv2">{% blocktrans %}Hemos dividido en <strong>cuatro bloques</strong> los aspectos que consideramos más significativos de la propuesta de reforma del sector eléctrico. Informáte y participa votando, dinos si consideras que son razones suficientes para presentar una enmienda a la totalidad de este proyecto de ley{% endblocktrans %}</p>
 
 
         <div class="span6 block_1">
             <div class="header_block">
                 <span class="badge">1</span>
-                <h3>¿Sabes que quieren privatizar el sol?</h3>
+                <h3>{% blocktrans %}¿Sabes que quieren privatizar el sol?{% endblocktrans %}</h3>
             </div>
             <div class="content_block">
-            <iframe width="250" height="188" src="//www.youtube.com/embed/LS678iuekqM?rel=0" frameborder="0" allowfullscreen></iframe>
-                <h4>Autoconsumo Energético</h4>
-                <p>La nueva ley es la más regresiva del mundo en materia de <strong>autoconsumo</strong>, esto es, la posibilidad de que cada ciudadano produzca su propia energía.
+            <iframe width="250" height="188" src="//youtu.be/JB8qT1e8qNY" frameborder="0" allowfullscreen></iframe>
+                <h4>{% blocktrans %}Autoconsumo Energético{% endblocktrans %}</h4>
+                <p>{% blocktrans %}La nueva ley es la más regresiva del mundo en materia de <strong>autoconsumo</strong>, esto es, la posibilidad de que cada ciudadano produzca su propia energía.
         Nos obligan a pagar por la electricidad que obtenemos de nuestros propios paneles. Algo tan absurdo como si tuviéramos que pagar a la tienda de la esquina por cada tomate que recogiéramos de nuestra huerta.
-        Esa es sólo una de las muchas dificultades que la nueva ley pone al autoconsumo, porque nace con un único objetivo: impedir que la gente coloque paneles que hagan competencia a las grandes eléctricas.</p>
+        Esa es sólo una de las muchas dificultades que la nueva ley pone al autoconsumo, porque nace con un único objetivo: impedir que la gente coloque paneles que hagan competencia a las grandes eléctricas.{% endblocktrans %}</p>
                 </div>
             <div class="footer_block">
-                <a href="#modal_autoconsumo" data-toggle="modal">Más información +</a>
+                <a href="#modal_autoconsumo" data-toggle="modal">{% blocktrans %}Más información +{% endblocktrans %}</a>
             </div>
         </div>
 
         <div class="span6 block_2">
             <div class="header_block">
                 <span class="badge">2</span>
-                <h3>¿Quién gana con la expulsión de las renovables?</h3>
+                <h3>{% blocktrans %}¿Quién gana con la expulsión de las renovables?{% endblocktrans %}</h3>
             </div>
             <div class="content_block">
-                <iframe width="250" height="188" src="//www.youtube.com/embed/LS678iuekqM?rel=0" frameborder="0" allowfullscreen></iframe>
-                <h4>Renovables</h4>
-                <p>Una reforma que expulsa a las instalaciones de energía limpia y frena su desarrollo en el futuro.
+                <iframe width="250" height="188" src="//youtu.be/6Ut-lc5CfAw" frameborder="0" allowfullscreen></iframe>
+                <h4>{% blocktrans %}Renovables{% endblocktrans %}</h4>
+                <p>{% blocktrans %}Una reforma que expulsa a las instalaciones de energía limpia y frena su desarrollo en el futuro.
         Nunca antes, como con las <strong>renovables</strong>, el Gobierno había primero fomentado y luego traicionado las legítimas expectativas de los que apostaron por el sector.
         Hacia el futuro además las nuevas instalaciones van a autorizarse sólo con carácter excepcional.
-        Las únicas tecnologías que nos pueden asegurar la independencia energética y la sostenibilidad medioambiental se han convertido en la pieza a batir.</p>
+        Las únicas tecnologías que nos pueden asegurar la independencia energética y la sostenibilidad medioambiental se han convertido en la pieza a batir.{% endblocktrans %}</p>
             </div>
             <div class="footer_block">
-                <a href="#modal_renovables" data-toggle="modal">Más información +</a>
+                <a href="#modal_renovables" data-toggle="modal">{% blocktrans %}Más información +{% endblocktrans %}</a>
             </div>
         </div>
 
         <div class="span6 block_3">
             <div class="header_block">
                 <span class="badge">3</span>
-                <h3>Déficit de Tarifa ¿Quién debe a quién?</h3>
+                <h3>{% blocktrans %}Déficit de Tarifa ¿Quién debe a quién?{% endblocktrans %}</h3>
                 </div>
                 <div class="content_block">
-                <iframe width="250" height="188" src="//www.youtube.com/embed/LS678iuekqM?rel=0" frameborder="0" allowfullscreen></iframe>
-                <h4>Estabilidad Económico-financiera</h4>
-                <p>La ley se presenta como la única solución al problema del <strong>déficit de tarifa</strong> (uno más)
+                <iframe width="250" height="188" src="//youtu.be/uxDH3hGuAYI" frameborder="0" allowfullscreen></iframe>
+                <h4>{% blocktrans %}Estabilidad Económico-financiera{% endblocktrans %}</h4>
+                <p>{% blocktrans %}La ley se presenta como la única solución al problema del <strong>déficit de tarifa</strong> (uno más)
         Pero eso sólo será posible si se hace una auténtica auditoría de costes del sistema, aspecto éste que no se contempla en la reforma y que sistemáticamente ha sido bloqueada por el Gobierno.
-        Ni tampoco será posible si no se elimina la absoluto discrecionalidad con la que el Gobierno va a poder seguir determinando los costes e ingresos del sector.</p>
+        Ni tampoco será posible si no se elimina la absoluto discrecionalidad con la que el Gobierno va a poder seguir determinando los costes e ingresos del sector.{% endblocktrans %}</p>
             </div>
             <div class="footer_block">
-                <a href="#modal_estabilidad" data-toggle="modal">Más información +</a>
+                <a href="#modal_estabilidad" data-toggle="modal">{% blocktrans %}Más información +{% endblocktrans %}</a>
             </div>
         </div>
 
         <div class="span6 block_4">
             <div class="header_block">
                 <span class="badge">4</span>
-                <h3>Una reforma que no soluciona la subida de la luz</h3>
+                <h3>{% blocktrans %}Una reforma que no soluciona la subida de la luz{% endblocktrans %}</h3>
                 </div>
                 <div class="content_block">
-                <iframe width="250" height="188" src="//www.youtube.com/embed/LS678iuekqM?rel=0" frameborder="0" allowfullscreen></iframe>
-                <h4>Mecanismo de fijación de precios</h4>
-                <p>No tiene sentido una reforma del sector eléctrico que deja fuera el <strong>mecanismo de precios</strong>.
+                <iframe width="250" height="188" src="//youtu.be/6w4VHEDtyCc" frameborder="0" allowfullscreen></iframe>
+                <h4>{% blocktrans %}Mecanismo de fijación de precios{% endblocktrans %}</h4>
+                <p>{% blocktrans %}No tiene sentido una reforma del sector eléctrico que deja fuera el <strong>mecanismo de precios</strong>.
         En el sistema actual, que no se toca, el precio de las tecnologías más caras (gas y carbón) sirve para retribuir también a centrales antiguas y amortizadas, como son las nucleares y las hidroeléctricas. Las grandes compañías se llevan así beneficios extraordinarios que tampoco se cuestionan.
-        El sistema marginalista de determinación de los precios resulta además incompatible con un sistema en el que cada vez sea mayor la penetración de renovables. Motivo más que suficiente para mantenerlo.</p>
+        El sistema marginalista de determinación de los precios resulta además incompatible con un sistema en el que cada vez sea mayor la penetración de renovables. Motivo más que suficiente para mantenerlo.{% endblocktrans %}</p>
             </div>
             <div class="footer_block">
-                <a href="#modal_formacion" data-toggle="modal">Más información +</a>
+                <a href="#modal_formacion" data-toggle="modal">{% blocktrans %}Más información +{% endblocktrans %}</a>
             </div>
         </div>
         <div class="clearfix"></div>
-        <a href="/compromis_equo/congreso/election/reforma-energetica/vote" class="btn btn-block btn-primary btn-success boton">Vota la Reforma Energética</a>
+        <a href="/compromis_equo/congreso/election/reforma-energetica/vote" class="btn btn-block btn-primary btn-success boton">{% blocktrans %}Vota la Reforma Energética{% endblocktrans %}</a>
 
         <div id="modal_autoconsumo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3>Autoconsumo Energético</h3>
+                <h3>{% blocktrans %}Autoconsumo Energético{% endblocktrans %}</h3>
             </div>
             <div class="modal-body">
-                <p>El autoconsumo a partir de renovables debería ser la primera fuente de energía del sistema eléctrico y, como tal, ser no solo protegida sino incentivada.</p>
-
+                <p>{% blocktrans %}El autoconsumo a partir de renovables debería ser la primera fuente de energía del sistema eléctrico y, como tal, ser no solo protegida sino incentivada.</p>
                 <p>El proyecto de ley, por el contrario, pretende penalizarlo en términos que han sido incluso motivo de mofa a nivel internacional. El concepto de peaje de respaldo -"impuesto al sol" en términos coloquiales-, para el autoconsumo instantáneo -es decir, el que se produce en la instalación interior del consumidor, siendo indetectable fuera de ésta- es tan perverso y absurdo que su generalización a otros sistemas ha sido instantánea: tomates, chimeneas, bicicletas, WhatsApp...</p>
-
                 <p>Que el sistema eléctrico español carezca de la más mínima transparencia -hecho, por cierto, que el Proyecto no aborda- y en consecuencia no estén adecuadamente asignados los costes de los diferentes servicios entre los beneficiarios de los mismos no justifica que se impongan barreras a un nuevo modelo energético que promete revolucionar completamente el sector.</p>
-
                 <p>El derecho a la agrupación de consumidores para abastecerse a través de una instalación compartida conectada a sus redes se omite en el proyecto de ley, lo que dificulta enormemente su desarrollo, por ejemplo, en comunidades de vecinos que, no olvidemos, es donde reside más del 80% de la población española.</p>
-
                 <p>Hay que destacar, asimismo, que, en contra de las directivas europeas, el proyecto de ley en lugar de facilitar la tramitación administrativa del autoconsumo, la complica aún más. Las pequeñas instalaciones, en la medida en la que no tengan efectos sobre la seguridad de suministro, deberían instalarse sin necesidad de tramitación previa alguna y, en todo caso, ser comunicadas a posterior a la administración competente. Todo lo demás es innecesario.</p>
-
-                <p>El proyecto de ley adolece, por último, de la creación de un sistema específico de balance neto -prometido, por otra parte, por el ministro Soria- que permitiera a los consumidores compensar sus excedentes energéticos instantáneos con déficits posteriores sin necesidad de que éstos tengan tratamiento de empresarios y pagando, bajo criterios objetivos, el coste que se origine al sistema por el "almacenamiento" de energía.</p>
+                <p>El proyecto de ley adolece, por último, de la creación de un sistema específico de balance neto -prometido, por otra parte, por el ministro Soria- que permitiera a los consumidores compensar sus excedentes energéticos instantáneos con déficits posteriores sin necesidad de que éstos tengan tratamiento de empresarios y pagando, bajo criterios objetivos, el coste que se origine al sistema por el "almacenamiento" de energía.{% endblocktrans %}</p>
             </div>
             <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                <button class="btn" data-dismiss="modal" aria-hidden="true">{% blocktrans %}Cerrar{% endblocktrans %}</button>
             </div>
         </div>
 
         <div id="modal_renovables" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3>Renovables</h3>
+                <h3>{% blocktrans %}Renovables{% endblocktrans %}</h3>
             </div>
             <div class="modal-body">
-                <p>El nuevo sistema retributivo obvia las características de las instalaciones renovables y atenta contra su línea de flotación: la seguridad jurídica.</p>
-
+                <p>{% blocktrans %}El nuevo sistema retributivo obvia las características de las instalaciones renovables y atenta contra su línea de flotación: la seguridad jurídica.</p>
                 <p>No es admisible, en primer lugar, que se modifiquen con carácter retroactivo las reglas de juego de las instalaciones que fueron construidas con anterioridad confiando en una retribución estable que garantizaba el Boletín Oficial del Estado. Es claro que la espectacular evolución de las renovables obliga a permanentes cambios en su sistema retributivo; pero éstos deben proyectarse siempre para las nuevas instalaciones, jamás deben afectar a las instalaciones ya construidas.</p>
-
                 <p>En cuanto al sistema retributivo para las nuevas instalaciones, resulta incompatible con las características de las renovables el hecho de que sea revisable cada tres años, así como que lo hagan depender del precio del mercado eléctrico.</p>
-
                 <p>Relegar, por otra parte, la construcción de nuevas renovables a situaciones de excepcionalidad o imposición externa es un error estratégico colosal: España tiene una dependencia energética exterior de más del 75%, muy superior al 54% de media de la Unión Europea, lo que le ha costado en 2012 más de 45.000 M€, el 4,5% del PIB, en importaciones netas de hidrocarburos. Si para la UE el desarrollo de las renovables es prioritario, para España resulta absolutamente necesario para salir de la actual crisis.</p>
-
                 <p>Debe aprovecharse, en consecuencia, el momento actual para promover un mayor desarrollo de las renovables que incluya un plan gradual de sustitución de centrales basadas en combustibles fósiles al menor coste posible.</p>
-
-                <p>Por último, la propuesta contenida en el proyecto de ley de que el permiso de acceso a la red pueda ser denegado por criterios de "sostenibilidad y eficiencia económica del sistema", lo que resulta incompatible con los principios básicos de liberalización de mercados. El principio de red única exige que la única razón para denegar el acceso a la misma sea su falta de capacidad. Dejar en manos del propietario de la red -frecuentemente, por otra parte, perteneciente a un grupo empresarial con intereses en generación- otros criterios para denegar el acceso a la misma supone un claro obstáculo al desarrollo de las renovables.</p>
+                <p>Por último, la propuesta contenida en el proyecto de ley de que el permiso de acceso a la red pueda ser denegado por criterios de "sostenibilidad y eficiencia económica del sistema", lo que resulta incompatible con los principios básicos de liberalización de mercados. El principio de red única exige que la única razón para denegar el acceso a la misma sea su falta de capacidad. Dejar en manos del propietario de la red -frecuentemente, por otra parte, perteneciente a un grupo empresarial con intereses en generación- otros criterios para denegar el acceso a la misma supone un claro obstáculo al desarrollo de las renovables.{% endblocktrans %}</p>
             </div>
             <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                <button class="btn" data-dismiss="modal" aria-hidden="true">{% blocktrans %}Cerrar{% endblocktrans %}</button>
             </div>
         </div>
 
         <div id="modal_estabilidad" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3>Estabilidad Económico-Financiera</h3>
+                <h3>{% blocktrans %}Estabilidad Económico-Financiera{% endblocktrans %}</h3>
             </div>
             <div class="modal-body">
-                <p>El proyecto de ley se ha presentado como el que acabará con la detestable práctica de los últimos Gobiernos de reconocer a las compañías del sector unos costes que luego no eran trasladados al consumidor, generando el denominado déficit de tarifa. </p>
-
+                <p>{% blocktrans %}El proyecto de ley se ha presentado como el que acabará con la detestable práctica de los últimos Gobiernos de reconocer a las compañías del sector unos costes que luego no eran trasladados al consumidor, generando el denominado déficit de tarifa. </p>
                 <p>Sin perjuicio de que no solo debiera perseguirse la sostenibilidad económica del sistema, sino también la seguridad de abastecimiento y la compatibilidad social y medioambiental,  el objetivo es loable; pero la forma en la que se instrumenta no lo es. </p>
-
                 <p>En primer lugar porque desde el año 2009 los sucesivos Gobiernos vienen comprometiéndose a acabar con el déficit de tarifa y plasmando su compromiso en normas con rango de ley que luego incumplen sistemáticamente. El último ejemplo, muy reciente, mediante el Real Decreto-ley 29/2012, de 28 de diciembre, de mejora de gestión y protección social en el Sistema Especial para Empleados de Hogar y otras medidas de carácter económico y social, que el 28 de diciembre pasado eliminaba de forma sorpresiva los límites legales para la generación del déficit en el presente año 2013. El Gobierno, sencillamente, no tiene credibilidad cuando en lugar de asegurar el cumplimiento de las leyes es el primero en incumplirlas.  </p>
-
                 <p>En segundo lugar hay que destacar que la inmensa mayoría de la población (más del 95% según las últimas encuestas) exige una auditoría de costes del sector eléctrico que permita determinar si los que se les reconocen a las empresas del sector son razonables.</p>
-
-                <p>Y en tercer y último lugar, porque el proyecto de ley sigue permitiendo absoluta discrecionalidad al Gobierno para determinar los costes e ingresos previstos en el sector eléctrico. Es previsible, por tanto, que sigamos asistiendo al deplorable espectáculo que hemos observado en los últimos años y que ha sido incluso sancionado por el Tribunal Supremo en el que las previsiones se realizan sin objetividad alguna y se generan déficits de tarifa "latentes" que, inexorablemente, acaban emergiendo.</p>
+                <p>Y en tercer y último lugar, porque el proyecto de ley sigue permitiendo absoluta discrecionalidad al Gobierno para determinar los costes e ingresos previstos en el sector eléctrico. Es previsible, por tanto, que sigamos asistiendo al deplorable espectáculo que hemos observado en los últimos años y que ha sido incluso sancionado por el Tribunal Supremo en el que las previsiones se realizan sin objetividad alguna y se generan déficits de tarifa "latentes" que, inexorablemente, acaban emergiendo.{% endblocktrans %}</p>
             </div>
             <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
@@ -278,25 +264,22 @@
         <div id="modal_formacion" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3>Formación de Precios</h3>
+                <h3>{% blocktrans %}Formación de Precios{% endblocktrans %}</h3>
             </div>
             <div class="modal-body">
-                <p>Un cambio en el sistema de formación de precios eléctricos, verdadera piedra angular del sector, no se ha incorporado en el proyecto de ley. </p>
+                <p>{% blocktrans %}Un cambio en el sistema de formación de precios eléctricos, verdadera piedra angular del sector, no se ha incorporado en el proyecto de ley. </p>
                 <p>Según declaraciones del secretario de estado de energía, se pretende abordar una vez aprobada la ley, lo que no tiene sentido debido a que influye directamente en la configuración del resto del sistema.</p>
-                <p>El sistema marginalista se ha demostrado inadecuado porque:</p>
+                <p>El sistema marginalista se ha demostrado inadecuado porque:{% endblocktrans %}</p>
                 <ul>
-                <li>Genera retribuciones excesivas a centrales construidas bajo regímenes regulados anteriores (principalmente nuclear e hidráulica) que han gozado de una garantía de retorno de la inversión inexistente para las centrales construidas a partir de 1997. Las tecnologías involucradas, además, impiden por sus características que nuevos competidores disputen las rentas que obtienen.</li>
+                <li>{% blocktrans %}Genera retribuciones excesivas a centrales construidas bajo regímenes regulados anteriores (principalmente nuclear e hidráulica) que han gozado de una garantía de retorno de la inversión inexistente para las centrales construidas a partir de 1997. Las tecnologías involucradas, además, impiden por sus características que nuevos competidores disputen las rentas que obtienen.</li>
                 <li>Es incompatible con una alta penetración de renovables. Las renovables, al contrario de las fósiles, no tienen prácticamente costes variables y la inmensa mayoría de los costes fijos quedan determinados en el momento de la inversión. Requieren, por tanto, de marcos retributivos estables y no pueden estar sometidas a los vaivenes de los precios de los combustibles fósiles. Hay que entender que se trata de tener garantía en el precio a futuro de la energía, por lo que no tiene sentido que la retribución dependa del precio de un mercado que varía en cada hora. Si el mercado arroja precios inferiores a los que necesitan las renovables, las inversiones devienen ruinosas; si el precio es demasiado alto, pueden obtener sobreretribuciones injustificadas.</li>
-                <li>Como consecuencia de la entrada de renovables a precio cero (al no tener costes variables son precio-aceptantes) en el mercado, se produce una disminución muy importante del precio marginal que impide a las centrales de gas recuperar sus costes. Esto provoca, a su vez, que estas centrales exijan pagos externos al propio mercado que lo distorsionan.</li>
+                <li>Como consecuencia de la entrada de renovables a precio cero (al no tener costes variables son precio-aceptantes) en el mercado, se produce una disminución muy importante del precio marginal que impide a las centrales de gas recuperar sus costes. Esto provoca, a su vez, que estas centrales exijan pagos externos al propio mercado que lo distorsionan.{% endblocktrans %}</li>
                 </ul>
 
-                <p>En la actualidad ninguna central eléctrica en el sistema español se retribuye únicamente a través del mercado marginalista.</p>
-
+                <p>{% blocktrans %}En la actualidad ninguna central eléctrica en el sistema español se retribuye únicamente a través del mercado marginalista.</p>
                 <p>En resumen: el mercado español, caracterizado por una reducida capacidad de interconexión con el norte de Europa, alta penetración de renovables y una importante cuota de mercado (40%) de centrales en clara situación de ventaja competitiva respecto al resto por haber sido construidas bajo garantía de recuperación de sus inversiones, requiere de un sistema diferente de formación de precios que conduzca a un mayor acercamiento de éstos a los costes de las centrales.</p>
-
                 <p>España debe asumir el liderazgo perdido en cuanto a proponer cambios profundos en un sistema eléctrico en el que algunas de las tecnologías renovables ya son plenamente competitivas con las convencionales sin necesidad de traer a colación el arrollador balance de externalidades positivas a su favor.</p>
-
-                <p>Debe olvidarse la idea de forzar a las renovables a adaptarse a un sistema diseñado para las fósiles y diseñar un nuevo modelo pensado para las renovables en el que las tecnologías fósiles -a sustituir gradualmente- que se sigan utilizando tengan, a su vez, un retorno razonable de la inversión.</p>
+                <p>Debe olvidarse la idea de forzar a las renovables a adaptarse a un sistema diseñado para las fósiles y diseñar un nuevo modelo pensado para las renovables en el que las tecnologías fósiles -a sustituir gradualmente- que se sigan utilizando tengan, a su vez, un retorno razonable de la inversión.{% endblocktrans %}</p>
             </div>
             <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-21 16:33+0200\n"
+"POT-Creation-Date: 2013-10-28 02:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,29 +34,31 @@ msgstr ""
 msgid "Basque"
 msgstr ""
 
-#: accounts/forms.py:53 accounts/forms.py:133
-#: accounts/templates/accounts/profile_detail.html:24
-#: agora_core/models/authority.py:28
-msgid "Name"
+#: accounts/forms.py:54
+msgid "Nombre y DOS APELLIDOS"
 msgstr ""
 
-#: accounts/forms.py:57 accounts/forms.py:134 accounts/forms.py:218
+#: accounts/forms.py:59
+msgid "DNI escaneado"
+msgstr ""
+
+#: accounts/forms.py:65 accounts/forms.py:148 accounts/forms.py:232
 msgid "Sign up"
 msgstr ""
 
-#: accounts/forms.py:77
+#: accounts/forms.py:91
 #, python-format
 msgid "<a href=\"%(url)s\">Forgot your "
 msgstr ""
 
-#: accounts/forms.py:80 accounts/templates/accounts/auth_forms.html:9
+#: accounts/forms.py:94 accounts/templates/accounts/auth_forms.html:9
 #: accounts/templates/accounts/auth_forms.html:31
 #: accounts/templates/accounts/signin_form.html:8
 #: accounts/templates/accounts/signin_form.html:31
 msgid "Log in"
 msgstr ""
 
-#: accounts/forms.py:87 accounts/templates/accounts/email_form.html:12
+#: accounts/forms.py:101 accounts/templates/accounts/email_form.html:12
 #: accounts/templates/accounts/email_form.html:19
 #: accounts/templates/accounts/password_form.html:14
 #: accounts/templates/accounts/profile_detail.html:17
@@ -65,61 +67,66 @@ msgstr ""
 msgid "Change email"
 msgstr ""
 
-#: accounts/forms.py:95
+#: accounts/forms.py:109
 msgid "Reset Password"
 msgstr ""
 
-#: accounts/forms.py:96 accounts/urls.py:70 accounts/urls.py:91
+#: accounts/forms.py:110 accounts/urls.py:70 accounts/urls.py:91
 msgid "Reset password"
 msgstr ""
 
-#: accounts/forms.py:102
+#: accounts/forms.py:116
 msgid "Set new Password"
 msgstr ""
 
-#: accounts/forms.py:103
+#: accounts/forms.py:117
 msgid "Set new password"
 msgstr ""
 
-#: accounts/forms.py:117
+#: accounts/forms.py:131
 msgid "Username"
 msgstr ""
 
-#: accounts/forms.py:118 agora_core/forms/user.py:338
+#: accounts/forms.py:132 agora_core/forms/user.py:383
 msgid "Username must contain only letters, numbers, dots and underscores."
 msgstr ""
 
-#: accounts/forms.py:121
+#: accounts/forms.py:135
 msgid "Create password"
 msgstr ""
 
-#: accounts/forms.py:124
+#: accounts/forms.py:138
 msgid "Repeat password"
 msgstr ""
 
-#: accounts/forms.py:148 agora_core/forms/user.py:358
+#: accounts/forms.py:147 accounts/templates/accounts/profile_detail.html:24
+#: agora_core/models/authority.py:28
+msgid "Name"
+msgstr ""
+
+#: accounts/forms.py:162 agora_core/forms/user.py:403
 msgid "This username is already taken."
 msgstr ""
 
-#: accounts/forms.py:150 agora_core/forms/user.py:360
+#: accounts/forms.py:164 agora_core/forms/user.py:405
 msgid "This username is not allowed."
 msgstr ""
 
-#: accounts/forms.py:162 agora_core/forms/__init__.py:206
-#: agora_core/forms/user.py:386
+#: accounts/forms.py:176 agora_core/forms/__init__.py:206
+#: agora_core/forms/user.py:440
 msgid "The two password fields didn't match."
 msgstr ""
 
-#: accounts/forms.py:196 accounts/forms.py:264
+#: accounts/forms.py:210 accounts/forms.py:278
 msgid "Your account has been activated and you have been signed in."
 msgstr ""
 
-#: accounts/forms.py:209 accounts/templates/accounts/profile_detail.html:27
+#: accounts/forms.py:223 accounts/templates/accounts/profile_detail.html:27
 #: agora_core/forms/__init__.py:113
 msgid "Email"
 msgstr ""
 
-#: accounts/forms.py:230
+#: accounts/forms.py:244
 msgid "This email is already taken."
 msgstr ""
 
@@ -130,28 +137,59 @@ msgid ""
 "time.</p>"
 msgstr ""
 
-#: accounts/views.py:36
+#: accounts/views.py:47
 msgid ""
 "Registration successful! We have sent the activation link to your email "
 "address, look it up. If you don't receive the email, please try to locate it "
-"in the SPAM folder."
+"in the SPAM folder. <strong>You will only be able to vote when we review and "
+"verify your scanned ID.</strong>"
 msgstr ""
 
-#: accounts/views.py:43
+#: accounts/views.py:54
 msgid ""
 "An e-mail has been sent to you which explains how to reset your password"
 msgstr ""
 
-#: accounts/views.py:49
+#: accounts/views.py:60
 #, python-format
 msgid ""
 "Your password has been reset, you can now <a href=\"%(url)s\">log in</a> "
 "with your new password"
 msgstr ""
 
-#: accounts/views.py:75 accounts/views.py:78 accounts/views.py:81
-#: accounts/views.py:107 accounts/views.py:110 accounts/views.py:113
+#: accounts/views.py:86 accounts/views.py:89 accounts/views.py:92
+#: accounts/views.py:100 accounts/views.py:217 accounts/views.py:220
+#: accounts/views.py:223
 msgid "Invalid activation link."
+msgstr ""
+
+#: accounts/views.py:128
+#, python-format
+msgid ""
+"Your account has been activated, but <strong>in order to vote have to verify "
+"your ID</strong> scanning attachment you sent us. Stay tuned "
+"<strong>attentive to your email</strong>, soon verify your identity and you "
+"will get an email saying you've entered the agora <strong>%s</strong> - You "
+"can then vote on the bill and make history with us."
+msgstr ""
+
+#: accounts/views.py:137
+msgid "Invalid login link."
+msgstr ""
+
+#: accounts/views.py:150 accounts/views.py:170
+msgid "Invalid confirmation link."
+msgstr ""
+
+#: accounts/views.py:186
+msgid "Your ballot has been confirmed and was successfully cast"
+msgstr ""
+
+#: accounts/views.py:192
+msgid ""
+"Your email address has been confirmed, but your ballot will not be confirmed "
+"until we manually verify your identity. We'll try to do it as soon as "
+"possible, and we'll keep you posted."
 msgstr ""
 
 #: accounts/templates/accounts/activate_fail.html:4
@@ -197,25 +235,55 @@ msgid "An account in %(SITE_NAME)s is required to continue."
 msgstr ""
 
 #: accounts/templates/accounts/auth_forms.html:44
-#: accounts/templates/accounts/signin_form.html:45
+#: accounts/templates/accounts/signin_form.html:44
 msgid "Use your account in.."
 msgstr ""
 
 #: accounts/templates/accounts/auth_forms.html:45
-#: accounts/templates/accounts/signin_form.html:46
+#: accounts/templates/accounts/signin_form.html:45
 msgid "You can log in using your account in Twitter."
 msgstr ""
 
 #: accounts/templates/accounts/auth_forms.html:51
-#: accounts/templates/accounts/signin_form.html:52
+#: accounts/templates/accounts/signin_form.html:51
 msgid "Privacy"
 msgstr ""
 
 #: accounts/templates/accounts/auth_forms.html:52
-#: accounts/templates/accounts/signin_form.html:53
+#: accounts/templates/accounts/signin_form.html:52
 msgid ""
 "We won't give any private data to Twitter and we will not use your profile "
 "to post anything without your permission."
+msgstr ""
+
+#: accounts/templates/accounts/auth_forms.html:57
+#: accounts/templates/accounts/signin_form.html:57
+msgid "Enter with FNMT"
+msgstr ""
+
+#: accounts/templates/accounts/auth_forms.html:59
+#: accounts/templates/accounts/signin_form.html:59
+msgid ""
+"You can enter this site using your FNMT certificate. <a href=\"#\">More "
+"information here</a>."
+msgstr ""
+
+#: accounts/templates/accounts/auth_forms.html:63
+#: accounts/templates/accounts/signin_form.html:63
+msgid "Enter using FNMT certificate"
+msgstr ""
+
+#: accounts/templates/accounts/auth_forms.html:67
+#: accounts/templates/accounts/signin_form.html:67
+msgid "Terms of service"
+msgstr ""
+
+#: accounts/templates/accounts/auth_forms.html:69
+#: accounts/templates/accounts/signin_form.html:69
+#, python-format
+msgid ""
+"When you enter using the FNMT certificate you're accepting our <a href="
+"\"%(tos_url)s\">Terms of Service.</a>"
 msgstr ""
 
 #: accounts/templates/accounts/complete_registration_fnmt_form.html:6
@@ -268,7 +336,7 @@ msgid ""
 msgstr ""
 
 #: accounts/templates/accounts/disabled.html:13
-#: agora_core/forms/__init__.py:670 agora_core/forms/__init__.py:672
+#: agora_core/forms/__init__.py:678 agora_core/forms/__init__.py:680
 #: agora_core/templates/agora_core/contact_form.html:5
 msgid "Contact"
 msgstr ""
@@ -462,31 +530,6 @@ msgstr ""
 msgid "next"
 msgstr ""
 
-#: accounts/templates/accounts/signin_form.html:55
-msgid "Enter with FNMT"
-msgstr ""
-
-#: accounts/templates/accounts/signin_form.html:57
-msgid ""
-"You can enter this site using your FNMT certificate. <a href=\"#\">More "
-"information here</a>."
-msgstr ""
-
-#: accounts/templates/accounts/signin_form.html:61
-msgid "Enter using FNMT certificate"
-msgstr ""
-
-#: accounts/templates/accounts/signin_form.html:65
-msgid "Terms of service"
-msgstr ""
-
-#: accounts/templates/accounts/signin_form.html:67
-#, python-format
-msgid ""
-"When you enter using the FNMT certificate you're accepting our <a href="
-"\"%(tos_url)s\">Terms of Service.</a>"
-msgstr ""
-
 #: accounts/templates/accounts/emails/activation_email_message.txt:2
 #: accounts/templates/accounts/emails/confirmation_email_message_new.txt:2
 #: accounts/templates/accounts/emails/confirmation_email_message_old.txt:2
@@ -580,29 +623,29 @@ msgstr ""
 msgid "Groups"
 msgstr ""
 
-#: agora_core/views.py:84
+#: agora_core/views.py:87
 msgid "You tried to execute an action improperly."
 msgstr ""
 
-#: agora_core/views.py:289 agora_core/views.py:299
+#: agora_core/views.py:293 agora_core/views.py:303
 msgid "Sorry, but you don't have permission to create agoras"
 msgstr ""
 
-#: agora_core/views.py:312
+#: agora_core/views.py:316
 #, python-format
 msgid ""
 "Creation of Agora %(agoraname)s successful! Now start to configure and use "
 "it."
 msgstr ""
 
-#: agora_core/views.py:351
+#: agora_core/views.py:355
 #, python-format
 msgid ""
 "Creation of Election <a href=\"%(election_url)s\">%(electionname)s</a> in "
 "%(agora_url)s successful!"
 msgstr ""
 
-#: agora_core/views.py:355
+#: agora_core/views.py:359
 #, python-format
 msgid ""
 "Creation of Election <a href=\"%(election_url)s\">%(electionname)s</a> in "
@@ -610,393 +653,382 @@ msgid ""
 "approval</strong>."
 msgstr ""
 
-#: agora_core/views.py:419
-#, python-format
-msgid ""
-"Sorry, but you don't have permissions to vote on <em>%(electionname)s</em>."
-msgstr ""
-
-#: agora_core/views.py:447 agora_core/views.py:460
+#: agora_core/views.py:474 agora_core/views.py:487
 #, python-format
 msgid ""
 "Sorry, but you don't have edit permissions on <em>%(electionname)s</em>."
 msgstr ""
 
-#: agora_core/views.py:474
+#: agora_core/views.py:501
 #, python-format
 msgid "Election %(electionname)s edited."
 msgstr ""
 
-#: agora_core/views.py:518
+#: agora_core/views.py:545
 msgid "You don't have permission to approve the election."
 msgstr ""
 
-#: agora_core/views.py:543
+#: agora_core/views.py:570
 msgid "You don't have permission to freeze the election."
 msgstr ""
 
-#: agora_core/views.py:570
+#: agora_core/views.py:597
 msgid "You don't have permission to start the election."
 msgstr ""
 
-#: agora_core/views.py:603
+#: agora_core/views.py:630
 msgid "You don't have permission to stop the election."
 msgstr ""
 
-#: agora_core/views.py:634
+#: agora_core/views.py:661
+msgid "You don't have permission to release election results."
+msgstr ""
+
+#: agora_core/views.py:686
 msgid "You don't have permission to archive the election."
 msgstr ""
 
-#: agora_core/views.py:639
+#: agora_core/views.py:691
 msgid "Election is already archived."
 msgstr ""
 
-#: agora_core/views.py:682
+#: agora_core/views.py:734
 #, python-format
 msgid "Election archived: %s"
 msgstr ""
 
-#: agora_core/views.py:717
+#: agora_core/views.py:769
 msgid ""
 "Your vote was correctly casted! Now you could share this election in "
 "Facebook, Google Plus, Twitter, etc."
 msgstr ""
 
-#: agora_core/views.py:738 agora_core/forms/election.py:173
+#: agora_core/views.py:790 agora_core/forms/election.py:176
+#: agora_core/forms/election.py:346
 #, python-format
 msgid "Vote casted for election %s"
 msgstr ""
 
-#: agora_core/views.py:775
+#: agora_core/views.py:827
 msgid "Sorry, election is closed and thus you cannot vote."
 msgstr ""
 
-#: agora_core/views.py:791
+#: agora_core/views.py:843
 msgid "Sorry, but you cannot delegate to yourself ;-)."
 msgstr ""
 
-#: agora_core/views.py:797
+#: agora_core/views.py:849
 msgid ""
 "Sorry, but you cannot delegate if you're not a member of the agora first."
 msgstr ""
 
-#: agora_core/views.py:863 agora_core/forms/agora.py:149
+#: agora_core/views.py:915 agora_core/forms/agora.py:149
 #, python-format
 msgid "%(site)s - You delegated your vote in %(agora)s"
 msgstr ""
 
-#: agora_core/views.py:881 agora_core/forms/agora.py:169
+#: agora_core/views.py:933 agora_core/forms/agora.py:169
 #, python-format
 msgid "%(site)s - You have a new delegation in %(agora)s"
 msgstr ""
 
-#: agora_core/views.py:895
+#: agora_core/views.py:947
 #, python-format
 msgid ""
 "You delegated your vote in %(agora)s to %(username)s! Now you could share "
 "this in Facebook, Google Plus, Twitter, etc."
 msgstr ""
 
-#: agora_core/views.py:917
+#: agora_core/views.py:969
 #, python-format
 msgid "Guess what, you are already a member of %(agora)s!"
 msgstr ""
 
-#: agora_core/views.py:926
+#: agora_core/views.py:978
 msgid "Sorry, you don't have permission to join this agora."
 msgstr ""
 
-#: agora_core/views.py:939
+#: agora_core/views.py:991
 #, python-format
 msgid ""
 "You joined %(agora)s. Now you could take a look at what elections are "
 "available at this agora"
 msgstr ""
 
-#: agora_core/views.py:953
+#: agora_core/views.py:1005
 #, python-format
 msgid ""
 "You requested membership in %(agora)s. Soon the admins of this agora will "
 "decide on your request."
 msgstr ""
 
-#: agora_core/views.py:963 agora_core/tasks/agora.py:32
+#: agora_core/views.py:1015 agora_core/tasks/agora.py:32
 #, python-format
 msgid ""
 "%(username)s has requested membership at %(agora)s. Please review this "
 "pending request"
 msgstr ""
 
-#: agora_core/views.py:969 agora_core/tasks/agora.py:38
+#: agora_core/views.py:1021 agora_core/tasks/agora.py:38
 msgid "List of membership requests"
 msgstr ""
 
-#: agora_core/views.py:986 agora_core/tasks/agora.py:57
+#: agora_core/views.py:1038 agora_core/tasks/agora.py:57
 #, python-format
 msgid "%(site)s - New membership request at %(agora)s"
 msgstr ""
 
-#: agora_core/views.py:1016
+#: agora_core/views.py:1068
 #, python-format
 msgid ""
 "Sorry but you need to be a member of %(agora)s to request admin membership!"
 msgstr ""
 
-#: agora_core/views.py:1022
+#: agora_core/views.py:1074
 msgid ""
 "Sorry, you don't have permission to request admin membership in this agora."
 msgstr ""
 
-#: agora_core/views.py:1037 agora_core/tasks/agora.py:83
+#: agora_core/views.py:1089 agora_core/tasks/agora.py:83
 #, python-format
 msgid ""
 "%(username)s has requested admin membership at %(agora)s. Please review this "
 "pending request"
 msgstr ""
 
-#: agora_core/views.py:1043 agora_core/tasks/agora.py:89
+#: agora_core/views.py:1095 agora_core/tasks/agora.py:89
 msgid "List of admin membership requests"
 msgstr ""
 
-#: agora_core/views.py:1060 agora_core/tasks/agora.py:108
+#: agora_core/views.py:1112 agora_core/tasks/agora.py:108
 #, python-format
 msgid "%(site)s - New admin membership request at %(agora)s"
 msgstr ""
 
-#: agora_core/views.py:1074
+#: agora_core/views.py:1126
 #, python-format
 msgid ""
 "You requested admin membership in %(agora)s. Soon the admins of this agora "
 "will decide on your request."
 msgstr ""
 
-#: agora_core/views.py:1091
+#: agora_core/views.py:1143
 msgid ""
 "Sorry, you don't have permission to cancel admin membership request in this "
 "agora."
 msgstr ""
 
-#: agora_core/views.py:1101
+#: agora_core/views.py:1153
 #, python-format
 msgid "Your admin membership in %(agora)s was cancelled."
 msgstr ""
 
-#: agora_core/views.py:1110
+#: agora_core/views.py:1162
 #, python-format
 msgid ""
 "%(username)s has cancelled his/her requested admin membership at %(agora)s."
 msgstr ""
 
-#: agora_core/views.py:1123
+#: agora_core/views.py:1175
 #, python-format
 msgid ""
 "%(site)s - %(username)s cancelled his/her admin membership request at "
 "%(agora)s"
 msgstr ""
 
-#: agora_core/views.py:1152 agora_core/views.py:1216 agora_core/views.py:1280
-#: agora_core/views.py:1393 agora_core/views.py:1459 agora_core/views.py:1526
-#: agora_core/views.py:1620
+#: agora_core/views.py:1204 agora_core/views.py:1294 agora_core/views.py:1358
+#: agora_core/views.py:1471 agora_core/views.py:1497 agora_core/views.py:1519
+#: agora_core/views.py:1586 agora_core/views.py:1680
 msgid "Sorry, you don't have admin permissions in this agora."
 msgstr ""
 
-#: agora_core/views.py:1157
+#: agora_core/views.py:1209
 msgid "Sorry, you cannot accept this user's  membership request."
 msgstr ""
 
-#: agora_core/views.py:1170
+#: agora_core/views.py:1223
 #, python-format
 msgid "You accepted  %(username)s membership request in %(agora)s."
 msgstr ""
 
-#: agora_core/views.py:1181 agora_core/resources/agora.py:679
+#: agora_core/views.py:1250 agora_core/resources/agora.py:716
 #, python-format
 msgid "Your membership has been accepted at %(agora)s. Congratulations!"
 msgstr ""
 
-#: agora_core/views.py:1189 agora_core/models/__init__.py:134
-#: agora_core/resources/agora.py:687
+#: agora_core/views.py:1255 agora_core/resources/agora.py:721
+#, python-format
+msgid ""
+"Your membership has been accepted at %(agora)s and your ballot has been "
+"finally casted. Congratulations!"
+msgstr ""
+
+#: agora_core/views.py:1267 agora_core/models/__init__.py:138
+#: agora_core/resources/agora.py:733
 #, python-format
 msgid "%(site)s - you are now member of %(agora)s"
 msgstr ""
 
-#: agora_core/views.py:1221
+#: agora_core/views.py:1299
 msgid "Sorry, you cannot make admin to this user."
 msgstr ""
 
-#: agora_core/views.py:1233
+#: agora_core/views.py:1311
 #, python-format
 msgid "You made admin to %(username)s admin in %(agora)s."
 msgstr ""
 
-#: agora_core/views.py:1244
+#: agora_core/views.py:1322
 #, python-format
 msgid "You've been promoted to admin at %(agora)s. Congratulations!"
 msgstr ""
 
-#: agora_core/views.py:1252 agora_core/views.py:1318
+#: agora_core/views.py:1330 agora_core/views.py:1396
 #, python-format
 msgid "%(site)s - you've been promoted to admin at %(agora)s"
 msgstr ""
 
-#: agora_core/views.py:1285
+#: agora_core/views.py:1363
 msgid "Sorry, you cannot accept this user's  admin membership request."
 msgstr ""
 
-#: agora_core/views.py:1298
+#: agora_core/views.py:1376
 #, python-format
 msgid "You accepted  %(username)s admin membership request in %(agora)s."
 msgstr ""
 
-#: agora_core/views.py:1309
+#: agora_core/views.py:1387
 #, python-format
 msgid ""
 "Your admin membership has been accepted  so you've been promoted to admin at "
 "%(agora)s. Congratulations!"
 msgstr ""
 
-#: agora_core/views.py:1349 agora_core/views.py:1591
+#: agora_core/views.py:1427 agora_core/views.py:1651
 msgid "Sorry, you don't have permission to leave this agora."
 msgstr ""
 
-#: agora_core/views.py:1361
+#: agora_core/views.py:1439
 #, python-format
 msgid "You left %(agora)s."
 msgstr ""
 
-#: agora_core/views.py:1371
+#: agora_core/views.py:1449
 #, python-format
 msgid "You cancelled your membership request at %(agora)s."
 msgstr ""
 
-#: agora_core/views.py:1398
+#: agora_core/views.py:1476
 msgid "Sorry, you cannot dismiss this user's  membership request."
 msgstr ""
 
-#: agora_core/views.py:1409
-#, python-format
-msgid "You dismissed %(username)s membership request at %(agora)s."
+#: agora_core/views.py:1508
+msgid "Sorry, file not found"
 msgstr ""
 
-#: agora_core/views.py:1420
-#, python-format
-msgid ""
-"Your membership request at %(agora)s has been dismissed. Sorry about that!"
-msgstr ""
-
-#: agora_core/views.py:1428
-#, python-format
-msgid "%(site)s - membership request dismissed at %(agora)s"
-msgstr ""
-
-#: agora_core/views.py:1464
+#: agora_core/views.py:1524
 msgid "Sorry, you cannot dismiss this user's  admin membership request."
 msgstr ""
 
-#: agora_core/views.py:1475
+#: agora_core/views.py:1535
 #, python-format
 msgid "You dismissed %(username)s admin membership request at %(agora)s."
 msgstr ""
 
-#: agora_core/views.py:1486
+#: agora_core/views.py:1546
 #, python-format
 msgid ""
 "Your admin membership request at %(agora)s  has been dismissed. Sorry about "
 "that!"
 msgstr ""
 
-#: agora_core/views.py:1494
+#: agora_core/views.py:1554
 #, python-format
 msgid "%(site)s - admin membership request dismissed at %(agora)s"
 msgstr ""
 
-#: agora_core/views.py:1531 agora_core/views.py:1625
+#: agora_core/views.py:1591 agora_core/views.py:1685
 msgid "Sorry, this user doesn't have permission to leave this agora."
 msgstr ""
 
-#: agora_core/views.py:1542
+#: agora_core/views.py:1602
 #, python-format
 msgid "You removed membership from %(agora)s to %(username)s."
 msgstr ""
 
-#: agora_core/views.py:1553
+#: agora_core/views.py:1613
 #, python-format
 msgid ""
 "Your have been removed from membership from %(agora)s . Sorry about that!"
 msgstr ""
 
-#: agora_core/views.py:1561 agora_core/resources/agora.py:968
+#: agora_core/views.py:1621 agora_core/resources/agora.py:996
 #, python-format
 msgid "%(site)s - membership removed from %(agora)s"
 msgstr ""
 
-#: agora_core/views.py:1603
+#: agora_core/views.py:1663
 #, python-format
 msgid "You removed your admin membership at %(agora)s."
 msgstr ""
 
-#: agora_core/views.py:1637
+#: agora_core/views.py:1697
 #, python-format
 msgid "You removed  admin membership from %(agora)s to %(username)s."
 msgstr ""
 
-#: agora_core/views.py:1648
+#: agora_core/views.py:1708
 #, python-format
 msgid ""
 "Your have been removed from admin membership from %(agora)s . Sorry about "
 "that!"
 msgstr ""
 
-#: agora_core/views.py:1656
+#: agora_core/views.py:1716
 #, python-format
 msgid "%(site)s - admin membership removed from %(agora)s"
 msgstr ""
 
-#: agora_core/views.py:1731 agora_core/views.py:1807
+#: agora_core/views.py:1791 agora_core/views.py:1867
 msgid "Your comment was successfully posted."
 msgstr ""
 
-#: agora_core/views.py:1744
+#: agora_core/views.py:1804
 #, python-format
 msgid ""
 "Sorry, but you don't have comment permissions on <em>%(electionname)s</em>."
 msgstr ""
 
-#: agora_core/views.py:1823
+#: agora_core/views.py:1883
 #, python-format
 msgid "Sorry, but you don't have comment permissions on %(agora)s."
 msgstr ""
 
-#: agora_core/views.py:1850
+#: agora_core/views.py:1910
 msgid "You can't cancel a vote in a closed election."
 msgstr ""
 
-#: agora_core/views.py:1857 agora_core/resources/election.py:561
+#: agora_core/views.py:1917 agora_core/resources/election.py:601
 msgid "You didn't participate in this election."
 msgstr ""
 
-#: agora_core/views.py:1882 agora_core/resources/election.py:584
+#: agora_core/views.py:1942 agora_core/resources/election.py:624
 #, python-format
 msgid "Vote cancelled for election %s"
 msgstr ""
 
-#: agora_core/views.py:1948
+#: agora_core/views.py:2008
 msgid "User settings updated."
 msgstr ""
 
-#: agora_core/views.py:2005 agora_core/views.py:2017
+#: agora_core/views.py:2065 agora_core/views.py:2077
 #, python-format
 msgid "Sorry, but you don't have admin permissions on %(agoraname)s."
 msgstr ""
 
-#: agora_core/views.py:2032
+#: agora_core/views.py:2092
 #, python-format
 msgid "Agora settings changed for %(agoraname)s."
-msgstr ""
-
-#: agora_core/views.py:2342
-#, python-format
-msgid "Election publick keys %s created"
 msgstr ""
 
 #: agora_core/forms/__init__.py:62 agora_core/forms/__init__.py:63
@@ -1004,7 +1036,7 @@ msgstr ""
 msgid "Create Agora"
 msgstr ""
 
-#: agora_core/forms/__init__.py:100 agora_core/forms/user.py:133
+#: agora_core/forms/__init__.py:100 agora_core/forms/user.py:180
 msgid "Avatar"
 msgstr ""
 
@@ -1016,8 +1048,8 @@ msgstr ""
 msgid "Remove this avatar"
 msgstr ""
 
-#: agora_core/forms/__init__.py:105 agora_core/models/__init__.py:241
-#: agora_core/models/agora.py:92 agora_core/models/election.py:244
+#: agora_core/forms/__init__.py:105 agora_core/models/__init__.py:249
+#: agora_core/models/agora.py:92 agora_core/models/election.py:250
 msgid "Short Description"
 msgstr ""
 
@@ -1025,8 +1057,8 @@ msgstr ""
 msgid "Say something about yourself (140 chars max)"
 msgstr ""
 
-#: agora_core/forms/__init__.py:108 agora_core/forms/user.py:177
-#: agora_core/models/__init__.py:243 agora_core/models/agora.py:94
+#: agora_core/forms/__init__.py:108 agora_core/forms/user.py:224
+#: agora_core/models/__init__.py:251 agora_core/models/agora.py:94
 #: agora_core/templates/agora_core/agora_bio.html:5
 #: agora_core/templates/agora_core/user_bio.html:5
 #: agora_core/templates/agora_core/user_view.html:30
@@ -1037,7 +1069,7 @@ msgstr ""
 msgid "Tell us about you, use as much text as needed"
 msgstr ""
 
-#: agora_core/forms/__init__.py:115 agora_core/models/__init__.py:254
+#: agora_core/forms/__init__.py:115 agora_core/models/__init__.py:262
 msgid "Receive email updates"
 msgstr ""
 
@@ -1070,50 +1102,51 @@ msgid "Security"
 msgstr ""
 
 #: agora_core/forms/__init__.py:159 agora_core/forms/__init__.py:221
-#: agora_core/forms/__init__.py:459
+#: agora_core/forms/__init__.py:467
 msgid "Save settings"
 msgstr ""
 
-#: agora_core/forms/__init__.py:188 agora_core/forms/user.py:242
-#: agora_core/forms/user.py:366
+#: agora_core/forms/__init__.py:188 agora_core/forms/user.py:289
+#: agora_core/forms/user.py:414
 msgid "This email is already in use. Please supply a different email."
 msgstr ""
 
-#: agora_core/forms/__init__.py:194 agora_core/forms/user.py:267
+#: agora_core/forms/__init__.py:194 agora_core/forms/user.py:314
 msgid "Invalid password."
 msgstr ""
 
-#: agora_core/forms/__init__.py:220 agora_core/forms/__init__.py:458
+#: agora_core/forms/__init__.py:220 agora_core/forms/__init__.py:466
 msgid "General settings"
 msgstr ""
 
 #: agora_core/forms/__init__.py:245
 #: agora_core/models/voting_systems/base_stv.py:55
-#: agora_core/models/voting_systems/plurality.py:50
+#: agora_core/models/voting_systems/plurality.py:52
+#: agora_core/models/voting_systems/plurality.py:115
 #: agora_core/models/voting_systems/wright_stv.py:53
 msgid "Invalid questions format"
 msgstr ""
 
-#: agora_core/forms/__init__.py:269 agora_core/models/election.py:273
-#: agora_core/resources/election.py:91
+#: agora_core/forms/__init__.py:269 agora_core/models/election.py:279
+#: agora_core/resources/election.py:92
 msgid "Questions"
 msgstr ""
 
-#: agora_core/forms/__init__.py:272 agora_core/forms/__init__.py:439
-#: agora_core/resources/election.py:93
+#: agora_core/forms/__init__.py:272 agora_core/forms/__init__.py:447
+#: agora_core/resources/election.py:94
 msgid "Start voting"
 msgstr ""
 
-#: agora_core/forms/__init__.py:273 agora_core/forms/__init__.py:440
+#: agora_core/forms/__init__.py:273 agora_core/forms/__init__.py:448
 msgid "Not required, you can choose to start the voting period manually"
 msgstr ""
 
-#: agora_core/forms/__init__.py:274 agora_core/forms/__init__.py:443
-#: agora_core/resources/election.py:94
+#: agora_core/forms/__init__.py:274 agora_core/forms/__init__.py:451
+#: agora_core/resources/election.py:95
 msgid "End voting"
 msgstr ""
 
-#: agora_core/forms/__init__.py:275 agora_core/forms/__init__.py:444
+#: agora_core/forms/__init__.py:275 agora_core/forms/__init__.py:452
 msgid "Not required, you can choose to end the voting period manually"
 msgstr ""
 
@@ -1121,75 +1154,74 @@ msgstr ""
 msgid "Create election"
 msgstr ""
 
-#: agora_core/forms/__init__.py:286
+#: agora_core/forms/__init__.py:288
 #: agora_core/templates/agora_core/create_election_form.html:5
 msgid "Create Election"
 msgstr ""
 
-#: agora_core/forms/__init__.py:310 agora_core/forms/__init__.py:471
+#: agora_core/forms/__init__.py:312 agora_core/forms/__init__.py:479
 msgid "You need to either provide none or both start and end voting dates"
 msgstr ""
 
-#: agora_core/forms/__init__.py:314 agora_core/forms/__init__.py:475
-#: agora_core/resources/election.py:122
+#: agora_core/forms/__init__.py:316 agora_core/forms/__init__.py:483
+#: agora_core/resources/election.py:123
 msgid "Invalid start date, must be in the future"
 msgstr ""
 
-#: agora_core/forms/__init__.py:318 agora_core/forms/__init__.py:479
-#: agora_core/resources/election.py:126
+#: agora_core/forms/__init__.py:320 agora_core/forms/__init__.py:487
+#: agora_core/resources/election.py:127
 msgid "Voting time must be at least 1 hour"
 msgstr ""
 
-#: agora_core/forms/__init__.py:397 agora_core/tasks/election.py:267
+#: agora_core/forms/__init__.py:401 agora_core/tasks/election.py:298
 #, python-format
 msgid "Election %s created"
 msgstr ""
 
-#: agora_core/forms/__init__.py:557
+#: agora_core/forms/__init__.py:565
 msgid "Vote secretly"
 msgstr ""
 
-#: agora_core/forms/__init__.py:559
+#: agora_core/forms/__init__.py:567
 msgid "Vote in public as a delegate"
 msgstr ""
 
-#: agora_core/forms/__init__.py:562 agora_core/forms/__init__.py:570
+#: agora_core/forms/__init__.py:570 agora_core/forms/__init__.py:578
 msgid "Vote in public as a non-member delegate"
 msgstr ""
 
-#: agora_core/forms/__init__.py:567
-#: agora_core/templates/agora_core/election_base.html:211
-#: agora_core/templates/agora_core/election_base.html:220
+#: agora_core/forms/__init__.py:575
+#: agora_core/templates/agora_core/election_base.html:227
 msgid "Vote"
 msgstr ""
 
-#: agora_core/forms/__init__.py:646
+#: agora_core/forms/__init__.py:654
 msgid ""
 "Explain your public position on the vote if you want and if your vote is "
 "public"
 msgstr ""
 
-#: agora_core/forms/__init__.py:658
+#: agora_core/forms/__init__.py:666
 msgid "Your name"
 msgstr ""
 
-#: agora_core/forms/__init__.py:660
+#: agora_core/forms/__init__.py:668
 msgid "Your contact email"
 msgstr ""
 
-#: agora_core/forms/__init__.py:661
+#: agora_core/forms/__init__.py:669
 msgid "Subject"
 msgstr ""
 
-#: agora_core/forms/__init__.py:663
+#: agora_core/forms/__init__.py:671
 msgid "Message"
 msgstr ""
 
-#: agora_core/forms/__init__.py:673
+#: agora_core/forms/__init__.py:681
 msgid "Send message"
 msgstr ""
 
-#: agora_core/forms/__init__.py:685
+#: agora_core/forms/__init__.py:706
 #, python-format
 msgid ""
 "[%(site)s] Message from %(name)s <%(email)s>: \n"
@@ -1197,7 +1229,7 @@ msgid ""
 " %(msg)s"
 msgstr ""
 
-#: agora_core/forms/__init__.py:694
+#: agora_core/forms/__init__.py:715
 msgid "You have contacted us, we'll answer you as soon as possible."
 msgstr ""
 
@@ -1213,67 +1245,68 @@ msgstr ""
 msgid "You must be authenticated to post a comment"
 msgstr ""
 
-#: agora_core/forms/comment.py:128 agora_core/forms/user.py:113
+#: agora_core/forms/comment.py:128 agora_core/forms/user.py:160
 #, python-format
 msgid "Watch your mouth! The word %s is not allowed here."
 msgid_plural "Watch your mouth! The words %s are not allowed here."
 msgstr[0] ""
 msgstr[1] ""
 
-#: agora_core/forms/user.py:83
+#: agora_core/forms/election.py:382
+#, python-format
+msgid "Please confirm vote casted for election %s"
+msgstr ""
+
+#: agora_core/forms/user.py:85 agora_core/forms/user.py:428
+msgid "Auto activation not allowed."
+msgstr ""
+
+#: agora_core/forms/user.py:88 agora_core/forms/user.py:426
+msgid "Invalid activation secret."
+msgstr ""
+
+#: agora_core/forms/user.py:130
 #, python-format
 msgid "Message from %s"
 msgstr ""
 
-#: agora_core/forms/user.py:255
+#: agora_core/forms/user.py:302
 msgid "This username is already in use. Please supply a different username."
 msgstr ""
 
-#: agora_core/forms/user.py:281
+#: agora_core/forms/user.py:328
 msgid "The two password fields didn't match or are insecure."
 msgstr ""
 
-#: agora_core/forms/user.py:295
-msgid "FNMT users cannot change their names."
-msgstr ""
-
-#: agora_core/forms/user.py:304
+#: agora_core/forms/user.py:349
 msgid "You need to be authenticated"
-msgstr ""
-
-#: agora_core/forms/user.py:372
-msgid "Invalid activation secret. "
-msgstr ""
-
-#: agora_core/forms/user.py:374
-msgid "Auto activation not allowed."
 msgstr ""
 
 #: agora_core/migrations/0003_auto__del_field_election_delegated_votes_result.py:34
 msgid "Simple one choice result type of election"
 msgstr ""
 
-#: agora_core/models/__init__.py:128
+#: agora_core/models/__init__.py:132
 #, python-format
 msgid "You just joined %(agora)s. Congratulations!"
 msgstr ""
 
-#: agora_core/models/__init__.py:192
+#: agora_core/models/__init__.py:196
 #, python-format
 msgid ""
 "Is a member of %(num_agoras)d agoras and has emitted  %(num_votes)d direct "
 "votes."
 msgstr ""
 
-#: agora_core/models/__init__.py:248
+#: agora_core/models/__init__.py:256
 msgid "Last Activity Read Date"
 msgstr ""
 
-#: agora_core/models/__init__.py:252
+#: agora_core/models/__init__.py:260
 msgid "Language Code"
 msgstr ""
 
-#: agora_core/models/__init__.py:258
+#: agora_core/models/__init__.py:266
 msgid "Extra"
 msgstr ""
 
@@ -1325,7 +1358,7 @@ msgstr ""
 msgid "Allow delegation, delegation can be secret and encrypted"
 msgstr ""
 
-#: agora_core/models/agora.py:55 agora_core/models/election.py:138
+#: agora_core/models/agora.py:55 agora_core/models/election.py:137
 msgid "Creator"
 msgstr ""
 
@@ -1334,19 +1367,19 @@ msgid "Delegation Election"
 msgstr ""
 
 #: agora_core/models/agora.py:68 agora_core/models/delegateelectioncount.py:39
-#: agora_core/models/election.py:151
+#: agora_core/models/election.py:150
 msgid "Created at date"
 msgstr ""
 
-#: agora_core/models/agora.py:71 agora_core/models/election.py:173
+#: agora_core/models/agora.py:71 agora_core/models/election.py:179
 msgid "Archived at Date"
 msgstr ""
 
-#: agora_core/models/agora.py:74 agora_core/models/election.py:242
+#: agora_core/models/agora.py:74 agora_core/models/election.py:248
 msgid "name"
 msgstr ""
 
-#: agora_core/models/agora.py:76 agora_core/models/election.py:240
+#: agora_core/models/agora.py:76 agora_core/models/election.py:246
 msgid "Pretty Name"
 msgstr ""
 
@@ -1382,7 +1415,7 @@ msgstr ""
 msgid "Administrators"
 msgstr ""
 
-#: agora_core/models/agora.py:213 agora_core/models/election.py:296
+#: agora_core/models/agora.py:213 agora_core/models/election.py:302
 msgid "Extra Data"
 msgstr ""
 
@@ -1392,11 +1425,15 @@ msgid "Requested membership"
 msgstr ""
 
 #: agora_core/models/agora.py:222
-msgid "Invited to membership"
+msgid "Denied requested membership"
 msgstr ""
 
 #: agora_core/models/agora.py:223
-#: agora_core/templates/agora_core/agora_members.html:47
+msgid "Invited to membership"
+msgstr ""
+
+#: agora_core/models/agora.py:224
+#: agora_core/templates/agora_core/agora_members.html:52
 msgid "Requested admin membership"
 msgstr ""
 
@@ -1408,7 +1445,7 @@ msgstr ""
 msgid "Public URL"
 msgstr ""
 
-#: agora_core/models/authority.py:35 agora_core/models/election.py:247
+#: agora_core/models/authority.py:35 agora_core/models/election.py:253
 msgid "Description"
 msgstr ""
 
@@ -1462,171 +1499,175 @@ msgstr ""
 msgid "Delegate vote"
 msgstr ""
 
-#: agora_core/models/election.py:64
+#: agora_core/models/election.py:63
 msgid "Vote is public"
 msgstr ""
 
-#: agora_core/models/election.py:65
+#: agora_core/models/election.py:64
 msgid "Allow secret voting"
 msgstr ""
 
-#: agora_core/models/election.py:66
+#: agora_core/models/election.py:65
 msgid "Allow secret and encrypted voting"
 msgstr ""
 
-#: agora_core/models/election.py:132
+#: agora_core/models/election.py:131
 msgid "Agora"
 msgstr ""
 
-#: agora_core/models/election.py:146
+#: agora_core/models/election.py:145
 msgid "Electorate"
 msgstr ""
 
-#: agora_core/models/election.py:149
+#: agora_core/models/election.py:148
 msgid "Parent Election"
 msgstr ""
 
-#: agora_core/models/election.py:156
+#: agora_core/models/election.py:155
 msgid "Is Approved"
 msgstr ""
 
-#: agora_core/models/election.py:161
-msgid "Last Modified at Date"
-msgstr ""
-
-#: agora_core/models/election.py:163
-msgid "Voting Starts Date"
-msgstr ""
-
 #: agora_core/models/election.py:165
-msgid "Voting Ends Date"
+msgid "Release"
 msgstr ""
 
 #: agora_core/models/election.py:167
-msgid "Voting Extended until Date"
+msgid "Last Modified at Date"
 msgstr ""
 
 #: agora_core/models/election.py:169
-msgid "Approved at Date"
+msgid "Voting Starts Date"
 msgstr ""
 
 #: agora_core/models/election.py:171
-msgid "Frozen at Date"
+msgid "Voting Ends Date"
+msgstr ""
+
+#: agora_core/models/election.py:173
+msgid "Voting Extended until Date"
 msgstr ""
 
 #: agora_core/models/election.py:175
-msgid "Delegated Votes at Date"
+msgid "Approved at Date"
 msgstr ""
 
 #: agora_core/models/election.py:177
+msgid "Frozen at Date"
+msgstr ""
+
+#: agora_core/models/election.py:181
+msgid "Delegated Votes at Date"
+msgstr ""
+
+#: agora_core/models/election.py:183
 msgid "Voters Frozen at Date"
 msgstr ""
 
-#: agora_core/models/election.py:179
+#: agora_core/models/election.py:185
 msgid "Result Tallied at Date"
 msgstr ""
 
-#: agora_core/models/election.py:182
+#: agora_core/models/election.py:188
 msgid "Public Key Created at Date"
 msgstr ""
 
-#: agora_core/models/election.py:184
+#: agora_core/models/election.py:190
 msgid "Talliy Released at Date"
 msgstr ""
 
-#: agora_core/models/election.py:238
+#: agora_core/models/election.py:244
 msgid "Election Result"
 msgstr ""
 
-#: agora_core/models/election.py:245
+#: agora_core/models/election.py:251
 msgid "Short description of the election (required)"
 msgstr ""
 
-#: agora_core/models/election.py:247
+#: agora_core/models/election.py:253
 msgid "Long description of the election"
 msgstr ""
 
-#: agora_core/models/election.py:277
+#: agora_core/models/election.py:283
 msgid "Delegated votes"
 msgstr ""
 
-#: agora_core/models/election.py:314
+#: agora_core/models/election.py:319
 msgid "Authorities"
 msgstr ""
 
-#: agora_core/models/election.py:670
+#: agora_core/models/election.py:680
 msgid "This election allows everyone to vote. "
 msgstr ""
 
-#: agora_core/models/election.py:673
+#: agora_core/models/election.py:683
 msgid ""
 "This election only allows agora members to vote, but any delegate can emit "
 "their position. "
 msgstr ""
 
-#: agora_core/models/election.py:676
+#: agora_core/models/election.py:686
 msgid "This election only allows agora members to vote. "
 msgstr ""
 
-#: agora_core/models/election.py:680
+#: agora_core/models/election.py:690
 msgid "Vote is secret (public for delegates). "
 msgstr ""
 
-#: agora_core/models/election.py:683
+#: agora_core/models/election.py:693
 msgid "Vote is public. "
 msgstr ""
 
-#: agora_core/models/election.py:692
+#: agora_core/models/election.py:702
 #, python-format
 msgid "The election has been approved and was frozen  %(frozen_date)s. "
 msgstr ""
 
-#: agora_core/models/election.py:696
+#: agora_core/models/election.py:706
 msgid "The election has been approved and is not frozen yet. "
 msgstr ""
 
-#: agora_core/models/election.py:699
+#: agora_core/models/election.py:709
 #, python-format
 msgid ""
 "The election has not been approved yet and was frozen  %(frozen_date)s. "
 msgstr ""
 
-#: agora_core/models/election.py:703
-msgid "The election has been not approved and is not frozen yet. "
-msgstr ""
-
-#: agora_core/models/election.py:708
-#, python-format
-msgid "Voting will start  %(start_date)s and finish %(end_date)s. "
-msgstr ""
-
 #: agora_core/models/election.py:713
-#, python-format
-msgid "Voting will start %(start_date)s. "
+msgid "The election has been not approved and is not frozen yet. "
 msgstr ""
 
 #: agora_core/models/election.py:718
 #, python-format
-msgid "Voting started %(start_date)s and will finish %(end_date)s. "
+msgid "Voting will start  %(start_date)s and finish %(end_date)s. "
 msgstr ""
 
 #: agora_core/models/election.py:723
 #, python-format
+msgid "Voting will start %(start_date)s. "
+msgstr ""
+
+#: agora_core/models/election.py:728
+#, python-format
+msgid "Voting started %(start_date)s and will finish %(end_date)s. "
+msgstr ""
+
+#: agora_core/models/election.py:733
+#, python-format
 msgid "Voting started %(start_date)s. "
 msgstr ""
 
-#: agora_core/models/election.py:727
+#: agora_core/models/election.py:737
 #, python-format
 msgid ""
 "Voting started %(start_date)s and finished %(end_date)s. Results available "
 "since %(tally_date)s. "
 msgstr ""
 
-#: agora_core/models/election.py:734
+#: agora_core/models/election.py:744
 msgid "Start date for voting is not set yet. "
 msgstr ""
 
-#: agora_core/models/election.py:738
+#: agora_core/models/election.py:748
 msgid "Election is <b>archived and dismissed</b>."
 msgstr ""
 
@@ -1643,7 +1684,7 @@ msgstr ""
 msgid "Multi-seat ranked voting - Meek STV (Single Transferable Vote)"
 msgstr ""
 
-#: agora_core/models/voting_systems/plurality.py:24
+#: agora_core/models/voting_systems/plurality.py:26
 msgid "Choose one option among many - Technical name: Plurality voting system"
 msgstr ""
 
@@ -1653,27 +1694,17 @@ msgid ""
 "Transferable Vote)"
 msgstr ""
 
-#: agora_core/resources/agora.py:614
+#: agora_core/resources/agora.py:634
 #, python-format
 msgid "You canceled your membership request at %(agora)s"
 msgstr ""
 
-#: agora_core/resources/agora.py:622
+#: agora_core/resources/agora.py:642
 #, python-format
 msgid "%(site)s - canceled your membership request at %(agora)s"
 msgstr ""
 
-#: agora_core/resources/agora.py:732
-#, python-format
-msgid "Your membership request at %(agora)s has been denied. Sorry about that!"
-msgstr ""
-
-#: agora_core/resources/agora.py:740
-#, python-format
-msgid "%(site)s - membership request denied at %(agora)s"
-msgstr ""
-
-#: agora_core/resources/agora.py:785
+#: agora_core/resources/agora.py:796
 #, python-format
 msgid ""
 "As administrator of %(agora)s, %(user)s has added you to this agora. You can "
@@ -1681,58 +1712,58 @@ msgid ""
 "please contact with this website administrators."
 msgstr ""
 
-#: agora_core/resources/agora.py:797
+#: agora_core/resources/agora.py:808
 #, python-format
 msgid "%(site)s - Added as member to %(agora)s"
 msgstr ""
 
-#: agora_core/resources/agora.py:845
+#: agora_core/resources/agora.py:865
 #, python-format
 msgid "Your membership of %(agora)s has been removed. Sorry about that!"
 msgstr ""
 
-#: agora_core/resources/agora.py:853
+#: agora_core/resources/agora.py:873
 #, python-format
 msgid "%(site)s - membership of %(agora)s removed"
 msgstr ""
 
-#: agora_core/resources/agora.py:914
+#: agora_core/resources/agora.py:934
 #, python-format
 msgid "You canceled your admin membership request at %(agora)s"
 msgstr ""
 
-#: agora_core/resources/agora.py:922
+#: agora_core/resources/agora.py:942
 #, python-format
 msgid "%(site)s - canceled your admin membership request at %(agora)s"
 msgstr ""
 
-#: agora_core/resources/agora.py:960
+#: agora_core/resources/agora.py:988
 #, python-format
 msgid "You have removed your membership from %(agora)s"
 msgstr ""
 
-#: agora_core/resources/agora.py:1017
+#: agora_core/resources/agora.py:1045
 #, python-format
 msgid "Your admin membership has been accepted at %(agora)s. Congratulations!"
 msgstr ""
 
-#: agora_core/resources/agora.py:1025
+#: agora_core/resources/agora.py:1053
 #, python-format
 msgid "%(site)s - you are now admin of %(agora)s"
 msgstr ""
 
-#: agora_core/resources/agora.py:1072
+#: agora_core/resources/agora.py:1100
 #, python-format
 msgid ""
 "Your admin membership request at %(agora)s has been denied. Sorry about that!"
 msgstr ""
 
-#: agora_core/resources/agora.py:1080
+#: agora_core/resources/agora.py:1108
 #, python-format
 msgid "%(site)s - admin membership request denied at %(agora)s"
 msgstr ""
 
-#: agora_core/resources/agora.py:1126
+#: agora_core/resources/agora.py:1154
 #, python-format
 msgid ""
 "As administrator of %(agora)s, %(user)s has promoted you to admin of this "
@@ -1740,85 +1771,90 @@ msgid ""
 "is spamming you please contact with this website administrators."
 msgstr ""
 
-#: agora_core/resources/agora.py:1138
+#: agora_core/resources/agora.py:1166
 #, python-format
 msgid "%(site)s - Promoted to admin of agora %(agora)s"
 msgstr ""
 
-#: agora_core/resources/agora.py:1186
+#: agora_core/resources/agora.py:1214
 #, python-format
 msgid ""
 "Your admin permissions on %(agora)s have been revoked. Sorry about that!"
 msgstr ""
 
-#: agora_core/resources/agora.py:1193
+#: agora_core/resources/agora.py:1221
 #, python-format
 msgid "%(site)s - admin permissions revoked on %(agora)s"
 msgstr ""
 
-#: agora_core/resources/agora.py:1231
+#: agora_core/resources/agora.py:1259
 #, python-format
 msgid "You have given up your admin permissions on %(agora)s"
 msgstr ""
 
-#: agora_core/resources/agora.py:1239
+#: agora_core/resources/agora.py:1267
 #, python-format
 msgid "%(site)s - admin permissions given up on %(agora)s"
 msgstr ""
 
-#: agora_core/resources/agora.py:1272
+#: agora_core/resources/agora.py:1300
 msgid "Invalid authorities_ids."
 msgstr ""
 
-#: agora_core/resources/agora.py:1278
+#: agora_core/resources/agora.py:1306
 msgid "Invalid number of authorities."
 msgstr ""
 
-#: agora_core/resources/agora.py:1316
+#: agora_core/resources/agora.py:1344
 msgid "Your vote is not currently delegated."
 msgstr ""
 
-#: agora_core/resources/agora.py:1336
+#: agora_core/resources/agora.py:1364
 #, python-format
 msgid "You have removed your vote delegation from %(agora)s"
 msgstr ""
 
-#: agora_core/resources/agora.py:1344
+#: agora_core/resources/agora.py:1372
 #, python-format
 msgid "%(site)s - vote delegation removed from %(agora)s"
 msgstr ""
 
-#: agora_core/resources/election.py:421
+#: agora_core/resources/election.py:436
 #, python-format
 msgid "Election %(election)s approved at agora %(agora)s. Congratulations!"
 msgstr ""
 
-#: agora_core/resources/election.py:428
+#: agora_core/resources/election.py:443
 msgid "Election URL"
 msgstr ""
 
-#: agora_core/resources/election.py:434
+#: agora_core/resources/election.py:449
 #, python-format
 msgid "%(site)s - Election %(election)s approved"
 msgstr ""
 
-#: agora_core/resources/user.py:306
+#: agora_core/resources/user.py:312
 msgid "Welcome to this agora"
 msgstr ""
 
-#: agora_core/resources/user.py:363
+#: agora_core/resources/user.py:369
 #, python-format
 msgid "%(site)s - invitation to join %(agora)s"
 msgstr ""
 
-#: agora_core/tasks/election.py:87 agora_core/tasks/election.py:104
+#: agora_core/tasks/election.py:94 agora_core/tasks/election.py:111
 #, python-format
 msgid "Vote in election %s"
 msgstr ""
 
-#: agora_core/tasks/election.py:177 agora_core/tasks/election.py:225
+#: agora_core/tasks/election.py:194 agora_core/tasks/election.py:256
 #, python-format
 msgid "Election results for %s"
+msgstr ""
+
+#: agora_core/tasks/election.py:446
+#, python-format
+msgid "Election publick keys %s created"
 msgstr ""
 
 #: agora_core/templates/404.html:10
@@ -1849,13 +1885,13 @@ msgstr ""
 msgid ""
 "Internal Server Error: Fuck this shit, I'm going to Paris!</p><p><a href="
 "\"%(home_url)s\">Go to the home page</a> if you don't know what else to do. "
-"And seriously, if problem persist, please <a href=\"mailto:agora-ciudadana-"
-"devel@googlegroups.com\">send us an email</a>."
+"And seriously, if problem persist, please <a href=\"mailto:"
+"info@congresotransparente.com\">send us an email</a>."
 msgstr ""
 
 #: agora_core/templates/agora_core/agora_activity.html:5
 #: agora_core/templates/agora_core/election_activity.html:6
-#: agora_core/templates/agora_core/election_base.html:91
+#: agora_core/templates/agora_core/election_base.html:103
 #: agora_core/templates/agora_core/user_activity.html:5
 #: agora_core/templates/agora_core/user_view.html:27
 msgid "Activity"
@@ -1896,7 +1932,7 @@ msgid ""
 msgstr ""
 
 #: agora_core/templates/agora_core/agora_comments.html:7
-#: agora_core/templates/agora_core/election_base.html:98
+#: agora_core/templates/agora_core/election_base.html:110
 #: agora_core/templates/agora_core/election_comments.html:8
 msgid "Comments"
 msgstr ""
@@ -1911,7 +1947,7 @@ msgstr ""
 #: agora_core/templates/agora_core/agora_list.html:28
 #: agora_core/templates/agora_core/agora_members.html:17
 #: agora_core/templates/agora_core/agora_view.html:42
-#: agora_core/templates/agora_core/election_base.html:160
+#: agora_core/templates/agora_core/election_base.html:172
 #: agora_core/templates/agora_core/election_delegates.html:18
 #: agora_core/templates/agora_core/election_list.html:28
 #: agora_core/templates/agora_core/election_votes.html:17
@@ -1927,7 +1963,7 @@ msgstr ""
 #: agora_core/templates/agora_core/agora_list.html:29
 #: agora_core/templates/agora_core/agora_members.html:18
 #: agora_core/templates/agora_core/agora_view.html:43
-#: agora_core/templates/agora_core/election_base.html:161
+#: agora_core/templates/agora_core/election_base.html:173
 #: agora_core/templates/agora_core/election_delegates.html:19
 #: agora_core/templates/agora_core/election_list.html:29
 #: agora_core/templates/agora_core/election_votes.html:18
@@ -1977,9 +2013,13 @@ msgid "Admins"
 msgstr ""
 
 #: agora_core/templates/agora_core/agora_members.html:36
-#: agora_core/templates/agora_core/election_base.html:105
+#: agora_core/templates/agora_core/election_base.html:117
 #: agora_core/templates/agora_core/election_delegates.html:5
 msgid "Delegates"
+msgstr ""
+
+#: agora_core/templates/agora_core/agora_members.html:47
+msgid "Miembros rechazados"
 msgstr ""
 
 #: agora_core/templates/agora_core/agora_view.html:11
@@ -1989,22 +2029,22 @@ msgid "%(name)s logo"
 msgstr ""
 
 #: agora_core/templates/agora_core/agora_view.html:56
-#: agora_core/templates/agora_core/election_base.html:311
+#: agora_core/templates/agora_core/election_base.html:316
 msgid "Share on Twitter"
 msgstr ""
 
 #: agora_core/templates/agora_core/agora_view.html:59
-#: agora_core/templates/agora_core/election_base.html:315
+#: agora_core/templates/agora_core/election_base.html:320
 msgid "Share on Facebook"
 msgstr ""
 
 #: agora_core/templates/agora_core/agora_view.html:62
-#: agora_core/templates/agora_core/election_base.html:318
+#: agora_core/templates/agora_core/election_base.html:323
 msgid "Share on Identica"
 msgstr ""
 
 #: agora_core/templates/agora_core/agora_view.html:65
-#: agora_core/templates/agora_core/election_base.html:321
+#: agora_core/templates/agora_core/election_base.html:326
 msgid "Share on Google Plus"
 msgstr ""
 
@@ -2064,148 +2104,152 @@ msgid "Quick actions"
 msgstr ""
 
 #: agora_core/templates/agora_core/election_base.html:40
-#: agora_core/templates/agora_core/election_base.html:241
+#: agora_core/templates/agora_core/election_base.html:240
 msgid "Approve election"
 msgstr ""
 
 #: agora_core/templates/agora_core/election_base.html:48
-#: agora_core/templates/agora_core/election_base.html:253
+#: agora_core/templates/agora_core/election_base.html:252
 msgid "Freeze election"
 msgstr ""
 
 #: agora_core/templates/agora_core/election_base.html:56
-#: agora_core/templates/agora_core/election_base.html:247
+#: agora_core/templates/agora_core/election_base.html:246
 msgid "Start voting period"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:64
-#: agora_core/templates/agora_core/election_base.html:259
+#: agora_core/templates/agora_core/election_base.html:65
+#: agora_core/templates/agora_core/election_base.html:258
 msgid "Stop voting period and publish results"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:72
+#: agora_core/templates/agora_core/election_base.html:67
+msgid "Stop voting period"
+msgstr ""
+
+#: agora_core/templates/agora_core/election_base.html:76
+msgid "Release election results"
+msgstr ""
+
+#: agora_core/templates/agora_core/election_base.html:84
 msgid "Dismiss and archive election"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:81
+#: agora_core/templates/agora_core/election_base.html:93
 msgid "Join this agora now"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:94
+#: agora_core/templates/agora_core/election_base.html:106
 #: agora_core/templates/agora_core/election_votes.html:5
 msgid "Votes"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:109
+#: agora_core/templates/agora_core/election_base.html:121
 #: agora_core/templates/agora_core/election_votes_graph.html:6
 msgid "Visual"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:110
+#: agora_core/templates/agora_core/election_base.html:122
 msgid "beta"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:116
+#: agora_core/templates/agora_core/election_base.html:128
 #: agora_core/templates/agora_core/election_edit.html:7
 msgid "Edit"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:131
+#: agora_core/templates/agora_core/election_base.html:143
 msgid "This election is archived and dismissed."
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:132
+#: agora_core/templates/agora_core/election_base.html:144
 msgid "This usually means that this election results are not valid."
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:172
+#: agora_core/templates/agora_core/election_base.html:184
 #, python-format
 msgid "VOTES (%(percent)s%% of the electorate)"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:176
+#: agora_core/templates/agora_core/election_base.html:188
 #, python-format
 msgid "DELEGATED VOTES (%(percent)s%% of the votes)"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:183
+#: agora_core/templates/agora_core/election_base.html:195
 #, python-format
 msgid "DIRECT VOTES (%(percent)s%% of the electorate)"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:188
+#: agora_core/templates/agora_core/election_base.html:200
 msgid "DELEGATED VOTES"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:204
+#: agora_core/templates/agora_core/election_base.html:216
 msgid "Request agora membership"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:218
+#: agora_core/templates/agora_core/election_base.html:225
 msgid "Change my vote"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:225
-msgid "Change my position as non-member delegate"
-msgstr ""
-
-#: agora_core/templates/agora_core/election_base.html:227
-msgid "Establish my position as non-member delegate"
-msgstr ""
-
-#: agora_core/templates/agora_core/election_base.html:234
+#: agora_core/templates/agora_core/election_base.html:233
 msgid "Your membership request in this election's agora is pending"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:267
-msgid "Your vote"
+#: agora_core/templates/agora_core/election_base.html:264
+msgid "Send election results"
 msgstr ""
 
 #: agora_core/templates/agora_core/election_base.html:272
+msgid "Your vote"
+msgstr ""
+
+#: agora_core/templates/agora_core/election_base.html:277
 #, python-format
 msgid "You answered <strong>%(answer)s</strong> to <em>%(question)s</em>"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:277
+#: agora_core/templates/agora_core/election_base.html:282
 #, python-format
 msgid ""
 "You delegated to <a href=\"%(delegate_url)s\">%(delegate_username)s</a> who "
 "answered <strong>%(answer)s</strong> to <em>%(question)s</em>"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:279
+#: agora_core/templates/agora_core/election_base.html:284
 #, python-format
 msgid "You delegated to <a href=\"%(delegate_url)s\">%(delegate_username)s</a>"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:283
+#: agora_core/templates/agora_core/election_base.html:288
 msgid "You delegated your vote, and your vote is secret"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:288
-#: agora_core/templates/agora_core/election_base.html:300
+#: agora_core/templates/agora_core/election_base.html:293
+#: agora_core/templates/agora_core/election_base.html:305
 msgid "Cancel direct vote"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:293
+#: agora_core/templates/agora_core/election_base.html:298
 msgid "Cancel vote?"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:296
+#: agora_core/templates/agora_core/election_base.html:301
 msgid "Do you really want to cancel your vote in this election?"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:299
+#: agora_core/templates/agora_core/election_base.html:304
 #: templates/base.html:60
 msgid "Close"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:310
+#: agora_core/templates/agora_core/election_base.html:315
 #, python-format
 msgid "Participate in %(electionname)s"
 msgstr ""
 
-#: agora_core/templates/agora_core/election_base.html:317
+#: agora_core/templates/agora_core/election_base.html:322
 #, python-format
 msgid "Participate in %(electionname)s at Agora Ciudadana"
 msgstr ""
@@ -2250,6 +2294,504 @@ msgstr ""
 msgid "Mouse wheel to zoom, click and drag the canvas to pan (editing is ON)"
 msgstr ""
 
+#: agora_core/templates/agora_core/featured_election.html:124
+msgid "Democracia Directa en el Congreso de los Diputados"
+msgstr ""
+
+#: agora_core/templates/agora_core/featured_election.html:126
+msgid ""
+"¿Ya te has leído los <strong>cuatro bloques</strong> sobre los que decidir?"
+msgstr ""
+
+#: agora_core/templates/agora_core/featured_election.html:127
+#: agora_core/templates/agora_core/featured_election.html:209
+msgid "Vota la Reforma Energética"
+msgstr ""
+
+#: agora_core/templates/agora_core/featured_election.html:130
+msgid "//www.youtube.com/embed/hkLLowa3X_E"
+msgstr "//youtu.be/EX8wF98uB2U"
+
+#: agora_core/templates/agora_core/featured_election.html:137
+msgid ""
+"Hemos dividido en <strong>cuatro bloques</strong> los aspectos que "
+"consideramos más significativos de la propuesta de reforma del sector "
+"eléctrico. Informáte y participa votando, dinos si consideras que son "
+"razones suficientes para presentar una enmienda a la totalidad de este "
+"proyecto de ley"
+msgstr ""
+"Hem dividit en quatre blocs els aspectes que considerem més"
+"significatius de la proposta de reforma del sector elèctric. Informa't"
+"i participa, i vota. Dis-nos si consideres que són raons suficients"
+"per a presentar una esmena a la totalitat contra aquest projecte de"
+"llei."
+
+#: agora_core/templates/agora_core/featured_election.html:143
+msgid "¿Sabes que quieren privatizar el sol?"
+msgstr "Saps que volen privatitzar el sol?"
+
+#: agora_core/templates/agora_core/featured_election.html:147
+#: agora_core/templates/agora_core/featured_election.html:214
+msgid "Autoconsumo Energético"
+msgstr "Autoconsum energètic"
+
+#: agora_core/templates/agora_core/featured_election.html:148
+msgid ""
+"La nueva ley es la más regresiva del mundo en materia de "
+"<strong>autoconsumo</strong>, esto es, la posibilidad de que cada ciudadano "
+"produzca su propia energía.\n"
+"        Nos obligan a pagar por la electricidad que obtenemos de nuestros "
+"propios paneles. Algo tan absurdo como si tuviéramos que pagar a la tienda "
+"de la esquina por cada tomate que recogiéramos de nuestra huerta.\n"
+"        Esa es sólo una de las muchas dificultades que la nueva ley pone al "
+"autoconsumo, porque nace con un único objetivo: impedir que la gente coloque "
+"paneles que hagan competencia a las grandes eléctricas."
+msgstr ""
+"La nova llei és la més regressiva del món en matèria d'autoconsum, açò"
+"és, la possibilitat que cada ciutadà produïsca la seua pròpia energia.\n"
+"Ens obliguen a pagar per l'electricitat que obtenim dels nostres"
+"propis panells. Una cosa tan absurda com si haguérem de pagar a la"
+"botiga de la cantonada per cada tomata que arreplegàrem de la nostra"
+"horta.\n 
+"Aquesta és només una de les moltes dificultats que la nova llei"
+"posa a l'autoconsum, perquè naix amb un únic objectiu: impedir que la"
+"gent col·loque panells que facen competència a les grans elèctriques."
+
+
+#: agora_core/templates/agora_core/featured_election.html:153
+#: agora_core/templates/agora_core/featured_election.html:171
+#: agora_core/templates/agora_core/featured_election.html:188
+#: agora_core/templates/agora_core/featured_election.html:205
+msgid "Más información +"
+msgstr "Més Informació +"
+
+#: agora_core/templates/agora_core/featured_election.html:160
+msgid "¿Quién gana con la expulsión de las renovables?"
+msgstr "Qui guanya amb l'expulsió de les renovables?"
+
+#: agora_core/templates/agora_core/featured_election.html:164
+#: agora_core/templates/agora_core/featured_election.html:232
+msgid "Renovables"
+msgstr "Renovables"
+
+#: agora_core/templates/agora_core/featured_election.html:165
+msgid ""
+"Una reforma que expulsa a las instalaciones de energía limpia y frena su "
+"desarrollo en el futuro.\n"
+"        Nunca antes, como con las <strong>renovables</strong>, el Gobierno "
+"había primero fomentado y luego traicionado las legítimas expectativas de "
+"los que apostaron por el sector.\n"
+"        Hacia el futuro además las nuevas instalaciones van a autorizarse "
+"sólo con carácter excepcional.\n"
+"        Las únicas tecnologías que nos pueden asegurar la independencia "
+"energética y la sostenibilidad medioambiental se han convertido en la pieza "
+"a batir."
+msgstr ""
+"Una reforma que expulsa les instal·lacions d'energia neta i en frena"
+"el desenvolupament en el futur. Mai abans, com amb les renovables, el"
+"Govern havia primer fomentat i després traït les legítimes"
+"expectatives dels qui van apostar pel sector.\n" 
+"A més a més, d'ara en"
+"avant les noves instal·lacions només s'autoritzaran amb caràcter"
+"excepcional.\n" 
+"Les úniques tecnologies que ens poden assegurar la"
+"independència energètica i la sostenibilitat mediambiental s'han"
+"convertit en la peça a batre."
+
+#: agora_core/templates/agora_core/featured_election.html:178
+msgid "Déficit de Tarifa ¿Quién debe a quién?"
+msgstr "Dèficit de tarifa, qui deu a qui?"
+
+#: agora_core/templates/agora_core/featured_election.html:182
+msgid "Estabilidad Económico-financiera"
+msgstr "Estabilitat econòmicofinancera"
+
+#: agora_core/templates/agora_core/featured_election.html:183
+msgid ""
+"La ley se presenta como la única solución al problema del <strong>déficit de "
+"tarifa</strong> (uno más)\n"
+"        Pero eso sólo será posible si se hace una auténtica auditoría de "
+"costes del sistema, aspecto éste que no se contempla en la reforma y que "
+"sistemáticamente ha sido bloqueada por el Gobierno.\n"
+"        Ni tampoco será posible si no se elimina la absoluto "
+"discrecionalidad con la que el Gobierno va a poder seguir determinando los "
+"costes e ingresos del sector."
+msgstr ""
+"La llei es presenta com l'única solució al problema del dèficit de"
+"tarifa (un altre...) Però açò només serà possible si es fa una"
+"autèntica auditoria de costos del sistema, aspecte que no es contempla"
+"en la reforma i que sistemàticament ha estat bloquejat pel Govern. Ni"
+"tampoc no serà possible si no s'elimina l'absoluta discrecionalitat"
+"amb la qual el Govern podrà continuar determinant els costos i"
+"ingressos del sector.</p>\n"
+
+#: agora_core/templates/agora_core/featured_election.html:195
+msgid "Una reforma que no soluciona la subida de la luz"
+msgstr "Una reforma que no soluciona la pujada de la llum"
+
+#: agora_core/templates/agora_core/featured_election.html:199
+msgid "Mecanismo de fijación de precios"
+msgstr "Mecanisme de fixació de preu"
+
+#: agora_core/templates/agora_core/featured_election.html:200
+msgid ""
+"No tiene sentido una reforma del sector eléctrico que deja fuera el "
+"<strong>mecanismo de precios</strong>.\n"
+"        En el sistema actual, que no se toca, el precio de las tecnologías "
+"más caras (gas y carbón) sirve para retribuir también a centrales antiguas y "
+"amortizadas, como son las nucleares y las hidroeléctricas. Las grandes "
+"compañías se llevan así beneficios extraordinarios que tampoco se "
+"cuestionan.\n"
+"        El sistema marginalista de determinación de los precios resulta "
+"además incompatible con un sistema en el que cada vez sea mayor la "
+"penetración de renovables. Motivo más que suficiente para mantenerlo."
+msgstr ""
+"No té sentit una reforma del sector elèctric que deixa fora el"
+"mecanisme de preus. En el sistema actual, que no es toca, el preu de"
+"les tecnologies més cares (gas i carbó) serveix per a retribuir també"
+"centrals antigues i amortitzades, com són les nuclears i les"
+"hidroelèctriques. Les grans companyies s'emporte d'aquesta manera"
+"beneficis extraordinaris que tampoc no es qüestionen.\n"
+"El sistema marginalista de determinació dels preus resulta a més incompatible amb"
+"un sistema en el qual cada vegada siga major la penetració de"
+"renovables. Motiu més que suficient per a mantenir-lo.""
+
+#: agora_core/templates/agora_core/featured_election.html:217
+#, python-format
+msgid ""
+"El autoconsumo a partir de renovables debería ser la primera fuente de "
+"energía del sistema eléctrico y, como tal, ser no solo protegida sino "
+"incentivada.</p>\n"
+"                <p>El proyecto de ley, por el contrario, pretende "
+"penalizarlo en términos que han sido incluso motivo de mofa a nivel "
+"internacional. El concepto de peaje de respaldo -\"impuesto al sol\" en "
+"términos coloquiales-, para el autoconsumo instantáneo -es decir, el que se "
+"produce en la instalación interior del consumidor, siendo indetectable fuera "
+"de ésta- es tan perverso y absurdo que su generalización a otros sistemas ha "
+"sido instantánea: tomates, chimeneas, bicicletas, WhatsApp...</p>\n"
+"                <p>Que el sistema eléctrico español carezca de la más mínima "
+"transparencia -hecho, por cierto, que el Proyecto no aborda- y en "
+"consecuencia no estén adecuadamente asignados los costes de los diferentes "
+"servicios entre los beneficiarios de los mismos no justifica que se impongan "
+"barreras a un nuevo modelo energético que promete revolucionar completamente "
+"el sector.</p>\n"
+"                <p>El derecho a la agrupación de consumidores para "
+"abastecerse a través de una instalación compartida conectada a sus redes se "
+"omite en el proyecto de ley, lo que dificulta enormemente su desarrollo, por "
+"ejemplo, en comunidades de vecinos que, no olvidemos, es donde reside más "
+"del 80%% de la población española.</p>\n"
+"                <p>Hay que destacar, asimismo, que, en contra de las "
+"directivas europeas, el proyecto de ley en lugar de facilitar la tramitación "
+"administrativa del autoconsumo, la complica aún más. Las pequeñas "
+"instalaciones, en la medida en la que no tengan efectos sobre la seguridad "
+"de suministro, deberían instalarse sin necesidad de tramitación previa "
+"alguna y, en todo caso, ser comunicadas a posterior a la administración "
+"competente. Todo lo demás es innecesario.</p>\n"
+"                <p>El proyecto de ley adolece, por último, de la creación de "
+"un sistema específico de balance neto -prometido, por otra parte, por el "
+"ministro Soria- que permitiera a los consumidores compensar sus excedentes "
+"energéticos instantáneos con déficits posteriores sin necesidad de que éstos "
+"tengan tratamiento de empresarios y pagando, bajo criterios objetivos, el "
+"coste que se origine al sistema por el \"almacenamiento\" de energía."
+msgstr ""
+"L'autoconsum a partir de renovables hauria de ser la primera font"
+"d'energia del sistema elèctric i, com a tal, no només hauria d'estar"
+"protegida sinó que, a més, hauria d'estar incentivada.</p>\n"
+"<p>Aquest projecte de llei, per contra, pretén penalitzar-ho en termes"
+"que han estat fins i tot motiu de mofa a nivell internacional. El"
+"concepte de peatge de suport  -"imposat al sol" en termes"
+"col·loquials-, per a l'autoconsum instantani -és a dir, el que es"
+"produeix en la instal·lació interior del consumidor, sent indetectable"
+"a fora- és tan pervers i absurd que la seua generalització a altres"
+"sistemes ha estat instantània: tomates, fumerals, bicicletes,"
+"WhatsApp...</p>\n"
+"<p>Que el sistema elèctric espanyol no tinga la més mínima transparència"
+"-fet, per cert, que el Projecte no aborda- i en conseqüència no"
+"estiguen adequadament assignats els costos dels diferents serveis"
+"entre els beneficiaris no justifica que s'imposen barreres a un nou"
+"model energètic que promet revolucionar completament el sector.</p>\n"
+"<p>El dret a l'agrupació de consumidors per a proveir-se a través d'una"
+"instal·lació compartida connectada a les seues xarxes s'omet en el"
+"projecte de llei,  fet que en dificulta enormement desenvolupament,"
+"per exemple, en comunitats de veïns que, no oblidem, és on resideix"
+"més del 80% de la població de l'estat espanyol.</p>\n"
+"<p>Cal destacar, així mateix, que, en contra de les directives europees,"
+"el projecte de llei en lloc de facilitar la tramitació administrativa"
+"de l'autoconsum, la complica encara més. Les instal·lacions xicotetes,"
+"en la mesura en què no tinguen efectes sobre la seguretat de"
+"subministrament, haurien d'instal·lar-se sense necessitat de"
+"tramitació prèvia alguna i, en tot cas, ser comunicades a posteriori a"
+"l'administració competent. Tota la resta és innecessari.</p>\n"
+"<p>El projecte de llei manca, finalment, de la creació d'un sistema"
+"específic de balanç net -promès, d'altra banda, pel ministre Soria-"
+"que permetera als consumidors compensar els excedents energètics"
+"instantanis amb dèficits posteriors sense necessitat que aquests"
+"tinguen tractament d'empresaris i pagant, sota criteris objectius, el"
+"cost que s'origine al sistema per l'"emmagatzematge" d'energia.</p>"
+
+#: agora_core/templates/agora_core/featured_election.html:225
+#: agora_core/templates/agora_core/featured_election.html:243
+msgid "Cerrar"
+msgstr "Cerrar"
+
+#: agora_core/templates/agora_core/featured_election.html:235
+#, python-format
+msgid ""
+"El nuevo sistema retributivo obvia las características de las instalaciones "
+"renovables y atenta contra su línea de flotación: la seguridad jurídica.</"
+"p>\n"
+"                <p>No es admisible, en primer lugar, que se modifiquen con "
+"carácter retroactivo las reglas de juego de las instalaciones que fueron "
+"construidas con anterioridad confiando en una retribución estable que "
+"garantizaba el Boletín Oficial del Estado. Es claro que la espectacular "
+"evolución de las renovables obliga a permanentes cambios en su sistema "
+"retributivo; pero éstos deben proyectarse siempre para las nuevas "
+"instalaciones, jamás deben afectar a las instalaciones ya construidas.</p>\n"
+"                <p>En cuanto al sistema retributivo para las nuevas "
+"instalaciones, resulta incompatible con las características de las "
+"renovables el hecho de que sea revisable cada tres años, así como que lo "
+"hagan depender del precio del mercado eléctrico.</p>\n"
+"                <p>Relegar, por otra parte, la construcción de nuevas "
+"renovables a situaciones de excepcionalidad o imposición externa es un error "
+"estratégico colosal: España tiene una dependencia energética exterior de más "
+"del 75%%, muy superior al 54%% de media de la Unión Europea, lo que le ha "
+"costado en 2012 más de 45.000 M€, el 4,5%% del PIB, en importaciones netas "
+"de hidrocarburos. Si para la UE el desarrollo de las renovables es "
+"prioritario, para España resulta absolutamente necesario para salir de la "
+"actual crisis.</p>\n"
+"                <p>Debe aprovecharse, en consecuencia, el momento actual "
+"para promover un mayor desarrollo de las renovables que incluya un plan "
+"gradual de sustitución de centrales basadas en combustibles fósiles al menor "
+"coste posible.</p>\n"
+"                <p>Por último, la propuesta contenida en el proyecto de ley "
+"de que el permiso de acceso a la red pueda ser denegado por criterios de "
+"\"sostenibilidad y eficiencia económica del sistema\", lo que resulta "
+"incompatible con los principios básicos de liberalización de mercados. El "
+"principio de red única exige que la única razón para denegar el acceso a la "
+"misma sea su falta de capacidad. Dejar en manos del propietario de la red -"
+"frecuentemente, por otra parte, perteneciente a un grupo empresarial con "
+"intereses en generación- otros criterios para denegar el acceso a la misma "
+"supone un claro obstáculo al desarrollo de las renovables."
+msgstr ""
+"El nou sistema retributiu obvia les característiques de les"
+"instal·lacions renovables i atempta contra la seua línia de flotació:"
+"la seguretat jurídica.</p>"
+"<p>No és admissible, en primer lloc, que es modifiquen amb caràcter"
+"retroactiu les regles de joc de les instal·lacions que van ser"
+"construïdes amb anterioritat confiant en una retribució estable que"
+"garantia el Butlletí Oficial de l'Estat. És clar que l'espectacular"
+"evolució de les renovables obliga a permanents canvis en el seu"
+"sistema retributiu; però han de projectar-se sempre per a les noves"
+"instal·lacions, mai han d'afectar a les instal·lacions ja construïdes.</p>"
+"Quant al sistema retributiu per a les noves instal·lacions, resulta"
+"incompatible amb les característiques de les renovables el fet que"
+"siga revisable cada tres anys, així com que depenga del preu del"
+"mercat elèctric.</p>"
+"<p>Relegar, d'altra banda, la construcció de noves renovables a"
+"situacions d'excepcionalitat o imposició externa és un error"
+"estratègic colossal: Espanya té una dependència energètica exterior de"
+"més del 75%%, molt superior al 54%% de mitjana de la Unió Europea, fet"
+"que li ha costat en 2012 més de 45.000 M€, el 4,5%% del PIB, en"
+"importacions netes d'hidrocarburs. Si per a la UE el desenvolupament"
+"de les renovables és prioritari, per a Espanya resulta absolutament"
+"necessari per a eixir de l'actual crisi.</p>\n"
+"<p>Ha d'aprofitar-se, en conseqüència, el moment actual per a promoure un"
+"major desenvolupament de les renovables que incloga un pla gradual de"
+"substitució de centrals basades en combustibles fòssils al menor cost"
+"possible.</p>\n"
+"<p>Finalment, la proposta continguda en el projecte de llei que el permís"
+"d'accés a la xarxa puga ser denegat per criteris de "sostenibilitat i"
+"eficiència econòmica del sistema", cosa que resulta incompatible amb"
+"els principis bàsics de liberalització de mercats. El principi de"
+"xarxa única exigeix que l'única raó per a denegar-ne l'accés siga la"
+"falta de capacitat. Deixar en mans del propietari de la xarxa"
+"-freqüentment, d'altra banda, pertanyent a un grup empresarial amb"
+"interessos en generació- altres criteris per a denegar-ne l'accés"
+"suposa un clar obstacle al desenvolupament de les renovables.</p>"
+
+#: agora_core/templates/agora_core/featured_election.html:250
+msgid "Estabilidad Económico-Financiera"
+msgstr "Estabilitat econòmicofinancera"
+
+#: agora_core/templates/agora_core/featured_election.html:253
+#, python-format
+msgid ""
+"El proyecto de ley se ha presentado como el que acabará con la detestable "
+"práctica de los últimos Gobiernos de reconocer a las compañías del sector "
+"unos costes que luego no eran trasladados al consumidor, generando el "
+"denominado déficit de tarifa. </p>\n"
+"                <p>Sin perjuicio de que no solo debiera perseguirse la "
+"sostenibilidad económica del sistema, sino también la seguridad de "
+"abastecimiento y la compatibilidad social y medioambiental,  el objetivo es "
+"loable; pero la forma en la que se instrumenta no lo es. </p>\n"
+"                <p>En primer lugar porque desde el año 2009 los sucesivos "
+"Gobiernos vienen comprometiéndose a acabar con el déficit de tarifa y "
+"plasmando su compromiso en normas con rango de ley que luego incumplen "
+"sistemáticamente. El último ejemplo, muy reciente, mediante el Real Decreto-"
+"ley 29/2012, de 28 de diciembre, de mejora de gestión y protección social en "
+"el Sistema Especial para Empleados de Hogar y otras medidas de carácter "
+"económico y social, que el 28 de diciembre pasado eliminaba de forma "
+"sorpresiva los límites legales para la generación del déficit en el presente "
+"año 2013. El Gobierno, sencillamente, no tiene credibilidad cuando en lugar "
+"de asegurar el cumplimiento de las leyes es el primero en incumplirlas.  </"
+"p>\n"
+"                <p>En segundo lugar hay que destacar que la inmensa mayoría "
+"de la población (más del 95%% según las últimas encuestas) exige una "
+"auditoría de costes del sector eléctrico que permita determinar si los que "
+"se les reconocen a las empresas del sector son razonables.</p>\n"
+"                <p>Y en tercer y último lugar, porque el proyecto de ley "
+"sigue permitiendo absoluta discrecionalidad al Gobierno para determinar los "
+"costes e ingresos previstos en el sector eléctrico. Es previsible, por "
+"tanto, que sigamos asistiendo al deplorable espectáculo que hemos observado "
+"en los últimos años y que ha sido incluso sancionado por el Tribunal Supremo "
+"en el que las previsiones se realizan sin objetividad alguna y se generan "
+"déficits de tarifa \"latentes\" que, inexorablemente, acaban emergiendo."
+msgstr ""
+"El projecte de llei s'ha presentat com el qual acabarà amb la
+detestable pràctica dels últims Governs de reconèixer a les companyies
+del sector uns costos que després no eren traslladats al consumidor,
+generant el denominat dèficit de tarifa.</p>\n"
+"Sense perjudici que no solament haguera de perseguir-se la"
+"sostenibilitat econòmica del sistema, sinó també la seguretat de"
+"proveïment i la compatibilitat social i mediambiental, l'objectiu és"
+"lloable; però la forma en la qual s'instrumenta no ho és.</p>\n"
+"<p>En primer lloc perquè des de l'any 2009 els successius Governs vénen"
+"comprometent-se a acabar amb el dèficit de tarifa i plasmant el seu"
+"compromís en normes amb rang de llei que després incompleixen"
+"sistemàticament. L'últim exemple, molt recent, mitjançant el Reial"
+"decret-llei 29/2012, de 28 de desembre, de millora de gestió i"
+"protecció social en el Sistema Especial per a Empleats de Llar i"
+"altres mesures de caràcter econòmic i social, que el 28 de desembre"
+"passat eliminava de forma sorprenent els límits legals per a la"
+"generació del dèficit en el present any 2013. El Govern, senzillament,"
+"no té credibilitat quan en lloc d'assegurar el compliment de les lleis"
+"és el primer a incomplir-les.</p>\n"
+"<p>En segon lloc, cal destacar que la immensa majoria de la població (més"
+"del 95%% segons les últimes enquestes) exigeix una auditoria de costos"
+"del sector elèctric que permeta determinar si els que se'ls reconeixen"
+"a les empreses del sector són raonables.</p>\n"
+"<p>I en tercer i últim lloc, perquè el projecte de llei segueix permetent"
+"absoluta discrecionalitat al Govern per a determinar els costos i"
+"ingressos previstos en el sector elèctric. És previsible, per tant,"
+"que seguim assistint al deplorable espectacle que hem observat en els"
+"últims anys i que ha estat fins i tot sancionat pel Tribunal Suprem en"
+"què les previsions es realitzen sense cap objectivitat i es generen"
+"dèficits de tarifa "latents" que, inexorablement, acaben emergint.</p>"
+
+#: agora_core/templates/agora_core/featured_election.html:267
+msgid "Formación de Precios"
+msgstr "Mecanisme de fixació de preu"
+
+#: agora_core/templates/agora_core/featured_election.html:270
+msgid ""
+"Un cambio en el sistema de formación de precios eléctricos, verdadera piedra "
+"angular del sector, no se ha incorporado en el proyecto de ley. </p>\n"
+"                <p>Según declaraciones del secretario de estado de energía, "
+"se pretende abordar una vez aprobada la ley, lo que no tiene sentido debido "
+"a que influye directamente en la configuración del resto del sistema.</p>\n"
+"                <p>El sistema marginalista se ha demostrado inadecuado "
+"porque:"
+msgstr ""
+"Un canvi en el sistema de formació de preus elèctrics, veritable pedra"
+"angular del sector, no s'ha incorporat en el projecte de llei.</p>\n"
+"Segons declaracions del Secretari d'Estat d'Energia, està previst"
+"tindre'l en compte una vegada s'haja aprovat la llei, fet que no té"
+"sentit, ja que influeix directament en la configuració de la resta del"
+"sistema.</p>\n"
+"<p>El sistema marginalista s'ha demostrat inadequat perquè:"
+
+#: agora_core/templates/agora_core/featured_election.html:274
+msgid ""
+"Genera retribuciones excesivas a centrales construidas bajo regímenes "
+"regulados anteriores (principalmente nuclear e hidráulica) que han gozado de "
+"una garantía de retorno de la inversión inexistente para las centrales "
+"construidas a partir de 1997. Las tecnologías involucradas, además, impiden "
+"por sus características que nuevos competidores disputen las rentas que "
+"obtienen.</li>\n"
+"                <li>Es incompatible con una alta penetración de renovables. "
+"Las renovables, al contrario de las fósiles, no tienen prácticamente costes "
+"variables y la inmensa mayoría de los costes fijos quedan determinados en el "
+"momento de la inversión. Requieren, por tanto, de marcos retributivos "
+"estables y no pueden estar sometidas a los vaivenes de los precios de los "
+"combustibles fósiles. Hay que entender que se trata de tener garantía en el "
+"precio a futuro de la energía, por lo que no tiene sentido que la "
+"retribución dependa del precio de un mercado que varía en cada hora. Si el "
+"mercado arroja precios inferiores a los que necesitan las renovables, las "
+"inversiones devienen ruinosas; si el precio es demasiado alto, pueden "
+"obtener sobreretribuciones injustificadas.</li>\n"
+"                <li>Como consecuencia de la entrada de renovables a precio "
+"cero (al no tener costes variables son precio-aceptantes) en el mercado, se "
+"produce una disminución muy importante del precio marginal que impide a las "
+"centrales de gas recuperar sus costes. Esto provoca, a su vez, que estas "
+"centrales exijan pagos externos al propio mercado que lo distorsionan."
+msgstr ""
+"Genera retribucions excessives a centrals construïdes sota règims"
+"regulats anteriors (principalment nuclear i hidràulica) que han gaudit"
+"d'una garantia de retorn de la inversió inexistent per a les centrals"
+"construïdes a partir de 1997. Les tecnologies involucrades, a més,"
+"impedeixen per les seues característiques que nous competidors"
+"disputen les rendes que obtenen.</li>\n"
+"<li>És incompatible amb una alta penetració de renovables. Les"
+"renovables, al contrari de les fòssils, no tenen pràcticament costos"
+"variables i la immensa majoria dels costos fixos queden determinats en"
+"el moment de la inversió. Requereixen, per tant, de marcs retributius"
+"estables i no poden estar sotmeses als vaivens dels preus dels"
+"combustibles fòssils. Cal entendre que es tracta de tenir garantia en"
+"el preu a futur de l'energia, pel que no té sentit que la retribució"
+"depenga del preu d'un mercat que varia a cada hora. Si el mercat"
+"llança preus inferiors als que necessiten les renovables, les"
+"inversions esdevenen ruïnoses; si el preu és massa alt, poden obtenir"
+"sobreretribuciones injustificades.</li>\n"
+"<li>Com a conseqüència de l'entrada de renovables a preu zero (al no"
+"tenir costos variables són preu-acceptants) en el mercat, es produeix"
+"una disminució molt important del preu marginal que impedeix a les"
+"centrals de gas recuperar els seus costos. Açò provoca, al seu torn,"
+"que aquestes centrals exigisquen pagaments externs al propi mercat que"
+"el distorsionen.</li>\n"
+
+#: agora_core/templates/agora_core/featured_election.html:279
+#, python-format
+msgid ""
+"En la actualidad ninguna central eléctrica en el sistema español se "
+"retribuye únicamente a través del mercado marginalista.</p>\n"
+"                <p>En resumen: el mercado español, caracterizado por una "
+"reducida capacidad de interconexión con el norte de Europa, alta penetración "
+"de renovables y una importante cuota de mercado (40%%) de centrales en clara "
+"situación de ventaja competitiva respecto al resto por haber sido "
+"construidas bajo garantía de recuperación de sus inversiones, requiere de un "
+"sistema diferente de formación de precios que conduzca a un mayor "
+"acercamiento de éstos a los costes de las centrales.</p>\n"
+"                <p>España debe asumir el liderazgo perdido en cuanto a "
+"proponer cambios profundos en un sistema eléctrico en el que algunas de las "
+"tecnologías renovables ya son plenamente competitivas con las convencionales "
+"sin necesidad de traer a colación el arrollador balance de externalidades "
+"positivas a su favor.</p>\n"
+"                <p>Debe olvidarse la idea de forzar a las renovables a "
+"adaptarse a un sistema diseñado para las fósiles y diseñar un nuevo modelo "
+"pensado para las renovables en el que las tecnologías fósiles -a sustituir "
+"gradualmente- que se sigan utilizando tengan, a su vez, un retorno razonable "
+"de la inversión."
+msgstr ""
+"En l'actualitat cap central elèctrica en el sistema espanyol es"
+"retribueix únicament a través del mercat marginalista.</p>\n"
+"<p>En resum: el mercat espanyol, caracteritzat per una reduïda capacitat"
+"d'interconnexió amb el nord d'Europa, alta penetració de renovables i"
+"una important quota de mercat (40%%) de centrals en clara situació"
+"d'avantatge competitiu respecte a la resta per haver estat construïdes"
+"sota garantia de recuperació de les seues inversions, requereix d'un"
+"sistema diferent de formació de preus que conduïsca a un major"
+"acostament d'aquests als costos de les centrals.</p>\n"
+"<p>Espanya ha d'assumir el lideratge perdut pel que fa a proposar canvis"
+"profunds en un sistema elèctric en què algunes de les tecnologies"
+"renovables ja són plenament competitives amb les convencionals sense"
+"necessitat de portar a col·lació l'arrollador balanç d'externalitats"
+"positives al seu favor.</p>\n"
+"<p>Ha d'oblidar-se la idea de forçar les renovables a adaptar-se a un"
+"sistema dissenyat per a les fòssils i dissenyar un nou model pensat"
+"per a les renovables en el qual les tecnologies fòssils -a substituir"
+"gradualment- que se seguisquen utilitzant tinguen, al seu torn, un"
+"retorn raonable de la inversió.</p>"
+
 #: agora_core/templates/agora_core/filter.html:5
 msgid "Filter..."
 msgstr ""
@@ -2283,7 +2825,18 @@ msgid ""
 "this case, you need to restart the web browser (close it then open it again)."
 msgstr ""
 
-#: agora_core/templates/agora_core/fnmt_login.html:25
+#: agora_core/templates/agora_core/fnmt_login.html:23
+msgid ""
+"<strong>You don't have an FNMT certificate</strong>. In this case, please <a "
+"href=\"https://www.youtube.com/watch?v=CiTqUZG0E_s\" target=\"_blank\">watch "
+"this video to learn how to obtain the FNMT certificate in 24 hours</a>, or "
+"<a href=\"https://www.cert.fnmt.es/index.php?cha=cit&sec=4&page=184&lang=es"
+"\" target=\"_blank\">obtain it in 10 minutes with your working DNIe</a>. "
+"Otherwise you should try to <a href=\"/accounts/signup/\">register with an "
+"username and password</a>."
+msgstr ""
+
+#: agora_core/templates/agora_core/fnmt_login.html:28
 #, python-format
 msgid ""
 "Most of the time restarting the browser solves the problem. If nothing of "
@@ -2436,6 +2989,8 @@ msgstr ""
 
 #: agora_core/templates/agora_core/emails/agora_notification.html:4
 #: agora_core/templates/agora_core/emails/agora_notification.txt:2
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:5
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:2
 #: agora_core/templates/agora_core/emails/election_archived.html:6
 #: agora_core/templates/agora_core/emails/election_archived.txt:1
 #: agora_core/templates/agora_core/emails/election_created.html:9
@@ -2454,6 +3009,8 @@ msgstr ""
 #: agora_core/templates/agora_core/emails/election_started.txt:18
 #: agora_core/templates/agora_core/emails/new_delegation.html:4
 #: agora_core/templates/agora_core/emails/new_delegation.txt:2
+#: agora_core/templates/agora_core/emails/non_voters.html:4
+#: agora_core/templates/agora_core/emails/non_voters.txt:2
 #: agora_core/templates/agora_core/emails/user_delegated.html:7
 #: agora_core/templates/agora_core/emails/user_delegated.html:16
 #: agora_core/templates/agora_core/emails/user_delegated.txt:2
@@ -2479,6 +3036,7 @@ msgid ""
 msgstr ""
 
 #: agora_core/templates/agora_core/emails/agora_notification.html:19
+#: agora_core/templates/agora_core/emails/non_voters.html:9
 #: agora_core/templates/agora_core/emails/user_delegated.html:24
 #, python-format
 msgid ""
@@ -2499,7 +3057,9 @@ msgid "User URL: %(protocol)s://%(site_domain)s%(other_user_url)s"
 msgstr ""
 
 #: agora_core/templates/agora_core/emails/agora_notification.txt:13
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:13
 #: agora_core/templates/agora_core/emails/new_delegation.txt:11
+#: agora_core/templates/agora_core/emails/non_voters.txt:7
 #: agora_core/templates/agora_core/emails/vote_cancelled.txt:11
 #: agora_core/templates/agora_core/emails/vote_casted.txt:11
 #, python-format
@@ -2507,6 +3067,73 @@ msgid ""
 "This message was sent to %(to_email)s. If you want to stop receiving these "
 "message from %(site_name)s, please click here: %(protocol)s://%(site_domain)s"
 "%(cancel_emails_url)s"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:7
+#, python-format
+msgid ""
+"We have recorded a vote from you at election <a href=\"%(election_url)s\">"
+"%(election_name)s</a> at <a href=\"%(agora_url)s\">%(agora_username)s/"
+"%(agora_name)s</a>. But for security reasons we need you to confirm your "
+"vote."
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:9
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:6
+msgid ""
+"Please, to confirm your vote click in the following URL (If you didn't emit "
+"that ballot, you can ignore this message):"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:11
+#, python-format
+msgid ""
+"Ballot Confirmation URL: <a href=\"%(confirm_vote_url)s\">"
+"%(confirm_vote_url)s</a>"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:13
+#: agora_core/templates/agora_core/emails/vote_cancelled.html:11
+#: agora_core/templates/agora_core/emails/vote_casted.html:11
+#, python-format
+msgid "Election description: <strong>%(election_description)s</strong>"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:16
+#: agora_core/templates/agora_core/emails/new_delegation.html:13
+#: agora_core/templates/agora_core/emails/vote_cancelled.html:14
+#: agora_core/templates/agora_core/emails/vote_casted.html:14
+#, python-format
+msgid ""
+"This message was sent to %(to_email)s. If you want to stop receiving these "
+"message from <a href=\"%(protocol)s://%(site_domain)s\">%(site_name)s</a>, "
+"please <a href=\"%(protocol)s://%(site_domain)s%(cancel_emails_url)s\">click "
+"here</a>"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:4
+#, python-format
+msgid ""
+"}We have recorded a vote from you at election %(election_name)s at "
+"%(agora_username)s/%(agora_name)s. But for security reasons we need you to "
+"confirm your vote."
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:8
+#, python-format
+msgid "Ballot Confirmation URL: %(confirm_vote_url)s"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:10
+#: agora_core/templates/agora_core/emails/election_archived.txt:7
+#: agora_core/templates/agora_core/emails/election_results.txt:7
+#: agora_core/templates/agora_core/emails/election_started.txt:9
+#: agora_core/templates/agora_core/emails/election_started.txt:17
+#: agora_core/templates/agora_core/emails/election_started.txt:24
+#: agora_core/templates/agora_core/emails/vote_cancelled.txt:8
+#: agora_core/templates/agora_core/emails/vote_casted.txt:8
+#, python-format
+msgid "Election description: %(election_description)s"
 msgstr ""
 
 #: agora_core/templates/agora_core/emails/election_archived.html:8
@@ -2559,17 +3186,6 @@ msgstr ""
 #: agora_core/templates/agora_core/emails/vote_casted.txt:6
 #, python-format
 msgid "Election URL: %(protocol)s://%(site_domain)s%(election_url)s"
-msgstr ""
-
-#: agora_core/templates/agora_core/emails/election_archived.txt:7
-#: agora_core/templates/agora_core/emails/election_results.txt:7
-#: agora_core/templates/agora_core/emails/election_started.txt:9
-#: agora_core/templates/agora_core/emails/election_started.txt:17
-#: agora_core/templates/agora_core/emails/election_started.txt:24
-#: agora_core/templates/agora_core/emails/vote_cancelled.txt:8
-#: agora_core/templates/agora_core/emails/vote_casted.txt:8
-#, python-format
-msgid "Election description: %(election_description)s"
 msgstr ""
 
 #: agora_core/templates/agora_core/emails/election_created.html:11
@@ -2755,17 +3371,6 @@ msgid ""
 "%(delegator_name)s</a>"
 msgstr ""
 
-#: agora_core/templates/agora_core/emails/new_delegation.html:13
-#: agora_core/templates/agora_core/emails/vote_cancelled.html:14
-#: agora_core/templates/agora_core/emails/vote_casted.html:14
-#, python-format
-msgid ""
-"This message was sent to %(to_email)s. If you want to stop receiving these "
-"message from <a href=\"%(protocol)s://%(site_domain)s\">%(site_name)s</a>, "
-"please <a href=\"%(protocol)s://%(site_domain)s%(cancel_emails_url)s\">click "
-"here</a>"
-msgstr ""
-
 #: agora_core/templates/agora_core/emails/new_delegation.txt:6
 #: agora_core/templates/agora_core/emails/user_delegated.txt:6
 #: agora_core/templates/agora_core/emails/user_delegated.txt:15
@@ -2891,12 +3496,6 @@ msgid ""
 "%(protocol)s://%(site_domain)s%(election_url)s</a>"
 msgstr ""
 
-#: agora_core/templates/agora_core/emails/vote_cancelled.html:11
-#: agora_core/templates/agora_core/emails/vote_casted.html:11
-#, python-format
-msgid "Election description: <strong>%(election_description)s</strong>"
-msgstr ""
-
 #: agora_core/templates/agora_core/emails/vote_cancelled.txt:4
 #, python-format
 msgid ""
@@ -2959,7 +3558,7 @@ msgid ""
 "for more details."
 msgstr ""
 
-#: misc/utils.py:86
+#: misc/utils.py:90
 msgid "Enter valid JSON"
 msgstr ""
 
@@ -3022,7 +3621,7 @@ msgid "Blog"
 msgstr ""
 
 #: templates/base.html:122
-msgid "Status"
+msgid "Press"
 msgstr ""
 
 #: templates/base.html:128
