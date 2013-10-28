@@ -261,5 +261,8 @@ urlpatterns += patterns('django.contrib.flatpages.views',
 
     url(r'^misc/page/security/?$', 'flatpage', {'url': '/security/'},
         name='security'),
+
+    url(r'^misc/page/press/?$', 'flatpage', {'url': '/press/'},
+        name='press'),
 )
 
