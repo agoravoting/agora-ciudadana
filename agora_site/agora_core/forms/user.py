@@ -377,7 +377,7 @@ class APISignupForm(django_forms.Form):
     be accepted.
 
     """
-    first_name = django_forms.RegexField(regex=r'^[_\.\w]+$', max_length=140, required=True)
+    first_name = django_forms.RegexField(regex=r'^[_\.\w ]+$', max_length=140, required=True)
     username = django_forms.RegexField(regex=userena_forms.USERNAME_RE,
                                 max_length=30, required=True,
                                 error_messages={'invalid': _('Username must contain only letters, numbers, dots and underscores.')})
