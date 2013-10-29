@@ -216,7 +216,7 @@ urlpatterns += patterns('',
 # Some redirects
 urlpatterns += patterns('',
     url(r'^misc/link/twitter/?$', RedirectView.as_view(
-        url= "https://twitter.com/#!/agoraciudadana"), name='twitter'
+        url= "https://twitter.com/#!/agoravoting"), name='twitter'
     ),
 
     url(r'^misc/link/facebook/?$', RedirectView.as_view(
