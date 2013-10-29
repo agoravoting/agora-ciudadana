@@ -165,7 +165,7 @@ class ConfirmVoteTokenView(TemplateView):
     def get(self, request, username, token, **kwargs):
         user = get_object_or_404(User, username=username)
         if not default_token_generator.check_token(user, token):
-            messages.add_message(request, messages.ERROR, _('Invalid confirmation link.'))
+            messages.add_message(request, messages.ERROR, _('Invalid confirmation link, it might have expired. Please, try to vote again!'))
             return redirect('/')
 
         if not user.is_active:
@@ -185,7 +185,7 @@ class ConfirmVoteTokenView(TemplateView):
         profile = user.get_profile()
         if not isinstance(profile.extra, dict) or\
             'pending_ballot_id' not in profile.extra:
-            messages.add_message(request, messages.ERROR, _('Invalid confirmation link.'))
+            messages.add_message(request, messages.ERROR, _('Invalid confirmation link, it might have expired. Please, try to vote again!'))
             return redirect('/')
         vote = get_object_or_404(CastVote, id=profile.extra['pending_ballot_id'])
         status_str = 'pending_ballot_status_%d' % vote.id

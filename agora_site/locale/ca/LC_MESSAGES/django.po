@@ -194,8 +194,8 @@ msgid "Invalid login link."
 msgstr "Enlace de entrada no válido."
 
 #: accounts/views.py:163 accounts/views.py:183
-msgid "Invalid confirmation link."
-msgstr "Enlace de confirmación no válido."
+msgid "Invalid confirmation link, it might have expired. Please, try to vote again!"
+msgstr "Enlace de confirmación no válido, es posible que haya expirado. Por favor, ¡intenta votar de nuevo!"
 
 #: accounts/views.py:209
 msgid "Your ballot has been confirmed and was successfully cast"
