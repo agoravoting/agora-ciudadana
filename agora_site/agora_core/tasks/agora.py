@@ -7,6 +7,7 @@ from agora_site.agora_core.templatetags.string_tags import urlify_markdown
 from actstream.signals import action
 
 from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
 from django.utils.translation import ugettext_lazy as _
 from django.utils import translation
 from django.core.mail import EmailMultiAlternatives
@@ -15,6 +16,7 @@ from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 
 from celery import task
+from celery.contrib import rdb
 
 import markdown
 import datetime
@@ -129,6 +131,9 @@ def send_mail_to_members(agora_id, user_id, is_secure, site_id, remote_addr,
 
     base_tmpl = 'agora_core/emails/agora_notification'
 
+    extra_notification_text_generator = None
+    context = get_base_email_context_task(is_secure, site_id)
+
     if receivers == 'members':
         receivers = agora.members.all()
     elif receivers == 'admins':
@@ -142,9 +147,36 @@ def send_mail_to_members(agora_id, user_id, is_secure, site_id, remote_addr,
         base_tmpl = 'agora_core/emails/non_voters'
     elif receivers == 'requested-membership':
         receivers = agora.users_who_requested_membership()
+    elif receivers == 'unconfirmed-open-votes':
+        election = agora.get_featured_election()
+        if not election or not election.has_started() or election.has_ended():
+            return
+
+        receivers = []
+        def text_gen(user):
+            token = default_token_generator.make_token(user)
+            confirm_vote_url = reverse('confirm-vote-token',
+                    kwargs=dict(username=user, token=token))
+
+            return _("You have a vote pending from confirmation. If you really emitted this vote, please confirm this vote click the following confirmation url:\n %(protocol)s://%(domain)s%(url)s") % dict(
+                protocol=context['protocol'],
+                domain=context['site'].domain,
+                url=confirm_vote_url
+            ), _("<p>You have a vote pending from confirmation. If you really emitted this vote, please confirm this vote click the following confirmation url:</p>\n<a href=\"%(protocol)s://%(domain)s%(url)s\">%(protocol)s://%(domain)s%(url)s</a><br/>") % dict(
+                protocol=context['protocol'],
+                domain=context['site'].domain,
+                url=confirm_vote_url
+            )
+
+        extra_notification_text_generator = text_gen
+        for v in CastVote.objects.filter(election__id=election.id,
+            is_counted=False):
+            if  CastVote.objects.filter(election__id=election.id, is_counted=False, voter__id=v.voter.id).count() > 0 and v.voter not in receivers and v.voter.is_active and election.has_perms("vote_counts", v.voter) and isinstance(v.voter.get_profile().extra, dict) and "pending_ballot_id" in v.voter.get_profile().extra:
+                pbi = v.voter.get_profile().extra.get('pending_ballot_id')
+                if v.voter.get_profile().extra.get('pending_ballot_status_%d' % pbi) != 'confirmed':
+                    receivers.append(v.voter)
 
     # Mail to the admins
-    context = get_base_email_context_task(is_secure, site_id)
     context.update(dict(
         agora=agora,
         other_user=sender,
@@ -152,6 +184,8 @@ def send_mail_to_members(agora_id, user_id, is_secure, site_id, remote_addr,
     ))
     context_html = context.copy()
     context_html["notification_text"] = markdown.markdown(urlify_markdown(body))
+    notification_text_base = context["notification_text"]
+    notification_text_base_html_base = context_html["notification_text"]
 
     for receiver in receivers:
         if not receiver.get_profile().has_perms('receive_email_updates'):
@@ -160,6 +194,11 @@ def send_mail_to_members(agora_id, user_id, is_secure, site_id, remote_addr,
         translation.activate(receiver.get_profile().lang_code)
         context['to'] = receiver
         context_html['to'] = receiver
+
+        if extra_notification_text_generator is not None:
+            extra_text, extra_html = extra_notification_text_generator(receiver)
+            context["notification_text"] = notification_text_base + "\n" + extra_text
+            context_html["notification_text"] = notification_text_base_html_base + "<br/>\n" + extra_html
 
         email = EmailMultiAlternatives(
             subject=subject,
