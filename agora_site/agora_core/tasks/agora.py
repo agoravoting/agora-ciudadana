@@ -205,6 +205,7 @@ def send_mail_to_members(agora_id, user_id, is_secure, site_id, remote_addr,
     context_html["notification_text"] = markdown.markdown(urlify_markdown(body))
     notification_text_base = context["notification_text"]
     notification_text_base_html_base = context_html["notification_text"]
+    notification_text_base_html_base = notification_text_base_html_base.replace("\n\n", "</p>\n\n<p>")
 
     for receiver in receivers:
         if not receiver.get_profile().has_perms('receive_email_updates'):
