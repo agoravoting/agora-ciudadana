@@ -241,7 +241,6 @@
             });
 
             if (user_vote_is_encrypted) {
-                console.log("web workers support = " + Agora.checkWebWorkersAvailable());
                 this.nextquestionToEncryptIndex = 0;
                 $("html").attr("style", "height: 100%; cursor: wait !important;");
                 setTimeout(this.encryptNextQuestion, 300);
@@ -263,16 +262,13 @@
             if (choice_index == -1) {
                 if (this.ballot['question' + index].length == 0) {
                     // blank vote is codified as possible_answers.length (which is invalid)
-                    console.log("blank vote");
                     choice_index = possible_answers.length;
                 } else {
                     // invalid vote is codified as possible_answers.length + 1 (which is invalid)
-                    console.log("!!! invalid vote");
                     choice_index = possible_answers.length + 1;
                 }
 
             }
-            console.log("encrypting index = " + index);
             var percent_num = parseInt(((index+1)*100.0)/ajax_data.questions.length);
 
             this.ballot['question' + index] = Agora.encryptAnswer(
@@ -776,21 +772,36 @@
             });
         },
 
+        email_address: false,
         fnmtLoginAndVote: function(e) {
             var self = this;
+            var url = AGORA_FNMT_BASE_URL + "/user/login/fnmt/";
+            if (this.email_address) {
+                url = url + "?email=" + this.email_address;
+            }
             this.startSendingData();
             $.ajax({
                 type: 'GET',
-                url: AGORA_FNMT_BASE_URL + "/user/login/fnmt/",
+                url: url,
                 dataType: 'jsonp',
                 timeout : 10000,
                 success: function(json) {
-                    self.stopSendingData();
-                    self.votingBooth.sendBallot();
+                    if (json.needs_email) {
+                        var email = "";
+                        while (!Agora.emailChecker(email)) {
+//                             email = window.prompt(gettext("Your FNMT certificate doesn't provide us an email address. Please, login from the front page and then vote again, sorry for the inconvenience"),"email@example.com");
+                            alert(gettext("Your FNMT certificate doesn't provide us an email address. Please, login from the front page and then vote again, sorry for the inconvenience");
+                            return;
+                        }
+                        self.email_address = email;
+                        self.fnmtLoginAndVote();
+                    } else {
+                        self.stopSendingData();
+                        self.votingBooth.sendBallot();
+                    }
                 },
                 error: function(e) {
                     self.stopSendingData();
-                    console.log(e.message);
                 }
             });
         },
@@ -822,7 +833,6 @@
                 self.votingBooth.showVoteSent(data);
             })
             .fail(function(data) {
-                console.log(data);
                 self.stopSendingData();
                 alert(gettext("Error casting the ballot. The given username might already exist or the attached file is too big. Try again or report this problem."));
             });
