@@ -18,6 +18,7 @@ import os
 import requests
 import hashlib
 
+from celery.contrib import rdb
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.utils.crypto import constant_time_compare
@@ -2256,12 +2257,20 @@ class FNMTLoginView(TemplateView):
             if user is None:
                 return self.invalid_login()
 
-            # show a form requesting the user its email
+            if email is None and user is not None and len(user.email) > 0:
+                email = user.email
+
+            # show a form requesting the user its email if needed
 
             email2 = self.request.REQUEST.get('email', None)
             if email is None and email2 is not None:
+                # check that the user provided an email not already in the DB
+                if User.objects.filter(email=email2).exists():
+                    logout(request)
+                    callback = self.request.REQUEST.get('callback', None)
+                    data = json.dumps(dict(needs_email=True))
+                    return http.HttpResponse("%s(%s);" % (callback, data))
                 user.email = email = email2
-                # send activation email
                 user.save()
 
             if not email and not user.is_active:

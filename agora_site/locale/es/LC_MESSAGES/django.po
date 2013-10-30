@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-30 10:50+0100\n"
+"POT-Creation-Date: 2013-10-30 12:47+0100\n"
 "PO-Revision-Date: 2013-06-04 17:44-0000\n"
 "Last-Translator: \n"
 "Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-"
@@ -1370,6 +1370,7 @@ msgstr[0] "¡No digas palabrotas! Aquí no se permite la palabra %s."
 msgstr[1] "¡No digas palabrotas! Aquí no se permiten las palabras %s."
 
 #: agora_core/forms/election.py:385
+#, python-format
 msgid "Please confirm vote casted for election %s"
 msgstr "Por favor confirma tu voto para la votación %s"
 
@@ -2000,6 +2001,7 @@ msgid "%(site)s - invitation to join %(agora)s"
 msgstr "%(site)s - invitación para unirte a %(agora)s"
 
 #: agora_core/tasks/agora.py:154
+#, python-format
 msgid ""
 "\n"
 "Here we provide you a custom link so you can directly access the election:\n"
@@ -2010,7 +2012,7 @@ msgstr ""
 "acceder directamente a la votación:\n"
 "%(protocol)s://%(domain)s%(url)s"
 
-#: agora_core/tasks/agora.py:158
+#: agora_core/tasks/agora.py:159
 #, python-format
 msgid ""
 "<p>Here we provide you a custom link so you can directly access the election:"
@@ -2023,7 +2025,7 @@ msgstr ""
 "<a href=\"%(protocol)s://%(domain)s%(url)s\">%(protocol)s://%(domain)s"
 "%(url)s</a><br/>"
 
-#: agora_core/tasks/agora.py:179
+#: agora_core/tasks/agora.py:180
 #, python-format
 msgid ""
 "You have a vote pending from confirmation. If you really emitted this vote, "
@@ -2034,7 +2036,7 @@ msgstr ""
 "por favor confírmalo haciendo clic en el siguiente enlace:\n"
 " %(protocol)s://%(domain)s%(url)s\n"
 
-#: agora_core/tasks/agora.py:183
+#: agora_core/tasks/agora.py:184
 #, python-format
 msgid ""
 "<p>You have a vote pending from confirmation. If you really emitted this "

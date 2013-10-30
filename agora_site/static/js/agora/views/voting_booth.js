@@ -784,17 +784,26 @@
                 type: 'GET',
                 url: url,
                 dataType: 'jsonp',
-                timeout : 10000,
+                timeout : 1000000,
                 success: function(json) {
                     if (json.needs_email) {
-                        var email = "";
-                        while (!Agora.emailChecker(email)) {
-//                             email = window.prompt(gettext("Your FNMT certificate doesn't provide us an email address. Please, login from the front page and then vote again, sorry for the inconvenience"),"email@example.com");
-                            alert(gettext("Your FNMT certificate doesn't provide us an email address. Please, login from the front page and then vote again, sorry for the inconvenience"));
-                            return;
+                        if (!self.email_address) {
+                            var email = "";
+                            var i = 0;
+                            while (!Agora.emailChecker(email) && i < 2) {
+                                email = window.prompt(gettext("Your FNMT certificate doesn't provide us an email address. Please, provide us your email address:"),"email@example.com");
+                                if (!email) {
+                                    alert(gettext("We are having trouble with your FNMT certificate. We recomend you to login from the web site front page and then try to vote again. Sorry for the inconvenience."))
+                                    window.location.href="/";
+                                }
+                                i += 1;
+                            }
+                            self.email_address = email;
+                            self.fnmtLoginAndVote();
+                        } else {
+                            alert(gettext("We are having trouble with your FNMT certificate. We recomend you to login from the web site front page and then try to vote again. Sorry for the inconvenience."))
+                            window.location.href="/";
                         }
-                        self.email_address = email;
-                        self.fnmtLoginAndVote();
                     } else {
                         self.stopSendingData();
                         self.votingBooth.sendBallot();
