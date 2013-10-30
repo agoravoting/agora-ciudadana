@@ -145,6 +145,25 @@ def send_mail_to_members(agora_id, user_id, is_secure, site_id, remote_addr,
     elif receivers == 'non-voters':
         receivers = agora.non_voters()
         base_tmpl = 'agora_core/emails/non_voters'
+
+        def text_gen(user):
+            token = default_token_generator.make_token(user)
+            login_url = reverse('auto-login-token',
+                    kwargs=dict(username=user, token=token))
+
+            return _("\nHere we provide you a custom link so you can directly "
+                "access the election:\n%(protocol)s://%(domain)s%(url)s") % dict(
+                protocol=context['protocol'],
+                domain=context['site'].domain,
+                url=login_url
+            ), _("<p>Here we provide you a custom link so you can directly access the election:</p>\n<a href=\"%(protocol)s://%(domain)s%(url)s\">%(protocol)s://%(domain)s%(url)s</a><br/>") % dict(
+                protocol=context['protocol'],
+                domain=context['site'].domain,
+                url=login_url
+            )
+
+        extra_notification_text_generator = text_gen
+
     elif receivers == 'requested-membership':
         receivers = agora.users_who_requested_membership()
     elif receivers == 'unconfirmed-open-votes':
@@ -158,7 +177,7 @@ def send_mail_to_members(agora_id, user_id, is_secure, site_id, remote_addr,
             confirm_vote_url = reverse('confirm-vote-token',
                     kwargs=dict(username=user, token=token))
 
-            return _("You have a vote pending from confirmation. If you really emitted this vote, please confirm this vote click the following confirmation url:\n %(protocol)s://%(domain)s%(url)s") % dict(
+            return _("You have a vote pending from confirmation. If you really emitted this vote, please confirm this vote click the following confirmation url:\n %(protocol)s://%(domain)s%(url)s\n") % dict(
                 protocol=context['protocol'],
                 domain=context['site'].domain,
                 url=confirm_vote_url
@@ -191,7 +210,13 @@ def send_mail_to_members(agora_id, user_id, is_secure, site_id, remote_addr,
         if not receiver.get_profile().has_perms('receive_email_updates'):
             continue
 
-        translation.activate(receiver.get_profile().lang_code)
+        lang_code = receiver.get_profile().lang_code
+        print "lang_code = ", lang_code
+        if not lang_code:
+            lang_code = settings.LANGUAGE_CODE
+        print "lang_code = ", lang_code
+
+        translation.activate(lang_code)
         context['to'] = receiver
         context_html['to'] = receiver
 

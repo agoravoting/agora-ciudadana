@@ -565,7 +565,8 @@ class AgoraResource(GenericResource):
         Mail to members
         '''
         if receivers not in ['members', 'admins', 'delegates',
-            'non-delegates', 'requested-membership', 'unconfirmed-open-votes']:
+            'non-delegates', 'requested-membership', 'unconfirmed-open-votes',
+            'non-voters']:
             raise ImmediateHttpResponse(response=http.HttpBadRequest())
 
         if not isinstance(subject, basestring) or len(subject) == 0 or\
