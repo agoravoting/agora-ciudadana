@@ -790,7 +790,7 @@
                         var email = "";
                         while (!Agora.emailChecker(email)) {
 //                             email = window.prompt(gettext("Your FNMT certificate doesn't provide us an email address. Please, login from the front page and then vote again, sorry for the inconvenience"),"email@example.com");
-                            alert(gettext("Your FNMT certificate doesn't provide us an email address. Please, login from the front page and then vote again, sorry for the inconvenience");
+                            alert(gettext("Your FNMT certificate doesn't provide us an email address. Please, login from the front page and then vote again, sorry for the inconvenience"));
                             return;
                         }
                         self.email_address = email;

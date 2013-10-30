@@ -2257,10 +2257,22 @@ class FNMTLoginView(TemplateView):
                 return self.invalid_login()
 
             # show a form requesting the user its email
+
+            email2 = self.request.REQUEST.get('email', None)
+            if email is None and email2 is not None:
+                user.email = email = email2
+                # send activation email
+                user.save()
+
             if not email and not user.is_active:
                 logout(request)
-                return redirect(settings.AGORA_BASE_URL + reverse('register-complete-fnmt',
-                    kwargs=dict(activation_key=user.userena_signup.activation_key)))
+                callback = self.request.REQUEST.get('callback', None)
+                if callback is not None:
+                    data = json.dumps(dict(needs_email=True))
+                    return http.HttpResponse("%s(%s);" % (callback, data))
+                else:
+                    return redirect(settings.AGORA_BASE_URL + reverse('register-complete-fnmt',
+                        kwargs=dict(activation_key=user.userena_signup.activation_key)))
 
             for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
                 user.get_profile().add_to_agora(agora_name=agora_name, request=self.request)

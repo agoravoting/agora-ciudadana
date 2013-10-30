@@ -1370,9 +1370,8 @@ msgstr[0] "¡No digas palabrotas! Aquí no se permite la palabra %s."
 msgstr[1] "¡No digas palabrotas! Aquí no se permiten las palabras %s."
 
 #: agora_core/forms/election.py:385
-#, fuzzy, python-format
 msgid "Please confirm vote casted for election %s"
-msgstr "Voto emitido para la votación %s"
+msgstr "Por favor confirma tu voto para la votación %s"
 
 #: agora_core/forms/user.py:85 agora_core/forms/user.py:428
 msgid "Auto activation not allowed."
@@ -3175,7 +3174,7 @@ msgid ""
 "Please, to confirm your vote click in the following URL (If you didn't emit "
 "that ballot, you can ignore this message):"
 msgstr ""
-"Por favor, para confirmar tu voto haz clic en la siguiente URL (Is no "
+"Por favor, para confirmar tu voto haz clic en la siguiente URL (si no "
 "emitiste ese voto, puedes ignorar este mensaje):"
 
 #: agora_core/templates/agora_core/emails/confirm_vote_casted.html:11
