@@ -407,6 +407,30 @@ class ElectionView(TemplateView):
             agora__creator__username=username)
         return super(ElectionView, self).dispatch(*args, **kwargs)
 
+class ElectionSecurityCenterView(TemplateView):
+    '''
+    Shows the election security center
+    '''
+    template_name = 'agora_core/election_security_center.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ElectionSecurityCenterView, self).get_context_data(**kwargs)
+        context['election'] = self.election
+        context['permissions'] = self.election.get_perms(self.request.user)
+        context['agora_perms'] = self.election.agora.get_perms(self.request.user)
+        return context
+
+    def dispatch(self, *args, **kwargs):
+        self.kwargs = kwargs
+
+        username = kwargs['username']
+        agoraname = kwargs['agoraname']
+        electionname = kwargs['electionname']
+        self.election = get_object_or_404(Election,
+            name=electionname, agora__name=agoraname,
+            agora__creator__username=username)
+        return super(ElectionSecurityCenterView, self).dispatch(*args, **kwargs)
+
 
 class VotingBoothView(TemplateView):
     '''
@@ -434,11 +458,13 @@ class VotingBoothView(TemplateView):
         self.election = get_object_or_404(Election,
             name=electionname, agora__name=agoraname,
             agora__creator__username=username)
+        if self.election.has_ended():
+            return redirect('/')
         return super(VotingBoothView, self).dispatch(*args, **kwargs)
 
 class FakeVotingBoothView(TemplateView):
     '''
-    Shows an election voting booth that is fake is a 4 USD$ bill
+    Shows an election voting booth that is as fake as a 4 USD$ bill
     '''
     template_name = 'agora_core/voting_booth.html'
 

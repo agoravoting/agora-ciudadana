@@ -1,0 +1,38 @@
+{% extends 'agora_core/election_base.html' %}
+{% load i18n %}
+{% load agora_utils %}
+{% load crispy_forms_tags %}
+{% load static from staticfiles %}
+
+{% block title %}{% trans "Security Center" %} - {{ election.pretty_name }} - {{ election.agora.creator.username }}/{{ election.agora.name }}{% endblock %}
+
+{% block election-navigation %}{% activetab "election-nav" "security-center" %}{{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="row" id="election-security-center hero">
+</div>
+
+{% endblock %}
+
+{% block ajax-data %}{% rest request '/election/' election.id '/' %}{% endblock %}
+
+{% block script-block %}
+    <script id="template-election-security-center" type="text/underscore-template">
+        <h2><%= gettext("Security Center") %></h2>
+        <p><%= gettext("To verify the election, follow these steps") %>:</p>
+        <ol>
+            <li>
+                <%= gettext("Download agora-verifier (you need x64 bits Linux with python and java) from <a href=\"https://congresotransparente.com/static/agora-verifier\">here</a>") %>
+            </li>
+            <li>
+                <%= interpolate(gettext("Download the tally for this election from <a href=\"/media/elections/%s/tally.tar.gz\">here</a>"), [id]) %>
+            </li>
+            <li>
+                <%= gettext("Execute the following command to verify the tally: <strong>./agora-verifier tally.tar.gz</strong>") %>
+            </li>
+        </ol>
+    </script>
+    <script>
+        app.currentView = new Agora.ElectionSecurityCenterView();
+    </script>
+{% endblock %}

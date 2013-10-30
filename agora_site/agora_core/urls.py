@@ -167,6 +167,9 @@ urlpatterns += patterns('',
     url(r'^(?P<username>[\-\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/vote/?$',
         VotingBoothView.as_view(), name='election-voting-booth'),
 
+    url(r'^(?P<username>[\-\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/security-center/?$',
+        ElectionSecurityCenterView.as_view(), name='election-security-center'),
+
     url(r'^(?P<username>[\-\.\w]+)/(?P<agoraname>[\-\.\w]+)/election/(?P<electionname>[\-\.\w]+)/fake_vote/?$',
         FakeVotingBoothView.as_view(), name='election-voting-booth-fake'),
 

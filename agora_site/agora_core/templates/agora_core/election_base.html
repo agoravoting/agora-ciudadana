@@ -128,6 +128,11 @@
         <a href="{% url election-edit election.agora.creator.username election.agora.name election.name %}">{% trans "Edit" %}</a>
     </li>
     {% endif %}
+    {% if election.is_secure and election.tally_released_at_date %}
+    <li {% ifactivetab "election-nav" "security-center" %}class="active"{% endifactivetab %}>
+        <a href="{% url election-security-center election.agora.creator.username election.agora.name election.name %}">{% trans "Security Center" %}</a>
+    </li>
+    {% endif %}
     {% endblock %}
     {% endblock %}
 </ul>

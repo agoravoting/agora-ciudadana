@@ -300,4 +300,14 @@
             }
         }
     });
+
+
+    Agora.ElectionSecurityCenterView = Backbone.View.extend({
+        el: "#election-security-center",
+
+        initialize: function() {
+            this.template = _.template($("#template-election-security-center").html());
+            this.$el.html(this.template(ajax_data));
+        }
+    });
 }).call(this)
