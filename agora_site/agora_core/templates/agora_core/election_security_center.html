@@ -9,7 +9,7 @@
 {% block election-navigation %}{% activetab "election-nav" "security-center" %}{{ block.super }}{% endblock %}
 
 {% block content %}
-<div class="row" id="election-security-center hero">
+<div class="row" id="election-security-center" style="font-size: 15px">
 </div>
 
 {% endblock %}
@@ -22,13 +22,13 @@
         <p><%= gettext("To verify the election, follow these steps") %>:</p>
         <ol>
             <li>
-                <%= gettext("Download agora-verifier (you need x64 bits Linux with python and java) from <a href=\"https://congresotransparente.com/static/agora-verifier\">here</a>") %>
+                <%= gettext("Download <a href=\"https://congresotransparente.com/static/agora-verifier\">agora-verifier</a> (you need x64 bits Linux with python and java)") %>
             </li>
             <li>
-                <%= interpolate(gettext("Download the tally for this election from <a href=\"/media/elections/%s/tally.tar.gz\">here</a>"), [id]) %>
+                <%= interpolate(gettext("Download <a href=\"/media/elections/%s/tally.tar.gz\">the tally for this election</a>"), [id]) %>
             </li>
             <li>
-                <%= gettext("Execute the following command to verify the tally: <strong>./agora-verifier tally.tar.gz</strong>") %>
+                <%= gettext("Execute the following command to verify the tally: <br/><h2>./agora-verifier tally.tar.gz</h2>") %>
             </li>
         </ol>
     </script>
