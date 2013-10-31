@@ -396,7 +396,7 @@ class APISignupForm(django_forms.Form):
 
         """
         try:
-            user = User.objects.get(username__iexact=self.cleaned_data['username'])
+            user = User.objects.get(username=self.cleaned_data['username'])
         except User.DoesNotExist:
             pass
         else:
