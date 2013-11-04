@@ -3,7 +3,7 @@ from simplejson.decoder import JSONDecodeError
 
 from django.conf import settings
 from django.core.paginator import InvalidPage
-from django.http import Http404
+from django.http import Http404, HttpResponseBadRequest
 
 from django.template import RequestContext
 from django.utils import simplejson
@@ -139,8 +139,11 @@ class GenericResourceMixin:
         self.throttle_check(request)
 
         # Do the query.
-        offset = int(request.GET.get('offset', 0))
-        limit = min(int(request.GET.get('limit', 20)), 1000)
+        try:
+            offset = int(request.GET.get('offset', 0))
+            limit = min(int(request.GET.get('limit', 20)), 1000)
+        except:
+            raise HttpBadRequest("Sorry, you did not provide valid input data")
         paginator = Paginator(request.GET, queryset)
 
         try:
