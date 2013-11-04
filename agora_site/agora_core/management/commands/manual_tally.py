@@ -14,40 +14,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from agora_site.agora_core.models import (Agora, Election, Profile, CastVote,
-                                          Authority)
 from agora_site.misc.utils import *
-from agora_site.agora_core.templatetags.agora_utils import get_delegate_in_agora
-from agora_site.agora_core.models.voting_systems.base import (
-    parse_voting_methods, get_voting_system_by_id)
+from agora_site.agora_core.models.voting_systems.base import get_voting_system_by_id
 
-from actstream.signals import action
-
-from django.conf import settings
-from django.contrib.auth.models import User
-from django.utils.translation import ugettext as _
-from django.template.loader import render_to_string
-from django.shortcuts import get_object_or_404
-from django.utils import translation, timezone
-from django.contrib.sites.models import Site
-from django.core.urlresolvers import reverse
-from django.utils.crypto import constant_time_compare
+from django.utils import timezone
 from django.core.management.base import BaseCommand, CommandError
-
-from celery.contrib import rdb
-from celery import task
-
-import datetime
 import codecs
-import requests
 import tarfile
-import uuid
 import json
 import os
 from tempfile import mkdtemp
-import shutil
-from random import choice
-import random
 
 class Command(BaseCommand):
     '''
@@ -72,11 +48,8 @@ class Command(BaseCommand):
 
         questions = json.loads(questions_content.strip())
         now = timezone.now()
-        print "hash: sha512://%s\n" % hash_file(tally_path)
 
         dir_path = mkdtemp("tally")
-
-        print "tmp dir = %s" % dir_path
 
         # untar the plaintexts
         tally_gz = tarfile.open(tally_path, mode="r:gz")
@@ -151,7 +124,6 @@ class Command(BaseCommand):
             for tally in tallies:
                 tally.post_tally(result)
 
-            print "tally result = "
             print json.dumps(dict(
                 a= "result",
                 counts = result,
