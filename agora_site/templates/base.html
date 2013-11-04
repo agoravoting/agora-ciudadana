@@ -78,15 +78,14 @@
                             {% trans "<p>A new way of</p><h1>Making group decisions</h1>" %}
                             <div id="agora_house">
                                 <img src="{{ STATIC_URL }}img/agora_house.png" />
-                                <a class="btn btn-success" href="{% url election-list %}">{% trans "Participate" %}</a>
-                                <a class="btn btn-primary" href="{% url agora-list %}">{% trans "Explore" %}</a>
+                                <a class="btn btn-block btn-success btn-large" href="{% url userena_signup %}">{% trans "Participate" %}</a>
                             </div>
                         </div>
                         <div class="span5">
                             <blockquote>&ldquo;
-                            {% trans "An indispensable tool to lead an organization in a democratic manner. Its delegation system reflects trust relationships" %}&rdquo;
+                            {% trans "It's a way to approach people and let people come to us, to share responsability" %} &rdquo;
                             </blockquote>
-                            <p>{% trans "Eduardo Robles Elvira, Cofounder of Wadobo" %}</p>
+                            <p>{% trans "Joan Baldoví, representative in Congress of Deputies (Spain)" %}</p>
                         </div>
                     {% endblock %}
                 </div>

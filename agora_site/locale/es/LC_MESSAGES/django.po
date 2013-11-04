@@ -3242,7 +3242,7 @@ msgstr "<p>Una nueva forma de</p><h1>Tomar decisiones en grupo</h1>"
 
 #: templates/base.html:81
 msgid "Participate"
-msgstr "Participar"
+msgstr "Participa"
 
 #: templates/base.html:82
 msgid "Explore"

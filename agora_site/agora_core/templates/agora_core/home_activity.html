@@ -5,6 +5,11 @@
 {% block content-wrapper-class %}home{% endblock %}
 
 {% block content %}
+        <div class="text-center">
+            <a href="/misc/page/press">
+                <img src="{{ STATIC_URL }}img/press.png" alt="press" />
+            </a>
+        </div>
         <div class="row election-content-row">
             <div class="activity-list hide" id="activity-list"
                 data-url="/api/v1/action/">

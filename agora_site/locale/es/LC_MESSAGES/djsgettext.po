@@ -943,7 +943,7 @@ msgstr "Mis ágoras"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:31
 msgid "Explore existing agoras.."
-msgstr "Explorar otras votaciones"
+msgstr "Explorar otras ágoras"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:37
 msgid "Create an Agora"

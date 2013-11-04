@@ -4395,6 +4395,9 @@ body {
 #running-board-wrapper.hero-unit .span7 {
   max-height: 180px;
 }
+#running-board-wrapper .span5 {
+  width: 370px;
+}
 #running-board-wrapper .span5 blockquote {
   margin: 26px 35px 0 35px;
 }

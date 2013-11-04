@@ -232,6 +232,12 @@ urlpatterns += patterns('django.contrib.flatpages.views',
     url(r'^misc/page/terms-of-service/?$', 'flatpage',
         {'url': '/terms-of-service/'}, name='terms-of-service'),
 
+    url(r'^misc/page/press/?$', 'flatpage',
+        {'url': '/press/'}, name='press'),
+
+    url(r'^misc/page/professional/?$', 'flatpage',
+        {'url': '/professional/'}, name='professional'),
+
     url(r'^misc/page/privacy-policy/?$', 'flatpage',
         {'url': '/privacy-policy/'}, name='privacy-policy'),
 

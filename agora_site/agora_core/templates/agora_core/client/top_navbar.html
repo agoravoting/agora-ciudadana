@@ -72,12 +72,12 @@
                             <a href="/elections/list/"><%= gettext("Elections") %></a>
                         </li>
                     <% } %>
-                    <li>
-                        <a href="/user/list/"><%= gettext("People") %></a>
-                    </li>
                 </ul>
 
                 <ul class="nav pull-right">
+                    <li>
+                        <a href="misc/page/professional/"><%= gettext("Professional services") %></a>
+                    </li>
                     <% if (user.id < 0) { %>
                         <li>
                             <a class="link-green" href="/accounts/signin/"><%= gettext("Enter") %></a>
