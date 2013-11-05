@@ -466,12 +466,13 @@ class FakeHttpRequest(HttpRequest):
 
 
 def clean_html(text, to_plaintext=False):
-    if not len(text.strip()):
+    text = text.strip()
+    if not len(text):
         return text
 
     html = lxml_clean_html(text)
     plaintext = html2text.html2text(html).strip()
-    if plaintext == text or to_plaintext:
+    if plaintext == text:
         return plaintext
 
     return html
