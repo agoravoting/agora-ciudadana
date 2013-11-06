@@ -54,7 +54,7 @@ class BaseSTV(BaseVotingSystem):
         '''
         error = django_forms.ValidationError(_('Invalid questions format'))
 
-        if question['question'] != clean_html(question['question'], True):
+        if question['question'].strip() != clean_html(question['question'], True):
             raise error
 
         if 'num_seats' not in question or\
@@ -103,7 +103,7 @@ class BaseSTV(BaseVotingSystem):
             if answer['value'] in answer_values:
                 raise error
 
-            if answer['value'] != clean_html(answer['value'], True).replace("\n", ""):
+            if answer['value'].strip() != clean_html(answer['value'], True).replace("\n", ""):
                 raise error
             answer_values.append(answer['value'])
 

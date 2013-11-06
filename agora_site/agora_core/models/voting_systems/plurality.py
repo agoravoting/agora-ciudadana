@@ -51,7 +51,7 @@ class Plurality(BaseVotingSystem):
         '''
         error = django_forms.ValidationError(_('Invalid questions format'))
 
-        if question['question'] != clean_html(question['question'], True):
+        if question['question'].strip() != clean_html(question['question'], True):
             raise error
 
         if question['a'] != 'ballot/question' or\
@@ -89,7 +89,7 @@ class Plurality(BaseVotingSystem):
                 ) or len(answer['value']) < 1:
                 raise error
 
-            if answer['value'] != clean_html(answer['value'], True).replace("\n", ""):
+            if answer['value'].strip() != clean_html(answer['value'], True).replace("\n", ""):
                 raise error
 
 
