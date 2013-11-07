@@ -143,7 +143,7 @@ class GenericResourceMixin:
             offset = int(request.GET.get('offset', 0))
             limit = min(int(request.GET.get('limit', 20)), 1000)
         except:
-            raise HttpBadRequest("Sorry, you did not provide valid input data")
+            raise http.HttpBadRequest("Sorry, you did not provide valid input data")
         paginator = Paginator(request.GET, queryset)
 
         try:
