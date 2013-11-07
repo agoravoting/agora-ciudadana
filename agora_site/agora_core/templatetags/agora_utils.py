@@ -7,7 +7,7 @@ from urlparse import urlparse, urlunparse
 from django.http import QueryDict
 from django import template
 from django.conf import settings
-from django.utils.translation import pgettext as _
+from django.utils.translation import pgettext as _, gettext as _g
 from django.template.base import token_kwargs
 from django.contrib.contenttypes.models import ContentType
 
@@ -28,6 +28,10 @@ def is_agora_admin(agora, user):
 @register.filter
 def ispair(obj):
     return obj % 2 == 0
+
+@register.filter
+def gettext(str_i18n):
+    return _g(str_i18n)
 
 @register.filter
 def vote_for_election(user, election):

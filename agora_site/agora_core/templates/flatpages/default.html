@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags agora_utils %}
 
-{% block title %}{{ flatpage.title }}{% endblock %}
+{% block title %}{{ flatpage.title|gettext }}{% endblock %}
 
 {% block running-board-wrapper-class %}{% endblock %}
 
-{% block running-board  %}<h2>{{ flatpage.title }}</h2>{% endblock %}
+{% block running-board  %}<h2>{{ flatpage.title|gettext }}</h2>{% endblock %}
 
 {% block content %}
 
 <div class="row">
     <div class="span9">
-        {{ flatpage.content }}
+        {{ flatpage.content|gettext }}
     </div>
 </div>
 
