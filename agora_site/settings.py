@@ -173,8 +173,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'django.contrib.messages',
-    'django.contrib.admin',
-    'django.contrib.admindocs',
+    # WARNING! you should disable admin in production sites for security:
+    #'django.contrib.admin',
     'django.contrib.comments',
     'django.contrib.markup',
     'django.contrib.flatpages',

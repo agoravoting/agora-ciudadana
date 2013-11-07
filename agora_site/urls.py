@@ -25,12 +25,6 @@ admin.autodiscover()
 
 
 urlpatterns = patterns('',
-    # Uncomment the admin/doc line below to enable admin documentation:
-    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    (r'^admin/', include(admin.site.urls)),
-
     (r'^accounts/', include('agora_site.accounts.urls')),
 
     (r'^comments/', include('django.contrib.comments.urls')),
@@ -41,5 +35,10 @@ urlpatterns = patterns('',
 
     (r'', include('agora_site.agora_core.urls')),
 )
+
+if 'django.contrib.admin' in settings.INSTALLED_APPS:
+    urlpatterns += patterns('',
+        (r'^admin/', include(admin.site.urls))
+    )
 
 urlpatterns += staticfiles_urlpatterns()
