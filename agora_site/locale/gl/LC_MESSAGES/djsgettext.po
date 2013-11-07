@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-06 12:02+0200\n"
+"POT-Creation-Date: 2013-11-07 13:58+0100\n"
 "PO-Revision-Date: 2013-09-27 07:43+0200\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -521,7 +521,8 @@ msgid "left admin permissions"
 msgstr "renunciou aos permisos de administrador"
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:24
-msgid "canceled voto delegation"
+#, fuzzy
+msgid "canceled vote delegation"
 msgstr "cancelou a delegación de voto"
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:25
@@ -955,9 +956,9 @@ msgstr "Votacións activas"
 msgid "Explore other elections"
 msgstr "Atopar outras votacións"
 
-#: agora_core/templates/agora_core/client/top_navbar.html:76
-msgid "People"
-msgstr "Persoas"
+#: agora_core/templates/agora_core/client/top_navbar.html:79
+msgid "Professional services"
+msgstr ""
 
 #: agora_core/templates/agora_core/client/top_navbar.html:83
 msgid "Enter"
@@ -1086,6 +1087,9 @@ msgstr "Escoller como delegado"
 #: agora_core/templates/search/include-js-template-agora-profile.html:106
 msgid "no actions"
 msgstr "ningunha acción"
+
+#~ msgid "People"
+#~ msgstr "Persoas"
 
 #~ msgid "Choices available"
 #~ msgstr "Opcións dispoñíbeis"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-06 12:02+0200\n"
+"POT-Creation-Date: 2013-11-07 13:58+0100\n"
 "PO-Revision-Date: 2013-06-04 17:45-0000\n"
 "Last-Translator: \n"
 "Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-"
@@ -524,7 +524,8 @@ msgid "left admin permissions"
 msgstr "dejó de ser administrador"
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:24
-msgid "canceled voto delegation"
+#, fuzzy
+msgid "canceled vote delegation"
 msgstr "canceló su delegación de voto"
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:25
@@ -957,9 +958,9 @@ msgstr "Votaciones activas"
 msgid "Explore other elections"
 msgstr "Explorar otras votaciones"
 
-#: agora_core/templates/agora_core/client/top_navbar.html:76
-msgid "People"
-msgstr "Gente"
+#: agora_core/templates/agora_core/client/top_navbar.html:79
+msgid "Professional services"
+msgstr "Servicios profesionales"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:83
 msgid "Enter"
@@ -1087,6 +1088,9 @@ msgstr "Elegir como delegado"
 #: agora_core/templates/search/include-js-template-agora-profile.html:106
 msgid "no actions"
 msgstr ""
+
+#~ msgid "People"
+#~ msgstr "Gente"
 
 #~ msgid "Choices available"
 #~ msgstr "Opciones disponibles"

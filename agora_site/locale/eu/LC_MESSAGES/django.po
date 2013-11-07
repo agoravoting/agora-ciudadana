@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-19 22:50+0200\n"
+"POT-Creation-Date: 2013-11-07 13:57+0100\n"
 "PO-Revision-Date: 2013-06-04 17:44-0000\n"
 "Last-Translator: \n"
 "Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-"
@@ -1156,7 +1156,7 @@ msgstr "Errepikatu pasahitza"
 msgid "Profile"
 msgstr "Profila"
 
-#: agora_core/forms/__init__.py:152 templates/base.html:137
+#: agora_core/forms/__init__.py:152 templates/base.html:136
 msgid "Security"
 msgstr "Segurtasuna"
 
@@ -2442,12 +2442,12 @@ msgstr ""
 "Jarraitu lagun bat. Sortu ordezkari bat. Idatzi iruzkinak. Parte hartu."
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:70
-#: templates/base.html:149
+#: templates/base.html:148
 msgid "Follow on Twitter"
 msgstr "Jarraitu Twitter-en"
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:71
-#: templates/base.html:152
+#: templates/base.html:151
 msgid "Like in Facebook"
 msgstr "Atsegin Facebook-en"
 
@@ -2456,7 +2456,7 @@ msgid "Follow in Identi.ca"
 msgstr "Jarraitu Identi.ca-en"
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:73
-#: templates/base.html:158
+#: templates/base.html:157
 msgid "+1 in Google Plus"
 msgstr "+1 Google Plus-en"
 
@@ -3236,66 +3236,73 @@ msgstr "<p></p><h1>Taldeetan erabakiak hartzeko</h1> era berri bat"
 msgid "Participate"
 msgstr "Parte hartu"
 
-#: templates/base.html:82
-msgid "Explore"
-msgstr "Arakatu"
-
-#: templates/base.html:87
+#: templates/base.html:86
 msgid ""
-"An indispensable tool to lead an organization in a democratic manner. Its "
-"delegation system reflects trust relationships"
+"It's a way to approach people and let people come to us, to share "
+"responsability"
 msgstr ""
-"Edozein erakunde era demokratikoan antolatzeko tresna hobezina. Ordezkarien "
-"sistemak fidagarritasun erlazioak adierazten ditu"
 
-#: templates/base.html:89
-msgid "Eduardo Robles Elvira, Cofounder of Wadobo"
-msgstr "Eduardo Robles Elvira, Wadobo-ko eratzailea"
+#: templates/base.html:88
+msgid "Joan Baldoví, representative in Congress of Deputies (Spain)"
+msgstr ""
 
-#: templates/base.html:110
+#: templates/base.html:109
 msgid "Discover"
 msgstr "Informazio gehiago"
 
-#: templates/base.html:113
+#: templates/base.html:112
 msgid "About"
 msgstr "Honi buruz"
 
-#: templates/base.html:116
+#: templates/base.html:115
 msgid "Libre Software"
 msgstr "Software Librea"
 
-#: templates/base.html:119
+#: templates/base.html:118
 msgid "Blog"
 msgstr "Bloga"
 
-#: templates/base.html:122
+#: templates/base.html:121
 msgid "Status"
 msgstr "Egoera"
 
-#: templates/base.html:128
+#: templates/base.html:127
 msgid "Serious Stuff"
 msgstr "Gauza garrantzitsuak"
 
-#: templates/base.html:131
+#: templates/base.html:130
 msgid "Terms of Service"
 msgstr "Erabilera baldintzak"
 
-#: templates/base.html:134
+#: templates/base.html:133
 msgid "Privacy Policy"
 msgstr "Pribatutasun-politika"
 
-#: templates/base.html:140
+#: templates/base.html:139
 msgid "Contact Us"
 msgstr "Jarri harremanetan"
 
-#: templates/base.html:146
+#: templates/base.html:145
 msgid "Be Social"
 msgstr "Ezagutu jendea"
 
-#: templates/base.html:155
+#: templates/base.html:154
 msgid "Follow in Indenti.ca"
 msgstr "Jarraitu Identi.ca-en"
 
-#: templates/base.html:163
+#: templates/base.html:162
 msgid "Powered by"
 msgstr "Garatzailea:"
+
+#~ msgid "Explore"
+#~ msgstr "Arakatu"
+
+#~ msgid ""
+#~ "An indispensable tool to lead an organization in a democratic manner. Its "
+#~ "delegation system reflects trust relationships"
+#~ msgstr ""
+#~ "Edozein erakunde era demokratikoan antolatzeko tresna hobezina. "
+#~ "Ordezkarien sistemak fidagarritasun erlazioak adierazten ditu"
+
+#~ msgid "Eduardo Robles Elvira, Cofounder of Wadobo"
+#~ msgstr "Eduardo Robles Elvira, Wadobo-ko eratzailea"

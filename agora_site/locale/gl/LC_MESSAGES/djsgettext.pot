@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-06 12:02+0200\n"
+"POT-Creation-Date: 2013-11-07 13:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -501,7 +501,7 @@ msgid "left admin permissions"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:24
-msgid "canceled voto delegation"
+msgid "canceled vote delegation"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:25
@@ -918,8 +918,8 @@ msgstr ""
 msgid "Explore other elections"
 msgstr ""
 
-#: agora_core/templates/agora_core/client/top_navbar.html:76
-msgid "People"
+#: agora_core/templates/agora_core/client/top_navbar.html:79
+msgid "Professional services"
 msgstr ""
 
 #: agora_core/templates/agora_core/client/top_navbar.html:83

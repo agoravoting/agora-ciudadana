@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-19 22:50+0200\n"
+"POT-Creation-Date: 2013-11-07 13:57+0100\n"
 "PO-Revision-Date: 2013-06-04 17:44-0000\n"
 "Last-Translator: \n"
 "Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-"
@@ -1160,7 +1160,7 @@ msgstr "Repite la nueva contraseña"
 msgid "Profile"
 msgstr "Perfil"
 
-#: agora_core/forms/__init__.py:152 templates/base.html:137
+#: agora_core/forms/__init__.py:152 templates/base.html:136
 msgid "Security"
 msgstr "Seguridad"
 
@@ -2448,12 +2448,12 @@ msgid "Follow a friend. Create a delegate. Comment. Participate."
 msgstr "Sigue a un amigo. Crea un delegado. Comenta. Participa."
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:70
-#: templates/base.html:149
+#: templates/base.html:148
 msgid "Follow on Twitter"
 msgstr "Seguir en Twitter"
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:71
-#: templates/base.html:152
+#: templates/base.html:151
 msgid "Like in Facebook"
 msgstr "Me gusta en Facebook"
 
@@ -2462,7 +2462,7 @@ msgid "Follow in Identi.ca"
 msgstr "Seguir en Identi.ca"
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:73
-#: templates/base.html:158
+#: templates/base.html:157
 msgid "+1 in Google Plus"
 msgstr "+1 en Google Plus"
 
@@ -3244,69 +3244,76 @@ msgstr "<p>Una nueva forma de</p><h1>Tomar decisiones en grupo</h1>"
 msgid "Participate"
 msgstr "Participa"
 
-#: templates/base.html:82
-msgid "Explore"
-msgstr "Explorar"
-
-#: templates/base.html:87
+#: templates/base.html:86
 msgid ""
-"An indispensable tool to lead an organization in a democratic manner. Its "
-"delegation system reflects trust relationships"
+"It's a way to approach people and let people come to us, to share "
+"responsability"
 msgstr ""
-"Una herramienta indispensable para llevar una organización de una forma "
-"democrática. Su sistema de delegación refleja las relaciones de confianza"
 
-#: templates/base.html:89
-msgid "Eduardo Robles Elvira, Cofounder of Wadobo"
-msgstr "Eduardo Robles Elvira, Cofundador de Wadobo"
+#: templates/base.html:88
+msgid "Joan Baldoví, representative in Congress of Deputies (Spain)"
+msgstr ""
 
-#: templates/base.html:110
+#: templates/base.html:109
 msgid "Discover"
 msgstr "Descubre"
 
-#: templates/base.html:113
+#: templates/base.html:112
 msgid "About"
 msgstr "Acerca de"
 
-#: templates/base.html:116
+#: templates/base.html:115
 msgid "Libre Software"
 msgstr "Software Libre"
 
-#: templates/base.html:119
+#: templates/base.html:118
 msgid "Blog"
 msgstr ""
 
-#: templates/base.html:122
+#: templates/base.html:121
 msgid "Status"
 msgstr "Estado"
 
-#: templates/base.html:128
+#: templates/base.html:127
 msgid "Serious Stuff"
 msgstr "Cosas Serias"
 
-#: templates/base.html:131
+#: templates/base.html:130
 msgid "Terms of Service"
 msgstr "Términos del Servicio"
 
-#: templates/base.html:134
+#: templates/base.html:133
 msgid "Privacy Policy"
 msgstr "Política de Privacidad"
 
-#: templates/base.html:140
+#: templates/base.html:139
 msgid "Contact Us"
 msgstr "Contáctanos"
 
-#: templates/base.html:146
+#: templates/base.html:145
 msgid "Be Social"
 msgstr "Socializa"
 
-#: templates/base.html:155
+#: templates/base.html:154
 msgid "Follow in Indenti.ca"
 msgstr "Seguir en Identi.ca"
 
-#: templates/base.html:163
+#: templates/base.html:162
 msgid "Powered by"
 msgstr "Funciona con"
+
+#~ msgid "Explore"
+#~ msgstr "Explorar"
+
+#~ msgid ""
+#~ "An indispensable tool to lead an organization in a democratic manner. Its "
+#~ "delegation system reflects trust relationships"
+#~ msgstr ""
+#~ "Una herramienta indispensable para llevar una organización de una forma "
+#~ "democrática. Su sistema de delegación refleja las relaciones de confianza"
+
+#~ msgid "Eduardo Robles Elvira, Cofounder of Wadobo"
+#~ msgstr "Eduardo Robles Elvira, Cofundador de Wadobo"
 
 #~ msgid "a month"
 #~ msgstr "un mes"
