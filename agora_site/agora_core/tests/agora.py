@@ -661,7 +661,7 @@ class AgoraTest(RootTestCase):
         self.assertEqual(objects[0]['actor']['content_type'], 'user')
         self.assertEqual(objects[0]['actor']['username'], 'david')
         self.assertEqual(objects[0]['action_object']['content_type'], 'comment')
-        self.assertEqual(objects[0]['action_object']['comment'], textile(orig_data['comment']).strip())
+        self.assertEqual(objects[0]['action_object']['comment'].strip(), textile(orig_data['comment']).strip())
 
     def test_list_comments(self):
         '''
@@ -685,7 +685,7 @@ class AgoraTest(RootTestCase):
         self.assertEqual(objects[0]['actor']['content_type'], 'user')
         self.assertEqual(objects[0]['actor']['username'], 'david')
         self.assertEqual(objects[0]['action_object']['content_type'], 'comment')
-        self.assertEqual(objects[0]['action_object']['comment'], textile(orig_data['comment']).strip())
+        self.assertEqual(objects[0]['action_object']['comment'].strip(), textile(orig_data['comment']).strip())
 
 
     def test_add_comment2(self):
@@ -741,7 +741,7 @@ class AgoraTest(RootTestCase):
         self.assertEqual(objects[0]['actor']['content_type'], 'user')
         self.assertEqual(objects[0]['actor']['username'], 'user1')
         self.assertEqual(objects[0]['action_object']['content_type'], 'comment')
-        self.assertEqual(objects[0]['action_object']['comment'], textile(orig_data['comment']).strip())
+        self.assertEqual(objects[0]['action_object']['comment'].strip(), textile(orig_data['comment']).strip())
 
     def test_add_comment3(self):
         '''

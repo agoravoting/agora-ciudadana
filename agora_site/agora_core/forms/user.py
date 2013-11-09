@@ -256,9 +256,6 @@ class UserSettingsForm(django_forms.ModelForm):
         if 'username' not in self.data:
             return None
 
-        if self.instance.password != '!' and 'old_password' not in self.data:
-            raise django_forms.ValidationError(_(u'You need to supply the old password.'))
-
         if User.objects.filter(username=self.cleaned_data['username']
                 ).exclude(pk=self.instance.id).exists():
             raise django_forms.ValidationError(_(u'This username is already in '
