@@ -168,18 +168,18 @@ class CustomAvatarForm(django_forms.ModelForm):
 class UserSettingsForm(django_forms.ModelForm):
     use_gravatar = django_forms.BooleanField(required=False)
 
-    first_name = django_forms.RegexField(regex=r'^[_\.\w]+$', max_length=140, required=False)
+    first_name = django_forms.CharField(max_length=140, required=False)
 
     use_initials = django_forms.BooleanField(required=False)
 
-    short_description = django_forms.RegexField(regex=r'^[\.\w]+$', max_length=140, required=False)
+    short_description = django_forms.CharField(max_length=140, required=False)
 
     biography = django_forms.CharField(_('Biography'),
         widget=django_forms.Textarea, required=False)
 
     email = django_forms.EmailField(required=False)
 
-    username = django_forms.RegexField(regex=r'^[\.\w]+$', max_length=30, required=False)
+    username = django_forms.RegexField(regex=r'^[\.\w_]+$', max_length=30, required=False)
 
     email_updates = django_forms.BooleanField(required=False)
 
@@ -230,6 +230,9 @@ class UserSettingsForm(django_forms.ModelForm):
         user.save()
         return user
 
+    def clean_short_description(self):
+        return clean_html(self.cleaned_data['short_description'])
+
     def clean_email(self):
         '''
         Validate that the email is not already registered with another user
@@ -237,7 +240,10 @@ class UserSettingsForm(django_forms.ModelForm):
         if 'email' not in self.data:
             return None
 
-        if User.objects.filter(email__iexact=self.cleaned_data['email']
+        if self.instance.password != '!' and 'old_password' not in self.data:
+            raise django_forms.ValidationError(_(u'You need to supply the old password.'))
+
+        if User.objects.filter(email=self.cleaned_data['email']
             ).exclude(pk=self.instance.id).exists():
             raise django_forms.ValidationError(_(u'This email is already in '
                 u'use. Please supply a different email.'))
@@ -250,7 +256,10 @@ class UserSettingsForm(django_forms.ModelForm):
         if 'username' not in self.data:
             return None
 
-        if User.objects.filter(username__iexact=self.cleaned_data['username']
+        if self.instance.password != '!' and 'old_password' not in self.data:
+            raise django_forms.ValidationError(_(u'You need to supply the old password.'))
+
+        if User.objects.filter(username=self.cleaned_data['username']
                 ).exclude(pk=self.instance.id).exists():
             raise django_forms.ValidationError(_(u'This username is already in '
                 u'use. Please supply a different username.'))
@@ -260,7 +269,10 @@ class UserSettingsForm(django_forms.ModelForm):
         '''
         Clean old password if needed
         '''
-        if 'password1' not in self.data or self.instance.password == '!':
+        if 'old_password' not in self.data:
+            return None
+
+        if self.instance.password == '!':
             return None
 
         if not self.instance.check_password(self.cleaned_data['old_password']):
@@ -275,6 +287,9 @@ class UserSettingsForm(django_forms.ModelForm):
         if 'password1' not in self.data:
             return None
 
+        if self.instance.password != '!' and 'old_password' not in self.data:
+            raise django_forms.ValidationError(_(u'You need to supply the old password.'))
+
         if 'password2' not in self.data or\
             self.cleaned_data['password1'] != self.data['password2'] or\
             len(self.cleaned_data['password1']) <= 3:
@@ -288,13 +303,20 @@ class UserSettingsForm(django_forms.ModelForm):
         Validates first_name field (which is actually user's full name). If its
         a FNMT authenticated user, this user cannot change the first name.
         '''
+        if 'first_name' not in self.data:
+            return None
+
+        first_name = clean_html(self.cleaned_data['first_name'])
+        if '<' in first_name or '\"' in first_name:
+            raise django_forms.ValidationError(_(u'Invalid first name.'))
+
         profile = self.request.user.get_profile()
         if isinstance(profile.extra, dict) and\
                 profile.extra.has_key('fnmt_cert') and\
-                self.request.user.first_name != self.cleaned_data['first_name']:
+                self.request.user.first_name != first_name:
             raise django_forms.ValidationError(_('FNMT users cannot change their names.'))
 
-        return self.cleaned_data['first_name']
+        return first_name
 
     def clean(self):
         """
@@ -351,7 +373,7 @@ class APISignupForm(django_forms.Form):
 
         """
         try:
-            user = User.objects.get(username__iexact=self.cleaned_data['username'])
+            user = User.objects.get(username=self.cleaned_data['username'])
         except User.DoesNotExist:
             pass
         else:
@@ -362,7 +384,7 @@ class APISignupForm(django_forms.Form):
 
     def clean_email(self):
         """ Validate that the e-mail address is unique. """
-        if User.objects.filter(email__iexact=self.cleaned_data['email']):
+        if User.objects.filter(email=self.cleaned_data['email']):
             raise django_forms.ValidationError(_('This email is already in use. Please supply a different email.'))
         return self.cleaned_data['email']
 

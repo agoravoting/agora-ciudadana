@@ -212,6 +212,7 @@
             var json = {
                 'email': $('#id_email').val(),
                 'email_updates': $('#id_email_updates').attr('checked') == 'checked',
+                'old_password': $('#id_current_password2').val()
             };
             var self = this;
             var jqxhr = $.ajax("/api/v1/user/settings/", {
@@ -220,13 +221,12 @@
                 type: 'PUT',
             })
             .done(function(e) {
-                self.sendingData = false;
-                $(".btn[type=submit]").removeClass("disabled");
+                window.location.reload(true);
             })
             .fail(function() {
                 self.sendingData = false;
                 $(".btn[type=submit]").removeClass("disabled");
-                alert("Error saving email settings");
+                alert(gettext("Error saving email settings. Please check that the provided current pasword is valid. Or maybe the email the provided email is invalid or already in use."));
             });
 
             return false;
@@ -258,7 +258,7 @@
             .fail(function() {
                 self.sendingData = false;
                 $(".btn[type=submit]").removeClass("disabled");
-                alert("Error saving password settings");
+                alert("Error saving password settings. Please check that the provided current pasword is valid.");
             });
 
             return false;
@@ -290,7 +290,7 @@
                 $("#modal-label").html(title2);
                 $(".modal-body").html(body2);
                 $(".modal-footer").html(footer2);
-                
+
                 $("#do-change-username-action").click(function(e, self) {
                     e.preventDefault();
                     if ($("#do-change-username-action").hasClass("disabled")) {

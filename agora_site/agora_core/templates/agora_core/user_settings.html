@@ -22,6 +22,9 @@
             <a href="#tab-user" data-toggle="tab"><%= gettext("User settings") %></a>
         </li>
         <li>
+            <a href="#tab-email" data-toggle="tab"><%= gettext("Email") %></a>
+        </li>
+        <li>
             <a href="#tab-account" data-toggle="tab"><%= gettext("Account") %></a>
         </li>
     </ul>
@@ -149,9 +152,8 @@
                     </ul>
                 </div>
             </div>
-            <div class="clearfix"></div>
-
-            <form id="email_form">
+            </form>
+            <form id="lang_form">
                 <fieldset>
                     <legend>
                         <%= gettext("Language") %>
@@ -184,6 +186,10 @@
                         </div>
                     </div>
                 </fieldset>
+            </form>
+        </div>
+        <div id="tab-email" class="tab-pane form-data admin-form span7">
+            <form id="email_form">
                 <fieldset>
                     <legend>
                         <%= gettext("Email settings") %>
@@ -204,6 +210,24 @@
                             </p>
                         </div>
                     </div>
+
+                <% if (has_current_password) { %>
+                    <div class="control-group" id="div_id_current_password2">
+                        <label class="control-label" for="id_current_password2">
+                            <%= gettext("Current password") %>
+                        </label>
+
+                        <div class="controls">
+                            <input class="required textinput textInput"
+                            id="id_current_password2" name="current_password2"
+                            type="password" />
+
+                            <p class="help-block" id="hint_id_current_password2">
+                                <%= gettext("Provide your current password for security, required field") %>
+                            </p>
+                        </div>
+                    </div>
+                <% } %>
 
                     <div class="control-group" id="div_id_email_updates">
                         <div class="controls">
