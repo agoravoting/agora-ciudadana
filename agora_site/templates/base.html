@@ -78,7 +78,7 @@
                             {% trans "<p>A new way of</p><h1>Making group decisions</h1>" %}
                             <div id="agora_house">
                                 <img src="{{ STATIC_URL }}img/agora_house.png" />
-                                <a class="btn btn-block btn-success btn-large" href="{% url userena_signup %}">{% trans "Participate" %}</a>
+                                <a class="btn btn-block btn-success btn-large" href="{% url 'userena_signup' %}">{% trans "Participate" %}</a>
                             </div>
                         </div>
                         <div class="span5">
@@ -109,16 +109,16 @@
                     <h3>{% trans "Discover" %}</h3>
                     <ul>
                         <li>
-                            <a href="{% url about %}">{% trans "About" %}</a>
+                            <a href="{% url 'about' %}">{% trans "About" %}</a>
                         </li>
                         <li>
-                            <a href="{% url libre-software %}">{% trans "Libre Software" %}</a>
+                            <a href="{% url 'libre-software' %}">{% trans "Libre Software" %}</a>
                         </li>
                         <li>
-                            <a href="{% url blog %}">{% trans "Blog" %}</a>
+                            <a href="{% url 'blog' %}">{% trans "Blog" %}</a>
                         </li>
                         <li>
-                            <a href="{% url status %}">{% trans "Status" %}</a>
+                            <a href="{% url 'status' %}">{% trans "Status" %}</a>
                         </li>
                     </ul>
                 </div>
@@ -127,16 +127,16 @@
                     <h3>{% trans "Serious Stuff" %}</h3>
                     <ul>
                         <li id="footer-terms-of-service">
-                            <a href="{% url terms-of-service %}">{% trans "Terms of Service" %}</a>
+                            <a href="{% url 'terms-of-service' %}">{% trans "Terms of Service" %}</a>
                         </li>
                         <li id="footer-privacy-policy">
-                            <a href="{% url privacy-policy %}">{% trans "Privacy Policy" %}</a>
+                            <a href="{% url 'privacy-policy' %}">{% trans "Privacy Policy" %}</a>
                         </li>
                         <li id="footer-security">
-                            <a href="{% url security %}">{% trans "Security" %}</a>
+                            <a href="{% url 'security' %}">{% trans "Security" %}</a>
                         </li>
                         <li>
-                            <a href="{% url contact %}">{% trans "Contact Us" %}</a>
+                            <a href="{% url 'contact' %}">{% trans "Contact Us" %}</a>
                         </li>
                     </ul>
                 </div>
@@ -145,16 +145,16 @@
                     <h3>{% trans "Be Social" %}</h3>
                     <ul>
                         <li>
-                            <a href="{% url twitter %}">{% trans "Follow on Twitter" %}</a>
+                            <a href="{% url 'twitter' %}">{% trans "Follow on Twitter" %}</a>
                         </li>
                         <li>
-                            <a href="{% url facebook %}">{% trans "Like in Facebook" %}</a>
+                            <a href="{% url 'facebook' %}">{% trans "Like in Facebook" %}</a>
                         </li>
                         <li>
-                            <a href="{% url identica %}">{% trans "Follow in Indenti.ca" %}</a>
+                            <a href="{% url 'identica' %}">{% trans "Follow in Indenti.ca" %}</a>
                         </li>
                         <li>
-                            <a href="{% url google-plus %}">{% trans "+1 in Google Plus" %}</a>
+                            <a href="{% url 'google-plus' %}">{% trans "+1 in Google Plus" %}</a>
                         </li>
                     </ul>
                 </div>
@@ -168,7 +168,7 @@
     <div class="container-fluid footer-end"></div>
     {% endblock %}
 
-    <script type="text/javascript" src="{% url jsgettext %}?language={{ language.current }}"></script>
+    <script type="text/javascript" src="{% url 'jsgettext' %}?language={{ language.current }}"></script>
     <!--[if lte IE 8]><script src="{% static 'js/min/main.compat.min.js' %}"></script><![endif]-->
     <!--[if gte IE 9]><!-->
     <script src="{% static 'js/min/main.min.js' %}"></script>

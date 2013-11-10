@@ -15,8 +15,9 @@
 
 from django.conf.urls.defaults import *
 from django.contrib.auth.decorators import login_required
-from django.views.generic import CreateView, RedirectView
+from django.views.generic import CreateView, RedirectView, TemplateView
 from django.contrib.auth.models import User
+
 from django.utils.translation import ugettext_lazy  as _
 
 from agora_site.agora_core.views import *
@@ -37,13 +38,13 @@ urlpatterns += patterns('',
     url(r'^$', HomeView.as_view(), name='home'),
 
     #TODO: create a robots.txt
-    (r'^robots\.txt$', 'django.views.generic.simple.direct_to_template', {'template': 'agora_core/robots.txt', 'mimetype': 'text/plain'}),
+    (r'^robots\.txt$', TemplateView.as_view(template_name='agora_core/robots.txt', content_type='text/plain')),
 
-    (r'^404/?$', 'django.views.generic.simple.direct_to_template', {'template': '404.html'}),
+    (r'^404/?$', TemplateView.as_view(template_name='404.html')),
 
-    (r'^500/?$', 'django.views.generic.simple.direct_to_template', {'template': '500.html'}),
+    (r'^500/?$', TemplateView.as_view(template_name='500.html')),
 
-    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/img/favicon.ico'}),
+    (r'^favicon\.ico$', RedirectView.as_view(url='/static/img/favicon.ico')),
 
     url(r'^misc/set-language/(?P<language>[\-\w]+)/?$', SetLanguageView.as_view(), name="set-language"),
 

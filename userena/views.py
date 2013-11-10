@@ -1,14 +1,14 @@
-from django.views.generic.simple import direct_to_template
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout, REDIRECT_FIELD_NAME
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.views.generic import TemplateView
+from django.views.generic.list import ListView
 from django.conf import settings
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-from django.views.generic import list_detail
 from django.http import HttpResponseForbidden, Http404
 
 from userena.forms import (SignupForm, SignupFormOnlyEmail, AuthenticationForm,
@@ -21,6 +21,53 @@ from userena import signals as userena_signals
 from userena import settings as userena_settings
 
 from guardian.decorators import permission_required_or_403
+
+class ExtraContextTemplateView(TemplateView):
+    """ Add extra context to a simple template view """
+    extra_context = None
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ExtraContextTemplateView, self).get_context_data(*args, **kwargs)
+        if self.extra_context:
+            context.update(self.extra_context)
+        return context
+
+    # this view is used in POST requests, e.g. signup when the form is not valid
+    post = TemplateView.get
+
+
+class ProfileListView(ListView):
+    """ Lists all profiles """
+    context_object_name='profile_list'
+    page=1
+    paginate_by=50
+    template_name='userena/profile_list.html'
+    extra_context=None
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(ProfileListView, self).get_context_data(**kwargs)
+        try:
+            page = int(self.request.GET.get('page', None))
+        except (TypeError, ValueError):
+            page = self.page
+
+        if userena_settings.USERENA_DISABLE_PROFILE_LIST \
+           and not self.request.user.is_staff:
+            raise Http404
+
+        if not self.extra_context: self.extra_context = dict()
+
+        context['page'] = page
+        context['paginate_by'] = self.paginate_by
+        context['extra_context'] = self.extra_context
+
+        return context
+
+    def get_queryset(self):
+        profile_model = get_profile_model()
+        queryset = profile_model.objects.get_visible_profiles(self.request.user).select_related()
+        return queryset
 
 @secure_required
 def signup(request, signup_form=SignupForm,
@@ -81,7 +128,9 @@ def signup(request, signup_form=SignupForm,
 
     if not extra_context: extra_context = dict()
     extra_context['register_form'] = form
-    return direct_to_template(request, template_name, extra_context=extra_context)
+    return ExtraContextTemplateView.as_view(template_name=template_name,
+                                            extra_context=extra_context)(request)
+
 @secure_required
 def activate(request, username, activation_key,
              template_name='userena/activate_fail.html',
@@ -135,9 +184,8 @@ def activate(request, username, activation_key,
         return redirect(redirect_to)
     else:
         if not extra_context: extra_context = dict()
-        return direct_to_template(request,
-                                  template_name,
-                                  extra_context=extra_context)
+    return ExtraContextTemplateView.as_view(template_name=template_name,
+                                            extra_context=extra_context)(request)
 
 @secure_required
 def email_confirm(request, username, confirmation_key,
@@ -181,9 +229,8 @@ def email_confirm(request, username, confirmation_key,
         return redirect(redirect_to)
     else:
         if not extra_context: extra_context = dict()
-        return direct_to_template(request,
-                                  template_name,
-                                  extra_context=extra_context)
+    return ExtraContextTemplateView.as_view(template_name=template_name,
+                                            extra_context=extra_context)(request)
 
 def direct_to_user_template(request, username, template_name,
                             extra_context=None):
@@ -219,9 +266,8 @@ def direct_to_user_template(request, username, template_name,
 
     if not extra_context: extra_context = dict()
     extra_context['viewed_user'] = user
-    return direct_to_template(request,
-                              template_name,
-                              extra_context=extra_context)
+    return ExtraContextTemplateView.as_view(template_name=template_name,
+                                            extra_context=extra_context)(request)
 
 @secure_required
 def signin(request, auth_form=AuthenticationForm,
@@ -298,9 +344,8 @@ def signin(request, auth_form=AuthenticationForm,
 
     if not extra_context: extra_context = dict()
     extra_context['form'] = form
-    return direct_to_template(request,
-                              template_name,
-                              extra_context=extra_context)
+    return ExtraContextTemplateView.as_view(template_name=template_name,
+                                            extra_context=extra_context)(request)
 
 
 
@@ -367,9 +412,8 @@ def email_change(request, username, form=ChangeEmailForm,
 
     if not extra_context: extra_context = dict()
     extra_context['form'] = form
-    return direct_to_template(request,
-                              template_name,
-                              extra_context=extra_context)
+    return ExtraContextTemplateView.as_view(template_name=template_name,
+                                            extra_context=extra_context)(request)
 
 @secure_required
 @permission_required_or_403('change_user', (User, 'username', 'username'))
@@ -432,9 +476,8 @@ def password_change(request, username, template_name='userena/password_form.html
 
     if not extra_context: extra_context = dict()
     extra_context['form'] = form
-    return direct_to_template(request,
-                              template_name,
-                              extra_context=extra_context)
+    return ExtraContextTemplateView.as_view(template_name=template_name,
+                                            extra_context=extra_context)(request)
 
 @secure_required
 @permission_required_or_403('change_profile', (get_profile_model(), 'user__username', 'username'))
@@ -510,9 +553,8 @@ def profile_edit(request, username, edit_profile_form=EditProfileForm,
     if not extra_context: extra_context = dict()
     extra_context['form'] = form
     extra_context['profile'] = profile
-    return direct_to_template(request,
-                              template_name,
-                              extra_context=extra_context)
+    return ExtraContextTemplateView.as_view(template_name=template_name,
+                                            extra_context=extra_context)(request)
 
 def profile_detail(request, username, template_name='userena/profile_detail.html', extra_context=None):
     """
@@ -542,51 +584,53 @@ def profile_detail(request, username, template_name='userena/profile_detail.html
         return HttpResponseForbidden(_("You don't have permission to view this profile."))
     if not extra_context: extra_context = dict()
     extra_context['profile'] = user.get_profile()
-    return direct_to_template(request,
-                              template_name,
-                              extra_context=extra_context)
+    return ExtraContextTemplateView.as_view(template_name=template_name,
+                                            extra_context=extra_context)(request)
+
 
 def profile_list(request, page=1, template_name='userena/profile_list.html',
-                 paginate_by=50, extra_context=None, **kwargs):
+                 paginate_by=50, extra_context=None, **kwargs): # pragma: no cover
     """
-    Returns a list of all profiles that are public.
+Returns a list of all profiles that are public.
 
-    It's possible to disable this by changing ``USERENA_DISABLE_PROFILE_LIST``
-    to ``True`` in your settings.
+It's possible to disable this by changing ``USERENA_DISABLE_PROFILE_LIST``
+to ``True`` in your settings.
 
-    :param page:
-        Integer of the active page used for pagination. Defaults to the first
-        page.
+:param page:
+Integer of the active page used for pagination. Defaults to the first
+page.
 
-    :param template_name:
-        String defining the name of the template that is used to render the
-        list of all users. Defaults to ``userena/list.html``.
+:param template_name:
+String defining the name of the template that is used to render the
+list of all users. Defaults to ``userena/list.html``.
 
-    :param paginate_by:
-        Integer defining the amount of displayed profiles per page. Defaults to
-        50 profiles per page.
+:param paginate_by:
+Integer defining the amount of displayed profiles per page. Defaults to
+50 profiles per page.
 
-    :param extra_context:
-        Dictionary of variables that are passed on to the ``template_name``
-        template.
+:param extra_context:
+Dictionary of variables that are passed on to the ``template_name``
+template.
 
-    **Context**
+**Context**
 
-    ``profile_list``
-        A list of profiles.
+``profile_list``
+A list of profiles.
 
-    ``is_paginated``
-        A boolean representing whether the results are paginated.
+``is_paginated``
+A boolean representing whether the results are paginated.
 
-    If the result is paginated. It will also contain the following variables.
+If the result is paginated. It will also contain the following variables.
 
-    ``paginator``
-        An instance of ``django.core.paginator.Paginator``.
+``paginator``
+An instance of ``django.core.paginator.Paginator``.
 
-    ``page_obj``
-        An instance of ``django.core.paginator.Page``.
+``page_obj``
+An instance of ``django.core.paginator.Page``.
 
-    """
+"""
+    warnings.warn("views.profile_list is deprecated. Use ProfileListView instead", DeprecationWarning, stacklevel=2)
+
     try:
         page = int(request.GET.get('page', None))
     except (TypeError, ValueError):
@@ -600,11 +644,11 @@ def profile_list(request, page=1, template_name='userena/profile_list.html',
     queryset = profile_model.objects.get_visible_profiles(request.user)
 
     if not extra_context: extra_context = dict()
-    return list_detail.object_list(request,
-                                   queryset=queryset,
+    return ProfileListView.as_view(queryset=queryset,
                                    paginate_by=paginate_by,
                                    page=page,
                                    template_name=template_name,
                                    extra_context=extra_context,
-                                   template_object_name='profile',
-                                   **kwargs)
+                                   **kwargs)(request)
+
+

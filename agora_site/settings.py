@@ -12,15 +12,15 @@ TEMPLATE_DEBUG = DEBUG
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    #'filters': {
-        #'require_debug_false': {
-            #'()': 'django.utils.log.RequireDebugFalse'
-        #}
-    #},
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',
-            #'filters': ['require_debug_false'],
+            'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         }
     },
@@ -416,6 +416,14 @@ MANY_CACHE_SECONDS = 0
 # sets the max age for calls that need to be very updated
 # set to zero (no-cache) by default
 FEW_CACHE_SECONDS = 0
+
+# Stablishes how many failed login attempts are allowed before a captcha is
+# shown
+MAX_ALLOWED_FAILED_LOGIN_ATTEMPTS = 1
+
+ALLOWED_HOSTS = [
+    '.local.dev',
+]
 
 try:
     # custom settings is the file where you should set your modifications of the

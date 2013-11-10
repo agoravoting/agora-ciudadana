@@ -1,5 +1,4 @@
 from django.conf.urls.defaults import *
-from django.views.generic.simple import redirect_to
 
 from userena.contrib.umessages import views as messages_views
 

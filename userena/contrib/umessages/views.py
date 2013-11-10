@@ -2,7 +2,6 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import list_detail
 from django.views.decorators.http import require_http_methods
 from django.core.urlresolvers import reverse
-from django.views.generic.simple import direct_to_template
 from django.shortcuts import get_object_or_404, redirect
 from django.http import Http404
 from django.contrib.auth.models import User
@@ -16,6 +15,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from userena.contrib.umessages.models import Message, MessageRecipient, MessageContact
 from userena.contrib.umessages.forms import ComposeForm
 from userena import settings as userena_settings
+from userena.views import ExtraContextTemplateView, ProfileListView
 
 import datetime
 
@@ -56,14 +56,13 @@ def message_list(request, page=1, paginate_by=50,
     queryset = MessageContact.objects.get_contacts_for(request.user)
 
     if not extra_context: extra_context = dict()
-    return list_detail.object_list(request,
-                                   queryset=queryset,
+    return ProfileListView.as_view(queryset=queryset,
                                    paginate_by=paginate_by,
                                    page=page,
                                    template_name=template_name,
                                    extra_context=extra_context,
-                                   template_object_name="message",
-                                   **kwargs)
+                                   context_object_name="message",
+                                   **kwargs)(request)
 
 @login_required
 def message_detail(request, username, page=1, paginate_by=10,
@@ -115,14 +114,13 @@ def message_detail(request, username, page=1, paginate_by=10,
 
     if not extra_context: extra_context = dict()
     extra_context['recipient'] = recipient
-    return list_detail.object_list(request,
-                                   queryset=queryset,
+    return ProfileListView.as_view(queryset=queryset,
                                    paginate_by=paginate_by,
                                    page=page,
                                    template_name=template_name,
                                    extra_context=extra_context,
-                                   template_object_name="message",
-                                   **kwargs)
+                                   context_object_name="message",
+                                   **kwargs)(request)
 
 @login_required
 def message_compose(request, recipients=None, compose_form=ComposeForm,
@@ -195,9 +193,8 @@ def message_compose(request, recipients=None, compose_form=ComposeForm,
     if not extra_context: extra_context = dict()
     extra_context["form"] = form
     extra_context["recipients"] = recipients
-    return direct_to_template(request,
-                              template_name,
-                              extra_context=extra_context)
+    return ExtraContextTemplateView.as_view(template_name=template_name,
+                                            extra_context=extra_context)(request)
 
 @login_required
 @require_http_methods(["POST"])
