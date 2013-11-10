@@ -435,7 +435,6 @@ class APISignupForm(django_forms.Form):
 
     def clean_email(self):
         """ Validate that the e-mail address is unique. """
-<<<<<<< HEAD
         user = User.objects.filter(email__iexact=self.cleaned_data['email'])
         if user.exists():
             user = user[0]
@@ -447,11 +446,6 @@ class APISignupForm(django_forms.Form):
                 link = settings.AGORA_BASE_URL + reverse('auto_join_activate',
                     args=(user.username, user.userena_signup.activation_key))
                 raise django_forms.ValidationError('This email is already in use but not activated, we have sent to the user\'s email the activation link: ' + link)
-=======
-        if User.objects.filter(email=self.cleaned_data['email']):
-            raise django_forms.ValidationError(_('This email is already in use. Please supply a different email.'))
->>>>>>> 164dc61... checking old_password when setting the user's email
-        return self.cleaned_data['email']
 
     def clean_activation_secret(self):
         if len(self.cleaned_data['activation_secret']) > 0:
