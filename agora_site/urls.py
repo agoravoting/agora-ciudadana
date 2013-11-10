@@ -36,7 +36,7 @@ urlpatterns = patterns('',
     (r'', include('agora_site.agora_core.urls')),
 )
 
-if 'django.contrib.admin' in settings.INSTALLED_APPS:
+if settings.DEBUG:
     urlpatterns += patterns('',
         (r'^admin/', include(admin.site.urls))
     )
