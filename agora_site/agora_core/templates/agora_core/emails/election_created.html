@@ -1,8 +1,8 @@
 {% load i18n %}
 {% autoescape off %}
 
-{% url election-view election.agora.creator.username election.agora.name election.name as election_url %}
-{% url agora-view election.agora.creator.username election.agora.name as agora_url %}
+{% url 'election-view' election.agora.creator.username election.agora.name election.name as election_url %}
+{% url 'agora-view' election.agora.creator.username election.agora.name as agora_url %}
 
 {% if election.is_approved %}
 

@@ -16,13 +16,13 @@
             <ul class="dropdown-menu">
                 {% if "cancel_membership_request" in perms %}
                 <li>
-                    <a href="{% url agora-action-accept-membership-request agora.creator.username agora.name object.username %}" class="action-form-link">
+                    <a href="{% url 'agora-action-accept-membership-request' agora.creator.username agora.name object.username %}" class="action-form-link">
                         <i class="icon-ok"></i>
                         {% trans "Accept membership request" %}
                     </a>
                 </li>
                 <li>
-                    <a href="{% url agora-action-dismiss-membership-request agora.creator.username agora.name object.username %}" class="action-form-link">
+                    <a href="{% url 'agora-action-dismiss-membership-request' agora.creator.username agora.name object.username %}" class="action-form-link">
                         <i class="icon-remove"></i>
                         {% trans "Dismiss membership request" %}
                     </a>
@@ -30,13 +30,13 @@
                 {% endif %}
                 {% if "cancel_admin_membership_request" in perms %}
                 <li>
-                    <a href="{% url agora-action-accept-admin-membership-request agora.creator.username agora.name object.username %}" class="action-form-link">
+                    <a href="{% url 'agora-action-accept-admin-membership-request' agora.creator.username agora.name object.username %}" class="action-form-link">
                         <i class="icon-ok"></i>
                         {% trans "Accept admin membership request" %}
                     </a>
                 </li>
                 <li>
-                    <a href="{% url agora-action-dismiss-admin-membership-request agora.creator.username agora.name object.username %}" class="action-form-link">
+                    <a href="{% url 'agora-action-dismiss-admin-membership-request' agora.creator.username agora.name object.username %}" class="action-form-link">
                         <i class="icon-remove"></i>
                         {% trans "Dismiss admin membership request" %}
                     </a>
@@ -44,13 +44,13 @@
                 {% endif %}
                 {% if "leave" in perms %}
                 <li>
-                    <a href="{% url agora-action-remove-membership agora.creator.username agora.name object.username %}" class="action-form-link">
+                    <a href="{% url 'agora-action-remove-membership' agora.creator.username agora.name object.username %}" class="action-form-link">
                         <i class="icon-remove"></i>
                         {% trans "Remove membership" %}
                     </a>
                 </li>
                 <li>
-                    <a href="{% url agora-action-make-admin agora.creator.username agora.name object.username %}" class="action-form-link">
+                    <a href="{% url 'agora-action-make-admin' agora.creator.username agora.name object.username %}" class="action-form-link">
                         <i class="icon-eject"></i>
                         {% trans "Make admin" %}
                     </a>
@@ -58,7 +58,7 @@
                 {% endif %}
                 {% if "leave_admin" in perms %}
                 <li>
-                    <a href="{% url agora-action-remove-admin-membership agora.creator.username agora.name object.username %}" class="action-form-link">
+                    <a href="{% url 'agora-action-remove-admin-membership' agora.creator.username agora.name object.username %}" class="action-form-link">
                         <i class="icon-edit"></i>
                         {% trans "Remove admin membership" %}
                     </a>
@@ -70,7 +70,7 @@
 {% else %}
     <div class="span6 span6-{{ row }}">
 {% endif %}
-    <a href="{% url user-view object.username %}">
+    <a href="{% url 'user-view' object.username %}">
         <div class="row-fluid">
             <div class="span4">
                 <img src="{{ object.get_profile.get_mugshot_url }}" alt="{% trans "User mugshot" %}" />

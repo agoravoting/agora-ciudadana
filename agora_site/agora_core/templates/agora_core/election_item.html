@@ -6,7 +6,7 @@
 {% endifequal %}
 
 <div class="span6 span6-{{ row }}">
-    <a href="{% url election-view object.agora.creator.username object.agora.name object.name %}">
+    <a href="{% url 'election-view' object.agora.creator.username object.agora.name object.name %}">
         <div class="row-fluid">
             <div class="span4">
                 <img src="{{ object.get_mugshot_url }}" alt="{% trans "Election mugshot" %}" />

@@ -12,7 +12,7 @@
     <img class="agora-logo" src="{{ user_shown.get_profile.get_mugshot_url }}" alt="{% blocktrans with username=user_shown.username %}{{ username }} logo{% endblocktrans %}" />
     <div class="item-detail">
         <h1>
-            <a href="{% url user-view user_shown.username %}">{{ user_shown.username }}</a>
+            <a href="{% url 'user-view' user_shown.username %}">{{ user_shown.username }}</a>
             / {{ user_shown.get_profile.get_fullname }}
         </h1>
         <p>{{ user_shown.get_profile.short_description }}</p>
@@ -24,13 +24,13 @@
     <ul class="nav nav-tabs">
         {% block user-navigation %}
         <li {% ifactivetab "user-nav" "activity" %}class="active"{% endifactivetab %}>
-            <a href="{% url user-view user_shown.username %}">{% trans "Activity" %}</a>
+            <a href="{% url 'user-view' user_shown.username %}">{% trans "Activity" %}</a>
         </li>
         <li {% ifactivetab "user-nav" "biography" %}class="active"{% endifactivetab %}>
-            <a href="{% url user-bio user_shown.username %}">{% trans "Biography" %}</a>
+            <a href="{% url 'user-bio' user_shown.username %}">{% trans "Biography" %}</a>
         </li>
         <li {% ifactivetab "user-nav" "elections" %}class="active"{% endifactivetab %}>
-            <a href="{% url user-elections user_shown.username 'participated' %}">{% trans "Elections" %}
+            <a href="{% url 'user-elections' user_shown.username 'participated' %}">{% trans "Elections" %}
              <span class="badge badge-info participated_elections_badge"></span>
             </a>
         </li>

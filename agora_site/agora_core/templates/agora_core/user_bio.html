@@ -7,7 +7,7 @@
 {% block user-navigation %}{% activetab "user-nav" "biography" %}{{ block.super }}{% endblock %}
 
 {% block user-content %}
-    {% url user-settings as edit_bio_url %}
+    {% url 'user-settings' as edit_bio_url %}
     {% if user_shown.get_profile.biography == "" %}
         <div class="alert alert-info">
         {% if user == user_shown %}

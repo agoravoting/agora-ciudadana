@@ -10,14 +10,14 @@
 <div class="span3">
     <div>
         {% if can_create_agoras %}
-        <a href="{% url agora-new %}" title="Create a new agora">
+        <a href="{% url 'agora-new' %}" title="Create a new agora">
             <img src="{{ STATIC_URL }}img/home_step1.png" id="home_step1_img" />
             <h2>1</h2>
             <h3>{% trans "Create a new agora" %}</h3>
             <p>{% trans "Create the place where the votings of your group will be held." %}</p>
         </a>
         {% else %}
-        <a href="{% url agora-list %}" title="Join an agora">
+        <a href="{% url 'agora-list' %}" title="Join an agora">
             <img src="{{ STATIC_URL }}img/home_step1.png" id="home_step1_img" />
             <h2>1</h2>
             <h3>{% trans "Join an agora" %}</h3>
@@ -29,7 +29,7 @@
 
 <div class="span3">
     <div>
-    <a href="{% url agora-list %}" title="Create a new election">
+    <a href="{% url 'agora-list' %}" title="Create a new election">
         <img src="{{ STATIC_URL }}img/home_step2.png" id="home_step2_img" />
         <h2>2</h2>
         <h3>{% trans "Create a new election" %}</h3>
@@ -40,7 +40,7 @@
 
 <div class="span3">
     <div>
-        <a href="{% url election-list %}" title="Delegate and vote">
+        <a href="{% url 'election-list' %}" title="Delegate and vote">
             <img src="{{ STATIC_URL }}img/home_step3.png" id="home_step3_img" />
             <h2>3</h2>
             <h3>{% trans "Delegate and vote" %}</h3>
@@ -67,10 +67,10 @@
     </div>
     <div class="modal-body">
         <ul>
-            <li><a href="{% url twitter %}">{% trans "Follow on Twitter" %}</a></li>
-            <li><a href="{% url facebook %}">{% trans "Like in Facebook" %}</a></li>
-            <li><a href="{% url identica %}">{% trans "Follow in Identi.ca" %}</a></li>
-            <li><a href="{% url google-plus %}">{% trans "+1 in Google Plus" %}</a></li>
+            <li><a href="{% url 'twitter' %}">{% trans "Follow on Twitter" %}</a></li>
+            <li><a href="{% url 'facebook' %}">{% trans "Like in Facebook" %}</a></li>
+            <li><a href="{% url 'identica' %}">{% trans "Follow in Identi.ca" %}</a></li>
+            <li><a href="{% url 'google-plus' %}">{% trans "+1 in Google Plus" %}</a></li>
         </ul>
     </div>
     <div class="modal-footer">
