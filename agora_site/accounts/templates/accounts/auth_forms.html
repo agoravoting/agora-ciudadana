@@ -44,7 +44,7 @@
         <h3>{% trans "Use your account in.." %}</h3>
         <p>{% trans "You can log in using your account in Twitter." %}</p>
         <div>
-        <a href="{% url socialauth_begin 'twitter' %}">
+        <a href="{% url 'socialauth_begin' 'twitter' %}">
             <img src="{{ STATIC_URL }}img/sign-in-with-twitter-l.png" />
         </a>
         </div>

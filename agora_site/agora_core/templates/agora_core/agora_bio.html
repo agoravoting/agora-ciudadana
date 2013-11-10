@@ -11,7 +11,7 @@
     {% if agora.biography == "" %}
     <div class="alert alert-info">
         {% if user in agora.admin %}
-            {% url agora-admin agora.creator.username agora.name as edit_bio_url %}
+            {% url 'agora-admin' agora.creator.username agora.name as edit_bio_url %}
             {% blocktrans %}This biography is empty! now you have the opportunity to <a href="{{ edit_bio_url }}">start writing it</a>.{% endblocktrans %}
         {% else %}
             {% trans "This biography is empty, sorry about that." %}
@@ -20,7 +20,7 @@
     {% else %}
         {% if agora.biography|length < 100 and user in agora.admin %}
         <div class="alert alert-info">
-            {% url agora-admin agora.creator.username agora.name as edit_bio_url %}
+            {% url 'agora-admin' agora.creator.username agora.name as edit_bio_url %}
             {% blocktrans %}This biography is a bit short, perhaps you can <a href="{{ edit_bio_url }}">improve it adding some additional information</a>.{% endblocktrans %}
         </div>
         {% endif %}

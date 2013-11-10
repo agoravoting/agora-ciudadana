@@ -7,12 +7,12 @@
 <div class="span6 span6-{{ row }}">
     {% if election.ballot_is_open %}
         {% if object.is_public %}
-            <a href="{% url election-delegate object.election.agora.creator.username object.election.agora.name object.election.name object.voter.username %}">
+            <a href="{% url 'election-delegate' object.election.agora.creator.username object.election.agora.name object.election.name object.voter.username %}">
         {% else %}
-            <a href="{% url user-view object.voter.username  %}">
+            <a href="{% url 'user-view' object.voter.username  %}">
         {% endif %}
     {% else %}
-        <a href="{% url user-view object.voter.username  %}">
+        <a href="{% url 'user-view' object.voter.username  %}">
     {% endif %}
         <div class="row-fluid user">
             <div class="span4">

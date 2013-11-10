@@ -5,7 +5,7 @@
 {% endifequal %}
 
 <div class="span6 span6-{{ row }} ">
-    <a href="{% url user-view object.voter.username %}">
+    <a href="{% url 'user-view' object.voter.username %}">
         <div class="row-fluid user">
             <div class="span4">
                 <img src="{{ object.voter.get_profile.get_mugshot_url }}" alt="{% trans "User mugshot" %}" />
@@ -24,7 +24,7 @@
     </div>
     {% if object.is_public %}
         {% with delegate=object.get_delegate %}
-        <a href="{% url user-view delegate.username %}">
+        <a href="{% url 'user-view' delegate.username %}">
             <div class="row-fluid user delegated">
                 <div class="span4">
                     <img src="{{ delegate.get_profile.get_mugshot_url }}" alt="{% trans "User mugshot" %}" />

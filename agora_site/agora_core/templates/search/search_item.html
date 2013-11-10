@@ -3,7 +3,7 @@
 
 {% if result|is_content_type:"agora" %}
     <div class="result-item agora-result">
-        <a href="{% url agora-view result.creator.username result.name %}">
+        <a href="{% url 'agora-view' result.creator.username result.name %}">
             <div class="row">
                 <div class="span2">
                     <img src="{{ result.get_mugshot_url }}" />
@@ -17,7 +17,7 @@
     </div>
 {% elif result|is_content_type:"election" %}
     <div class="result-item agora-result">
-        <a href="{% url election-view result.agora.creator.username result.agora.name result.name %}">
+        <a href="{% url 'election-view' result.agora.creator.username result.agora.name result.name %}">
             <div class="row">
                 <div class="span2">
                     <img src="{{ result.get_mugshot_url }}" />
@@ -35,7 +35,7 @@
     </div>
 {% elif result|is_content_type:"profile" %}
     <div class="result-item user-result">
-        <a href="{% url user-view result.user.username %}">
+        <a href="{% url 'user-view' result.user.username %}">
             <div class="row">
                 <div class="span2">
                     <img src="{{ result.get_mugshot_url }}" />

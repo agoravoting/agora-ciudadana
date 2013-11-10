@@ -21,7 +21,7 @@
     <li><p>{% trans "In this same browser session, you <strong>mistakenly chose not to send your certificate and indicated the browser to remember this choice</strong>. In this case, you need to restart the web browser (close it then open it again)." %}</p>
     </li>
 </ul>
-{% url contact as contact_url %}
+{% url 'contact' as contact_url %}
 <p>{% blocktrans %}Most of the time restarting the browser solves the problem. If nothing of the above helps, then please <a href="{{contact_url}}">contact us</a>.{% endblocktrans %}</p>
 </div>
 

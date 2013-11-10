@@ -19,32 +19,32 @@
         <div class="span4 agora-right-side">
             <ul class="nav nav-pills nav-stacked">
                 <li{% ifequal filter 'open' %} class="active"{% endifequal %}>
-                    <a href="{% url agora-elections agora.creator.username agora.name 'open' %}">
+                    <a href="{% url 'agora-elections' agora.creator.username agora.name 'open' %}">
                         {% trans "Open" %} ({{ agora.open_elections.count }})
                     </a>
                 </li>
                 <li{% ifequal filter 'tallied' %} class="active"{% endifequal %}>
-                    <a href="{% url agora-elections agora.creator.username agora.name 'tallied' %}">
+                    <a href="{% url 'agora-elections' agora.creator.username agora.name 'tallied' %}">
                         {% trans "Tallied" %} ({{ agora.get_tallied_elections.count }})
                     </a>
                 </li>
                 <li{% ifequal filter 'approved' %} class="active"{% endifequal %}>
-                    <a href="{% url agora-elections agora.creator.username agora.name 'approved' %}">
+                    <a href="{% url 'agora-elections' agora.creator.username agora.name 'approved' %}">
                         {% trans "Approved" %} ({{ agora.approved_elections.count }})
                     </a>
                 </li>
                 <li{% ifequal filter 'requested' %} class="active"{% endifequal %}>
-                    <a href="{% url agora-elections agora.creator.username agora.name 'requested' %}">
+                    <a href="{% url 'agora-elections' agora.creator.username agora.name 'requested' %}">
                         {% trans "Requested" %} ({{ agora.requested_elections.count }})
                     </a>
                 </li>
                 <li{% ifequal filter 'archived' %} class="active"{% endifequal %}>
-                    <a href="{% url agora-elections agora.creator.username agora.name 'archived' %}">
+                    <a href="{% url 'agora-elections' agora.creator.username agora.name 'archived' %}">
                         {% trans "Archived" %} ({{ agora.archived_elections.count }})
                     </a>
                 </li>
                 <li{% ifequal filter 'all' %} class="active"{% endifequal %}>
-                    <a href="{% url agora-elections agora.creator.username agora.name 'all' %}">
+                    <a href="{% url 'agora-elections' agora.creator.username agora.name 'all' %}">
                         {% trans "All" %} ({{ agora.all_elections.count }})
                     </a>
                 </li>

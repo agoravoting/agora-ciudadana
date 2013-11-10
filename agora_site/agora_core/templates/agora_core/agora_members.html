@@ -22,28 +22,28 @@
         <div class="span4 agora-right-side">
             <ul class="nav nav-pills nav-stacked">
                 <li{% ifequal filter 'members' %} class="active"{% endifequal %}>
-                    <a href="{% url agora-members agora.creator.username agora.name 'members' %}">
+                    <a href="{% url 'agora-members' agora.creator.username agora.name 'members' %}">
                         {% trans "Members" %} ({{ agora.members.count }})
                     </a>
                 </li>
                 <li{% ifequal filter 'admins' %} class="active"{% endifequal %}>
-                    <a href="{% url agora-members agora.creator.username agora.name 'admins' %}">
+                    <a href="{% url 'agora-members' agora.creator.username agora.name 'admins' %}">
                         {% trans "Admins" %} ({{ agora.admins.count }})
                     </a>
                 </li>
                 <li{% ifequal filter 'active_delegates' %} class="active"{% endifequal %}>
-                    <a href="{% url agora-members agora.creator.username agora.name 'active_delegates' %}">
+                    <a href="{% url 'agora-members' agora.creator.username agora.name 'active_delegates' %}">
                         {% trans "Delegates" %} ({{ agora.active_delegates.count }})
                     </a>
                 </li>
                 {% if agora|is_agora_admin:user %}
                     <li{% ifequal filter 'membership_requests' %} class="active"{% endifequal %}>
-                        <a href="{% url agora-members agora.creator.username agora.name 'membership_requests' %}">
+                        <a href="{% url 'agora-members' agora.creator.username agora.name 'membership_requests' %}">
                             {% trans "Requested membership" %} ({{ agora.users_who_requested_membership.count }})
                         </a>
                     </li>
                     <li{% ifequal filter 'admin_membership_requests' %} class="active"{% endifequal %}>
-                        <a href="{% url agora-members agora.creator.username agora.name 'admin_membership_requests' %}">
+                        <a href="{% url 'agora-members' agora.creator.username agora.name 'admin_membership_requests' %}">
                             {% trans "Requested admin membership" %} ({{ agora.users_who_requested_admin_membership.count }})
                         </a>
                     </li>
