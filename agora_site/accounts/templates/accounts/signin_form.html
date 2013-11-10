@@ -44,7 +44,7 @@
             <h3>{% trans "Use your account in.." %}</h3>
             <p>{% trans "You can log in using your account in Twitter." %}</p>
             <div>
-            <a href="{% url socialauth_begin 'twitter' %}">
+            <a href="{% url 'socialauth_begin' 'twitter' %}">
                 <img src="{{ STATIC_URL }}img/sign-in-with-twitter-l.png" />
             </a>
             </div>
@@ -66,7 +66,7 @@
             </div>
             <strong>{% trans "Terms of service" %}</strong>
             <small>
-            {% url terms-of-service as tos_url %}{% blocktrans %}When you enter using the FNMT certificate you're accepting our <a href="{{tos_url}}">Terms of Service.</a>{% endblocktrans %}</small>
+            {% url 'terms-of-service' as tos_url %}{% blocktrans %}When you enter using the FNMT certificate you're accepting our <a href="{{tos_url}}">Terms of Service.</a>{% endblocktrans %}</small>
         </div>
     {% endif %}
 </div>

@@ -15,7 +15,6 @@
 
 from django.conf.urls.defaults import *
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic.simple import direct_to_template
 from django.views.generic.base import TemplateView
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required

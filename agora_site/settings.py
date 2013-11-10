@@ -12,15 +12,15 @@ TEMPLATE_DEBUG = DEBUG
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    #'filters': {
-        #'require_debug_false': {
-            #'()': 'django.utils.log.RequireDebugFalse'
-        #}
-    #},
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',
-            #'filters': ['require_debug_false'],
+            'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         }
     },
@@ -431,7 +431,6 @@ MANY_CACHE_SECONDS = 0
 # set to zero (no-cache) by default
 FEW_CACHE_SECONDS = 0
 
-
 # This is the minimum number of authorities needed to do a secure tally
 MIN_NUM_AUTHORITIES = 2
 
@@ -444,6 +443,9 @@ SSL_KEY_PATH = '%s/certs/key-nopass.pem' % os.path.dirname(ROOT_PATH)
 
 PRIVATE_DATA_ROOT = os.path.join(os.path.dirname(ROOT_PATH), 'private_data')
 
+ALLOWED_HOSTS = [
+    '.local.dev',
+]
 
 try:
     # custom settings is the file where you should set your modifications of the

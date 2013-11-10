@@ -18,7 +18,6 @@ from djsgettext.views import I18n
 from django.conf.urls.defaults import *
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.views.generic.simple import redirect_to
 from django.contrib import admin
 
 admin.autodiscover()
