@@ -3249,10 +3249,12 @@ msgid ""
 "It's a way to approach people and let people come to us, to share "
 "responsability"
 msgstr ""
+"Es una nueva forma de acercarse a la gente y permitir que nos conozcan, de "
+"compartir responsabilidad"
 
 #: templates/base.html:88
 msgid "Joan Baldoví, representative in Congress of Deputies (Spain)"
-msgstr ""
+msgstr "Joan Baldoví, diputado en el Congreso de los Diputados (España)"
 
 #: templates/base.html:109
 msgid "Discover"
