@@ -305,9 +305,12 @@ class UserResource(GenericResource):
     def user_invite(self, request, **kwargs):
         if request.method != 'POST':
             raise ImmediateHttpResponse(response=http.HttpMethodNotAllowed())
-        data = self.deserialize_post_data(request)
-        emails = map(str.strip, data['emails'])
-        agoraid = data['agoraid']
+        try:
+            data = self.deserialize_post_data(request)
+            emails = map(str.strip, data['emails'])
+            agoraid = data['agoraid']
+        except:
+            raise ImmediateHttpResponse(response=http.HttpBadRequest())
         agora = get_object_or_404(Agora, pk=agoraid)
         welcome_message = data.get('welcome_message', _("Welcome to this agora"))
 
