@@ -1,5 +1,6 @@
 from agora_site.settings import *
 
+SOUTH_TESTS_MIGRATE = False
 
 DATABASES = {
     'default': {
