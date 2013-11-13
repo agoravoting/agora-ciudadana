@@ -12,7 +12,7 @@ django-crispy-forms
 easy_thumbnails
 pil
 django-haystack
-django-debug-toolbar=0.11.0
+django-debug-toolbar==0.11.0
 textile
 simplejson
 pygeoip
@@ -24,7 +24,7 @@ whoosh==2.4.1
 sphinx
 git+https://github.com/edulix/django-jsgettext.git
 sphinxcontrib-httpdomain
-jsonfield=0.9.19
+jsonfield==0.9.19
 git+https://github.com/OpenTechStrategies/openstv.git
 markdown
 pyopenssl
