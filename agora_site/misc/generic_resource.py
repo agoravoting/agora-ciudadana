@@ -10,6 +10,7 @@ from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
 
 from tastypie.authorization import Authorization
+from tastypie.http import HttpForbidden
 from tastypie.authentication import (ApiKeyAuthentication, MultiAuthentication,
                                      SessionAuthentication)
 from tastypie.resources import ModelResource
@@ -28,9 +29,12 @@ class GenericResourceMixin:
         '''
         Useful for get deserialized data
         '''
-        return self.deserialize(request,
-                                request.raw_post_data,
-                                format=request.META.get('CONTENT_TYPE', 'application/json'))
+        try:
+            return self.deserialize(request,
+                                    request.raw_post_data,
+                                    format=request.META.get('CONTENT_TYPE', 'application/json'))
+        except:
+            return HttpResponseBadRequest("Sorry, you did not provide valid input data")
 
     def determine_format(self, request):
         """
@@ -143,7 +147,7 @@ class GenericResourceMixin:
             offset = int(request.GET.get('offset', 0))
             limit = min(int(request.GET.get('limit', 20)), 1000)
         except:
-            raise http.HttpBadRequest("Sorry, you did not provide valid input data")
+            return HttpResponseBadRequest("Sorry, you did not provide valid input data")
         paginator = Paginator(request.GET, queryset)
 
         try:

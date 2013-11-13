@@ -2,7 +2,8 @@ from tastypie.resources import ALL
 from tastypie.utils import trailing_slash
 from tastypie.paginator import Paginator
 from tastypie.resources import ModelResource
-from tastypie import fields
+from tastypie.exceptions import ImmediateHttpResponse
+from tastypie import fields, http
 
 from actstream.models import user_stream, object_stream
 from actstream.models import Follow, Action
