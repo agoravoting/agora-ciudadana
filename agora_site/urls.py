@@ -33,6 +33,8 @@ urlpatterns = patterns('',
     (r'', include('social_auth.urls')),
 
     (r'', include('agora_site.agora_core.urls')),
+
+    url(r'^captcha/', include('captcha.urls')),
 )
 
 if settings.DEBUG:

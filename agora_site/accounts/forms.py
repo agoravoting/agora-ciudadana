@@ -50,7 +50,11 @@ from agora_site.misc.utils import geolocate_ip, get_base_email_context, JSONForm
 from agora_site.agora_core.forms.election import LoginAndVoteForm
 from agora_site.agora_core.models.election import Election
 
+from captcha.fields import CaptchaField
+
+
 class AccountSignupForm(userena_forms.SignupForm):
+
     def __init__(self, *args, **kwargs):
         super(AccountSignupForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -169,6 +173,10 @@ class AcccountAuthForm(userena_forms.AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(AcccountAuthForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        if len(args) > 0:
+            self.data = args[0]
+        else:
+            self.data = dict()
         self.helper.form_id = 'login-form'
         self.helper.form_action = 'userena_signin'
         self.helper.help_text_inline = True
@@ -177,6 +185,75 @@ class AcccountAuthForm(userena_forms.AuthenticationForm):
 
         self.helper.add_input(Submit('submit', _('Log in'), css_class='btn btn-success btn-large'))
         self.helper.add_input(Hidden('type', 'login'))
+
+    def clean(self):
+        """
+        Checks for the identification and password.
+
+        If the combination can't be found will raise an invalid sign in error.
+
+        """
+        identification = self.cleaned_data.get('identification')
+        password = self.cleaned_data.get('password')
+
+        if identification and password:
+            # try to get the user object using only the identification
+            try:
+                if '@' in identification:
+                    auth_user = User.objects.get(email=identification)
+                else:
+                    auth_user = User.objects.get(username=identification)
+            except:
+                raise django_forms.ValidationError(_(u"Please enter a correct "
+                    "username or email and password. Note that both fields "
+                    "are case-sensitive."))
+
+            profile = auth_user.get_profile()
+            if isinstance(profile.extra, dict) and\
+                    "failed_login_attempts" in profile.extra and\
+                    isinstance(profile.extra['failed_login_attempts'], int) and\
+                    profile.extra['failed_login_attempts'] >= settings.MAX_ALLOWED_FAILED_LOGIN_ATTEMPTS:
+                captcha_field = CaptchaField()
+                self.fields.insert(0, 'captcha', captcha_field)
+                if 'captcha_0' not in self.data:
+                    raise django_forms.ValidationError(_(u"Please, for "
+                        u"security reasons validate the captcha"))
+                else:
+                    value = captcha_field.widget.value_from_datadict(self.data,
+                        self.files, self.add_prefix("captcha"))
+                    captcha_field.clean(value)
+            user = authenticate(identification=identification, password=password)
+
+            if user is None:
+                # if user was not authenticated but it does exist, then
+                # increment the failed_login_attempts counter
+                if not isinstance(profile.extra, dict):
+                    profile.extra = dict()
+
+                if 'failed_login_attempts' not in profile.extra or\
+                        not isinstance(profile.extra['failed_login_attempts'], int) or\
+                        profile.extra['failed_login_attempts'] < 0:
+                    profile.extra['failed_login_attempts'] = 1
+                else:
+                    profile.extra['failed_login_attempts'] += 1
+                profile.save()
+
+                # insert captcha in the form if max failed login attempts is
+                # reached and we got an invalid login attempt
+                if profile.extra['failed_login_attempts'] >= settings.MAX_ALLOWED_FAILED_LOGIN_ATTEMPTS:
+                    self.fields.insert(0, 'captcha', CaptchaField())
+
+                raise django_forms.ValidationError(_(u"Please enter a correct "
+                    "username or email and password. Note that both fields "
+                    "are case-sensitive."))
+            else:
+                # if the user was authenticated, reset the failed_login_attempts
+                # counter
+                if not isinstance(profile.extra, dict):
+                    profile.extra = dict()
+                profile.extra['failed_login_attempts'] = 0
+                profile.save()
+        return self.cleaned_data
 
 class AccountChangeEmailForm(userena_forms.ChangeEmailForm):
     def __init__(self, user, *args, **kwargs):

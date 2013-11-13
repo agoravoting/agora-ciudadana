@@ -194,6 +194,7 @@ INSTALLED_APPS = (
     'agora_site.agora_core',
     'agora_site.accounts',
     'haystack',
+    'captcha',
     'djcelery',
     'guardian',
     'djsgettext'
@@ -442,6 +443,10 @@ SSL_CERT_PATH = '%s/certs/cert.pem' % os.path.dirname(ROOT_PATH)
 SSL_KEY_PATH = '%s/certs/key-nopass.pem' % os.path.dirname(ROOT_PATH)
 
 PRIVATE_DATA_ROOT = os.path.join(os.path.dirname(ROOT_PATH), 'private_data')
+
+# Stablishes how many failed login attempts for a given user are allowed before
+# a captcha is shown
+MAX_ALLOWED_FAILED_LOGIN_ATTEMPTS = 5
 
 ALLOWED_HOSTS = [
     '.local.dev',
