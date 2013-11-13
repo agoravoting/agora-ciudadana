@@ -346,4 +346,3 @@ post_save.connect(create_user_profile, sender=User)
 
 from tastypie.models import create_api_key
 post_save.connect(create_api_key, sender=User)
-

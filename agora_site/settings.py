@@ -191,6 +191,7 @@ INSTALLED_APPS = (
     'agora_site.agora_core',
     'agora_site.accounts',
     'haystack',
+    'captcha',
     'djcelery',
     'guardian',
     'djsgettext'
@@ -417,9 +418,9 @@ MANY_CACHE_SECONDS = 0
 # set to zero (no-cache) by default
 FEW_CACHE_SECONDS = 0
 
-# Stablishes how many failed login attempts are allowed before a captcha is
-# shown
-MAX_ALLOWED_FAILED_LOGIN_ATTEMPTS = 1
+# Stablishes how many failed login attempts for a given user are allowed before
+# a captcha is shown
+MAX_ALLOWED_FAILED_LOGIN_ATTEMPTS = 5
 
 ALLOWED_HOSTS = [
     '.local.dev',
