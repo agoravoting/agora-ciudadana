@@ -32,3 +32,4 @@ pyasn1
 pyasn1_modules
 lxml
 html2text
+django-simple-captcha
