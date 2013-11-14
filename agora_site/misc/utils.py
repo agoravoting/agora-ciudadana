@@ -471,7 +471,11 @@ def clean_html(text, to_plaintext=False):
         return text
 
     html = lxml_clean_html(text)
-    plaintext = html2text.html2text(html).strip()
+    h  = html2text.HTML2Text()
+    # otherwise, some \n might be entered in long lines, breaking the
+    # possibility of comparison of plaintext with the original text
+    h.body_width = 0
+    plaintext = h.handle(html).strip()
     if plaintext == text:
         return plaintext
 
