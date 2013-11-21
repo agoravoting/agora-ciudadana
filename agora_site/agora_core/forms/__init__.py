@@ -42,6 +42,7 @@ from actstream.actions import follow, unfollow, is_following
 from actstream.signals import action as actstream_action
 from userena.models import UserenaSignup
 from userena import settings as userena_settings
+from captcha.fields import CaptchaField
 
 from agora_site.agora_core.models import Agora, Election, CastVote
 from agora_site.agora_core.tasks.election import (start_election, end_election,
@@ -672,14 +673,16 @@ class ContactForm(django_forms.Form):
         min_length=5, max_length=1000, widget=django_forms.Textarea())
 
     def __init__(self, request, *args, **kwargs):
+        super(ContactForm, self).__init__(*args, **kwargs)
         self.request = request
         self.helper = FormHelper()
         if not request.user.is_authenticated():
-            self.helper.layout = Layout(Fieldset(_('Contact'), 'name', 'email', 'subject', 'message'))
+            self.helper.layout = Layout(Fieldset(_('Contact'), 'name', 'email',
+                'subject', 'message', 'captcha'))
+            self.fields.insert(0, 'captcha', CaptchaField())
         else:
             self.helper.layout = Layout(Fieldset(_('Contact'), 'subject', 'message'))
         self.helper.add_input(Submit('submit', _('Send message'), css_class='btn btn-success btn-large'))
-        super(ContactForm, self).__init__(*args, **kwargs)
 
     def clean_name(self):
         if self.request.user.is_authenticated():
