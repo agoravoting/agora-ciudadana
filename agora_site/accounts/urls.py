@@ -29,7 +29,7 @@ from agora_site.accounts import views as accounts_views
 
 urlpatterns = patterns('',
     # User-View
-    url(r'^(?P<username>[\.\w]+)/view/$',
+    url(r'^(?P<username>[\-\.\w]+)/view/$',
        TemplateView.as_view(template_name='base.html'),
        name='user-view'),
 
@@ -102,12 +102,12 @@ urlpatterns = patterns('',
        name='userena_password_reset_complete'),
 
     ## Signup
-    url(r'^(?P<username>[\.\w]+)/signup/complete/$',
+    url(r'^(?P<username>[\-\.\w]+)/signup/complete/$',
        accounts_views.SignUpCompleteView.as_view(),
        name='userena_signup_complete'),
 
     # Activate
-    url(r'^(?P<username>[\.\w]+)/activate/(?P<activation_key>\w+)/$',
+    url(r'^(?P<username>[\-\.\w]+)/activate/(?P<activation_key>\w+)/$',
        userena_views.activate,
        {'success_url': '/',
         'template_name': 'accounts/activate_fail.html'},
@@ -131,39 +131,39 @@ urlpatterns = patterns('',
        name='confirm-vote-token'),
 
     # Change email and confirm it
-    url(r'^(?P<username>[\.\w]+)/email/$',
+    url(r'^(?P<username>[\-\.\w]+)/email/$',
        userena_views.email_change,
        name='userena_email_change'),
-    url(r'^(?P<username>[\.\w]+)/email/complete/$',
+    url(r'^(?P<username>[\-\.\w]+)/email/complete/$',
        userena_views.direct_to_user_template,
        {'template_name': 'accounts/email_change_complete.html'},
        name='userena_email_change_complete'),
-    url(r'^(?P<username>[\.\w]+)/confirm-email/complete/$',
+    url(r'^(?P<username>[\-\.\w]+)/confirm-email/complete/$',
        userena_views.direct_to_user_template,
        {'template_name': 'accounts/email_confirm_complete.html'},
        name='userena_email_confirm_complete'),
-    url(r'^(?P<username>[\.\w]+)/confirm-email/(?P<confirmation_key>\w+)/$',
+    url(r'^(?P<username>[\-\.\w]+)/confirm-email/(?P<confirmation_key>\w+)/$',
        userena_views.email_confirm,
        name='userena_email_confirm'),
 
     # Disabled account
-    url(r'^(?P<username>[\.\w]+)/disabled/$',
+    url(r'^(?P<username>[\-\.\w]+)/disabled/$',
        userena_views.direct_to_user_template,
        {'template_name': 'accounts/disabled.html'},
        name='userena_disabled'),
 
     # Change password
-    url(r'^(?P<username>[\.\w]+)/password/$',
+    url(r'^(?P<username>[\-\.\w]+)/password/$',
        userena_views.password_change,
        {'template_name': 'accounts/password_form.html'},
        name='userena_password_change'),
-    url(r'^(?P<username>[\.\w]+)/password/complete/$',
+    url(r'^(?P<username>[\-\.\w]+)/password/complete/$',
        userena_views.direct_to_user_template,
        {'template_name': 'accounts/password_complete.html'},
        name='userena_password_change_complete'),
 
     # Edit profile
-    #url(r'^(?P<username>[\.\w]+)/edit/$',
+    #url(r'^(?P<username>[\-\.\w]+)/edit/$',
        #userena_views.profile_edit,
        #name='userena_profile_edit'),
 
