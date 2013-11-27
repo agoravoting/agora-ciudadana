@@ -144,8 +144,8 @@ class GenericResourceMixin:
 
         # Do the query.
         try:
-            offset = int(request.GET.get('offset', 0))
-            limit = min(int(request.GET.get('limit', 20)), 1000)
+            offset = max(0, int(request.GET.get('offset', 0)))
+            limit = max(1, min(int(request.GET.get('limit', 20)), 1000))
         except:
             return HttpResponseBadRequest("Sorry, you did not provide valid input data")
         paginator = Paginator(request.GET, queryset)
