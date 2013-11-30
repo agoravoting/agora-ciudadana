@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-07 13:58+0100\n"
-"PO-Revision-Date: 2013-09-27 07:43+0200\n"
+"PO-Revision-Date: 2013-11-30 17:11+0100\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: gl\n"
@@ -521,7 +521,6 @@ msgid "left admin permissions"
 msgstr "renunciou aos permisos de administrador"
 
 #: agora_core/templates/agora_core/client/actions_i18n.html:24
-#, fuzzy
 msgid "canceled vote delegation"
 msgstr "cancelou a delegación de voto"
 
@@ -958,7 +957,7 @@ msgstr "Atopar outras votacións"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:79
 msgid "Professional services"
-msgstr ""
+msgstr "Servizos profesionais"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:83
 msgid "Enter"
