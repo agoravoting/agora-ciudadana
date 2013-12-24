@@ -2,7 +2,7 @@
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-                <a href="/" class="brand" alt="<%= gettext("Home") %>">
+                <a href="/" class="brand" alt="<%= escapeAttribute(gettext("Home")) %>">
                     <img alt="Agora"  src="{{ STATIC_URL }}img/agora-small.png" />
                 </a>
                 <ul class="nav">

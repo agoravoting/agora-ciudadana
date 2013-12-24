@@ -1,7 +1,7 @@
 <script id="template-action_action_object_agora" type="text/underscore-template">
     <div class="activity-action" geodata="<%= geolocation %>">
         <a href="<%= actor.url %>" class="mugshot">
-            <img src="<%= actor.mugshot_url %>" alt="<%= actor.initials %>" />
+            <img src="<%= actor.mugshot_url %>" alt="<%= escapeAttribute(actor.initials) %>" />
         </a>
         <div class="action-body">
             <div class="action-title">
@@ -18,7 +18,7 @@
 
             <div class="action-detail">
                 <a href="<%= action_object.url %>" class="mugshot">
-                    <img src="<%= action_object.mugshot_url %>" alt="<%= action_object.full_name %>" />
+                    <img src="<%= action_object.mugshot_url %>" alt="<%= escapeAttribute(action_object.full_name) %>" />
                 </a>
                 <div class="detail-body">
                     <strong class="action-title">

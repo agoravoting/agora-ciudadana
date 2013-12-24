@@ -1,7 +1,7 @@
 <script id="template-action_target_election_action_object_comment" type="text/underscore-template">
     <div class="activity-action" geodata="<%= geolocation %>">
         <a href="<%= actor.url %>" class="mugshot">
-            <img src="<%= actor.mugshot_url %>" alt="<%= actor.initials %>" />
+            <img src="<%= actor.mugshot_url %>" alt="<%= escapeAttribute(actor.initials) %>" />
         </a>
         <div class="action-body">
             <div class="action-title">
@@ -21,7 +21,7 @@
 
             <div class="action-detail">
                 <a href="<%= target.url %>" class="mugshot">
-                    <img src="<%= target.mugshot_url %>" alt="<%= target.pretty_name %>" />
+                    <img src="<%= target.mugshot_url %>" alt="<%= escapeAttribute(target.pretty_name) %>" />
                 </a>
                 <div class="detail-body">
                     <strong class="action-title">

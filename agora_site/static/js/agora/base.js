@@ -4,6 +4,16 @@ if (window.gettext === undefined) {
     };
 }
 
+if (window.escapeAttribute === undefined) {
+    window.escapeAttribute = function(text) {
+        if (!!text && text.replace) {
+            return text.replace(new RegExp("[^0-9a-zA-Z ]+"), '');
+        } else {
+            return text;
+        }
+    };
+}
+
 (function() {
     var Agora = this.Agora = {};
     var app = this.app = {};
