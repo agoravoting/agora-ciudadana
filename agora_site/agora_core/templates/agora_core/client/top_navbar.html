@@ -75,9 +75,11 @@
                 </ul>
 
                 <ul class="nav pull-right">
-                    <li>
-                        <a href="/misc/page/professional/"><%= gettext("Professional services") %></a>
-                    </li>
+                    <% if (SHOW_PROFESSIONAL_SERVICES_LINK == "True") { %>
+                        <li>
+                            <a href="/misc/page/professional/"><%= gettext("Professional services") %></a>
+                        </li>
+                    <% } %>
                     <% if (user.id < 0) { %>
                         <li>
                             <a class="link-green" href="/accounts/signin/"><%= gettext("Enter") %></a>

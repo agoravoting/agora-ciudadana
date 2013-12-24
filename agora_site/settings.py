@@ -121,6 +121,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'agora_site.misc.context_processor.settings.MEDIA_URL',
     'agora_site.misc.context_processor.settings.AUTHENTICATION_BACKENDS',
     'agora_site.misc.context_processor.settings.AGORA_FNMT_BASE_URL',
+    'agora_site.misc.context_processor.settings.SHOW_PROFESSIONAL_SERVICES_LINK',
 )
 
 ROOT_URLCONF = 'agora_site.urls'
@@ -427,6 +428,9 @@ MAX_ALLOWED_FAILED_LOGIN_ATTEMPTS = 5
 ALLOWED_HOSTS = [
     '.local.dev',
 ]
+
+# Enable/disable the top navbar link to "Professional services" page
+SHOW_PROFESSIONAL_SERVICES_LINK = False
 
 try:
     # custom settings is the file where you should set your modifications of the
