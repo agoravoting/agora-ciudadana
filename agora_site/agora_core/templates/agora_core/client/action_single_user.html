@@ -1,7 +1,7 @@
 <script id="template-action_single_user" type="text/underscore-template">
     <div class="activity-action" geodata="<%= geolocation %>">
         <a href="<%= actor.url %>" class="mugshot">
-            <img src="<%= actor.mugshot_url %>" alt="<%= actor.initials %>" />
+            <img src="<%= actor.mugshot_url %>" alt="<%= escapeAttribute(actor.initials) %>" />
         </a>
         <div class="action-body">
             <div class="action-title">

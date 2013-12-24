@@ -2,7 +2,7 @@
     <div class="row-fluid bottom-bordered userinfo">
             <div class="span3">
                 <a href="<%= vote.voter.url %>">
-                <img src="<%= vote.voter.mugshot_url %>" alt="<%= vote.voter.username %>" class="img-polaroid"/>
+                <img src="<%= vote.voter.mugshot_url %>" alt="<%= escapeAttribute(vote.voter.username) %>" class="img-polaroid"/>
                 </a>
             </div>
             <div class="span8">

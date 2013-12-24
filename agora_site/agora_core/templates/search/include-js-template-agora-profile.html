@@ -3,7 +3,7 @@
             <div class="row bottom-bordered" data-url="<%= url %>"
                 data-id="<%= id %>" data-username=<%= username %> data-fullname="<%= full_name %>">
                 <a href="<%= url %>"><div class="span2">
-                    <img src="<%= mugshot_url %>" alt="<%= initials %>" class="mugshot"/>
+                    <img src="<%= mugshot_url %>" alt="<%= escapeAttribute(initials) %>" class="mugshot"/>
                 </div></a>
                 <div class="span7">
                     <a href="<%= url %>"><strong class="username">

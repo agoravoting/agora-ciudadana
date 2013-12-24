@@ -3,7 +3,7 @@
         <a href="<%= url %>">
             <div class="row bottom-bordered">
                 <div class="span2">
-                    <img src="<%= mugshot_url %>" alt="<%= initials %>" class="mugshot" />
+                    <img src="<%= mugshot_url %>" alt="<%= escapeAttribute(initials) %>" class="mugshot" />
                 </div>
                 <div class="span6">
                     <strong class="username">
