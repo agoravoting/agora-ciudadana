@@ -95,6 +95,7 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
+    'djangosecure.middleware.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -196,7 +197,8 @@ INSTALLED_APPS = (
     'captcha',
     'djcelery',
     'guardian',
-    'djsgettext'
+    'djsgettext',
+    'djangosecure'
 )
 
 # Cache settings
@@ -389,7 +391,21 @@ VOTING_METHODS = (
     'agora_site.agora_core.models.voting_systems.meek_stv.MeekSTV',
 )
 
+# change the following for improved security
+
 AGORA_USE_HTTPS = False
+
+SECURE_HSTS_SECONDS = 2
+
+SECURE_SSL_REDIRECT = False
+
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+SECURE_FRAME_DENY = True
+
+SECURE_BROWSER_XSS_FILTER = True
 
 USE_ESI = False
 
