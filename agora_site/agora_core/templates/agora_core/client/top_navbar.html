@@ -79,6 +79,11 @@
 
 
                 <ul class="nav pull-right">
+                    <% if (SHOW_PROFESSIONAL_SERVICES_LINK == "True") { %>
+                        <li>
+                            <a href="/misc/page/professional/"><%= gettext("Professional services") %></a>
+                        </li>
+                    <% } %>
                     <% if (user.id < 0) { %>
                         <li class="dropdown">
                             <a class="link-green dropdown-toggle" id="show-login-link" data-toggle="dropdown" href="#">
