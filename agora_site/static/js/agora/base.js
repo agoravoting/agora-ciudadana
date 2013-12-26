@@ -7,7 +7,7 @@ if (window.gettext === undefined) {
 if (window.escapeAttribute === undefined) {
     window.escapeAttribute = function(text) {
         if (!!text && text.replace) {
-            return text.replace(new RegExp("[^0-9a-zA-Z ]+"), '');
+            return texta.replace(/[^0-9a-zA-Z ]+/gi, '');
         } else {
             return text;
         }
