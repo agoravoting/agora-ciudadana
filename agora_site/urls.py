@@ -18,9 +18,6 @@ from djsgettext.views import I18n
 from django.conf.urls.defaults import *
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.contrib import admin
-
-admin.autodiscover()
 
 
 urlpatterns = patterns('',
@@ -37,7 +34,9 @@ urlpatterns = patterns('',
     url(r'^captcha/', include('captcha.urls')),
 )
 
-if settings.DEBUG:
+if 'django.contrib.admin' in settings.INSTALLED_APPS and settings.DEBUG:
+    from django.contrib import admin
+    admin.autodiscover()
     urlpatterns += patterns('',
         (r'^admin/', include(admin.site.urls))
     )
