@@ -181,7 +181,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.messages',
     # WARNING! you should disable admin in production sites for security:
-    #'django.contrib.admin',
+    'django.contrib.admin',
     'django.contrib.comments',
     'django.contrib.markup',
     'django.contrib.flatpages',
