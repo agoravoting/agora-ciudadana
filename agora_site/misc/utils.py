@@ -40,7 +40,6 @@ from guardian.core import ObjectPermissionChecker
 from guardian.models import UserObjectPermission, GroupObjectPermission
 from guardian.utils import get_identity
 
-from lxml.html.clean import clean_html as lxml_clean_html
 import html2text
 
 BUF_SIZE = 10*1024
@@ -474,7 +473,21 @@ def clean_html(text, to_plaintext=False):
     if not len(text):
         return text
 
-    html = lxml_clean_html(text)
+    from lxml.html.clean import Cleaner
+    from lxml.html import fragment_fromstring
+    from lxml.html import _transform_result
+
+    # clean html
+    try:
+        doc = fragment_fromstring(text)
+        # remove style tags, they are EVIL I tell you! And the hell with svg
+        c = Cleaner(whitelist_tags=set(),style=True,remove_tags=['svg'],add_nofollow=True)
+        c(doc)
+        html = _transform_result(type(""), doc)
+    except:
+        # on parse error, return empty string
+        return ""
+
     h  = html2text.HTML2Text()
     # otherwise, some \n might be entered in long lines, breaking the
     # possibility of comparison of plaintext with the original text
