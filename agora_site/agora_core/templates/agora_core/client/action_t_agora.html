@@ -1,11 +1,11 @@
 <script id="template-action_target_agora" type="text/underscore-template">
-    <div class="activity-action" geodata="<%= geolocation %>">
-        <a href="<%= actor.url %>" class="mugshot">
-            <img src="<%= actor.mugshot_url %>" alt="<%= escapeAttribute(actor.initials) %>" />
+    <div class="activity-action" geodata="<%- geolocation %>">
+        <a href="<%- actor.url %>" class="mugshot">
+            <img src="<%- actor.mugshot_url %>" alt="<%- escapeAttribute(actor.initials) %>" />
         </a>
         <div class="action-body">
             <div class="action-title">
-                <a href="<%= actor.url %>"><strong class="username">
+                <a href="<%- actor.url %>"><strong class="username">
 <% if (actor.full_name && actor.full_name != actor.username) { %>
     <%= actor.full_name %> <em>(<%= actor.username %>)</em>
 <% } else { %>
@@ -13,17 +13,17 @@
 <% } %>
 </strong></a> <strong class="verb"><%= gettext(verb) %></strong>
                 <%= pgettext("<verb> agora <agora>", "agora") %>
-                <a href="<%= target.url %>"><%= target.full_name %></a>
-                <time class="timeago" data-livestamp="<%= timestamp %>" datetime="<%= timestamp %>"></time>
+                <a href="<%- target.url %>"><%= target.full_name %></a>
+                <time class="timeago" data-livestamp="<%- timestamp %>" datetime="<%- timestamp %>"></time>
             </div>
 
             <div class="action-detail">
-                <a href="<%= target.url %>" class="mugshot">
-                    <img src="<%= target.mugshot_url %>" alt="<%= escapeAttribute(target.full_name) %>" />
+                <a href="<%- target.url %>" class="mugshot">
+                    <img src="<%- target.mugshot_url %>" alt="<%- escapeAttribute(target.full_name) %>" />
                 </a>
                 <div class="detail-body">
                     <strong class="action-title">
-                        <a href="<%= target.url %>">
+                        <a href="<%- target.url %>">
                             <%= target.full_name %>
                         </a>
                     </strong>

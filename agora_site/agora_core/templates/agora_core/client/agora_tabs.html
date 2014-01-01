@@ -1,24 +1,24 @@
 <script id="template-agora-tabs-view" type="text/underscore-template">
     <li data-tabname="activity">
-        <a href="<%= agora.url %>"><%= gettext("Activity") %></a>
+        <a href="<%- agora.url %>"><%= gettext("Activity") %></a>
     </li>
     <li data-tabname="biography">
-        <a href="<%= agora.url %>/biography/"><%= gettext("Biography") %></a>
+        <a href="<%- agora.url %>/biography/"><%= gettext("Biography") %></a>
     </li>
     <li data-tabname="comments">
-        <a href="<%= agora.url %>/comments/"><%= gettext("Comments") %></a>
+        <a href="<%- agora.url %>/comments/"><%= gettext("Comments") %></a>
     </li>
     <li data-tabname="elections">
-        <a href="<%= agora.url %>/elections/open/"><%= gettext("Elections") %>
+        <a href="<%- agora.url %>/elections/open/"><%= gettext("Elections") %>
         <span class="badge badge-info"><%= agora.open_elections_count %></span></a>
     </li>
     <li data-tabname="members">
-        <a href="<%= agora.url %>/members/members/"><%= gettext("Members") %>
+        <a href="<%- agora.url %>/members/members/"><%= gettext("Members") %>
         <span class="badge badge-info"><%= agora.members_count %></span></a>
     </li>
     <% if (_.contains(user_permissions, 'admin')) { %>
         <li data-tabname="admin">
-            <a href="<%= agora.url %>/admin/"><%= gettext("Admin") %></a>
+            <a href="<%- agora.url %>/admin/"><%= gettext("Admin") %></a>
         </li>
     <% } %>
 </script>

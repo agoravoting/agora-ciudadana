@@ -31,7 +31,7 @@
                     </div>
                     <div class="modal-header">
                         <small>
-                            <%= gettext("Election") %> <a class="inline text-center" href="<%= url %>" target="_blank"><%= pretty_name %></a> <%= pgettext("<election> at <agora>", "at") %> <a class="inline text-center" href="<%= agora.url %>" target="_blank"><%= agora.full_name %></a>
+                            <%= gettext("Election") %> <a class="inline text-center" href="<%- url %>" target="_blank"><%= pretty_name %></a> <%= pgettext("<election> at <agora>", "at") %> <a class="inline text-center" href="<%- agora.url %>" target="_blank"><%= agora.full_name %></a>
                             </a>
                         </small>
                         <small class="pull-right">
@@ -101,7 +101,7 @@
             <div class="plurality-options">
                 <% for (var i = 0; i < answers.length; i++) { %>
                     <label class="radio">
-                        <input type="radio" name="q<%= question_num %>answer" value="<%= answers[i].value %>">
+                        <input type="radio" name="q<%= question_num %>answer" value="<%- answers[i].value %>">
                         <%= answers[i].value %>
                         <a href="#" class="pull-right remove-selection">
                             <i class="icon-white icon-remove"></i>
@@ -161,7 +161,7 @@
                     <%= gettext("Click to add/remove to your ballot") %></p>
                     <ul class="nav nav-list sidenav">
                         <% for (var i = 0; i < answers.length; i++) { %>
-                        <li data-value="<%= answers[i].value %>">
+                        <li data-value="<%- answers[i].value %>">
                             <a href="#">
                                 <i class="icon-chevron-right"></i>
                                 <%= answers[i].value %>
@@ -207,7 +207,7 @@
                         <tr><th>
                             <%= interpolate(gettext("Question #%s"), [i + 1]) %>.
                             <strong><%= questions[i].question %></strong>
-                            <a href="#" data-id="<%= i %>">(<%= gettext("Change choices") %>)</a>
+                            <a href="#" data-id="<%- i %>">(<%= gettext("Change choices") %>)</a>
                         </th></tr>
                     </thead>
                     <tbody>
@@ -242,7 +242,7 @@
                     <%= gettext("This will make your vote <strong>public</strong>. You cannot vote in secret in this election. This might be because of different reasons: maybe you are not a member in this agora, or perhaps this election allows only public vote.") %>
                 </span>
             </label>
-                <input type="text" id="why_id" class="btn-block" placeholder="<%= gettext("Why did you vote this way? (optional)") %>" />
+                <input type="text" id="why_id" class="btn-block" placeholder="<%- gettext("Why did you vote this way? (optional)") %>" />
             <button class="btn btn-large btn-block btn-success btn-continue" id="cast-ballot-btn" type="button">
                 <strong><%= gettext("Confirm choices and cast ballot") %></strong>
             </button>
@@ -258,7 +258,7 @@
         </div>
         <div class="modal-header hero-vote vote-cast">
             <p><%= gettext("Congratulations, your vote has been <strong>successfully cast</strong>. You will soon receive a confirmation email") %>.</p>
-            <a class="btn btn-large btn-block btn-primary btn-goback" href="<%= url %>">
+            <a class="btn btn-large btn-block btn-primary btn-goback" href="<%- url %>">
                 <strong><%= gettext("Go back to the election page") %></strong>
             </a>
         </div>
@@ -267,7 +267,7 @@
                 <p><%= interpolate(gettext("You can <strong>delegate your vote</strong> so that <strong>in future elections in this agora</strong> <a href=\"%s\">%s</a> this delegate votes for you if you don't find the time to vote"),
                 [agora.url, agora.full_name]) %>.</p>
 
-                <a class="btn btn-large btn-block btn-continue" href="<%= url %>/delegates">
+                <a class="btn btn-large btn-block btn-continue" href="<%- url %>/delegates">
                     <strong><%= interpolate(gettext("Choose a delegate for agora %s"), [agora.full_name]) %></strong>
                 </a>
             <% } %>

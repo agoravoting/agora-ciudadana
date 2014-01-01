@@ -16,13 +16,13 @@
                     <div class="control-group">
                         <label class="control-label" for="pretty_name"><%= gettext("Name") %></label>
                         <div class="controls">
-                            <textarea rows="1" class="input-xxlarge" id="pretty_name" placeholder="<%= gettext("Election name") %>"><%= pretty_name %></textarea>
+                            <textarea rows="1" class="input-xxlarge" id="pretty_name" placeholder="<%- gettext("Election name") %>"><%= pretty_name %></textarea>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="description"><%= gettext("Description") %></label>
                         <div class="controls">
-                            <textarea rows="3" class="input-xxlarge" id="description" placeholder="<%= gettext("Election description") %>"><%= description %></textarea>
+                            <textarea rows="3" class="input-xxlarge" id="description" placeholder="<%- gettext("Election description") %>"><%= description %></textarea>
                         </div>
                     </div>
                     <div class="control-group">
@@ -43,10 +43,10 @@
                         <div class="controls sub-group-control hide" id="schedule_voting_controls">
                             <div class="input-prepend inline">
                                 <span class="add-on"><i class="icon-calendar"></i></span>
-                                <input class="span2 datetimepicker" id="start_voting_date" type="text" placeholder="<%= gettext("Start voting at..") %>" value="<%= from_date %>" /> -
+                                <input class="span2 datetimepicker" id="start_voting_date" type="text" placeholder="<%- gettext("Start voting at..") %>" value="<%- from_date %>" /> -
                             </div>
                             <div class="input-append inline">
-                                <input class="span2 datetimepicker" id="end_voting_date" type="text" placeholder="<%= gettext("End voting at..") %>" value="<%= to_date %>" />
+                                <input class="span2 datetimepicker" id="end_voting_date" type="text" placeholder="<%- gettext("End voting at..") %>" value="<%- to_date %>" />
                                 <span class="add-on"><i class="icon-calendar"></i></span>
                             </div>
                         </div>
@@ -94,7 +94,7 @@
         <div class="control-group">
             <label class="control-label" for="name"><%= gettext("Question text") %></label>
             <div class="controls">
-                <textarea rows="1" class="input-xxlarge name" id="name<%=question_num%>" placeholder="<%= gettext("Question text") %>"><%= question %></textarea>
+                <textarea rows="1" class="input-xxlarge name" id="name<%=question_num%>" placeholder="<%- gettext("Question text") %>"><%= question %></textarea>
             </div>
         </div>
         <div class="control-group">
@@ -102,11 +102,11 @@
             <div class="controls">
                 <div class="btn-group">
                     <a class="btn btn-block dropdown-toggle" data-toggle="dropdown" href="#">
-                    <div id="votingsystem<%=question_num%>" class="votingsystem current-item inline" data-id="<%= tally_type %>"></div>
+                    <div id="votingsystem<%=question_num%>" class="votingsystem current-item inline" data-id="<%- tally_type %>"></div>
                     <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu complete-block votingsystem-dropdown" id="votingsystem-dropdown<%=question_num%>">
-                        <li data-id="ONE_CHOICE" data-showids="" data-usertext="<%= gettext("Classic vote (Plurality)") %>">
+                        <li data-id="ONE_CHOICE" data-showids="" data-usertext="<%- gettext("Classic vote (Plurality)") %>">
                         <a href="#"><div class="row-fluid">
                             <div class="span3">
                                 <img src="{% static 'img/plurality_ballot.png' %}"/>
@@ -119,7 +119,7 @@
                             </div>
                         </div></a></li>
                         <li class="divider"></li>
-                        <li data-id="MEEK-STV" data-usertext="<%= gettext("Elect a list (Meek-STV)") %>">
+                        <li data-id="MEEK-STV" data-usertext="<%- gettext("Elect a list (Meek-STV)") %>">
                         <a href="#"><div class="row-fluid">
                             <div class="span3">
                                 <img src="{% static 'img/preferential_ballot.png' %}"/>
@@ -140,21 +140,21 @@
         <div class="control-group">
             <div id="num_winners_opts<%=question_num%>" class="inline num_winners_opts">
             <label class="control-label inline" for="num_winners"><%= gettext("Elect a list of") %></label>
-            <input type="text" name="num_winners" maxlength="3" value="<%= num_seats %>" id="num_winners<%=question_num%>" class="num_winners inline input-nano"/>
+            <input type="text" name="num_winners" maxlength="3" value="<%- num_seats %>" id="num_winners<%=question_num%>" class="num_winners inline input-nano"/>
             <%= gettext("winners") %>.
             </div>
             <div class="inline">
                 <label class="control-label inline" for="min_num_choices"><%= gettext("A voter selects from") %></label>
-                <input type="text" name="min_num_choices" value="<%= min %>" maxlength="3" id="min_num_choices<%=question_num%>" class="inline input-nano min_num_choices"/>
+                <input type="text" name="min_num_choices" value="<%- min %>" maxlength="3" id="min_num_choices<%=question_num%>" class="inline input-nano min_num_choices"/>
                 <label class="control-label inline" for="max_num_choices"><%= gettext("to") %></label>
-                <input type="text" name="max_num_choices" maxlength="3" value="<%= max %>" id="max_num_choices<%=question_num%>" class="inline input-nano max_num_choices"/>
+                <input type="text" name="max_num_choices" maxlength="3" value="<%- max %>" id="max_num_choices<%=question_num%>" class="inline input-nano max_num_choices"/>
                 <%= gettext("choices") %>.
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="add_option"><%= gettext("Choices") %></label>
             <div class="input-append">
-                <input class="add_option" id="add_option<%=question_num%>" type="text" placeholder="<%= gettext("Add a choice") %>">
+                <input class="add_option" id="add_option<%=question_num%>" type="text" placeholder="<%- gettext("Add a choice") %>">
                 <button id="add_option_btn<%=question_num%>" class="add_option_btn btn btn-primary" type="button"><i class="icon-plus icon-white"></i></button>
             </div>
             <table class="table well">
@@ -169,7 +169,7 @@
         <div class="control-group spaced-up-control">
             <input type="hidden" class="hidden-input" value="" />
             <% if (question_num > 0) { %>
-            <button class="btn btn-large btn-block add-question remove_question_btn" id="remove_question_btn<%=question_num%>" data-id="<%=question_num%>" type="button">
+            <button class="btn btn-large btn-block add-question remove_question_btn" id="remove_question_btn<%=question_num%>" data-id="<%-question_num%>" type="button">
                 <%= gettext("Remove question") %>
             </button>
             <% } else { %>
@@ -199,12 +199,12 @@
         </a>
         </div>
         <div class="hide edit-value">
-            <input type="text" value="<%= value %>" class="input-edit-value input-xxlarge" />
+            <input type="text" value="<%- value %>" class="input-edit-value input-xxlarge" />
         </div>
     </td>
     <td>
         <div class="text-right">
-            <a href="#" class="remove_option" data-value="<%= value %>">
+            <a href="#" class="remove_option" data-value="<%- value %>">
                 <i class="icon-remove"></i>
             </a>
         </div>
