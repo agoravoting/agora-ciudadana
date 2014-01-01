@@ -474,6 +474,9 @@ ALLOWED_HOSTS = [
 # Enable/disable the top navbar link to "Professional services" page
 SHOW_PROFESSIONAL_SERVICES_LINK = False
 
+# do not allow javascript to access to the session cookie for improved security
+SESSION_COOKIE_HTTPONLY = True
+
 try:
     # custom settings is the file where you should set your modifications of the
     # settings file
