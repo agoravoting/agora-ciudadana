@@ -46,7 +46,7 @@
                         <div class="controls">
                             <input class="textinput textInput" id="id_pretty_name"
                             maxlength="70" name="pretty_name" type="text"
-                            value="<%= ajax_data.agora.pretty_name %>">
+                            value="<%- ajax_data.agora.pretty_name %>">
 
                             <p class="help-block" id="hint_id_pretty_name">
                                 <%= gettext("Example: The Important Agora") %>
@@ -62,7 +62,7 @@
                         <div class="controls">
                             <input class="textinput textInput" id="id_short_description"
                             maxlength="140" name="short_description" type="text"
-                            value="<%= ajax_data.agora.short_description%>">
+                            value="<%- ajax_data.agora.short_description %>">
 
                             <p class="help-block" id="hint_id_short_description">
                                 <%= gettext("Example: Agora where stuff that matter is decided upon") %>
@@ -202,7 +202,7 @@
                         <div class="span6 available-choices">
                             <ul class="nav nav-list sidenav">
                                 <% for (var i = 0; i < available_authorities.objects.length; i++) { %>
-                                <li data-id="<%= available_authorities.objects[i].id %>">
+                                <li data-id="<%- available_authorities.objects[i].id %>">
                                     <a href="#">
                                         <i class="icon-chevron-right"></i>
                                         <%= available_authorities.objects[i].name %>

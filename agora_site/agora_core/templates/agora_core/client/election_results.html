@@ -19,7 +19,7 @@
                     )</small>
                 </th></tr>
             </thead>
-            <tbody data-randomize="<%= election.questions[i].randomize_answer_order %>">
+            <tbody data-randomize="<%- election.questions[i].randomize_answer_order %>">
                 <% for (var j = 0; j < election.questions[i].answers.length; j++) { %>
                 <tr><td>
                     <%= election.questions[i].answers[j].value %>
@@ -68,7 +68,7 @@
                         <% } %>
                         </td>
                         <% for(var j = 0; j < tally.iterations.length; j++) { %>
-                            <td class="<%= tally.iterations[j].candidates[i].status %>">
+                            <td class="<%- tally.iterations[j].candidates[i].status %>">
                                 <%= parseFloat(tally.iterations[j].candidates[i].count) %>
                             </td>
                         <% } %>
@@ -91,7 +91,7 @@
     <h3 class="headerlink"><%= question_num +1 %>. <%= question.question %> <a href="#tally_question<%= question_num %>">¶</a></h3>
     <strong class="winners"><%= gettext("Winner: ") %> <%= question.winners[0] %></strong>
     <% for(var i = 0; i < question.answers.length; i++) { %>
-        <li style="color: <%= question.answers[i].color %>" data-value="<%= question.answers[i].total_count %>">
+        <li style="color: <%= question.answers[i].color %>" data-value="<%- question.answers[i].total_count %>">
             <span class="legendbox" style="background-color: <%= question.answers[i].color %>"></span>
             <%= question.answers[i].value %>
             <em>

@@ -1,8 +1,8 @@
 <script id="template-vote_list_item" type="text/underscore-template">
     <div class="result-item user-result">
-            <div class="row bottom-bordered" data-id="<%= id %>">
+            <div class="row bottom-bordered" data-id="<%- id %>">
                 <a href="#" class="show_vote"><div class="span2">
-                    <img src="<%= voter.mugshot_url %>" alt="<%= escapeAttribute(voter.username) %>" class="mugshot"/>
+                    <img src="<%- voter.mugshot_url %>" alt="<%- escapeAttribute(voter.username) %>" class="mugshot"/>
                 </div></a>
                 <div class="span7">
                     <a href="#" class="show_vote"><strong class="username">

@@ -1,11 +1,11 @@
 <script id="template-action_action_object_election_verb_voted_public" type="text/underscore-template">
-    <div class="activity-action" geodata="<%= geolocation %>">
-        <a href="<%= actor.url %>" class="mugshot">
-            <img src="<%= actor.mugshot_url %>" alt="<%= escapeAttribute(actor.initials) %>" />
+    <div class="activity-action" geodata="<%- geolocation %>">
+        <a href="<%- actor.url %>" class="mugshot">
+            <img src="<%- actor.mugshot_url %>" alt="<%- escapeAttribute(actor.initials) %>" />
         </a>
         <div class="action-body">
             <div class="action-title">
-                <a href="<%= actor.url %>"><strong class="username">
+                <a href="<%- actor.url %>"><strong class="username">
 <% if (actor.full_name && actor.full_name != actor.username) { %>
     <%= actor.full_name %> <em>(<%= actor.username %>)</em>
 <% } else { %>
@@ -13,10 +13,10 @@
 <% } %>
 </strong></a> <strong class="verb"><%= gettext(verb) %></strong>
                 <%= pgettext("<verb> on election <election>", "on election") %>
-                <a href="<%= action_object.url %>"><%= action_object.pretty_name %></a>
+                <a href="<%- action_object.url %>"><%= action_object.pretty_name %></a>
                 <%= pgettext("<election> at <agora>", "at") %>
-                <a href="<%= action_object.agora.url %>"><%= action_object.agora.full_name %></a>
-                <time class="timeago" data-livestamp="<%= timestamp %>" datetime="<%= timestamp %>"></time>
+                <a href="<%- action_object.agora.url %>"><%= action_object.agora.full_name %></a>
+                <time class="timeago" data-livestamp="<%- timestamp %>" datetime="<%- timestamp %>"></time>
             </div>
             <div class="action-detail">
                 <div class="detail-body vote">
@@ -33,12 +33,12 @@
             </div>
 
             <div class="action-detail">
-                <a href="<%= action_object.url %>" class="mugshot">
-                    <img src="<%= action_object.mugshot_url %>" alt="<%= escapeAttribute(action_object.full_name) %>" />
+                <a href="<%- action_object.url %>" class="mugshot">
+                    <img src="<%- action_object.mugshot_url %>" alt="<%- escapeAttribute(action_object.full_name) %>" />
                 </a>
                 <div class="detail-body">
                     <strong class="action-title">
-                        <a href="<%= action_object.url %>">
+                        <a href="<%- action_object.url %>">
                             <%= action_object.pretty_name %>
                         </a>
                     </strong>

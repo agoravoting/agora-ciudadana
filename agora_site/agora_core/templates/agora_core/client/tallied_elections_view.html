@@ -6,9 +6,9 @@
         <ul>
             <% for (var i = 0; i < objects.length; i++) { %>
             <li>
-                <a href="<%= objects[i].url %>" class="election">
+                <a href="<%- objects[i].url %>" class="election">
                     <strong class="ellipsis"><%= objects[i].pretty_name %></strong>
-                    <time datetime="<%= objects[i].result_tallied_at_date %>" data-livestamp="<%= objects[i].result_tallied_at_date %>">
+                    <time datetime="<%- objects[i].result_tallied_at_date %>" data-livestamp="<%- objects[i].result_tallied_at_date %>">
                         <%= objects[i].result_tallied_at_date %>
                     </time>
                     <% if (objects[i].result.is_simple) { %>
@@ -40,7 +40,7 @@
 
             <% if (meta.total_count > 3)  { %>
             <li>
-                <a class="election remaining" href="<%= objects[0].agora.url %>/elections/tallied">
+                <a class="election remaining" href="<%- objects[0].agora.url %>/elections/tallied">
                     <%= gettext("... and more") %>
                 </a>
             </li>

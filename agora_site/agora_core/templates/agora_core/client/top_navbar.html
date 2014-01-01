@@ -2,7 +2,7 @@
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-                <a href="/" class="brand" alt="<%= escapeAttribute(gettext("Home")) %>">
+                <a href="/" class="brand" alt="<%- escapeAttribute(gettext("Home")) %>">
                     <img alt="Agora"  src="{{ STATIC_URL }}img/agora-small.png" />
                 </a>
                 <ul class="nav">
@@ -17,7 +17,7 @@
                                 <% } %>
                                 <% for (var i = 0; i < agoras.objects.length; i++) { %>
                                     <li>
-                                        <a href="<%= agoras.objects[i].url %>">
+                                        <a href="<%- agoras.objects[i].url %>">
                                             <%= agoras.objects[i].full_name %>
                                         </a>
                                     </li>
@@ -51,7 +51,7 @@
                                     <% } %>
                                     <% for (var i = 0; i < open_elections.objects.length; i++) { %>
                                         <li>
-                                            <a href="<%= open_elections.objects[i].url %>">
+                                            <a href="<%- open_elections.objects[i].url %>">
                                                 <%= open_elections.objects[i].pretty_name %>
                                             </a>
                                         </li>
@@ -94,12 +94,12 @@
                                 <form method="post" class="span6" id="login-form" action="/accounts/signin/">
                                     <h3><%= gettext("Enter with user and password") %></h3>
                                     {% csrf_token %}
-                                    <input type="text" maxlength="75" name="identification" class="required textinput textInput" id="id_identification" placeholder="<%= gettext("Email or user name") %>" />
+                                    <input type="text" maxlength="75" name="identification" class="required textinput textInput" id="id_identification" placeholder="<%- gettext("Email or user name") %>" />
 
-                                    <input type="password" name="password" class="required textinput textInput" id="id_password" placeholder="<%= gettext("Password") %>"/>
+                                    <input type="password" name="password" class="required textinput textInput" id="id_password" placeholder="<%- gettext("Password") %>"/>
                                     <div class="text-links"><a href="/accounts/password/reset/"><%= gettext("Forgot your password?") %></a> | <a href="/accounts/signup/"><strong><%= gettext("Register") %></strong></a></div>
 
-                                    <input type="submit" id="submit-id-submit" class="btn btn btn-success btn-large" value="<%= gettext("Entrar") %>" name="submit">
+                                    <input type="submit" id="submit-id-submit" class="btn btn btn-success btn-large" value="<%- gettext("Entrar") %>" name="submit">
 
                                     <input type="hidden" value="login" name="type">
                                 </form>
@@ -166,7 +166,7 @@
                     <% } %>
                 </ul>
                 <form id="search-form" class="nav-search pull-right" action="/search">
-                    <input type="text" class="span2 search-query"  value="" placeholder="<%= gettext("Search") %>" name="q" />
+                    <input type="text" class="span2 search-query"  value="" placeholder="<%- gettext("Search") %>" name="q" />
                 </form>
             </div>
         </div>

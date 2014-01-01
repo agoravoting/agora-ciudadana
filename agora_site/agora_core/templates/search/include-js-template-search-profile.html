@@ -1,9 +1,9 @@
 <script id="template-search-profile-item" type="text/underscore-template">
     <div class="result-item user-result">
-        <a href="<%= url %>">
+        <a href="<%- url %>">
             <div class="row bottom-bordered">
                 <div class="span2">
-                    <img src="<%= mugshot_url %>" alt="<%= escapeAttribute(initials) %>" class="mugshot" />
+                    <img src="<%- mugshot_url %>" alt="<%- escapeAttribute(initials) %>" class="mugshot" />
                 </div>
                 <div class="span6">
                     <strong class="username">

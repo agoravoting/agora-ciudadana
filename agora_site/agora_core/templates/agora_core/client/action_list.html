@@ -2,15 +2,15 @@
     <% if (dropdown) { %>
     <div class="btn-group">
         <a class="btn dropdown-toggle main-action <%= main_action_class %>"
-            href="#" data-toggle="dropdown" data-id="<%= main_action_id %>">
-            <i class="<%= main_action_icon %>"></i> <%= main_action_name %>
+            href="#" data-toggle="dropdown" data-id="<%- main_action_id %>">
+            <i class="<%- main_action_icon %>"></i> <%= main_action_name %>
             <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
             <% for (var i = 0; i < actions.length; i++) { %>
                 <li>
-                    <a href="#" data-id="<%= actions[i].id %>" class="action-link">
-                        <i class="<%= actions[i].icon %>"></i>
+                    <a href="#" data-id="<%- actions[i].id %>" class="action-link">
+                        <i class="<%- actions[i].icon %>"></i>
                         <%= actions[i].name %>
                     </a>
                 </li>
@@ -19,8 +19,8 @@
     </div>
     <% } else { %>
     <a class="btn main-action action-link <%= main_action_class %>" href="#"
-        data-id="<%= main_action_id %>">
-        <i class="<%= main_action_icon %>"></i> <%= main_action_name %>
+        data-id="<%- main_action_id %>">
+        <i class="<%- main_action_icon %>"></i> <%= main_action_name %>
     </a>
     <% } %>
 </script>

@@ -1,12 +1,12 @@
 <script id="template-agora-profile-item" type="text/underscore-template">
     <div class="result-item user-result">
-            <div class="row bottom-bordered" data-url="<%= url %>"
-                data-id="<%= id %>" data-username=<%= username %> data-fullname="<%= full_name %>">
-                <a href="<%= url %>"><div class="span2">
-                    <img src="<%= mugshot_url %>" alt="<%= escapeAttribute(initials) %>" class="mugshot"/>
+            <div class="row bottom-bordered" data-url="<%- url %>"
+                data-id="<%- id %>" data-username=<%= username %> data-fullname="<%- full_name %>">
+                <a href="<%- url %>"><div class="span2">
+                    <img src="<%- mugshot_url %>" alt="<%- escapeAttribute(initials) %>" class="mugshot"/>
                 </div></a>
                 <div class="span7">
-                    <a href="<%= url %>"><strong class="username">
+                    <a href="<%- url %>"><strong class="username">
                         <% if (full_name && full_name != username) { %>
                             <%= full_name %> <em>(<%= username %>)</em>
                         <% } else { %>
@@ -36,13 +36,13 @@
 <% if (permissions && permissions.length > 0) { %>
     <% if (_.contains(permissions, "cancel_membership_request")) { %>
     <li>
-        <a href="<%= agora_path %>/action/accept-membership-request/<%= username %>" class="action-form-link">
+        <a href="<%- agora_path %>/action/accept-membership-request/<%= username %>" class="action-form-link">
             <i class="icon-ok"></i>
             <%= gettext("Accept membership request") %>
         </a>
     </li>
     <li>
-        <a href="<%= agora_path %>/action/dismiss-membership-request/<%= username %>" class="action-form-link">
+        <a href="<%- agora_path %>/action/dismiss-membership-request/<%= username %>" class="action-form-link">
             <i class="icon-remove"></i>
             <%= gettext("Dismiss membership request") %>
         </a>
@@ -51,20 +51,20 @@
     <!-- TODO: fix this, this client-side script shouldn't depend on the server -->
     <!-- NOTE: this shows the Download scanned ID action unconditionally -->
     <li>
-        <a href="<%= agora_path %>/action/download-user-id/<%= username %>" class="action-form-link">
+        <a href="<%- agora_path %>/action/download-user-id/<%= username %>" class="action-form-link">
             <i class="icon-remove"></i>
             <%= gettext("Download scanned ID") %>
         </a>
     </li>
     <% if (_.contains(permissions, "cancel_admin_membership_request")) { %>
     <li>
-        <a href="<%= agora_path %>/action/accept-admin-membership-request/<%= username %>" class="action-form-link">
+        <a href="<%- agora_path %>/action/accept-admin-membership-request/<%= username %>" class="action-form-link">
             <i class="icon-ok"></i>
             <%= gettext("Accept admin membership request") %>
         </a>
     </li>
     <li>
-        <a href="<%= agora_path %>/action/dismiss-admin-membership-request/<%= username %>" class="action-form-link">
+        <a href="<%- agora_path %>/action/dismiss-admin-membership-request/<%= username %>" class="action-form-link">
             <i class="icon-remove"></i>
             <%= gettext("Dismiss admin membership request") %>
         </a>
@@ -72,13 +72,13 @@
     <% } %>
     <% if (_.contains(permissions, "leave")) { %>
     <li>
-        <a href="<%= agora_path %>/action/remove-membership/<%= username %>" class="action-form-link">
+        <a href="<%- agora_path %>/action/remove-membership/<%= username %>" class="action-form-link">
             <i class="icon-remove"></i>
             <%= gettext("Remove membership") %>
         </a>
     </li>
     <li>
-        <a href="<%= agora_path %>/action/make-admin/<%= username %>" class="action-form-link">
+        <a href="<%- agora_path %>/action/make-admin/<%= username %>" class="action-form-link">
             <i class="icon-remove"></i>
             <%= gettext("Make admin") %>
         </a>
@@ -86,7 +86,7 @@
     <% } %>
     <% if (_.contains(permissions, "leave_admin")) { %>
     <li>
-        <a href="<%= agora_path %>/action/remove-admin-membership/<%= username %>" class="action-form-link">
+        <a href="<%- agora_path %>/action/remove-admin-membership/<%= username %>" class="action-form-link">
             <i class="icon-remove"></i>
             <%= gettext("Remove admin membership") %>
         </a>
