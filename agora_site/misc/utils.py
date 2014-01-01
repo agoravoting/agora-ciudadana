@@ -474,19 +474,15 @@ def clean_html(text, to_plaintext=False):
         return text
 
     from lxml.html.clean import Cleaner
-    from lxml.html import fragment_fromstring
+    from lxml.html import fromstring
     from lxml.html import _transform_result
 
     # clean html
-    try:
-        doc = fragment_fromstring(text)
-        # remove style tags, they are EVIL I tell you! And the hell with svg
-        c = Cleaner(whitelist_tags=set(),style=True,remove_tags=['svg'],add_nofollow=True)
-        c(doc)
-        html = _transform_result(type(""), doc)
-    except:
-        # on parse error, return empty string
-        return ""
+    doc = fromstring(text)
+    # remove style tags, they are EVIL I tell you! And the hell with svg
+    c = Cleaner(whitelist_tags=set(),style=True,remove_tags=['svg'],add_nofollow=True)
+    c(doc)
+    html = _transform_result(type(""), doc)
 
     h  = html2text.HTML2Text()
     # otherwise, some \n might be entered in long lines, breaking the
