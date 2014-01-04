@@ -12,6 +12,7 @@ from django.contrib.markup.templatetags.markup import textile
 from django.utils.translation import gettext as _
 from django.contrib.auth import authenticate, login
 from django.shortcuts import get_object_or_404
+from django.utils.crypto import constant_time_compare
 
 from userena import settings as userena_settings
 from userena import forms as userena_forms
@@ -387,8 +388,10 @@ class APISignupForm(django_forms.Form):
 
     def clean_activation_secret(self):
         if len(self.cleaned_data['activation_secret']) > 0:
-            if self.cleaned_data['activation_secret'] != settings.AGORA_API_AUTO_ACTIVATION_SECRET:
-                raise django_forms.ValidationError(_('Invalid activation secret. ' + settings.AGORA_API_AUTO_ACTIVATION_SECRET + "!= " + self.cleaned_data['activation_secret']))
+            if not constant_time_compare(
+                    self.cleaned_data['activation_secret'],
+                    settings.AGORA_API_AUTO_ACTIVATION_SECRET):
+                raise django_forms.ValidationError(_('Invalid activation secret. '))
             if not settings.AGORA_ALLOW_API_AUTO_ACTIVATION:
                 raise django_forms.ValidationError(_('Auto activation not allowed.'))
         return self.cleaned_data['activation_secret']
