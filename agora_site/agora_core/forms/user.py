@@ -449,7 +449,9 @@ class APISignupForm(django_forms.Form):
 
     def clean_activation_secret(self):
         if len(self.cleaned_data['activation_secret']) > 0:
-            if self.cleaned_data['activation_secret'] != settings.AGORA_API_AUTO_ACTIVATION_SECRET:
+            if not constant_time_compare(
+                    self.cleaned_data['activation_secret'],
+                    settings.AGORA_API_AUTO_ACTIVATION_SECRET):
                 raise django_forms.ValidationError(_('Invalid activation secret.'))
             if not settings.AGORA_ALLOW_API_AUTO_ACTIVATION:
                 raise django_forms.ValidationError(_('Auto activation not allowed.'))
