@@ -446,6 +446,7 @@ class APISignupForm(django_forms.Form):
                 link = settings.AGORA_BASE_URL + reverse('auto_join_activate',
                     args=(user.username, user.userena_signup.activation_key))
                 raise django_forms.ValidationError('This email is already in use but not activated, we have sent to the user\'s email the activation link: ' + link)
+        return self.cleaned_data['email']
 
     def clean_activation_secret(self):
         if len(self.cleaned_data['activation_secret']) > 0:
@@ -485,6 +486,7 @@ class APISignupForm(django_forms.Form):
                 password, False, False)
             new_user.first_name = self.cleaned_data['first_name'][:30]
             new_user.save()
+            self.token = default_token_generator.make_token(new_user)
             profile = new_user.get_profile()
             profile.extra = dict(auto_activation=True)
             profile.save()
@@ -497,7 +499,7 @@ class APISignupForm(django_forms.Form):
         Bundles the object for the api showing activation url if needed
         '''
         from agora_site.agora_core.resources.user import (
-            ActivationUserResource, TinyUserResource)
+            AutoJoinActivationUserResource, TinyUserResource)
 
         if not self.cleaned_data['activation_secret']:
             ur = TinyUserResource()
@@ -505,7 +507,8 @@ class APISignupForm(django_forms.Form):
             bundle = ur.full_dehydrate(bundle)
             return bundle
         else:
-            ur = ActivationUserResource()
+            ur = AutoJoinActivationUserResource(self.token)
+            ur.url_name = 'auto-login-token'
             bundle = ur.build_bundle(obj=obj, request=request)
             bundle = ur.full_dehydrate(bundle)
             return bundle

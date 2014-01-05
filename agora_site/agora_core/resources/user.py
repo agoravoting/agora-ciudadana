@@ -77,6 +77,19 @@ class ActivationUserResource(TinyUserResource):
         return reverse("auto_join_activate",
             args=(bundle.obj.username, bundle.obj.userena_signup.activation_key))
 
+
+class AutoJoinActivationUserResource(TinyUserResource):
+    activation_url = fields.CharField()
+
+    def __init__(self, token):
+        self.token = token
+        super(AutoJoinActivationUserResource, self).__init__()
+
+    def dehydrate_activation_url(self, bundle):
+        return reverse('auto-login-token',
+                       args=(bundle.obj.username, self.token))
+
+
 class TinyProfileResource(GenericResource):
     '''
     Tiny Resource representing profiles.
