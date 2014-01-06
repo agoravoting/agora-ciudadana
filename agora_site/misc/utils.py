@@ -469,26 +469,19 @@ class FakeHttpRequest(HttpRequest):
 
 
 def clean_html(text, to_plaintext=False):
+    if isinstance(text, str):
+        text = unicode(text, 'utf-8')
     text = text.strip()
     if not len(text):
         return text
 
-    from lxml.html.clean import Cleaner
-    from lxml.html import fromstring
-    from lxml.html import _transform_result
+    import bleach
+    html = bleach.clean(text)
 
-    # clean html
-    doc = fromstring(text)
-    # remove style tags, they are EVIL I tell you! And the hell with svg
-    c = Cleaner(whitelist_tags=set(),style=True,remove_tags=['svg'],add_nofollow=True)
-    c(doc)
-    html = _transform_result(type(""), doc)
+    from lxml.html import html5parser
+    doc = html5parser.fromstring(html)
+    plaintext = doc.xpath("string()")
 
-    h  = html2text.HTML2Text()
-    # otherwise, some \n might be entered in long lines, breaking the
-    # possibility of comparison of plaintext with the original text
-    h.body_width = 0
-    plaintext = h.handle(html).strip()
     if plaintext == text:
         return plaintext
 
