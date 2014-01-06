@@ -476,7 +476,9 @@ def clean_html(text, to_plaintext=False):
         return text
 
     import bleach
-    html = bleach.clean(text)
+    ALLOWED_TAGS = bleach.ALLOWED_TAGS
+    ALLOWED_TAGS.append('p')
+    html = bleach.clean(text, tags=ALLOWED_TAGS, strip=True)
 
     from lxml.html import html5parser
     doc = html5parser.fromstring(html)
