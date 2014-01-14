@@ -13,6 +13,10 @@ DATABASES = {
     }
 }
 
+# remove django secure to make tests work
+MIDDLEWARE_CLASSES = tuple([
+    i for i in MIDDLEWARE_CLASSES
+        if i != 'djangosecure.middleware.SecurityMiddleware'])
 
 HAYSTACK_CONNECTIONS = {
     'default': {
