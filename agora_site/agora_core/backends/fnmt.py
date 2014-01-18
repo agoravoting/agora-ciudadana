@@ -94,7 +94,7 @@ class FNMTBackend(object):
             # generate a valid new username
             base_username = username = slugify(self.email.split('@')[0])
             while User.objects.filter(username=username).exists():
-                username = base_username + random.randint(0, 100)
+                username = base_username + str(random.randint(0, 100))
         else:
             username = str(uuid4())[:30]
             email = "%s@example.com" % str(uuid4())
