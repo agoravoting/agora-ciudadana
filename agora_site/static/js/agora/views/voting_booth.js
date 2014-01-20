@@ -271,6 +271,7 @@
             }
             var percent_num = parseInt(((index+1)*100.0)/ajax_data.questions.length);
 
+            this.ballot['issue_date'] = moment().format();
             this.ballot['question' + index] = Agora.encryptAnswer(
                 ajax_data.pubkeys[index], choice_index);
 

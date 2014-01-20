@@ -51,14 +51,17 @@ class CastVote(models.Model):
         app_label = 'agora_core'
 
     def get_serializable_data(self):
-        return {
-            'voter_username': self.voter.username,
-            'data': self.data,
-            'casted_at_date': self.casted_at_date.isoformat()
-        }
+        if not self.election.is_secure() and not self.is_public:
+            return {
+                'voter_username': self.voter.username,
+                'data': self.data,
+                'casted_at_date': self.casted_at_date.isoformat()
+            }
+        else:
+            return self.data
 
     def get_serialized(self):
-        return simplejson.dumps(self.get_serializable_data())
+        return simplejson.dumps(self.get_serializable_data(), sort_keys=True)
 
     def create_hash(self):
         self.hash = hashlib.sha256(self.get_serialized()).hexdigest()
@@ -118,8 +121,9 @@ class CastVote(models.Model):
     def get_public_data(self):
         '''
         Returns self.data without showing vote answer if the vote is not public
+        or it's not encrypted
         '''
-        if self.is_public:
+        if self.is_public or self.election.is_secure():
             return self.data
         else:
             return dict()

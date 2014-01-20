@@ -113,7 +113,7 @@ class Election(models.Model):
         return data
 
     def get_serialized(self):
-        return json.dumps(self.get_serializable_data())
+        return json.dumps(self.get_serializable_data(), sort_keys=True)
 
     def create_hash(self):
         self.hash = hashlib.sha256(self.get_serialized()).hexdigest()

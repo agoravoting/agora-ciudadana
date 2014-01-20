@@ -31,6 +31,8 @@
                 <%= gettext("Enter the directory where you downloaded both files and execute the following command to verify the tally: <br/><h2>sh agora-verifier tally.tar.gz</h2>") %>
             </li>
         </ol>
+        <p><%= gettext("To verify your ballot is counted in the tally, execute:") %></p>
+        <h2>sh agora-verifier tally.tar.gz &lt;smart-ballot-tracker&gt;</h2>
     </script>
     <script>
         app.currentView = new Agora.ElectionSecurityCenterView();

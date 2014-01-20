@@ -52,6 +52,8 @@
         <% } %>
     </div>
     <div class="row-fluid questions">
+        <p><strong class="smart-tracker"><%= interpolate(gettext("Smart tracker: %s"), [vote.hash]) %></strong></p>
+
     <% if (vote.is_public) { %>
         <% if (vote.is_direct) { %>
             <% if (delegation == true) { %>
@@ -75,7 +77,10 @@
             </div>
         <% } %>
     <% } else { %>
-        <% if (vote.is_direct) { %>
+        <% if (vote.is_direct && election.security_policy.contains("ENCRYPTED")) { %>
+            <strong><%= interpolate(gettext("%s's vote is encrypted"), [vote.voter.full_name]) %>
+
+        <% } else if (vote.is_direct) { %>
             <strong><%= interpolate(gettext("%s's vote is secret"), [vote.voter.full_name]) %></strong>
         <% } else { %>
             <strong><%= interpolate(gettext("%s delegation is secret"), [vote.voter.full_name]) %></strong>

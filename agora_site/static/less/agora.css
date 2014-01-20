@@ -5837,6 +5837,10 @@ img.mugshot,
 #vote_info .row-fluid.questions strong {
   color: #46a546;
 }
+#vote_info .row-fluid.questions strong.smart-tracker {
+  color: black;
+  word-wrap: break-word;
+}
 #vote_info .row-fluid.questions li {
   color: #555555;
 }

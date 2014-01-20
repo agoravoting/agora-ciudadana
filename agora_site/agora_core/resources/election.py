@@ -653,7 +653,8 @@ class ElectionResource(GenericResource):
         if u_filter:
             q = (Q(voter__username__icontains=u_filter) |
                  Q(voter__first_name__icontains=u_filter) |
-                 Q(voter__last_name__icontains=u_filter))
+                 Q(voter__last_name__icontains=u_filter) |
+                 Q(hash__contains=u_filter))
             return query.filter(q)
         return query
 

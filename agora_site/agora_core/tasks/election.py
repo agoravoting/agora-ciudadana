@@ -489,27 +489,7 @@ def launch_encrypted_tally(election):
     import codecs
     with codecs.open(votes_path, encoding='utf-8', mode='w') as votes_file:
         for vote in election.get_direct_votes():
-            proofs = []
-            choices = []
-            i = 0
-            for question in election.questions:
-                q_answer = vote.data['answers'][i]
-
-                proofs.append(dict(
-                    commitment=q_answer['commitment'],
-                    response=q_answer['response'],
-                    challenge=q_answer['challenge']
-                ))
-                choices.append(dict(
-                    alpha=q_answer['alpha'],
-                    beta=q_answer['beta']
-                ))
-                i += 1
-            vote_json = dict(
-                proofs=proofs,
-                choices=choices
-            )
-            votes_file.write(json.dumps(vote_json) + "\n")
+            votes_file.write(json.dumps(vote.data, sort_keys=True) + "\n")
 
 
     proto = "https://" if settings.AGORA_USE_HTTPS else "http://"

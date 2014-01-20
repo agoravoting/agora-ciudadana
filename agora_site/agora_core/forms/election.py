@@ -59,6 +59,8 @@ class VoteForm(django_forms.ModelForm):
     '''
     is_vote_secret = django_forms.BooleanField(required=False)
 
+    issue_date = django_forms.CharField(required=False, max_length=120)
+
     def __init__(self, request, election, *args, **kwargs):
         super(VoteForm, self).__init__(*args, **kwargs)
         self.election = election
@@ -120,14 +122,26 @@ class VoteForm(django_forms.ModelForm):
 
         # generate vote
         data = {
-            "a": "vote",
-            "answers": [],
+            "a": "encrypted-vote-v1",
+            "proofs": [],
+            "choices": [],
+            "voter_username": self.request.user.username,
+            "issue_date": self.cleaned_data["issue_date"],
             "election_hash": {"a": "hash/sha256/value", "value": self.election.hash},
             "election_uuid": self.election.uuid
         }
         i = 0
         for question in self.election.questions:
-            data["answers"] += [self.cleaned_data['question%d' % i]]
+            q_answer =self.cleaned_data['question%d' % i]
+            data["proofs"].append(dict(
+                commitment=q_answer['commitment'],
+                response=q_answer['response'],
+                challenge=q_answer['challenge']
+            ))
+            data["choices"].append(dict(
+                alpha=q_answer['alpha'],
+                beta=q_answer['beta']
+            ))
             i += 1
 
         # fill the vote
@@ -166,6 +180,7 @@ class VoteForm(django_forms.ModelForm):
         context.update(dict(
             to=self.request.user,
             election=self.election,
+            vote_hash=vote.hash,
             election_url=self.election.get_link(),
             agora_url=self.election.get_link(),
         ))

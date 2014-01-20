@@ -3,7 +3,10 @@
 
 {% blocktrans with election_name=election.pretty_name agora_username=election.agora.creator.username agora_name=election.agora.name %}We have recorded your vote at election {{ election_name }} at {{ agora_username }}/{{ agora_name }}. You may re-vote if you wish: only your last vote counts.{% endblocktrans %}
 
+Your smart ballot tracker is: {{ vote_hash }}. You can check it in the election vote's list.
+
 {% blocktrans with site_domain=site.domain %}Election URL: {{ protocol }}://{{ site_domain }}{{ election_url }}{% endblocktrans %}
+{% blocktrans with site_domain=site.domain %}Election votes URL: {{ protocol }}://{{ site_domain }}{{ election_url }}/votes{% endblocktrans %}
 
 {% blocktrans with election_description=election.description|striptags %}Election description: {{ election_description }}{% endblocktrans %}
 
