@@ -12,6 +12,7 @@ from common import RootTestCase
 from django.contrib.markup.templatetags.markup import textile
 from django.utils import timezone
 from datetime import datetime, timedelta
+from uuid import uuid4
 import copy
 
 class DelegateElectionCountTest(RootTestCase):
@@ -102,6 +103,7 @@ class DelegateElectionCountTest(RootTestCase):
         def vote(usernames, orig_data):
             for username in usernames:
                 self.login(username, '123')
+                orig_data['unique_randomness'] = str(uuid4())
                 data = self.post('election/%d/action/' % election_id,
                     data=orig_data, code=HTTP_OK,
                     content_type='application/json')

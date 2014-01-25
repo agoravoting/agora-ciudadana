@@ -245,6 +245,11 @@
                 $("html").attr("style", "height: 100%; cursor: wait !important;");
                 setTimeout(this.encryptNextQuestion, 300);
             } else {
+                // we need to add some randomness to make vote unique so that
+                // the hash is not repeated
+                var random = sjcl.random.randomWords(5, 0);
+                var rand_bi = new BigInt(sjcl.codec.hex.fromBits(random), 16);
+                this.ballot['unique_randomness'] = rand_bi.toRadix(16);
                 this.eventVoteSealed();
             }
         },

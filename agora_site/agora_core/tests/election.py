@@ -12,6 +12,7 @@ from common import RootTestCase
 from django.contrib.markup.templatetags.markup import textile
 from django.utils import timezone
 from datetime import datetime, timedelta
+from uuid import uuid4
 import copy
 import hashlib
 
@@ -490,6 +491,7 @@ class ElectionTest(RootTestCase):
         def vote(usernames, orig_data):
             for username in usernames:
                 self.login(username, '123')
+                orig_data['unique_randomness'] = str(uuid4())
                 data = self.post('election/%d/action/' % election_id,
                     data=orig_data, code=HTTP_OK,
                     content_type='application/json')
@@ -675,6 +677,7 @@ class ElectionTest(RootTestCase):
         def vote(usernames, orig_data):
             for username in usernames:
                 self.login(username, '123')
+                orig_data['unique_randomness'] = str(uuid4())
                 data = self.post('election/%d/action/' % election_id,
                     data=orig_data, code=HTTP_OK,
                     content_type='application/json')
@@ -1042,7 +1045,7 @@ class ElectionTest(RootTestCase):
         self.assertEqual(data["is_direct"], True)
         self.assertEqual(data["is_counted"], True)
         self.assertEqual(data["reason"], vote_data['reason'])
-        self.assertEqual(data["public_data"]['a'], 'vote')
+        self.assertEqual(data["public_data"]['a'], 'plaintext-vote-v1')
         self.assertEqual(data["public_data"]['answers'],
             [{'a': 'plaintext-answer', 'choices': ['fo"o']}])
 
@@ -1129,6 +1132,7 @@ class ElectionTest(RootTestCase):
             'is_vote_secret': False,
             'question0': "bar",
             'action': 'vote',
+            'unique_randomness': str(uuid4()),
             'reason': "becuase of .. yes"
         }
         data = self.postAndParse('election/%d/action/' % election_id,
@@ -1182,6 +1186,7 @@ class ElectionTest(RootTestCase):
         vote_data = {
             'is_vote_secret': False,
             'question0': "bar",
+            'unique_randomness': str(uuid4()),
             'action': 'vote',
             'reason': "becuase of .. yes"
         }
@@ -1394,6 +1399,7 @@ class ElectionTest(RootTestCase):
                 data = self.post('agora/1/action/', data=join_data,
                     code=HTTP_OK, content_type='application/json')
                 # vote
+                orig_data['unique_randomness'] = str(uuid4())
                 data = self.post('election/%d/action/' % election_id,
                     data=orig_data, code=HTTP_OK,
                     content_type='application/json')
@@ -1590,6 +1596,7 @@ class ElectionTest(RootTestCase):
         def vote(usernames, orig_data):
             for username in usernames:
                 self.login(username, '123')
+                orig_data['unique_randomness'] = str(uuid4())
                 data = self.post('election/%d/action/' % election_id,
                     data=orig_data, code=HTTP_OK,
                     content_type='application/json')
