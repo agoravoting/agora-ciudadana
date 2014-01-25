@@ -142,7 +142,7 @@ class CastVote(models.Model):
         return self.delegation_agora[0]
 
     def is_plaintext(self):
-        if self.data['a'] == 'vote':
+        if self.data['a'] in ['vote', "plaintext-vote-v1"]:
             return self.data['answers'][0]['a'] == 'plaintext-answer'
         elif self.data['a'] == 'delegated-vote':
             return True
@@ -164,7 +164,7 @@ class CastVote(models.Model):
     def get_chained_first_pretty_answer(self, election=None):
         if not self.is_public:
             raise Exception('Vote is not public')
-        elif self.data['a'] == 'vote':
+        elif self.data['a'] in ['vote', "plaintext-vote-v1"]:
             if self.data['answers'][0]['a'] != 'plaintext-answer':
                 raise Exception('Invalid direct vote')
 
@@ -188,7 +188,7 @@ class CastVote(models.Model):
     def get_first_pretty_answer(self):
         if not self.is_public:
             raise Exception('Vote is not public')
-        elif self.data['a'] == 'vote':
+        elif self.data['a'] in ['vote', "plaintext-vote-v1"]:
             if self.data['answers'][0]['a'] != 'plaintext-answer':
                 raise Exception('Invalid direct vote')
 
