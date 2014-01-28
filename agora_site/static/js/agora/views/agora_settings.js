@@ -152,7 +152,8 @@
             e.preventDefault();
             this.updateData("configuration");
         },
-        updateAuthorities: function(what) {
+        updateAuthorities: function(e) {
+            e.preventDefault();
             if (this.sendingData) {
                 return;
             }
