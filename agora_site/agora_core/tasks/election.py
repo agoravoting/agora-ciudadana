@@ -42,7 +42,8 @@ def start_election(election_id, is_secure, site_id, remote_addr, user_id):
         election.save()
         return
 
-    if election.extra_data and "started" in election.extra_data:
+    if election.extra_data and "started" in election.extra_data or\
+            not election.release_tally_automatically:
         return
 
     if not election.voting_starts_at_date or\
