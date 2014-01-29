@@ -421,6 +421,9 @@ class CreateElectionForm(django_forms.ModelForm):
             user_id=self.request.user.id
         )
 
+        # make the election available to celery
+        transaction.commit()
+
         # send email to admins
         send_election_created_mails.apply_async(kwargs=kwargs, task_id=election.task_id(send_election_created_mails))
 
