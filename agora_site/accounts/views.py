@@ -110,10 +110,6 @@ class RegisterCompleteInviteView(FormView):
 
 class AutoJoinActivateView(TemplateView):
     def get(self, request, username, activation_key, **kwargs):
-        if not settings.AGORA_REGISTER_AUTO_JOIN:
-            messages.add_message(request, messages.ERROR, _('Invalid activation link.'))
-            return redirect('/')
-
         try:
             userena = UserenaSignup.objects.get(user__username=username)
         except:
