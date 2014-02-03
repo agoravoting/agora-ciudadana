@@ -18,7 +18,7 @@
         return RFC822.test(v);
     }
 
-    Agora.encryptAnswer = function(pk_json, plain_answer) {
+    Agora.encryptAnswer = function(pk_json, encoded_answer) {
         /**
          * Here we not only just encrypt the answer but also provide a
          * verifiable Proof of Knowledge (PoK) of the plaintext, using the
@@ -27,22 +27,23 @@
          * that substitutes the random oracle). We use sha256 for hashing.
          */
         var pk = ElGamal.PublicKey.fromJSONObject(pk_json);
-        var plaintext = new ElGamal.Plaintext(BigInt.fromInt(plain_answer), pk, true);
+        var plaintext = new
+        ElGamal.Plaintext(encoded_answer, pk, true);
         var randomness = Random.getRandomInteger(pk.q);
         var ctext = ElGamal.encrypt(pk, plaintext, randomness);
         var proof = plaintext.proveKnowledge(ctext.alpha, randomness, ElGamal.fiatshamir_dlog_challenge_generator);
         var ciphertext =  ctext.toJSONObject();
-        var proof = proof.toJSONObject();
+        var json_proof = proof.toJSONObject();
         var enc_answer = {
             alpha: ciphertext.alpha,
             beta: ciphertext.beta,
-            commitment: proof.commitment,
-            response: proof.response,
-            challenge: proof.challenge
+            commitment: json_proof.commitment,
+            response: json_proof.response,
+            challenge: json_proof.challenge
         };
 
-//         var verified = ctext.verifyPlaintextProof(proof, ElGamal.fiatshamir_dlog_challenge_generator);
-//         console.log("is proof verified = " + new Boolean(verified).toString());
+        var verified = ctext.verifyPlaintextProof(proof, ElGamal.fiatshamir_dlog_challenge_generator);
+        console.log("is proof verified = " + new Boolean(verified).toString());
         return enc_answer;
     }
 
@@ -262,23 +263,12 @@
             var index = this.nextquestionToEncryptIndex;
             this.nextquestionToEncryptIndex = index + 1;
 
-            var possible_answers = _.pluck(ajax_data.questions[index].answers, "value");
-            var choice_index = possible_answers.indexOf(this.ballot['question' + index]);
-            if (choice_index == -1) {
-                if (this.ballot['question' + index].length == 0) {
-                    // blank vote is codified as possible_answers.length (which is invalid)
-                    choice_index = possible_answers.length;
-                } else {
-                    // invalid vote is codified as possible_answers.length + 1 (which is invalid)
-                    choice_index = possible_answers.length + 1;
-                }
-
-            }
+            var data = this.questionViews[index].getEncryptableQuestionData(this.ballot['question' + index], index);
             var percent_num = parseInt(((index+1)*100.0)/ajax_data.questions.length);
 
             this.ballot['issue_date'] = moment().format();
             this.ballot['question' + index] = Agora.encryptAnswer(
-                ajax_data.pubkeys[index], choice_index);
+                ajax_data.pubkeys[index], data);
 
             var percent = interpolate("width: %s%;",[percent_num]);
             $("#encrypt_progress").attr("style", percent);
@@ -339,6 +329,11 @@
             this.$el.find(".current-screen").append(this.voteCast.render().el);
         }
     });
+
+    Agora.testVote = function(n) {
+        var n_bigint = BigInt.fromInt(n);
+        var encrypted = Agora.encryptAnswer(ajax_data.pubkeys[0], n_bigint);
+    };
 
     Agora.VotingBoothStartScreen = Backbone.View.extend({
         initialize: function() {
@@ -454,6 +449,20 @@
             }
 
             this.nextStep();
+        },
+
+        getEncryptableQuestionData: function(data, index) {
+            /**
+             * Gets the answer in an encoded, encryptable way as a BigInt
+             */
+            var possible_answers = _.pluck(ajax_data.questions[index].answers, "value");
+            var choice_index = possible_answers.indexOf(data);
+            if (choice_index == -1) {
+                // invalid vote is codified as possible_answers.length + 1 (which is invalid)
+                choice_index = possible_answers.length + 1;
+
+            }
+            return BigInt.fromInt(choice_index);
         },
 
         nextStep: function() {
@@ -610,11 +619,39 @@
             }
         },
 
+        getEncryptableQuestionData: function(data, index) {
+            var possible_answers = _.pluck(ajax_data.questions[index].answers, "value");
+            var ret_data = "";
+            var numChars = (possible_answers.length + 2).toString().length;
+            _.each(data, function (element, i, list) {
+                var choice_index = possible_answers.indexOf(element);
+                if (choice_index == -1) {
+                    // invalid vote is codified as possible_answers.length + 1 (which is invalid)
+                    choice_index = possible_answers.length + 1;
+                }
+                ret_data = ret_data + Agora.numberToString(choice_index + 1, numChars);
+            });
+            var ret_int = parseInt(ret_data);
+            return BigInt.fromInt(ret_int);
+        },
+
         nextStep: function() {
             this.votingBooth.nextStep(this.model.get('question_num'));
         }
     });
 
+    /**
+     * Converts a number to a string. For example if number=23 and numCharts=3,
+     * result="023"
+     */
+    Agora.numberToString = function(number, numChars) {
+        var num_str = number.toString(10);
+        var ret = num_str;
+        for(var i = 0; i < numChars - num_str.length; i++) {
+            ret = "0" + ret;
+        }
+        return ret;
+    };
 
     Agora.ReviewQuestionsView = Backbone.View.extend({
         events: {
