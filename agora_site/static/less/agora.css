@@ -5534,6 +5534,9 @@ div.top-form .option-edit:hover {
 #voting_booth .hero-vote {
   padding: 20px;
 }
+.break-word {
+  word-wrap: break-word;
+}
 #voting_booth .vote-auth-forms .btn-large {
   min-width: 190px;
 }
