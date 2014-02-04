@@ -624,13 +624,13 @@ def receive_tally(election_id, tally_data, is_secure, site_id):
                         # so we trim beginning and end, parse the int and
                         # substract one
                         nums_str = line[1:-2]
-                        num_str = str(int(num_str) - 1) # because crypto adds +1
+                        nums_str = str(int(nums_str) - 1) # because crypto adds +1
                         num_zeros = len(nums_str) % numChars
                         nums_str = "0"*num_zeros + nums_str
                         voter_answers[i]['choices'] = []
 
-                        for i in xrange(0, len(num_str)/numChars):
-                            num_str = nums_str[i*numChars:i*numChars + numChars]
+                        for j in xrange(0, len(nums_str)/numChars):
+                            num_str = nums_str[j*numChars:j*numChars + numChars]
                             option_index = int(num_str) - 1 # because we added +1
                             if option_index < len(question['answers']):
                                 option_str = question['answers'][option_index]['value']
