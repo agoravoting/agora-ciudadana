@@ -18,7 +18,7 @@
         return RFC822.test(v);
     }
 
-    Agora.encryptAnswer = function(pk_json, encoded_answer) {
+    Agora.encryptAnswer = function(pk_json, encoded_answer, randomness) {
         /**
          * Here we not only just encrypt the answer but also provide a
          * verifiable Proof of Knowledge (PoK) of the plaintext, using the
@@ -29,7 +29,11 @@
         var pk = ElGamal.PublicKey.fromJSONObject(pk_json);
         var plaintext = new
         ElGamal.Plaintext(encoded_answer, pk, true);
-        var randomness = Random.getRandomInteger(pk.q);
+        if (!randomness) {
+          randomness = Random.getRandomInteger(pk.q);
+        } else {
+          randomness = BigInt.fromJSONObject(randomness);
+        }
         var ctext = ElGamal.encrypt(pk, plaintext, randomness);
         var proof = plaintext.proveKnowledge(ctext.alpha, randomness, ElGamal.fiatshamir_dlog_challenge_generator);
         var ciphertext =  ctext.toJSONObject();
@@ -42,8 +46,8 @@
             challenge: json_proof.challenge
         };
 
-        var verified = ctext.verifyPlaintextProof(proof, ElGamal.fiatshamir_dlog_challenge_generator);
-        console.log("is proof verified = " + new Boolean(verified).toString());
+//         var verified = ctext.verifyPlaintextProof(proof, ElGamal.fiatshamir_dlog_challenge_generator);
+//         console.log("is proof verified = " + new Boolean(verified).toString());
         return enc_answer;
     }
 
@@ -329,11 +333,6 @@
             this.$el.find(".current-screen").append(this.voteCast.render().el);
         }
     });
-
-    Agora.testVote = function(n) {
-        var n_bigint = BigInt.fromInt(n);
-        var encrypted = Agora.encryptAnswer(ajax_data.pubkeys[0], n_bigint);
-    };
 
     Agora.VotingBoothStartScreen = Backbone.View.extend({
         initialize: function() {
