@@ -112,7 +112,7 @@ def base_question_check(question):
                 raise error
 
             if not isinstance(answer['urls'], list) or\
-                    len(answer['urls']) > 3:
+                    len(answer['urls']) > 10:
                 raise error
 
             for url in answer['urls']:
@@ -121,7 +121,7 @@ def base_question_check(question):
                 for key, value in url.items():
                     if key not in ['title', 'url']:
                         raise error
-                    if not isinstance(value, basestring):
+                    if not isinstance(value, basestring) or len(value) > 500:
                         raise error
 
 
