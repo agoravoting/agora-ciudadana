@@ -128,7 +128,9 @@
 
         render: function() {
             // render template
-            this.$el.html(this.template(this.model.toJSON()));
+            var data = this.model.toJSON();
+            data.DEFAULT_FROM_EMAIL = DEFAULT_FROM_EMAIL;
+            this.$el.html(this.template(data));
 
             // create start view
             this.startScreenView = new Agora.VotingBoothStartScreen({model: this.model});
@@ -674,9 +676,17 @@
 
             // user cannot vote secretly
             var is_fake = $("#vote_fake").data("fakeit") == "yes-please";
-            if (!is_fake && !has_to_authenticate &&
+
+            if (ajax_data.agora.delegation_policy == "DISALLOW_DELEGATION" &&
+                this.model.get('security_policy') != 'PUBLIC_VOTING')
+            {
+                this.$el.find("#user_vote_is_public").parent().hide();
+                this.$el.find("#why_id").hide();
+            }
+             else if (!is_fake && !has_to_authenticate &&
                     (this.model.get('user_perms').indexOf('vote_counts') == -1 ||
-                    this.model.get('security_policy') == 'PUBLIC_VOTING')) {
+                    this.model.get('security_policy') == 'PUBLIC_VOTING'))
+            {
                 this.$el.find("#user_vote_is_public").attr('checked', 'checked');
                 this.$el.find("#user_vote_is_public").attr('disabled', true);
                 this.$el.find("#user_vote_is_public").hide();

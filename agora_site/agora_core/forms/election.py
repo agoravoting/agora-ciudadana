@@ -135,7 +135,7 @@ class VoteForm(django_forms.ModelForm):
             }
             i = 0
             for question in self.election.questions:
-                q_answer =self.cleaned_data['question%d' % i]
+                q_answer =self.data['question%d' % i]
                 data["proofs"].append(dict(
                     commitment=q_answer['commitment'],
                     response=q_answer['response'],

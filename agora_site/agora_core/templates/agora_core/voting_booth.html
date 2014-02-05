@@ -24,7 +24,7 @@
                     <div class="modal-header">
                         <h3>
                             <%= gettext("Agora Voting Booth") %>
-                            <a href="mailto:agora-ciudadana-devel@googlegroups.com" class="text-right help_link pull-right" target="_blank"><%= gettext("Help!") %></a>
+                            <a href="mailto:<%- DEFAULT_FROM_EMAIL %>" class="text-right help_link pull-right" target="_blank"><%= gettext("Help!") %></a>
                         </h3>
                     </div>
                     <div class="current-screen">
@@ -479,6 +479,7 @@
 
         var has_to_authenticate = {% if has_to_authenticate %}true{% else %}false{% endif %};
         var AGORA_FNMT_BASE_URL = "{{AGORA_FNMT_BASE_URL}}";
+        var DEFAULT_FROM_EMAIL = "{{DEFAULT_FROM_EMAIL}}";
         app.currentView = new Agora.VotingBooth();
     </script>
 </body>
