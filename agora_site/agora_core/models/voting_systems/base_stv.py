@@ -7,7 +7,8 @@ from django import forms as django_forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-from .base import BaseVotingSystem, BaseTally
+from .base import BaseVotingSystem, BaseTally, base_question_check
+
 from agora_site.misc.utils import *
 
 class BaseSTV(BaseVotingSystem):
@@ -53,6 +54,7 @@ class BaseSTV(BaseVotingSystem):
         Validates the value of a given question in an election
         '''
         error = django_forms.ValidationError(_('Invalid questions format'))
+        base_question_check(question)
 
         if question['question'].strip() != clean_html(question['question'], True):
             raise error
@@ -62,50 +64,15 @@ class BaseSTV(BaseVotingSystem):
             question['num_seats'] < 1:
             raise error
 
-        if question['a'] != 'ballot/question' or\
-            not isinstance(question['min'], int) or question['min'] < 0 or\
-            not isinstance(question['max'], int) or question['max'] < 1 or\
-            question['min'] > question['max'] or\
-            not isinstance(question['randomize_answer_order'], bool):
+        if question['max'] < 1 :
             raise error
 
-        # check there are at least 2 possible answers
+        # check there num answers
         if not isinstance(question['answers'], list) or\
             len(question['answers']) < 2 or\
             len(question['answers']) < question['num_seats'] or\
-            len(question['answers']) > 100:
+            len(question['answers']) > 300:
             raise error
-
-        # check each answer
-        answer_values = []
-        for answer in question['answers']:
-            if not isinstance(answer, dict):
-                raise error
-
-            # check it contains the valid elements
-            if not list_contains_all(['a', 'value', 'url', 'details'],
-                answer.keys()):
-                raise error
-
-            for el in ['a', 'value', 'url', 'details']:
-                if not (isinstance(answer[el], unicode) or\
-                    isinstance(answer[el], str)) or\
-                    len(answer[el]) > 500:
-                    raise error
-
-            if answer['a'] != 'ballot/answer' or\
-                not (
-                    isinstance(answer['value'], unicode) or\
-                    isinstance(answer['value'], str)
-                ) or len(answer['value']) < 1:
-                raise error
-
-            if answer['value'] in answer_values:
-                raise error
-
-            if answer['value'].strip() != clean_html(answer['value'], True).replace("\n", ""):
-                raise error
-            answer_values.append(answer['value'])
 
 
 class BaseSTVField(JSONFormField):

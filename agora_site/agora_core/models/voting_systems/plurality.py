@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from .base import BaseVotingSystem, BaseTally
 from agora_site.misc.utils import *
 from agora_site.agora_core.models.voting_systems.base import (
-    parse_voting_methods, get_voting_system_by_id)
+    parse_voting_methods, get_voting_system_by_id, base_question_check)
 
 class Plurality(BaseVotingSystem):
     '''
@@ -50,47 +50,10 @@ class Plurality(BaseVotingSystem):
         Validates the value of a given question in an election
         '''
         error = django_forms.ValidationError(_('Invalid questions format'))
+        base_question_check(question)
 
-        if question['question'].strip() != clean_html(question['question'], True):
+        if question['min'] > 1 or question['max'] != 1:
             raise error
-
-        if question['a'] != 'ballot/question' or\
-            not isinstance(question['min'], int) or question['min'] < 0 or\
-            question['min'] > 1 or\
-            not isinstance(question['max'], int) or question['max'] != 1 or\
-            not isinstance(question['randomize_answer_order'], bool):
-            raise error
-
-        # check there are at least 2 possible answers
-        if not isinstance(question['answers'], list) or\
-            len(question['answers']) < 2:
-            raise error
-
-        # check each answer
-        for answer in question['answers']:
-            if not isinstance(answer, dict):
-                raise error
-
-            # check it contains the valid elements
-            if not list_contains_all(['a', 'value', 'url', 'details'],
-                answer.keys()):
-                raise error
-
-            for el in ['a', 'value', 'url', 'details']:
-                if not (isinstance(answer[el], unicode) or\
-                    isinstance(answer[el], str)) or\
-                    len(answer[el]) > 500:
-                    raise error
-
-            if answer['a'] != 'ballot/answer' or\
-                not (
-                    isinstance(answer['value'], unicode) or\
-                    isinstance(answer['value'], str)
-                ) or len(answer['value']) < 1:
-                raise error
-
-            if answer['value'].strip() != clean_html(answer['value'], True).replace("\n", ""):
-                raise error
 
 
 class PluralityField(django_forms.ChoiceField):

@@ -260,9 +260,14 @@ class Election(models.Model):
             #"answers": [
                 #{
                     #"a": "ballot/answer",
-                    #"value": "Alice",
-                    #"url": "<http://alice.com>", # UNUSED ATM
-                    #"details": "Alice is a wonderful person who..." # UNUSED ATM
+                    #"value": "Alice", # this is the only required option
+                    #"media_url": "<http://alice.com>", # image or video
+                    #"details_title": "Presentacion y motivaciones"
+                    #"links": [
+                        #{"title": "@alice", "url": "http://twitter.com/alice"},
+                        #{"title": "Blog", "url": "http://alice.com"}
+                    #]
+                    #"details": "Alice is a wonderful person who..."
                 #},
                 #...
             #],
@@ -271,6 +276,7 @@ class Election(models.Model):
             #"randomize_answer_order": false, # true by default
             #"short_name": "President", # UNSED ATM
             #"tally_type": "ONE_CHOICE"
+            #"layout": "SIMPLE" # or PRIMARY
         #},
         #...
     #]

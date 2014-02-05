@@ -256,7 +256,7 @@ def election_questions_validator(questions):
 
         # check it contains the valid elements
         if not list_contains_all(['a', 'answers', 'max', 'min', 'question',
-            'randomize_answer_order', 'tally_type'], question.keys()):
+            'randomize_answer_order', 'tally_type', 'layout'], question.keys()):
             raise error
 
         # let the voting system check the rest

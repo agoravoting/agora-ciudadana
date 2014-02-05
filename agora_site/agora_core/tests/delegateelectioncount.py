@@ -24,6 +24,7 @@ class DelegateElectionCountTest(RootTestCase):
             {
                 'a': 'ballot/question',
                 'tally_type': 'ONE_CHOICE',
+                'layout': 'SIMPLE',
                 'max': 1,
                 'min': 0,
                 'question': 'Do you prefer foo or bar?',
@@ -31,13 +32,11 @@ class DelegateElectionCountTest(RootTestCase):
                 'answers': [
                     {
                         'a': 'ballot/answer',
-                        'url': '',
                         'details': '',
                         'value': 'fo\"o'
                     },
                     {
                         'a': 'ballot/answer',
-                        'url': '',
                         'details': '',
                         'value': 'bar'
                     }
@@ -58,7 +57,6 @@ class DelegateElectionCountTest(RootTestCase):
         orig_data['questions'][0]['answers'][1]['value'] = "bar"
         orig_data['questions'][0]['answers'].append({
             'a': 'ballot/answer',
-            'url': '',
             'details': '',
             'value': 'none'
         })
@@ -163,12 +161,12 @@ class DelegateElectionCountTest(RootTestCase):
                     'min':0,
                     'max':1,
                     'tally_type':'ONE_CHOICE',
+                    'layout': 'SIMPLE',
                     'question':'Do you prefer foo or bar?',
                     'answers':[
                         {
                         'a':'answer/result/ONE_CHOICE',
                         'by_delegation_count':2,
-                        'url':u'',
                         'total_count':3,
                         'by_direct_vote_count':1,
                         'value':'foo',
@@ -178,7 +176,6 @@ class DelegateElectionCountTest(RootTestCase):
                         {
                         'a':'answer/result/ONE_CHOICE',
                         'by_delegation_count':0,
-                        'url':u'',
                         'total_count':2,
                         'by_direct_vote_count':2,
                         'value':'bar',
@@ -188,7 +185,6 @@ class DelegateElectionCountTest(RootTestCase):
                         {
                         'a':'answer/result/ONE_CHOICE',
                         'by_delegation_count':0,
-                        'url':u'',
                         'total_count':0,
                         'by_direct_vote_count':0,
                         'value':'none',

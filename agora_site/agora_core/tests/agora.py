@@ -20,6 +20,7 @@ class AgoraTest(RootTestCase):
         'questions': [
             {
                 'a': 'ballot/question',
+                'layout': 'SIMPLE',
                 'tally_type': 'ONE_CHOICE',
                 'max': 1,
                 'min': 0,
@@ -28,13 +29,11 @@ class AgoraTest(RootTestCase):
                 'answers': [
                     {
                         'a': 'ballot/answer',
-                        'url': '',
                         'details': '',
                         'value': 'fo\"o'
                     },
                     {
                         'a': 'ballot/answer',
-                        'url': '',
                         'details': '',
                         'value': 'bar'
                     }
@@ -132,13 +131,13 @@ class AgoraTest(RootTestCase):
         delegated_vote_id = data['id']
 
         data = self.getAndParse('action/agora/1/')
-        self.assertEqual(len(data['objects']), 3)
+        self.assertEqual(len(data['objects']), 2)
         action0_id = data['objects'][0]['id']
         action1_id = data['objects'][1]['id']
 
         # election has two actions
         data = self.getAndParse('action/election/%d/' % election_id)
-        self.assertEqual(len(data['objects']), 3)
+        self.assertEqual(len(data['objects']), 2)
         action2_id = data['objects'][0]['id']
         action3_id = data['objects'][1]['id']
 

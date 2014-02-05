@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.utils.importlib import import_module
+from django import forms as django_forms
+from agora_site.misc.utils import *
 
 def get_voting_system_classes():
     '''
@@ -34,6 +36,94 @@ def get_voting_system_by_id(name):
         if klass.get_id() == name:
             return klass
     return None
+
+def base_question_check(question):
+    '''
+    Validates the value of a given question in an election
+    '''
+    error = django_forms.ValidationError(_('Invalid questions format'))
+
+    if question['question'].strip() != clean_html(question['question'], True):
+        raise error
+
+    if question['a'] != 'ballot/question' or\
+        not isinstance(question['min'], int) or question['min'] < 0 or\
+        not isinstance(question['max'], int) or\
+        question['max'] < question['min'] or\
+        not isinstance(question['randomize_answer_order'], bool):
+        raise error
+
+    # check there are at least 2 possible answers
+    if not isinstance(question['answers'], list) or\
+        len(question['answers']) < 2:
+        raise error
+
+    if not isinstance(question['layout'], basestring) or\
+        question['layout'] not in ['SIMPLE', 'PRIMARY']:
+        raise error
+
+    # check each answer
+    answer_values = []
+    for answer in question['answers']:
+        if not isinstance(answer, dict):
+            raise error
+
+        if answer['value'] in answer_values:
+            raise error
+        answer_values.append(answer['value'])
+
+        # check it contains the valid elements
+        if not list_contains_all(['a', 'value'], answer.keys()):
+            raise error
+
+        for key in answer.keys():
+            if key not in ['a', 'value', 'media_url', 'urls', 'details',
+                           'details_title']:
+                raise error
+
+        for el in ['a', 'value']:
+            if not isinstance(answer[el], basestring) or\
+                len(answer[el]) > 500:
+                raise error
+
+        if answer['a'] != 'ballot/answer' or\
+                not isinstance(answer['value'], basestring) or\
+                len(answer['value']) < 1:
+            raise error
+
+        if answer['value'].strip() != clean_html(answer['value'], True).replace("\n", ""):
+            raise error
+
+        if question['layout'] == 'PRIMARY':
+            if not list_contains_all(['media_url', 'urls', 'details',
+                    'details_title'], answer.keys()):
+                raise error
+
+            if not isinstance(answer['media_url'], basestring) or\
+                    len(answer['details_title']) > 500:
+                raise error
+
+            if not isinstance(answer['details_title'], basestring) or\
+                    len(answer['details_title']) > 500:
+                raise error
+
+            if not isinstance(answer['details'], basestring) or\
+                    len(answer['details']) > 5000:
+                raise error
+
+            if not isinstance(answer['urls'], list) or\
+                    len(answer['urls']) > 3:
+                raise error
+
+            for url in answer['urls']:
+                if not isinstance(url, dict):
+                    raise error
+                for key, value in url.items():
+                    if key not in ['title', 'url']:
+                        raise error
+                    if not isinstance(value, basestring):
+                        raise error
+
 
 class BaseVotingSystem(object):
     '''

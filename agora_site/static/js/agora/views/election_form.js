@@ -17,6 +17,7 @@
         defaults: {
             'a': 'ballot/question',
             'tally_type': 'ONE_CHOICE',
+            'layout': 'SIMPLE',
             'question_num': 0,
             'max': 1,
             'min': 0,

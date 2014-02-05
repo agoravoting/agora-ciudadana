@@ -24,6 +24,7 @@ class ElectionTest(RootTestCase):
         'questions': [
             {
                 'a': 'ballot/question',
+                'layout': 'SIMPLE',
                 'tally_type': 'ONE_CHOICE',
                 'max': 1,
                 'min': 0,
@@ -32,13 +33,11 @@ class ElectionTest(RootTestCase):
                 'answers': [
                     {
                         'a': 'ballot/answer',
-                        'url': '',
                         'details': '',
                         'value': 'fo\"o'
                     },
                     {
                         'a': 'ballot/answer',
-                        'url': '',
                         'details': '',
                         'value': 'bar'
                     }
@@ -127,6 +126,70 @@ class ElectionTest(RootTestCase):
             textile(orig_data['comment']).strip())
 
 
+    def test_creeate_primary_election(self):
+        self.login('user1', '123')
+        election_data = {
+            'action': "create_election",
+            'pretty_name': "foo bar",
+            'description': "foo bar foo bar",
+            'questions': [
+                {
+                    'a': 'ballot/question',
+                    'layout': 'PRIMARY',
+                    'tally_type': 'ONE_CHOICE',
+                    'max': 1,
+                    'min': 0,
+                    'question': 'Do you prefer foo or bar?',
+                    'randomize_answer_order': True,
+                    'answers': [
+                        {
+                            'a': 'ballot/answer',
+                            'value': 'foo',
+                            'details': 'hola caracola\n\nesto es la leche',
+                            'details_title': 'Presentacion',
+                            'media_url': 'https://example.com/aa.jpeg',
+                            'urls': [
+                                {
+                                    'title': '@example',
+                                    'url': 'https://twitter.com/example',
+                                },
+                                {
+                                    'title': 'blog',
+                                    'url': 'http://blog.example.com/',
+                                }
+                            ],
+                        },
+                        {
+                            'a': 'ballot/answer',
+                            'value': 'bar',
+                            'details': 'hola caracola\n\nesto es la leche 2',
+                            'details_title': 'Presentacion',
+                            'media_url': 'https://example.com/aa2.jpeg',
+                            'urls': [
+                                {
+                                    'title': '@example2',
+                                    'url': 'https://twitter.com/example2',
+                                },
+                                {
+                                    'title': 'blog',
+                                    'url': 'http://blog2.example.com/',
+                                }
+                            ],
+                        }
+                    ]
+                }
+            ],
+            'security_policy': 'ALLOW_SECRET_VOTING',
+            'release_tally_automatically': True,
+            'from_date': '',
+            'to_date': '',
+        }
+        # user1 creates an election, but remains in requested status
+        data = self.postAndParse('agora/1/action/', data=election_data,
+            code=HTTP_OK, content_type='application/json')
+        election_id = data['id']
+        self.assertEquals(data['pretty_name'], self.base_election_data['pretty_name'])
+
     def test_change_election(self):
         self.login('user1', '123')
         # user1 creates an election, but remains in requested status
@@ -151,7 +214,6 @@ class ElectionTest(RootTestCase):
         orig_data['questions'][0]['answers'][1]['value'] = "two"
         orig_data['questions'][0]['answers'].append({
             'a': 'ballot/answer',
-            'url': '',
             'details': '',
             'value': 'three'
         })
@@ -446,7 +508,6 @@ class ElectionTest(RootTestCase):
         orig_data['questions'][0]['answers'][1]['value'] = "bar"
         orig_data['questions'][0]['answers'].append({
             'a': 'ballot/answer',
-            'url': '',
             'details': '',
             'value': 'none'
         })
@@ -548,6 +609,7 @@ class ElectionTest(RootTestCase):
                 {
                     'a':'question/result/ONE_CHOICE',
                     'winners': ['foo'],
+                    'layout': 'SIMPLE',
                     'min':0,
                     'max':1,
                     'tally_type':'ONE_CHOICE',
@@ -556,7 +618,6 @@ class ElectionTest(RootTestCase):
                         {
                         'a':'answer/result/ONE_CHOICE',
                         'by_delegation_count':2,
-                        'url':u'',
                         'total_count':3,
                         'by_direct_vote_count':1,
                         'value':'foo',
@@ -566,7 +627,6 @@ class ElectionTest(RootTestCase):
                         {
                         'a':'answer/result/ONE_CHOICE',
                         'by_delegation_count':0,
-                        'url':u'',
                         'total_count':2,
                         'by_direct_vote_count':2,
                         'value':'bar',
@@ -576,7 +636,6 @@ class ElectionTest(RootTestCase):
                         {
                         'a':'answer/result/ONE_CHOICE',
                         'by_delegation_count':0,
-                        'url':u'',
                         'total_count':0,
                         'by_direct_vote_count':0,
                         'value':'none',
@@ -632,7 +691,6 @@ class ElectionTest(RootTestCase):
         orig_data['questions'][0]['answers'][1]['value'] = "bar"
         orig_data['questions'][0]['answers'].append({
             'a': 'ballot/answer',
-            'url': '',
             'details': '',
             'value': 'none'
         })
@@ -731,6 +789,7 @@ class ElectionTest(RootTestCase):
             'counts':[
                 {
                     'a':'question/result/ONE_CHOICE',
+                    'layout': 'SIMPLE',
                     'winners': ['foo'],
                     'min':0,
                     'max':1,
@@ -740,7 +799,6 @@ class ElectionTest(RootTestCase):
                         {
                         'a':'answer/result/ONE_CHOICE',
                         'by_delegation_count':1,
-                        'url':u'',
                         'total_count':3,
                         'by_direct_vote_count':2,
                         'value':'foo',
@@ -750,7 +808,6 @@ class ElectionTest(RootTestCase):
                         {
                         'a':'answer/result/ONE_CHOICE',
                         'by_delegation_count':0,
-                        'url':u'',
                         'total_count':2,
                         'by_direct_vote_count':2,
                         'value':'bar',
@@ -760,7 +817,6 @@ class ElectionTest(RootTestCase):
                         {
                         'a':'answer/result/ONE_CHOICE',
                         'by_delegation_count':0,
-                        'url':u'',
                         'total_count':0,
                         'by_direct_vote_count':0,
                         'value':'none',
@@ -909,6 +965,7 @@ class ElectionTest(RootTestCase):
             'questions': [
                 {
                     'a': 'ballot/question',
+                    'layout': 'SIMPLE',
                     'tally_type': 'MEEK-STV',
                     'max': 2,
                     'min': 2,
@@ -918,25 +975,21 @@ class ElectionTest(RootTestCase):
                     'answers': [
                         {
                             'a': 'ballot/answer',
-                            'url': '',
                             'details': '',
                             'value': 'Florentino'
                         },
                         {
                             'a': 'ballot/answer',
-                            'url': '',
                             'details': '',
                             'value': 'Jack'
                         },
                         {
                             'a': 'ballot/answer',
-                            'url': '',
                             'details': '',
                             'value': 'Marie'
                         },
                         {
                             'a': 'ballot/answer',
-                            'url': '',
                             'details': '',
                             'value': 'Jijoe'
                         },
@@ -1346,6 +1399,7 @@ class ElectionTest(RootTestCase):
             'questions': [
                 {
                     'a': 'ballot/question',
+                    'layout': 'SIMPLE',
                     'tally_type': 'MEEK-STV',
                     'max': 3,
                     'min': 0,
@@ -1355,19 +1409,16 @@ class ElectionTest(RootTestCase):
                     'answers': [
                         {
                             'a': 'ballot/answer',
-                            'url': '',
                             'details': '',
                             'value': u'Florentino de los Jagüeños jórl!'
                         },
                         {
                             'a': 'ballot/answer',
-                            'url': '',
                             'details': '',
                             'value': 'Jack'
                         },
                         {
                             'a': 'ballot/answer',
-                            'url': '',
                             'details': '',
                             'value': 'Marie'
                         }
@@ -1434,6 +1485,7 @@ class ElectionTest(RootTestCase):
             'counts':[
                 {
                     'a':'question/result/MEEK-STV',
+                    'layout': 'SIMPLE',
                     'min':0,
                     'max':3,
                     'tally_type':'MEEK-STV',
@@ -1441,7 +1493,6 @@ class ElectionTest(RootTestCase):
                     'answers':[
                     {
                         'a':'answer/result/MEEK-STV',
-                        'url':u'',
                         'total_count':0,
                         'value':u'Florentino de los Jagüeños jórl!',
                         'elected':True,
@@ -1451,7 +1502,6 @@ class ElectionTest(RootTestCase):
                     },
                     {
                         'a':'answer/result/MEEK-STV',
-                        'url':u'',
                         'total_count':0,
                         'value':'Jack',
                         'elected':True,
@@ -1461,7 +1511,6 @@ class ElectionTest(RootTestCase):
                     },
                     {
                         'a':'answer/result/MEEK-STV',
-                        'url':u'',
                         'total_count':0,
                         'value':'Marie',
                         'elected':False,
@@ -1551,7 +1600,6 @@ class ElectionTest(RootTestCase):
         orig_data['questions'][0]['answers'][1]['value'] = "bar"
         orig_data['questions'][0]['answers'].append({
             'a': 'ballot/answer',
-            'url': '',
             'details': '',
             'value': 'none'
         })
@@ -1643,6 +1691,7 @@ class ElectionTest(RootTestCase):
             'counts':[
                 {
                     'a':'question/result/ONE_CHOICE',
+                    'layout': 'SIMPLE',
                     'winners': ['bar'],
                     'min':0,
                     'max':1,
@@ -1652,7 +1701,6 @@ class ElectionTest(RootTestCase):
                         {
                         'a':'answer/result/ONE_CHOICE',
                         'by_delegation_count':0,
-                        'url':u'',
                         'total_count':1,
                         'by_direct_vote_count':1,
                         'value':'foo',
@@ -1662,7 +1710,6 @@ class ElectionTest(RootTestCase):
                         {
                         'a':'answer/result/ONE_CHOICE',
                         'by_delegation_count':1,
-                        'url':u'',
                         'total_count':3,
                         'by_direct_vote_count':2,
                         'value':'bar',
@@ -1672,7 +1719,6 @@ class ElectionTest(RootTestCase):
                         {
                         'a':'answer/result/ONE_CHOICE',
                         'by_delegation_count':0,
-                        'url':u'',
                         'total_count':0,
                         'by_direct_vote_count':0,
                         'value':'none',

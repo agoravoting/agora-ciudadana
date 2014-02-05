@@ -62,8 +62,8 @@ class UserTest(RootTestCase):
         self.assertEqual(data['username'], 'david')
 
         # change username
-        input_data = {'username': 'davido'}
-        self.putAndParse('user/settings/', data=input_data, code=HTTP_OK)
+        data['username'] = 'davido'
+        self.putAndParse('user/settings/', data=data, code=HTTP_OK)
         data = self.getAndParse('user/settings/')
         self.assertEqual(data['username'], 'davido')
 
