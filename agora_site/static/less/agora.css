@@ -5532,7 +5532,10 @@ div.top-form .option-edit:hover {
   border-radius: 4px;
 }
 #voting_booth .hero-vote {
-  padding: 20px;
+  padding: 20px 20px 10px 20px;
+}
+#voting_booth .hero-vote.question {
+  padding-top: 0;
 }
 .break-word {
   word-wrap: break-word;
@@ -5578,10 +5581,10 @@ div.top-form .option-edit:hover {
   transition: none;
 }
 #voting_booth .hero-vote h1 {
-  font-size: 50px;
-  line-height: 50px;
-  padding: 20px;
+  font-size: 40px;
+  line-height: 40px;
   letter-spacing: -1px;
+  margin-bottom: 5px;
 }
 .hero-vote p,
 .hero-vote li {
@@ -5703,6 +5706,101 @@ div.top-form .option-edit:hover {
 #voting_booth .ranked-form .sidenav {
   width: 400px;
   margin: 10px 0 20px 14px;
+}
+#voting_booth .ranked-form .user-choices .sidenav {
+  margin-top: 24px;
+}
+#voting_booth .ranked-form .available-choices.primary > p {
+  margin-left: 0;
+}
+#voting_booth #filter-options {
+  margin-left: 2%;
+  width: 98%;
+}
+#voting_booth ul.primary-options {
+  max-height: 300px;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0 0 10px;
+}
+#voting_booth ul.primary-options li {
+  display: block;
+  clear: both;
+}
+#voting_booth ul.primary-options li.active a.choose-option {
+  background: #0088CC;
+  color: white !important;
+}
+#voting_booth ul.primary-options li.active a.choose-option img {
+  background-color: #0088CC;
+  color: white  !important;
+}
+#voting_booth ul.primary-options li.active a.choose-option:hover {
+  background-color: #DA4F49 !important;
+}
+#voting_booth ul.primary-options li.active a.choose-option:hover img {
+  background-color: #DA4F49 !important;
+}
+#voting_booth ul.primary-options li .option-image {
+  width: 45%;
+  display: inline-block;
+  float: left;
+}
+#voting_booth ul.primary-options li .option-image a {
+  display: block;
+  padding: 5px;
+  border-radius: 6px;
+  min-height: 150px;
+  width: 153px;
+  background-color: #fcfcfc;
+  text-align: center;
+}
+#voting_booth ul.primary-options li .option-image a:hover {
+  background: #0088CC;
+}
+#voting_booth ul.primary-options li .option-image a:hover img {
+  background-color: #0088CC;
+  color: white;
+}
+#voting_booth ul.primary-options li .option-image a img {
+  text-align: center;
+  color: black;
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 6px;
+}
+#voting_booth ul.primary-options li .option-details {
+  width: 52%;
+  display: inline-block;
+  float: left;
+}
+#voting_booth ul.primary-options li .option-details a.choose-option {
+  width: 100%;
+  display: block;
+  color: black;
+  font-weight: bold;
+  margin-bottom: 6px;
+  padding: 5px;
+  border-radius: 6px;
+}
+#voting_booth ul.primary-options li .option-details a.choose-option .icon-white {
+  margin-top: 5px;
+}
+#voting_booth ul.primary-options li .option-details a.choose-option:hover {
+  text-decoration: none;
+  background: #0088CC;
+  color: #fcfcfc;
+}
+#voting_booth ul.primary-options li .option-details a.option-link {
+  width: 100%;
+  display: block;
+  color: #9B045A;
+  margin-bottom: 5px;
+}
+#voting_booth ul.primary-options li .option-details a.option-tail-link {
+  width: 100%;
+  display: block;
+  font-size: 11pt;
 }
 .ranked-form .sidenav {
   background-color: #FFFFFF;

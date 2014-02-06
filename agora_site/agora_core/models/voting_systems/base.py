@@ -111,6 +111,9 @@ def base_question_check(question):
                     len(answer['details']) > 5000:
                 raise error
 
+            if answer['details'].strip() != clean_html(answer['details'], False).replace("\n", "").strip():
+                raise error
+
             if not isinstance(answer['urls'], list) or\
                     len(answer['urls']) > 10:
                 raise error

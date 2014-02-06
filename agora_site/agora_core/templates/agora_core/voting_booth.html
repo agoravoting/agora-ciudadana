@@ -15,6 +15,7 @@
 <body data-userid="{{ user.pk }}" data-lang="{{ LANGUAGE_CODE }}" class="voting-booth-body">
 
 
+    <div id="modaldialogdiv"></div>
     <div id="voting_booth"></div>
 
     <script id="template-voting_booth" type="text/underscore-template">
@@ -209,6 +210,16 @@
         </div>
     </script>
 
+    <script id="template-show_option_details_body" type="text/underscore-template">
+        <h4><%- gettext("Presentación y motivos") %></h4>
+        <p>
+            <img src="<%- media_url %>" alt="<%- value %>" />
+        </p>
+        <p>
+            <%= details %>
+        </p>
+    </script>
+
     <script id="template-voting_booth_question_ranked_primary" type="text/underscore-template">
         <div class="modal-header hero-vote">
             <div class="text-center">
@@ -242,7 +253,7 @@
             </div>
             </small>
             <div class="row-fluid ranked-form">
-                <div class="span6 available-choices">
+                <div class="span6 available-choices primary">
                     <p>
                     <strong><%= gettext("Available choices") %>:</strong>
                     <%= gettext("Click to add/remove to your ballot") %></p>
@@ -251,8 +262,8 @@
                         <% for (var i = 0; i < answers.length; i++) { %>
                         <li data-value="<%- answers[i].value %>">
                             <div class="option-image">
-                                <a href="#" class="choose-option">
-                                    <img src="<%- answers[i].media_url %>" class="img-rounded" alt="<%- interpolate(gettext("%s photo"), [answers[i].value]) %>"/>
+                                <a href="#" class="choose-option" alt="<%- answers[i].value %>">
+                                    <img src="<%- answers[i].media_url %>" class="img-rounded" alt="<%- answers[i].value %>"/>
                                 </a>
                             </div>
                             <div class="option-details">
@@ -533,6 +544,8 @@
             </div>
         </div>
     </script>
+
+    {% include "agora_core/client/modal_dialog.html" %}
 
     <script type="text/javascript" src="{% url 'jsgettext' %}?language={{ LANGUAGE_CODE }}"></script>
     <!--[if lte IE 8]><script src="{% static 'js/min/main.compat.min.js' %}"></script><![endif]-->

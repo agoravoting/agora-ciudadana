@@ -1701,7 +1701,11 @@ div.top-form .option-edit:hover {
 }
 
 #voting_booth .hero-vote {
-    padding: 20px;
+    padding: 20px 20px 10px 20px;
+
+    &.question {
+        padding-top: 0;
+    }
 }
 
 .break-word {
@@ -1762,6 +1766,7 @@ div.top-form .option-edit:hover {
     font-size: 40px;
     line-height: 40px;
     letter-spacing: -1px;
+    margin-bottom: 5px;
 }
 
 .hero-vote p, .hero-vote li {
@@ -1920,7 +1925,16 @@ div.top-form .option-edit:hover {
 }
 
 #voting_booth .ranked-form .user-choices .sidenav {
-    margin-top: 28px;
+    margin-top: 24px;
+}
+
+#voting_booth .ranked-form .available-choices.primary > p {
+    margin-left: 0;
+}
+
+#voting_booth #filter-options {
+    margin-left: 2%;
+    width: 98%;
 }
 
 #voting_booth ul.primary-options {
@@ -1929,9 +1943,29 @@ div.top-form .option-edit:hover {
     list-style: none;
     margin: 0 0 10px;
 
+
+
     li {
         display: block;
         clear: both;
+
+        &.active a.choose-option {
+            background: #0088CC;
+            color: white !important;
+
+            img {
+                background-color: #0088CC;
+                color: white  !important;
+            }
+
+            &:hover {
+                background-color: #DA4F49 !important;
+
+                img {
+                    background-color: #DA4F49 !important;
+                }
+            }
+        }
 
         .option-image {
             width: 45%;
@@ -1944,11 +1978,16 @@ div.top-form .option-edit:hover {
                 border-radius: 6px;
                 min-height: 150px;
                 width: 153px;
+                background-color: #fcfcfc;
                 text-align: center;
 
                 &:hover {
                     background: #0088CC;
-                    color: #fcfcfc;
+
+                    img {
+                        background-color: #0088CC;
+                        color: white;
+                    }
                 }
 
                 img {

@@ -164,10 +164,10 @@
             if (voting_system == "ONE_CHOICE") {
                 return new Agora.VotePluralityQuestion({model: model, votingBooth: this});
             } else if (voting_system == "MEEK-STV") {
-                if (layout == "SIMPLE") {
-                    return new Agora.VoteRankedQuestion({model: model, votingBooth: this});
-                } else if (layout = "PRIMARY") {
+                if (layout == "PRIMARY") {
                     return new Agora.VotePrimaryRankedQuestion({model: model, votingBooth: this});
+                } else { // simple
+                    return new Agora.VoteRankedQuestion({model: model, votingBooth: this});
                 }
             }
         },
@@ -657,6 +657,7 @@
             this.template = _.template($("#template-voting_booth_question_ranked_primary").html());
             this.templateChoice = _.template($("#template-voting_booth_question_ranked_choice").html());
             this.votingBooth = this.options.votingBooth;
+            app.modalDialog = new Agora.ModalDialogView();
 
             return this.$el;
         },
@@ -703,6 +704,30 @@
                 clearTimeout($.data(this, 'timer'));
                 var wait = setTimeout(self.filterOptions, 500);
                 $(this).data('timer', wait);
+            });
+
+            // show details pop up
+            $('a.option-link').click(function(e) {
+                e.preventDefault();
+                var liEl = $(e.target).closest('li');
+                var value = liEl.data('value');
+
+                // find user choice
+                var answer;
+                self.model.get('answers').each(function (element, index, list) {
+                    if (element.get('value') == value) {
+                        answer = element.toJSON();
+                    }
+                });
+
+                var title = answer.value;
+                var bodyTmpl = _.template($("#template-show_option_details_body").html());
+                var body = bodyTmpl(answer);
+                var footer = '<button type="button" class="btn btn-warning" data-dismiss="modal" aria-hidden="true">' + gettext("Close") + '</button>';
+
+                app.modalDialog.populate(title, body, footer);
+                app.modalDialog.show();
+
             });
         },
 
@@ -754,6 +779,7 @@
             // select
             if (!liEl.hasClass('active')) {
                 if (length >= this.model.get('max')) {
+                    $('html').scrollTop($(document).height());
                     return;
                 }
                 // mark selected
