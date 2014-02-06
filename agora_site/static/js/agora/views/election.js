@@ -294,6 +294,12 @@
                     };
                     if (data.q.layout == "PRIMARY") {
                         $("#bloques").append(this.question_primary_template(data));
+
+                        // shuffle options
+                        if (data.q.randomize_answer_order) {
+                            $('.candidates-list.list-' + i).shuffle();
+                        }
+
                     } else {
                         $("#bloques").append(this.question_template(data));
                     }

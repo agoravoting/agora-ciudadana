@@ -51,6 +51,7 @@
     <script id="template_featured-election-primary-question" type="text/underscore-template">
         <div class="featured-primary-question">
             <h2><%- q.question %></h2>
+            <div class="candidates-list list-<%- i %>">
             <% for (var j = 0; j < q.answers.length; j++) { %>
                 <div class="candidate">
 
@@ -71,6 +72,7 @@
                 </div>
             </tr>
             <% } %>
+            </div>
         </div>
     </script>
 
