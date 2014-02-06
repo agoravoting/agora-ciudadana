@@ -209,6 +209,87 @@
         </div>
     </script>
 
+    <script id="template-voting_booth_question_ranked_primary" type="text/underscore-template">
+        <div class="modal-header hero-vote">
+            <div class="text-center">
+                <h1><%= election_name %></h1>
+                <div class="btn-group">
+                    <button class="btn btn-primary disabled"><%= gettext("1. Select") %></button>
+                    <button class="btn disabled"><%= gettext("2. Review") %></button>
+                    <% if (!has_to_authenticate) { %>
+                        <button class="btn disabled"><%= gettext("3. Submit") %></button>
+                    <% } else { %>
+                        <button class="btn disabled"><%= gettext("3. Authenticate and Submit") %></button>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        <div class="modal-header hero-vote question">
+            <h2><%= gettext(question) %></h2>
+            <small>
+            <div class="inline">
+                <%= interpolate(gettext("Question #%s of %s"), [question_num + 1, num_questions]) %> —
+            </div>
+            <div class="inline">
+                <% if (min == 0) { %>
+                    <%= interpolate(gettext("Select up to %s answers"), [max]) %>
+                <% } else {%>
+                    <%= interpolate(gettext("Select from %s to %s answers"), [min, max]) %>
+                <% } %>
+            </div>
+            <div class="inline">
+                (<%= interpolate(gettext("%s winners"), [num_seats]) %>)
+            </div>
+            </small>
+            <div class="row-fluid ranked-form">
+                <div class="span6 available-choices">
+                    <p>
+                    <strong><%= gettext("Available choices") %>:</strong>
+                    <%= gettext("Click to add/remove to your ballot") %></p>
+                    <input type="text" class="input-block-level" id="filter-options" placeholder="<%= gettext("filter candidates..") %>" />
+                    <ul class="primary-options">
+                        <% for (var i = 0; i < answers.length; i++) { %>
+                        <li data-value="<%- answers[i].value %>">
+                            <div class="option-image">
+                                <a href="#" class="choose-option">
+                                    <img src="<%- answers[i].media_url %>" class="img-rounded" alt="<%- interpolate(gettext("%s photo"), [answers[i].value]) %>"/>
+                                </a>
+                            </div>
+                            <div class="option-details">
+                                <a href="#" class="choose-option" alt="<%- interpolate(gettext("choose %s"), [answers[i].value]) %>">
+                                    <%- answers[i].value %>
+                                </a>
+                                <a href="#" class="option-link">
+                                    <%- answers[i].details_title %>
+                                </a>
+                                <% for (var j = 0; j < answers[i].urls.length; j++) { %>
+                                    <a href="<%- answers[i].urls[j].url %>" target="_blank" class="option-tail-link">
+                                        <%- answers[i].urls[j].title %>
+                                    </a>
+                                <% } %>
+                            </div>
+                        </li>
+                        <% } %>
+                    </ul>
+                </div>
+                <div class="span6 user-choices">
+                    <p><strong><%= gettext("Your ballot:") %></strong></p>
+                    <ul class="nav nav-list sidenav">
+                    </ul>
+                </div>
+            </div>
+            <div class="select-info need-select-more error hide">
+                <%= interpolate(gettext("It's mandatory to select at least %s choices in this question."), [min]) %>
+            </div>
+            <div class="select-info cannot-select-more info hide">
+                <%= interpolate(gettext("You reached the maximum number of allowed choices (%s). You can change your choices removing current choices first."), [max]) %>
+            </div>
+            <button class="btn btn-large btn-block btn-continue" type="button">
+                <strong><%= gettext("Continue") %></strong>
+            </button>
+        </div>
+    </script>
+
     <script id="template-voting_booth_review_questions" type="text/underscore-template">
         <div class="modal-header hero-vote">
             <div class="text-center">

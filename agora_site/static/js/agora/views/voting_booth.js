@@ -160,10 +160,15 @@
          */
         createQuestionView: function (model) {
             var voting_system = model.get('tally_type');
+            var layout = model.get('layout');
             if (voting_system == "ONE_CHOICE") {
                 return new Agora.VotePluralityQuestion({model: model, votingBooth: this});
             } else if (voting_system == "MEEK-STV") {
-                return new Agora.VoteRankedQuestion({model: model, votingBooth: this});
+                if (layout == "SIMPLE") {
+                    return new Agora.VoteRankedQuestion({model: model, votingBooth: this});
+                } else if (layout = "PRIMARY") {
+                    return new Agora.VotePrimaryRankedQuestion({model: model, votingBooth: this});
+                }
             }
         },
 
@@ -538,6 +543,202 @@
          * ballot and marking it as selected.
          */
         selectChoice: function(e) {
+            var liEl = $(e.target).closest('li');
+            var value = liEl.data('value');
+            var length = this.model.get('user_answers').length;
+
+            // find user choice
+            var newSelection;
+            this.model.get('answers').each(function (element, index, list) {
+                if (element.get('value') == value) {
+                    newSelection = element.clone();
+                }
+            });
+
+            // select
+            if (!liEl.hasClass('active')) {
+                if (length >= this.model.get('max')) {
+                    return;
+                }
+                // mark selected
+                liEl.addClass('active');
+                liEl.find('i').removeClass('icon-chevron-right');
+                liEl.find('i').addClass('icon-chevron-left');
+                liEl.find('i').addClass('icon-white');
+
+                // add to user choices
+                var templData = {
+                    value: value,
+                    i: length + 1
+                };
+                var newChoiceLink = this.templateChoice(templData);
+                var newChoice = $(document.createElement('li'));
+                newChoice.data('value', value);
+                newChoice.html(newChoiceLink);
+                this.$el.find('.user-choices ul').append(newChoice);
+
+               // add choice to model
+                this.model.get('user_answers').add(newSelection);
+
+                // show/hide relevant info
+                if (length + 1 == this.model.get('min')) {
+                    this.$el.find('.need-select-more').hide();
+                }
+                if (length + 1 == this.model.get('max')) {
+                    this.$el.find('.cannot-select-more').show();
+                }
+            }
+            // deselect
+            else {
+                // unmark selected
+                liEl.removeClass('active');
+                liEl.find('i').addClass('icon-chevron-right');
+                liEl.find('i').removeClass('icon-chevron-left');
+                liEl.find('i').removeClass('icon-white');
+
+                // find user choice
+                var userChoice = null;
+                this.$el.find('.user-choices ul li').each(function (index) {
+                    if ($(this).data('value') == value) {
+                        userChoice = $(this);
+                    }
+                    // renumerate
+                    if (userChoice) {
+                        $(this).find('small').html(index + ".");
+                    }
+                });
+
+                // remove from user choices
+                userChoice.remove()
+
+                // remove choice from model
+                this.model.get('user_answers').each(function (element, index, list) {
+                    if (element.get('value') == value) {
+                        element.destroy();
+                    }
+                });
+
+                // show/hide relevant info
+                if (length - 1 < this.model.get('max')) {
+                    this.$el.find('.cannot-select-more').hide();
+                }
+            }
+        },
+
+        getEncryptableQuestionData: function(data, index) {
+            var possible_answers = _.pluck(ajax_data.questions[index].answers, "value");
+            var ret_data = "";
+            var numChars = (possible_answers.length + 2).toString().length;
+            _.each(data, function (element, i, list) {
+                var choice_index = possible_answers.indexOf(element);
+                if (choice_index == -1) {
+                    // invalid vote is codified as possible_answers.length + 1 (which is invalid)
+                    choice_index = possible_answers.length + 1;
+                }
+                ret_data = ret_data + Agora.numberToString(choice_index + 1, numChars);
+            });
+            var ret_int = parseInt(ret_data);
+            return BigInt.fromInt(ret_int);
+        },
+
+        nextStep: function() {
+            this.votingBooth.nextStep(this.model.get('question_num'));
+        }
+    });
+
+    Agora.VotePrimaryRankedQuestion = Backbone.View.extend({
+        events: {
+            'click .available-choices li a.choose-option': 'selectChoice',
+            'click .btn-continue': 'continueClicked',
+        },
+
+        initialize: function() {
+            _.bindAll(this);
+            this.template = _.template($("#template-voting_booth_question_ranked_primary").html());
+            this.templateChoice = _.template($("#template-voting_booth_question_ranked_choice").html());
+            this.votingBooth = this.options.votingBooth;
+
+            return this.$el;
+        },
+
+        render: function() {
+            // render template
+            this.$el.html(this.template(this.model.toJSON()));
+
+            // shuffle options
+            if (this.model.get('randomize_answer_order')) {
+                this.$el.find('.available-choices ul').shuffle();
+            }
+
+            var self = this;
+            var selection = [];
+            // restore selected options from model if any
+            this.model.get('user_answers').each(function (element, index, list) {
+                var value = element.get('value');
+                var target = null;
+                self.$el.find('.available-choices ul li').each(function (index) {
+                    if ($(this).data('value') == value) {
+                        target = this;
+                    }
+                });
+
+                // simulate user clicked it
+                selection[index] = target;
+            });
+
+            this.model.get('user_answers').reset();
+            _.each(selection, function (element, index, list) {
+                self.selectChoice({target: element});
+            });
+
+            this.delegateEvents();
+            setTimeout(self.addFiltering, 500);
+
+            return this;
+        },
+
+        addFiltering: function() {
+            var self = this;
+            $('#filter-options').keyup(function() {
+                clearTimeout($.data(this, 'timer'));
+                var wait = setTimeout(self.filterOptions, 500);
+                $(this).data('timer', wait);
+            });
+        },
+
+        filterOptions: function() {
+            var val = $('#filter-options').val().toLowerCase();
+            this.$el.find("ul.primary-options > li").each(function (index) {
+                var value = $(this).data("value").toLowerCase();
+                if (value.contains(val)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        },
+
+        /**
+         * Continues to next question or review view if this is the last question
+         */
+        continueClicked: function() {
+            var length = this.model.get('user_answers').length;
+            if (length < this.model.get('min')) {
+                this.$el.find('.need-select-more').show();
+                return;
+            }
+
+            this.nextStep();
+        },
+
+        /**
+         * Selects a choice from the available choices list, adding it to the
+         * ballot and marking it as selected.
+         */
+        selectChoice: function(e) {
+            if (e && e.preventDefault) {
+                e.preventDefault();
+            }
             var liEl = $(e.target).closest('li');
             var value = liEl.data('value');
             var length = this.model.get('user_answers').length;

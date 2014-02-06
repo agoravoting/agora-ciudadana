@@ -1759,9 +1759,8 @@ div.top-form .option-edit:hover {
 }
 
 #voting_booth .hero-vote h1 {
-    font-size: 50px;
-    line-height: 50px;
-    padding: 20px;
+    font-size: 40px;
+    line-height: 40px;
     letter-spacing: -1px;
 }
 
@@ -1921,7 +1920,86 @@ div.top-form .option-edit:hover {
 }
 
 #voting_booth .ranked-form .user-choices .sidenav {
-    margin-top:28px;
+    margin-top: 28px;
+}
+
+#voting_booth ul.primary-options {
+    max-height: 300px;
+    overflow-y: auto;
+    list-style: none;
+    margin: 0 0 10px;
+
+    li {
+        display: block;
+        clear: both;
+
+        .option-image {
+            width: 45%;
+            display: inline-block;
+            float: left;
+
+            a {
+                display: block;
+                padding: 5px;
+                border-radius: 6px;
+                min-height: 150px;
+                width: 153px;
+                text-align: center;
+
+                &:hover {
+                    background: #0088CC;
+                    color: #fcfcfc;
+                }
+
+                img {
+                    text-align: center;
+                    color: black;
+                    max-width: 150px;
+                    max-height: 150px;
+                    border-radius: 6px;
+                }
+            }
+        }
+
+        .option-details {
+            width: 52%;
+            display: inline-block;
+            float: left;
+
+            a.choose-option {
+                width: 100%;
+                display: block;
+                color: black;
+                font-weight: bold;
+                margin-bottom: 6px;
+                padding: 5px;
+                border-radius: 6px;
+
+                .icon-white {
+                    margin-top: 5px;
+                }
+
+                &:hover {
+                    text-decoration: none;
+                    background: #0088CC;
+                    color: #fcfcfc;
+                }
+            }
+
+            a.option-link {
+                width: 100%;
+                display: block;
+                color: #9B045A;
+                margin-bottom: 5px;
+            }
+
+            a.option-tail-link {
+                width: 100%;
+                display: block;
+                font-size: 11pt;
+            }
+        }
+    }
 }
 
 .ranked-form .sidenav {
