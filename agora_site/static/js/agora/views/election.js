@@ -262,8 +262,10 @@
 
         initialize: function() {
             _.bindAll(this);
+            app.modalDialog = new Agora.ModalDialogView();
             this.bw_template = _.template($("#template_background-wrapper-featured-election").html());
             this.question_template = _.template($("#template_featured-election-question").html());
+            this.question_primary_template = _.template($("#template_featured-election-primary-question").html());
             this.oc_question_template = _.template($("#template_featured-election-tallied-one-choice-question").html());
             this.stv_question_template = _.template($("#template_featured-election-tallied-stv-question").html());
 
@@ -290,7 +292,11 @@
                         i: i,
                         q: ajax_data.election.questions[i]
                     };
-                    $("#bloques").append(this.question_template(data));
+                    if (data.q.layout == "PRIMARY") {
+                        $("#bloques").append(this.question_primary_template(data));
+                    } else {
+                        $("#bloques").append(this.question_template(data));
+                    }
                 }
             }
 
@@ -298,6 +304,23 @@
             if (ajax_data.election.questions.length == 1) {
                 $("#q0").addClass("in");
             }
+
+            $("a.cand-details").click(this.showDetails);
+        },
+
+        showDetails: function(e) {
+            e.preventDefault();
+            var i = $(e.target).data('question-index');
+            var j = $(e.target).data('option-index');
+            var answer = ajax_data.election.questions[i].answers[j];
+
+            var title = answer.value;
+            var bodyTmpl = _.template($("#template-show_option_details_body").html());
+            var body = bodyTmpl(answer);
+            var footer = '<button type="button" class="btn btn-warning" data-dismiss="modal" aria-hidden="true">' + gettext("Close") + '</button>';
+
+            app.modalDialog.populate(title, body, footer);
+            app.modalDialog.show();
         }
     });
 

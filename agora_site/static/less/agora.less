@@ -2364,8 +2364,89 @@ ul.list-container {
 /* color: #6EB43F; */
 }
 
+.home .vote-button {
+    padding: 10px;
+    font-size: 16px;
+    width: 93%;
+}
+
+/* <home-featured-election> */
+.home.featured-election {
+    .span5.election-description {
+        font-size: 14pt;
+        text-align: justify;
+        margin-top: 15px;
+        padding: 6px;
+        width: 350px;
+        min-height: 110px;
+        border-radius: 6px;
+        background-color: rgba(255, 255, 255, 0.6);
+        color: rgb(87, 43, 133);
+    }
+}
+
+#bloques {
+    margin-top: -10px;
+}
+
+.home .featured-primary-question {
+    width: 100%;
+
+    .candidate {
+        width: 47%;
+        display: block;
+        float: left;
+        padding: 15px 10px;
+        height: 150px;
+
+        .cand-image {
+            display: block;
+            float: left;
+            width: 150px;
+            height: 150px;
+            border-radius: 6px;
+            background-color: @grayLighter;
+
+            img {
+                font-size: 16px;
+                border-radius: 6px;
+                max-height: 150px;
+                max-width: 150px;
+            }
+        }
+
+        .cand-details {
+            display: block;
+            float: left;
+            padding-left: 9px;
+            min-width: 150px;
+
+            h3 {
+                display: block;
+                clear: both;
+            }
+
+            a {
+                display: block;
+                clear: both;
+                width: 100%;
+
+                &.cand-details {
+                    color: #9B045A;
+                    margin: 6px 0;
+                    padding-left: 0;
+                    font-size: 15px;
+                }
+            }
+        }
+    }
+}
+
+/* </home-featured-election> */
+
 .home .hero-unit h1.home-loggedin {
-    margin-top: 20px;
+    margin: 10px 0 10px 0;
+    font-size: 34px;
 }
 
 .home .hero-unit li {
