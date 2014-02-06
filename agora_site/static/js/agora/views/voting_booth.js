@@ -735,7 +735,7 @@
             var val = $('#filter-options').val().toLowerCase();
             this.$el.find("ul.primary-options > li").each(function (index) {
                 var value = $(this).data("value").toLowerCase();
-                if (value.contains(val)) {
+                if (value.indexOf(val) != -1) {
                     $(this).show();
                 } else {
                     $(this).hide();
