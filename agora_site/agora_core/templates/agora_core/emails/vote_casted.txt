@@ -5,8 +5,8 @@
 
 Your smart ballot tracker is: {{ vote_hash }}. You can check it in the election vote's list.
 
-{% blocktrans with site_domain=site.domain %}Election URL: {{ protocol }}://{{ site_domain }}{{ election_url }}{% endblocktrans %}
-{% blocktrans with site_domain=site.domain %}Election votes URL: {{ protocol }}://{{ site_domain }}{{ election_url }}/votes{% endblocktrans %}
+{% blocktrans with site_domain=site.domain %}Election URL: {{ election_url }}{% endblocktrans %}
+{% blocktrans with site_domain=site.domain %}Election votes URL: {{ election_url }}/votes{% endblocktrans %}
 
 {% blocktrans with election_description=election.description|striptags %}Election description: {{ election_description }}{% endblocktrans %}
 
