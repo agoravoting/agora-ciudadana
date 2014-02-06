@@ -232,6 +232,7 @@ class LoginAndVoteForm(django_forms.ModelForm):
     is_vote_secret = django_forms.BooleanField(required=False)
     user_id = django_forms.CharField(required=True, max_length=120)
     password = django_forms.CharField(required=True, max_length=20)
+    issue_date = django_forms.CharField(required=False, max_length=120)
 
     bad_password = False
     is_active = True
@@ -324,16 +325,42 @@ class LoginAndVoteForm(django_forms.ModelForm):
         vote.is_counted = not self.bad_password and self.is_active and self.election.has_perms('vote_counts', self.user)
 
         # generate vote
-        data = {
-            "a": "vote",
-            "answers": [],
-            "election_hash": {"a": "hash/sha256/value", "value": self.election.hash},
-            "election_uuid": self.election.uuid
-        }
-        i = 0
-        for question in self.election.questions:
-            data["answers"] += [self.cleaned_data['question%d' % i]]
-            i += 1
+        # generate vote
+        if self.election.is_secure() and self.cleaned_data['is_vote_secret']:
+            data = {
+                "a": "encrypted-vote-v1",
+                "proofs": [],
+                "choices": [],
+                "voter_username": self.request.user.username,
+                "issue_date": self.cleaned_data["issue_date"],
+                "election_hash": {"a": "hash/sha256/value", "value": self.election.hash},
+                "election_uuid": self.election.uuid
+            }
+            i = 0
+            for question in self.election.questions:
+                q_answer =self.data['question%d' % i]
+                data["proofs"].append(dict(
+                    commitment=q_answer['commitment'],
+                    response=q_answer['response'],
+                    challenge=q_answer['challenge']
+                ))
+                data["choices"].append(dict(
+                    alpha=q_answer['alpha'],
+                    beta=q_answer['beta']
+                ))
+                i += 1
+        else:
+            data = {
+                "a": "plaintext-vote-v1",
+                "answers": [],
+                "unique_randomness": self.cleaned_data["unique_randomness"],
+                "election_hash": {"a": "hash/sha256/value", "value": self.election.hash},
+                "election_uuid": self.election.uuid
+            }
+            i = 0
+            for question in self.election.questions:
+                data["answers"] += [self.cleaned_data['question%d' % i]]
+                i += 1
 
         # fill the vote
         vote.voter = self.user

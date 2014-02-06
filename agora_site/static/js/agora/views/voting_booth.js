@@ -1030,6 +1030,7 @@
 
             var ballot = this.votingBooth.ballot;
             ballot['action'] = 'login_and_vote';
+            ballot['issue_date'] = moment().format();
             ballot['user_id'] = this.$el.find("#id_identification").val();
             ballot['password'] = this.$el.find("#id_password").val();
             this.startSendingData();
@@ -1101,6 +1102,7 @@
 
             var ballot = this.votingBooth.ballot;
             ballot['action'] = 'register_and_vote';
+            ballot['issue_date'] = moment().format();
             ballot['user_id'] = this.$el.find("#id_identification").val();
             ballot['password'] = this.$el.find("#id_password").val();
             this.startSendingData();
