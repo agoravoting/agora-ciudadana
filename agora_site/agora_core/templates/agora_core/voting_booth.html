@@ -36,7 +36,9 @@
                             </a>
                         </small>
                         <small class="pull-right">
-                            <%= gettext("Election fingerprint:") %> <%= hash %>
+                            <% if (hash) { %>
+                                <%= gettext("Election fingerprint:") %> <%= hash %>
+                            <% } %>
                         </small>
                         <div class="clearfix"></div>
                     </div>
