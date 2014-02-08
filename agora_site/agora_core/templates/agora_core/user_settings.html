@@ -340,6 +340,24 @@
                 </div>
                 </fieldset>
             </form>
+            <form id="remove_form">
+                <fieldset>
+                <legend><%= gettext("Remove account") %></legend>
+
+                <div class="control-group">
+                    <p class="help-block" id="hint_id_change_username">
+                    <%= gettext("If you remove your account, there's no going back.") %>
+                    </p>
+
+                    <div class="controls">
+                        <a href="#" class="btn btn-large btn-danger btn-block"
+                        id="remove_account_btn">
+                            <%= gettext("Remove account") %>
+                        </a>
+                    </div>
+                </div>
+                </fieldset>
+            </form>
         </div>
     </div>
 </script>
@@ -349,6 +367,7 @@
 {% block script-block %}
     {% include "agora_core/client/modal_dialog.html" %}
     {% include "agora_core/client/confirm_change_username_modal_dialog.html" %}
+    {% include "agora_core/client/remove_account_modal_dialog.html" %}
     <script>
     var ajax_data = {
         user: {% rest request '/user/settings/' %},

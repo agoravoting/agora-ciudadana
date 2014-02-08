@@ -107,9 +107,10 @@ class UserTest(RootTestCase):
         {'comment': 'holaaaaaaaaaaaa'}, code=HTTP_OK)
 
     def test_disable(self):
-        self.get('user/disable/', code=HTTP_METHOD_NOT_ALLOWED)
         self.login('david', 'david')
-        self.get('user/disable/')
+        data = self.postAndParse('user/disable/', {'password': 'davidwweeef'},
+                                 code=HTTP_BAD_REQUEST)
+        data = self.postAndParse('user/disable/', {'password': 'david'})
         data = self.getAndParse('user/settings/')
         self.assertEqual(data['id'], -1)
         self.post('user/login/',

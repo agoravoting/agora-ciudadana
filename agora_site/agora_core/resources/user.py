@@ -34,7 +34,7 @@ from agora_site.misc.utils import rest, validate_email
 from agora_site.misc.decorators import permission_required
 from agora_site.agora_core.forms.user import (UsernameAvailableForm, LoginForm,
     SendMailForm, UserSettingsForm, CustomAvatarForm, APISignupForm,
-    APIEmailLoginForm)
+    APIEmailLoginForm, DisableUserForm)
 from agora_site.agora_core.models import Profile
 from agora_site.agora_core.models import Agora
 
@@ -217,7 +217,8 @@ class UserResource(GenericResource):
 
             url(r"^(?P<resource_name>%s)/disable%s$" \
                 % (self._meta.resource_name, trailing_slash()),
-                self.wrap_view("disable"), name="api_user_disable"),
+                self.wrap_form(form_class=DisableUserForm, method="POST"),
+                name="api_user_disable"),
 
             url(r"^(?P<resource_name>%s)/agoras%s$" \
                 % (self._meta.resource_name, trailing_slash()),
@@ -251,19 +252,6 @@ class UserResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('user_invite'), name="api_user_invite")
         ]
-
-    @cache_control(no_cache=True)
-    def disable(self, request, **kwargs):
-        '''
-        Disable the currently authenticated user
-        '''
-        if request.user.is_anonymous():
-            raise ImmediateHttpResponse(response=http.HttpMethodNotAllowed())
-
-        request.user.is_active = False
-        request.user.save()
-        auth_logout(request)
-        return self.create_response(request, dict(status="success"))
 
     @cache_control(no_cache=True)
     def logout(self, request, **kwargs):

@@ -102,6 +102,10 @@
             this.$el.find("#username_form").on('silentSubmit', this.changeUsername);
             this.$el.find("#username_form").submit(function (e) { e.preventDefault(); });
 
+            // remove account form
+            $("#remove_account_btn").click(this.removeAccount);
+
+
             return this.$el;
         },
 
@@ -327,6 +331,44 @@
                 return false;
             });
 
+            return false;
+        },
+
+        removeAccount: function(e) {
+            e.preventDefault();
+            if (this.sendingData) {
+                return;
+            }
+
+            app.confirmRemoveAccountDialog = new Agora.ModalDialogView();
+            var title = _.template($("#template-remove_account_modal_dialog_title").html())();
+            var body =  _.template($("#template-remove_account_modal_dialog_body").html())();
+            var footer = _.template($("#template-remove_account_modal_dialog_footer").html())();
+
+            app.confirmRemoveAccountDialog.populate(title, body, footer);
+            app.confirmRemoveAccountDialog.show();
+            var self = this;
+            $("#confirm-remove-account-action").click(function(e) {
+                e.preventDefault();
+                self.sendingData = true;
+                var json = {
+                    'password': $("#remove_account_password").val()
+                };
+                var jqxhr = $.ajax("/api/v1/user/disable/", {
+                    data: JSON.stringifyCompat(json),
+                    contentType : 'application/json',
+                    type: 'POST',
+                })
+                .done(function(e) {
+                    window.location.reload(true);
+                })
+                .fail(function() {
+                    self.sendingData = false;
+                    alert("Error, possibly an invalid password");
+                });
+
+                return false;
+            });
             return false;
         },
 

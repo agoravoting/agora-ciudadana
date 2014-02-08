@@ -5,6 +5,7 @@ from django.core.files.temp import NamedTemporaryFile
 from django import forms as django_forms
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
@@ -19,6 +20,8 @@ from django.utils.crypto import constant_time_compare
 from userena import settings as userena_settings
 from userena import forms as userena_forms
 from userena.models import UserenaSignup
+
+from uuid import uuid4
 
 from agora_site.misc.utils import FormRequestMixin
 from agora_site.agora_core.forms.comment import COMMENT_MAX_LENGTH
@@ -57,6 +60,44 @@ class LoginForm(userena_forms.AuthenticationForm):
                 return False
         else:
             return False
+
+    @staticmethod
+    def static_get_form_kwargs(request, data, *args, **kwargs):
+        '''
+        Returns the parameters that will be sent to the constructor
+        '''
+        return dict(request=request, data=data)
+
+class DisableUserForm(django_forms.Form):
+    '''
+    Secure form to disable user, request current password if any
+    '''
+    password = django_forms.CharField(max_length=75, required=True)
+
+    def __init__(self, request, data):
+        self.request = request
+        super(DisableUserForm, self).__init__(data=data)
+
+    def is_valid(self):
+        if  not self.request.user.is_authenticated():
+            raise django_forms.ValidationError(_('Unathenticated request.'))
+
+        if self.request.user.password != '!' and\
+                not self.request.user.check_password(self.data['password']):
+            raise django_forms.ValidationError(_('Invalid password.'))
+
+        return True
+
+    def save(self):
+        self.request.user.email = str(uuid4()) + "@disabled.example.com"
+        self.request.user.first_name = ""
+        self.request.user.password = '!'
+        self.request.user.username = str(uuid4())[:6]
+        self.request.user.is_active = False
+        self.request.user.save()
+        auth_logout(self.request)
+
+        return dict()
 
     @staticmethod
     def static_get_form_kwargs(request, data, *args, **kwargs):

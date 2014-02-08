@@ -343,6 +343,8 @@ Displays cookie law banner only if user has not dismissed it yet.
 
     def render_tag(self, context, **kwargs):
         template = self.get_template(context, **kwargs)
+        if not 'request' in context or not hasattr(context['request'], 'COOKIES'):
+            return ''
         if not settings.SHOW_COOKIE_LAW_BANNER or\
                 context['request'].COOKIES.get('cookielaw_accepted', False) or\
                 context['request'].user.is_authenticated():
