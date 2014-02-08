@@ -5708,7 +5708,7 @@ div.top-form .option-edit:hover {
   margin: 10px 0 20px 14px;
 }
 #voting_booth .ranked-form .user-choices .sidenav {
-  margin-top: 24px;
+  margin-top: 0px;
 }
 #voting_booth .ranked-form .available-choices.primary > p {
   margin-left: 0;

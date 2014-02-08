@@ -128,6 +128,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'agora_site.misc.context_processor.settings.AGORA_REQUEST_SCANNED_ID_ON_REGISTER',
     'agora_site.misc.context_processor.settings.SHOW_PROFESSIONAL_SERVICES_LINK',
     'agora_site.misc.context_processor.settings.DEFAULT_FROM_EMAIL',
+    'agora_site.misc.context_processor.settings.AGORA_FRONT_PAGE',
 )
 
 ROOT_URLCONF = 'agora_site.urls'

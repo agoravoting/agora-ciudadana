@@ -1185,6 +1185,10 @@
             // render template
             var data = this.model.toJSON();
             data.is_counted = this.is_counted;
+            data.return_to_election = (AGORA_FRONT_PAGE != ajax_data.agora.full_name);
+            if (!data.return_to_election) {
+                data.url = "/";
+            }
             this.$el.html(this.template(data));
             this.delegateEvents();
             return this;

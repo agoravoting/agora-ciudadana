@@ -284,7 +284,8 @@
                     </ul>
                 </div>
                 <div class="span6 user-choices primary">
-                    <p><strong><%= gettext("Your ballot:") %></strong></p>
+                    <p><strong><%= gettext("Your ballot:") %></strong><br/>
+                    <%= gettext("Note: the selection order matters") %> <a href="https://www.youtube.com/watch?v=bLH_w5kHJpA" target="_blank"><%= gettext("+ info") %></a></p>
                     <ul class="nav nav-list sidenav">
                     </ul>
                 </div>
@@ -391,7 +392,11 @@
                 <p><%= gettext("We have received your vote but for security reasons we need to check your identity. We have sent you an email with a <strong>link you need to click</strong> if you want your vote to be confirmed. Please check your email address. It might take a while to arrive, be patient. If the email doesn't seem to arrive, please check if it has gone to the SPAM folder or try again to vote.") %>
             <% } %>
             <a class="btn btn-large btn-block btn-primary btn-goback" href="<%- url %>">
-                <strong><%= gettext("Go back to the election page") %></strong>
+                <% if (return_to_election) { %>
+                    <strong><%= gettext("Go back to the election page") %></strong>
+                <% } else { %>
+                    <strong><%= gettext("Go back to the frontpage") %></strong>
+                <% } %>
             </a>
         </div>
         <div class="modal-header hero-vote vote-cast">
@@ -574,6 +579,7 @@
         var has_to_authenticate = {% if has_to_authenticate %}true{% else %}false{% endif %};
         var AGORA_FNMT_BASE_URL = "{{AGORA_FNMT_BASE_URL}}";
         var DEFAULT_FROM_EMAIL = "{{DEFAULT_FROM_EMAIL}}";
+        var AGORA_FRONT_PAGE = "{{AGORA_FRONT_PAGE}}";
         app.currentView = new Agora.VotingBooth();
     </script>
 </body>
