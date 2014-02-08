@@ -649,6 +649,7 @@
     Agora.VotePrimaryRankedQuestion = Backbone.View.extend({
         events: {
             'click .available-choices li a.choose-option': 'selectChoice',
+            'click .user-choices ul li a': 'deselectUserChoice',
             'click .btn-continue': 'continueClicked',
         },
 
@@ -784,9 +785,6 @@
                 }
                 // mark selected
                 liEl.addClass('active');
-                liEl.find('i').removeClass('icon-chevron-right');
-                liEl.find('i').addClass('icon-chevron-left');
-                liEl.find('i').addClass('icon-white');
 
                 // add to user choices
                 var templData = {
@@ -814,9 +812,6 @@
             else {
                 // unmark selected
                 liEl.removeClass('active');
-                liEl.find('i').addClass('icon-chevron-right');
-                liEl.find('i').removeClass('icon-chevron-left');
-                liEl.find('i').removeClass('icon-white');
 
                 // find user choice
                 var userChoice = null;
@@ -844,6 +839,50 @@
                 if (length - 1 < this.model.get('max')) {
                     this.$el.find('.cannot-select-more').hide();
                 }
+            }
+        },
+
+        /*
+         * deselects an user choice
+         */
+        deselectUserChoice: function(e) {
+            e.preventDefault();
+            var liEl = $(e.target).closest('li');
+            var value = liEl.data('value');
+            var length = this.model.get('user_answers').length;
+
+            // find user choice in the model
+            var model;
+            this.model.get('answers').each(function (element, index, list) {
+                if (element.get('value') == value) {
+                    model = element.clone();
+                }
+            });
+
+            // find the item in the list of available choices and unmark as
+            // selected
+            this.$el.find('.available-choices ul li').each(function (index) {
+                var availableChoice;
+                if ($(this).data('value') == value) {
+                    availableChoice = $(this);
+                    // unmark selected
+                    availableChoice.removeClass('active');
+                }
+            });
+
+            // remove from user choices
+            liEl.remove();
+
+            // remove choice from model
+            this.model.get('user_answers').each(function (element, index, list) {
+                if (element.get('value') == value) {
+                    element.destroy();
+                }
+            });
+
+            // show/hide relevant info
+            if (length - 1 < this.model.get('max')) {
+                this.$el.find('.cannot-select-more').hide();
             }
         },
 
