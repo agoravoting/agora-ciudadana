@@ -111,7 +111,8 @@ def base_question_check(question):
                     len(answer['details']) > 5000:
                 raise error
 
-            if answer['details'].strip() != clean_html(answer['details'], False).replace("\n", "").strip():
+            if answer['details'].strip().replace("\n", "") != clean_html(answer['details'], False).replace("\n", "").strip():
+                import ipdb; ipdb.set_trace()
                 raise error
 
             if not isinstance(answer['urls'], list) or\

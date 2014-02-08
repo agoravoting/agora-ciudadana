@@ -63,6 +63,7 @@ class UserTest(RootTestCase):
 
         # change username
         data['username'] = 'davido'
+        data['old_password'] = 'david'
         self.putAndParse('user/settings/', data=data, code=HTTP_OK)
         data = self.getAndParse('user/settings/')
         self.assertEqual(data['username'], 'davido')
