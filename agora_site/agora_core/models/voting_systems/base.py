@@ -112,7 +112,6 @@ def base_question_check(question):
                 raise error
 
             if answer['details'].strip().replace("\n", "") != clean_html(answer['details'], False).replace("\n", "").strip():
-                import ipdb; ipdb.set_trace()
                 raise error
 
             if not isinstance(answer['urls'], list) or\
