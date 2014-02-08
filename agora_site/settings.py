@@ -203,7 +203,8 @@ INSTALLED_APPS = (
     'djcelery',
     'guardian',
     'djsgettext',
-    'djangosecure'
+    'djangosecure',
+    'cookielaw',
 )
 
 # Cache settings
@@ -478,6 +479,9 @@ SHOW_PROFESSIONAL_SERVICES_LINK = False
 
 # do not allow javascript to access to the session cookie for improved security
 SESSION_COOKIE_HTTPONLY = True
+
+# shows/hides the cookie law banner
+SHOW_COOKIE_LAW_BANNER = True
 
 try:
     # custom settings is the file where you should set your modifications of the

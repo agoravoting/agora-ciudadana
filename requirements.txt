@@ -35,3 +35,4 @@ html2text
 django-simple-captcha
 django-secure==1.0
 bleach
+django-cookie-law

@@ -10,6 +10,9 @@ from django.conf import settings
 from django.utils.translation import pgettext as _
 from django.template.base import token_kwargs
 from django.contrib.contenttypes.models import ContentType
+from django.template.loader import render_to_string
+
+from classytags.helpers import InclusionTag
 
 register = template.Library()
 
@@ -328,3 +331,22 @@ def raw(parser, token):
         start, end = tag_mapping[token.token_type]
         text.append(u'%s%s%s' % (start, token.contents, end))
     parser.unclosed_block_tag(parse_until)
+
+
+
+class CookielawBanner(InclusionTag):
+    """
+Displays cookie law banner only if user has not dismissed it yet.
+"""
+
+    template = 'cookielaw/banner.html'
+
+    def render_tag(self, context, **kwargs):
+        template = self.get_template(context, **kwargs)
+        if not settings.SHOW_COOKIE_LAW_BANNER or\
+                context['request'].COOKIES.get('cookielaw_accepted', False) or\
+                context['request'].user.is_authenticated():
+            return ''
+        data = self.get_context(context, **kwargs)
+        return render_to_string(template, data)
+register.tag(CookielawBanner)

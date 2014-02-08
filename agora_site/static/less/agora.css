@@ -6375,3 +6375,16 @@ div.top-form .navbar.translations .nav .dropdown-menu li > a:hover {
 .voting-booth-body {
   padding-top: 0px;
 }
+#CookielawBanner {
+  background: #fff;
+  padding: 15px 0;
+}
+#CookielawBanner .container {
+  position: relative;
+}
+#CookielawBanner #CookielawCross {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
