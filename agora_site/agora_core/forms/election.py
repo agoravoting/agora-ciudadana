@@ -179,13 +179,14 @@ class VoteForm(django_forms.ModelForm):
         vote.create_hash()
 
         # create action
-        actstream_action.send(self.request.user, verb='voted', action_object=self.election,
-            target=self.election.agora,
-            geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
+        if not settings.ANONYMIZE_USERS:
+            actstream_action.send(self.request.user, verb='voted', action_object=self.election,
+                target=self.election.agora,
+                geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
 
-        vote.action_id = Action.objects.filter(actor_object_id=self.request.user.id,
-            verb='voted', action_object_object_id=self.election.id,
-            target_object_id=self.election.agora.id).order_by('-timestamp').all()[0].id
+            vote.action_id = Action.objects.filter(actor_object_id=self.request.user.id,
+                verb='voted', action_object_object_id=self.election.id,
+                target_object_id=self.election.agora.id).order_by('-timestamp').all()[0].id
 
         # send email
 
@@ -384,13 +385,14 @@ class LoginAndVoteForm(django_forms.ModelForm):
         # send mail
         if  vote.is_counted:
             # create action
-            actstream_action.send(self.user, verb='voted', action_object=self.election,
-                target=self.election.agora,
-                geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
+            if not settings.ANONYMIZE_USERS:
+                actstream_action.send(self.user, verb='voted', action_object=self.election,
+                    target=self.election.agora,
+                    geolocation=json.dumps(geolocate_ip(self.request.META.get('REMOTE_ADDR'))))
 
-            vote.action_id = Action.objects.filter(actor_object_id=self.user.id,
-                verb='voted', action_object_object_id=self.election.id,
-                target_object_id=self.election.agora.id).order_by('-timestamp').all()[0].id
+                vote.action_id = Action.objects.filter(actor_object_id=self.user.id,
+                    verb='voted', action_object_object_id=self.election.id,
+                    target_object_id=self.election.agora.id).order_by('-timestamp').all()[0].id
 
             context = get_base_email_context(self.request)
             context.update(dict(

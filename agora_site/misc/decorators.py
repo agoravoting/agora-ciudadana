@@ -29,14 +29,14 @@ def permission_required(perm, lookup_variables=None, **kwargs):
 
     @permission_required('join', (Agora, 'id', 'id'))
     def join(self, request):
-    agora = get_object_or_404(Agora, id=id)
-    agora.members.append(request.user)
-    return self.success()
+        agora = get_object_or_404(Agora, id=id)
+        agora.members.append(request.user)
+        return self.success()
 
     @permission_required('create', check_static=Agora)
     def obj_create(self, bundle, request=None, **kwargs):
-    user = get_object_or_404(User, username=username)
-    return user.get_absolute_url()
+        user = get_object_or_404(User, username=username)
+        return user.get_absolute_url()
 
     """
     check_static = kwargs.pop('check_static', None)

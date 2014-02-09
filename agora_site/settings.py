@@ -483,6 +483,10 @@ SESSION_COOKIE_HTTPONLY = True
 # shows/hides the cookie law banner
 SHOW_COOKIE_LAW_BANNER = True
 
+# activate this if you want user idnetities to be anonymous for other users
+# (but NOT to agoras administratos)
+ANONYMIZE_USERS = False
+
 try:
     # custom settings is the file where you should set your modifications of the
     # settings file

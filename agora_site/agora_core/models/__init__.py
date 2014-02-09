@@ -87,9 +87,9 @@ class Profile(UserenaLanguageBaseProfile):
                 custom_size, self.get_initials()
             )
 
-    def get_gravatar_mugshot(self, custom_size = userena_settings.USERENA_MUGSHOT_SIZE):
+    def get_gravatar_mugshot(self, custom_size = userena_settings.USERENA_MUGSHOT_SIZE, force_default=False):
         d = self.get_initials_mugshot(custom_size)
-        return get_gravatar(self.user.email, custom_size, d)
+        return get_gravatar(self.user.email, custom_size, d, force_default)
 
     def get_big_mugshot(self):
         return self.get_mugshot_url(170)
@@ -152,7 +152,7 @@ class Profile(UserenaLanguageBaseProfile):
         email.send()
         translation.deactivate()
 
-    def get_mugshot_url(self, custom_size = userena_settings.USERENA_MUGSHOT_SIZE):
+    def get_mugshot_url(self, custom_size = userena_settings.USERENA_MUGSHOT_SIZE, force_default=False):
         """
         Returns the image containing the mugshot for the user.
 
@@ -168,9 +168,9 @@ class Profile(UserenaLanguageBaseProfile):
         """
         # First check for a mugshot and if any return that.
         if self.mugshot.name == "gravatar":
-            return self.get_gravatar_mugshot(custom_size)
+            return self.get_gravatar_mugshot(custom_size, force_default=force_default)
         elif self.mugshot.name == "initials":
-            return self.get_initials_mugshot(custom_size)
+            return self.get_initials_mugshot(custom_size, force_default=force_default)
         elif self.mugshot:
             return settings.MEDIA_URL +\
                    settings.MUGSHOTS_DIR +\
@@ -178,7 +178,7 @@ class Profile(UserenaLanguageBaseProfile):
 
         # Use Gravatar if the user wants to.
         if userena_settings.USERENA_MUGSHOT_GRAVATAR:
-            return self.get_gravatar_mugshot(custom_size)
+            return self.get_gravatar_mugshot(custom_size, force_default=force_default)
 
         # Gravatar not used, check for a default image.
         else:

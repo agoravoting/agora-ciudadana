@@ -53,6 +53,9 @@ class TinyUserResource(GenericResource):
     full_name = fields.CharField()
     short_description = fields.CharField()
 
+    # if this is set to true, full name is not shown to the plebe
+    make_anonymous = settings.ANONYMIZE_USERS
+
     class Meta(GenericMeta):
         queryset = User.objects.select_related("profile").filter(id__gt=-1)
         fields = ["username", "first_name", "id"]
@@ -61,13 +64,24 @@ class TinyUserResource(GenericResource):
         return bundle.obj.get_profile().get_link()
 
     def dehydrate_mugshot_url(self, bundle):
-        return bundle.obj.get_profile().get_mugshot_url()
+        return bundle.obj.get_profile().get_mugshot_url(
+            force_default=self.make_anonymous)
 
     def dehydrate_full_name(self, bundle):
-        return bundle.obj.get_full_name()
+        if not self.make_anonymous:
+            return bundle.obj.get_full_name()
+        else:
+            return _("Anonymous")
 
     def dehydrate_short_description(self, bundle):
-        return bundle.obj.get_profile().get_short_description()
+        if not self.make_anonymous:
+            return bundle.obj.get_profile().get_short_description()
+        else:
+            return _("Anonymous")
+
+
+class NotAnonTinyUserResource(TinyUserResource):
+    make_anonymous = False
 
 
 class ActivationUserResource(TinyUserResource):
@@ -98,6 +112,9 @@ class TinyProfileResource(GenericResource):
     resources, as in ActionResource for example.
     '''
 
+    # if this is set to true, full name is not shown to the plebe
+    make_anonymous = settings.ANONYMIZE_USERS
+
     content_type = fields.CharField(default="profile")
     username = fields.CharField()
     short_description = fields.CharField()
@@ -121,10 +138,16 @@ class TinyProfileResource(GenericResource):
         return bundle.obj.user.username
 
     def dehydrate_short_description(self, bundle):
-        return bundle.obj.get_short_description()
+        if not self.make_anonymous:
+            return bundle.obj.get_short_description()
+        else:
+            return _("Anonymous")
 
     def dehydrate_first_name(self, bundle):
-        return bundle.obj.user.first_name
+        if not self.make_anonymous:
+            return bundle.obj.user.first_name
+        else:
+            return _("Anonymous")
 
     def dehydrate_user_id(self, bundle):
         return bundle.obj.user.id
@@ -133,10 +156,13 @@ class TinyProfileResource(GenericResource):
         return bundle.obj.get_link()
 
     def dehydrate_mugshot_url(self, bundle):
-        return bundle.obj.get_mugshot_url()
+        return bundle.obj.get_mugshot_url(force_default=self.make_anonymous)
 
     def dehydrate_full_name(self, bundle):
-        return bundle.obj.user.get_full_name()
+        if not self.make_anonymous:
+            return bundle.obj.user.get_full_name()
+        else:
+            return _("Anonymous")
 
     def dehydrate_num_agoras(self, bundle):
         return bundle.obj.user.agoras.count()
@@ -153,6 +179,9 @@ class UserResource(GenericResource):
     mugshot_url = fields.CharField()
     full_name = fields.CharField()
 
+    # if this is set to true, full name is not shown to the plebe
+    make_anonymous = settings.ANONYMIZE_USERS
+
     class Meta(GenericMeta):
         queryset = User.objects.select_related("profile").filter(id__gt=-1)
         list_allowed_methods = ['get']
@@ -163,13 +192,19 @@ class UserResource(GenericResource):
         return bundle.obj.get_profile().get_link()
 
     def dehydrate_full_name(self, bundle):
-        return bundle.obj.get_full_name()
+        if not self.make_anonymous:
+            return bundle.obj.get_full_name()
+        else:
+            return _("Anonymous")
 
     def dehydrate_short_description(self, bundle):
-        return bundle.obj.get_profile().get_short_description()
+        if not self.make_anonymous:
+            return bundle.obj.get_profile().get_short_description()
+        else:
+            return _("Anonymous")
 
     def dehydrate_mugshot_url(self, bundle):
-        return bundle.obj.get_profile().get_mugshot_url()
+        return bundle.obj.get_profile().get_mugshot_url(force_default=self.make_anonymous)
 
     def prepend_urls(self):
         return [
@@ -469,6 +504,8 @@ class UserSettingsResource(UserResource):
     big_mugshot = fields.CharField()
     initials_mugshot = fields.CharField()
     gravatar_mugshot = fields.CharField()
+
+    make_anonymous = False
 
     def dehydrate_email(self, bundle):
         return bundle.obj.email

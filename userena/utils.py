@@ -9,7 +9,7 @@ import urllib, random
 
 from django.utils.hashcompat import md5_constructor
 
-def get_gravatar(email, size=80, default='identicon'):
+def get_gravatar(email, size=80, default='identicon', force_default=False):
     """ Get's a Gravatar for a email address.
 
     :param size:
@@ -49,8 +49,11 @@ def get_gravatar(email, size=80, default='identicon'):
             {'base_url': base_url,
              'gravatar_id': md5_constructor(email.lower()).hexdigest()}
 
-    gravatar_url += urllib.urlencode({'s': str(size),
-                                      'd': default})
+    data = {'s': str(size), 'd': default}
+    if force_default:
+        data["f"] = "y"
+
+    gravatar_url += urllib.urlencode(data)
     return gravatar_url
 
 def signin_redirect(redirect=None, user=None):

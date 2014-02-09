@@ -35,7 +35,8 @@ from guardian.shortcuts import assign, remove_perm
 from agora_site.agora_core.models import Agora, CastVote
 from agora_site.agora_core.tasks.agora import (send_request_membership_mails,
     send_request_admin_membership_mails, send_mail_to_members)
-from agora_site.agora_core.resources.user import TinyUserResource
+from agora_site.agora_core.resources.user import (TinyUserResource,
+                                                  NotAnonTinyUserResource)
 from agora_site.agora_core.forms import PostCommentForm, CreateElectionForm
 from agora_site.agora_core.forms.agora import DelegateVoteForm
 from agora_site.agora_core.views import AgoraActionJoinView
@@ -296,31 +297,36 @@ class AgoraResource(GenericResource):
         '''
         return self.wrap_form(PostCommentForm)(request, **kwargs)
 
-    def filter_user(self, request, query):
-        u_filter = request.GET.get('username', '')
-        if u_filter:
-            q = (Q(username__icontains=u_filter) |
-                 Q(first_name__icontains=u_filter) |
-                 Q(last_name__icontains=u_filter))
-            return query.filter(q)
-        return query
+    def filter_user(self, request, query, agora):
+        if not settings.ANONYMIZE_USERS or agora.has_perms('admin', request.user):
+            u_filter = request.GET.get('username', '')
+            if u_filter:
+                q = (Q(username__icontains=u_filter) |
+                    Q(first_name__icontains=u_filter) |
+                    Q(last_name__icontains=u_filter))
+                return query.filter(q)
+            return query
+        else:
+            return query
 
+    @cache_control(no_cache=True)
     def get_admin_list(self, request, **kwargs):
         '''
         List admin members of this agora
         '''
         return self.get_custom_resource_list(request,
             resource=TinyUserResource,
-            queryfunc=lambda agora: self.filter_user(request, agora.admins.all()),
+            queryfunc=lambda agora: self.filter_user(request, agora.admins.all(), agora),
             **kwargs)
 
+    @cache_control(no_cache=True)
     def get_member_list(self, request, **kwargs):
         '''
         List the members of this agora
         '''
         return self.get_custom_resource_list(request,
             resource=TinyUserResource,
-            queryfunc=lambda agora: self.filter_user(request, agora.members.all()),
+            queryfunc=lambda agora: self.filter_user(request, agora.members.all(), agora),
             **kwargs)
 
     def get_authorities_list(self, request, **kwargs):
@@ -333,13 +339,14 @@ class AgoraResource(GenericResource):
             queryfunc=lambda agora: agora.agora_local_authorities.all(),
             **kwargs)
 
+    @cache_control(no_cache=True)
     def get_active_delegates_list(self, request, **kwargs):
         '''
         List currently active delegates in this agora
         '''
         return self.get_custom_resource_list(request,
             resource=TinyUserResource,
-            queryfunc=lambda agora: self.filter_user(request, agora.active_delegates()),
+            queryfunc=lambda agora: self.filter_user(request, agora.active_delegates(), agora),
             **kwargs)
 
     def get_all_elections_list(self, request, **kwargs):
@@ -390,6 +397,8 @@ class AgoraResource(GenericResource):
         return self.get_custom_resource_list(request, resource=TinyElectionResource,
             queryfunc=lambda agora: agora.approved_elections(), **kwargs)
 
+    @permission_required('admin', (Agora, 'id', 'agoraid'))
+    @cache_control(no_cache=True)
     def get_request_list(self, request, **kwargs):
         '''
         List agora membership requests
@@ -399,13 +408,15 @@ class AgoraResource(GenericResource):
             from guardian.shortcuts import get_users_with_perms
             u_filter = request.GET.get('username', '')
             users = get_users_with_perms(agora, attach_perms=True)
-            users = [k.username for k, v in users.items() if "requested_membership" in v]                       
-            queryset = self.filter_user(request, User.objects.filter(username__in=users))
+            users = [k.username for k, v in users.items() if "requested_membership" in v]
+            queryset = self.filter_user(request, User.objects.filter(username__in=users), agora)
             return queryset
 
         return self.get_custom_resource_list(request, queryfunc=get_queryset,
-            resource=TinyUserResource, **kwargs)
+            resource=NotAnonTinyUserResource, **kwargs)
 
+    @permission_required('admin', (Agora, 'id', 'agoraid'))
+    @cache_control(no_cache=True)
     def get_denied_request_list(self, request, **kwargs):
         '''
         List agora denied membership requests
@@ -415,11 +426,11 @@ class AgoraResource(GenericResource):
             from guardian.shortcuts import get_users_with_perms
             users = get_users_with_perms(agora, attach_perms=True)
             users = [k.username for k, v in users.items() if "denied_requested_membership" in v]
-            queryset = self.filter_user(request, User.objects.filter(username__in=users))
+            queryset = self.filter_user(request, User.objects.filter(username__in=users), agora)
             return queryset
 
         return self.get_custom_resource_list(request, queryfunc=get_queryset,
-            resource=TinyUserResource, **kwargs)
+            resource=NotAnonTinyUserResource, **kwargs)
 
     @permission_required('admin', (Agora, 'id', 'agoraid'))
     @cache_control(no_cache=True)
@@ -432,11 +443,11 @@ class AgoraResource(GenericResource):
             from guardian.shortcuts import get_users_with_perms
             users = get_users_with_perms(agora, attach_perms=True)
             users = [k.username for k, v in users.items() if "requested_admin_membership" in v]
-            queryset = self.filter_user(request, User.objects.filter(username__in=users))
+            queryset = self.filter_user(request, User.objects.filter(username__in=users), agora)
             return queryset
 
         return self.get_custom_resource_list(request, queryfunc=get_queryset,
-            resource=TinyUserResource, **kwargs)
+            resource=NotAnonTinyUserResource, **kwargs)
 
     def get_custom_resource_list(self, request, queryfunc, resource=None,
         resourcefunc=None, **kwargs):
