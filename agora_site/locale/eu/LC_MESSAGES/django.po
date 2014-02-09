@@ -2909,11 +2909,10 @@ msgid ""
 "%(site_domain)s%(agora_url)s\">%(agora_fullname)s</a>. Please <a href="
 "\"%(protocol)s://%(site_domain)s%(agora_url)s\">follow this link</a> to "
 "complete your registration and join the agora:"
-msgstr "%(inviter)s kideak gonbidatu egin zaitu <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">%(agora_fullname)s</a> agoran parte hartzeko. <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">Egin klik esteka honetan</a>, erregistratu eta agorara sartzeko:</p>\n"
-"\n"
-"<p><a href=\"%(protocol)s://%(site_domain)s%(invitation_link)s\">%(protocol)s://%(site_domain)s%(invitation_link)s</a></p>\n"
-"\n"
-"<p>%(welcome_message)s</p>."
+msgstr "%(inviter)s kideak gonbidatu egin zaitu <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">%(agora_fullname)s</a> "
+"agoran parte hartzeko. <a href=\"%(protocol)s://%(site_domain)s"
+"%(agora_url)s\">Egin klik esteka honetan</a>, erregistratu eta agorara "
+"sartzeko:"
 
 #: agora_core/templates/agora_core/emails/join_invitation.html:13
 #: agora_core/templates/agora_core/emails/join_invitation.txt:10

@@ -2972,9 +2972,13 @@ msgid ""
 "vote in them, <strong>%(delegate_name)s</strong> will vote for you. You may "
 "change your delegation or cancel it at any time. We advise to delegate only "
 "in a someone you trust, and to actively review his vote record  frequently."
-msgstr "Hemos registrado que has delegado tu voto en el ágora <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">%(agora_full_name)s</a> en en el delegado <a href=\"%(protocol)s://%(site_domain)s%(delegate_url)s\">%(delegate_name)s</a>.\n"
-"\n"
-"<p>URL del usuario: <a href=\"%(protocol)s://%(site_domain)s%(other_user_url)s\">%(other_user_name)s</a></p> Esto significa que en futuras votaciones dentro de este ágora, si no votas directamente en ellas, %(delegate_name)s votará por tí. Puedes cambiar tu delegado o cancelarlo en cualquier momento. Aconsejamos delegar únicamente en alguien en quien confíes y activamente revisar su registro de votaciones frecuentemente."
+msgstr "Hemos registrado que has delegado tu voto en el ágora <a " "href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">%(agora_full_name)s</a> "
+"en en el delegado <a href=\"%(protocol)s://%(site_domain)s%(delegate_url)s\">"
+"%(delegate_name)s</a>. Esto significa que en futuras votaciones dentro de "
+"este ágora, si no votas directamente en ellas, %(delegate_name)s votará por "
+"tí. Puedes cambiar tu delegado o cancelarlo en cualquier momento. "
+"Aconsejamos delegar únicamente en alguien en quien confíes y activamente "
+"revisar su registro de votaciones frecuentemente."
 
 #: agora_core/templates/agora_core/emails/user_delegated.html:13
 #, python-format
@@ -3082,11 +3086,10 @@ msgid ""
 "As you requested, we have cancelled your vote at election %(election_name)s "
 "at %(agora_username)s/%(agora_name)s. You may re-vote if you wish: only your "
 "last vote counts."
-msgstr "Tal y como has solicitado, hemos cancelado tu voto en la votación %(election_name)s en %(agora_username)s/%(agora_name)s.\n"
-"\n"
-"URL de la votación: %(protocol)s://%(site_domain)s%(election_url)s\n"
-"\n"
-"Descripción de la votación: %(election_description)s Puedes volver a votar si quieres: sólo tu último voto cuenta."
+msgstr ""
+"Tal y como has solicitado, hemos cancelado tu voto en la votación "
+"%(election_name)s en %(agora_username)s/%(agora_name)s. Puedes volver a "
+"votar si quieres: sólo tu último voto cuenta."
 
 #: agora_core/templates/agora_core/emails/vote_casted.html:7
 #, python-format
