@@ -111,13 +111,24 @@
     </li>
     <% } %>
     <li>
-        <a href="/admin/auth/user/<%= id %>/">
+        <a href="#" class="action-edit-name">
             <i class="icon-tags"></i>
-            <%= gettext("Edit user name or other details") %>
+            <%= gettext("Edit user name") %>
         </a>
     </li>
     <% if (permissions.length == 0) { %>
         <li><%= gettext("no actions") %></li>
     <% } %>
 <% } %>
+</script>
+
+<script id="template-edit_name_dialog_footer" type="text/underscore-template">
+    <a href="#" class="btn btn-primary" id="change-name-action"><%= gettext("Save the name") %></a>
+</script>
+
+<script id="template-edit_name_dialog_body" type="text/underscore-template">
+    <p>
+    <%= interpolate(gettext("Edit %s full name:"), [username]) %>
+    </p>
+    <input type="text" class="input-block-level" id="user_full_name" value="<%- user_fullname %>" />
 </script>

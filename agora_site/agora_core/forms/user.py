@@ -150,6 +150,64 @@ class APIEmailLoginForm(django_forms.Form):
         return dict(request=request, data=data)
 
 
+class ChangeNameForm(django_forms.Form):
+    '''
+    Change first name of another user, only for superusers
+    '''
+    first_name = django_forms.CharField(max_length=140, required=True)
+
+    def __init__(self, request, target_user, *args, **kwargs):
+        super(ChangeNameForm, self).__init__(*args, **kwargs)
+        self.request = request
+        self.target_user = target_user
+
+    def is_valid(self):
+        if not super(ChangeNameForm, self).is_valid():
+            return False
+
+        if not self.request.user.is_superuser:
+            raise django_forms.ValidationError(_('You have no permission.'))
+
+        return True
+
+    def clean_first_name(self):
+        '''
+        Validates first_name field (which is actually user's full name). If its
+        a FNMT authenticated user, this user cannot change the first name.
+        '''
+        if 'first_name' not in self.data:
+            return None
+
+        first_name = clean_html(self.cleaned_data['first_name'])
+        if '<' in first_name or '\"' in first_name or '(' in first_name:
+            raise django_forms.ValidationError(_(u'Invalid first name.'))
+
+        profile = self.target_user.get_profile()
+        if isinstance(profile.extra, dict) and\
+                profile.extra.has_key('fnmt_cert') and\
+                self.target_user.first_name != first_name:
+            raise django_forms.ValidationError(_('FNMT users cannot change their names.'))
+
+        return first_name
+
+    def save(self):
+        self.target_user.first_name = self.cleaned_data['first_name']
+        self.target_user.save()
+        return dict()
+
+    @staticmethod
+    def static_get_form_kwargs(request, data, *args, **kwargs):
+        '''
+        Returns the parameters that will be sent to the constructor
+        '''
+        ret_kwargs = dict(
+            request=request,
+            data=data
+        )
+        ret_kwargs['target_user'] = get_object_or_404(User, pk=kwargs["userid"])
+        return ret_kwargs
+
+
 class SendMailForm(django_forms.Form):
     '''
     Base comment. This is inherited by others

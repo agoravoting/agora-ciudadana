@@ -34,7 +34,7 @@ from agora_site.misc.utils import rest, validate_email
 from agora_site.misc.decorators import permission_required
 from agora_site.agora_core.forms.user import (UsernameAvailableForm, LoginForm,
     SendMailForm, UserSettingsForm, CustomAvatarForm, APISignupForm,
-    APIEmailLoginForm, DisableUserForm)
+    APIEmailLoginForm, DisableUserForm, ChangeNameForm)
 from agora_site.agora_core.models import Profile
 from agora_site.agora_core.models import Agora
 
@@ -231,6 +231,11 @@ class UserResource(GenericResource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_form(form_class=APISignupForm,
                 method="POST"), name="api_user_register"),
+
+            url(r"^(?P<resource_name>%s)/(?P<userid>\d+)/change_name%s$" \
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_form(form_class=ChangeNameForm,
+                method="POST"), name="api_user_change_name"),
 
             url(r"^(?P<resource_name>%s)/email_login%s$" \
                 % (self._meta.resource_name, trailing_slash()),

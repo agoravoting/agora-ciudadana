@@ -7,6 +7,7 @@
             'click .user-result .row': 'clickUser',
             'click .action-send-message': 'showSendMessageDialog',
             'click .action-choose-as-delegate': 'delegateVote',
+            'click .action-edit-name': 'editName',
             'click .dropdown-toggle': 'toggleDropdown'
         },
 
@@ -78,6 +79,62 @@
             $(e.target).closest(".action-choose-as-delegate").data("delegate", voter);
 
             Agora.delegateVoteHandler(e, this);
+        },
+
+        editName: function (e) {
+            e.preventDefault();
+
+            $(e.target).closest('.dropdown').find('.dropdown-toggle').dropdown('toggle');
+            var user_id = $(e.target).closest("div.row.bottom-bordered").data('id');
+            var user_fullname = $(e.target).closest("div.row.bottom-bordered").data('fullname');
+            var username = $(e.target).closest("div.row.bottom-bordered").data('username');
+            if (!user_fullname.length) {
+                user_fullname = username;
+            }
+
+            app.editNameDialog = new Agora.ModalDialogView();
+            var title = interpolate(gettext('Edit %s full name'), [username]);
+
+            var data = {
+                "user_fullname": user_fullname,
+                "username": username
+            };
+            var body = _.template($("#template-edit_name_dialog_body").html())(data);
+            var footer = _.template($("#template-edit_name_dialog_footer").html())();
+
+            app.editNameDialog.populate(title, body, footer);
+            app.editNameDialog.show();
+
+            $('#change-name-action').click(function (e) {
+                e.preventDefault();
+                if ($("#change-name-action").hasClass("disabled")) {
+                    return;
+                }
+                $("#change-name-action").addClass("disabled");
+
+                var json = {
+                    "first_name": $("#user_full_name").val()
+                };
+
+                var jqxhr = $.ajax("/api/v1/user/" + user_id + "/change_name/", {
+                    data: JSON.stringifyCompat(json),
+                    contentType : 'application/json',
+                    type: 'POST',
+                })
+                .done(function() {
+                    $("#modal_dialog").modal('hide');
+                    alert(gettext("Name changed successfully"));
+                    window.location.reload(true);
+                })
+                .fail(function() {
+                    $("#change-name-action").removeClass("disabled");
+                    alert(gettext("Error saving the name, please try again later"));
+                });
+
+                return false;
+            });
+
+            return false;
         },
 
         showSendMessageDialog: function(e) {
