@@ -880,6 +880,11 @@
                 }
             });
 
+            // renumerate user choices
+            this.$el.find('.user-choices ul li').each(function (index) {
+                $(this).find('small').html((index + 1) + ".");
+            });
+
             // show/hide relevant info
             if (length - 1 < this.model.get('max')) {
                 this.$el.find('.cannot-select-more').hide();
