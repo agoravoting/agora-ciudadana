@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-09 22:01+0100\n"
+"POT-Creation-Date: 2014-02-09 22:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -334,7 +334,7 @@ msgstr ""
 
 #: agora_core/templates/agora_core/featured_election.html:279
 #: agora_core/templates/agora_core/featured_election.html:280
-msgid "Security Authorities"
+msgid "Election Authorities"
 msgstr ""
 
 #: agora_core/templates/agora_core/user_settings.html:22

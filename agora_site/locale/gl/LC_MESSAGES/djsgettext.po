@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-09 22:01+0100\n"
+"POT-Creation-Date: 2014-02-09 22:08+0100\n"
 "PO-Revision-Date: 2013-09-27 07:43+0200\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -350,8 +350,9 @@ msgstr ""
 
 #: agora_core/templates/agora_core/featured_election.html:279
 #: agora_core/templates/agora_core/featured_election.html:280
-msgid "Security Authorities"
-msgstr ""
+#, fuzzy
+msgid "Election Authorities"
+msgstr "Votación"
 
 #: agora_core/templates/agora_core/user_settings.html:22
 msgid "User settings"

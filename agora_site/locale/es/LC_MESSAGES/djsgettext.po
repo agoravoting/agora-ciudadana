@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-09 22:01+0100\n"
+"POT-Creation-Date: 2014-02-09 22:08+0100\n"
 "PO-Revision-Date: 2013-06-04 17:45-0000\n"
 "Last-Translator: \n"
 "Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-"
@@ -370,9 +370,8 @@ msgstr "Preguntas Frecuentes"
 
 #: agora_core/templates/agora_core/featured_election.html:279
 #: agora_core/templates/agora_core/featured_election.html:280
-#, fuzzy
-msgid "Security Authorities"
-msgstr "Autoridades seleccionadas"
+msgid "Election Authorities"
+msgstr "Autoridades de Votación"
 
 #: agora_core/templates/agora_core/user_settings.html:22
 msgid "User settings"
