@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-08 18:51+0100\n"
+"POT-Creation-Date: 2014-02-09 21:59+0100\n"
 "PO-Revision-Date: 2013-09-27 07:34+0200\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -50,7 +50,7 @@ msgstr ""
 msgid "Sign up"
 msgstr "Rexistrarse"
 
-#: accounts/forms.py:118 accounts/forms.py:325 agora_core/forms/user.py:474
+#: accounts/forms.py:118 accounts/forms.py:325 agora_core/forms/user.py:532
 msgid "This username is not allowed."
 msgstr "Este nome de usuario non está permitido."
 
@@ -105,7 +105,7 @@ msgstr "Establecer o novo contrasinal"
 msgid "Username"
 msgstr "Nome de usuario"
 
-#: accounts/forms.py:293 agora_core/forms/user.py:452
+#: accounts/forms.py:293 agora_core/forms/user.py:510
 msgid "Username must contain only letters, numbers, dots and underscores."
 msgstr ""
 "Os nomes de usuario só deben conter letras, números, puntos e guións baixos."
@@ -123,12 +123,12 @@ msgstr "Repetir o contrasinal"
 msgid "Name"
 msgstr "Nome:"
 
-#: accounts/forms.py:323 agora_core/forms/user.py:472
+#: accounts/forms.py:323 agora_core/forms/user.py:530
 msgid "This username is already taken."
 msgstr "Este nome de usuario xa está collido."
 
 #: accounts/forms.py:337 agora_core/forms/__init__.py:207
-#: agora_core/forms/user.py:511
+#: agora_core/forms/user.py:569
 msgid "The two password fields didn't match."
 msgstr "Os contrasinais non coincidían."
 
@@ -775,8 +775,8 @@ msgstr ""
 "O seu voto foi emitido correctamente. Comparta a votación en Facebook, "
 "Google Plus, Twitter, etc."
 
-#: agora_core/views.py:817 agora_core/forms/election.py:206
-#: agora_core/forms/election.py:406
+#: agora_core/views.py:817 agora_core/forms/election.py:207
+#: agora_core/forms/election.py:408
 #, python-format
 msgid "Vote casted for election %s"
 msgstr "Emitiuse un voto para «%s»."
@@ -943,12 +943,12 @@ msgstr "Non pode aceptar a solicitude de admisión na ágora deste usuario."
 msgid "You accepted  %(username)s membership request in %(agora)s."
 msgstr "Aceptou a %(username)s na ágora %(agora)s."
 
-#: agora_core/views.py:1286 agora_core/resources/agora.py:726
+#: agora_core/views.py:1286 agora_core/resources/agora.py:737
 #, python-format
 msgid "Your membership has been accepted at %(agora)s. Congratulations!"
 msgstr "Foi admitido na ágora %(agora)s. Parabéns!"
 
-#: agora_core/views.py:1291 agora_core/resources/agora.py:731
+#: agora_core/views.py:1291 agora_core/resources/agora.py:742
 #, fuzzy, python-format
 msgid ""
 "Your membership has been accepted at %(agora)s and your ballot has been "
@@ -956,7 +956,7 @@ msgid ""
 msgstr "Foi admitido na ágora %(agora)s. Parabéns!"
 
 #: agora_core/views.py:1303 agora_core/models/__init__.py:141
-#: agora_core/resources/agora.py:743
+#: agora_core/resources/agora.py:754
 #, python-format
 msgid "%(site)s - you are now member of %(agora)s"
 msgstr "%(site)s — Xa forma parte da ágora «%(agora)s»"
@@ -1065,7 +1065,7 @@ msgid ""
 "Your have been removed from membership from %(agora)s . Sorry about that!"
 msgstr "Foi expulsado da ágora %(agora)s."
 
-#: agora_core/views.py:1657 agora_core/resources/agora.py:1006
+#: agora_core/views.py:1657 agora_core/resources/agora.py:1017
 #, python-format
 msgid "%(site)s - membership removed from %(agora)s"
 msgstr "%(site)s — Expulsión da ágora %(agora)s"
@@ -1141,7 +1141,7 @@ msgstr "Cambiou a configuración da ágora «%(agoraname)s»."
 msgid "Create Agora"
 msgstr "Nova ágora"
 
-#: agora_core/forms/__init__.py:101 agora_core/forms/user.py:221
+#: agora_core/forms/__init__.py:101 agora_core/forms/user.py:279
 msgid "Avatar"
 msgstr "Imaxe"
 
@@ -1164,7 +1164,7 @@ msgstr "Descrición breve:"
 msgid "Say something about yourself (140 chars max)"
 msgstr "Escriba algo sobre vostede en 140 caracteres ou menos."
 
-#: agora_core/forms/__init__.py:109 agora_core/forms/user.py:265
+#: agora_core/forms/__init__.py:109 agora_core/forms/user.py:323
 #: agora_core/models/__init__.py:254 agora_core/models/agora.py:94
 #: agora_core/templates/agora_core/agora_bio.html:5
 #: agora_core/templates/agora_core/user_bio.html:5
@@ -1206,7 +1206,7 @@ msgstr "Novo contrasinal (repítao):"
 msgid "Profile"
 msgstr "Perfil"
 
-#: agora_core/forms/__init__.py:153 templates/base.html:140
+#: agora_core/forms/__init__.py:153 templates/base.html:144
 msgid "Security"
 msgstr "Seguridade"
 
@@ -1215,15 +1215,15 @@ msgstr "Seguridade"
 msgid "Save settings"
 msgstr "Gardar a configuración"
 
-#: agora_core/forms/__init__.py:189 agora_core/forms/user.py:336
-#: agora_core/forms/user.py:483
+#: agora_core/forms/__init__.py:189 agora_core/forms/user.py:394
+#: agora_core/forms/user.py:541
 msgid "This email is already in use. Please supply a different email."
 msgstr ""
 "O enderezo de correo indicado xa está rexistrado. Deberá escoller un "
 "enderezo distinto."
 
 #: agora_core/forms/__init__.py:195 agora_core/forms/user.py:87
-#: agora_core/forms/user.py:367
+#: agora_core/forms/user.py:425
 msgid "Invalid password."
 msgstr "O contrasinal non é válido."
 
@@ -1365,14 +1365,14 @@ msgstr "Enviar"
 msgid "You must be authenticated to post a comment"
 msgstr "Debe acceder ao sitio para deixar comentarios."
 
-#: agora_core/forms/comment.py:128 agora_core/forms/user.py:201
+#: agora_core/forms/comment.py:128 agora_core/forms/user.py:259
 #, python-format
 msgid "Watch your mouth! The word %s is not allowed here."
 msgid_plural "Watch your mouth! The words %s are not allowed here."
 msgstr[0] "Esa lingua! A palabra «%s» non está permitida."
 msgstr[1] "Esa lingua! A palabra «%s» non está permitida."
 
-#: agora_core/forms/election.py:442
+#: agora_core/forms/election.py:444
 #, fuzzy, python-format
 msgid "Please confirm vote casted for election %s"
 msgstr "Emitiuse un voto para «%s»."
@@ -1381,45 +1381,49 @@ msgstr "Emitiuse un voto para «%s»."
 msgid "Unathenticated request."
 msgstr ""
 
-#: agora_core/forms/user.py:126 agora_core/forms/user.py:499
+#: agora_core/forms/user.py:126 agora_core/forms/user.py:557
 msgid "Auto activation not allowed."
 msgstr "Non pode activar a súa propia conta."
 
-#: agora_core/forms/user.py:129 agora_core/forms/user.py:497
+#: agora_core/forms/user.py:129 agora_core/forms/user.py:555
 #, fuzzy
 msgid "Invalid activation secret."
 msgstr "O segredo de activación é incorrecto."
 
-#: agora_core/forms/user.py:171
+#: agora_core/forms/user.py:169
+msgid "You have no permission."
+msgstr ""
+
+#: agora_core/forms/user.py:183 agora_core/forms/user.py:461
+#, fuzzy
+msgid "Invalid first name."
+msgstr "A ligazón de activación é incorrecta."
+
+#: agora_core/forms/user.py:189 agora_core/forms/user.py:467
+msgid "FNMT users cannot change their names."
+msgstr "Os usuarios FNMT non poden cambiar de nome."
+
+#: agora_core/forms/user.py:229
 #, python-format
 msgid "Message from %s"
 msgstr "Mensaxe de %s"
 
-#: agora_core/forms/user.py:332 agora_core/forms/user.py:348
-#: agora_core/forms/user.py:379
+#: agora_core/forms/user.py:390 agora_core/forms/user.py:406
+#: agora_core/forms/user.py:437
 msgid "You need to supply the old password."
 msgstr ""
 
-#: agora_core/forms/user.py:352
+#: agora_core/forms/user.py:410
 msgid "This username is already in use. Please supply a different username."
 msgstr ""
 "O nome de usuario indicado xa está rexistrado. Deberá escoller un nome de "
 "usuario distinto."
 
-#: agora_core/forms/user.py:384
+#: agora_core/forms/user.py:442
 msgid "The two password fields didn't match or are insecure."
 msgstr "Os contrasinais non coincidían ou non son seguros."
 
-#: agora_core/forms/user.py:403
-#, fuzzy
-msgid "Invalid first name."
-msgstr "A ligazón de activación é incorrecta."
-
-#: agora_core/forms/user.py:409
-msgid "FNMT users cannot change their names."
-msgstr "Os usuarios FNMT non poden cambiar de nome."
-
-#: agora_core/forms/user.py:418
+#: agora_core/forms/user.py:476
 msgid "You need to be authenticated"
 msgstr "Primeiro ten que acceder ao sitio."
 
@@ -1846,17 +1850,17 @@ msgid "Choose one option among many - Technical name: Plurality voting system"
 msgstr ""
 "Escolla unha opción de entre moitas — Sistema de votación de pluralidade"
 
-#: agora_core/resources/agora.py:635
+#: agora_core/resources/agora.py:646
 #, python-format
 msgid "You canceled your membership request at %(agora)s"
 msgstr "Cancelou a súa solicitude de admisión en %(agora)s."
 
-#: agora_core/resources/agora.py:643
+#: agora_core/resources/agora.py:654
 #, python-format
 msgid "%(site)s - canceled your membership request at %(agora)s"
 msgstr "%(site)s — Cancelouse a súa solicitude de admisión en %(agora)s."
 
-#: agora_core/resources/agora.py:806
+#: agora_core/resources/agora.py:817
 #, python-format
 msgid ""
 "As administrator of %(agora)s, %(user)s has added you to this agora. You can "
@@ -1867,62 +1871,62 @@ msgstr ""
 "ágora. Pode darse de baixa da ágora cando queira. Se cre que este usuario "
 "non debeu engadilo á ágora, non dubide en poñerse en contacto connosco."
 
-#: agora_core/resources/agora.py:818
+#: agora_core/resources/agora.py:829
 #, python-format
 msgid "%(site)s - Added as member to %(agora)s"
 msgstr "%(site)s — Engadírono como membro da ágora %(agora)s"
 
-#: agora_core/resources/agora.py:875
+#: agora_core/resources/agora.py:886
 #, python-format
 msgid "Your membership of %(agora)s has been removed. Sorry about that!"
 msgstr "Expulsárono da ágora %(agora)s."
 
-#: agora_core/resources/agora.py:883
+#: agora_core/resources/agora.py:894
 #, python-format
 msgid "%(site)s - membership of %(agora)s removed"
 msgstr "%(site)s — Expulsión da ágora %(agora)s"
 
-#: agora_core/resources/agora.py:944
+#: agora_core/resources/agora.py:955
 #, python-format
 msgid "You canceled your admin membership request at %(agora)s"
 msgstr "Cancelou a súa solicitude de status de administrador en %(agora)s."
 
-#: agora_core/resources/agora.py:952
+#: agora_core/resources/agora.py:963
 #, python-format
 msgid "%(site)s - canceled your admin membership request at %(agora)s"
 msgstr ""
 "%(site)s — Nova solicitude de status de administrador na ágora %(agora)s"
 
-#: agora_core/resources/agora.py:998
+#: agora_core/resources/agora.py:1009
 #, python-format
 msgid "You have removed your membership from %(agora)s"
 msgstr "Deixou de ser membro da ágora %(agora)s."
 
-#: agora_core/resources/agora.py:1055
+#: agora_core/resources/agora.py:1066
 #, python-format
 msgid "Your admin membership has been accepted at %(agora)s. Congratulations!"
 msgstr "Foi admitido como administrador da ágora %(agora)s. Parabéns!"
 
-#: agora_core/resources/agora.py:1063
+#: agora_core/resources/agora.py:1074
 #, python-format
 msgid "%(site)s - you are now admin of %(agora)s"
 msgstr "%(site)s — Xa é administrador da ágora %(agora)s"
 
-#: agora_core/resources/agora.py:1110
+#: agora_core/resources/agora.py:1121
 #, python-format
 msgid ""
 "Your admin membership request at %(agora)s has been denied. Sorry about that!"
 msgstr ""
 "Rexeitouse a súa solicitude do status de administrador na ágora %(agora)s."
 
-#: agora_core/resources/agora.py:1118
+#: agora_core/resources/agora.py:1129
 #, python-format
 msgid "%(site)s - admin membership request denied at %(agora)s"
 msgstr ""
 "%(site)s — Rexeitamento da solicitude de status de administrador da ágora "
 "%(agora)s"
 
-#: agora_core/resources/agora.py:1164
+#: agora_core/resources/agora.py:1175
 #, python-format
 msgid ""
 "As administrator of %(agora)s, %(user)s has promoted you to admin of this "
@@ -1934,54 +1938,54 @@ msgstr ""
 "cando queira. Se cre que este usuario non debeu engadilo á ágora, non dubide "
 "en poñerse en contacto connosco."
 
-#: agora_core/resources/agora.py:1176
+#: agora_core/resources/agora.py:1187
 #, python-format
 msgid "%(site)s - Promoted to admin of agora %(agora)s"
 msgstr "%(site)s — Ascendérono a administrador da ágora %(agora)s"
 
-#: agora_core/resources/agora.py:1224
+#: agora_core/resources/agora.py:1235
 #, python-format
 msgid ""
 "Your admin permissions on %(agora)s have been revoked. Sorry about that!"
 msgstr "Revogáronse os seus permisos de administrador na ágora %(agora)s."
 
-#: agora_core/resources/agora.py:1231
+#: agora_core/resources/agora.py:1242
 #, python-format
 msgid "%(site)s - admin permissions revoked on %(agora)s"
 msgstr ""
 "%(site)s — Revogáronse os seus permisos de administrador na ágora %(agora)s"
 
-#: agora_core/resources/agora.py:1269
+#: agora_core/resources/agora.py:1280
 #, python-format
 msgid "You have given up your admin permissions on %(agora)s"
 msgstr "Renunciou aos seus permisos de administrador na ágora %(agora)s."
 
-#: agora_core/resources/agora.py:1277
+#: agora_core/resources/agora.py:1288
 #, python-format
 msgid "%(site)s - admin permissions given up on %(agora)s"
 msgstr ""
 "%(site)s — Renunciou aos seus permisos de administrador na ágora %(agora)s"
 
-#: agora_core/resources/agora.py:1310
+#: agora_core/resources/agora.py:1321
 #, fuzzy
 msgid "Invalid authorities_ids."
 msgstr "O contrasinal non é válido."
 
-#: agora_core/resources/agora.py:1316
+#: agora_core/resources/agora.py:1327
 #, fuzzy
 msgid "Invalid number of authorities."
 msgstr "O formato da resposta é incorrecto."
 
-#: agora_core/resources/agora.py:1354
+#: agora_core/resources/agora.py:1365
 msgid "Your vote is not currently delegated."
 msgstr "O seu voto non está delegado."
 
-#: agora_core/resources/agora.py:1374
+#: agora_core/resources/agora.py:1385
 #, python-format
 msgid "You have removed your vote delegation from %(agora)s"
 msgstr "Deixou de delegar o voto na ágora %(agora)s."
 
-#: agora_core/resources/agora.py:1382
+#: agora_core/resources/agora.py:1393
 #, python-format
 msgid "%(site)s - vote delegation removed from %(agora)s"
 msgstr "%(site)s — Cese da delegación do voto na ágora %(agora)s"
@@ -2000,11 +2004,18 @@ msgstr "URL da votación"
 msgid "%(site)s - Election %(election)s approved"
 msgstr "%(site)s — Aprobouse a votación «%(election)s»"
 
-#: agora_core/resources/user.py:316
+#: agora_core/resources/user.py:74 agora_core/resources/user.py:80
+#: agora_core/resources/user.py:150 agora_core/resources/user.py:156
+#: agora_core/resources/user.py:171 agora_core/resources/user.py:204
+#: agora_core/resources/user.py:210
+msgid "Anonymous"
+msgstr ""
+
+#: agora_core/resources/user.py:362
 msgid "Welcome to this agora"
 msgstr "Reciba a benvida a esta ágora"
 
-#: agora_core/resources/user.py:373
+#: agora_core/resources/user.py:419
 #, python-format
 msgid "%(site)s - invitation to join %(agora)s"
 msgstr "%(site)s — Invitación para unirse á ágora %(agora)s"
@@ -2481,7 +2492,7 @@ msgid "Do you really want to cancel your vote in this election?"
 msgstr "Está seguro de que quere cancelar o seu voto nesta votación?"
 
 #: agora_core/templates/agora_core/election_base.html:309
-#: templates/base.html:64
+#: templates/base.html:68
 msgid "Close"
 msgstr "Pechar"
 
@@ -2646,12 +2657,12 @@ msgid "Follow a friend. Create a delegate. Comment. Participate."
 msgstr "Siga aos amigos. Cree un delegado. Comente. Participe."
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:70
-#: templates/base.html:152
+#: templates/base.html:156
 msgid "Follow on Twitter"
 msgstr "Seguirnos en Twitter"
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:71
-#: templates/base.html:155
+#: templates/base.html:159
 msgid "Like in Facebook"
 msgstr "Gustarnos en Facebook"
 
@@ -2660,7 +2671,7 @@ msgid "Follow in Identi.ca"
 msgstr "Seguirnos en Identi.ca"
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:73
-#: templates/base.html:161
+#: templates/base.html:165
 msgid "+1 in Google Plus"
 msgstr "+1 en Google Plus"
 
@@ -3504,35 +3515,35 @@ msgstr ""
 msgid "Enter valid JSON"
 msgstr "Introduza código JSON correcto"
 
-#: templates/base.html:46
+#: templates/base.html:50
 msgid "Heads Up!"
 msgstr "Atención!"
 
-#: templates/base.html:47
+#: templates/base.html:51
 msgid "Well done!"
 msgstr "Moi ben!"
 
-#: templates/base.html:48
+#: templates/base.html:52
 msgid "Be aware!"
 msgstr "Coidado!"
 
-#: templates/base.html:49
+#: templates/base.html:53
 msgid "Oh snap!"
 msgstr "Oh!"
 
-#: templates/base.html:58
+#: templates/base.html:62
 msgid "Heads up!"
 msgstr "Atención!"
 
-#: templates/base.html:82
+#: templates/base.html:86
 msgid "<p>A new way of</p><h1>Making group decisions</h1>"
 msgstr "<p>Unha nova forma de</p> <h1>Tomar decisións en grupo</h1>"
 
-#: templates/base.html:85
+#: templates/base.html:89
 msgid "Participate"
 msgstr "Participar"
 
-#: templates/base.html:90
+#: templates/base.html:94
 msgid ""
 "An indispensable tool to lead an organization in a democratic manner. Its "
 "delegation system reflects trust relationships"
@@ -3540,55 +3551,55 @@ msgstr ""
 "Unha ferramenta indispensábel para levar unha organización de forma "
 "democrática. O seu sistema de delegación reflicte as relacións de confianza."
 
-#: templates/base.html:92
+#: templates/base.html:96
 msgid "Eduardo Robles Elvira, Cofounder of Wadobo"
 msgstr "Eduardo Robles Elvira, co-fundador de Wadobo."
 
-#: templates/base.html:113
+#: templates/base.html:117
 msgid "Discover"
 msgstr "Coñézanos"
 
-#: templates/base.html:116
+#: templates/base.html:120
 msgid "About"
 msgstr "Información"
 
-#: templates/base.html:119
+#: templates/base.html:123
 msgid "Libre Software"
 msgstr "Software libre"
 
-#: templates/base.html:122
+#: templates/base.html:126
 msgid "Blog"
 msgstr "Bitácora"
 
-#: templates/base.html:125
+#: templates/base.html:129
 msgid "Press"
 msgstr ""
 
-#: templates/base.html:131
+#: templates/base.html:135
 msgid "Serious Stuff"
 msgstr "Cousas serias"
 
-#: templates/base.html:134
+#: templates/base.html:138
 msgid "Terms of Service"
 msgstr "Condicións de uso"
 
-#: templates/base.html:137
+#: templates/base.html:141
 msgid "Privacy Policy"
 msgstr "Política de protección da intimidade"
 
-#: templates/base.html:143
+#: templates/base.html:147
 msgid "Contact Us"
 msgstr "Contacte connosco"
 
-#: templates/base.html:149
+#: templates/base.html:153
 msgid "Be Social"
 msgstr "Socialice"
 
-#: templates/base.html:158
+#: templates/base.html:162
 msgid "Follow in Indenti.ca"
 msgstr "Seguirnos en Identi.ca"
 
-#: templates/base.html:166
+#: templates/base.html:170
 msgid "Powered by"
 msgstr "Co apoio de"
 

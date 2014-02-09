@@ -5,12 +5,14 @@
 # Luis Cuerdo <email@luiscuerdo.com>, 2013
 # Eduardo Robles Elvira <edulix@gmail.com>, 2013
 msgid ""
-msgstr "Project-Id-Version: 2.1\n"
+msgstr ""
+"Project-Id-Version: 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-08 18:52+0100\n"
+"POT-Creation-Date: 2014-02-09 22:01+0100\n"
 "PO-Revision-Date: 2013-06-04 17:45-0000\n"
 "Last-Translator: \n"
-"Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-devel@googlegroups.com>\n"
+"Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-"
+"devel@googlegroups.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -98,11 +100,15 @@ msgstr "Cualquiera puede participar"
 
 #: agora_core/templates/agora_core/agora_admin.html:133
 msgid "Joining requires admins approval, allow non-member delegates"
-msgstr "Unirse requiere la aprobación del administrador, permitir delegados no miembros"
+msgstr ""
+"Unirse requiere la aprobación del administrador, permitir delegados no "
+"miembros"
 
 #: agora_core/templates/agora_core/agora_admin.html:136
 msgid "Joining requires admins approval and delegates must be agora members"
-msgstr "Ser miembro requiere la aprobación de los administradores y los delegados deben ser miembros del ágora"
+msgstr ""
+"Ser miembro requiere la aprobación de los administradores y los delegados "
+"deben ser miembros del ágora"
 
 #: agora_core/templates/agora_core/agora_admin.html:144
 msgid "Comments policy"
@@ -136,7 +142,9 @@ msgstr "Guardar la configuración"
 msgid ""
 "Authorities encrypt the secret direct votes in elections and secret "
 "delegated votes in an agora. "
-msgstr "Las autoridades cifran los votos directos y las delegaciones secretas de la votación en el ágora. "
+msgstr ""
+"Las autoridades cifran los votos directos y las delegaciones secretas de la "
+"votación en el ágora. "
 
 #: agora_core/templates/agora_core/agora_admin.html:190
 #: agora_core/templates/agora_core/available_authorities.html:15
@@ -147,7 +155,9 @@ msgstr "Autoridades disponibles"
 msgid ""
 "Click to add/remove to your list of authorities. <a href=\"/available-"
 "authorities/\">More detailed information here</a>"
-msgstr "Haz clic para añadir/eliminar autoridades <a href=\"/available-authorities/\">Más información aquí</a>"
+msgstr ""
+"Haz clic para añadir/eliminar autoridades <a href=\"/available-authorities/"
+"\">Más información aquí</a>"
 
 #: agora_core/templates/agora_core/agora_admin.html:195
 msgid "Selected authorities"
@@ -172,14 +182,19 @@ msgstr "Es obligatorio seleccionar como mínimo %s opciones en esta pregunta."
 msgid ""
 "You reached the maximum number of allowed choices (%s). You can change your "
 "choices removing current choices first."
-msgstr "Has alcanzado el número máximo de opciones permitidas (%s). Para cambiar las opciones debes quitar las actualmente seleccionadas."
+msgstr ""
+"Has alcanzado el número máximo de opciones permitidas (%s). Para cambiar las "
+"opciones debes quitar las actualmente seleccionadas."
 
 #: agora_core/templates/agora_core/agora_admin.html:230
 msgid ""
 "<strong>Warning!</strong> When you change authorities, all previous "
 "delegated votes will be lost and will need to be renewed, and vote "
 "delegation won't be available until authorities verify your request."
-msgstr "<strong>¡Atención!</strong> Al cambiar las autoridades se perderán todas las delegaciones de voto previas y la delegación de voto no estará disponible hasta que las autoridades verifiquen tu petición."
+msgstr ""
+"<strong>¡Atención!</strong> Al cambiar las autoridades se perderán todas las "
+"delegaciones de voto previas y la delegación de voto no estará disponible "
+"hasta que las autoridades verifiquen tu petición."
 
 #: agora_core/templates/agora_core/agora_admin.html:233
 msgid "Save authorities"
@@ -191,13 +206,20 @@ msgid ""
 "all this data will be empty and of no interest. If you have enabled secret "
 "and encrypted delegation, until status doesn't reach <strong>finished</"
 "strong> status, vote delegation will be disabled."
-msgstr "Estado de la compatibilidad de delegación segura. Si has deshabilitado la delegación, estos datos estarán vacíos y no son necesarios. Si has habilitado la delegación segura y cifrada, hasta que el estado no sea <strong>finalizado</strong>, la delegación de voto estará deshabilitada."
+msgstr ""
+"Estado de la compatibilidad de delegación segura. Si has deshabilitado la "
+"delegación, estos datos estarán vacíos y no son necesarios. Si has "
+"habilitado la delegación segura y cifrada, hasta que el estado no sea "
+"<strong>finalizado</strong>, la delegación de voto estará deshabilitada."
 
 #: agora_core/templates/agora_core/agora_admin.html:243
 msgid ""
 "If there was some error and you want to try again, go to Authorities tab and "
 "click in Save Authorities to request a new election id to authorities."
-msgstr "Si se ha producido un error y quieres intentarlo de nuevo, dirígete a la pestaña Autoridades y pulsa Guardar autoridades para solicitar a las autoridades un nuevo ID de votación."
+msgstr ""
+"Si se ha producido un error y quieres intentarlo de nuevo, dirígete a la "
+"pestaña Autoridades y pulsa Guardar autoridades para solicitar a las "
+"autoridades un nuevo ID de votación."
 
 #: agora_core/templates/agora_core/agora_admin.html:247
 msgid "Election Id"
@@ -226,7 +248,12 @@ msgid ""
 "uncompromised if at least one of the authorities remain secure and "
 "independent. What follows is a list of the available authorities (if you "
 "want to add one more please contact us):"
-msgstr "Las autoridades son responsables del recuento de las votaciones. Dos o más autoridades realizan el recuento de la votación cifrada, el voto permanecerá secreto mientras por lo menos una de las autoridades permanezca segura e independiente. A continuación dispones de una lista de autoridades (si deseas añadir una, ponte en contacto con nosostros):"
+msgstr ""
+"Las autoridades son responsables del recuento de las votaciones. Dos o más "
+"autoridades realizan el recuento de la votación cifrada, el voto permanecerá "
+"secreto mientras por lo menos una de las autoridades permanezca segura e "
+"independiente. A continuación dispones de una lista de autoridades (si "
+"deseas añadir una, ponte en contacto con nosostros):"
 
 #: agora_core/templates/agora_core/available_authorities.html:21
 msgid "more"
@@ -249,84 +276,103 @@ msgid ""
 "Download <a target=\"_blank\" href=\"https://congresotransparente.com/static/"
 "agora-verifier\">agora-verifier</a> (you need x64 bits Linux with python and "
 "java)"
-msgstr "Descarga <a target=\"_blank\" href=\"https://congresotransparente.com/static/agora-verifier\">agora-verifier</a> (necesitarás Linux x64 bits con python y java)"
+msgstr ""
+"Descarga <a target=\"_blank\" href=\"https://congresotransparente.com/static/"
+"agora-verifier\">agora-verifier</a> (necesitarás Linux x64 bits con python y "
+"java)"
 
 #: agora_core/templates/agora_core/election_security_center.html:28
 #, php-format
 msgid ""
 "Download <a target=\"_blank\" href=\"/media/elections/%s/tally.tar.gz\">the "
 "tally for this election</a>"
-msgstr "Descarga <a target=\"_blank\" href=\"/media/elections/%s/tally.tar.gz\">el recuento de la votación</a>"
+msgstr ""
+"Descarga <a target=\"_blank\" href=\"/media/elections/%s/tally.tar.gz\">el "
+"recuento de la votación</a>"
 
 #: agora_core/templates/agora_core/election_security_center.html:31
 msgid ""
 "Enter the directory where you downloaded both files and execute the "
 "following command to verify the tally: <br/><h2>sh agora-verifier tally.tar."
 "gz</h2>"
-msgstr "Indica el directorio donde hayas descargado ambos archivos y ejecuta el siguiente comando para verificar el recuento: <br/><h2>sh agora-verifier tally.tar.gz</h2>"
+msgstr ""
+"Indica el directorio donde hayas descargado ambos archivos y ejecuta el "
+"siguiente comando para verificar el recuento: <br/><h2>sh agora-verifier "
+"tally.tar.gz</h2>"
 
 #: agora_core/templates/agora_core/election_security_center.html:34
 msgid "To verify your ballot is counted in the tally, execute:"
 msgstr "Para verificar que se haya contado tu voto, ejecuta:"
 
 #: agora_core/templates/agora_core/featured_election.html:33
-#: agora_core/templates/agora_core/featured_election.html:122
-#: agora_core/templates/agora_core/featured_election.html:198
+#: agora_core/templates/agora_core/featured_election.html:126
+#: agora_core/templates/agora_core/featured_election.html:202
 msgid "Options"
 msgstr "Opciones"
 
-#: agora_core/templates/agora_core/featured_election.html:80
+#: agora_core/templates/agora_core/featured_election.html:84
 #: agora_core/templates/agora_core/voting_booth.html:216
 msgid "Presentación y motivos"
 msgstr ""
 
-#: agora_core/templates/agora_core/featured_election.html:104
-#: agora_core/templates/agora_core/featured_election.html:173
+#: agora_core/templates/agora_core/featured_election.html:108
+#: agora_core/templates/agora_core/featured_election.html:177
 #: agora_core/templates/agora_core/client/election_results.html:98
 #, php-format
 msgid "%s votes"
 msgstr "%s votos"
 
-#: agora_core/templates/agora_core/featured_election.html:123
+#: agora_core/templates/agora_core/featured_election.html:127
 msgid "Votes"
 msgstr "Votos"
 
-#: agora_core/templates/agora_core/featured_election.html:124
+#: agora_core/templates/agora_core/featured_election.html:128
 msgid "Percent"
 msgstr "Porcentaje"
 
-#: agora_core/templates/agora_core/featured_election.html:190
+#: agora_core/templates/agora_core/featured_election.html:194
 #: agora_core/templates/agora_core/client/election_results.html:40
 msgid "Winners: "
 msgstr "Ganadores: "
 
-#: agora_core/templates/agora_core/featured_election.html:201
+#: agora_core/templates/agora_core/featured_election.html:205
 #: agora_core/templates/agora_core/client/election_results.html:53
 #, php-format
 msgid "%sº round"
 msgstr "Ronda número %s"
 
-#: agora_core/templates/agora_core/featured_election.html:205
+#: agora_core/templates/agora_core/featured_election.html:209
 #: agora_core/templates/agora_core/client/election_results.html:57
 msgid "Final"
 msgstr ""
 
-#: agora_core/templates/agora_core/featured_election.html:225
+#: agora_core/templates/agora_core/featured_election.html:229
 #: agora_core/templates/agora_core/client/election_results.html:77
 msgid "winner"
 msgstr "ganador"
 
-#: agora_core/templates/agora_core/featured_election.html:254
+#: agora_core/templates/agora_core/featured_election.html:258
 msgid "Vote now"
 msgstr "Vota ahora"
 
-#: agora_core/templates/agora_core/featured_election.html:259
+#: agora_core/templates/agora_core/featured_election.html:263
 msgid "Vote now (DEMO)"
 msgstr "Vota ahora (DEMO)"
 
-#: agora_core/templates/agora_core/featured_election.html:264
+#: agora_core/templates/agora_core/featured_election.html:268
 msgid "Election details"
 msgstr "Detalles de la votación"
+
+#: agora_core/templates/agora_core/featured_election.html:276
+#: agora_core/templates/agora_core/featured_election.html:277
+msgid "FAQs"
+msgstr "Preguntas Frecuentes"
+
+#: agora_core/templates/agora_core/featured_election.html:279
+#: agora_core/templates/agora_core/featured_election.html:280
+#, fuzzy
+msgid "Security Authorities"
+msgstr "Autoridades seleccionadas"
 
 #: agora_core/templates/agora_core/user_settings.html:22
 msgid "User settings"
@@ -520,13 +566,17 @@ msgstr "<strong>Entra/Regístrate</strong> para <strong>enviar</strong> tu voto"
 msgid ""
 "You need to authenticate or register to vote. It will take just a minute and "
 "we'll receive your ballot at the same time you login or register."
-msgstr "Debes autenticartes autenticar o registrar tu voto. Solo se tarda un minuto y recibirás tu voto cuando inicies la sesión o te registres."
+msgstr ""
+"Debes autenticartes autenticar o registrar tu voto. Solo se tarda un minuto "
+"y recibirás tu voto cuando inicies la sesión o te registres."
 
 #: agora_core/templates/agora_core/voting_booth.html:78
 msgid ""
 "Currently, you have delegated your vote in this agora. So if you don't vote, "
 "this delegate can vote for you."
-msgstr "Actualmente, has delegado tu voto en este ágora. Si no votas personalmente, tu delegado podrá votar por ti."
+msgstr ""
+"Actualmente, has delegado tu voto en este ágora. Si no votas personalmente, "
+"tu delegado podrá votar por ti."
 
 #: agora_core/templates/agora_core/voting_booth.html:87
 msgid "Start voting"
@@ -590,7 +640,9 @@ msgstr "Eliminar selección"
 msgid ""
 "You haven't chosen an option. Please select one, it's mandatory for this "
 "question."
-msgstr "No has seleccionado ninguna opción. Selecciona una opción, es obligatorio en esta pregunta."
+msgstr ""
+"No has seleccionado ninguna opción. Selecciona una opción, es obligatorio en "
+"esta pregunta."
 
 #: agora_core/templates/agora_core/voting_booth.html:137
 #: agora_core/templates/agora_core/voting_booth.html:210
@@ -680,20 +732,28 @@ msgstr "NOTA"
 #: agora_core/templates/agora_core/voting_booth.html:355
 msgid ""
 "Choosing this will allow other users to <strong>view your vote</strong>."
-msgstr "Esta opción significa que los demás usuarios <strong>podrán ver tu voto</strong>."
+msgstr ""
+"Esta opción significa que los demás usuarios <strong>podrán ver tu voto</"
+"strong>."
 
 #: agora_core/templates/agora_core/voting_booth.html:357
 msgid ""
 "Others users may <strong>delegate</strong> their vote to you for elections "
 "in this agora."
-msgstr "Otros usuarios podrán <strong>delegar</strong> su voto en ti en las votaciones de este ágora."
+msgstr ""
+"Otros usuarios podrán <strong>delegar</strong> su voto en ti en las "
+"votaciones de este ágora."
 
 #: agora_core/templates/agora_core/voting_booth.html:362
 msgid ""
 "This will make your vote <strong>public</strong>. You cannot vote in secret "
 "in this election. This might be because of different reasons: maybe you are "
 "not a member in this agora, or perhaps this election allows only public vote."
-msgstr "Si seleccionas esta opción tu voto será <strong>público</strong>. No puedes votar en secreto en esta votación. Esto puede deberse a diversos motivos: tal vez no eres miembro de este ágora, o tal vez solo se permitan los votos públicos en estas elecciones."
+msgstr ""
+"Si seleccionas esta opción tu voto será <strong>público</strong>. No puedes "
+"votar en secreto en esta votación. Esto puede deberse a diversos motivos: "
+"tal vez no eres miembro de este ágora, o tal vez solo se permitan los votos "
+"públicos en estas elecciones."
 
 #: agora_core/templates/agora_core/voting_booth.html:365
 msgid "Why did you vote this way? (optional)"
@@ -719,7 +779,9 @@ msgstr "Voto recibido, esperando tu Confirmación por Email"
 msgid ""
 "Congratulations, your vote has been <strong>successfully cast</strong>. You "
 "will soon receive a confirmation email"
-msgstr "Felicidades, has emitido tu voto <strong>correctamente</strong>. Recibirás en breve un email de confirmación"
+msgstr ""
+"Felicidades, has emitido tu voto <strong>correctamente</strong>. Recibirás "
+"en breve un email de confirmación"
 
 #: agora_core/templates/agora_core/voting_booth.html:394
 msgid ""
@@ -729,7 +791,12 @@ msgid ""
 "address. It might take a while to arrive, be patient. If the email doesn't "
 "seem to arrive, please check if it has gone to the SPAM folder or try again "
 "to vote."
-msgstr "Hemos recibido tu voto, pero por motivos de seguridad debemos comprobar tu identidad. Te hemos enviado un email con un <strong>enlace que debes pulsar</strong> si quieres confirmar tu voto. Comprueba tu cuenta de email. Puede que tarde un rato. Si parece que no llega tu email, comprueba en la carpeta de Spam o intenta votar nuevamente."
+msgstr ""
+"Hemos recibido tu voto, pero por motivos de seguridad debemos comprobar tu "
+"identidad. Te hemos enviado un email con un <strong>enlace que debes pulsar</"
+"strong> si quieres confirmar tu voto. Comprueba tu cuenta de email. Puede "
+"que tarde un rato. Si parece que no llega tu email, comprueba en la carpeta "
+"de Spam o intenta votar nuevamente."
 
 #: agora_core/templates/agora_core/voting_booth.html:398
 msgid "Go back to the election page"
@@ -745,7 +812,10 @@ msgid ""
 "You can <strong>delegate your vote</strong> so that <strong>in future "
 "elections in this agora</strong> <a href=\"%s\">%s</a> this delegate votes "
 "for you if you don't find the time to vote"
-msgstr "Puedes <strong>delegar tu voto</strong> para las <strong>votaciones futuras en este ágora</strong> El delegado <a href=\"%s\">%s</a> votará por ti si no tienes oportunidad de votar"
+msgstr ""
+"Puedes <strong>delegar tu voto</strong> para las <strong>votaciones futuras "
+"en este ágora</strong> El delegado <a href=\"%s\">%s</a> votará por ti si no "
+"tienes oportunidad de votar"
 
 #: agora_core/templates/agora_core/voting_booth.html:410
 #, php-format
@@ -755,11 +825,13 @@ msgstr "Selecciona un delegado en el ágora %s"
 #: agora_core/templates/agora_core/voting_booth.html:433
 msgid ""
 "Encrypting and securing your ballot. This may take some minutes, please wait."
-msgstr "Cifrado y protección de tu voto. Puede tardar unos minutos, espera por favor."
+msgstr ""
+"Cifrado y protección de tu voto. Puede tardar unos minutos, espera por favor."
 
 #: agora_core/templates/agora_core/voting_booth.html:436
 msgid "The web browser might freeze during this process: please be patient."
-msgstr "El navegador puede congelarse durante este proceso: por favor se paciente"
+msgstr ""
+"El navegador puede congelarse durante este proceso: por favor se paciente"
 
 #: agora_core/templates/agora_core/voting_booth.html:439
 msgid "5%"
@@ -768,7 +840,9 @@ msgstr ""
 #: agora_core/templates/agora_core/voting_booth.html:457
 msgid ""
 "Before casting your ballot: login or register to authenticate your identity."
-msgstr "Antes de emitir tu voto: inicia la sesión o regístrate para autenticar tu identidad."
+msgstr ""
+"Antes de emitir tu voto: inicia la sesión o regístrate para autenticar tu "
+"identidad."
 
 #: agora_core/templates/agora_core/voting_booth.html:462
 #: agora_core/templates/agora_core/client/top_navbar.html:87
@@ -811,7 +885,9 @@ msgstr ""
 msgid ""
 "Adjunta tu DNI escaneado para poder verificar tu identidad (formato pdf o "
 "imagen, max. 1MB)"
-msgstr "Adjunta tu DNI escaneado para poder verificar tu identidad (formato pdf o imagen, máx. 1MB)"
+msgstr ""
+"Adjunta tu DNI escaneado para poder verificar tu identidad (formato pdf o "
+"imagen, máx. 1MB)"
 
 #: agora_core/templates/agora_core/voting_booth.html:496
 msgid "Name and TWO SURNAMES"
@@ -858,7 +934,9 @@ msgstr "Condiciones de uso"
 msgid ""
 "When you enter using the FNMT certificate or registering, you're accepting "
 "our <a href=\"/misc/page/terms-of-service\">Terms of Service.</a>"
-msgstr "Cuando entras con el certificado de la FNMT o te registras, estás aceptando nuestras <a href=\"/misc/page/terms-of-service\">Condiciones de Uso.</a>"
+msgstr ""
+"Cuando entras con el certificado de la FNMT o te registras, estás aceptando "
+"nuestras <a href=\"/misc/page/terms-of-service\">Condiciones de Uso.</a>"
 
 #: agora_core/templates/agora_core/client/action_ao_agora.html:14
 #: agora_core/templates/agora_core/client/action_t_agora.html:15
@@ -1023,7 +1101,12 @@ msgid ""
 "by commas. If an user exists in agora with a given email or username, it "
 "will be added as a member of this agora directly. Otherwise, an email with "
 "an invitation will be sent if it's a valid email address."
-msgstr "Escribe las direcciones de email o los nombres de usuario de las personas que desees invitar, separados por coma. Si el usuario o la dirección de email ya existe, se añadirá como miembro del ágora directamente. De lo contrario, se enviará un email con una invitación, si la dirección de email es válida."
+msgstr ""
+"Escribe las direcciones de email o los nombres de usuario de las personas "
+"que desees invitar, separados por coma. Si el usuario o la dirección de "
+"email ya existe, se añadirá como miembro del ágora directamente. De lo "
+"contrario, se enviará un email con una invitación, si la dirección de email "
+"es válida."
 
 #: agora_core/templates/agora_core/client/agora_calendar.html:3
 #: agora_core/templates/agora_core/client/calendar_elections.html:18
@@ -1106,7 +1189,9 @@ msgstr ""
 msgid ""
 "When you choose someone as your delegate, he/she will vote in your name. Do "
 "you want to choose %s as delegate on agora %s?"
-msgstr "Si eliges a alguien como tu delegado, podrá votar en tu nombre. ¿Deseas que %s sea tu delegado en el ágora %s?"
+msgstr ""
+"Si eliges a alguien como tu delegado, podrá votar en tu nombre. ¿Deseas que "
+"%s sea tu delegado en el ágora %s?"
 
 #: agora_core/templates/agora_core/client/election_form.html:11
 #: agora_core/templates/agora_core/client/election_form.html:99
@@ -1150,7 +1235,9 @@ msgstr "Permitir votación secreta y cifrada segura"
 msgid ""
 "Automatically release tally and send results to agora members when election "
 "is closed"
-msgstr "Publicar el recuento automáticamente y enviar los resultados a todos los miembros del ágora cuando finalice la votación"
+msgstr ""
+"Publicar el recuento automáticamente y enviar los resultados a todos los "
+"miembros del ágora cuando finalice la votación"
 
 #: agora_core/templates/agora_core/client/election_form.html:84
 msgid "Schedule start/end voting period"
@@ -1198,7 +1285,9 @@ msgstr "Voto clásico"
 msgid ""
 "Each <strong>voter chooses only one candidate</strong> and the candidate "
 "with more votes wins."
-msgstr "Cada <strong>votante selecciona un único candidato</strong>, el candidato con más votos gana."
+msgstr ""
+"Cada <strong>votante selecciona un único candidato</strong>, el candidato "
+"con más votos gana."
 
 #: agora_core/templates/agora_core/client/election_form.html:161
 #: agora_core/templates/agora_core/client/election_form.html:176
@@ -1221,7 +1310,9 @@ msgstr "Seleccionar una lista"
 msgid ""
 "Each <strong>voter choose a ranked list of candidates</strong>. This method "
 "allows to elect a list of winners."
-msgstr "Cada <strong>votante selecciona una lista ordenada de candidatos</strong>. Este método permite elegir una lista de ganadores."
+msgstr ""
+"Cada <strong>votante selecciona una lista ordenada de candidatos</strong>. "
+"Este método permite elegir una lista de ganadores."
 
 #: agora_core/templates/agora_core/client/election_form.html:174
 msgid ""
@@ -1230,7 +1321,12 @@ msgid ""
 "proceeds and candidates are either elected or eliminated, the <strong>vote "
 "is transferred to other candidates</strong> according to the voter's stated "
 "preferences."
-msgstr "Mediante el sistema de Voto simple transferible, el votante dispone de un voto único asignado a su candidato preferido, luego, a medida que progresa el recuento se eliminan o eligen los candidatos, y se <strong>transfiere el voto a otros candidatos</strong> según las preferencias indicadas por el votante."
+msgstr ""
+"Mediante el sistema de Voto simple transferible, el votante dispone de un "
+"voto único asignado a su candidato preferido, luego, a medida que progresa "
+"el recuento se eliminan o eligen los candidatos, y se <strong>transfiere el "
+"voto a otros candidatos</strong> según las preferencias indicadas por el "
+"votante."
 
 #: agora_core/templates/agora_core/client/election_form.html:176
 msgid "Single Transferable Vote - Meek's method (Meek-STV)"
@@ -1341,7 +1437,9 @@ msgid ""
 "If you remove your account, you won't be able to use it anymore. To confirm "
 "you want to do that, please introduce your password if you enter with "
 "password:"
-msgstr "Si eliminas tu cuenta, ya no podrás volver a utilizarla. Para confirmar que quieres hacerlo, introduce tu contraseña:"
+msgstr ""
+"Si eliminas tu cuenta, ya no podrás volver a utilizarla. Para confirmar que "
+"quieres hacerlo, introduce tu contraseña:"
 
 #: agora_core/templates/agora_core/client/remove_account_modal_dialog.html:14
 msgid "Really want to remove your account??"
@@ -1440,7 +1538,11 @@ msgid ""
 "certificado-con-dnie\" target=\"_blank\">Obtain it here</a> or <a href="
 "\"https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-"
 "certificado-software\" target=\"_blank\">here with your DNIe</a>"
-msgstr "<a href=\"https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-certificado-con-dnie\" target=\"_blank\">Consíguelo aquí</a> o <a href=\"https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-certificado-software\" target=\"_blank\">aquí con tu DNIe</a>"
+msgstr ""
+"<a href=\"https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-"
+"certificado-con-dnie\" target=\"_blank\">Consíguelo aquí</a> o <a href="
+"\"https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-"
+"certificado-software\" target=\"_blank\">aquí con tu DNIe</a>"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:111
 msgid "Enter with FNMT certificate"
@@ -1450,7 +1552,9 @@ msgstr "Entrar con cert. de la FNMT"
 msgid ""
 "When you login with your user you are accepting our <a href=\"/misc/page/"
 "terms-of-service\" class=\"inline\">Terms of Service</a>"
-msgstr "Cuando entras con tu usuario estás aceptando nuestras <a href=\"/misc/page/terms-of-service\" class=\"inline\">Condiciones de Uso</a>"
+msgstr ""
+"Cuando entras con tu usuario estás aceptando nuestras <a href=\"/misc/page/"
+"terms-of-service\" class=\"inline\">Condiciones de Uso</a>"
 
 #: agora_core/templates/agora_core/client/top_navbar.html:146
 msgid "Log out"
@@ -1500,7 +1604,11 @@ msgid ""
 "this user was not a member of the Agora or was not part of the electorate, "
 "for example. However, if the vote is public, members of the electorate might "
 "delegate in this vote, and those delegations would be counted."
-msgstr "Puede que no se cuente un voto porque el usuario no era miembro del ágora o no formaba parte del electorado, por ejemplo. Sin embargo, si el voto es público, los miembros del electorado podrán delegar en su voto, y las delegaciones sí serán contadas."
+msgstr ""
+"Puede que no se cuente un voto porque el usuario no era miembro del ágora o "
+"no formaba parte del electorado, por ejemplo. Sin embargo, si el voto es "
+"público, los miembros del electorado podrán delegar en su voto, y las "
+"delegaciones sí serán contadas."
 
 #: agora_core/templates/agora_core/client/vote_info.html:33
 msgid "This vote is not counted"
@@ -1582,12 +1690,25 @@ msgid "Choose as my delegate"
 msgstr "Elegir como delegado"
 
 #: agora_core/templates/search/include-js-template-agora-profile.html:116
-msgid "Edit user name or other details"
-msgstr "Editar nombre de usuario y otros datos"
+#, fuzzy
+msgid "Edit user name"
+msgstr "Email o nombre de usuario"
 
 #: agora_core/templates/search/include-js-template-agora-profile.html:120
 msgid "no actions"
 msgstr "ninguna acción"
+
+#: agora_core/templates/search/include-js-template-agora-profile.html:126
+msgid "Save the name"
+msgstr ""
+
+#: agora_core/templates/search/include-js-template-agora-profile.html:131
+#, php-format
+msgid "Edit %s full name:"
+msgstr ""
+
+#~ msgid "Edit user name or other details"
+#~ msgstr "Editar nombre de usuario y otros datos"
 
 #~ msgid "People"
 #~ msgstr "Gente"
@@ -1623,6 +1744,3 @@ msgstr "ninguna acción"
 
 #~ msgid "Delegate in %s for agora %s"
 #~ msgstr "Delega en %s en el ágora %s"
-
-
-
