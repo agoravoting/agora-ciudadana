@@ -129,6 +129,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'agora_site.misc.context_processor.settings.SHOW_PROFESSIONAL_SERVICES_LINK',
     'agora_site.misc.context_processor.settings.DEFAULT_FROM_EMAIL',
     'agora_site.misc.context_processor.settings.AGORA_FRONT_PAGE',
+    'agora_site.misc.context_processor.settings.CUSTOM_CSS_STYLE',
 )
 
 ROOT_URLCONF = 'agora_site.urls'
@@ -486,6 +487,9 @@ SHOW_COOKIE_LAW_BANNER = True
 # activate this if you want user idnetities to be anonymous for other users
 # (but NOT to agoras administratos)
 ANONYMIZE_USERS = False
+
+# custom css styling
+CUSTOM_CSS_STYLE = ""
 
 try:
     # custom settings is the file where you should set your modifications of the
