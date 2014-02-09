@@ -4393,7 +4393,7 @@ body {
   padding-bottom: 15px;
 }
 #running-board-wrapper.hero-unit .span7 {
-  max-height: 180px;
+  max-height: 170px;
 }
 #running-board-wrapper .span5 blockquote {
   margin: 26px 35px 0 35px;
@@ -6086,15 +6086,35 @@ ul.list-container li.agora-user-item.simple > a.agora i {
 }
 /* <home-featured-election> */
 .home.featured-election .span5.election-description {
-  font-size: 14pt;
+  font-size: 11pt;
   text-align: justify;
-  margin-top: 15px;
   padding: 6px;
   width: 350px;
   min-height: 110px;
   border-radius: 6px;
   background-color: rgba(255, 255, 255, 0.6);
   color: #572b85;
+}
+.home.featured-election .span5.election-description > div.ed-wrapper {
+  display: block;
+  width: 100%;
+}
+.home.featured-election .span5.election-description ul {
+  background-color: #63006F;
+  display: block;
+  width: 100%;
+  color: white;
+  margin-top: 6px;
+  margin-bottom: -20px;
+  border-radius: 7px;
+}
+.home.featured-election .span5.election-description ul > li > a {
+  color: white;
+  font-size: 10pt;
+}
+.home.featured-election .span5.election-description ul > li > a:hover {
+  background-color: #9900AB;
+  color: white;
 }
 #bloques {
   margin-top: -10px;
@@ -6387,4 +6407,16 @@ div.top-form .navbar.translations .nav .dropdown-menu li > a:hover {
   position: absolute;
   top: 0;
   right: 0;
+}
+.nav-justified {
+  width: 100%;
+}
+.nav-justified > li {
+  float: none;
+  display: table-cell;
+  width: 1%;
+}
+.nav-justified > li > a {
+  text-align: center;
+  margin-bottom: 0px;
 }

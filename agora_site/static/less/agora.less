@@ -352,7 +352,7 @@ body {
     }
 
     &.hero-unit .span7 {
-        max-height: 180px;
+        max-height: 170px;
     }
 
     .span5 {
@@ -2378,15 +2378,39 @@ ul.list-container {
 /* <home-featured-election> */
 .home.featured-election {
     .span5.election-description {
-        font-size: 14pt;
+        font-size: 11pt;
         text-align: justify;
-        margin-top: 15px;
         padding: 6px;
         width: 350px;
         min-height: 110px;
         border-radius: 6px;
         background-color: rgba(255, 255, 255, 0.6);
         color: rgb(87, 43, 133);
+
+        > div.ed-wrapper {
+            display: block;
+            width: 100%;
+        }
+
+        ul {
+            background-color: #63006F;
+            display: block;
+            width: 100%;
+            color: white;
+            margin-top: 6px;
+            margin-bottom: -20px;
+            border-radius: 7px;
+
+            > li > a {
+                color: white;
+                font-size: 10pt;
+
+                &:hover {
+                    background-color: #9900AB;
+                    color: white;
+                }
+            }
+        }
     }
 }
 
@@ -2748,4 +2772,17 @@ padding-top:0px;
     right: 0;
 }
 
+.nav-justified {
+    width: 100%;
+}
 
+.nav-justified > li {
+    float: none;
+    display: table-cell;
+    width: 1%;
+}
+
+.nav-justified > li > a {
+    text-align: center;
+    margin-bottom: 0px;
+}
