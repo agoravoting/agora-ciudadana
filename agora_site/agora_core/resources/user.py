@@ -83,6 +83,12 @@ class TinyUserResource(GenericResource):
 class NotAnonTinyUserResource(TinyUserResource):
     make_anonymous = False
 
+    content_type = fields.CharField(default="user")
+    url = fields.CharField()
+    mugshot_url = fields.CharField()
+    full_name = fields.CharField()
+    short_description = fields.CharField()
+
 
 class ActivationUserResource(TinyUserResource):
     activation_url = fields.CharField()
