@@ -1593,7 +1593,7 @@ msgstr "ekintzarik ez"
 #~ msgstr "Jendea"
 
 #~ msgid "Choices available"
-#~ msgstr "Opciones disponibles"
+#~ msgstr "Aukera erabilgarriak"
 
 #~ msgid "Vote in public as a delegate"
 #~ msgstr "Bozkatu publikoki ordezkari gisa"
@@ -1603,7 +1603,7 @@ msgstr "ekintzarik ez"
 #~ "others to delegate their vote in you for this election."
 #~ msgstr ""
 #~ "Aukera hau hautatzen baduzu zure botoa <strong>publikoa</strong> izango da "
-#~ "eta beste erabiltzaileek orrdezkari gisa zu hauta zaitzakete."
+#~ "eta beste erabiltzaileek ordezkari gisa zu hauta zaitzakete."
 
 #~ msgid "Delegate in %s for agora %s"
 #~ msgstr "Aukeratu %s ordezkari gisa %s agoran"
