@@ -437,6 +437,7 @@ class LoginAndVoteForm(django_forms.ModelForm):
                 election=self.election,
                 election_url=self.election.get_link(),
                 agora_url=self.election.agora.get_link(),
+                vote_hash=vote.hash,
                 confirm_vote_url=confirm_vote_url
             ))
             translation.activate(self.user.get_profile().lang_code)
