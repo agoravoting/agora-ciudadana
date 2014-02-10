@@ -59,6 +59,8 @@ class AccountSignupForm(userena_forms.SignupForm):
         super(AccountSignupForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.fields.insert(0, 'first_name', django_forms.CharField(label=_("Nombre y DOS APELLIDOS"), required=True, max_length=140))
+        self.fields.insert(5, 'tos', django_forms.BooleanField(required=True,
+            label=_('&nbsp; I accept the <a href="/misc/page/terms-of-service" target="_blank">Terms of Service</a> and <a href="/misc/page/privacy-policy" target="_blank">Privacy Policy</a>.')))
 
         # if using fnmt, we require user/pass registration to give a way to
         # verify their identity

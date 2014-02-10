@@ -520,6 +520,14 @@
                             </div>
                         </div>
 
+                        <div class="control-group" id="div_id_password2">
+                            <div class="controls">
+                                <p class="help-block">
+                                    <%= gettext("When registering, you're accepting our <a href=\"/misc/page/terms-of-service\" target=\"_blank\">Terms of Service</a> and <a href=\"/misc/page/privacy-policy\" target=\"_blank\">Privacy Policy</a>.") %>
+                                </p>
+                            </div>
+                        </div>
+
                         <div class="clearfix"></div>
                         <input type="hidden" class="hidden-input" value="" />
                         <input type="hidden" name="csrftoken" value="" />
@@ -545,7 +553,7 @@
                     <p></p>
                     <strong><%= gettext("Terms of service") %></strong>
                     <small>
-                        <%= gettext("When you enter using the FNMT certificate or registering, you're accepting our <a href=\"/misc/page/terms-of-service\">Terms of Service.</a>") %>
+                        <%= gettext("When you enter using the FNMT certificate or registering, you're accepting our <a href=\"/misc/page/terms-of-service\" target=\"_blank\">Terms of Service</a> and <a href=\"/misc/page/privacy-policy\" target=\"_blank\">Privacy Policy</a>.") %>
                     </small>
                 </div>
             </div>
