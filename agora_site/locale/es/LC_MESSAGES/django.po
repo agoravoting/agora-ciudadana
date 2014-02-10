@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-10 12:03+0100\n"
+"POT-Creation-Date: 2014-02-10 15:32+0100\n"
 "PO-Revision-Date: 2013-06-04 17:44-0000\n"
 "Last-Translator: \n"
 "Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-"
@@ -344,9 +344,8 @@ msgid ""
 "href=\"/misc/page/privacy-policy\" target=\"_blank\">Privacy Policy</a>."
 msgstr ""
 "Si entras con el certificado FNMT estás aceptando nuestros <a href="
-"\"%(tos_url)s\">Términos de servicio</a> y <a "
-"href=\"/misc/page/privacy-policy\" target=\"_blank\">Política de "
-"Privacidad</a>."
+"\"%(tos_url)s\">Términos de servicio</a> y <a href=\"/misc/page/privacy-"
+"policy\" target=\"_blank\">Política de Privacidad</a>."
 
 #: accounts/templates/accounts/complete_registration_fnmt_form.html:6
 #: accounts/templates/accounts/complete_registration_invite_form.html:6
@@ -1415,7 +1414,7 @@ msgid_plural "Watch your mouth! The words %s are not allowed here."
 msgstr[0] "¡No digas palabrotas! Aquí no se permite la palabra %s."
 msgstr[1] "¡No digas palabrotas! Aquí no se permiten las palabras %s."
 
-#: agora_core/forms/election.py:444
+#: agora_core/forms/election.py:445
 #, python-format
 msgid "Please confirm vote casted for election %s"
 msgstr "Por favor confirma tu voto para la votación %s"
@@ -2889,7 +2888,7 @@ msgid "User URL: %(protocol)s://%(site_domain)s%(other_user_url)s"
 msgstr "URL del usuario: %(protocol)s://%(site_domain)s%(other_user_url)s"
 
 #: agora_core/templates/agora_core/emails/agora_notification.txt:13
-#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:13
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:15
 #: agora_core/templates/agora_core/emails/new_delegation.txt:11
 #: agora_core/templates/agora_core/emails/non_voters.txt:7
 #: agora_core/templates/agora_core/emails/vote_cancelled.txt:11
@@ -2917,8 +2916,8 @@ msgstr ""
 "%(agora_name)s</a>. Por motivos de seguridad, necesitamos que confirmes tu "
 "voto."
 
-#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:9
-#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:6
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:11
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:8
 msgid ""
 "Please, to confirm your vote click in the following URL (If you didn't emit "
 "that ballot, you can ignore this message):"
@@ -2926,7 +2925,7 @@ msgstr ""
 "Por favor, para confirmar tu voto haz clic en la siguiente URL (si no "
 "emitiste ese voto, puedes ignorar este mensaje):"
 
-#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:11
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:13
 #, python-format
 msgid ""
 "Ballot Confirmation URL: <a href=\"%(confirm_vote_url)s\">"
@@ -2935,14 +2934,14 @@ msgstr ""
 "URL de confirmación de voto: <a href=\"%(confirm_vote_url)s\">"
 "%(confirm_vote_url)s</a>"
 
-#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:13
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:15
 #: agora_core/templates/agora_core/emails/vote_cancelled.html:11
 #: agora_core/templates/agora_core/emails/vote_casted.html:13
 #, python-format
 msgid "Election description: <strong>%(election_description)s</strong>"
 msgstr "Descripción de la votación: <strong>%(election_description)s</strong>"
 
-#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:16
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:18
 #: agora_core/templates/agora_core/emails/new_delegation.html:13
 #: agora_core/templates/agora_core/emails/vote_cancelled.html:14
 #: agora_core/templates/agora_core/emails/vote_casted.html:16
@@ -2959,9 +2958,9 @@ msgstr ""
 "\">haz clic aquí</a>"
 
 #: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:4
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"}We have recorded a vote from you at election %(election_name)s at "
+"We have recorded a vote from you at election %(election_name)s at "
 "%(agora_username)s/%(agora_name)s. But for security reasons we need you to "
 "confirm your vote."
 msgstr ""
@@ -2969,12 +2968,23 @@ msgstr ""
 "%(agora_username)s/%(agora_name)s. Por motivos de seguridad, necesitamos que "
 "confirmes tu voto."
 
-#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:8
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:6
+#, python-format
+msgid ""
+"Your smart ballot tracker is: %(vote_hash)s. You can check it in the "
+"election vote's list, where it will appear once your identity has been "
+"confirmed"
+msgstr ""
+"Tu identificador inteligente de voto es %(vote_hash)s. Podrás encontrarlo en "
+"la lista de votos de la votación, donde aparecerá una vez tu identidad sea "
+"verificada"
+
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:10
 #, python-format
 msgid "Ballot Confirmation URL: %(confirm_vote_url)s"
 msgstr "URL para confirmar tu voto: %(confirm_vote_url)s"
 
-#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:10
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:12
 #: agora_core/templates/agora_core/emails/election_archived.txt:7
 #: agora_core/templates/agora_core/emails/election_results.txt:7
 #: agora_core/templates/agora_core/emails/election_started.txt:9
@@ -3489,6 +3499,18 @@ msgstr ""
 "%(agora_url)s\">%(agora_username)s/%(agora_name)s</a>. Puedes volver a votar "
 "si quieres: sólo tu último voto cuenta."
 
+#: agora_core/templates/agora_core/emails/vote_casted.html:9
+#, python-format
+msgid ""
+"Your smart ballot tracker is: <strong>%(vote_hash)s</strong>. You can check "
+"your ballot was counted by searching your smart ballot tracker in the <a "
+"href=\"%(election_url)s/votes\">election votes list</a>."
+msgstr ""
+"Tu identificador inteligente de voto es <strong>%(vote_hash)s</strong>. "
+"Puedes comprobar que tu voto cuenta buscándo tu identificador inteligente de "
+"voto en la <a "
+"href=\"%(election_url)s/votes\">lista de votos de la votación</a>."
+
 #: agora_core/templates/agora_core/emails/vote_casted.html:11
 #, python-format
 msgid "Election URL: <a href=\"%(election_url)s\">%(election_url)s</a>"
@@ -3504,6 +3526,15 @@ msgstr ""
 "Hemos registrado tu voto en la votación %(election_name)s en "
 "%(agora_username)s/%(agora_name)s. Puedes volver a votar si quieres: sólo tu "
 "último voto cuenta."
+
+#: agora_core/templates/agora_core/emails/vote_casted.txt:6
+#, python-format
+msgid ""
+"Your smart ballot tracker is: %(vote_hash)s. You can check it in the "
+"election vote's list."
+msgstr ""
+"Tu identificador inteligente de voto es: %(vote_hash)s. Puedes comprobarlo en "
+"la lista de votos de la votación."
 
 #: agora_core/templates/agora_core/emails/vote_casted.txt:8
 #, python-format

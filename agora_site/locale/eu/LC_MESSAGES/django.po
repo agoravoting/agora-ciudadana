@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-10 12:03+0100\n"
+"POT-Creation-Date: 2014-02-10 15:33+0100\n"
 "PO-Revision-Date: 2013-06-04 17:44-0000\n"
 "Last-Translator: \n"
 "Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-"
@@ -1403,7 +1403,7 @@ msgid_plural "Watch your mouth! The words %s are not allowed here."
 msgstr[0] "Ez esan horrelakorik! Ez dugu %s hitza onartzen hemen."
 msgstr[1] "Ez esan horrelakorik! Ez ditugu %s bezalako hitzak onartzen hemen."
 
-#: agora_core/forms/election.py:444
+#: agora_core/forms/election.py:445
 #, python-format
 msgid "Please confirm vote casted for election %s"
 msgstr "Berretsi %s bozketako botoa"
@@ -2878,7 +2878,7 @@ msgstr ""
 "Erabiltzailearen URLa: %(protocol)s://%(site_domain)s%(other_user_url)s"
 
 #: agora_core/templates/agora_core/emails/agora_notification.txt:13
-#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:13
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:15
 #: agora_core/templates/agora_core/emails/new_delegation.txt:11
 #: agora_core/templates/agora_core/emails/non_voters.txt:7
 #: agora_core/templates/agora_core/emails/vote_cancelled.txt:11
@@ -2906,8 +2906,8 @@ msgstr ""
 "\"%(election_url)s\">%(election_name)s</a> hauteskundean. Zure botoa jaso "
 "dugu baina zure botoa berretsi behar dugu."
 
-#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:9
-#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:6
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:11
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:8
 msgid ""
 "Please, to confirm your vote click in the following URL (If you didn't emit "
 "that ballot, you can ignore this message):"
@@ -2915,7 +2915,7 @@ msgstr ""
 "Berretsi zure botoa ondorengo URL helbidean (ez baduzu boto hori eman, "
 "baztertu mezu hau):"
 
-#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:11
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:13
 #, python-format
 msgid ""
 "Ballot Confirmation URL: <a href=\"%(confirm_vote_url)s\">"
@@ -2924,14 +2924,14 @@ msgstr ""
 "Boto-berrespenaren URLa: <a href=\"%(confirm_vote_url)s\">"
 "%(confirm_vote_url)s</a>"
 
-#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:13
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:15
 #: agora_core/templates/agora_core/emails/vote_cancelled.html:11
 #: agora_core/templates/agora_core/emails/vote_casted.html:13
 #, python-format
 msgid "Election description: <strong>%(election_description)s</strong>"
 msgstr "Bozketaren azalpena: <strong>%(election_description)s</strong>"
 
-#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:16
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.html:18
 #: agora_core/templates/agora_core/emails/new_delegation.html:13
 #: agora_core/templates/agora_core/emails/vote_cancelled.html:14
 #: agora_core/templates/agora_core/emails/vote_casted.html:16
@@ -2948,9 +2948,9 @@ msgstr ""
 "\">egin klik hemen</a>"
 
 #: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:4
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"}We have recorded a vote from you at election %(election_name)s at "
+"We have recorded a vote from you at election %(election_name)s at "
 "%(agora_username)s/%(agora_name)s. But for security reasons we need you to "
 "confirm your vote."
 msgstr ""
@@ -2958,12 +2958,20 @@ msgstr ""
 "%(election_name)s bozketan. Zure botoa jaso dugu baina zure botoa berretsi "
 "behar dugu."
 
-#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:8
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:6
+#, python-format
+msgid ""
+"Your smart ballot tracker is: %(vote_hash)s. You can check it in the "
+"election vote's list, where it will appear once your identity has been "
+"confirmed"
+msgstr ""
+
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:10
 #, python-format
 msgid "Ballot Confirmation URL: %(confirm_vote_url)s"
 msgstr "Boto-berrespenaren URLa: %(confirm_vote_url)s"
 
-#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:10
+#: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:12
 #: agora_core/templates/agora_core/emails/election_archived.txt:7
 #: agora_core/templates/agora_core/emails/election_results.txt:7
 #: agora_core/templates/agora_core/emails/election_started.txt:9
@@ -3474,6 +3482,14 @@ msgstr ""
 "%(agora_username)s/%(agora_name)s</a> agoran. Berriro bozkatu dezakezu, "
 "azken botoak bakarrik balio du."
 
+#: agora_core/templates/agora_core/emails/vote_casted.html:9
+#, python-format
+msgid ""
+"Your smart ballot tracker is: <strong>%(vote_hash)s</strong>. You can check "
+"your ballot was counted by searching your smart ballot tracker in the <a "
+"href=\"%(election_url)s/votes\">election votes list</a>."
+msgstr ""
+
 #: agora_core/templates/agora_core/emails/vote_casted.html:11
 #, python-format
 msgid "Election URL: <a href=\"%(election_url)s\">%(election_url)s</a>"
@@ -3489,6 +3505,13 @@ msgstr ""
 "Zure botoa erregistratu dugu %(agora_username)s/%(agora_name)s agorako "
 "%(election_name)s hauteskundean zuk eskatu duzulako. Berriro bozkatu "
 "dezakezu, azken botoak bakarrik balio du."
+
+#: agora_core/templates/agora_core/emails/vote_casted.txt:6
+#, python-format
+msgid ""
+"Your smart ballot tracker is: %(vote_hash)s. You can check it in the "
+"election vote's list."
+msgstr ""
 
 #: agora_core/templates/agora_core/emails/vote_casted.txt:8
 #, python-format
