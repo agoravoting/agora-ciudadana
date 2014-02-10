@@ -237,6 +237,7 @@
             };
         {% endif %}
         user_data.SHOW_PROFESSIONAL_SERVICES_LINK = "{{SHOW_PROFESSIONAL_SERVICES_LINK}}";
+        user_data.ANONYMIZE_USERS = "{{ANONYMIZE_USERS}}";
 
         // process languages
         user_data.languages = {% if languages %}{{ languages|safe }}{% else %}{

@@ -130,6 +130,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'agora_site.misc.context_processor.settings.DEFAULT_FROM_EMAIL',
     'agora_site.misc.context_processor.settings.AGORA_FRONT_PAGE',
     'agora_site.misc.context_processor.settings.CUSTOM_CSS_STYLE',
+    'agora_site.misc.context_processor.settings.ANONYMIZE_USERS',
 )
 
 ROOT_URLCONF = 'agora_site.urls'

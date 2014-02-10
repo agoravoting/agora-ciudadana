@@ -1,4 +1,5 @@
 from tastypie.api import Api
+from django.conf import settings
 from resources.user import UserResource
 from resources.agora import AgoraResource
 from resources.authority import AuthorityResource
@@ -17,4 +18,6 @@ v1.register(CastVoteResource())
 v1.register(DelegateElectionCountResource())
 v1.register(FollowResource())
 v1.register(ActionResource())
-v1.register(SearchResource())
+
+if not settings.ANONYMIZE_USERS:
+    v1.register(SearchResource())

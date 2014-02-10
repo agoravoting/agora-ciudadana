@@ -162,9 +162,11 @@
                         </li>
                     <% } %>
                 </ul>
-                <form id="search-form" class="nav-search pull-right" action="/search">
-                    <input type="text" class="span2 search-query"  value="" placeholder="<%- gettext("Search") %>" name="q" />
-                </form>
+                <% if (ANONYMIZE_USERS != "True") { %>
+                    <form id="search-form" class="nav-search pull-right" action="/search">
+                        <input type="text" class="span2 search-query"  value="" placeholder="<%- gettext("Search") %>" name="q" />
+                    </form>
+                <% } %>
             </div>
         </div>
     </div>
