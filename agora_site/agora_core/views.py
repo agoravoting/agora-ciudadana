@@ -2004,6 +2004,10 @@ class UserView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(UserView, self).get_context_data(**kwargs)
         context['user_shown'] = self.user_shown
+        if settings.ANONYMIZE_USERS:
+            context['user_full_name'] = _('Anonymous')
+        else:
+            context['user_full_name'] = self.user_shown.get_profile().get_fullname()
         return context
 
     def dispatch(self, *args, **kwargs):
