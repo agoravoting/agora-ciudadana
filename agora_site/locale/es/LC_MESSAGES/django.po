@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-09 21:59+0100\n"
+"POT-Creation-Date: 2014-02-10 12:03+0100\n"
 "PO-Revision-Date: 2013-06-04 17:44-0000\n"
 "Last-Translator: \n"
 "Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-"
@@ -41,35 +41,45 @@ msgstr "Vasco"
 msgid "Valencian"
 msgstr "Valencià"
 
-#: accounts/forms.py:61 accounts/forms.py:97
+#: accounts/forms.py:61 accounts/forms.py:99
 msgid "Nombre y DOS APELLIDOS"
 msgstr ""
 
-#: accounts/forms.py:66 accounts/forms.py:102
+#: accounts/forms.py:63
+msgid ""
+"&nbsp; I accept the <a href=\"/misc/page/terms-of-service\" target=\"_blank"
+"\">Terms of Service</a> and <a href=\"/misc/page/privacy-policy\" target="
+"\"_blank\">Privacy Policy</a>."
+msgstr ""
+"&nbsp; Acepto las <a href=\"/misc/page/terms-of-service\" target=\"_blank"
+"\">Condiciones de Uso</a> y la <a href=\"/misc/page/privacy-policy\" target="
+"\"_blank\">Política de Privacidad</a>."
+
+#: accounts/forms.py:68 accounts/forms.py:104
 msgid "DNI escaneado"
 msgstr ""
 
-#: accounts/forms.py:72 accounts/forms.py:309 accounts/forms.py:393
+#: accounts/forms.py:74 accounts/forms.py:311 accounts/forms.py:395
 msgid "Sign up"
 msgstr "Registrarme"
 
-#: accounts/forms.py:118 accounts/forms.py:325 agora_core/forms/user.py:532
+#: accounts/forms.py:120 accounts/forms.py:327 agora_core/forms/user.py:532
 msgid "This username is not allowed."
 msgstr "Este nombre de usuario no está permitido."
 
-#: accounts/forms.py:183
+#: accounts/forms.py:185
 #, python-format
 msgid "<a href=\"%(url)s\">Forgot your password?</a>"
 msgstr "<a href=\"%(url)s\">¿Has olvidado tu contraseña?</a>"
 
-#: accounts/forms.py:186 accounts/templates/accounts/auth_forms.html:9
+#: accounts/forms.py:188 accounts/templates/accounts/auth_forms.html:9
 #: accounts/templates/accounts/auth_forms.html:31
 #: accounts/templates/accounts/signin_form.html:8
 #: accounts/templates/accounts/signin_form.html:31
 msgid "Log in"
 msgstr "Iniciar sesión"
 
-#: accounts/forms.py:207 accounts/forms.py:246
+#: accounts/forms.py:209 accounts/forms.py:248
 msgid ""
 "Please enter a correct username or email and password. Note that both fields "
 "are case-sensitive."
@@ -77,11 +87,11 @@ msgstr ""
 "Indica un nombre de usuario o una dirección de correo y una contraseña. "
 "Ambos campos distinguen entre mayúsculas y minúsculas."
 
-#: accounts/forms.py:219
+#: accounts/forms.py:221
 msgid "Please, for security reasons validate the captcha"
 msgstr "Por motivos de seguridad, confirma el captcha"
 
-#: accounts/forms.py:262 accounts/templates/accounts/email_form.html:12
+#: accounts/forms.py:264 accounts/templates/accounts/email_form.html:12
 #: accounts/templates/accounts/email_form.html:19
 #: accounts/templates/accounts/password_form.html:14
 #: accounts/templates/accounts/profile_detail.html:17
@@ -90,64 +100,64 @@ msgstr "Por motivos de seguridad, confirma el captcha"
 msgid "Change email"
 msgstr "Cambiar email"
 
-#: accounts/forms.py:270
+#: accounts/forms.py:272
 msgid "Reset Password"
 msgstr "Recuperar Contraseña"
 
-#: accounts/forms.py:271 accounts/urls.py:76 accounts/urls.py:97
+#: accounts/forms.py:273 accounts/urls.py:76 accounts/urls.py:97
 msgid "Reset password"
 msgstr "Recuperar Contraseña"
 
-#: accounts/forms.py:277
+#: accounts/forms.py:279
 msgid "Set new Password"
 msgstr "Nueva contraseña"
 
-#: accounts/forms.py:278
+#: accounts/forms.py:280
 msgid "Set new password"
 msgstr "Nueva contraseña"
 
-#: accounts/forms.py:292
+#: accounts/forms.py:294
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: accounts/forms.py:293 agora_core/forms/user.py:510
+#: accounts/forms.py:295 agora_core/forms/user.py:510
 msgid "Username must contain only letters, numbers, dots and underscores."
 msgstr ""
 "El nombre de usuario solo puede contener letras, números, guiones bajos y "
 "puntos"
 
-#: accounts/forms.py:296
+#: accounts/forms.py:298
 msgid "Create password"
 msgstr "Crear contraseña"
 
-#: accounts/forms.py:299
+#: accounts/forms.py:301
 msgid "Repeat password"
 msgstr "Repetir contraseña"
 
-#: accounts/forms.py:308 accounts/templates/accounts/profile_detail.html:24
+#: accounts/forms.py:310 accounts/templates/accounts/profile_detail.html:24
 #: agora_core/models/authority.py:28
 msgid "Name"
 msgstr "Nombre"
 
-#: accounts/forms.py:323 agora_core/forms/user.py:530
+#: accounts/forms.py:325 agora_core/forms/user.py:530
 msgid "This username is already taken."
 msgstr "Este nombre de usuario ya está en uso."
 
-#: accounts/forms.py:337 agora_core/forms/__init__.py:207
+#: accounts/forms.py:339 agora_core/forms/__init__.py:207
 #: agora_core/forms/user.py:569
 msgid "The two password fields didn't match."
 msgstr "Las contraseñas no coinciden."
 
-#: accounts/forms.py:371 accounts/forms.py:439
+#: accounts/forms.py:373 accounts/forms.py:441
 msgid "Your account has been activated and you have been signed in."
 msgstr "Hemos activado tu cuenta y has iniciado la sesión"
 
-#: accounts/forms.py:384 accounts/templates/accounts/profile_detail.html:27
+#: accounts/forms.py:386 accounts/templates/accounts/profile_detail.html:27
 #: agora_core/forms/__init__.py:114
 msgid "Email"
 msgstr ""
 
-#: accounts/forms.py:405
+#: accounts/forms.py:407
 msgid "This email is already taken."
 msgstr "Este nombre de usuario ya está en uso."
 
@@ -328,14 +338,15 @@ msgid "Terms of service"
 msgstr "Términos del Servicio"
 
 #: accounts/templates/accounts/auth_forms.html:69
-#: accounts/templates/accounts/signin_form.html:69
-#, python-format
 msgid ""
-"When you enter using the FNMT certificate you're accepting our <a href="
-"\"%(tos_url)s\">Terms of Service.</a>"
+"When you enter using the FNMT certificate you're accepting our <a href=\"/"
+"misc/page/terms-of-service\" target=\"_blank\">Terms of Service</a> and <a "
+"href=\"/misc/page/privacy-policy\" target=\"_blank\">Privacy Policy</a>."
 msgstr ""
 "Si entras con el certificado FNMT estás aceptando nuestros <a href="
-"\"%(tos_url)s\">Términos de servicio.</a>"
+"\"%(tos_url)s\">Términos de servicio</a> y <a "
+"href=\"/misc/page/privacy-policy\" target=\"_blank\">Política de "
+"Privacidad</a>."
 
 #: accounts/templates/accounts/complete_registration_fnmt_form.html:6
 #: accounts/templates/accounts/complete_registration_invite_form.html:6
@@ -597,6 +608,15 @@ msgstr ""
 #: accounts/templates/accounts/profile_list.html:31
 msgid "next"
 msgstr "siguiente"
+
+#: accounts/templates/accounts/signin_form.html:69
+#, python-format
+msgid ""
+"When you enter using the FNMT certificate you're accepting our <a href="
+"\"%(tos_url)s\">Terms of Service.</a>"
+msgstr ""
+"Si entras con el certificado FNMT estás aceptando nuestros <a href="
+"\"%(tos_url)s\">Términos de servicio.</a>"
 
 #: accounts/templates/accounts/emails/activation_email_message.txt:2
 #: accounts/templates/accounts/emails/confirmation_email_message_new.txt:2
@@ -1143,16 +1163,23 @@ msgstr "No participaste en esta votación."
 msgid "Vote cancelled for election %s"
 msgstr "Voto cancelado para la votación %s"
 
-#: agora_core/views.py:2044
+#: agora_core/views.py:2008 agora_core/resources/user.py:74
+#: agora_core/resources/user.py:80 agora_core/resources/user.py:150
+#: agora_core/resources/user.py:156 agora_core/resources/user.py:171
+#: agora_core/resources/user.py:204 agora_core/resources/user.py:210
+msgid "Anonymous"
+msgstr ""
+
+#: agora_core/views.py:2048
 msgid "User settings updated."
 msgstr "Configuración de Usuario actualizada."
 
-#: agora_core/views.py:2101 agora_core/views.py:2113
+#: agora_core/views.py:2105 agora_core/views.py:2117
 #, python-format
 msgid "Sorry, but you don't have admin permissions on %(agoraname)s."
 msgstr "Lo sentimos, pero no tienes permisos administrativos en %(agoraname)s."
 
-#: agora_core/views.py:2128
+#: agora_core/views.py:2132
 #, python-format
 msgid "Agora settings changed for %(agoraname)s."
 msgstr "Cambiada la configuración de Ágora para %(agoraname)s."
@@ -2013,13 +2040,6 @@ msgstr "URL de la votación"
 msgid "%(site)s - Election %(election)s approved"
 msgstr "%(site)s - Votación %(election)s aprobada"
 
-#: agora_core/resources/user.py:74 agora_core/resources/user.py:80
-#: agora_core/resources/user.py:150 agora_core/resources/user.py:156
-#: agora_core/resources/user.py:171 agora_core/resources/user.py:204
-#: agora_core/resources/user.py:210
-msgid "Anonymous"
-msgstr ""
-
 #: agora_core/resources/user.py:362
 msgid "Welcome to this agora"
 msgstr "Bienvenido a este ágora"
@@ -2120,12 +2140,12 @@ msgid "ERROR! 500"
 msgstr "¡ERROR! 500"
 
 #: agora_core/templates/500.html:13
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "Internal Server Error: Fuck this shit, I'm going to Paris!</p><p><a href="
 "\"%(home_url)s\">Go to the home page</a> if you don't know what else to do. "
 "And seriously, if problem persist, please <a href=\"mailto:"
-"info@congresotransparente.com\">send us an email</a>."
+"%(DEFAULT_FROM_EMAIL)s\">send us an email</a>."
 msgstr ""
 "Error Interno en el Servidor: Al carajo con esto, ¡me voy a París!</p><p><a "
 "href=\"%(home_url)s\">Ve a la página de inicio</a> si no sabes qué otra cosa "

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-09 21:59+0100\n"
+"POT-Creation-Date: 2014-02-10 12:03+0100\n"
 "PO-Revision-Date: 2013-09-27 07:34+0200\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -38,45 +38,52 @@ msgstr "Éuscaro"
 msgid "Valencian"
 msgstr "Galego"
 
-#: accounts/forms.py:61 accounts/forms.py:97
+#: accounts/forms.py:61 accounts/forms.py:99
 msgid "Nombre y DOS APELLIDOS"
 msgstr ""
 
-#: accounts/forms.py:66 accounts/forms.py:102
+#: accounts/forms.py:63
+msgid ""
+"&nbsp; I accept the <a href=\"/misc/page/terms-of-service\" target=\"_blank"
+"\">Terms of Service</a> and <a href=\"/misc/page/privacy-policy\" target="
+"\"_blank\">Privacy Policy</a>."
+msgstr ""
+
+#: accounts/forms.py:68 accounts/forms.py:104
 msgid "DNI escaneado"
 msgstr ""
 
-#: accounts/forms.py:72 accounts/forms.py:309 accounts/forms.py:393
+#: accounts/forms.py:74 accounts/forms.py:311 accounts/forms.py:395
 msgid "Sign up"
 msgstr "Rexistrarse"
 
-#: accounts/forms.py:118 accounts/forms.py:325 agora_core/forms/user.py:532
+#: accounts/forms.py:120 accounts/forms.py:327 agora_core/forms/user.py:532
 msgid "This username is not allowed."
 msgstr "Este nome de usuario non está permitido."
 
-#: accounts/forms.py:183
+#: accounts/forms.py:185
 #, fuzzy, python-format
 msgid "<a href=\"%(url)s\">Forgot your password?</a>"
 msgstr "<a href=\"%(url)s\">Esqueceu o seu "
 
-#: accounts/forms.py:186 accounts/templates/accounts/auth_forms.html:9
+#: accounts/forms.py:188 accounts/templates/accounts/auth_forms.html:9
 #: accounts/templates/accounts/auth_forms.html:31
 #: accounts/templates/accounts/signin_form.html:8
 #: accounts/templates/accounts/signin_form.html:31
 msgid "Log in"
 msgstr "Acceder"
 
-#: accounts/forms.py:207 accounts/forms.py:246
+#: accounts/forms.py:209 accounts/forms.py:248
 msgid ""
 "Please enter a correct username or email and password. Note that both fields "
 "are case-sensitive."
 msgstr ""
 
-#: accounts/forms.py:219
+#: accounts/forms.py:221
 msgid "Please, for security reasons validate the captcha"
 msgstr ""
 
-#: accounts/forms.py:262 accounts/templates/accounts/email_form.html:12
+#: accounts/forms.py:264 accounts/templates/accounts/email_form.html:12
 #: accounts/templates/accounts/email_form.html:19
 #: accounts/templates/accounts/password_form.html:14
 #: accounts/templates/accounts/profile_detail.html:17
@@ -85,63 +92,63 @@ msgstr ""
 msgid "Change email"
 msgstr "Cambiar o correo"
 
-#: accounts/forms.py:270
+#: accounts/forms.py:272
 msgid "Reset Password"
 msgstr "Solicitude dun novo contrasinal"
 
-#: accounts/forms.py:271 accounts/urls.py:76 accounts/urls.py:97
+#: accounts/forms.py:273 accounts/urls.py:76 accounts/urls.py:97
 msgid "Reset password"
 msgstr "Solicitar un novo contrasinal"
 
-#: accounts/forms.py:277
+#: accounts/forms.py:279
 msgid "Set new Password"
 msgstr "Escolla dun novo contrasinal"
 
-#: accounts/forms.py:278
+#: accounts/forms.py:280
 msgid "Set new password"
 msgstr "Establecer o novo contrasinal"
 
-#: accounts/forms.py:292
+#: accounts/forms.py:294
 msgid "Username"
 msgstr "Nome de usuario"
 
-#: accounts/forms.py:293 agora_core/forms/user.py:510
+#: accounts/forms.py:295 agora_core/forms/user.py:510
 msgid "Username must contain only letters, numbers, dots and underscores."
 msgstr ""
 "Os nomes de usuario só deben conter letras, números, puntos e guións baixos."
 
-#: accounts/forms.py:296
+#: accounts/forms.py:298
 msgid "Create password"
 msgstr "Crear o contrasinal"
 
-#: accounts/forms.py:299
+#: accounts/forms.py:301
 msgid "Repeat password"
 msgstr "Repetir o contrasinal"
 
-#: accounts/forms.py:308 accounts/templates/accounts/profile_detail.html:24
+#: accounts/forms.py:310 accounts/templates/accounts/profile_detail.html:24
 #: agora_core/models/authority.py:28
 msgid "Name"
 msgstr "Nome:"
 
-#: accounts/forms.py:323 agora_core/forms/user.py:530
+#: accounts/forms.py:325 agora_core/forms/user.py:530
 msgid "This username is already taken."
 msgstr "Este nome de usuario xa está collido."
 
-#: accounts/forms.py:337 agora_core/forms/__init__.py:207
+#: accounts/forms.py:339 agora_core/forms/__init__.py:207
 #: agora_core/forms/user.py:569
 msgid "The two password fields didn't match."
 msgstr "Os contrasinais non coincidían."
 
-#: accounts/forms.py:371 accounts/forms.py:439
+#: accounts/forms.py:373 accounts/forms.py:441
 msgid "Your account has been activated and you have been signed in."
 msgstr "Activouse a súa conta e iniciouse a súa sesión no sitio."
 
-#: accounts/forms.py:384 accounts/templates/accounts/profile_detail.html:27
+#: accounts/forms.py:386 accounts/templates/accounts/profile_detail.html:27
 #: agora_core/forms/__init__.py:114
 msgid "Email"
 msgstr "Correo:"
 
-#: accounts/forms.py:405
+#: accounts/forms.py:407
 msgid "This email is already taken."
 msgstr "Este enderezo de correo electrónico xa está collido."
 
@@ -313,11 +320,11 @@ msgid "Terms of service"
 msgstr "Condicións de uso"
 
 #: accounts/templates/accounts/auth_forms.html:69
-#: accounts/templates/accounts/signin_form.html:69
-#, python-format
+#, fuzzy
 msgid ""
-"When you enter using the FNMT certificate you're accepting our <a href="
-"\"%(tos_url)s\">Terms of Service.</a>"
+"When you enter using the FNMT certificate you're accepting our <a href=\"/"
+"misc/page/terms-of-service\" target=\"_blank\">Terms of Service</a> and <a "
+"href=\"/misc/page/privacy-policy\" target=\"_blank\">Privacy Policy</a>."
 msgstr ""
 "Ao acceder usando un certificado FMNT, está a aceptar as <a href="
 "\"%(tos_url)s\">condicións de uso</a>."
@@ -582,6 +589,15 @@ msgstr ""
 #: accounts/templates/accounts/profile_list.html:31
 msgid "next"
 msgstr "Seguinte"
+
+#: accounts/templates/accounts/signin_form.html:69
+#, python-format
+msgid ""
+"When you enter using the FNMT certificate you're accepting our <a href="
+"\"%(tos_url)s\">Terms of Service.</a>"
+msgstr ""
+"Ao acceder usando un certificado FMNT, está a aceptar as <a href="
+"\"%(tos_url)s\">condicións de uso</a>."
 
 #: accounts/templates/accounts/emails/activation_email_message.txt:2
 #: accounts/templates/accounts/emails/confirmation_email_message_new.txt:2
@@ -1122,16 +1138,23 @@ msgstr "Non participou nesta votación."
 msgid "Vote cancelled for election %s"
 msgstr "Cancelouse o seu voto en «%s»."
 
-#: agora_core/views.py:2044
+#: agora_core/views.py:2008 agora_core/resources/user.py:74
+#: agora_core/resources/user.py:80 agora_core/resources/user.py:150
+#: agora_core/resources/user.py:156 agora_core/resources/user.py:171
+#: agora_core/resources/user.py:204 agora_core/resources/user.py:210
+msgid "Anonymous"
+msgstr ""
+
+#: agora_core/views.py:2048
 msgid "User settings updated."
 msgstr "Actualizouse a súa configuración."
 
-#: agora_core/views.py:2101 agora_core/views.py:2113
+#: agora_core/views.py:2105 agora_core/views.py:2117
 #, python-format
 msgid "Sorry, but you don't have admin permissions on %(agoraname)s."
 msgstr "Non ten permisos de administrador na ágora «%(agoraname)s»."
 
-#: agora_core/views.py:2128
+#: agora_core/views.py:2132
 #, python-format
 msgid "Agora settings changed for %(agoraname)s."
 msgstr "Cambiou a configuración da ágora «%(agoraname)s»."
@@ -2004,13 +2027,6 @@ msgstr "URL da votación"
 msgid "%(site)s - Election %(election)s approved"
 msgstr "%(site)s — Aprobouse a votación «%(election)s»"
 
-#: agora_core/resources/user.py:74 agora_core/resources/user.py:80
-#: agora_core/resources/user.py:150 agora_core/resources/user.py:156
-#: agora_core/resources/user.py:171 agora_core/resources/user.py:204
-#: agora_core/resources/user.py:210
-msgid "Anonymous"
-msgstr ""
-
 #: agora_core/resources/user.py:362
 msgid "Welcome to this agora"
 msgstr "Reciba a benvida a esta ágora"
@@ -2104,7 +2120,7 @@ msgid ""
 "Internal Server Error: Fuck this shit, I'm going to Paris!</p><p><a href="
 "\"%(home_url)s\">Go to the home page</a> if you don't know what else to do. "
 "And seriously, if problem persist, please <a href=\"mailto:"
-"info@congresotransparente.com\">send us an email</a>."
+"%(DEFAULT_FROM_EMAIL)s\">send us an email</a>."
 msgstr ""
 "Produciuse un erro interno no servidor.</p> <p>Se non sabe que facer, "
 "simplemente vaia á <a href=\"%(home_url)s\">páxina principal</a>. Se o "

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-09 22:00+0100\n"
+"POT-Creation-Date: 2014-02-10 12:03+0100\n"
 "PO-Revision-Date: 2013-06-04 17:44-0000\n"
 "Last-Translator: \n"
 "Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-"
@@ -41,35 +41,42 @@ msgstr "Euskara"
 msgid "Valencian"
 msgstr "Valentziera"
 
-#: accounts/forms.py:61 accounts/forms.py:97
+#: accounts/forms.py:61 accounts/forms.py:99
 msgid "Nombre y DOS APELLIDOS"
 msgstr "Izena eta BI ABIZEN"
 
-#: accounts/forms.py:66 accounts/forms.py:102
+#: accounts/forms.py:63
+msgid ""
+"&nbsp; I accept the <a href=\"/misc/page/terms-of-service\" target=\"_blank"
+"\">Terms of Service</a> and <a href=\"/misc/page/privacy-policy\" target="
+"\"_blank\">Privacy Policy</a>."
+msgstr ""
+
+#: accounts/forms.py:68 accounts/forms.py:104
 msgid "DNI escaneado"
 msgstr "Eskaneatutako DNIa"
 
-#: accounts/forms.py:72 accounts/forms.py:309 accounts/forms.py:393
+#: accounts/forms.py:74 accounts/forms.py:311 accounts/forms.py:395
 msgid "Sign up"
 msgstr "Erregistratu"
 
-#: accounts/forms.py:118 accounts/forms.py:325 agora_core/forms/user.py:532
+#: accounts/forms.py:120 accounts/forms.py:327 agora_core/forms/user.py:532
 msgid "This username is not allowed."
 msgstr "Ezin duzu erabiltzaile izen hau erabili."
 
-#: accounts/forms.py:183
+#: accounts/forms.py:185
 #, python-format
 msgid "<a href=\"%(url)s\">Forgot your password?</a>"
 msgstr "<a href=\"%(url)s\">Pasahitza ahaztu duzu?</a>"
 
-#: accounts/forms.py:186 accounts/templates/accounts/auth_forms.html:9
+#: accounts/forms.py:188 accounts/templates/accounts/auth_forms.html:9
 #: accounts/templates/accounts/auth_forms.html:31
 #: accounts/templates/accounts/signin_form.html:8
 #: accounts/templates/accounts/signin_form.html:31
 msgid "Log in"
 msgstr "Hasi saioa"
 
-#: accounts/forms.py:207 accounts/forms.py:246
+#: accounts/forms.py:209 accounts/forms.py:248
 msgid ""
 "Please enter a correct username or email and password. Note that both fields "
 "are case-sensitive."
@@ -77,11 +84,11 @@ msgstr ""
 "Sar itzazu erabiltzaile-izena eta pasahitza. Maiuskula eta minuskulak "
 "bereizten dira bi eremuetan"
 
-#: accounts/forms.py:219
+#: accounts/forms.py:221
 msgid "Please, for security reasons validate the captcha"
 msgstr "Segurtasuna bermatzeko, egiaztatu captcha irudia"
 
-#: accounts/forms.py:262 accounts/templates/accounts/email_form.html:12
+#: accounts/forms.py:264 accounts/templates/accounts/email_form.html:12
 #: accounts/templates/accounts/email_form.html:19
 #: accounts/templates/accounts/password_form.html:14
 #: accounts/templates/accounts/profile_detail.html:17
@@ -90,64 +97,64 @@ msgstr "Segurtasuna bermatzeko, egiaztatu captcha irudia"
 msgid "Change email"
 msgstr "Aldatu helbide elektronikoa"
 
-#: accounts/forms.py:270
+#: accounts/forms.py:272
 msgid "Reset Password"
 msgstr "Berreskuratu pasahitza"
 
-#: accounts/forms.py:271 accounts/urls.py:76 accounts/urls.py:97
+#: accounts/forms.py:273 accounts/urls.py:76 accounts/urls.py:97
 msgid "Reset password"
 msgstr "Berreskuratu pasahitza"
 
-#: accounts/forms.py:277
+#: accounts/forms.py:279
 msgid "Set new Password"
 msgstr "Pasahitz berria"
 
-#: accounts/forms.py:278
+#: accounts/forms.py:280
 msgid "Set new password"
 msgstr "Ezarri pasahitz berria"
 
-#: accounts/forms.py:292
+#: accounts/forms.py:294
 msgid "Username"
 msgstr "Erabiltzaile-izena"
 
-#: accounts/forms.py:293 agora_core/forms/user.py:510
+#: accounts/forms.py:295 agora_core/forms/user.py:510
 msgid "Username must contain only letters, numbers, dots and underscores."
 msgstr ""
 "Erabiltzailearen izenak hizkiak, zenbakiak, puntuak eta azpimarrak eduki "
 "ditzake"
 
-#: accounts/forms.py:296
+#: accounts/forms.py:298
 msgid "Create password"
 msgstr "Sortu pasahitza"
 
-#: accounts/forms.py:299
+#: accounts/forms.py:301
 msgid "Repeat password"
 msgstr "Errepikatu pasahitza"
 
-#: accounts/forms.py:308 accounts/templates/accounts/profile_detail.html:24
+#: accounts/forms.py:310 accounts/templates/accounts/profile_detail.html:24
 #: agora_core/models/authority.py:28
 msgid "Name"
 msgstr "Izena"
 
-#: accounts/forms.py:323 agora_core/forms/user.py:530
+#: accounts/forms.py:325 agora_core/forms/user.py:530
 msgid "This username is already taken."
 msgstr "Erabiltzaile izen hau dagoeneko erabilita dago."
 
-#: accounts/forms.py:337 agora_core/forms/__init__.py:207
+#: accounts/forms.py:339 agora_core/forms/__init__.py:207
 #: agora_core/forms/user.py:569
 msgid "The two password fields didn't match."
 msgstr "Pasahitzak ez datoz bat."
 
-#: accounts/forms.py:371 accounts/forms.py:439
+#: accounts/forms.py:373 accounts/forms.py:441
 msgid "Your account has been activated and you have been signed in."
 msgstr "Zure kontua aktibatu dugu eta saioa hasi duzu"
 
-#: accounts/forms.py:384 accounts/templates/accounts/profile_detail.html:27
+#: accounts/forms.py:386 accounts/templates/accounts/profile_detail.html:27
 #: agora_core/forms/__init__.py:114
 msgid "Email"
 msgstr "Helbide elektronikoa"
 
-#: accounts/forms.py:405
+#: accounts/forms.py:407
 msgid "This email is already taken."
 msgstr "Helbide elektroniko hau dagoeneko erabilita dago."
 
@@ -329,11 +336,11 @@ msgid "Terms of service"
 msgstr "Erabilera baldintzak"
 
 #: accounts/templates/accounts/auth_forms.html:69
-#: accounts/templates/accounts/signin_form.html:69
-#, python-format
+#, fuzzy
 msgid ""
-"When you enter using the FNMT certificate you're accepting our <a href="
-"\"%(tos_url)s\">Terms of Service.</a>"
+"When you enter using the FNMT certificate you're accepting our <a href=\"/"
+"misc/page/terms-of-service\" target=\"_blank\">Terms of Service</a> and <a "
+"href=\"/misc/page/privacy-policy\" target=\"_blank\">Privacy Policy</a>."
 msgstr ""
 "FNMT ziurtagiriarekin sartzen zarenean, gure <a href=\"%(tos_url)s"
 "\">Erabilera baldintzak</a> onartzen dituzu."
@@ -597,6 +604,15 @@ msgstr ""
 #: accounts/templates/accounts/profile_list.html:31
 msgid "next"
 msgstr "hurrengoa"
+
+#: accounts/templates/accounts/signin_form.html:69
+#, python-format
+msgid ""
+"When you enter using the FNMT certificate you're accepting our <a href="
+"\"%(tos_url)s\">Terms of Service.</a>"
+msgstr ""
+"FNMT ziurtagiriarekin sartzen zarenean, gure <a href=\"%(tos_url)s"
+"\">Erabilera baldintzak</a> onartzen dituzu."
 
 #: accounts/templates/accounts/emails/activation_email_message.txt:2
 #: accounts/templates/accounts/emails/confirmation_email_message_new.txt:2
@@ -1134,16 +1150,23 @@ msgstr "Ez duzu bozketa honetan parte hartu."
 msgid "Vote cancelled for election %s"
 msgstr "Botoa ezeztatu duzu %s bozketan"
 
-#: agora_core/views.py:2044
+#: agora_core/views.py:2008 agora_core/resources/user.py:74
+#: agora_core/resources/user.py:80 agora_core/resources/user.py:150
+#: agora_core/resources/user.py:156 agora_core/resources/user.py:171
+#: agora_core/resources/user.py:204 agora_core/resources/user.py:210
+msgid "Anonymous"
+msgstr "Anónimo"
+
+#: agora_core/views.py:2048
 msgid "User settings updated."
 msgstr "Erabiltzaile-ezarpenak eguneratu ditugu."
 
-#: agora_core/views.py:2101 agora_core/views.py:2113
+#: agora_core/views.py:2105 agora_core/views.py:2117
 #, python-format
 msgid "Sorry, but you don't have admin permissions on %(agoraname)s."
 msgstr "Ez zara administratzailea %(agoraname)s agoran."
 
-#: agora_core/views.py:2128
+#: agora_core/views.py:2132
 #, python-format
 msgid "Agora settings changed for %(agoraname)s."
 msgstr "Agoraren ezarpenak aldatu ditugu %(agoraname)s agoran."
@@ -2010,13 +2033,6 @@ msgstr "Bozketaren URLa"
 msgid "%(site)s - Election %(election)s approved"
 msgstr "%(site)s - %(election)s bozketa onartu dugu"
 
-#: agora_core/resources/user.py:74 agora_core/resources/user.py:80
-#: agora_core/resources/user.py:150 agora_core/resources/user.py:156
-#: agora_core/resources/user.py:171 agora_core/resources/user.py:204
-#: agora_core/resources/user.py:210
-msgid "Anonymous"
-msgstr "Anónimo"
-
 #: agora_core/resources/user.py:362
 msgid "Welcome to this agora"
 msgstr "Ongi etorri agora honetara"
@@ -2114,12 +2130,12 @@ msgid "ERROR! 500"
 msgstr "ERROREA! 500"
 
 #: agora_core/templates/500.html:13
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "Internal Server Error: Fuck this shit, I'm going to Paris!</p><p><a href="
 "\"%(home_url)s\">Go to the home page</a> if you don't know what else to do. "
 "And seriously, if problem persist, please <a href=\"mailto:"
-"info@congresotransparente.com\">send us an email</a>."
+"%(DEFAULT_FROM_EMAIL)s\">send us an email</a>."
 msgstr ""
 "Zerbitzariaren barneko errore: nahikoa izan deu, Parisera noa!</p><p><a href="
 "\"%(home_url)s\">Joan hasierako orrira</a> ez badakizu beste zer egin. "

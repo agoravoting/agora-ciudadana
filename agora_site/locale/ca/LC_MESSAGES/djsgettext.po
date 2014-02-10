@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-09 22:08+0100\n"
+"POT-Creation-Date: 2014-02-10 12:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -884,39 +884,52 @@ msgstr "Nombre de usuario"
 msgid "Repeat Password"
 msgstr "Repite la contraseña"
 
-#: agora_core/templates/agora_core/voting_booth.html:528
+#: agora_core/templates/agora_core/voting_booth.html:526
+#, fuzzy
+msgid ""
+"When registering, you're accepting our <a href=\"/misc/page/terms-of-service"
+"\" target=\"_blank\">Terms of Service</a> and <a href=\"/misc/page/privacy-"
+"policy\" target=\"_blank\">Privacy Policy</a>."
+msgstr ""
+"Cuando entras con tu usuario estás aceptando nuestras <a href=\"/misc/page/"
+"terms-of-service\" class=\"inline\">Condiciones de Uso</a>"
+
+#: agora_core/templates/agora_core/voting_booth.html:536
 msgid "Register and vote"
 msgstr "Registrarme y votar"
 
-#: agora_core/templates/agora_core/voting_booth.html:534
+#: agora_core/templates/agora_core/voting_booth.html:542
 #: agora_core/templates/agora_core/client/top_navbar.html:105
 msgid "..or enter with FNMT cert"
 msgstr "..o entra con el cert. de la FNMT"
 
-#: agora_core/templates/agora_core/voting_booth.html:536
+#: agora_core/templates/agora_core/voting_booth.html:544
 msgid "Obtain it here"
 msgstr "Obtenlo aquí"
 
-#: agora_core/templates/agora_core/voting_booth.html:537
+#: agora_core/templates/agora_core/voting_booth.html:545
 msgid "or"
 msgstr "o"
 
-#: agora_core/templates/agora_core/voting_booth.html:538
+#: agora_core/templates/agora_core/voting_booth.html:546
 msgid "here with your DNIe"
 msgstr "aquí con tu DNIe"
 
-#: agora_core/templates/agora_core/voting_booth.html:543
+#: agora_core/templates/agora_core/voting_booth.html:551
 msgid "Enter with FNMT certificate and vote"
 msgstr "Entra con tu certificado de la FNMT y vota"
 
-#: agora_core/templates/agora_core/voting_booth.html:546
+#: agora_core/templates/agora_core/voting_booth.html:554
 msgid "Terms of service"
 msgstr "Condiciones de uso"
 
-#: agora_core/templates/agora_core/voting_booth.html:548
+#: agora_core/templates/agora_core/voting_booth.html:556
+#, fuzzy
 msgid ""
 "When you enter using the FNMT certificate or registering, you're accepting "
-"our <a href=\"/misc/page/terms-of-service\">Terms of Service.</a>"
+"our <a href=\"/misc/page/terms-of-service\" target=\"_blank\">Terms of "
+"Service</a> and <a href=\"/misc/page/privacy-policy\" target=\"_blank"
+"\">Privacy Policy</a>."
 msgstr ""
 "Cuando entras con el certificado de la FNMT o te registras, estás "
 "aceptandonuestras <a href=\"/misc/page/terms-of-service\">Condiciones de Uso."
