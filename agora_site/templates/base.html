@@ -269,7 +269,7 @@
     {% block script-block %}{% endblock %}
 
     <script>
-        {{ CUSTOM_JAVASCRIPT }}
+        {{ CUSTOM_JAVASCRIPT|safe }}
     </script>
 </body>
 </html>
