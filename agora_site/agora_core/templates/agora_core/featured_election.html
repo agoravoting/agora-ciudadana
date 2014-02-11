@@ -254,18 +254,18 @@
 
                                     <% if (!is_demo) { %>
                                         <a href="<%= election.url %>/vote"
-                                            class="btn btn-success vote-button">
+                                            class="btn btn-success btn-large btn-xxlarge vote-button">
                                             <%= interpolate(gettext("Vote now"), [gettext(election.pretty_name)]) %>
                                         </a>
                                     <% } else { %>
                                         <a href="<%= election.url %>/fake_vote"
-                                            class="btn btn-success vote-button">
+                                            class="btn btn-success btn-large btn-xxlarge vote-button">
                                             <%= interpolate(gettext("Vote now (DEMO)"), [gettext(election.pretty_name)]) %>
                                         </a>
                                     <% } %>
 
                                 <% } else { %>
-                                    <a href="<%= election.url %>" class="btn btn-success btn-large btn-xxlarge"><%= interpolate(gettext("Election details"), [gettext(election.pretty_name)]) %></a>
+                                    <a href="<%= election.url %>" class="btn vote-button btn-success btn-large btn-xxlarge vote-button"><%= interpolate(gettext("Election details"), [gettext(election.pretty_name)]) %></a>
                                 <% } %>
                             </div>
                             <div class="span5 election-description">
