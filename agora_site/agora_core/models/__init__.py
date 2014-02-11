@@ -170,7 +170,7 @@ class Profile(UserenaLanguageBaseProfile):
         if self.mugshot.name == "gravatar":
             return self.get_gravatar_mugshot(custom_size, force_default=force_default)
         elif self.mugshot.name == "initials":
-            return self.get_initials_mugshot(custom_size, force_default=force_default)
+            return self.get_initials_mugshot(custom_size)
         elif self.mugshot:
             return settings.MEDIA_URL +\
                    settings.MUGSHOTS_DIR +\
