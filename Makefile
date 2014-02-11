@@ -30,8 +30,6 @@ mainjs:
 					      agora_site/static/js/libs/d3.v3.js \
 					      agora_site/static/js/libs/nv.d3.js \
 					      agora_site/static/js/libs/moment.js \
-					      agora_site/static/js/libs/moment-lang/gl.js \
-					      agora_site/static/js/libs/moment-lang/es.js \
 					      agora_site/static/js/libs/livestamp.js \
 					      agora_site/static/js/libs/nod.js \
 					      agora_site/static/js/libs/showdown.js \
@@ -63,8 +61,6 @@ mainjs:
 					      agora_site/static/js/libs/r2d3.js \
 					      agora_site/static/js/libs/nv.d3.js \
 					      agora_site/static/js/libs/moment.js \
-					      agora_site/static/js/libs/moment-lang/gl.js \
-					      agora_site/static/js/libs/moment-lang/es.js \
 					      agora_site/static/js/libs/livestamp.js \
 					      agora_site/static/js/libs/nod.js \
 					      agora_site/static/js/libs/showdown.js \
