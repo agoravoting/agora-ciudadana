@@ -131,6 +131,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'agora_site.misc.context_processor.settings.AGORA_FRONT_PAGE',
     'agora_site.misc.context_processor.settings.CUSTOM_CSS_STYLE',
     'agora_site.misc.context_processor.settings.ANONYMIZE_USERS',
+    'agora_site.misc.context_processor.settings.CUSTOM_JAVASCRIPT',
 )
 
 ROOT_URLCONF = 'agora_site.urls'
@@ -491,6 +492,9 @@ ANONYMIZE_USERS = False
 
 # custom css styling
 CUSTOM_CSS_STYLE = ""
+
+# custom JS code to include in every page
+CUSTOM_JAVASCRIPT = ""
 
 try:
     # custom settings is the file where you should set your modifications of the
