@@ -6121,14 +6121,14 @@ ul.list-container li.agora-user-item.simple > a.agora i {
 .home .featured-primary-question {
   width: 100%;
 }
-.home .featured-primary-question .candidate {
+.home .featured-primary-question div.candidate {
   width: 47%;
   display: block;
   float: left;
   padding: 15px 10px;
   height: 150px;
 }
-.home .featured-primary-question .candidate .cand-image {
+.home .featured-primary-question div.candidate .cand-image {
   display: block;
   float: left;
   width: 150px;
@@ -6136,28 +6136,28 @@ ul.list-container li.agora-user-item.simple > a.agora i {
   border-radius: 6px;
   background-color: #eeeeee;
 }
-.home .featured-primary-question .candidate .cand-image img {
+.home .featured-primary-question div.candidate .cand-image img {
   font-size: 16px;
   border-radius: 6px;
   max-height: 150px;
   max-width: 150px;
 }
-.home .featured-primary-question .candidate .cand-details {
+.home .featured-primary-question div.candidate .cand-details {
   display: block;
   float: left;
   padding-left: 9px;
   min-width: 150px;
 }
-.home .featured-primary-question .candidate .cand-details h3 {
+.home .featured-primary-question div.candidate .cand-details h3 {
   display: block;
   clear: both;
 }
-.home .featured-primary-question .candidate .cand-details a {
+.home .featured-primary-question div.candidate .cand-details a {
   display: block;
   clear: both;
   width: 100%;
 }
-.home .featured-primary-question .candidate .cand-details a.cand-details {
+.home .featured-primary-question div.candidate .cand-details a.cand-details {
   color: #9B045A;
   margin: 6px 0;
   padding-left: 0;

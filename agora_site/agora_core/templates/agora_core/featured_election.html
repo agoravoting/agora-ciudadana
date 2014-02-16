@@ -51,8 +51,17 @@
     <script id="template_featured-election-primary-question" type="text/underscore-template">
         <div class="featured-primary-question">
             <h2><%- q.question %></h2>
+            <% if (q.winners) { %>
+            <strong class="winners">
+                <%= gettext("Winners: ") %>
+                <% for(var j=0; j < q.winners.length; j++) { %>
+                    <%= q.winners[j] %><% if (j + 1 <  q.winners.length) { %>,<% } %>
+                <% } %>
+            </strong>
+            <% } %>
             <div class="candidates-list list-<%- i %>">
-            <% for (var j = 0; j < q.answers.length; j++) { %>
+            <% for (var j = 0; j < q.answers.length; j++) {
+                if (!q.winners || _.contains(q.winners, q.answers[j].value)) { %>
                 <div class="candidate">
 
                     <div class="cand-image">
@@ -74,9 +83,53 @@
                         <% } %>
                     </div>
                 </div>
-            </tr>
-            <% } %>
+            <% }
+            } %>
             </div>
+            <% if (q.winners) { %>
+                <div class="clear"></clear>
+                <div class="table_wrapper"  id="q<%- i %>">
+                    <table class="question-stv table table-bordered">
+                        <thead><tr>
+                            <th><%= gettext("Options") %></th>
+                            <% for(var j = 0; j < q_tally.iterations.length; j++) { %>
+                            <th>
+                                <%= interpolate(gettext("%sº round"), [q_tally.iterations[j].round_stage]) %>
+                            </th>
+                            <% } %>
+                            <th>
+                                <%= gettext("Final") %>
+                            </th>
+                        </tr></thead>
+                        <tbody>
+                            <% for(var j = 0; j < q.answers.length; j++) { %>
+                                <tr>
+                                    <td class="candidate">
+                                    <% if (q_tally.winners.indexOf(q.answers[j].value) != -1) { %>
+                                        <strong><%= gettext(q.answers[j].value) %></strong>
+                                    <% } else { %>
+                                        <%= gettext(q.answers[j].value) %>
+                                    <% } %>
+                                    </td>
+                                    <% for (var k = 0; k < q_tally.iterations.length; k++) { %>
+                                        <td class="<%= q_tally.iterations[k].candidates[j].status %>">
+                                            <%= parseFloat(q_tally.iterations[k].candidates[j].count) %>
+                                        </td>
+                                    <% } %>
+                                    <% if (q_tally.winners.indexOf(q.answers[j].value) != -1) { %>
+                                        <td class="last won">
+                                            <%= gettext("winner") %>
+                                        </td>
+                                    <% } else { %>
+                                        <td class="last">
+                                        </td>
+                                    <% } %>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } %>
         </div>
     </script>
 
@@ -278,6 +331,9 @@
                                     </a></li>
                                     <li><a href="/available-authorities" alt="<%- gettext("Election Authorities") %>">
                                         <%- gettext("Election Authorities") %>
+                                    </a></li>
+                                    <li><a href="<%- election.url %>/security-center" alt="<%- gettext("Security Center") %>">
+                                        <%- gettext("Security Center") %>
                                     </a></li>
                                 </ul>
                             </div>

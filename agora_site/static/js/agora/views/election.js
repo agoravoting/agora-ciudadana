@@ -280,10 +280,31 @@
                         q: ajax_data.election.result.counts[i],
                         q_tally: ajax_data.extra_data.tally_log[i]
                     };
-                    if (data.q.a == "question/result/ONE_CHOICE") {
+                    if (data.q.layout == "PRIMARY") {
+                        $("#bloques").append(this.question_primary_template(data));
+                        $('#q' + i + ' table.question-stv tbody tr').sortElements(function (a, b) {
+                            var rate = function (i) {
+                                return ($(i).find('.already_won').length
+                                    + $(i).find('.won').length
+                                    - $(i).find('.lost').length
+                                    - $(i).find('.already_lost').length);
+                            }
+                            return rate(a) < rate(b);
+                        });
+                    } else if (data.q.a == "question/result/ONE_CHOICE") {
                         $("#bloques").append(this.oc_question_template(data));
                     } else {
-                        $("#bloques").append(this.stv_question_template(data));
+                        var el = this.stv_question_template(data);
+                        $("#bloques").append(el);
+                        $('#q' + i + ' table.question-stv tbody tr').sortElements(function (a, b) {
+                            var rate = function (i) {
+                                return ($(i).find('.already_won').length
+                                    + $(i).find('.won').length
+                                    - $(i).find('.lost').length
+                                    - $(i).find('.already_lost').length);
+                            }
+                            return rate(a) < rate(b);
+                        });
                     }
                 }
             } else {
