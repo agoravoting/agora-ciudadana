@@ -612,7 +612,6 @@ def receive_tally(election_id, tally_data, is_secure, site_id):
 
             plaintexts_path = os.path.join(settings.MEDIA_ROOT, 'elections',
                 str(election.id), "%d_plaintexts_json" % i)
-            numChars = len(str(len(question['answers']) + 2))
             with codecs.open(plaintexts_path, encoding='utf-8', mode='r') as plaintexts_file:
                 for line in plaintexts_file.readlines():
                     voter_answers = base_vote
@@ -623,23 +622,12 @@ def receive_tally(election_id, tally_data, is_secure, site_id):
                         # because number 0 cannot be encrypted with elgammal
                         # so we trim beginning and end, parse the int and
                         # substract one
-                        nums_str = line[1:-2]
-                        nums_str = str(int(nums_str) - 1) # because crypto adds +1
-                        num_zeros = len(nums_str) % numChars
-                        nums_str = "0"*num_zeros + nums_str
-                        voter_answers[i]['choices'] = []
+                        number = int(line[1:-2]) - 1
+                        choices = tally.parse_vote(number, question)
 
-                        for j in xrange(0, len(nums_str)/numChars):
-                            num_str = nums_str[j*numChars:j*numChars + numChars]
-                            option_index = int(num_str) - 1 # because we added +1
-                            if option_index < len(question['answers']):
-                                option_str = question['answers'][option_index]['value']
-                            else:
-                                raise Exception()
-
-                            # craft the voter_answers in the format admitted by
-                            # tally.add_vote
-                            voter_answers[i]['choices'].append(option_str)
+                        # craft the voter_answers in the format admitted by
+                        # tally.add_vote
+                        voter_answers[i]['choices'] = choices
                     except:
                         print "invalid vote: " + line
                         print "voter_answers = " + json.dumps(voter_answers)

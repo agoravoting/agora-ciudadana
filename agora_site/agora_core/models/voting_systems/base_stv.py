@@ -202,6 +202,27 @@ class BaseSTVTally(BaseTally):
         self.ballots = []
         self.answer_to_ids_dict = dict()
 
+    def parse_vote(self, number, question):
+        vote_str = str(number)
+        tab_size = len(str(len(question['answers']) + 2))
+
+        # fix add zeros
+        if len(vote_str) % tab_size != 0:
+            vote_str = "0" * (len(vote_str) % tab_size) + vote_str
+
+        ret = []
+        for i in xrange(len(vote_str) / tab_size):
+            option = int(vote_str[i*tab_size: (i+1)*tab_size]) - 1
+            if option < len(question['answers']):
+                option_str = question['answers'][option]['value']
+            if option >= len(question['answers']):
+                # invalid vote
+                print "invalid vote: " + vote_str
+                return []
+            ret.append(option_str)
+
+        return ret
+
     def pre_tally(self, result):
         '''
         Function called once before the tally begins

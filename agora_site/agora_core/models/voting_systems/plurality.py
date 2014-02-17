@@ -149,6 +149,14 @@ class PluralityTally(BaseTally):
         if not voter_answers[self.question_num]["choices"]:
             self.dirty_votes += 1
 
+    def parse_vote(self, number, question):
+        if number < len(question['answers']):
+            option_str = question['answers'][number]['value']
+        if number >= len(question['answers']):
+            option_str = ""
+
+        return [option_str]
+
     def post_tally(self, result):
         '''
         Post process the tally
