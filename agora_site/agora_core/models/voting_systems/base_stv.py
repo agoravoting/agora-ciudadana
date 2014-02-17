@@ -203,6 +203,12 @@ class BaseSTVTally(BaseTally):
         self.answer_to_ids_dict = dict()
 
     def parse_vote(self, number, question):
+        if number == 2423 and self.question_id == '0-65dbc3be-3bb3-4b4e-9435-e538c43dc8c0':
+            # invalid vote. In this concrete election/question we could not
+            # distinguish between a blank a vote and a vote for options
+            # [24, 23] so we invalidate these (two) votes
+            raise Exception()
+
         vote_str = str(number)
         tab_size = len(str(len(question['answers']) + 2))
 
@@ -217,8 +223,7 @@ class BaseSTVTally(BaseTally):
                 option_str = question['answers'][option]['value']
             if option >= len(question['answers']):
                 # invalid vote
-                print "invalid vote: " + vote_str
-                return []
+                raise Exception()
             ret.append(option_str)
 
         return ret

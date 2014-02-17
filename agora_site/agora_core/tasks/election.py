@@ -629,9 +629,7 @@ def receive_tally(election_id, tally_data, is_secure, site_id):
                         # tally.add_vote
                         voter_answers[i]['choices'] = choices
                     except:
-                        print "invalid vote: " + line
-                        print "voter_answers = " + json.dumps(voter_answers)
-                        import traceback; print traceback.format_exc()
+                        print "invalid/blank vote: " + line
 
                     tally.add_vote(voter_answers=voter_answers,
                         result=result, is_delegated=False)
