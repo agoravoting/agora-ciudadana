@@ -291,10 +291,9 @@
                             }
                             return rate(a) < rate(b);
                         });
-                        // shuffle options
-                        if (data.q.randomize_answer_order) {
-                            $('.candidates-list.list-' + i).shuffle();
-                        }
+                        $('.candidates-list.list-' + i + ' .candidate').sortElements(function (a, b) {
+                            return $(a).data("pos") < $(b).data("pos");
+                        });
                     } else if (data.q.a == "question/result/ONE_CHOICE") {
                         $("#bloques").append(this.oc_question_template(data));
                     } else {
