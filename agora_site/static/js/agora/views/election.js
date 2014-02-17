@@ -289,10 +289,10 @@
                                     - $(i).find('.lost').length
                                     - $(i).find('.already_lost').length);
                             }
-                            return rate(a) > rate(b);
+                            return rate(a) < rate(b);
                         });
                         $('.candidates-list.list-' + i + ' .candidate').sortElements(function (a, b) {
-                            return $(a).data("pos") < $(b).data("pos");
+                            return $(a).data("pos") > $(b).data("pos");
                         });
                     } else if (data.q.a == "question/result/ONE_CHOICE") {
                         $("#bloques").append(this.oc_question_template(data));
