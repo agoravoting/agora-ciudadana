@@ -615,6 +615,7 @@ def receive_tally(election_id, tally_data, is_secure, site_id):
             with codecs.open(plaintexts_path, encoding='utf-8', mode='r') as plaintexts_file:
                 for line in plaintexts_file.readlines():
                     voter_answers = base_vote
+                    choices = []
                     try:
                         # Note line starts with " (1 character) and ends with
                         # "\n (2 characters). It contains the index of the
