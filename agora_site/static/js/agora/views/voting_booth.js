@@ -274,8 +274,18 @@
             var index = this.nextquestionToEncryptIndex;
             this.nextquestionToEncryptIndex = index + 1;
 
-            var data = this.questionViews[index].getEncryptableQuestionData(this.ballot['question' + index], index);
-            var percent_num = parseInt(((index+1)*100.0)/ajax_data.questions.length);
+            var data = this.questionViews[index].encodeQuestionAnswer(
+                this.ballot['question' + index]);
+            var decoded_data = this.questionViews[index].decodeQuestionAnswer(
+                data);
+            var decoded_data_str = JSON.stringifyCompat(decoded_data);
+            var ballot_str = JSON.stringifyCompat(this.ballot['question' + index]);
+            if (ballot_str != decoded_data_str) {
+                alert(gettext("Sorry, but the codification of the vote failed. This is most likely a problem with your web browser. Please contact us telling information about what web browser and platform are you using to vote. We will redirect you now to the contact form."));
+                window.location.href="/contact";
+                return;
+            }
+            var percent_num = parseInt(((index+1)*100.0)/ajax_data.questions.length, 10);
 
             this.ballot['issue_date'] = moment().format();
             this.ballot['question' + index] = Agora.encryptAnswer(
@@ -378,7 +388,46 @@
             this.template = _.template($("#template-voting_booth_question_plurality").html());
             this.votingBooth = this.options.votingBooth;
 
+            // do some sanity checks
+            sanityChecks();
+
             return this.$el;
+        },
+
+        /**
+         * Do some vote encoding tests
+         */
+        sanityChecks: function () {
+            try {
+                var question = this.model.toJSON();
+                var possible_answers = _.pluck(question.answers, "value");
+
+                // test 10 random ballots. Note, we won't honor the limits of number
+                // of options for this question for simplicity, we'll just do some
+                // tests to assure everything is fine.
+                for (var i = 0; i < 10; i++) {
+                    // generate ballot
+                    var rnd = Math.ceil(Math.random() * 10000) % possible_answers.length;
+                    var opt = possible_answers[rnd];
+                    var ballot = opt;
+                    // check encode -> decode pipe doesn't modify the ballot
+                    var encoded = this.encodeQuestionAnswer(ballot);
+                    var decoded = JSON.stringifyCompat(this.decodeQuestionAnswer(encoded));
+                    if (ballot != decoded) {
+                        throw "error";
+                    }
+                }
+
+                // test blank vote
+                var encoded = this.encodeQuestionAnswer("");
+                var decoded = JSON.stringifyCompat(this.decodeQuestionAnswer(encoded));
+                if (JSON.stringifyCompat([]) != decoded) {
+                    throw "error";
+                }
+            } catch (e) {
+                alert(gettext("Sorry, but we have detected errors when doing some sanity automatic checks which prevents to assure that you can vote with this web browser. This is most likely a problem with your web browser. Please contact us telling information about what web browser and platform are you using to vote. We will redirect you now to the contact form."));
+                window.location.href = "/contact";
+            }
         },
 
         render: function() {
@@ -457,18 +506,43 @@
             this.nextStep();
         },
 
-        getEncryptableQuestionData: function(data, index) {
+        /**
+         *  Encode an answer into a bigint. Example: "A" --> 1 -> BigInt(1)
+         */
+        encodeQuestionAnswer: function(data) {
             /**
              * Gets the answer in an encoded, encryptable way as a BigInt
              */
-            var possible_answers = _.pluck(ajax_data.questions[index].answers, "value");
-            var choice_index = possible_answers.indexOf(data);
+            var question = this.model.toJSON();
+            var possible_answers = _.pluck(question.answers, "value");
+            var choice_index = _.indexOf(possible_answers, data);
             if (choice_index == -1) {
                 // invalid vote is codified as possible_answers.length + 1 (which is invalid)
                 choice_index = possible_answers.length + 1;
 
             }
             return BigInt.fromInt(choice_index);
+        },
+
+        /**
+         * Does exactly the reverse of of encodeQuestionAnswer. It should be
+         * such as the following statement is always true:
+         *
+         * data == decodeQuestionAnswer(encodeQuestionAnswer(data))
+         *
+         * This function is very useful for sanity checks.
+         */
+        decodeQuestionAnswer: function(encoded_data) {
+            var question = this.model.toJSON();
+            var possible_answers = _.pluck(question.answers, "value");
+            var encoded_str = encoded_data.toJSONObject();
+            var encoded_index = parseInt(encoded_str, 10);
+
+            // this is a blank vote
+            if (encoded_index == possible_answers.length + 1) {
+                return "";
+            }
+            return possible_answers[encoded_index];
         },
 
         nextStep: function() {
@@ -488,7 +562,53 @@
             this.templateChoice = _.template($("#template-voting_booth_question_ranked_choice").html());
             this.votingBooth = this.options.votingBooth;
 
+            // do some sanity checks
+            this.sanityChecks();
+
             return this.$el;
+        },
+
+        /**
+         * Do some vote encoding tests
+         */
+        sanityChecks: function () {
+            try {
+                var question = this.model.toJSON();
+                var possible_answers = _.pluck(question.answers, "value");
+
+                // test 10 random ballots. Note, we won't honor the limits of number
+                // of options for this question for simplicity, we'll just do some
+                // tests to assure everything is fine.
+                for (var i = 0; i < 10; i++) {
+                    // generate ballot
+                    var ballot = [];
+                    var n_selected_options = Math.ceil(Math.random() * 10000) % possible_answers.length;
+                    for (var j = 0; j < n_selected_options; j++) {
+                        var rnd = Math.ceil(Math.random() * 10000) % possible_answers.length;
+                        var opt = possible_answers[rnd];
+                        // do not duplicate options
+                        if (_.indexOf(ballot, opt) == -1) {
+                            ballot.push(opt);
+                        }
+                    }
+                    // check encode -> decode pipe doesn't modify the ballot
+                    var encoded = this.encodeQuestionAnswer(ballot);
+                    var decoded = JSON.stringifyCompat(this.decodeQuestionAnswer(encoded));
+                    if (JSON.stringifyCompat(ballot) != decoded) {
+                        throw "error";
+                    }
+                }
+
+                // test blank vote
+                var encoded = this.encodeQuestionAnswer([]);
+                var decoded = JSON.stringifyCompat(this.decodeQuestionAnswer(encoded));
+                if (JSON.stringifyCompat([]) != decoded) {
+                    throw "error";
+                }
+            } catch (e) {
+                alert(gettext("Sorry, but we have detected errors when doing some sanity automatic checks which prevents to assure that you can vote with this web browser. This is most likely a problem with your web browser. Please contact us telling information about what web browser and platform are you using to vote. We will redirect you now to the contact form."));
+                window.location.href = "/contact";
+            }
         },
 
         render: function() {
@@ -625,20 +745,90 @@
             }
         },
 
-        getEncryptableQuestionData: function(data, index) {
-            var possible_answers = _.pluck(ajax_data.questions[index].answers, "value");
+        /**
+         * Converts a vote into a BigInt. A vote in this case is a list of
+         * preferences, for example ['A', 'C'], which is translated this way:
+         *
+         * A --> first option, so we convert it to the number 1
+         * C --> third option, so we convert it to the number 3
+         *
+         * Options are converted to numbers starting from 1. We don't use zero
+         * because it would cause encoding problems. Next step is converting
+         * those number to strings of fixed size:
+         *
+         * ['A', 'C']  --> [1, 3] -> ['01', '03']
+         *
+         * We need to be sure that each option will always be encoded using the
+         * the same number of characters so that decoding the options is
+         * possible in a deterministic way. So if we have 24 options, we know
+         * that we can codify any of those options with 2 characters, but if we
+         * have 110 options we need three chars per option.
+         *
+         * Next step is to concatenate the ordered list of option strings:
+         *
+         * ['A', 'C']  --> [1, 3] -> ['01', '03'] -> '0103'
+         *
+         * After that, we have a number to be encrypted. We convert this number
+         * to integer and then to a BigInt, and return it:
+         *
+         * ['A', 'C']  --> [1, 3] -> ['01', '03'] -> '0103' -> 103 -> BigInt(103)
+         *
+         * NOTE: the zeros at the left of the final number are removed, because
+         * a number representation never has any zeros at the left. When
+         * doing decoding of the result you should take this into account.
+         */
+        encodeQuestionAnswer: function(data) {
+            var question = this.model.toJSON();
+            var possible_answers = _.pluck(question.answers, "value");
             var ret_data = "";
-            var numChars = (possible_answers.length + 2).toString().length;
+            var numChars = (possible_answers.length + 2).toString(10).length;
             _.each(data, function (element, i, list) {
-                var choice_index = possible_answers.indexOf(element);
-                if (choice_index == -1) {
-                    // invalid vote is codified as possible_answers.length + 1 (which is invalid)
-                    choice_index = possible_answers.length + 1;
-                }
+                var choice_index = _.indexOf(possible_answers, element);
                 ret_data = ret_data + Agora.numberToString(choice_index + 1, numChars);
             });
-            var ret_int = parseInt(ret_data);
-            return BigInt.fromInt(ret_int);
+            // blank vote --> make it not count using possible_answers.length + 2;
+            if (ret_data.length == 0) {
+                ret_data = Agora.numberToString(possible_answers.length + 2, numChars);
+            }
+            var ret_val = new BigInt(ret_data, 10);
+
+            return ret_val;
+        },
+
+        /**
+         * Does exactly the reverse of of encodeQuestionAnswer. It should be
+         * such as the following statement is always true:
+         *
+         * data == decodeQuestionAnswer(encodeQuestionAnswer(data))
+         *
+         * This function is very useful for sanity checks.
+         */
+        decodeQuestionAnswer: function(encoded_data) {
+            var question = this.model.toJSON();
+            var possible_answers = _.pluck(question.answers, "value");
+            var encoded_str = encoded_data.toJSONObject();
+            var tab_nchars = (possible_answers.length + 2).toString(10).length;
+
+            // check if it's a blank vote
+            if (parseInt(encoded_str, 10) == possible_answers.length + 2) {
+                return [];
+            }
+
+            // add zeros to the left for tabulation
+            var length = encoded_str.length;
+            for (var i = 0; i < (length % tab_nchars); i++) {
+                encoded_str = "0" + encoded_str;
+            }
+
+            // decode each option
+            var ret_val = []
+            for (var i = 0; i < (encoded_str.length / tab_nchars); i++) {
+                var option_str = encoded_str.substr(i*tab_nchars, tab_nchars);
+                var option_index = parseInt(option_str, 10);
+                var opt_str = possible_answers[option_index - 1];
+                ret_val.push(opt_str);
+            }
+            return ret_val;
         },
 
         nextStep: function() {
@@ -646,7 +836,7 @@
         }
     });
 
-    Agora.VotePrimaryRankedQuestion = Backbone.View.extend({
+    Agora.VotePrimaryRankedQuestion = Agora.VoteRankedQuestion.extend({
         events: {
             'click .available-choices li a.choose-option': 'selectChoice',
             'click .user-choices ul li a': 'deselectUserChoice',
@@ -659,6 +849,8 @@
             this.templateChoice = _.template($("#template-voting_booth_question_ranked_choice").html());
             this.votingBooth = this.options.votingBooth;
             app.modalDialog = new Agora.ModalDialogView();
+
+            this.sanityChecks();
 
             return this.$el;
         },
@@ -889,22 +1081,6 @@
             if (length - 1 < this.model.get('max')) {
                 this.$el.find('.cannot-select-more').hide();
             }
-        },
-
-        getEncryptableQuestionData: function(data, index) {
-            var possible_answers = _.pluck(ajax_data.questions[index].answers, "value");
-            var ret_data = "";
-            var numChars = (possible_answers.length + 2).toString().length;
-            _.each(data, function (element, i, list) {
-                var choice_index = possible_answers.indexOf(element);
-                if (choice_index == -1) {
-                    // invalid vote is codified as possible_answers.length + 1 (which is invalid)
-                    choice_index = possible_answers.length + 1;
-                }
-                ret_data = ret_data + Agora.numberToString(choice_index + 1, numChars);
-            });
-            var ret_int = parseInt(ret_data);
-            return BigInt.fromInt(ret_int);
         },
 
         nextStep: function() {
