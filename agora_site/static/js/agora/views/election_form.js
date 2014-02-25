@@ -2,9 +2,11 @@
     Agora.AnswerModel = Backbone.AssociatedModel.extend({
         defaults: {
             'a': 'ballot/answer',
-            'url': '',
+            'urls': [],
             'details': '',
-            'value': ''
+            'value': '',
+            'media_url': '',
+            'details_title': ''
         }
     });
 
