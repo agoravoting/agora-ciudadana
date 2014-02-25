@@ -391,7 +391,7 @@
             this.votingBooth = this.options.votingBooth;
 
             // do some sanity checks
-            sanityChecks();
+            this.sanityChecks();
 
             return this.$el;
         },
@@ -400,6 +400,10 @@
          * Do some vote encoding tests
          */
         sanityChecks: function () {
+            var user_vote_is_encrypted = ajax_data.security_policy == "ALLOW_ENCRYPTED_VOTING";
+            if (!user_vote_is_encrypted) {
+                return;
+            }
             try {
                 var question = this.model.toJSON();
                 var possible_answers = _.pluck(question.answers, "value");
@@ -574,6 +578,10 @@
          * Do some vote encoding tests
          */
         sanityChecks: function () {
+            var user_vote_is_encrypted = ajax_data.security_policy == "ALLOW_ENCRYPTED_VOTING";
+            if (!user_vote_is_encrypted) {
+                return;
+            }
             try {
                 var question = this.model.toJSON();
                 var possible_answers = _.pluck(question.answers, "value");
