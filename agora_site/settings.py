@@ -401,6 +401,7 @@ AGORA_FRONT_PAGE = None
 VOTING_METHODS = (
     'agora_site.agora_core.models.voting_systems.plurality.Plurality',
     'agora_site.agora_core.models.voting_systems.meek_stv.MeekSTV',
+    'agora_site.agora_core.models.voting_systems.approval.Approval',
 )
 
 # change the following for improved security
