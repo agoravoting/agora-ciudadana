@@ -211,7 +211,7 @@
                 if (id == self.$el.find(".votingsystem").data('id')) {
                     var usertext = $(this).data("usertext");
                     self.$el.find(".votingsystem").html(usertext);
-                    if (id == "MEEK-STV") {
+                    if (id == "MEEK-STV" || id == "APPROVAL") {
                         self.$el.find(".num_winners_opts").css('display', 'inline-block');
                     } else {
                         self.$el.find(".num_winners_opts").hide();
@@ -309,7 +309,7 @@
             var usertext = $(e.target).closest("li").data('usertext');
             this.$el.find(".votingsystem").data('id', id);
             this.$el.find(".votingsystem").html(usertext);
-            if (id == "MEEK-STV") {
+            if (id == "MEEK-STV" || id == "APPROVAL") {
                 this.$el.find(".num_winners_opts").css('display', 'inline-block');
                 this.$el.find(".max_num_choices").removeAttr('readonly');
             } else {
@@ -464,7 +464,7 @@
             this.model.get('questions').each(function (model) {
                 model.set('question_num', i);
                 i++;
-            }); 
+            });
 
             var selector = "#add-question-navtab a";
             this.$el.find(selector).tab('show');
@@ -677,7 +677,7 @@
             var election_id = this.model.get('id');
             var self = this;
             var jqxhr = $.ajax("/api/v1/election/" + election_id + "/", {
-                data: JSON.stringifyCompat(json), 
+                data: JSON.stringifyCompat(json),
                 contentType : 'application/json',
                 type: 'PUT',
             })

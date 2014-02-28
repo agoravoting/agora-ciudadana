@@ -176,6 +176,21 @@
                                 <p><strong><%= gettext("Technical name") %></strong>: <%= gettext("Single Transferable Vote - Meek's method (Meek-STV)") %></p>
                             </div>
                         </div></a></li>
+                        <li class="divider"></li>
+                        <li data-id="APPROVAL" data-usertext="<%- gettext("Elect a list (Approval)") %>">
+                        <a href="#"><div class="row-fluid">
+                            <div class="span3">
+                                <img src="{% static 'img/approval_ballot.png' %}"/>
+                            </div>
+                            <div class="span9">
+                                <h3><%= gettext("Elect a list") %></h3>
+                                <p><%= gettext("Each <strong>voter chooses an unordered list of candidates</strong>. This method allows electing a list of winners.") %></p>
+
+                                <p><%= gettext("Under Approval voting, an elector has the choice to approve several candidates.") %>
+                                </p>
+                                <p><strong><%= gettext("Technical name") %></strong>: <%= gettext("Approval") %></p>
+                            </div>
+                        </div></a></li>
                     </ul>
                 </div>
             </div>
@@ -237,7 +252,7 @@
     <td>
         <div class="view-value">
         <a href="#" class="option-edit">
-            <div class="the-value inline"><%= value %></div> 
+            <div class="the-value inline"><%= value %></div>
             <i class="icon-pencil inline"></i>
         </a>
         </div>

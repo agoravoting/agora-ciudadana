@@ -52,6 +52,13 @@
                         question_num: i,
                     });
                 }
+                else if (ajax_data.election.result.counts[i].tally_type == 'APPROVAL') {
+                    view = new Agora.ApprovalTallyView({
+                        question: ajax_data.election.result.counts[i],
+                        tally: ajax_data.extra_data.tally_log[i],
+                        question_num: i,
+                    });
+                }
                 $("#election-results").append(view.render().el);
             }
         }
@@ -100,6 +107,50 @@
             _.bindAll(this);
             this.color = d3.scale.category10();
             this.template = _.template($("#template-question_one_choice_tally").html());
+            this.render();
+            return this.$el;
+        },
+
+        render: function() {
+            // render template
+            for (var i=0; i<this.options.question.answers.length; i++) {
+                this.options.question.answers[i]['color'] = this.color(i);
+            }
+            this.$el.html(this.template(this.options));
+            this.$el.find('li').sortElements(function (a, b) {
+                var rate = function (i) {
+                    return parseFloat($(i).data('value'));
+                }
+                return rate(a) < rate(b);
+            });
+            this.pieChart();
+            return this;
+        },
+
+        pieChart: function() {
+            var pienode = this.$el.find('.piechart')[0];
+            Charts.arc(this.options.question.answers,
+                       pienode,
+                       function (d) { return d.total_count; },
+                       function (d) { return d.value; },
+                       this.color,
+                       500, 250);
+        }
+    });
+
+    Agora.ApprovalTallyView = Backbone.View.extend({
+        tagName: "div",
+
+        id: function() {
+            return "tally_question" + this.options.question_num;
+        },
+
+        className: "election-results",
+
+        initialize: function() {
+            _.bindAll(this);
+            this.color = d3.scale.category10();
+            this.template = _.template($("#template-question_approval_tally").html());
             this.render();
             return this.$el;
         },

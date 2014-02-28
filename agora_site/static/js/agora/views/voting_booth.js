@@ -165,7 +165,7 @@
             var layout = model.get('layout');
             if (voting_system == "ONE_CHOICE") {
                 return new Agora.VotePluralityQuestion({model: model, votingBooth: this});
-            } else if (voting_system == "MEEK-STV") {
+            } else if (voting_system == "MEEK-STV" || voting_system == "APPROVAL") {
                 if (layout == "PRIMARY") {
                     return new Agora.VotePrimaryRankedQuestion({model: model, votingBooth: this});
                 } else { // simple
@@ -249,7 +249,7 @@
                     } else {
                         self.ballot['question' + index] = "";
                     }
-                } else if (voting_system == "MEEK-STV") {
+                } else if (voting_system == "MEEK-STV" || voting_system == "APPROVAL") {
                     self.ballot['question' + index] = user_answers;
                 }
             });

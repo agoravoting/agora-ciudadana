@@ -337,7 +337,7 @@
                     <tbody>
                         <% for (var j = 0; j < questions[i].user_answers.length; j++) { %>
                         <tr><td>
-                            <% if (questions[i].tally_type == 'MEEK-STV') { %>
+                            <% if (questions[i].tally_type == 'MEEK-STV' || questions[i].tally_type == 'APPROVAL') { %>
                                 <small><%= (j+1) %>.</small>
                             <% } %>
                             <%= questions[i].user_answers[j].value %>

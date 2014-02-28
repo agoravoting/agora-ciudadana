@@ -11,6 +11,20 @@ class JsonReport(ReportPlugin):
         self.json = {}
         ReportPlugin.__init__(self, e, None, False)
 
+    def generateReportNonIterative(self):
+
+        self.json['winners'] = [self.cleanB.names[winner] for winner in self.e.winners]
+        self.json['num_seats'] = self.e.numSeats
+        self.json['candidates'] = self.cleanB.names
+        self.json['dirty_ballots_count'] = self.dirtyB.numBallots
+        self.json['ballots_count'] = self.cleanB.numBallots
+        self.json['answers'] = {}
+
+        i = 0
+        for count in self.e.count:
+            self.json['answers'][self.cleanB.names[i]] = count
+            i += 1
+
     def generateReportIterative(self):
         self.json['winners'] = [self.cleanB.names[winner] for winner in self.e.winners]
         self.json['num_seats'] = self.e.numSeats
@@ -39,13 +53,13 @@ class JsonReport(ReportPlugin):
 
             lost = []
             if (r < self.e.numRounds - 1) and self.e.roundInfo[r+1]["action"][0] == "eliminate":
-                lost = self.e.roundInfo[r+1]["action"][1] 
+                lost = self.e.roundInfo[r+1]["action"][1]
                 lost.sort()
             already_lost += lost
 
             xfer = []
             if (r < self.e.numRounds - 1) and self.e.roundInfo[r+1]["action"][0] == "surplus":
-                xfer = self.e.roundInfo[r+1]["action"][1] 
+                xfer = self.e.roundInfo[r+1]["action"][1]
                 xfer.sort()
 
             def get_status(i):
