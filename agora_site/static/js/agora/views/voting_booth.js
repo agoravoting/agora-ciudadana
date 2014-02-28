@@ -167,9 +167,9 @@
                 return new Agora.VotePluralityQuestion({model: model, votingBooth: this});
             } else if (voting_system == "MEEK-STV" || voting_system == "APPROVAL") {
                 if (layout == "PRIMARY") {
-                    return new Agora.VotePrimaryRankedQuestion({model: model, votingBooth: this});
+                    return new Agora.VotePrimaryMultiQuestion({model: model, votingBooth: this, system: voting_system});
                 } else { // simple
-                    return new Agora.VoteRankedQuestion({model: model, votingBooth: this});
+                    return new Agora.VoteMultiQuestion({model: model, votingBooth: this, system: voting_system});
                 }
             }
         },
@@ -556,7 +556,7 @@
         }
     });
 
-    Agora.VoteRankedQuestion = Backbone.View.extend({
+    Agora.VoteMultiQuestion = Backbone.View.extend({
         events: {
             'click .available-choices li a': 'selectChoice',
             'click .btn-continue': 'continueClicked',
@@ -565,8 +565,16 @@
         initialize: function() {
             _.bindAll(this);
             this.template = _.template($("#template-voting_booth_question_ranked").html());
-            this.templateChoice = _.template($("#template-voting_booth_question_ranked_choice").html());
+            this.system = this.options.system;
+            if(this.system == "APPROVAL") {
+                this.templateChoice = _.template($("#template-voting_booth_question_approval_choice").html());
+            }
+            else {
+                this.templateChoice = _.template($("#template-voting_booth_question_ranked_choice").html());
+            }
+
             this.votingBooth = this.options.votingBooth;
+
 
             // do some sanity checks
             this.sanityChecks();
@@ -846,7 +854,7 @@
         }
     });
 
-    Agora.VotePrimaryRankedQuestion = Agora.VoteRankedQuestion.extend({
+    Agora.VotePrimaryMultiQuestion = Agora.VoteMultiQuestion.extend({
         events: {
             'click .available-choices li a.choose-option': 'selectChoice',
             'click .user-choices ul li a': 'deselectUserChoice',
@@ -856,7 +864,13 @@
         initialize: function() {
             _.bindAll(this);
             this.template = _.template($("#template-voting_booth_question_ranked_primary").html());
-            this.templateChoice = _.template($("#template-voting_booth_question_ranked_choice").html());
+            this.system = this.options.system;
+            if(this.system == "APPROVAL") {
+                this.templateChoice = _.template($("#template-voting_booth_question_approval_choice").html());
+            }
+            else {
+                this.templateChoice = _.template($("#template-voting_booth_question_ranked_choice").html());
+            }
             this.votingBooth = this.options.votingBooth;
             app.modalDialog = new Agora.ModalDialogView();
 

@@ -372,9 +372,6 @@ class ApprovalTally(BaseTally):
             else:
                 answer['total_count_percentage'] = 0
 
-
-        print("fill_results " + str(question['answers']))
-
     def post_tally(self, result):
         '''
         Once all votes have been added, this function actually save them to
