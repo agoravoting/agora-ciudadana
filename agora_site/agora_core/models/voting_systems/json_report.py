@@ -22,7 +22,8 @@ class JsonReport(ReportPlugin):
 
         i = 0
         for count in self.e.count:
-            self.json['answers'][self.cleanB.names[i]] = count
+            key = self.cleanB.names[i].decode('utf-8')
+            self.json['answers'][key] = count
             i += 1
 
     def generateReportIterative(self):
