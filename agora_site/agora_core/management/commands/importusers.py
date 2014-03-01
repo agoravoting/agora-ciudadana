@@ -28,6 +28,7 @@ class Command(BaseCommand):
         with open(args[0], 'r') as f:
             user_list = json.loads(f.read())
 
+        import ipdb; ipdb.set_trace()
         for data in user_list:
             if User.objects.filter(username=data['username']).exists() or\
                     User.objects.filter(email=data['email']).exists():
@@ -45,4 +46,4 @@ class Command(BaseCommand):
 
             # add user to the default agoras if any
             for agora_name in data["agoras"]:
-                u.get_profile().add_to_agora(agora_name=agora_name, silent=False)
+                u.get_profile().add_to_agora(agora_name=agora_name, silent=True)
