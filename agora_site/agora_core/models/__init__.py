@@ -94,7 +94,7 @@ class Profile(UserenaLanguageBaseProfile):
     def get_big_mugshot(self):
         return self.get_mugshot_url(170)
 
-    def add_to_agora(self, request=None, agora_name=None, agora_id=None):
+    def add_to_agora(self, request=None, agora_name=None, agora_id=None, silent=True):
         '''
         Add the user to the specified agora. The agora is specified by its full
         name or id, for example agora_name="username/agoraname" or agora_id=3.
@@ -104,27 +104,25 @@ class Profile(UserenaLanguageBaseProfile):
             username, agoraname = agora_name.split("/")
             agora = get_object_or_404(Agora, name=agoraname,
                 creator__username=username)
-            if agora.members.filter(pk=self.user.id).exists():
-                return
-            agora.members.add(self.user)
-            agora.save()
         else:
             agora = get_object_or_404(Agora, pk=agora_id)
-            if agora.members.filter(pk=self.user.id).exists():
-                return
-            agora.members.add(self.user)
-            agora.save()
 
-        send_action(self.user, verb='joined', action_object=agora, request=request)
+        if agora.members.filter(pk=self.user.id).exists():
+            return
+        agora.members.add(self.user)
+        agora.save()
+
+        if not silent:
+            send_action(self.user, verb='joined', action_object=agora, request=request)
 
         remove_perm('requested_membership', self.user, agora)
         remove_perm('denied_requested_membership', self.user, agora)
 
-        if not is_following(self.user, agora):
+        if not is_following(self.user, agora) and not silent:
             follow(self.user, agora, actor_only=False, request=request)
 
         # Mail to the user
-        if not self.has_perms('receive_email_updates'):
+        if not self.has_perms('receive_email_updates') or silent:
             return
 
         translation.activate(self.user.get_profile().lang_code)

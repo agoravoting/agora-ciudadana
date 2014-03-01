@@ -29,16 +29,20 @@ class Command(BaseCommand):
             user_list = json.loads(f.read())
 
         for data in user_list:
-            if User.objects.filter(username=data['username']).exists() or User.objects.filter(email=data['email']).exists():
-                print("user %s already exists, ignoring.." % data["username"])
-                continue
-
-            u = User(username=data['username'], email=data['email'])
-            u.password= data['password']
-            u.first_name = data['first_name']
-            u.is_active = True
-            u.save()
+            if User.objects.filter(username=data['username']).exists() or\
+                    User.objects.filter(email=data['email']).exists():
+                print("user %s already exists.." % data["username"])
+                if User.objects.filter(username=data['username']).exists():
+                    u = User.objects.get(username=data['username'])
+                else:
+                    u = User.objects.get(email=data['email'])
+            else:
+                u = User(username=data['username'], email=data['email'])
+                u.password= data['password']
+                u.first_name = data['first_name']
+                u.is_active = True
+                u.save()
 
             # add user to the default agoras if any
             for agora_name in data["agoras"]:
-                u.get_profile().add_to_agora(agora_name=agora_name)
+                u.get_profile().add_to_agora(agora_name=agora_name, silent=False)
