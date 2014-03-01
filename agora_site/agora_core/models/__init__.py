@@ -94,7 +94,7 @@ class Profile(UserenaLanguageBaseProfile):
     def get_big_mugshot(self):
         return self.get_mugshot_url(170)
 
-    def add_to_agora(self, request=None, agora_name=None, agora_id=None, silent=True):
+    def add_to_agora(self, request=None, agora_name=None, agora_id=None, silent=False):
         '''
         Add the user to the specified agora. The agora is specified by its full
         name or id, for example agora_name="username/agoraname" or agora_id=3.
@@ -118,11 +118,11 @@ class Profile(UserenaLanguageBaseProfile):
         remove_perm('requested_membership', self.user, agora)
         remove_perm('denied_requested_membership', self.user, agora)
 
-        if not is_following(self.user, agora) and not silent:
+        if not silent and not not is_following(self.user, agora):
             follow(self.user, agora, actor_only=False, request=request)
 
         # Mail to the user
-        if not self.has_perms('receive_email_updates') or silent:
+        if silent or not self.has_perms('receive_email_updates'):
             return
 
         translation.activate(self.user.get_profile().lang_code)
