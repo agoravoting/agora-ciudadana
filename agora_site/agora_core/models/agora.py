@@ -446,11 +446,13 @@ class Agora(models.Model):
 
         is_superuser = user.is_superuser
         user.is_superuser = False
-        is_member = lambda: self.members.filter(id=user.id).exists()
-        is_admin = lambda: self.admins.filter(id=user.id).exists()
+        is_member = lambda: not isanon and self.members.filter(id=user.id).exists()
+        is_admin = lambda: not isanon and self.admins.filter(id=user.id).exists()
 
-        opc = ObjectPermissionChecker(user)
-        opc_perms = opc.get_perms(self)
+        opc_perms = None
+        if not isanon:
+            opc = ObjectPermissionChecker(user)
+            opc_perms = opc.get_perms(self)
         user.is_superuser = is_superuser
 
         isarchived = self.is_archived()
@@ -472,14 +474,17 @@ class Agora(models.Model):
         is_superuser = user.is_superuser
         user.is_superuser = False
 
-        _is_member = self.members.filter(id=user.id).exists()
+        _is_member = not isanon and self.members.filter(id=user.id).exists()
         is_member = lambda: _is_member
 
-        _is_admin = self.admins.filter(id=user.id).exists()
+        _is_admin = not isanon and self.admins.filter(id=user.id).exists()
         is_admin = lambda: _is_admin
 
-        opc = ObjectPermissionChecker(user)
-        opc_perms = opc.get_perms(self)
+        opc_perms = None
+        if not isanon:
+            opc = ObjectPermissionChecker(user)
+            opc_perms = opc.get_perms(self)
+
         user.is_superuser = is_superuser
 
         isarchived = self.is_archived()
