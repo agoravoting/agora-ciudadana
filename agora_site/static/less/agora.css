@@ -6147,6 +6147,7 @@ ul.list-container li.agora-user-item.simple > a.agora i {
   float: left;
   padding-left: 9px;
   min-width: 150px;
+  max-width: 280px;
 }
 .home .featured-primary-question div.candidate .cand-details h3 {
   display: block;

@@ -7,7 +7,7 @@ from agora_site.agora_core.resources.agora import AgoraResource, TinyAgoraResour
 from agora_site.agora_core.resources.castvote import CastVoteResource
 from agora_site.agora_core.forms import PostCommentForm, election_questions_validator
 from agora_site.agora_core.forms.election import (VoteForm as ElectionVoteForm,
-    LoginAndVoteForm)
+    LoginAndVoteForm, TokenVoteForm)
 from agora_site.misc.utils import (geolocate_ip, get_base_email_context,
     JSONFormField, JSONApiField, ISODateTimeFormField, clean_html)
 from agora_site.misc.decorators import permission_required
@@ -390,6 +390,7 @@ class ElectionResource(GenericResource):
             'release_results': self.release_results_action,
             'archive': self.archive_action,
             'vote': self.vote_action,
+            'token_vote': self.token_vote_action,
             'login_and_vote': self.login_and_vote_action,
             'cancel_vote': self.cancel_vote_action,
         }
@@ -589,6 +590,12 @@ class ElectionResource(GenericResource):
         Form for voting
         '''
         return self.wrap_form(ElectionVoteForm)(request, election, **kwargs)
+
+    def token_vote_action(self, request, election, **kwargs):
+        '''
+        Form for voting
+        '''
+        return self.wrap_form(TokenVoteForm)(request, election, **kwargs)
 
 
     def login_and_vote_action(self, request, election, **kwargs):

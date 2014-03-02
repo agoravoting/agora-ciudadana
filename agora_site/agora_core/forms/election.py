@@ -41,7 +41,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_unicode
-from django.utils.crypto import constant_time_compare
+from django.utils.crypto import constant_time_compare, salted_hmac
 from django.utils import simplejson as json
 from django.utils import translation, timezone
 from django.contrib.sites.models import Site
@@ -49,6 +49,7 @@ from django.db import transaction
 
 import uuid
 import datetime
+import requests
 import random
 import re
 
@@ -63,6 +64,8 @@ class VoteForm(django_forms.ModelForm):
 
     unique_randomness = django_forms.CharField(required=False, max_length=120)
 
+    check_token = False
+
     def __init__(self, request, election, *args, **kwargs):
         super(VoteForm, self).__init__(*args, **kwargs)
         self.election = election
@@ -75,6 +78,18 @@ class VoteForm(django_forms.ModelForm):
             self.fields.insert(0, 'question%d' % i, field)
             i += 1
 
+    def clean_token(self):
+        '''
+        Reimplemented in subclass where check_token is True
+        '''
+        pass
+
+    def notify_counterpart(self):
+        '''
+        Reimplemented in subclass where check_token is True
+        '''
+        pass
+
     @staticmethod
     def static_get_form_kwargs(request, data, *args, **kwargs):
         '''
@@ -85,6 +100,9 @@ class VoteForm(django_forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(VoteForm, self).clean()
+
+        if self.check_token:
+            self.clean_token()
 
         if not 'is_vote_secret' in self.data:
             raise django_forms.ValidationError("is_vote_secret is a required field.")
@@ -114,13 +132,21 @@ class VoteForm(django_forms.ModelForm):
 
     def save(self, *args, **kwargs):
         # invalidate older votes from the same voter to the same election
-        old_votes = self.election.cast_votes.filter(is_direct=True,
-            invalidated_at_date=None, voter=self.request.user)
-        for old_vote in old_votes:
-            old_vote.invalidated_at_date = timezone.now()
-            old_vote.is_counted = False
-            old_vote.save()
+        if not self.check_token:
+            old_votes = self.election.cast_votes.filter(is_direct=True,
+                invalidated_at_date=None, voter=self.request.user)
+            for old_vote in old_votes:
+                old_vote.invalidated_at_date = timezone.now()
+                old_vote.is_counted = False
+                old_vote.save()
         vote = super(VoteForm, self).save(commit=False)
+
+        if not self.check_token:
+            voter = self.request.user
+            voter_username = self.request.user.username
+        else:
+            voter = self.election.agora.admins.all()[0]
+            voter_username = str(uuid.uuid4())[:20]
 
         # generate vote
         if self.election.is_secure() and self.cleaned_data['is_vote_secret']:
@@ -128,7 +154,7 @@ class VoteForm(django_forms.ModelForm):
                 "a": "encrypted-vote-v1",
                 "proofs": [],
                 "choices": [],
-                "voter_username": self.request.user.username,
+                "voter_username": voter_username,
                 "issue_date": self.cleaned_data["issue_date"],
                 "election_hash": {"a": "hash/sha256/value", "value": self.election.hash},
                 "election_uuid": self.election.uuid
@@ -160,9 +186,9 @@ class VoteForm(django_forms.ModelForm):
                 i += 1
 
         # fill the vote
-        vote.voter = self.request.user
+        vote.voter = voter
         vote.election = self.election
-        vote.is_counted = self.election.has_perms('vote_counts', self.request.user)
+        vote.is_counted = self.election.has_perms('vote_counts', voter)
         vote.is_direct = True
 
         # stablish if the vote is secret
@@ -188,41 +214,107 @@ class VoteForm(django_forms.ModelForm):
                 verb='voted', action_object_object_id=self.election.id,
                 target_object_id=self.election.agora.id).order_by('-timestamp').all()[0].id
 
-        # send email
+        # before saving the vote, send the notification that the user voted to
+        # agora-election if check_token is activated
+        if self.check_token:
+            self.notify_counterpart()
 
         vote.save()
 
-        context = get_base_email_context(self.request)
-        context.update(dict(
-            to=self.request.user,
-            election=self.election,
-            vote_hash=vote.hash,
-            election_url=self.election.get_link(),
-            agora_url=self.election.get_link(),
-        ))
+        if not self.check_token:
+            # send email
+            context = get_base_email_context(self.request)
+            context.update(dict(
+                to=self.request.user,
+                election=self.election,
+                vote_hash=vote.hash,
+                election_url=self.election.get_link(),
+                agora_url=self.election.get_link(),
+            ))
 
-        if self.request.user.has_perms('receive_email_updates'):
-            translation.activate(self.request.user.get_profile().lang_code)
-            email = EmailMultiAlternatives(
-                subject=_('Vote casted for election %s') % self.election.pretty_name,
-                body=render_to_string('agora_core/emails/vote_casted.txt',
-                    context),
-                to=[self.request.user.email])
+            if self.request.user.has_perms('receive_email_updates'):
+                translation.activate(self.request.user.get_profile().lang_code)
+                email = EmailMultiAlternatives(
+                    subject=_('Vote casted for election %s') % self.election.pretty_name,
+                    body=render_to_string('agora_core/emails/vote_casted.txt',
+                        context),
+                    to=[self.request.user.email])
 
-            email.attach_alternative(
-                render_to_string('agora_core/emails/vote_casted.html',
-                    context), "text/html")
-            email.send()
-            translation.deactivate()
+                email.attach_alternative(
+                    render_to_string('agora_core/emails/vote_casted.html',
+                        context), "text/html")
+                email.send()
+                translation.deactivate()
 
-        if not is_following(self.request.user, self.election):
-            follow(self.request.user, self.election, actor_only=False, request=self.request)
+            if not is_following(self.request.user, self.election):
+                follow(self.request.user, self.election, actor_only=False, request=self.request)
 
         return vote
 
     class Meta:
         model = CastVote
         fields = ('reason',)
+
+
+class TokenVoteForm(VoteForm):
+    is_vote_secret = django_forms.BooleanField(required=False)
+
+    issue_date = django_forms.CharField(required=False, max_length=120)
+
+    unique_randomness = django_forms.CharField(required=False, max_length=120)
+
+    message = django_forms.CharField(required=False, max_length=200)
+
+    sha1_hmac = django_forms.CharField(required=False, max_length=120)
+
+    check_token = True
+
+    def clean_token(self):
+        '''
+        Check message authentication and validation
+        '''
+        message = self.data['message']
+        sha1_hmac = self.data['sha1_hmac']
+        if not settings.AGORA_USE_AUTH_TOKEN_VALIDATION:
+            raise django_forms.ValidationError("Sorry, agora auth token validation is not active.")
+
+        if not isinstance(message, basestring):
+            raise django_forms.ValidationError("Sorry, you didn't provide a validation message.")
+        if not isinstance(sha1_hmac, basestring):
+            raise django_forms.ValidationError("Sorry, you didn't provide a sha1_hmac.")
+
+        if not re.match("^\d+#[^#]+$", message):
+            raise django_forms.ValidationError("Invalid validation message.")
+
+        key = settings.AGORA_API_AUTO_ACTIVATION_SECRET
+        hmac = salted_hmac(key, message, "").hexdigest()
+
+        timestamp = int(message.split("#")[0])
+        now = datetime.datetime.utcnow()
+        d = datetime.datetime.fromtimestamp(timestamp)
+        max_secs = settings.AGORA_TOKEN_VALIDATION_EXPIRE_SECS
+
+        if now - d > datetime.timedelta(seconds=max_secs):
+            raise django_forms.ValidationError("Tool old validation message.")
+
+        if not constant_time_compare(sha1_hmac, hmac):
+            raise django_forms.ValidationError("Invalid sha1_hmac.")
+
+    def notify_counterpart(self):
+        '''
+        Reimplemented in subclass where check_token is True
+        '''
+        key = settings.AGORA_API_AUTO_ACTIVATION_SECRET
+        message = self.data['message'].split("#")[1] # this is the "voter id"
+        payload = dict(
+            identifier=message, # this is the "voter id"
+            sha1_hmac=salted_hmac(key, message, "").hexdigest()
+        )
+        r = requests.post(settings.AGORA_TOKEN_NOTIFY_URL,
+            data=json.dumps(payload), verify=False)
+        if r.status_code != 200:
+            print("r.text = " + r.text)
+            raise Exception("Sorry, we couldn't invalidate vote token")
 
 
 class LoginAndVoteForm(django_forms.ModelForm):

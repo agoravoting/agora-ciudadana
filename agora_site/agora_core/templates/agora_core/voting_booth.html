@@ -31,10 +31,12 @@
                     <div class="current-screen">
                     </div>
                     <div class="modal-header">
-                        <small>
-                            <%= gettext("Election") %> <a class="inline text-center" href="<%- url %>" target="_blank"><%= pretty_name %></a> <%= pgettext("<election> at <agora>", "at") %> <a class="inline text-center" href="<%- agora.url %>" target="_blank"><%= agora.full_name %></a>
-                            </a>
-                        </small>
+                        <% if (!is_tokenized) { %>
+                            <small>
+                                <%= gettext("Election") %> <a class="inline text-center" href="<%- url %>" target="_blank"><%= pretty_name %></a> <%= pgettext("<election> at <agora>", "at") %> <a class="inline text-center" href="<%- agora.url %>" target="_blank"><%= agora.full_name %></a>
+                                </a>
+                            </small>
+                        <% } %>
                         <small class="pull-right">
                             <% if (hash) { %>
                                 <%= gettext("Election fingerprint:") %> <%= hash %>
@@ -395,7 +397,11 @@
             </div>
         </div>
         <div class="modal-header hero-vote vote-cast text-center">
-            <h2><a href="https://twitter.com/share">¡Difunde la votación en Twitter!</a></h2>
+            <% if (is_tokenized) { %>
+              <h2><a href="https://twitter.com/share?url=<%- share_url %>">¡Difunde la votación en Twitter!</a></h2>
+            <% } else { %>
+              <h2><a href="https://twitter.com/share">¡Difunde la votación en Twitter!</a></h2>
+            <% } %>
         </div>
         <div class="modal-header hero-vote vote-cast">
             <% if (is_counted) { %>
@@ -403,7 +409,11 @@
             <% } else { %>
                 <p><%= gettext("We have received your vote but for security reasons we need to check your identity. We have sent you an email with a <strong>link you need to click</strong> if you want your vote to be confirmed. Please check your email address. It might take a while to arrive, be patient. If the email doesn't seem to arrive, please check if it has gone to the SPAM folder or try again to vote.") %>
             <% } %>
+            <% if (is_tokenized) { %>
+            <a class="btn btn-large btn-block btn-primary btn-goback" href="<%- share_url %>">
+            <% } else { %>
             <a class="btn btn-large btn-block btn-primary btn-goback" href="<%- url %>">
+            <% } %>
                 <% if (return_to_election) { %>
                     <strong><%= gettext("Go back to the election page") %></strong>
                 <% } else { %>
@@ -600,6 +610,8 @@
         var AGORA_FNMT_BASE_URL = "{{AGORA_FNMT_BASE_URL}}";
         var DEFAULT_FROM_EMAIL = "{{DEFAULT_FROM_EMAIL}}";
         var AGORA_FRONT_PAGE = "{{AGORA_FRONT_PAGE}}";
+        var AGORA_USE_AUTH_TOKEN_VALIDATION = "{{AGORA_USE_AUTH_TOKEN_VALIDATION}}";
+        var AGORA_TOKEN_REDIRECT_IDENTIFY_URL = "{{AGORA_TOKEN_REDIRECT_IDENTIFY_URL}}";
         app.currentView = new Agora.VotingBooth();
     </script>
 </body>

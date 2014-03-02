@@ -132,6 +132,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'agora_site.misc.context_processor.settings.CUSTOM_CSS_STYLE',
     'agora_site.misc.context_processor.settings.ANONYMIZE_USERS',
     'agora_site.misc.context_processor.settings.CUSTOM_JAVASCRIPT',
+    'agora_site.misc.context_processor.settings.AGORA_USE_AUTH_TOKEN_VALIDATION',
+    'agora_site.misc.context_processor.settings.AGORA_TOKEN_REDIRECT_IDENTIFY_URL',
 )
 
 ROOT_URLCONF = 'agora_site.urls'
@@ -434,6 +436,19 @@ AGORA_ALLOW_API_AUTO_ACTIVATION = False
 # the API caller will have to provide this secret to be able to do API
 # auto-activation
 AGORA_API_AUTO_ACTIVATION_SECRET = 'change the activation secret'
+
+# Token validation in seconds. Only used if auth token validation is active
+AGORA_USE_AUTH_TOKEN_VALIDATION = False
+
+# url where we should post a notification when a tokenized ballot is casted
+AGORA_TOKEN_NOTIFY_URL = 'http://127.0.0.1:7000/api/v1/notify_vote/'
+
+# an user can only vote with a token up to 15 minutes after validating the sms,
+# by default
+AGORA_TOKEN_VALIDATION_EXPIRE_SECS = 60*15
+
+# url to redirect after voting when using token validation
+AGORA_TOKEN_REDIRECT_IDENTIFY_URL = "http://127.0.0.1:7000/"
 
 # List of agoras to which a user will be joined automatically when they are
 # registered

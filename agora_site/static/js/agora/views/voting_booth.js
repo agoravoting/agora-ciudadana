@@ -113,6 +113,23 @@
             'click #user_vote_is_public': 'toggleWhy'
         },
 
+        /**
+         *  indicates that the vote is authenticated using a token given
+         *  using the parameters ?message=whatever&sha1_hmac=whatever2
+         */
+        is_tokenized: false,
+
+        jsonFromURL: function() {
+            var query = decodeURI(document.location.search.substr(1));
+            var data = query.split("&");
+            var result = {};
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i].split("=");
+                result[item[0]] = decodeURIComponent(item[1]);
+            }
+            return result;
+        },
+
         reviewMode: false,
 
         initialize: function() {
@@ -120,6 +137,15 @@
             this.template = _.template($("#template-voting_booth").html());
             this.templateEncrypting = _.template($("#template-voting_booth_encrypting").html());
 
+            // note, we have to do this before calling to render
+            if (AGORA_USE_AUTH_TOKEN_VALIDATION  == "True") {
+                var json_url = this.jsonFromURL();
+                if (json_url.message && json_url.sha1_hmac) {
+                    this.is_tokenized = true;
+                    this.json_url = json_url;
+                    ajax_data.is_tokenized = true;
+                }
+            }
             // ajax_data is a global variable
             ajax_data.has_to_authenticate = has_to_authenticate;
             this.model = new Agora.VoteElectionModel(ajax_data);
@@ -131,12 +157,19 @@
         render: function() {
             // render template
             var data = this.model.toJSON();
+            data.is_tokenized = this.is_tokenized;
             data.DEFAULT_FROM_EMAIL = DEFAULT_FROM_EMAIL;
             this.$el.html(this.template(data));
 
-            // create start view
-            this.startScreenView = new Agora.VotingBoothStartScreen({model: this.model});
-            this.$el.find(".current-screen").append(this.startScreenView.render().el);
+            // if agora is configured to use tokens and we didn't receive one,
+            // this is a problem
+            if(AGORA_USE_AUTH_TOKEN_VALIDATION == "True" && !this.is_tokenized) {
+                document.location = AGORA_TOKEN_REDIRECT_IDENTIFY_URL;
+            } else {
+                // create start view
+                this.startScreenView = new Agora.VotingBoothStartScreen({model: this.model});
+                this.$el.find(".current-screen").append(this.startScreenView.render().el);
+            }
 
             // create a view per question
             this.questionViews = [];
@@ -302,7 +335,7 @@
 
         eventVoteSealed: function() {
             $("html").attr("style", "");
-            if (has_to_authenticate) {
+            if (!this.is_tokenized && has_to_authenticate) {
                 this.showAuthenticationForm();
                 return;
             }
@@ -329,6 +362,13 @@
                 return;
             }
 
+            // tokenize the vote if needed
+            if (this.is_tokenized) {
+                this.ballot['action'] = 'token_vote';
+                this.ballot['message'] = this.json_url.message;
+                this.ballot['sha1_hmac'] = this.json_url.sha1_hmac;
+            }
+
             var self = this;
             var jqxhr = $.ajax("/api/v1/election/" + election_id + "/action/", {
                 data: JSON.stringifyCompat(self.ballot),
@@ -339,10 +379,15 @@
                 self.$el.find(".current-screen").html('');
                 self.$el.find(".current-screen").append(self.voteCast.render().el);
             })
-            .fail(function() {
+            .fail(function(jqXHR, textStatus) {
                 self.sendingData = false;
                 self.$el.find("#cast-ballot-btn").removeClass("disabled");
-                alert("Error casting the ballot, try again or report this problem");
+                if (jqXHR.text.indexOf("token") != -1) {
+                    alert(gettext("There was a problem casting the ballot. You might have already voted, or your identification might have expired. We recommend you to try to identify yourself again."));
+                    document.location.href = AGORA_TOKEN_REDIRECT_IDENTIFY_URL;
+                } else {
+                    alert(gettext("Error casting the ballot, try again or report this problem"));
+                }
             });
         },
 
@@ -365,6 +410,7 @@
             // render template
             var data = this.model.toJSON();
             data.vote_isfake = $("#vote_fake").data("fakeit") == "yes-please";
+            data.is_tokenized = ajax_data.is_tokenized;
 
             this.$el.html(this.template(data));
             var converter = new Showdown.converter();
@@ -1277,6 +1323,14 @@
             ballot['issue_date'] = moment().format();
             ballot['user_id'] = this.$el.find("#id_identification").val();
             ballot['password'] = this.$el.find("#id_password").val();
+
+            if (user_vote_is_encrypted) {
+                // we need to add some randomness to make vote unique so that
+                // the hash is not repeated
+                var random = sjcl.random.randomWords(5, 0);
+                var rand_bi = new BigInt(sjcl.codec.hex.fromBits(random), 16);
+                ballot['unique_randomness'] = rand_bi.toRadix(16);
+            }
             this.startSendingData();
             var self = this;
             var election_id = this.model.get('id');
@@ -1391,6 +1445,8 @@
             var data = this.model.toJSON();
             data.is_counted = this.is_counted;
             data.return_to_election = (AGORA_FRONT_PAGE != ajax_data.agora.full_name);
+            data.is_tokenized = (AGORA_USE_AUTH_TOKEN_VALIDATION == "True");
+            data.share_url = AGORA_TOKEN_REDIRECT_IDENTIFY_URL;
             if (!data.return_to_election) {
                 data.url = "/";
             }
