@@ -405,7 +405,18 @@
         </div>
         <div class="modal-header hero-vote vote-cast">
             <% if (is_counted) { %>
-            <p><%= gettext("Congratulations, your vote has been <strong>successfully cast</strong>. You will soon receive a confirmation email") %>.</p>
+              <% if (is_tokenized) { %>
+                  <p><%= gettext("Congratulations, your vote has been <strong>successfully cast</strong>. Your ballot hash is: %s, write it down somewhere to be able to check it was counted later.") %>.</p>
+
+                  <p><%= gettext("Your ballot smart tracker is:") %></p>
+                  <p><strong>%s</strong></p>
+                  <p><%= interpolate(gettext("Write it down somewhere to be able to check that your vote was counted."), [ballot_hash]) %>.</p>
+              <% } else { %>
+                  <p><%= gettext("Congratulations, your vote has been <strong>successfully cast</strong>. You will soon receive a confirmation email") %>.</p>
+                  <p><%= gettext("Your ballot smart tracker is:") %></p>
+                  <p><strong>%s</strong></p>
+                  <p><%= interpolate(gettext("Write it down somewhere to be able to check that your vote was counted."), [ballot_hash]) %>.</p>
+              <% } %>
             <% } else { %>
                 <p><%= gettext("We have received your vote but for security reasons we need to check your identity. We have sent you an email with a <strong>link you need to click</strong> if you want your vote to be confirmed. Please check your email address. It might take a while to arrive, be patient. If the email doesn't seem to arrive, please check if it has gone to the SPAM folder or try again to vote.") %>
             <% } %>

@@ -376,6 +376,7 @@
                 type: 'POST',
             })
             .done(function(e) {
+                ajax_data.ballot = self.ballot;
                 self.$el.find(".current-screen").html('');
                 self.$el.find(".current-screen").append(self.voteCast.render().el);
             })
@@ -1342,6 +1343,7 @@
             })
             .done(function(data) {
                 self.stopSendingData();
+                ajax_data.ballot = ballot;
                 self.votingBooth.showVoteSent(data);
             })
             .fail(function(data) {
@@ -1418,6 +1420,7 @@
             })
             .done(function(data) {
                 self.stopSendingData();
+                ajax_data.ballot = ballot;
                 self.votingBooth.showVoteSent(data);
             })
             .fail(function(data) {
@@ -1443,6 +1446,9 @@
         render: function() {
             // render template
             var data = this.model.toJSON();
+
+            data.ballot_hash = Agora.hashBallot(ajax_data.ballot);
+            ajax_data.ballot_hash =  data.ballot_hash;
             data.is_counted = this.is_counted;
             data.return_to_election = (AGORA_FRONT_PAGE != ajax_data.agora.full_name);
             data.is_tokenized = (AGORA_USE_AUTH_TOKEN_VALIDATION == "True");
@@ -1455,4 +1461,66 @@
             return this;
         }
     });
+
+    /**
+     * Replacement for JSON.stringify in cases where the output needs to be
+     * reproducable. In those cases, we have to sort the dictionaries before
+     * stringifying them, something that JSON.stringify doesn't do.
+     */
+    Agora.jsonStringifySorted = function(obj) {
+        if (Array.isArray(obj)) {
+            var serialized = [];
+            for(var i = 0; i < obj.length; i++) {
+                serialized.push(Agora.jsonStringifySorted(obj[i]));
+            }
+            return "[" + serialized.join(", ") + "]";
+        } else if (typeof(obj) == 'object') {
+            if (obj == null) {
+                return "null";
+            }
+            var sortedKeys = Object.keys(obj).sort();
+            var arr = [];
+            for(var i = 0; i < sortedKeys.length; i++) {
+                var key = sortedKeys[i];
+                var value = obj[key];
+                key = JSON.stringify(key);
+                value = Agora.jsonStringifySorted(value);
+                arr.push(key + ': ' + value);
+            }
+            return "{" + arr.join(", ") + "}";
+        } else {
+            return JSON.stringify(obj);
+        }
+    };
+
+    /**
+     * Converts the ballot into the string that is used for hashing, and is
+     * actually the format in which the vote is stored in the database and
+     * how it will get stored in the tally.tar.gz
+     */
+    Agora.hashBallot = function(ballot) {
+        var transformedBallot = {
+            "a": "encrypted-vote-v1",
+            "proofs": [],
+            "choices": [],
+            "issue_date": ballot.issue_date,
+            "election_hash": {"a": "hash/sha256/value", "value": ajax_data.hash},
+            "election_uuid": ajax_data.uuid
+        }
+        for (var i = 0; i < ajax_data.questions.length; i++) {
+            var q_answer = ballot['question' + i];
+            transformedBallot.proofs.push({
+                "commitment":q_answer['commitment'],
+                "response":q_answer['response'],
+                "challenge":q_answer['challenge']
+            });
+            transformedBallot.choices.push({
+                "alpha":q_answer['alpha'],
+                "beta":q_answer['beta']
+            });
+        }
+        var str_data = Agora.jsonStringifySorted(transformedBallot);
+        var bitArray = sjcl.hash.sha256.hash(str_data);
+        return sjcl.codec.hex.fromBits(bitArray);
+    };
 }).call(this);

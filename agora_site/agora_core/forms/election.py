@@ -146,7 +146,6 @@ class VoteForm(django_forms.ModelForm):
             voter_username = self.request.user.username
         else:
             voter = self.election.agora.admins.all()[0]
-            voter_username = str(uuid.uuid4())[:20]
 
         # generate vote
         if self.election.is_secure() and self.cleaned_data['is_vote_secret']:
@@ -154,7 +153,6 @@ class VoteForm(django_forms.ModelForm):
                 "a": "encrypted-vote-v1",
                 "proofs": [],
                 "choices": [],
-                "voter_username": voter_username,
                 "issue_date": self.cleaned_data["issue_date"],
                 "election_hash": {"a": "hash/sha256/value", "value": self.election.hash},
                 "election_uuid": self.election.uuid
