@@ -10,7 +10,7 @@ django-activity-stream
 django-social-auth>=0.7.7
 django-crispy-forms
 easy_thumbnails
-pil
+Pillow==2.3.0
 django-haystack
 django-debug-toolbar==0.11.0
 textile
