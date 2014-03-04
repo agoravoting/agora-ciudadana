@@ -16,7 +16,7 @@ django-debug-toolbar==0.11.0
 textile
 simplejson
 pygeoip
-celery==3.1
+celery==3.1.9
 django-celery==3.1.9
 pytz>dev
 django-tastypie==0.9.12
