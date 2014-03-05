@@ -443,6 +443,10 @@ AGORA_USE_AUTH_TOKEN_VALIDATION = False
 # url where we should post a notification when a tokenized ballot is casted
 AGORA_TOKEN_NOTIFY_URL = 'http://127.0.0.1:7000/api/v1/notify_vote/'
 
+# Auth param used for AGORA_NOTIFY_URL in python-requests
+# Something like ('user', 'password') for basic auth will work
+AGORA_TOKEN_NOTIFY_URL_AUTH = None
+
 # an user can only vote with a token up to 15 minutes after validating the sms,
 # by default
 AGORA_TOKEN_VALIDATION_EXPIRE_SECS = 60*15

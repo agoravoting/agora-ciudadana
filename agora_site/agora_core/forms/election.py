@@ -309,7 +309,8 @@ class TokenVoteForm(VoteForm):
             sha1_hmac=salted_hmac(key, message, "").hexdigest()
         )
         r = requests.post(settings.AGORA_TOKEN_NOTIFY_URL,
-            data=json.dumps(payload), verify=False)
+            data=json.dumps(payload), verify=False,
+            auth=settings.AGORA_TOKEN_NOTIFY_URL_AUTH)
         if r.status_code != 200:
             print("r.text = " + r.text)
             raise Exception("Sorry, we couldn't invalidate vote token")
