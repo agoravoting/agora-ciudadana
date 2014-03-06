@@ -406,7 +406,7 @@
         <div class="modal-header hero-vote vote-cast">
             <% if (is_counted) { %>
               <% if (is_tokenized) { %>
-                  <p><%= gettext("Congratulations, your vote has been <strong>successfully cast</strong>. Your ballot hash is: %s, write it down somewhere to be able to check it was counted later.") %></p>
+                  <p><%= gettext("Congratulations, your vote has been <strong>successfully cast</strong>.") %></p>
 
                   <p><%= gettext("Your ballot smart tracker is:") %></p>
                   <p><strong><%- ballot_hash %></strong></p>
