@@ -293,7 +293,7 @@ class TokenVoteForm(VoteForm):
         max_secs = settings.AGORA_TOKEN_VALIDATION_EXPIRE_SECS
 
         if now - d > datetime.timedelta(seconds=max_secs):
-            raise django_forms.ValidationError("Tool old validation message.")
+            raise django_forms.ValidationError("Too old validation message.")
 
         if not constant_time_compare(sha1_hmac, hmac):
             raise django_forms.ValidationError("Invalid sha1_hmac.")

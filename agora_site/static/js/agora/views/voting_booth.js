@@ -384,10 +384,10 @@
                 self.sendingData = false;
                 self.$el.find("#cast-ballot-btn").removeClass("disabled");
                 if (jqXHR.responseText.indexOf("validation") != -1) {
-                    alert(gettext("There was a problem casting the ballot. You might have already voted. You might want to try to identify yourself again. Redirecting to home page."));
+                    alert(gettext("There was a problem casting the ballot, your SMS code has expired and is no longer valid. To vote, you need to identify yourself again. Redirecting to the home page."));
                     document.location.href = AGORA_TOKEN_REDIRECT_IDENTIFY_URL;
                 } else if (jqXHR.responseText.indexOf("token") != -1 || ajax_data.is_tokenized) {
-                    alert(gettext("There was a problem casting the ballot. Maybe you already voted? You can only vote once. Redirecting to home page."));
+                    alert(gettext("There was a problem casting the ballot. Maybe you already voted? You can only vote once. Redirecting to the home page."));
                     document.location.href = AGORA_TOKEN_REDIRECT_IDENTIFY_URL;
                 } else {
                     alert(gettext("Error casting the ballot, try again or report this problem"));
