@@ -112,7 +112,7 @@ class VoteForm(django_forms.ModelForm):
         if not self.election.ballot_is_open():
             raise django_forms.ValidationError("Sorry, you cannot vote in this election.")
 
-        if cleaned_data['is_vote_secret'] and\
+        if not self.check_token and cleaned_data['is_vote_secret'] and\
             not self.election.has_perms('vote_counts', self.request.user):
             raise django_forms.ValidationError("Sorry, you cannot vote secretly in "
                 "this election because you can only act as a delegate.")
