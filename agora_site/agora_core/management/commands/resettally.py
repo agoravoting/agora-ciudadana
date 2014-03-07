@@ -30,6 +30,7 @@ class Command(BaseCommand):
         e.extra_data = None
         e.voting_ends_at_date = None
         e.voting_extended_until_date= None
-        e.tally_released_at_date=None
+        e.tally_released_at_date = None
+        e.result_tallied_at_date = None
         e.result = None
         e.save()
