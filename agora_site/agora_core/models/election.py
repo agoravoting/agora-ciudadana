@@ -107,7 +107,10 @@ class Election(models.Model):
             'eligibility': self.eligibility
         }
 
-        if self.voting_starts_at_date:
+        # because for secure elections we need to have the hash when it's
+        # frozen even if we don't know yet the voting_starts_at_date, in secure
+        # elections we don't put start_date in get_serializable_data
+        if self.voting_starts_at_date and not self.is_secure():
             data['start_date'] = self.voting_starts_at_date.isoformat()
 
         return data

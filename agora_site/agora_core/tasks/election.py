@@ -320,6 +320,16 @@ def create_pubkeys(election_id):
     election = Election.objects.get(pk=election_id)
 
     auths = election.authorities = election.agora.agora_local_authorities.all()
+    election.uuid = str(uuid.uuid4())
+
+    election.orchestra_status = {
+        'election_id': election.uuid,
+        'create_status': "not_requested_yet",
+        'create_director_id': None,
+        'tally_status': 'not_requested_yet',
+        'tally_director_id': None,
+    }
+    election.create_hash()
     election.save()
     if len(auths) < settings.MIN_NUM_AUTHORITIES or\
             len(auths) > settings.MAX_NUM_AUTHORITIES:
@@ -337,7 +347,7 @@ def create_pubkeys(election_id):
             return datet.isoformat()
 
     payload = {
-        "election_id": str(uuid.uuid4()),
+        "election_id": election.uuid,
         "is_recurring": False,
         "callback_url": callback_url,
         "extra": [],
@@ -369,7 +379,7 @@ def create_pubkeys(election_id):
         status = 'requested'
 
     election.orchestra_status = {
-        'election_id': payload["election_id"],
+        'election_id': election.uuid,
         'create_status': status,
         'create_director_id': director.id,
         'tally_status': 'not_requested_yet',
