@@ -329,12 +329,14 @@
                                     <li><a href="/misc/page/faq" alt="<%- gettext("FAQs") %>">
                                         <%- gettext("FAQs") %>
                                     </a></li>
-                                    <li><a href="/available-authorities" alt="<%- gettext("Election Authorities") %>">
-                                        <%- gettext("Election Authorities") %>
-                                    </a></li>
-                                    <li><a href="<%- election.url %>/security-center" alt="<%- gettext("Security Center") %>">
-                                        <%- gettext("Security Center") %>
-                                    </a></li>
+                                    <% if (election.security_policy.indexOf("ENCRYPT") != -1) { %>
+                                      <li><a href="/available-authorities" alt="<%- gettext("Election Authorities") %>">
+                                          <%- gettext("Election Authorities") %>
+                                      </a></li>
+                                      <li><a href="<%- election.url %>/security-center" alt="<%- gettext("Security Center") %>">
+                                          <%- gettext("Security Center") %>
+                                      </a></li>
+                                    <% } %>
                                 </ul>
                             </div>
                     </div>
