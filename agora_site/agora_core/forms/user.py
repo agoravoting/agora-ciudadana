@@ -129,6 +129,12 @@ class APIEmailLoginForm(django_forms.Form):
             raise django_forms.ValidationError(_('Invalid activation secret.'))
 
         self.user = get_object_or_404(User, email__iexact=self.cleaned_data['email'])
+        # just in case the user is not in the needed agoras, we try to add to
+        # all of them. Onli if the user is not in the agora, it will be added
+        for agora_name in settings.AGORA_REGISTER_AUTO_JOIN:
+            self.user.get_profile().add_to_agora(
+                agora_name=agora_name,
+                request=self.request)
 
         return True
 
