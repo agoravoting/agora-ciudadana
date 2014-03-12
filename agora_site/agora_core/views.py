@@ -600,6 +600,7 @@ class FreezeElectionView(FormActionView):
 
         election.frozen_at_date = timezone.now()
         election.save()
+        transaction.commit()
         if election.is_secure():
             election.request_pubkeys()
 
