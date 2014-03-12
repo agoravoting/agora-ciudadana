@@ -480,6 +480,7 @@ class ElectionResource(GenericResource):
         '''
         election.frozen_at_date = election.last_modified_at_date = timezone.now()
         election.save()
+        transaction.commit()
         if election.is_secure():
             election.request_pubkeys()
 
