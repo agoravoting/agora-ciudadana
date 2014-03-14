@@ -161,16 +161,6 @@
             data.DEFAULT_FROM_EMAIL = DEFAULT_FROM_EMAIL;
             this.$el.html(this.template(data));
 
-            // if agora is configured to use tokens and we didn't receive one,
-            // this is a problem
-            if(AGORA_USE_AUTH_TOKEN_VALIDATION == "True" && !this.is_tokenized) {
-                document.location = AGORA_TOKEN_REDIRECT_IDENTIFY_URL;
-            } else {
-                // create start view
-                this.startScreenView = new Agora.VotingBoothStartScreen({model: this.model});
-                this.$el.find(".current-screen").append(this.startScreenView.render().el);
-            }
-
             // create a view per question
             this.questionViews = [];
             var self = this;
@@ -184,6 +174,19 @@
             // create vote caste view for later
             this.voteCast = new Agora.VoteCastView({model: this.model, votingBooth: this});
 
+            // if agora is configured to use tokens and we didn't receive one,
+            // this is a problem
+            if(AGORA_USE_AUTH_TOKEN_VALIDATION == "True" && !this.is_tokenized) {
+                document.location = AGORA_TOKEN_REDIRECT_IDENTIFY_URL;
+            } else {
+                // create start view
+                if (!this.is_tokenized) {
+                    this.startScreenView = new Agora.VotingBoothStartScreen({model: this.model});
+                    this.$el.find(".current-screen").append(this.startScreenView.render().el);
+                } else {
+                    this.startVoting();
+                }
+            }
             this.delegateEvents();
 
             return this;

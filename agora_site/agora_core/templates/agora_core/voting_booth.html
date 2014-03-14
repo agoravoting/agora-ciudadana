@@ -96,12 +96,19 @@
             <div class="text-center">
                 <h1><%= election_name %></h1>
                 <div class="btn-group">
-                    <button class="btn btn-primary disabled"><%= gettext("1. Select") %></button>
-                    <button class="btn disabled"><%= gettext("2. Review") %></button>
-                    <% if (!has_to_authenticate) { %>
-                        <button class="btn disabled"><%= gettext("3. Submit") %></button>
+                    <% if(!ajax_data.is_tokenized) { %>
+                      <button class="btn btn-primary disabled"><%= gettext("1. Select") %></button>
+                      <button class="btn disabled"><%= gettext("2. Review") %></button>
+                      <% if (!has_to_authenticate) { %>
+                          <button class="btn disabled"><%= gettext("3. Submit") %></button>
+                      <% } else { %>
+                          <button class="btn disabled"><%= gettext("3. Authenticate and Submit") %></button>
+                      <% } %>
                     <% } else { %>
-                        <button class="btn disabled"><%= gettext("3. Authenticate and Submit") %></button>
+                      <button class="btn disabled"><%= gettext("1. Register") %></button>
+                      <button class="btn disabled"><%= gettext("2. Authenticate") %></button>
+                      <button class="btn btn-primary disabled"><%= gettext("3. Select") %></button>
+                      <button class="btn disabled"><%= gettext("4. Review and vote") %></button>
                     <% } %>
                 </div>
             </div>
@@ -159,12 +166,19 @@
             <div class="text-center">
                 <h1><%= election_name %></h1>
                 <div class="btn-group">
-                    <button class="btn btn-primary disabled"><%= gettext("1. Select") %></button>
-                    <button class="btn disabled"><%= gettext("2. Review") %></button>
-                    <% if (!has_to_authenticate) { %>
-                        <button class="btn disabled"><%= gettext("3. Submit") %></button>
+                    <% if(!ajax_data.is_tokenized) { %>
+                      <button class="btn btn-primary disabled"><%= gettext("1. Select") %></button>
+                      <button class="btn disabled"><%= gettext("2. Review") %></button>
+                      <% if (!has_to_authenticate) { %>
+                          <button class="btn disabled"><%= gettext("3. Submit") %></button>
+                      <% } else { %>
+                          <button class="btn disabled"><%= gettext("3. Authenticate and Submit") %></button>
+                      <% } %>
                     <% } else { %>
-                        <button class="btn disabled"><%= gettext("3. Authenticate and Submit") %></button>
+                      <button class="btn disabled"><%= gettext("1. Register") %></button>
+                      <button class="btn disabled"><%= gettext("2. Authenticate") %></button>
+                      <button class="btn btn-primary disabled"><%= gettext("3. Select") %></button>
+                      <button class="btn disabled"><%= gettext("4. Review and vote") %></button>
                     <% } %>
                 </div>
             </div>
@@ -235,12 +249,19 @@
             <div class="text-center">
                 <h1><%= election_name %></h1>
                 <div class="btn-group">
-                    <button class="btn btn-primary disabled"><%= gettext("1. Select") %></button>
-                    <button class="btn disabled"><%= gettext("2. Review") %></button>
-                    <% if (!has_to_authenticate) { %>
-                        <button class="btn disabled"><%= gettext("3. Submit") %></button>
+                    <% if(!ajax_data.is_tokenized) { %>
+                      <button class="btn btn-primary disabled"><%= gettext("1. Select") %></button>
+                      <button class="btn disabled"><%= gettext("2. Review") %></button>
+                      <% if (!has_to_authenticate) { %>
+                          <button class="btn disabled"><%= gettext("3. Submit") %></button>
+                      <% } else { %>
+                          <button class="btn disabled"><%= gettext("3. Authenticate and Submit") %></button>
+                      <% } %>
                     <% } else { %>
-                        <button class="btn disabled"><%= gettext("3. Authenticate and Submit") %></button>
+                      <button class="btn disabled"><%= gettext("1. Register") %></button>
+                      <button class="btn disabled"><%= gettext("2. Authenticate") %></button>
+                      <button class="btn btn-primary disabled"><%= gettext("3. Select") %></button>
+                      <button class="btn disabled"><%= gettext("4. Review and vote") %></button>
                     <% } %>
                 </div>
             </div>
@@ -321,12 +342,19 @@
             <div class="text-center">
                 <h1><%= pretty_name %></h1>
                 <div class="btn-group">
-                    <button class="btn disabled"><%= gettext("1. Select") %></button>
-                    <button class="btn btn-primary disabled"><%= gettext("2. Review") %></button>
-                    <% if (!has_to_authenticate) { %>
-                        <button class="btn disabled"><%= gettext("3. Submit") %></button>
+                    <% if(!ajax_data.is_tokenized) { %>
+                      <button class="btn disabled"><%= gettext("1. Select") %></button>
+                      <button class="btn btn-primary disabled"><%= gettext("2. Review") %></button>
+                      <% if (!has_to_authenticate) { %>
+                          <button class="btn disabled"><%= gettext("3. Submit") %></button>
+                      <% } else { %>
+                          <button class="btn disabled"><%= gettext("3. Authenticate and Submit") %></button>
+                      <% } %>
                     <% } else { %>
-                        <button class="btn disabled"><%= gettext("3. Authenticate and Submit") %></button>
+                      <button class="btn disabled"><%= gettext("1. Register") %></button>
+                      <button class="btn disabled"><%= gettext("2. Authenticate") %></button>
+                      <button class="btn disabled"><%= gettext("3. Select") %></button>
+                      <button class="btn btn-primary disabled"><%= gettext("4. Review and vote") %></button>
                     <% } %>
                 </div>
             </div>
@@ -449,12 +477,19 @@
             <div class="text-center">
                 <h1><%= pretty_name %></h1>
                 <div class="btn-group">
-                    <button class="btn disabled"><%= gettext("1. Select") %></button>
-                    <button class="btn disabled"><%= gettext("2. Review") %></button>
-                    <% if (!has_to_authenticate) { %>
-                        <button class="btn btn-primary disabled"><%= gettext("3. Submit") %></button>
+                    <% if(!ajax_data.is_tokenized) { %>
+                      <button class="btn disabled"><%= gettext("1. Select") %></button>
+                      <button class="btn disabled"><%= gettext("2. Review") %></button>
+                      <% if (!has_to_authenticate) { %>
+                          <button class="btn btn-primary disabled"><%= gettext("3. Submit") %></button>
+                      <% } else { %>
+                          <button class="btn btn-primary disabled"><%= gettext("3. Authenticate and Submit") %></button>
+                      <% } %>
                     <% } else { %>
-                        <button class="btn btn-primary disabled"><%= gettext("3. Authenticate and Submit") %></button>
+                      <button class="btn disabled"><%= gettext("1. Register") %></button>
+                      <button class="btn disabled"><%= gettext("2. Authenticate") %></button>
+                      <button class="btn disabled"><%= gettext("3. Select") %></button>
+                      <button class="btn btn-primary disabled"><%= gettext("4. Review and vote") %></button>
                     <% } %>
                 </div>
             </div>
