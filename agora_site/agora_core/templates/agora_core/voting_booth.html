@@ -430,9 +430,9 @@
         </div>
         <div class="modal-header hero-vote vote-cast text-center">
             <% if (is_tokenized) { %>
-              <h2><a href="https://twitter.com/share?url=<%- share_url %>">¡Difunde la votación en Twitter!</a></h2>
+              <h2><a href="https://twitter.com/share?url=<%- share_url %>"><%= gettext("Share election on Twitter!") %></a></h2>
             <% } else { %>
-              <h2><a href="https://twitter.com/share">¡Difunde la votación en Twitter!</a></h2>
+              <h2><a href="https://twitter.com/share"><%= gettext("Share election on Twitter!") %></a></h2>
             <% } %>
         </div>
         <div class="modal-header hero-vote vote-cast">

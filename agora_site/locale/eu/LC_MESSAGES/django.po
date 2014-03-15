@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-10 15:33+0100\n"
+"POT-Creation-Date: 2014-03-15 23:11+0100\n"
 "PO-Revision-Date: 2013-06-04 17:44-0000\n"
 "Last-Translator: \n"
 "Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-"
@@ -769,32 +769,32 @@ msgstr "Ez duzu bozketa onartzeko baimenik."
 msgid "You don't have permission to freeze the election."
 msgstr "Ez duzu bozketa izozteko baimenik."
 
-#: agora_core/views.py:624
+#: agora_core/views.py:625
 msgid "You don't have permission to start the election."
 msgstr "Ez duzu bozketa hasteko baimenik."
 
-#: agora_core/views.py:657
+#: agora_core/views.py:658
 msgid "You don't have permission to stop the election."
 msgstr "Ez duzu bozketa gelditzeko baimenik."
 
-#: agora_core/views.py:688
+#: agora_core/views.py:689
 msgid "You don't have permission to release election results."
 msgstr "Ez daukazu baimenik bozketaren emaitzak igortzeko."
 
-#: agora_core/views.py:713
+#: agora_core/views.py:714
 msgid "You don't have permission to archive the election."
 msgstr "Ez duzu bozketa artxibatzeko baimenik."
 
-#: agora_core/views.py:718
+#: agora_core/views.py:719
 msgid "Election is already archived."
 msgstr "Bozketa dagoeneko artxibatuta dago."
 
-#: agora_core/views.py:761
+#: agora_core/views.py:762
 #, python-format
 msgid "Election archived: %s"
 msgstr "Bozketa artxibatuta: %s"
 
-#: agora_core/views.py:796
+#: agora_core/views.py:797
 msgid ""
 "Your vote was correctly casted! Now you could share this election in "
 "Facebook, Google Plus, Twitter, etc."
@@ -802,38 +802,38 @@ msgstr ""
 "Behar bezala bozkatu duzu! Bozketa Facebook, Google Plus, Twitter, etab. "
 "bezalako guneetan partekatu dezakezu."
 
-#: agora_core/views.py:817 agora_core/forms/election.py:207
-#: agora_core/forms/election.py:408
+#: agora_core/views.py:818 agora_core/forms/election.py:236
+#: agora_core/forms/election.py:499
 #, python-format
 msgid "Vote casted for election %s"
 msgstr "%s bozketan bozkatu duzu"
 
-#: agora_core/views.py:854
+#: agora_core/views.py:855
 msgid "Sorry, election is closed and thus you cannot vote."
 msgstr "Sentitzen dugu baina bozketa itxita dago eta ezin duzu bozkatu."
 
-#: agora_core/views.py:870
+#: agora_core/views.py:871
 msgid "Sorry, but you cannot delegate to yourself ;-)."
 msgstr "Sentitzen dugu baina ezin duzu zeure buruaren ordezkaria izan ;)"
 
-#: agora_core/views.py:876
+#: agora_core/views.py:877
 msgid ""
 "Sorry, but you cannot delegate if you're not a member of the agora first."
 msgstr ""
 "Sentitzen dugu baina ordezkari bat hautatzeko agorako kidea izan behar "
 "duzu ;)"
 
-#: agora_core/views.py:942 agora_core/forms/agora.py:149
+#: agora_core/views.py:943 agora_core/forms/agora.py:149
 #, python-format
 msgid "%(site)s - You delegated your vote in %(agora)s"
 msgstr "%(site)s - Ordezkari bat hautatu duzu %(agora)s agoran"
 
-#: agora_core/views.py:960 agora_core/forms/agora.py:169
+#: agora_core/views.py:961 agora_core/forms/agora.py:169
 #, python-format
 msgid "%(site)s - You have a new delegation in %(agora)s"
 msgstr "%(site)s - Ordezkaritza berri bat duzu %(agora)s agoran"
 
-#: agora_core/views.py:974
+#: agora_core/views.py:975
 #, python-format
 msgid ""
 "You delegated your vote in %(agora)s to %(username)s! Now you could share "
@@ -843,23 +843,23 @@ msgstr ""
 "baduzu Facebook, Google Plus, Twitter, etab. bezalako guneetan partekatu "
 "dezakezu."
 
-#: agora_core/views.py:996
+#: agora_core/views.py:997
 #, python-format
 msgid "Guess what, you are already a member of %(agora)s!"
 msgstr "Dagoeneko %(agora)s agorako kidea zara!"
 
-#: agora_core/views.py:1005
+#: agora_core/views.py:1006
 msgid "Sorry, you don't have permission to join this agora."
 msgstr "Sentitzen dugu baina ez duzu agora honetara elkartzeko baimenik."
 
-#: agora_core/views.py:1018
+#: agora_core/views.py:1019
 #, python-format
 msgid ""
 "You joined %(agora)s. Now you could take a look at what elections are "
 "available at this agora"
 msgstr "%(agora)s agorara elkartu zara. Orain agorako bozketak ikus ditzakezu"
 
-#: agora_core/views.py:1032
+#: agora_core/views.py:1033
 #, python-format
 msgid ""
 "You requested membership in %(agora)s. Soon the admins of this agora will "
@@ -868,7 +868,7 @@ msgstr ""
 "%(agora)s agorako kide izatea eskatu duzu. Laster agorako administratzaileek "
 "zure eskarari erantzungo diote."
 
-#: agora_core/views.py:1042 agora_core/tasks/agora.py:34
+#: agora_core/views.py:1043 agora_core/tasks/agora.py:34
 #, python-format
 msgid ""
 "%(username)s has requested membership at %(agora)s. Please review this "
@@ -877,16 +877,16 @@ msgstr ""
 "%(username)s erabiltzaileak kidetza eskatu du %(agora)s gunean. Berrikusi "
 "zain dagoen eskaera hau"
 
-#: agora_core/views.py:1048 agora_core/tasks/agora.py:40
+#: agora_core/views.py:1049 agora_core/tasks/agora.py:40
 msgid "List of membership requests"
 msgstr "Kide izateko eskaeren zerrenda"
 
-#: agora_core/views.py:1065 agora_core/tasks/agora.py:59
+#: agora_core/views.py:1066 agora_core/tasks/agora.py:59
 #, python-format
 msgid "%(site)s - New membership request at %(agora)s"
 msgstr "%(site)s - %(agora)s agorako kide izateko eskaera berria."
 
-#: agora_core/views.py:1095
+#: agora_core/views.py:1096
 #, python-format
 msgid ""
 "Sorry but you need to be a member of %(agora)s to request admin membership!"
@@ -894,12 +894,12 @@ msgstr ""
 "%(agora)s agorako kidea izan behar duzu administratzaile-funtzioa eskatu "
 "ahal izateko."
 
-#: agora_core/views.py:1101
+#: agora_core/views.py:1102
 msgid ""
 "Sorry, you don't have permission to request admin membership in this agora."
 msgstr "Ez duzu baimenik agora honetako administratzailea izateko."
 
-#: agora_core/views.py:1116 agora_core/tasks/agora.py:85
+#: agora_core/views.py:1117 agora_core/tasks/agora.py:85
 #, python-format
 msgid ""
 "%(username)s has requested admin membership at %(agora)s. Please review this "
@@ -908,16 +908,16 @@ msgstr ""
 "%(username)s erabiltzaileak %(agora)s agorako administratzailea izatea "
 "eskatu du. Berrikusi zain dagoen eskaera hau"
 
-#: agora_core/views.py:1122 agora_core/tasks/agora.py:91
+#: agora_core/views.py:1123 agora_core/tasks/agora.py:91
 msgid "List of admin membership requests"
 msgstr "Administratzailea izateko eskaeren zerrenda"
 
-#: agora_core/views.py:1139 agora_core/tasks/agora.py:110
+#: agora_core/views.py:1140 agora_core/tasks/agora.py:110
 #, python-format
 msgid "%(site)s - New admin membership request at %(agora)s"
 msgstr "%(site)s - Administratzailea izateko eskaera berria %(agora)s agoran"
 
-#: agora_core/views.py:1153
+#: agora_core/views.py:1154
 #, python-format
 msgid ""
 "You requested admin membership in %(agora)s. Soon the admins of this agora "
@@ -926,19 +926,19 @@ msgstr ""
 "Administratzailea izatea eskatu duzu %(agora)s agoran. Laster agorako "
 "administratzaileek zure eskarari erantzungo diote."
 
-#: agora_core/views.py:1170
+#: agora_core/views.py:1171
 msgid ""
 "Sorry, you don't have permission to cancel admin membership request in this "
 "agora."
 msgstr ""
 "Ez duzu baimenik administratzailea izateko eskaera ukatzeko agora honetan."
 
-#: agora_core/views.py:1180
+#: agora_core/views.py:1181
 #, python-format
 msgid "Your admin membership in %(agora)s was cancelled."
 msgstr "Zure administratzaile-funtzioa ezeztatu egin da %(agora)s agoran."
 
-#: agora_core/views.py:1189
+#: agora_core/views.py:1190
 #, python-format
 msgid ""
 "%(username)s has cancelled his/her requested admin membership at %(agora)s."
@@ -946,7 +946,7 @@ msgstr ""
 "%(username)s erabiltzaileak %(agora)s agoran administratzailea izateko "
 "eskaera ezeztatu egin du."
 
-#: agora_core/views.py:1202
+#: agora_core/views.py:1203
 #, python-format
 msgid ""
 "%(site)s - %(username)s cancelled his/her admin membership request at "
@@ -955,28 +955,28 @@ msgstr ""
 "%(site)s - %(username)s erabiltzaileak %(agora)s agoran administratzailea "
 "izateko eskaera ezeztatu du."
 
-#: agora_core/views.py:1231 agora_core/views.py:1330 agora_core/views.py:1394
-#: agora_core/views.py:1507 agora_core/views.py:1533 agora_core/views.py:1555
-#: agora_core/views.py:1622 agora_core/views.py:1716
+#: agora_core/views.py:1232 agora_core/views.py:1331 agora_core/views.py:1395
+#: agora_core/views.py:1508 agora_core/views.py:1534 agora_core/views.py:1556
+#: agora_core/views.py:1623 agora_core/views.py:1717
 msgid "Sorry, you don't have admin permissions in this agora."
 msgstr "Ez duzu administratzaile-funtzioa agora honetan."
 
-#: agora_core/views.py:1236
+#: agora_core/views.py:1237
 msgid "Sorry, you cannot accept this user's  membership request."
 msgstr "Ezin duzu erabiltzaile honen kidetza-eskaera onartu."
 
-#: agora_core/views.py:1250
+#: agora_core/views.py:1251
 #, python-format
 msgid "You accepted  %(username)s membership request in %(agora)s."
 msgstr ""
 "%(username)s erabiltzailea %(agora)s agoran kide izateko eskaera onartu duzu"
 
-#: agora_core/views.py:1286 agora_core/resources/agora.py:737
+#: agora_core/views.py:1287 agora_core/resources/agora.py:737
 #, python-format
 msgid "Your membership has been accepted at %(agora)s. Congratulations!"
 msgstr "Zure kidetza onartu dugu %(agora)s agoran. Zorionak!"
 
-#: agora_core/views.py:1291 agora_core/resources/agora.py:742
+#: agora_core/views.py:1292 agora_core/resources/agora.py:742
 #, python-format
 msgid ""
 "Your membership has been accepted at %(agora)s and your ballot has been "
@@ -984,44 +984,44 @@ msgid ""
 msgstr ""
 "Zure kidetza onartu dugu %(agora)s agoran eta zure botoa eman duzu. Zorionak!"
 
-#: agora_core/views.py:1303 agora_core/models/__init__.py:141
+#: agora_core/views.py:1304 agora_core/models/__init__.py:139
 #: agora_core/resources/agora.py:754
 #, python-format
 msgid "%(site)s - you are now member of %(agora)s"
 msgstr "%(site)s - orain %(agora)s agorako kidea zara"
 
-#: agora_core/views.py:1335
+#: agora_core/views.py:1336
 msgid "Sorry, you cannot make admin to this user."
 msgstr "Ezin duzu erabiltzaile hau administratzaile bihurtu."
 
-#: agora_core/views.py:1347
+#: agora_core/views.py:1348
 #, python-format
 msgid "You made admin to %(username)s admin in %(agora)s."
 msgstr ""
 "%(username)s erabiltzailea administratzaile bihurtu duzu %(agora)s agoran."
 
-#: agora_core/views.py:1358
+#: agora_core/views.py:1359
 #, python-format
 msgid "You've been promoted to admin at %(agora)s. Congratulations!"
 msgstr "Orain %(agora)s agorako administratzailea zara. Zorionak!"
 
-#: agora_core/views.py:1366 agora_core/views.py:1432
+#: agora_core/views.py:1367 agora_core/views.py:1433
 #, python-format
 msgid "%(site)s - you've been promoted to admin at %(agora)s"
 msgstr "%(site)s - orain %(agora)s agorako administratzailea zara"
 
-#: agora_core/views.py:1399
+#: agora_core/views.py:1400
 msgid "Sorry, you cannot accept this user's  admin membership request."
 msgstr "Ezin duzu kide honen administratzaile izateko eskaera onartu."
 
-#: agora_core/views.py:1412
+#: agora_core/views.py:1413
 #, python-format
 msgid "You accepted  %(username)s admin membership request in %(agora)s."
 msgstr ""
 "%(agora)s agoran administratzailea izateko %(username)s erabiltzailearen "
 "eskaera onartu duzu."
 
-#: agora_core/views.py:1423
+#: agora_core/views.py:1424
 #, python-format
 msgid ""
 "Your admin membership has been accepted  so you've been promoted to admin at "
@@ -1030,40 +1030,40 @@ msgstr ""
 "Administratzailea izateko zure eskaera onartu dugu, beraz orain %(agora)s "
 "agorako administratzailea zara. Zorionak!"
 
-#: agora_core/views.py:1463 agora_core/views.py:1687
+#: agora_core/views.py:1464 agora_core/views.py:1688
 msgid "Sorry, you don't have permission to leave this agora."
 msgstr "Ezin duzu agora hau utzi."
 
-#: agora_core/views.py:1475
+#: agora_core/views.py:1476
 #, python-format
 msgid "You left %(agora)s."
 msgstr "%(agora)s agora utzi duzu"
 
-#: agora_core/views.py:1485
+#: agora_core/views.py:1486
 #, python-format
 msgid "You cancelled your membership request at %(agora)s."
 msgstr "%(agora)s agorako kide izateko zure eskaera ezeztatu duzu."
 
-#: agora_core/views.py:1512
+#: agora_core/views.py:1513
 msgid "Sorry, you cannot dismiss this user's  membership request."
 msgstr "Ezin duzu erabiltzaile honen kide izateko eskaera baztertu."
 
-#: agora_core/views.py:1544
+#: agora_core/views.py:1545
 msgid "Sorry, file not found"
 msgstr "Ez dugu fitxategia aurkitu"
 
-#: agora_core/views.py:1560
+#: agora_core/views.py:1561
 msgid "Sorry, you cannot dismiss this user's  admin membership request."
 msgstr "Ezin duzu kide honen administratzaile izateko eskaera baztertu."
 
-#: agora_core/views.py:1571
+#: agora_core/views.py:1572
 #, python-format
 msgid "You dismissed %(username)s admin membership request at %(agora)s."
 msgstr ""
 "%(agora)s agorako administratzailea izateko %(username)s erabiltzailearen "
 "eskaera baztertu duzu."
 
-#: agora_core/views.py:1582
+#: agora_core/views.py:1583
 #, python-format
 msgid ""
 "Your admin membership request at %(agora)s  has been dismissed. Sorry about "
@@ -1072,44 +1072,44 @@ msgstr ""
 "%(agora)s agorako administratzailea izateko zure eskaera baztertu dugu. "
 "Sentitzen dugu!"
 
-#: agora_core/views.py:1590
+#: agora_core/views.py:1591
 #, python-format
 msgid "%(site)s - admin membership request dismissed at %(agora)s"
 msgstr "%(site)s - administratzaile-eskaera baztertua %(agora)s agoran"
 
-#: agora_core/views.py:1627 agora_core/views.py:1721
+#: agora_core/views.py:1628 agora_core/views.py:1722
 msgid "Sorry, this user doesn't have permission to leave this agora."
 msgstr "Erabiltzaile honek ezin du agora hau utzi."
 
-#: agora_core/views.py:1638
+#: agora_core/views.py:1639
 #, python-format
 msgid "You removed membership from %(agora)s to %(username)s."
 msgstr "%(username)s erabiltzailearen kidetza kendu duzu %(agora)s agoran."
 
-#: agora_core/views.py:1649
+#: agora_core/views.py:1650
 #, python-format
 msgid ""
 "Your have been removed from membership from %(agora)s . Sorry about that!"
 msgstr "Zure kidetza kendu dugu %(agora)s agoran. Sentitzen dugu!"
 
-#: agora_core/views.py:1657 agora_core/resources/agora.py:1017
+#: agora_core/views.py:1658 agora_core/resources/agora.py:1017
 #, python-format
 msgid "%(site)s - membership removed from %(agora)s"
 msgstr "%(site)s - kidetza-kentzea %(agora)s agoran"
 
-#: agora_core/views.py:1699
+#: agora_core/views.py:1700
 #, python-format
 msgid "You removed your admin membership at %(agora)s."
 msgstr "Zure administratzaile-funtzioa kendu duzu %(agora)s agoran."
 
-#: agora_core/views.py:1733
+#: agora_core/views.py:1734
 #, python-format
 msgid "You removed  admin membership from %(agora)s to %(username)s."
 msgstr ""
 "%(username)s erabiltzailearen administratzaile-funtzioa kendu duzu %(agora)s "
 "agoran."
 
-#: agora_core/views.py:1744
+#: agora_core/views.py:1745
 #, python-format
 msgid ""
 "Your have been removed from admin membership from %(agora)s . Sorry about "
@@ -1117,56 +1117,56 @@ msgid ""
 msgstr ""
 "Zure administratzaile-funtzioa kendu dugu %(agora)s agoran . Sentitzen dugu!"
 
-#: agora_core/views.py:1752
+#: agora_core/views.py:1753
 #, python-format
 msgid "%(site)s - admin membership removed from %(agora)s"
 msgstr "%(site)s - administratzaile-funtzioa kendu dugu %(agora)s agoran."
 
-#: agora_core/views.py:1827 agora_core/views.py:1903
+#: agora_core/views.py:1828 agora_core/views.py:1904
 msgid "Your comment was successfully posted."
 msgstr "Iruzkina behar bezala bidali duzu."
 
-#: agora_core/views.py:1840
+#: agora_core/views.py:1841
 #, python-format
 msgid ""
 "Sorry, but you don't have comment permissions on <em>%(electionname)s</em>."
 msgstr "Ezin dituzu iruzkinak idatzi <em>%(electionname)s</em> bozketan."
 
-#: agora_core/views.py:1919
+#: agora_core/views.py:1920
 #, python-format
 msgid "Sorry, but you don't have comment permissions on %(agora)s."
 msgstr "Ezin dituzu iruzkinak egin %(agora)s agoran."
 
-#: agora_core/views.py:1946
+#: agora_core/views.py:1947
 msgid "You can't cancel a vote in a closed election."
 msgstr "Ezin duzu botoa ezeztatu itxitako bozketa batean."
 
-#: agora_core/views.py:1953 agora_core/resources/election.py:611
+#: agora_core/views.py:1954 agora_core/resources/election.py:619
 msgid "You didn't participate in this election."
 msgstr "Ez duzu bozketa honetan parte hartu."
 
-#: agora_core/views.py:1978 agora_core/resources/election.py:634
+#: agora_core/views.py:1979 agora_core/resources/election.py:642
 #, python-format
 msgid "Vote cancelled for election %s"
 msgstr "Botoa ezeztatu duzu %s bozketan"
 
-#: agora_core/views.py:2008 agora_core/resources/user.py:74
+#: agora_core/views.py:2009 agora_core/resources/user.py:74
 #: agora_core/resources/user.py:80 agora_core/resources/user.py:150
 #: agora_core/resources/user.py:156 agora_core/resources/user.py:171
 #: agora_core/resources/user.py:204 agora_core/resources/user.py:210
 msgid "Anonymous"
 msgstr "Anónimo"
 
-#: agora_core/views.py:2048
+#: agora_core/views.py:2049
 msgid "User settings updated."
 msgstr "Erabiltzaile-ezarpenak eguneratu ditugu."
 
-#: agora_core/views.py:2105 agora_core/views.py:2117
+#: agora_core/views.py:2106 agora_core/views.py:2118
 #, python-format
 msgid "Sorry, but you don't have admin permissions on %(agoraname)s."
 msgstr "Ez zara administratzailea %(agoraname)s agoran."
 
-#: agora_core/views.py:2132
+#: agora_core/views.py:2133
 #, python-format
 msgid "Agora settings changed for %(agoraname)s."
 msgstr "Agoraren ezarpenak aldatu ditugu %(agoraname)s agoran."
@@ -1188,8 +1188,8 @@ msgstr "Igo irudi bat zure profilean erakusteko edo erabili Gravatar zerbitzua"
 msgid "Remove this avatar"
 msgstr "Kendu irudi hau"
 
-#: agora_core/forms/__init__.py:106 agora_core/models/__init__.py:252
-#: agora_core/models/agora.py:92 agora_core/models/election.py:250
+#: agora_core/forms/__init__.py:106 agora_core/models/__init__.py:250
+#: agora_core/models/agora.py:92 agora_core/models/election.py:253
 msgid "Short Description"
 msgstr "Aurkezpen laburra"
 
@@ -1198,7 +1198,7 @@ msgid "Say something about yourself (140 chars max)"
 msgstr "Esaguzu zerbait zuri buruz (gehienez 140 karaktere)"
 
 #: agora_core/forms/__init__.py:109 agora_core/forms/user.py:323
-#: agora_core/models/__init__.py:254 agora_core/models/agora.py:94
+#: agora_core/models/__init__.py:252 agora_core/models/agora.py:94
 #: agora_core/templates/agora_core/agora_bio.html:5
 #: agora_core/templates/agora_core/user_bio.html:5
 #: agora_core/templates/agora_core/user_view.html:30
@@ -1209,7 +1209,7 @@ msgstr "Biografia"
 msgid "Tell us about you, use as much text as needed"
 msgstr "Esaguzu nahi duzuna zuri buruz, nahi bezain beste leku duzu hemen!"
 
-#: agora_core/forms/__init__.py:116 agora_core/models/__init__.py:265
+#: agora_core/forms/__init__.py:116 agora_core/models/__init__.py:263
 msgid "Receive email updates"
 msgstr "Jaso egunerapenak mezu elektronikoaren bidez"
 
@@ -1266,6 +1266,7 @@ msgid "General settings"
 msgstr "Ezarpen orokorrak"
 
 #: agora_core/forms/__init__.py:246
+#: agora_core/models/voting_systems/approval.py:56
 #: agora_core/models/voting_systems/base.py:44
 #: agora_core/models/voting_systems/base_stv.py:56
 #: agora_core/models/voting_systems/plurality.py:52
@@ -1273,7 +1274,7 @@ msgstr "Ezarpen orokorrak"
 msgid "Invalid questions format"
 msgstr "Galeraren formatua ez da zuzena"
 
-#: agora_core/forms/__init__.py:270 agora_core/models/election.py:285
+#: agora_core/forms/__init__.py:270 agora_core/models/election.py:288
 #: agora_core/resources/election.py:91
 msgid "Questions"
 msgstr "Galderak"
@@ -1403,7 +1404,7 @@ msgid_plural "Watch your mouth! The words %s are not allowed here."
 msgstr[0] "Ez esan horrelakorik! Ez dugu %s hitza onartzen hemen."
 msgstr[1] "Ez esan horrelakorik! Ez ditugu %s bezalako hitzak onartzen hemen."
 
-#: agora_core/forms/election.py:445
+#: agora_core/forms/election.py:536
 #, python-format
 msgid "Please confirm vote casted for election %s"
 msgstr "Berretsi %s bozketako botoa"
@@ -1459,12 +1460,12 @@ msgstr "Autentikatuta egon behar duzu"
 msgid "Simple one choice result type of election"
 msgstr "Emaitza bakarreko bozketa arrunta"
 
-#: agora_core/models/__init__.py:135
+#: agora_core/models/__init__.py:133
 #, python-format
 msgid "You just joined %(agora)s. Congratulations!"
 msgstr "%(agora)s agoran sartu zara. Zorionak!"
 
-#: agora_core/models/__init__.py:199
+#: agora_core/models/__init__.py:197
 #, python-format
 msgid ""
 "Is a member of %(num_agoras)d agoras and has emitted  %(num_votes)d direct "
@@ -1473,15 +1474,15 @@ msgstr ""
 "%(num_agoras)d agoratako kidea da eta %(num_votes)d aldiz bozkatu du "
 "zuzenean."
 
-#: agora_core/models/__init__.py:259
+#: agora_core/models/__init__.py:257
 msgid "Last Activity Read Date"
 msgstr "Irakurketa-jardueraren azken data"
 
-#: agora_core/models/__init__.py:263
+#: agora_core/models/__init__.py:261
 msgid "Language Code"
 msgstr "Hizkuntza-kodea"
 
-#: agora_core/models/__init__.py:269
+#: agora_core/models/__init__.py:267
 msgid "Extra"
 msgstr "Gehigarria"
 
@@ -1538,7 +1539,7 @@ msgid "Allow delegation, delegation can be secret and encrypted"
 msgstr ""
 "Baimendu ordezkaritza, ordezkaritza isilpekoa eta enkriptatua izan daiteke"
 
-#: agora_core/models/agora.py:55 agora_core/models/election.py:137
+#: agora_core/models/agora.py:55 agora_core/models/election.py:140
 msgid "Creator"
 msgstr "Egilea"
 
@@ -1547,19 +1548,19 @@ msgid "Delegation Election"
 msgstr "Bozketa ordezkariekin"
 
 #: agora_core/models/agora.py:68 agora_core/models/delegateelectioncount.py:39
-#: agora_core/models/election.py:150
+#: agora_core/models/election.py:153
 msgid "Created at date"
 msgstr "Sortze-data"
 
-#: agora_core/models/agora.py:71 agora_core/models/election.py:179
+#: agora_core/models/agora.py:71 agora_core/models/election.py:182
 msgid "Archived at Date"
 msgstr "Artxibatze-data"
 
-#: agora_core/models/agora.py:74 agora_core/models/election.py:248
+#: agora_core/models/agora.py:74 agora_core/models/election.py:251
 msgid "name"
 msgstr "izena"
 
-#: agora_core/models/agora.py:76 agora_core/models/election.py:246
+#: agora_core/models/agora.py:76 agora_core/models/election.py:249
 msgid "Pretty Name"
 msgstr "Izen laburra"
 
@@ -1597,7 +1598,7 @@ msgstr "Kideak"
 msgid "Administrators"
 msgstr "Administratzaileak"
 
-#: agora_core/models/agora.py:213 agora_core/models/election.py:308
+#: agora_core/models/agora.py:213 agora_core/models/election.py:311
 msgid "Extra Data"
 msgstr "Datu gehigarriak"
 
@@ -1627,7 +1628,7 @@ msgstr ""
 msgid "Public URL"
 msgstr "URL publikoa"
 
-#: agora_core/models/authority.py:35 agora_core/models/election.py:253
+#: agora_core/models/authority.py:35 agora_core/models/election.py:256
 msgid "Description"
 msgstr "Azalpena"
 
@@ -1693,95 +1694,95 @@ msgstr "Baimendu isilpeko botoa"
 msgid "Allow secret and encrypted voting"
 msgstr "Baimendu isilpeko bozketa enkriptatua"
 
-#: agora_core/models/election.py:131
+#: agora_core/models/election.py:134
 msgid "Agora"
 msgstr ""
 
-#: agora_core/models/election.py:145
+#: agora_core/models/election.py:148
 msgid "Electorate"
 msgstr "Hautesleak"
 
-#: agora_core/models/election.py:148
+#: agora_core/models/election.py:151
 msgid "Parent Election"
 msgstr "Goi mailako bozketa"
 
-#: agora_core/models/election.py:155
+#: agora_core/models/election.py:158
 msgid "Is Approved"
 msgstr "Onartuta dago"
 
-#: agora_core/models/election.py:165
+#: agora_core/models/election.py:168
 msgid "Release"
 msgstr "Igorri"
 
-#: agora_core/models/election.py:167
+#: agora_core/models/election.py:170
 msgid "Last Modified at Date"
 msgstr "Azken aldaketaren data"
 
-#: agora_core/models/election.py:169
+#: agora_core/models/election.py:172
 msgid "Voting Starts Date"
 msgstr "Bozketaren hasiera-data"
 
-#: agora_core/models/election.py:171
+#: agora_core/models/election.py:174
 msgid "Voting Ends Date"
 msgstr "Bozketaren amaiera-data"
 
-#: agora_core/models/election.py:173
+#: agora_core/models/election.py:176
 msgid "Voting Extended until Date"
 msgstr "Bozketa-epearen hedatze-data"
 
-#: agora_core/models/election.py:175
+#: agora_core/models/election.py:178
 msgid "Approved at Date"
 msgstr "Datan onartutakoa"
 
-#: agora_core/models/election.py:177
+#: agora_core/models/election.py:180
 msgid "Frozen at Date"
 msgstr "Izozte-data"
 
-#: agora_core/models/election.py:181
+#: agora_core/models/election.py:184
 msgid "Delegated Votes at Date"
 msgstr "Ordezkatutako botoak data honetan"
 
-#: agora_core/models/election.py:183
+#: agora_core/models/election.py:186
 msgid "Voters Frozen at Date"
 msgstr "Gelditutako botoak data honetan"
 
-#: agora_core/models/election.py:185
+#: agora_core/models/election.py:188
 msgid "Result Tallied at Date"
 msgstr "Botoen kontaketa data honetan"
 
-#: agora_core/models/election.py:188
+#: agora_core/models/election.py:191
 msgid "Public Key Created at Date"
 msgstr "Gako publikoa sortu da data honetan"
 
-#: agora_core/models/election.py:190
+#: agora_core/models/election.py:193
 msgid "Talliy Released at Date"
 msgstr "Kontaketa igorri da data honetan"
 
-#: agora_core/models/election.py:244
+#: agora_core/models/election.py:247
 msgid "Election Result"
 msgstr "Bozketaren emaitza"
 
-#: agora_core/models/election.py:251
+#: agora_core/models/election.py:254
 msgid "Short description of the election (required)"
 msgstr "Bozketaren azalpen laburra (beharrezkoa)"
 
-#: agora_core/models/election.py:253
+#: agora_core/models/election.py:256
 msgid "Long description of the election"
 msgstr "Bozketaren azalpen osoa"
 
-#: agora_core/models/election.py:289
+#: agora_core/models/election.py:292
 msgid "Delegated votes"
 msgstr "Ordezkatutako botoak"
 
-#: agora_core/models/election.py:325
+#: agora_core/models/election.py:328
 msgid "Authorities"
 msgstr "Autoritateak"
 
-#: agora_core/models/election.py:686
+#: agora_core/models/election.py:689
 msgid "This election allows everyone to vote. "
 msgstr "Bozketa honetan edonork bozkatu dezake. "
 
-#: agora_core/models/election.py:689
+#: agora_core/models/election.py:692
 msgid ""
 "This election only allows agora members to vote, but any delegate can emit "
 "their position. "
@@ -1789,61 +1790,61 @@ msgstr ""
 "Bozketa honetan agorako kideek bakarrik bozkatu dezakete, baina ordezkariek "
 "beren botoa azaldu dezakete. "
 
-#: agora_core/models/election.py:692
+#: agora_core/models/election.py:695
 msgid "This election only allows agora members to vote. "
 msgstr "Bozketa honetan agorako kideek bakarrik bozkatu dezakete. "
 
-#: agora_core/models/election.py:696
+#: agora_core/models/election.py:699
 msgid "Vote is secret (public for delegates). "
 msgstr "Botoa isilpekoa da (ordezkariena publikoa da). "
 
-#: agora_core/models/election.py:699
+#: agora_core/models/election.py:702
 msgid "Vote is public. "
 msgstr "Botoa publikoa da. "
 
-#: agora_core/models/election.py:708
+#: agora_core/models/election.py:711
 #, python-format
 msgid "The election has been approved and was frozen  %(frozen_date)s. "
 msgstr "Bozketa onartu dugu eta %(frozen_date)s datan izoztu dugu. "
 
-#: agora_core/models/election.py:712
+#: agora_core/models/election.py:715
 msgid "The election has been approved and is not frozen yet. "
 msgstr "Bozketa onartu dugu baina oraindik ez dugu izoztu. "
 
-#: agora_core/models/election.py:715
+#: agora_core/models/election.py:718
 #, python-format
 msgid ""
 "The election has not been approved yet and was frozen  %(frozen_date)s. "
 msgstr ""
 "Bozketa oraindik ez dugu onartu eta %(frozen_date)s datan izoztu dugu. "
 
-#: agora_core/models/election.py:719
+#: agora_core/models/election.py:722
 msgid "The election has been not approved and is not frozen yet. "
 msgstr "Bozketa ez dugu onartu eta oraindik ez dugu izoztu. "
 
-#: agora_core/models/election.py:724
+#: agora_core/models/election.py:727
 #, python-format
 msgid "Voting will start  %(start_date)s and finish %(end_date)s. "
 msgstr ""
 "Bozketa %(start_date)s datan hasiko da eta %(end_date)s datan amaituko da. "
 
-#: agora_core/models/election.py:729
+#: agora_core/models/election.py:732
 #, python-format
 msgid "Voting will start %(start_date)s. "
 msgstr "Bozketa %(start_date)s datan hasiko da. "
 
-#: agora_core/models/election.py:734
+#: agora_core/models/election.py:737
 #, python-format
 msgid "Voting started %(start_date)s and will finish %(end_date)s. "
 msgstr ""
 "Bozketa %(start_date)s datan hasi da eta %(end_date)s datan amaituko da. "
 
-#: agora_core/models/election.py:739
+#: agora_core/models/election.py:742
 #, python-format
 msgid "Voting started %(start_date)s. "
 msgstr "Bozketa %(start_date)s datan hasi da. "
 
-#: agora_core/models/election.py:743
+#: agora_core/models/election.py:746
 #, python-format
 msgid ""
 "Voting started %(start_date)s and finished %(end_date)s. Results available "
@@ -1852,21 +1853,26 @@ msgstr ""
 "Bozketa %(start_date)s datan hasi zen eta %(end_date)s datan amaitu zen. "
 "Emaitzak %(tally_date)s datan aurkeztu ziren. "
 
-#: agora_core/models/election.py:750
+#: agora_core/models/election.py:753
 msgid "Start date for voting is not set yet. "
 msgstr "Oraindik ez dago bozketaren hasiera-data ezarrita. "
 
-#: agora_core/models/election.py:754
+#: agora_core/models/election.py:757
 msgid "Election is <b>archived and dismissed</b>."
 msgstr "Bozketa <b>artxibatuta eta baztertuta</b> dago."
+
+#: agora_core/models/voting_systems/approval.py:30
+msgid "Multi-seat approval voting"
+msgstr ""
+
+#: agora_core/models/voting_systems/approval.py:93
+#: agora_core/models/voting_systems/base_stv.py:93
+msgid "Invalid answer format"
+msgstr "Erantzun-formatu baliogabea."
 
 #: agora_core/models/voting_systems/base_stv.py:30
 msgid "Multi-seat ranked voting - STV (Single Transferable Vote)"
 msgstr "Eremu anitzeko antolatutako bozketa - STV (Single Transferable Vote)"
-
-#: agora_core/models/voting_systems/base_stv.py:93
-msgid "Invalid answer format"
-msgstr "Erantzun-formatu baliogabea."
 
 #: agora_core/models/voting_systems/meek_stv.py:22
 msgid "Multi-seat ranked voting - Meek STV (Single Transferable Vote)"
@@ -2019,16 +2025,16 @@ msgstr "Zure botoaren ordezkatzea ezeztatu duzu %(agora)s agoran"
 msgid "%(site)s - vote delegation removed from %(agora)s"
 msgstr "%(site)s - botoaren ordezkatzearen ezeztatzea %(agora)s agoran"
 
-#: agora_core/resources/election.py:446
+#: agora_core/resources/election.py:447
 #, python-format
 msgid "Election %(election)s approved at agora %(agora)s. Congratulations!"
 msgstr "%(election)s bozketa onartu dugu %(agora)s agoran. Zorionak!"
 
-#: agora_core/resources/election.py:453
+#: agora_core/resources/election.py:454
 msgid "Election URL"
 msgstr "Bozketaren URLa"
 
-#: agora_core/resources/election.py:459
+#: agora_core/resources/election.py:460
 #, python-format
 msgid "%(site)s - Election %(election)s approved"
 msgstr "%(site)s - %(election)s bozketa onartu dugu"
@@ -2099,7 +2105,7 @@ msgstr "Bozkatu %s bozketan"
 msgid "Election results for %s"
 msgstr "%s bozketaren emaitzak"
 
-#: agora_core/tasks/election.py:447
+#: agora_core/tasks/election.py:457
 #, python-format
 msgid "Election publick keys %s created"
 msgstr "Bozketaren %s gako publikoak sortu dira"
