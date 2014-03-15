@@ -320,7 +320,11 @@
                 </div>
                 <div class="span6 user-choices primary">
                     <p><strong><%= gettext("Your ballot:") %></strong><br/>
-                    <%= gettext("Note: the selection order matters") %> <a href="http://www.amara.org/es/videos/4CLBElwjkGKs/info/what-is-stv-single-transferable-vote-explained/" target="_blank"><%= gettext("+ info") %></a></p>
+                    <% if (tally_type == "MEEK-STV") { %>
+                      <%= gettext("Note: the selection order matters") %> <a href="http://www.amara.org/es/videos/4CLBElwjkGKs/info/what-is-stv-single-transferable-vote-explained/" target="_blank"><%= gettext("+ info") %></a></p>
+                    <% } else { %>
+                      <%= gettext("Note: the selection does not matter") %>
+                    <% }  %>
                     <ul class="nav nav-list sidenav">
                     </ul>
                 </div>
