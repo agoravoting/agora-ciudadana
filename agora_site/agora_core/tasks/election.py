@@ -160,6 +160,12 @@ def end_election(election_id, is_secure, site_id, remote_addr, user_id):
     if not election.release_tally_automatically:
         return
 
+    tally_path = os.path.join(settings.PRIVATE_DATA_ROOT, 'elections',
+                              str(election.id))
+    if os.path.exists(tally_path):
+        shutil.copy2(tally_path, os.path.join(settings.MEDIA_ROOT,
+            'elections', str(election.id)))
+
     election.tally_released_at_date = timezone.now()
     election.save()
 
@@ -567,14 +573,18 @@ def receive_tally(election_id, tally_data, is_secure, site_id):
                     f.write(chunk)
                     f.flush()
 
-    pub_url = director.get_public_data(eid, "tally.tar.gz")
-    tally_path = os.path.join(settings.MEDIA_ROOT, 'elections', str(election.id),
+    priv_url = director.get_public_data(eid, "tally.tar.gz")
+    tally_path = os.path.join(settings.PRIVATE_DATA_ROOT, 'elections', str(election.id),
         'tally.tar.gz')
+    election_path = os.path.dirname(tally_path)
 
     if os.path.exists(tally_path):
         os.unlink(tally_path)
 
-    download_file(pub_url, tally_path)
+    if not os.path.exists(election_path):
+        os.makedirs(election_path)
+
+    download_file(priv_url, tally_path)
     if data['data']['tally_hash'] != "sha512://" + hash_file(tally_path):
         raise Exception()
 
@@ -586,7 +596,7 @@ def receive_tally(election_id, tally_data, is_secure, site_id):
     i = 0
     for plaintexts_path in plaintexts_paths:
         member = tally_gz.getmember(plaintexts_path)
-        extract_path =os.path.join(settings.MEDIA_ROOT, 'elections',
+        extract_path =os.path.join(settings.PRIVATE_DATA_ROOT, 'elections',
             str(election.id))
         member.name = "%d_plaintexts_json" % i
         tally_gz.extract(member, path=extract_path)
@@ -620,7 +630,7 @@ def receive_tally(election_id, tally_data, is_secure, site_id):
 
             tally.pre_tally(result)
 
-            plaintexts_path = os.path.join(settings.MEDIA_ROOT, 'elections',
+            plaintexts_path = os.path.join(settings.PRIVATE_DATA_ROOT, 'elections',
                 str(election.id), "%d_plaintexts_json" % i)
             with codecs.open(plaintexts_path, encoding='utf-8', mode='r') as plaintexts_file:
                 for line in plaintexts_file.readlines():

@@ -693,6 +693,13 @@ class ReleaseResultsView(FormActionView):
         election.tally_released_at_date = timezone.now()
         election.save()
 
+        # release tally.tar.gz if any
+        tally_path = os.path.join(settings.PRIVATE_DATA_ROOT, 'elections',
+                                     str(election.id))
+        if os.path.exists(tally_path):
+            shutil.copy2(tally_path, os.path.join(settings.MEDIA_ROOT,
+                'elections', str(election.id)))
+
         action.send(self.request.user, verb='published results', action_object=election,
             target=election.agora, ipaddr=request.META.get('REMOTE_ADDR'),
             geolocation=json.dumps(geolocate_ip(request.META.get('REMOTE_ADDR'))))
