@@ -695,7 +695,7 @@ class ReleaseResultsView(FormActionView):
 
         # release tally.tar.gz if any
         tally_path = os.path.join(settings.PRIVATE_DATA_ROOT, 'elections',
-                                     str(election.id))
+                                     str(election.id), 'tally.tar.gz')
         if os.path.exists(tally_path):
             shutil.copy2(tally_path, os.path.join(settings.MEDIA_ROOT,
                 'elections', str(election.id)))
