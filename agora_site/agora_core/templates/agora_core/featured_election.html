@@ -72,7 +72,7 @@
                         <% } %>
                     </div>
                     <div class="cand-details">
-                        <h3 class="name"><%- (q.winners.indexOf(q.answers[j].value)+1) %>. <%- q.answers[j].value %></h3>
+                        <h3 class="name"><% if (q.winners) { %><%- (q.winners.indexOf(q.answers[j].value)+1) %>. <% } %><%- q.answers[j].value %></h3>
                         <a href="#" class="cand-details" data-question-index="<%- i %>" data-option-index="<%- j %>">
                             <%- q.answers[j].details_title %>
                         </a>
