@@ -43,8 +43,7 @@ def base_question_check(question):
     '''
     error = django_forms.ValidationError(_('Invalid questions format'))
 
-    if question['question'].strip() != clean_html(question['question'], True):
-        raise error
+    question['question'] = clean_html(question['question'])
 
     if question['a'] != 'ballot/question' or\
         not isinstance(question['min'], int) or question['min'] < 0 or\
