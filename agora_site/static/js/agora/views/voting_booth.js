@@ -1331,6 +1331,7 @@
             ballot['user_id'] = this.$el.find("#id_identification").val();
             ballot['password'] = this.$el.find("#id_password").val();
 
+            var user_vote_is_encrypted = ajax_data.security_policy == "ALLOW_ENCRYPTED_VOTING";
             if (user_vote_is_encrypted) {
                 // we need to add some randomness to make vote unique so that
                 // the hash is not repeated
@@ -1416,6 +1417,15 @@
             var election_id = this.model.get('id');
             ballot.election_id = election_id;
             $("#id_ballot_data").attr("value", JSON.stringifyCompat(ballot));
+
+            var user_vote_is_encrypted = ajax_data.security_policy == "ALLOW_ENCRYPTED_VOTING";
+            if (user_vote_is_encrypted) {
+                // we need to add some randomness to make vote unique so that
+                // the hash is not repeated
+                var random = sjcl.random.randomWords(5, 0);
+                var rand_bi = new BigInt(sjcl.codec.hex.fromBits(random), 16);
+                ballot['unique_randomness'] = rand_bi.toRadix(16);
+            }
 
             var jqxhr = $.ajax("/accounts/signup_and_vote/", {
                 type: 'POST',
