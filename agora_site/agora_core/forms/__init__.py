@@ -303,7 +303,7 @@ class CreateElectionForm(django_forms.ModelForm):
         from_date = cleaned_data.get("from_date", None)
         to_date = cleaned_data.get("to_date", None)
 
-        cleaned_data['pretty_name'] = clean_html(cleaned_data['pretty_name'], True)
+        cleaned_data['pretty_name'] = clean_html(cleaned_data['pretty_name'])
         cleaned_data['description'] = clean_html(cleaned_data['description'])
 
         if not from_date and not to_date:

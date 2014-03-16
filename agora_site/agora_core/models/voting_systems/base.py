@@ -107,11 +107,13 @@ def base_question_check(question):
                     len(answer['details_title']) > 500:
                 raise error
 
-            if not isinstance(answer['details'], basestring) or\
-                    len(answer['details']) > 5000:
+            if answer['details_title'].strip() != clean_html(answer['details_title'], True).replace("\n", ""):
                 raise error
 
-            if answer['details'].strip().replace("\n", "") != clean_html(answer['details'], False).replace("\n", "").strip():
+            answer['details'] = clean_html(answer['details'])
+
+            if not isinstance(answer['details'], basestring) or\
+                    len(answer['details']) > 5000:
                 raise error
 
             if not isinstance(answer['urls'], list) or\
