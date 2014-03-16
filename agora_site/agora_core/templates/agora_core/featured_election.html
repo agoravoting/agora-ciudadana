@@ -62,7 +62,7 @@
             <div class="candidates-list list-<%- i %>">
             <% for (var j = 0; j < q.answers.length; j++) {
                 if (!q.winners || _.contains(q.winners, q.answers[j].value)) { %>
-                <div class="candidate" data-pos="<%- q.winners.indexOf(q.answers[j].value) %>">
+                <div class="candidate" <% if (q.winners) { %>data-pos="<%- q.winners.indexOf(q.answers[j].value) %>"<% } %>>
 
                     <div class="cand-image">
                         <% if (q.answers[j].media_url) { %>
