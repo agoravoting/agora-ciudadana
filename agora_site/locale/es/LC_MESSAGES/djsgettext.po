@@ -830,7 +830,7 @@ msgstr "Felicidades, has emitido tu voto <strong>correctamente</strong>."
 #: agora_core/templates/agora_core/voting_booth.html:443
 #: agora_core/templates/agora_core/voting_booth.html:448
 msgid "Your ballot smart tracker is:"
-msgstr "Localizador de voto: %s"
+msgstr "Localizador de voto:"
 
 #: agora_core/templates/agora_core/voting_booth.html:445
 #: agora_core/templates/agora_core/voting_booth.html:450
