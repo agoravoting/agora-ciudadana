@@ -446,7 +446,7 @@
             this.$el.find("form").submit(function (e) { e.preventDefault(); });
 
             $('.datetimepicker').datetimepicker();
-            if (this.model.get("from_date")) {
+            if (this.model.get("from_date") && this.model.get("from_date") != "Invalid date") {
                 this.$el.find("#schedule_voting").click();
                 $('div.top-form #schedule_voting_controls').toggle();
             }
