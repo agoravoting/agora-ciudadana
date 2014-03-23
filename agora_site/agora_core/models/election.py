@@ -449,7 +449,8 @@ class Election(models.Model):
             can_emit = ismember() or\
                 (self.agora.has_perms('join', user) and self.agora.delegation_policy != Agora.DELEGATION_TYPE[1][0])
             return can_emit and not isarchived and isfrozen and\
-                self.has_started() and not self.has_ended()
+                self.has_started() and not self.has_ended() and\
+                self.security_policy != "ALLOW_ENCRYPTED_VOTING"
 
     def has_perms(self, permission_name, user):
         '''
