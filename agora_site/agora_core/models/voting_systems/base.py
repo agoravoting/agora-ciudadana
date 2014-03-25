@@ -41,7 +41,8 @@ def base_question_check(question):
     '''
     Validates the value of a given question in an election
     '''
-    error = django_forms.ValidationError(_('Invalid questions format'))
+    def raise_error(var):
+        raise django_forms.ValidationError(_('Invalid questions format ' + var))
 
     question['question'] = clean_html(question['question'])
 
@@ -50,83 +51,83 @@ def base_question_check(question):
         not isinstance(question['max'], int) or\
         question['max'] < question['min'] or\
         not isinstance(question['randomize_answer_order'], bool):
-        raise error
+        raise_error("1")
 
     # check there are at least 2 possible answers
     if not isinstance(question['answers'], list) or\
         len(question['answers']) < 2:
-        raise error
+        raise_error("2")
 
     if not isinstance(question['layout'], basestring) or\
         question['layout'] not in ['SIMPLE', 'PRIMARY']:
-        raise error
+        raise_error("3")
 
     # check each answer
     answer_values = []
     for answer in question['answers']:
         if not isinstance(answer, dict):
-            raise error
+            raise_error("4")
 
         if answer['value'] in answer_values:
-            raise error
+            raise_error("5")
         answer_values.append(answer['value'])
 
         # check it contains the valid elements
         if not list_contains_all(['a', 'value'], answer.keys()):
-            raise error
+            raise_error("6")
 
         for key in answer.keys():
             if key not in ['a', 'value', 'media_url', 'urls', 'details',
                            'details_title']:
-                raise error
+                raise_error("7")
 
         for el in ['a', 'value']:
             if not isinstance(answer[el], basestring) or\
                 len(answer[el]) > 500:
-                raise error
+                raise_error("8")
 
         if answer['a'] != 'ballot/answer' or\
                 not isinstance(answer['value'], basestring) or\
                 len(answer['value']) < 1:
-            raise error
+            raise_error("9")
 
         if answer['value'].strip() != clean_html(answer['value'], True).replace("\n", ""):
-            raise error
+            raise_error("10")
 
         if question['layout'] == 'PRIMARY':
             if not list_contains_all(['media_url', 'urls', 'details',
                     'details_title'], answer.keys()):
-                raise error
+                raise_error("11")
 
             if not isinstance(answer['media_url'], basestring) or\
                     len(answer['details_title']) > 500:
-                raise error
+                raise_error("12")
 
             if not isinstance(answer['details_title'], basestring) or\
                     len(answer['details_title']) > 500:
-                raise error
+                raise_error("13")
 
             if answer['details_title'].strip() != clean_html(answer['details_title'], True).replace("\n", ""):
-                raise error
+                raise_error("14")
 
             answer['details'] = clean_html(answer['details'])
 
             if not isinstance(answer['details'], basestring) or\
-                    len(answer['details']) > 5000:
-                raise error
+                    len(answer['details']) > 10000:
+                raise_error("15")
 
             if not isinstance(answer['urls'], list) or\
                     len(answer['urls']) > 10:
-                raise error
+                raise_error("16")
 
             for url in answer['urls']:
                 if not isinstance(url, dict):
-                    raise error
+                    raise_error("17")
                 for key, value in url.items():
                     if key not in ['title', 'url']:
-                        raise error
+                        raise_error("18")
                     if not isinstance(value, basestring) or len(value) > 500:
-                        raise error
+                        raise_error("19")
 
 
 class BaseVotingSystem(object):
