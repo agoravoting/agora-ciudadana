@@ -295,7 +295,7 @@
                             <div class="option-image">
                                 <a href="#" class="choose-option" alt="<%- answers[i].value %>">
                                     <% if (answers[i].media_url.length > 0) { %>
-                                        <img src="<%- answers[i].media_url %>" class="img-rounded" alt="<%- answers[i].value %>"/>
+                                        <img data-original="<%- answers[i].media_url %>" class="img-rounded img-lazyload" alt="<%- answers[i].value %>"/>
                                     <% } else { %>
                                         <img src="/static/img/anon_icon.png" class="img-rounded" alt="<%- answers[i].value %>"/>
                                     <% } %>

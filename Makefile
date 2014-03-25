@@ -26,6 +26,7 @@ mainjs:
 					      agora_site/static/js/libs/jquery-ui.js \
 					      agora_site/static/js/libs/jquery-ui-timepicker-addon.js \
 					      agora_site/static/js/libs/jquery-shuffle.js \
+					      agora_site/static/js/libs/jquery.lazyload.min.js \
 					      agora_site/static/js/libs/jsrender.js \
 					      agora_site/static/js/libs/d3.v3.js \
 					      agora_site/static/js/libs/nv.d3.js \
@@ -57,6 +58,7 @@ mainjs:
 					      agora_site/static/js/libs/jquery-ui.js \
 					      agora_site/static/js/libs/jquery-ui-timepicker-addon.js \
 					      agora_site/static/js/libs/jquery-shuffle.js \
+					      agora_site/static/js/libs/jquery.lazyload.min.js \
 					      agora_site/static/js/libs/jsrender.js \
 					      agora_site/static/js/libs/r2d3.js \
 					      agora_site/static/js/libs/nv.d3.js \
