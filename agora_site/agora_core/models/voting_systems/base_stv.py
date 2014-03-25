@@ -214,7 +214,8 @@ class BaseSTVTally(BaseTally):
 
         # fix add zeros
         if len(vote_str) % tab_size != 0:
-            vote_str = "0" * (len(vote_str) % tab_size) + vote_str
+            num_zeros = (tab_size - (len(vote_str) % tab_size)) % tab_size
+            vote_str = "0" * num_zeros + vote_str
 
         ret = []
         for i in xrange(len(vote_str) / tab_size):

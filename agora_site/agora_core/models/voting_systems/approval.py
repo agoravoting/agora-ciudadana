@@ -203,18 +203,13 @@ class ApprovalTally(BaseTally):
         self.answer_to_ids_dict = dict()
 
     def parse_vote(self, number, question):
-        if number == 2423 and self.question_id == '0-65dbc3be-3bb3-4b4e-9435-e538c43dc8c0':
-            # invalid vote. In this concrete election/question we could not
-            # distinguish between a blank a vote and a vote for options
-            # [24, 23] so we invalidate these (two) votes
-            raise Exception()
-
         vote_str = str(number)
         tab_size = len(str(len(question['answers']) + 2))
 
         # fix add zeros
         if len(vote_str) % tab_size != 0:
-            vote_str = "0" * (len(vote_str) % tab_size) + vote_str
+            num_zeros = (tab_size - (len(vote_str) % tab_size)) % tab_size
+            vote_str = "0" * num_zeros + vote_str
 
         ret = []
         for i in xrange(len(vote_str) / tab_size):

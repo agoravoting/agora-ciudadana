@@ -887,7 +887,8 @@
 
             // add zeros to the left for tabulation
             var length = encoded_str.length;
-            for (var i = 0; i < (length % tab_nchars); i++) {
+            var missing_zeros = (tab_nchars - (length % tab_nchars)) % tab_nchars;
+            for (var i = 0; i < missing_zeros; i++) {
                 encoded_str = "0" + encoded_str;
             }
 
