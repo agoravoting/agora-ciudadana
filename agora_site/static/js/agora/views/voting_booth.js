@@ -937,9 +937,6 @@
             // render template
             this.$el.html(this.template(this.model.toJSON()));
 
-            // lazyload images
-            $("img.img-lazyload").lazyload();
-
             // shuffle options
             if (this.model.get('randomize_answer_order')) {
                 this.$el.find('.available-choices ul').shuffle();
@@ -974,6 +971,10 @@
 
         addFiltering: function() {
             var self = this;
+
+            // lazyload images
+            $("img.img-lazyload").lazyload();
+
             $('#filter-options').keyup(function() {
                 clearTimeout($.data(this, 'timer'));
                 var wait = setTimeout(self.filterOptions, 500);
