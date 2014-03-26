@@ -973,7 +973,9 @@
             var self = this;
 
             // lazyload images
-            $("img.img-lazyload").lazyload();
+            $("img.img-lazyload").lazyload({
+                container: $(".available-choices ul")
+            });
 
             $('#filter-options').keyup(function() {
                 clearTimeout($.data(this, 'timer'));
