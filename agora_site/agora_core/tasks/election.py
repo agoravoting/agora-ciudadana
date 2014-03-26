@@ -341,7 +341,11 @@ def create_pubkeys(election_id):
             len(auths) > settings.MAX_NUM_AUTHORITIES:
         raise Exception("Invalid number of authorities")
 
-    director = choice(auths)
+    if settings.FORCE_AUTHORITY_DIRECTOR_ID is not None:
+        director = choice(auths)
+    else:
+        director = election.agora.agora_local_authorities.get(
+            settings.FORCE_AUTHORITY_DIRECTOR_ID)
     callback_url = '%s/api/v1/update/election/%d/request_pubkey/' %\
         (settings.AGORA_BASE_URL, election.id)
 
@@ -491,7 +495,11 @@ def launch_encrypted_tally(election):
     callback_url = '%s/api/v1/update/election/%d/do_tally/' %\
         (settings.AGORA_BASE_URL, election.id)
     auths = election.authorities.all()
-    director = choice(auths)
+    if settings.FORCE_AUTHORITY_DIRECTOR_ID is not None:
+        director = choice(auths)
+    else:
+        director = election.authorities.get(
+            settings.FORCE_AUTHORITY_DIRECTOR_ID)
 
     # create votes file and do hash. Note: currently we do not count delegated
     # votes
