@@ -345,7 +345,7 @@ def create_pubkeys(election_id):
         director = choice(auths)
     else:
         director = election.agora.agora_local_authorities.get(
-            settings.FORCE_AUTHORITY_DIRECTOR_ID)
+            pk=settings.FORCE_AUTHORITY_DIRECTOR_ID)
     callback_url = '%s/api/v1/update/election/%d/request_pubkey/' %\
         (settings.AGORA_BASE_URL, election.id)
 
@@ -499,7 +499,7 @@ def launch_encrypted_tally(election):
         director = choice(auths)
     else:
         director = election.authorities.get(
-            settings.FORCE_AUTHORITY_DIRECTOR_ID)
+            pk=settings.FORCE_AUTHORITY_DIRECTOR_ID)
 
     # create votes file and do hash. Note: currently we do not count delegated
     # votes
