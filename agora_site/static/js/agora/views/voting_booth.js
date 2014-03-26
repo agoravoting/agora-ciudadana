@@ -1018,6 +1018,10 @@
                     $(this).hide();
                 }
             });
+            // lazyload images
+            $("img.img-lazyload").lazyload({
+                container: $(".available-choices ul")
+            });
         },
 
         /**
