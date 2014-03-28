@@ -477,9 +477,12 @@ def set_pubkeys(election_id, pubkey_data, is_secure, site_id):
     send_mass_html_mail(datatuples)
 
 
-def launch_encrypted_tally(election):
+def launch_encrypted_tally(election, partial=False):
     '''
     Launch encrypted tally
+
+    If partial is true, we won't receive it back, only authorities will have it.
+    Partial tallies are only launched manually with partialtally django command.
     '''
 
     # stores delegation status data in the following format:
@@ -492,8 +495,13 @@ def launch_encrypted_tally(election):
     # }
     orchestra_status = JSONField(null=True)
 
-    callback_url = '%s/api/v1/update/election/%d/do_tally/' %\
-        (settings.AGORA_BASE_URL, election.id)
+    if not partial:
+        callback_url = '%s/api/v1/update/election/%d/do_tally/' %\
+            (settings.AGORA_BASE_URL, election.id)
+    else:
+        # fake callbackurl, as partial tallies are NOT received by agora
+        callback_url = "https://127.0.0.1/"
+
     auths = election.authorities.all()
     if settings.FORCE_AUTHORITY_DIRECTOR_ID is None:
         director = choice(auths)
@@ -539,6 +547,9 @@ def launch_encrypted_tally(election):
         status = "error requesting"
     else:
         status = 'requested'
+
+    if partial:
+        return
 
     election.orchestra_status['tally_status'] = status
     election.orchestra_status['tally_director_id'] = director.id
