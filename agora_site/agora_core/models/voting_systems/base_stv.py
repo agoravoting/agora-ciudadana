@@ -353,11 +353,10 @@ class BaseSTVTally(BaseTally):
         question = result[self.question_num]
         question['total_votes'] = json_report['ballots_count']
         question['dirty_votes'] = json_report['dirty_ballots_count'] - json_report['ballots_count']
-        json_report['winners'] = [winner.decode('utf-8') for winner in json_report['winners']]
+        json_report['winners'] = [winner.encode('utf-8') for winner in json_report['winners']]
         question['winners'] = []
 
         # order winners properly
-        from celery.contrib import rdb; rdb.set_trace()
         for iteration in json_report['iterations']:
             it_winners = [cand for cand in iteration['candidates']
                 if cand['status'] == 'won']
@@ -366,8 +365,7 @@ class BaseSTVTally(BaseTally):
 
         i = 1
         for answer in question['answers']:
-            name = answer['value']
-            name.encode('utf-8')
+            name = answer['value'].encode('utf-8')
             it_answer = last_iteration['candidates'][i - 1]
             answer['elected'] = ('won' in it_answer['status'])
 
