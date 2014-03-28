@@ -555,7 +555,11 @@ class Agora(models.Model):
                 len(auths) > settings.MAX_NUM_AUTHORITIES:
             raise Exception("Invalid number of authorities")
 
-        director = choice(auths)
+        if settings.FORCE_AUTHORITY_DIRECTOR_ID is None:
+            director = choice(auths)
+        else:
+            director = self.agora_local_authorities.get(
+                pk=settings.FORCE_AUTHORITY_DIRECTOR_ID)
         callback_url = '%s/api/v1/update/agora/%d/delegation_election/' %\
             (settings.AGORA_BASE_URL, self.id)
 
