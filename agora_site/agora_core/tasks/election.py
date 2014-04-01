@@ -557,21 +557,25 @@ def launch_encrypted_tally(election, partial=False):
 
 
 @task(ignore_result=True)
-def receive_tally(election_id, tally_data, is_secure, site_id):
+def receive_tally(election_id, tally_data, is_secure, site_id, force=False, static_tally_path=None):
     data = tally_data
     election = Election.objects.get(id=election_id)
-    status = data['status']
-    eid = data['reference']['election_id']
+    if not force:
+        status = data['status']
+        eid = data['reference']['election_id']
+    elif force:
+        status = 'finished'
+        eid = election.orchestra_status.get('election_id')
     now = timezone.now()
 
-    if not isinstance(election.orchestra_status, dict) or\
+    if not force and not isinstance(election.orchestra_status, dict) or\
             election.orchestra_status.get('tally_status', '') == 'finished' or\
             election.voting_ends_at_date is None or\
             election.result_tallied_at_date is not None or\
             not constant_time_compare(election.orchestra_status.get('election_id'), eid):
         raise Exception()
 
-    if status != 'finished':
+    if not force and status != 'finished':
         election.orchestra_status['tally_status'] = status
         election.orchestra_status['updated_at'] = now.isoformat()
         election.save()
@@ -603,9 +607,12 @@ def receive_tally(election_id, tally_data, is_secure, site_id):
     if not os.path.exists(election_path):
         os.makedirs(election_path)
 
-    download_file(priv_url, tally_path)
-    if data['data']['tally_hash'] != "sha512://" + hash_file(tally_path):
-        raise Exception()
+    if not force:
+        download_file(priv_url, tally_path)
+        if data['data']['tally_hash'] != "sha512://" + hash_file(tally_path):
+            raise Exception()
+    else:
+        shutil.copyfile(static_tally_path, tally_path)
 
     # untar the plaintexts
     tally_gz = tarfile.open(tally_path, mode="r:gz")
