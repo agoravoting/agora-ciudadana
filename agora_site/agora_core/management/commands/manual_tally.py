@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
+import os
 from django.core.management.base import BaseCommand, CommandError
 from agora_site.agora_core.models.election import Election
 from agora_site.agora_core.tasks.election import receive_tally
@@ -37,4 +37,11 @@ class Command(BaseCommand):
             raise CommandError("tally path doesn't exist")
 
         e = Election.objects.get(name=election_name)
-        receive_tally(e.id, None, True, 0, True, tally_path)
+        kwargs = dict(
+            election_id=e.id,
+            tally_data=None,
+            is_secure=True,
+            site_id=0,
+            force=True,
+            static_tally_path=tally_path)
+        receive_tally.apply_async(kwargs=kwargs, task_id=e.task_id(receive_tally))

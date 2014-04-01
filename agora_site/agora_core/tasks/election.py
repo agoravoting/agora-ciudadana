@@ -568,11 +568,11 @@ def receive_tally(election_id, tally_data, is_secure, site_id, force=False, stat
         eid = election.orchestra_status.get('election_id')
     now = timezone.now()
 
-    if not force and not isinstance(election.orchestra_status, dict) or\
+    if not force and (not isinstance(election.orchestra_status, dict) or\
             election.orchestra_status.get('tally_status', '') == 'finished' or\
             election.voting_ends_at_date is None or\
             election.result_tallied_at_date is not None or\
-            not constant_time_compare(election.orchestra_status.get('election_id'), eid):
+            not constant_time_compare(election.orchestra_status.get('election_id'), eid)):
         raise Exception()
 
     if not force and status != 'finished':
