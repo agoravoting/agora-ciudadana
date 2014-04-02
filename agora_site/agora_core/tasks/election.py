@@ -557,7 +557,8 @@ def launch_encrypted_tally(election, partial=False):
 
 
 @task(ignore_result=True)
-def receive_tally(election_id, tally_data, is_secure, site_id, force=False, static_tally_path=None):
+def receive_tally(election_id, tally_data, is_secure, site_id, force=False,
+                  static_tally_path=None, result_path=None):
     data = tally_data
     election = Election.objects.get(id=election_id)
     if not force:
@@ -708,7 +709,21 @@ def receive_tally(election_id, tally_data, is_secure, site_id, force=False, stat
         election.delegated_votes_frozen_at_date = election.voters_frozen_at_date =\
             election.result_tallied_at_date = timezone.now()
 
-    do_tally(tally_path, election)
+    if result_path is None:
+        do_tally(tally_path, election)
+    else:
+        with open(result_path, 'r', encoding="utf-8") as f:
+            result_json = json.loads(f.read())
+
+        election.electorate = election.agora.members.all()
+        election.delegated_votes_frozen_at_date = election.voters_frozen_at_date =\
+            election.result_tallied_at_date = timezone.now()
+
+        election.extra_data = dict()
+        election.extra_data['tally_log'] = result_json['tally_log']
+        election.result = result_json['agora_result']
+        election.electorate = election.agora.members.all()
+
     election.orchestra_status['tally_status'] = 'finished'
     election.orchestra_status['updated_at'] = now.isoformat()
     election.result_tallied_at_date = now

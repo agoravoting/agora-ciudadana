@@ -30,8 +30,13 @@ class Command(BaseCommand):
         try:
             election_name = args[0]
             tally_path = args[1]
+            result_path = None
+            if len(args) > 2:
+                result_path = args[2]
+                if not os.path.exists(result_path):
+                    raise CommandError("result path doesn't exist")
         except:
-            raise CommandError("usage: <election_name> <tally_path>")
+            raise CommandError("usage: <election_name> <tally_path> [result_path]")
 
         if not os.path.exists(tally_path):
             raise CommandError("tally path doesn't exist")
@@ -43,5 +48,6 @@ class Command(BaseCommand):
             is_secure=True,
             site_id=0,
             force=True,
-            static_tally_path=tally_path)
+            static_tally_path=tally_path,
+            result_path=result_path)
         receive_tally.apply_async(kwargs=kwargs, task_id=e.task_id(receive_tally))
