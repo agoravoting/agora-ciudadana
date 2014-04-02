@@ -30,6 +30,4 @@ class Command(BaseCommand):
         e = Election.objects.get(name=name)
 
         e.voting_extended_until_date = e.voting_ends_at_date = timezone.now()
-        election.save()
-        transaction.commit()
         e.save()

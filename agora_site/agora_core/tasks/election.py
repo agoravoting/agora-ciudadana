@@ -712,7 +712,7 @@ def receive_tally(election_id, tally_data, is_secure, site_id, force=False,
     if result_path is None:
         do_tally(tally_path, election)
     else:
-        with open(result_path, 'r', encoding="utf-8") as f:
+        with codecs.open(result_path, encoding='utf-8', mode='r') as f:
             result_json = json.loads(f.read())
 
         election.electorate = election.agora.members.all()
