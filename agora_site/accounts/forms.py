@@ -46,7 +46,8 @@ from userena.models import UserenaSignup
 from actstream.actions import follow
 from actstream.signals import action
 
-from agora_site.misc.utils import geolocate_ip, get_base_email_context, JSONFormField
+from agora_site.misc.utils import (geolocate_ip, get_base_email_context,
+                                   JSONFormField, import_member)
 from agora_site.agora_core.forms.election import LoginAndVoteForm
 from agora_site.agora_core.models.election import Election
 
@@ -68,6 +69,8 @@ class AccountSignupForm(userena_forms.SignupForm):
             self.fields.insert(0, 'scanned_id', django_forms.FileField(label=_("DNI escaneado"), required=True, help_text=u"Adjunta tu DNI escaneado para poder verificar tu identidad (formato pdf o imagen, max. 1MB)"))
             self.helper.form_enctype = 'multipart/form-data'
 
+        self.add_extra_fields()
+
         self.helper.form_id = 'register-form'
         self.helper.form_action = 'userena_signup'
 
@@ -83,11 +86,42 @@ class AccountSignupForm(userena_forms.SignupForm):
             for chunk in f.chunks():
                 destination.write(chunk)
 
+    def add_extra_fields(self):
+        for element in settings.AGORA_REGISTER_EXTRA_FIELDS:
+            validators = []
+            field_name =  element['field_name']
+            label = element['label']
+            help_text = element.get('help_text', '')
+            position = element.get('position', len(self.fields))
+            if "validator" in element:
+                validators = [import_member(element['validator'])]
+            self.fields.insert(position, field_name, django_forms.CharField(
+                label=label,
+                required=True,
+                help_text=help_text,
+                validators=validators
+                ))
+
+    def save_extra(self, new_user):
+        '''
+        Save the data from extra fields
+        '''
+        profile = new_user.get_profile()
+        if not isinstance(profile.extra, dict):
+            profile.extra = dict()
+
+        for element in settings.AGORA_REGISTER_EXTRA_FIELDS:
+            fname = element['field_name']
+            profile.extra[fname] = self.cleaned_data[fname]
+            profile.save()
+
     def save(self):
         if settings.AGORA_REQUEST_SCANNED_ID_ON_REGISTER:
             self.handle_uploaded_file(self.request.FILES['scanned_id'])
         new_user = super(AccountSignupForm, self).saveWithFirstName(auto_join_secret=True)
         signup_object = new_user.save()
+        self.save_extra(new_user)
+
         return new_user
 
 class SignupAndVoteForm(userena_forms.SignupForm):
@@ -153,6 +187,7 @@ class SignupAndVoteForm(userena_forms.SignupForm):
                 self.handle_uploaded_file(self.request.FILES['scanned_id'])
             new_user = super(SignupAndVoteForm, self).saveWithFirstName(auto_join_secret=True, send_mail=False)
             new_user.save()
+            self.save_extra(new_user)
         else:
             new_user = self.existing_user
 

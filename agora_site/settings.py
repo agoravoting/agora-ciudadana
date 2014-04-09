@@ -458,6 +458,26 @@ AGORA_TOKEN_REDIRECT_IDENTIFY_URL = "http://127.0.0.1:7000/"
 # registered
 AGORA_REGISTER_AUTO_JOIN = []
 
+# Field to specify extra fields to be add on register form. Example:
+'''
+AGORA_REGISTER_EXTRA_FIELDS = [
+    {
+        'field_name': "nie",
+        'name': _('DNI/NIE'),
+        'position': 3,
+        'help_text': _('Especify your DNI or NIE. Examples: 12345678Y, Y2345678A'),
+        'validator': "agora_site.multireferendum_validators.nie_validator"
+    },
+    {
+        'field_name': "postal_code",
+        'name': _('Postal Code'),
+        'help_text': _('Example: 11130'),
+        'validator': "agora_site.multireferendum_validators.postal_code_val"
+    },
+]
+'''
+AGORA_REGISTER_EXTRA_FIELDS = []
+
 AGORA_FNMT_BASE_URL = "https://fnmt.local.dev"
 AGORA_BASE_URL = "https://local.dev"
 

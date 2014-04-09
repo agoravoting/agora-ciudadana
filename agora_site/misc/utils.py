@@ -532,3 +532,13 @@ def hash_file(file_path):
         hash.update(chunk)
     f.close()
     return hash.hexdigest()
+
+def import_member(path):
+    '''
+    Given a module path + module member path, return the member. Example:
+    "path.to.module.func_name"
+    '''
+    member_name = path.split(".")[-1]
+    module = __import__(".".join(path.split(".")[:-1]), globals(), locals(),
+            [member_name], 0)
+    return getattr(module, member_name)
