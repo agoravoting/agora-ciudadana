@@ -584,7 +584,10 @@ def receive_tally(election_id, tally_data, is_secure, site_id, force=False,
 
     # The callback comes with all the needed data, but it so happens that
     # it's not authenticated, so we get the data directly from the source
-    director = get_object_or_404(Authority, pk=election.orchestra_status['tally_director_id'])
+    director_id = election.orchestra_status['tally_director_id']
+    if director_id is None:
+        director_id = election.orchestra_status['create_director_id']
+    director = get_object_or_404(Authority, pk=director_id)
 
     def download_file(url, where):
         r = requests.get(url, verify=False, stream=True,
