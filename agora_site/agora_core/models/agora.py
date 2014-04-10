@@ -471,6 +471,9 @@ class Agora(models.Model):
         '''
         isanon = user.is_anonymous()
 
+        if isanon:
+            return []
+
         is_superuser = user.is_superuser
         user.is_superuser = False
 
