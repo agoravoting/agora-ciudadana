@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: agora-cat\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-03-15 23:11+0100\n"
-"PO-Revision-Date: 2014-04-14 01:01+0100\n"
+"PO-Revision-Date: 2014-04-14 17:42+0100\n"
 "Last-Translator: Dario Castañé <i@dario.im>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ca_ES\n"
@@ -156,7 +156,7 @@ msgstr "Correu electrònic"
 
 #: accounts/forms.py:407
 msgid "This email is already taken."
-msgstr "Aquest correu electrònic ja està en ús."
+msgstr "Aquest correu ja està en ús."
 
 #: accounts/urls.py:77
 msgid ""
@@ -288,7 +288,7 @@ msgstr "Es requereix un compte a %(SITE_NAME)s per continuar."
 #: accounts/templates/accounts/auth_forms.html:44
 #: accounts/templates/accounts/signin_form.html:44
 msgid "Use your account in.."
-msgstr "Utilitza el teu compte a.."
+msgstr "Utilitza el teu compte a..."
 
 #: accounts/templates/accounts/auth_forms.html:45
 #: accounts/templates/accounts/signin_form.html:45
@@ -307,7 +307,7 @@ msgid ""
 "to post anything without your permission."
 msgstr ""
 "No donarem cap informació privada a Twitter i no utilitzarem el teu perfil "
-"per a publicar res sense el seu permís."
+"per a publicar res sense el teu permís."
 
 #: accounts/templates/accounts/auth_forms.html:57
 #: accounts/templates/accounts/signin_form.html:57
@@ -320,8 +320,8 @@ msgid ""
 "You can enter this site using your FNMT certificate. <a href=\"#\">More "
 "information here</a>."
 msgstr ""
-"Pots registrar-te en el lloc amb el certificat FNMT. <a href=\"#\">Més "
-"informació aquí</a>."
+"Pots registrar-te amb el certificat FNMT. <a href=\"#\">Més informació aquí</"
+"a>."
 
 #: accounts/templates/accounts/auth_forms.html:63
 #: accounts/templates/accounts/signin_form.html:63
@@ -331,7 +331,7 @@ msgstr "Entra amb el certificat FNMT"
 #: accounts/templates/accounts/auth_forms.html:67
 #: accounts/templates/accounts/signin_form.html:67
 msgid "Terms of service"
-msgstr "Termes del Servei"
+msgstr "Termes del servei"
 
 #: accounts/templates/accounts/auth_forms.html:69
 msgid ""
@@ -422,7 +422,7 @@ msgstr "Confirma el teu nou correu electrònic"
 #: accounts/templates/accounts/email_change_complete.html:8
 #, python-format
 msgid "You have received an email at %(email)s."
-msgstr "Has rebut un nou email en %(email)s."
+msgstr "Has rebut un nou correu a %(email)s."
 
 #: accounts/templates/accounts/email_change_complete.html:9
 #, python-format
@@ -430,8 +430,8 @@ msgid ""
 "To associate this email address with your account (%(username)s) click on "
 "the link provided in this email."
 msgstr ""
-"Per a associar aquesta direcció d'email al teu compte (%(username)s) fes "
-"clic a l'enllaç d'aquest email."
+"Per associar aquesta adreça de correu al teu compte (%(username)s) clica a "
+"l'enllaç d'aquest correu."
 
 #: accounts/templates/accounts/email_confirm_complete.html:4
 msgid "Email changed!"
@@ -610,8 +610,8 @@ msgid ""
 "When you enter using the FNMT certificate you're accepting our <a href="
 "\"%(tos_url)s\">Terms of Service.</a>"
 msgstr ""
-"Si entres amb el certificat FNMT estàs aceptant nostres <a href=\"%(tos_url)s"
-"\">Termes del servei.</a>"
+"Si entres amb el certificat FNMT estàs aceptant els nostres <a href="
+"\"%(tos_url)s\">Termes del servei.</a>"
 
 #: accounts/templates/accounts/emails/activation_email_message.txt:2
 #: accounts/templates/accounts/emails/confirmation_email_message_new.txt:2
@@ -623,7 +623,7 @@ msgstr "Hola %(first_name)s,"
 #: accounts/templates/accounts/emails/activation_email_message.txt:4
 #, python-format
 msgid "Thank you for signing up at %(site)s."
-msgstr "Gracies per registrar-te en %(site)s."
+msgstr "Gràcies per registrar-te en %(site)s."
 
 #: accounts/templates/accounts/emails/activation_email_message.txt:6
 msgid "To activate your account you should click on the link below:"
@@ -634,7 +634,7 @@ msgstr "Per activar el seu compte, ha de fer clic a l'enllaç de sota:"
 #: accounts/templates/accounts/emails/confirmation_email_message_old.txt:8
 #: accounts/templates/accounts/emails/password_reset_message.txt:10
 msgid "Thanks for using our site!"
-msgstr "Gracies per utilitzar la nostra pàgina!"
+msgstr "Gràcies per utilitzar la nostra pàgina!"
 
 #: accounts/templates/accounts/emails/activation_email_message.txt:12
 #: accounts/templates/accounts/emails/confirmation_email_message_new.txt:13
@@ -663,8 +663,8 @@ msgstr ""
 #, python-format
 msgid "There was a request to change your email address at %(site)s."
 msgstr ""
-"Hi va haver una sol·licitud per canviar la seva adreça de correu electrònic "
-"a %(site)s."
+"Hi ha hagut una petició per canviar la teva adreça de correu electrònic a "
+"%(site)s."
 
 #: accounts/templates/accounts/emails/confirmation_email_message_old.txt:6
 #, python-format
@@ -766,27 +766,27 @@ msgstr "Votació %(electionname)s editada."
 
 #: agora_core/views.py:572
 msgid "You don't have permission to approve the election."
-msgstr "No tens permis per a aprovar la votació."
+msgstr "No tens permís per aprovar la votació."
 
 #: agora_core/views.py:597
 msgid "You don't have permission to freeze the election."
-msgstr "No té permís per a congelar la votació."
+msgstr "No tens permís per congelar la votació."
 
 #: agora_core/views.py:625
 msgid "You don't have permission to start the election."
-msgstr "No té permís per a iniciar la votació."
+msgstr "No tens permís per iniciar la votació."
 
 #: agora_core/views.py:658
 msgid "You don't have permission to stop the election."
-msgstr "No té permís per a aturar la votació."
+msgstr "No tens permís per aturar la votació."
 
 #: agora_core/views.py:689
 msgid "You don't have permission to release election results."
-msgstr "No té permís per a divulgar el resultat de la votació."
+msgstr "No tens permís per publicar els resultats de la votació."
 
 #: agora_core/views.py:714
 msgid "You don't have permission to archive the election."
-msgstr "No té permís per a arxivar la elecció."
+msgstr "No tens permís per arxivar la votació."
 
 #: agora_core/views.py:719
 msgid "Election is already archived."
@@ -809,7 +809,7 @@ msgstr ""
 #: agora_core/forms/election.py:499
 #, python-format
 msgid "Vote casted for election %s"
-msgstr "Vot fos per a la votació %s"
+msgstr "Vot emès per la votació %s"
 
 #: agora_core/views.py:855
 msgid "Sorry, election is closed and thus you cannot vote."
@@ -840,8 +840,8 @@ msgid ""
 "You delegated your vote in %(agora)s to %(username)s! Now you could share "
 "this in Facebook, Google Plus, Twitter, etc."
 msgstr ""
-"Has delegat el teu vot en l'àgora %(agora)s en l'usuario %(username)s! Pots "
-"compartir esta votació en Facebook, Google Plus, Twitter, etc."
+"Has delegat el teu vot en l'àgora %(agora)s en l'usuari %(username)s! Pots "
+"compartir aquesta votació a Facebook, Google+, Twitter, etc."
 
 #: agora_core/views.py:997
 #, python-format
@@ -971,7 +971,7 @@ msgstr "Ho sentim, però no pots acceptar aquest membre."
 #: agora_core/views.py:1251
 #, python-format
 msgid "You accepted  %(username)s membership request in %(agora)s."
-msgstr "Has aceptado la petición para ser miembro de %(username)s en %(agora)s"
+msgstr "Has acceptat la petició per ser membre de %(username)s a %(agora)s"
 
 #: agora_core/views.py:1287 agora_core/resources/agora.py:737
 #, python-format
@@ -1019,7 +1019,7 @@ msgstr ""
 #, python-format
 msgid "You accepted  %(username)s admin membership request in %(agora)s."
 msgstr ""
-"Has aceptado la petición para ser administrador de %(username)s en %(agora)s."
+"Has acceptat la petició per ser administrador de %(username)s a %(agora)s."
 
 #: agora_core/views.py:1424
 #, python-format
@@ -1042,7 +1042,7 @@ msgstr "Has abandonado %(agora)s"
 #: agora_core/views.py:1486
 #, python-format
 msgid "You cancelled your membership request at %(agora)s."
-msgstr "Has cancelado tu petición para ser miembro de %(agora)s."
+msgstr "Has cancel·lat la teva petició per ser membre a %(agora)s."
 
 #: agora_core/views.py:1513
 msgid "Sorry, you cannot dismiss this user's  membership request."
@@ -1061,8 +1061,7 @@ msgstr ""
 #, python-format
 msgid "You dismissed %(username)s admin membership request at %(agora)s."
 msgstr ""
-"Has descartado la petición para ser administrador en %(agora)s de "
-"%(username)s."
+"Has descartat la petició per ser administrador a %(agora)s de %(username)s."
 
 #: agora_core/views.py:1583
 #, python-format
@@ -1139,16 +1138,16 @@ msgstr "Ho sentim, però no tens permisos per comentar a %(agora)s."
 
 #: agora_core/views.py:1947
 msgid "You can't cancel a vote in a closed election."
-msgstr "No puedes cancelar un voto en una votación ya cerrada."
+msgstr "No pots cancel·lar un vot en una votació tancada."
 
 #: agora_core/views.py:1954 agora_core/resources/election.py:619
 msgid "You didn't participate in this election."
-msgstr "No participaste en esta votación."
+msgstr "No has participat en aquesta votació."
 
 #: agora_core/views.py:1979 agora_core/resources/election.py:642
 #, python-format
 msgid "Vote cancelled for election %s"
-msgstr "Voto cancelado para la votación %s"
+msgstr "Vot cancel·lat per la votació %s"
 
 #: agora_core/views.py:2009 agora_core/resources/user.py:74
 #: agora_core/resources/user.py:80 agora_core/resources/user.py:150
@@ -1159,7 +1158,7 @@ msgstr "Anònim"
 
 #: agora_core/views.py:2049
 msgid "User settings updated."
-msgstr "Configuración de Usuario actualizada."
+msgstr "Configuració d'usuari actualitzada."
 
 #: agora_core/views.py:2106 agora_core/views.py:2118
 #, python-format
@@ -1182,7 +1181,7 @@ msgstr "Avatar"
 
 #: agora_core/forms/__init__.py:102
 msgid "Upload an image to use as avatar instead of gravatar service"
-msgstr "Subir una imagen para usar como avatar en vez la del servicio gravatar"
+msgstr "Pujar una imatge per emprar com avatar en comptes del gravatar."
 
 #: agora_core/forms/__init__.py:103
 msgid "Remove this avatar"
@@ -1207,7 +1206,7 @@ msgstr "Biografia"
 
 #: agora_core/forms/__init__.py:110
 msgid "Tell us about you, use as much text as needed"
-msgstr "Cuéntanos acerca de tí, usa tanto espacio como necesites"
+msgstr "Explica'ns quelcom sobre tu, empra tant text com vulguis"
 
 #: agora_core/forms/__init__.py:116 agora_core/models/__init__.py:263
 msgid "Receive email updates"
@@ -1227,8 +1226,7 @@ msgstr "Nova contrasenya"
 
 #: agora_core/forms/__init__.py:125
 msgid "Specify your new password if you want to change it, or leave it blank"
-msgstr ""
-"Especifica tu nueva contraseña si quieres cambiarla, o déjala en blanco"
+msgstr "Indica la teva nova contrasenya si vols canviar-la o deixa-la en blanc"
 
 #: agora_core/forms/__init__.py:128
 msgid "Repeat new password"
@@ -1250,7 +1248,7 @@ msgstr "Guardar configuració"
 #: agora_core/forms/__init__.py:189 agora_core/forms/user.py:394
 #: agora_core/forms/user.py:541
 msgid "This email is already in use. Please supply a different email."
-msgstr "Este email ya está en uso. Escribe un email distinto por favor."
+msgstr "Aquest correu ja està en ús. Indica un correu diferent."
 
 #: agora_core/forms/__init__.py:195 agora_core/forms/user.py:87
 #: agora_core/forms/user.py:425
@@ -1278,7 +1276,7 @@ msgstr "Preguntes"
 #: agora_core/forms/__init__.py:273 agora_core/forms/__init__.py:451
 #: agora_core/resources/election.py:93
 msgid "Start voting"
-msgstr "Començar la votació"
+msgstr "Iniciar la votació"
 
 #: agora_core/forms/__init__.py:274 agora_core/forms/__init__.py:452
 msgid "Not required, you can choose to start the voting period manually"
@@ -1316,7 +1314,7 @@ msgstr "Data d'inici invàlida, ha de situar-se al futur"
 #: agora_core/forms/__init__.py:321 agora_core/forms/__init__.py:491
 #: agora_core/resources/election.py:137
 msgid "Voting time must be at least 1 hour"
-msgstr "El tiempo de votación debe ser al menos de 1 hora"
+msgstr "El temps de votació ha de ser una hora com a mínim"
 
 #: agora_core/forms/__init__.py:402 agora_core/tasks/election.py:299
 #, python-format
@@ -1325,15 +1323,15 @@ msgstr "Elecció %s creada"
 
 #: agora_core/forms/__init__.py:569
 msgid "Vote secretly"
-msgstr "Votar de forma secreta"
+msgstr "Votar de manera secreta"
 
 #: agora_core/forms/__init__.py:571
 msgid "Vote in public as a delegate"
-msgstr "Votar públicamente como delegado"
+msgstr "Votar públicament com delegat"
 
 #: agora_core/forms/__init__.py:574 agora_core/forms/__init__.py:582
 msgid "Vote in public as a non-member delegate"
-msgstr "Votar públicamente como delegado no-miembro"
+msgstr "Votar públicament com delegrat no membre"
 
 #: agora_core/forms/__init__.py:579
 #: agora_core/templates/agora_core/election_base.html:232
@@ -1357,7 +1355,7 @@ msgstr "Tu email de contacto"
 
 #: agora_core/forms/__init__.py:673
 msgid "Subject"
-msgstr "Asunto"
+msgstr "Assumpte"
 
 #: agora_core/forms/__init__.py:675
 msgid "Message"
@@ -1380,8 +1378,7 @@ msgstr ""
 
 #: agora_core/forms/__init__.py:721
 msgid "You have contacted us, we'll answer you as soon as possible."
-msgstr ""
-"Vostè s'ha comunicat amb nosaltres, et respondrem el més aviat possible."
+msgstr "Ens has contactat, et respondrem el més aviat possible."
 
 #: agora_core/forms/comment.py:33
 msgid "Post a comment here..."
@@ -1399,8 +1396,8 @@ msgstr "Cal que estiguis autenticat per publicar un comentari"
 #, python-format
 msgid "Watch your mouth! The word %s is not allowed here."
 msgid_plural "Watch your mouth! The words %s are not allowed here."
-msgstr[0] "Cuida el que dius! La paraula %s no està permesa aquí."
-msgstr[1] "Cuida el que dius! Les paraules %s no estan permeses aquí."
+msgstr[0] "Vigila el que dius! La paraula %s no està permesa aquí."
+msgstr[1] "Vigila el que dius! Les paraules %s no estan permeses aquí."
 
 #: agora_core/forms/election.py:536
 #, python-format
@@ -1409,7 +1406,7 @@ msgstr "Confirma el vot fet a la votació %s"
 
 #: agora_core/forms/user.py:83
 msgid "Unathenticated request."
-msgstr "Sol·licitud sense autenticar."
+msgstr "Petició sense autenticar."
 
 #: agora_core/forms/user.py:126 agora_core/forms/user.py:557
 msgid "Auto activation not allowed."
@@ -1421,7 +1418,7 @@ msgstr "Secret d'activació no vàlid. "
 
 #: agora_core/forms/user.py:169
 msgid "You have no permission."
-msgstr "No té permisos."
+msgstr "No tens permisos."
 
 #: agora_core/forms/user.py:183 agora_core/forms/user.py:461
 msgid "Invalid first name."
@@ -1561,7 +1558,7 @@ msgstr "Nom bonic"
 
 #: agora_core/models/agora.py:78
 msgid "Url"
-msgstr "Url"
+msgstr "Adreça"
 
 #: agora_core/models/agora.py:96
 msgid "Image Url"
@@ -1616,7 +1613,7 @@ msgstr "Demanat ser administrador"
 
 #: agora_core/models/authority.py:30
 msgid "URL"
-msgstr "URL"
+msgstr "Adreça"
 
 #: agora_core/models/authority.py:32
 msgid "Public URL"
@@ -1641,7 +1638,7 @@ msgstr "Crear àgora"
 #: agora_core/models/castvote.py:24
 #: agora_core/templates/agora_core/election_votes_graph.html:32
 msgid "Voter"
-msgstr "Votante"
+msgstr "Votant"
 
 #: agora_core/models/castvote.py:27
 #: agora_core/models/delegateelectioncount.py:26
@@ -1662,7 +1659,7 @@ msgstr "És un vot públic"
 
 #: agora_core/models/castvote.py:46
 msgid "Why"
-msgstr "Razón"
+msgstr "Raó"
 
 #: agora_core/models/castvote.py:107
 msgid "Data"
@@ -1678,7 +1675,7 @@ msgstr "Delegar el vot"
 
 #: agora_core/models/election.py:63
 msgid "Vote is public"
-msgstr "El vot és públic. "
+msgstr "El vot és públic."
 
 #: agora_core/models/election.py:64
 msgid "Allow secret voting"
@@ -1714,15 +1711,15 @@ msgstr "Data d'última modificació"
 
 #: agora_core/models/election.py:172
 msgid "Voting Starts Date"
-msgstr "Fecha de inicio de votación"
+msgstr "Data d'inici de la votació"
 
 #: agora_core/models/election.py:174
 msgid "Voting Ends Date"
-msgstr "Fecha de final de votación"
+msgstr "Data final de la votació"
 
 #: agora_core/models/election.py:176
 msgid "Voting Extended until Date"
-msgstr "Votación ampliada hasta la fecha"
+msgstr "Votació ampliada fins"
 
 #: agora_core/models/election.py:178
 msgid "Approved at Date"
@@ -1738,7 +1735,7 @@ msgstr "Vots delegats a"
 
 #: agora_core/models/election.py:186
 msgid "Voters Frozen at Date"
-msgstr "Votos Paralizados en fecha"
+msgstr "Votants congelats a"
 
 #: agora_core/models/election.py:188
 msgid "Result Tallied at Date"
@@ -1750,7 +1747,7 @@ msgstr "Clau pública creada a"
 
 #: agora_core/models/election.py:193
 msgid "Talliy Released at Date"
-msgstr "Resultat comtabilitzat a data"
+msgstr "Resultat comptabilitzat a"
 
 #: agora_core/models/election.py:247
 msgid "Election Result"
@@ -1774,67 +1771,67 @@ msgstr "Autoritats"
 
 #: agora_core/models/election.py:689
 msgid "This election allows everyone to vote. "
-msgstr "Esta votación permite a todo el mundo votar. "
+msgstr "Aquesta votació permet votar a tothom."
 
 #: agora_core/models/election.py:692
 msgid ""
 "This election only allows agora members to vote, but any delegate can emit "
 "their position. "
 msgstr ""
-"Esta votación sólo permite votar a los miembros del ágora, pero cualquier "
-"delegado puede emitir su intención de voto. "
+"Aquesta votació només permet votar als membres de l'àgora, però qualsevol "
+"delegat pot emetre la seva posició."
 
 #: agora_core/models/election.py:695
 msgid "This election only allows agora members to vote. "
-msgstr "Esta votación sólo permite votar a los miembros del ágora. "
+msgstr "Aquesta votació només permet votar als membres de l'agòra."
 
 #: agora_core/models/election.py:699
 msgid "Vote is secret (public for delegates). "
-msgstr "El voto es secreto (público para los delegados). "
+msgstr "El vot és secret (públic per delegats)."
 
 #: agora_core/models/election.py:702
 msgid "Vote is public. "
-msgstr "El voto es público. "
+msgstr "El vot és públic."
 
 #: agora_core/models/election.py:711
 #, python-format
 msgid "The election has been approved and was frozen  %(frozen_date)s. "
-msgstr "La votación ha sido aprobada y fue congelada %(frozen_date)s. "
+msgstr "La votació ha estat aprovada i s'ha congelat a %(frozen_date)s. "
 
 #: agora_core/models/election.py:715
 msgid "The election has been approved and is not frozen yet. "
-msgstr "La votación ha sido aprobada y no está congelada todavía. "
+msgstr "La votació ha estat aprovada i no està congelada encara."
 
 #: agora_core/models/election.py:718
 #, python-format
 msgid ""
 "The election has not been approved yet and was frozen  %(frozen_date)s. "
 msgstr ""
-"La votación no ha sido probada todavía y fue congelada %(frozen_date)s. "
+"La votació no s'ha aprovat encara i ha estat congelada a %(frozen_date)s. "
 
 #: agora_core/models/election.py:722
 msgid "The election has been not approved and is not frozen yet. "
-msgstr "La votación no ha sido aprobada ni congelada todavía. "
+msgstr "La votació no ha estat aprovada ni congelada."
 
 #: agora_core/models/election.py:727
 #, python-format
 msgid "Voting will start  %(start_date)s and finish %(end_date)s. "
-msgstr "La votación se iniciará %(start_date)s y terminará %(end_date)s. "
+msgstr "La votació s'iniciarà el %(start_date)s i acabarà %(end_date)s. "
 
 #: agora_core/models/election.py:732
 #, python-format
 msgid "Voting will start %(start_date)s. "
-msgstr "La votación se iniciará %(start_date)s. "
+msgstr "La votació s'iniciarà %(start_date)s. "
 
 #: agora_core/models/election.py:737
 #, python-format
 msgid "Voting started %(start_date)s and will finish %(end_date)s. "
-msgstr "La votación comenzó %(start_date)s y terminará %(end_date)s. "
+msgstr "La votació va iniciar-se el %(start_date)s i acabarà el %(end_date)s. "
 
 #: agora_core/models/election.py:742
 #, python-format
 msgid "Voting started %(start_date)s. "
-msgstr "La votación comenzó %(start_date)s. "
+msgstr "La votació va iniciar-se el %(start_date)s. "
 
 #: agora_core/models/election.py:746
 #, python-format
@@ -1842,12 +1839,12 @@ msgid ""
 "Voting started %(start_date)s and finished %(end_date)s. Results available "
 "since %(tally_date)s. "
 msgstr ""
-"La votación comenzó %(start_date)s y terminó %(end_date)s. Los resultados "
-"disponibles %(tally_date)s. "
+"La votació va iniciar-se el %(start_date)s i va acabar el %(end_date)s. "
+"Resultats disponibles des de %(tally_date)s. "
 
 #: agora_core/models/election.py:753
 msgid "Start date for voting is not set yet. "
-msgstr "La fecha de inicio de la votación no ha sido establecido aún. "
+msgstr "La data d'inici de la votació no s'ha establert encara."
 
 #: agora_core/models/election.py:757
 msgid "Election is <b>archived and dismissed</b>."
@@ -1882,7 +1879,7 @@ msgstr ""
 #: agora_core/resources/agora.py:646
 #, python-format
 msgid "You canceled your membership request at %(agora)s"
-msgstr "Has cancelado tu petición para ser miembro de %(agora)s."
+msgstr "Has cancel·lat la teva petició per ser membre a %(agora)s."
 
 #: agora_core/resources/agora.py:654
 #, python-format
@@ -1919,7 +1916,7 @@ msgstr "%(site)s - membre retirat a %(agora)s"
 #: agora_core/resources/agora.py:955
 #, python-format
 msgid "You canceled your admin membership request at %(agora)s"
-msgstr "Has cancelado tu solicitud de administrador en %(agora)s."
+msgstr "Has cancel·lat la teva petició per ser administrador a %(agora)s."
 
 #: agora_core/resources/agora.py:963
 #, python-format
@@ -1930,7 +1927,7 @@ msgstr ""
 #: agora_core/resources/agora.py:1009
 #, python-format
 msgid "You have removed your membership from %(agora)s"
-msgstr "Has eliminado tu membresía de %(agora)s."
+msgstr "T'has esborrat com membre de %(agora)s."
 
 #: agora_core/resources/agora.py:1066
 #, python-format
@@ -1986,7 +1983,7 @@ msgstr "%(site)s - permisos d'administrador retirats de %(agora)s."
 #: agora_core/resources/agora.py:1280
 #, python-format
 msgid "You have given up your admin permissions on %(agora)s"
-msgstr "Has renunciado a tus permisos de administrador en %(agora)s"
+msgstr "Has renunciat als teus permisos d'administrador a %(agora)s"
 
 #: agora_core/resources/agora.py:1288
 #, python-format
@@ -2008,7 +2005,7 @@ msgstr "Actualmente no estás delegando el voto."
 #: agora_core/resources/agora.py:1385
 #, python-format
 msgid "You have removed your vote delegation from %(agora)s"
-msgstr "Has retirado tu delegación de voto de %(agora)s"
+msgstr "Has retirat la teva delegació de vot a %(agora)s"
 
 #: agora_core/resources/agora.py:1393
 #, python-format
@@ -2031,7 +2028,7 @@ msgstr "%(site)s - Votació %(election)s aprovada"
 
 #: agora_core/resources/user.py:362
 msgid "Welcome to this agora"
-msgstr "Bienvenido a este ágora"
+msgstr "Benvingut a aquesta àgora"
 
 #: agora_core/resources/user.py:419
 #, python-format
@@ -2070,8 +2067,8 @@ msgid ""
 "please confirm this vote click the following confirmation url:\n"
 " %(protocol)s://%(domain)s%(url)s\n"
 msgstr ""
-"Vostè té un vot pendent de confirmació. Si realment ha emès aquest vot, si "
-"us plau confirma'l fent clic a la següent url:\n"
+"Tens un vot pendent de confirmació. Si realment has emès aquest vot, "
+"confirma'l clicant a la següent adreça:\n"
 " %(protocol)s://%(domain)s%(url)s\n"
 
 #: agora_core/tasks/agora.py:184
@@ -2090,7 +2087,7 @@ msgstr ""
 #: agora_core/tasks/election.py:95 agora_core/tasks/election.py:112
 #, python-format
 msgid "Vote in election %s"
-msgstr "Vota en la votación %s"
+msgstr "Vota en la votació %s"
 
 #: agora_core/tasks/election.py:195 agora_core/tasks/election.py:257
 #, python-format
@@ -2116,9 +2113,8 @@ msgid ""
 "This page has disappeared. Like magic!</p><p><a href=\"%(home_url)s\">Go to "
 "the home page</a> if you don't know what else to do."
 msgstr ""
-"Ésta página ha desaparecido. ¡Como por arte de magia!</p><p><a href="
-"\"%(home_url)s\">Ve a la página de inicio</a> si no sabes qué otra cosa "
-"hacer."
+"Aquesta pàgina ha desaparegut. ¡Como per art de màgia!</p><p><a href="
+"\"%(home_url)s\">Ves a la pàgina d'inici</a> si no saps què fer."
 
 #: agora_core/templates/500.html:10
 msgid "To Paris"
@@ -2162,9 +2158,9 @@ msgid ""
 "The users will be directly added to this agora, created if needed and will "
 "receive a welcome email. Please note that spam is against our rules."
 msgstr ""
-"Se añadirán los usuarios directamente a este ágora, en caso necesario, se "
-"crearán los usuarios y recibirán un email de bienvenida. Ten en cuenta que "
-"está prohibido hacer spam."
+"S'afegiran usuaris directament a l'àgora, creant-se si és necessari, tot "
+"enviant un correu de benvinguda. Tingueu present que fer spam està contra "
+"les nostres normes."
 
 #: agora_core/templates/agora_core/agora_bio.html:15
 #, python-format
@@ -2172,8 +2168,8 @@ msgid ""
 "This biography is empty! now you have the opportunity to <a href="
 "\"%(edit_bio_url)s\">start writing it</a>."
 msgstr ""
-"¡Esta biografía está vacía! puedes comenzar ahora mismo a <a href="
-"\"%(edit_bio_url)s\">escribirla</a>."
+"Aquesta biografia és buida! Pots començar ara mateix a <a href="
+"\"%(edit_bio_url)s\">escriure-la</a>."
 
 #: agora_core/templates/agora_core/agora_bio.html:17
 #: agora_core/templates/agora_core/user_bio.html:18
@@ -2186,8 +2182,8 @@ msgid ""
 "This biography is a bit short, perhaps you can <a href=\"%(edit_bio_url)s"
 "\">improve it adding some additional information</a>."
 msgstr ""
-"Esta biografía es un poco corta, a lo mejor <a href=\"%(edit_bio_url)s"
-"\">mejorarla añadiendo información adicional</a>"
+"Aquesta biografia és un pèl curta, potser podries <a href=\"%(edit_bio_url)s"
+"\">millorar-la afegint informació addicional</a>."
 
 #: agora_core/templates/agora_core/agora_comments.html:7
 #: agora_core/templates/agora_core/election_base.html:110
@@ -2324,7 +2320,7 @@ msgstr "Crear un lloc web per al teu grup on les votacions tindran lloc."
 #: agora_core/templates/agora_core/user_item.html:76
 #: agora_core/templates/agora_core/vote_from_delegate_item.html:19
 msgid "User mugshot"
-msgstr "Foto de usuario"
+msgstr "Fotografia d'usuari"
 
 #: agora_core/templates/agora_core/delegated_vote_item.html:20
 msgid "Delegates to:"
@@ -2334,7 +2330,7 @@ msgstr "Delega en:"
 #: agora_core/templates/agora_core/delegated_vote_item.html:44
 #: agora_core/templates/agora_core/vote_from_delegate_item.html:32
 msgid "Vote is secret"
-msgstr "El voto es secreto"
+msgstr "El vot és secret"
 
 #: agora_core/templates/agora_core/delegated_vote_item.html:42
 #: agora_core/templates/agora_core/vote_from_delegate_item.html:30
@@ -2380,12 +2376,12 @@ msgstr "Congelar votació"
 #: agora_core/templates/agora_core/election_base.html:56
 #: agora_core/templates/agora_core/election_base.html:251
 msgid "Start voting period"
-msgstr "Comenzar el periodo de votación"
+msgstr "Iniciar el període de votació"
 
 #: agora_core/templates/agora_core/election_base.html:65
 #: agora_core/templates/agora_core/election_base.html:263
 msgid "Stop voting period and publish results"
-msgstr "Parar el periodo de votación y publicar los resultados"
+msgstr "Aturar el període de votació i publicar els resultats"
 
 #: agora_core/templates/agora_core/election_base.html:67
 msgid "Stop voting period"
@@ -2406,7 +2402,7 @@ msgstr "Unir-se a aquesta àgora ara"
 #: agora_core/templates/agora_core/election_base.html:106
 #: agora_core/templates/agora_core/election_votes.html:5
 msgid "Votes"
-msgstr "Votos"
+msgstr "Vots"
 
 #: agora_core/templates/agora_core/election_base.html:121
 #: agora_core/templates/agora_core/election_votes_graph.html:6
@@ -2429,17 +2425,17 @@ msgstr "Centre de seguretat"
 
 #: agora_core/templates/agora_core/election_base.html:148
 msgid "This election is archived and dismissed."
-msgstr "Esta elección ha sido archivada y descartada."
+msgstr "Aquesta votació ha estat arxivada i descartada."
 
 #: agora_core/templates/agora_core/election_base.html:149
 msgid "This usually means that this election results are not valid."
 msgstr ""
-"Normalmente significa que los resultados de estas elecciones no son válidos"
+"Això normalment significa que els resultats de la votació no són vàlids."
 
 #: agora_core/templates/agora_core/election_base.html:189
 #, python-format
 msgid "VOTES (%(percent)s%% of the electorate)"
-msgstr "VOTOS (%(percent)s%% del electorado)"
+msgstr "VOTS (%(percent)s%% de l'electorat)"
 
 #: agora_core/templates/agora_core/election_base.html:193
 #, python-format
@@ -2481,8 +2477,7 @@ msgstr "Tu voto"
 #, python-format
 msgid "You answered <strong>%(answer)s</strong> to <em>%(question)s</em>"
 msgstr ""
-"Has respondido <strong>%(answer)s</strong> a la pregunta <em>%(question)s</"
-"em>"
+"Has respost <strong>%(answer)s</strong> a la pregunta <em>%(question)s</em>"
 
 #: agora_core/templates/agora_core/election_base.html:287
 #, python-format
@@ -2490,17 +2485,17 @@ msgid ""
 "You delegated to <a href=\"%(delegate_url)s\">%(delegate_username)s</a> who "
 "answered <strong>%(answer)s</strong> to <em>%(question)s</em>"
 msgstr ""
-"Has delegado en <a href=\"%(delegate_url)s\">%(delegate_username)s</a> que "
-"ha respondido <strong>%(answer)s</strong> a la pregunta <em>%(question)s</em>"
+"Has delegat en <a href=\"%(delegate_url)s\">%(delegate_username)s</a> que ha "
+"votat <strong>%(answer)s</strong> a la pregunta <em>%(question)s</em>"
 
 #: agora_core/templates/agora_core/election_base.html:289
 #, python-format
 msgid "You delegated to <a href=\"%(delegate_url)s\">%(delegate_username)s</a>"
-msgstr "Has delegado en <a href=\"%(delegate_url)s\">%(delegate_username)s</a>"
+msgstr "Has delegat en <a href=\"%(delegate_url)s\">%(delegate_username)s</a>"
 
 #: agora_core/templates/agora_core/election_base.html:293
 msgid "You delegated your vote, and your vote is secret"
-msgstr "Has delegado tu voto, y tu voto es secreto"
+msgstr "Has delegat el teu vot i és secret"
 
 #: agora_core/templates/agora_core/election_base.html:298
 #: agora_core/templates/agora_core/election_base.html:310
@@ -2540,9 +2535,9 @@ msgid ""
 "Once the election is frozen, you cannot edit it anymore, and next step is "
 "either to start it or archive it."
 msgstr ""
-"Debes pulsar el botón guardar para aplicar los cambios en la votación. "
-"Cuando la votación esté congelada, ya no podrás editarla y el siguiente paso "
-"será iniciarla o archivarla."
+"Prem el botó Guardar per aplicar els teus canvis a la votació. Quan la "
+"votació estigui congelada, no podràs editar-la i el següent pas serà iniciar-"
+"la o arxivar-la."
 
 #: agora_core/templates/agora_core/election_item.html:12
 msgid "Election mugshot"
@@ -2563,11 +2558,11 @@ msgstr "Opció"
 
 #: agora_core/templates/agora_core/election_votes_graph.html:34
 msgid "Winner"
-msgstr "Ganador"
+msgstr "Guanyador"
 
 #: agora_core/templates/agora_core/election_votes_graph.html:36
 msgid "tally (client-side)"
-msgstr "recuento de votos (lado cliente)"
+msgstr "recompte de vots (client)"
 
 #: agora_core/templates/agora_core/election_votes_graph.html:38
 msgid "Mouse wheel to zoom, click and drag the canvas to pan (editing is ON)"
@@ -2588,9 +2583,7 @@ msgid ""
 "The authentication in the website using the FNMT certificate has failed. "
 "What could have happen is any of these options, please check if:"
 msgstr ""
-"Ha fallado la autenticación en el sitio web mediante el certificado FNMT. "
-"Este error puede ser debido a alguna de las siguientes opciones, comprueba "
-"si::"
+"L'autenticació emprant el certificat de la FNMT ha fallat. Comprova si:"
 
 #: agora_core/templates/agora_core/fnmt_login.html:17
 msgid ""
@@ -2605,9 +2598,9 @@ msgid ""
 "You <strong>chose another certificate</strong>. In this case, you'll need to "
 "try again, probably restarting the web browser (close it then open it again)."
 msgstr ""
-"Has <strong>elegido otro certificado</strong>. En ese caso, tendrás que "
-"intentarlo de nuevo, seguramente tendrás que reiniciar el navegador (cerrar "
-"y abrir de nuevo)."
+"Has <strong>triat un altre certificat</strong>. En aquest cas, hauràs de "
+"provar-ho de nou, probablement reiniciar el navegador (tancant i obrint de "
+"nou)."
 
 #: agora_core/templates/agora_core/fnmt_login.html:21
 msgid ""
@@ -2677,8 +2670,7 @@ msgstr "Delega i vota"
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:47
 msgid "You can vote on each question brought up in the agora, or delegate."
-msgstr ""
-"Puedes votar en cada cuestión que aparezca en el ágora, o delegar el voto."
+msgstr "Pots votar en cada qüestió que es plantegi a l'àgora o delegar."
 
 #: agora_core/templates/agora_core/home_loggedin_activity.html:57
 msgid "Be social"
@@ -2770,7 +2762,7 @@ msgstr "Esborrar administrador"
 #: agora_core/templates/agora_core/user_listing.html:5
 #: agora_core/templates/agora_core/user_listing.html:13
 msgid "User list"
-msgstr "Lista de usuarios"
+msgstr "Llista d'usuaris"
 
 #: agora_core/templates/agora_core/user_listing.html:15
 msgid "Listing all users"
@@ -2778,7 +2770,7 @@ msgstr "Llistant tots els usuaris"
 
 #: agora_core/templates/agora_core/user_settings.html:6
 msgid "User settings"
-msgstr "Preferencias de usuario"
+msgstr "Preferències d'usuari"
 
 #: agora_core/templates/agora_core/user_view.html:12
 #, python-format
@@ -2800,7 +2792,7 @@ msgstr ""
 
 #: agora_core/templates/agora_core/voting_booth.html:10
 msgid "Voting Booth"
-msgstr "Cabina de votación"
+msgstr "Cabina de votació"
 
 #: agora_core/templates/agora_core/emails/agora_notification.html:4
 #: agora_core/templates/agora_core/emails/agora_notification.txt:2
@@ -2849,8 +2841,8 @@ msgid ""
 "User URL: <a href=\"%(protocol)s://%(site_domain)s%(other_user_url)s\">"
 "%(other_user_name)s</a>"
 msgstr ""
-"URL de usuario: <a href=\"%(protocol)s://%(site_domain)s%(other_user_url)s\">"
-"%(other_user_name)s</a>"
+"Adreça de l'usuari: <a href=\"%(protocol)s://%(site_domain)s"
+"%(other_user_url)s\">%(other_user_name)s</a>"
 
 #: agora_core/templates/agora_core/emails/agora_notification.html:19
 #: agora_core/templates/agora_core/emails/non_voters.html:9
@@ -2862,10 +2854,10 @@ msgid ""
 "please <a href=\"%(protocol)s://%(site_domain)s%(cancel_emails_url)s\">click "
 "here</a>\n"
 msgstr ""
-"Este mensaje se envió a %(to_email)s. Si quieres dejar de recibir estos "
-"mensajes de <a href=\"%(protocol)s://%(site_domain)s\">%(site_name)s</a>, "
-"por favor <a href=\"%(protocol)s://%(site_domain)s%(cancel_emails_url)s"
-"\">haz clic aquí</a>\n"
+"S'ha enviat aquest missatge a %(to_email)s. Si vols deixar de rebre aquests "
+"missatges de <a href=\"%(protocol)s://%(site_domain)s\">%(site_name)s</a>, "
+"<a href=\"%(protocol)s://%(site_domain)s%(cancel_emails_url)s\">clica aquí</"
+"a>\n"
 
 #: agora_core/templates/agora_core/emails/agora_notification.txt:8
 #, python-format
@@ -2875,7 +2867,7 @@ msgstr "Adreça del ágora: %(agora_url)s"
 #: agora_core/templates/agora_core/emails/agora_notification.txt:10
 #, python-format
 msgid "User URL: %(protocol)s://%(site_domain)s%(other_user_url)s"
-msgstr "URL del usuario: %(protocol)s://%(site_domain)s%(other_user_url)s"
+msgstr "Adreça de l'usuari: %(protocol)s://%(site_domain)s%(other_user_url)s"
 
 #: agora_core/templates/agora_core/emails/agora_notification.txt:13
 #: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:15
@@ -2889,9 +2881,9 @@ msgid ""
 "message from %(site_name)s, please click here: %(protocol)s://%(site_domain)s"
 "%(cancel_emails_url)s"
 msgstr ""
-"Este mensaje fue enviado a %(to_email)s. Si quieres dejar de recibir estos "
-"mensajes de %(site_name)s, por favor haz clic aquí: %(protocol)s://"
-"%(site_domain)s%(cancel_emails_url)s"
+"S'ha enviat aquest missatge a %(to_email)s. Si vols deixar de rebre aquests "
+"missatges de %(site_name)s, clica aquí: %(protocol)s://%(site_domain)s"
+"%(cancel_emails_url)s"
 
 #: agora_core/templates/agora_core/emails/confirm_vote_casted.html:7
 #, python-format
@@ -2942,10 +2934,10 @@ msgid ""
 "please <a href=\"%(protocol)s://%(site_domain)s%(cancel_emails_url)s\">click "
 "here</a>"
 msgstr ""
-"Este mensaje se envió a %(to_email)s. Si quieres dejar de recibir estos "
-"mensajes de <a href=\"%(protocol)s://%(site_domain)s\">%(site_name)s</a>, "
-"por favor <a href=\"%(protocol)s://%(site_domain)s%(cancel_emails_url)s"
-"\">haz clic aquí</a>"
+"S'ha enviat aquest missatge a %(to_email)s. Si vols deixar de rebre aquests "
+"missatges de <a href=\"%(protocol)s://%(site_domain)s\">%(site_name)s</a>, "
+"<a href=\"%(protocol)s://%(site_domain)s%(cancel_emails_url)s\">clica aquí</"
+"a>"
 
 #: agora_core/templates/agora_core/emails/confirm_vote_casted.txt:4
 #, python-format
@@ -3018,9 +3010,9 @@ msgid ""
 "messages from %(site_name)s, please click here: %(protocol)s://"
 "%(site_domain)s%(cancel_emails_url)s"
 msgstr ""
-"Este mensaje fue enviado a %(to_email)s. Si quieres dejar de recibir estos "
-"mensajes de %(site_name)s, por favor haz clic aquí: %(protocol)s://"
-"%(site_domain)s%(cancel_emails_url)s"
+"S'ha enviat aquest missatge a %(to_email)s. Si vols deixar de rebre aquests "
+"missatges de %(site_name)s, clica aquí: %(protocol)s://%(site_domain)s"
+"%(cancel_emails_url)s"
 
 #: agora_core/templates/agora_core/emails/election_archived.txt:3
 #, python-format
@@ -3081,9 +3073,9 @@ msgid ""
 "these messages from %(site_name)s, please <a href=\"%(protocol)s://"
 "%(site_domain)s%(cancel_emails_url)s\">click here</a>"
 msgstr ""
-"Este mensaje fue enviado a %(to_username)s. Si quieres dejar de recibir "
-"estos mensajes de %(site_name)s, por favor  <a href=\"%(protocol)s://"
-"%(site_domain)s%(cancel_emails_url)s\">haz clic aquí</a>"
+"S'ha enviat aquest missatge a %(to_username)s. Si vols deixar de rebre "
+"aquests missatges de %(site_name)s, <a href=\"%(protocol)s://%(site_domain)s"
+"%(cancel_emails_url)s\">clica aquí</a>"
 
 #: agora_core/templates/agora_core/emails/election_created.txt:3
 #, python-format
@@ -3393,9 +3385,9 @@ msgid ""
 "message from %(site_name)s, please click here: %(protocol)s://%(site_domain)s"
 "%(cancel_emails_url)s\n"
 msgstr ""
-"Aquest missatge va ser enviat a %(to_email)s. Si vols deixar de rebre "
-"aquests missatges de %(site_name)s, si us plau fes clic aquí: %(protocol)s://"
-"%(site_domain)s%(cancel_emails_url)s\n"
+"S'ha enviat aquest missatge a %(to_email)s. Si vols deixar de rebre aquests "
+"missatges de %(site_name)s, clica aquí: %(protocol)s://%(site_domain)s"
+"%(cancel_emails_url)s\n"
 
 #: agora_core/templates/agora_core/emails/user_mail.html:5
 #: agora_core/templates/agora_core/emails/user_mail.txt:1
@@ -3538,8 +3530,8 @@ msgid ""
 "policy</a>"
 msgstr ""
 "Utilitzem cookies per millorar l'experiència de l'usuari. En continuar la "
-"navegació entenem que vostè accepta la nostra <a href=\"/misc/page/privacy-"
-"policy\">política de privacitat</a>"
+"navegació entenem que acceptes la nostra <a href=\"/misc/page/privacy-policy"
+"\">política de privacitat</a>"
 
 #: agora_core/templates/search/search.html:12
 msgid "Search"
@@ -3657,7 +3649,7 @@ msgstr "Coses serioses"
 
 #: templates/base.html:138
 msgid "Terms of Service"
-msgstr "Condicions del servei"
+msgstr "Termes del servei"
 
 #: templates/base.html:141
 msgid "Privacy Policy"
