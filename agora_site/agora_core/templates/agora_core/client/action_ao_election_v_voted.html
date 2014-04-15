@@ -7,7 +7,7 @@
             <div class="action-title">
                 <a href="<%- actor.url %>"><strong class="username">
 <% if (actor.full_name && actor.full_name != actor.username) { %>
-    <%= actor.full_name %> <em>(<%= actor.username %>)</em>
+    <%- actor.full_name %> <em>(<%- actor.username %>)</em>
 <% } else { %>
     <%= actor.username %>
 <% } %>
@@ -26,10 +26,10 @@
                 <div class="detail-body">
                     <strong class="action-title">
                         <a href="<%- action_object.url %>">
-                            <%= action_object.pretty_name %>
+                            <%- action_object.pretty_name %>
                         </a>
                     </strong>
-                    <p><%= action_object.short_description %></p>
+                    <p><%- action_object.short_description %></p>
                 </div>
             </div>
         </div>

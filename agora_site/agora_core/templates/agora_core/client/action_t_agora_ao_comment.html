@@ -7,11 +7,11 @@
             <div class="action-title">
                 <a href="<%- actor.url %>"><strong class="username">
 <% if (actor.full_name && actor.full_name != actor.username) { %>
-    <%= actor.full_name %> <em>(<%= actor.username %>)</em>
+    <%- actor.full_name %> <em>(<%- actor.username %>)</em>
 <% } else { %>
-    <%= actor.username %>
+    <%- actor.username %>
 <% } %>
-</strong></a> <strong class="verb"><%= gettext(verb) %></strong>
+</strong></a> <strong class="verb"><%- gettext(verb) %></strong>
                 <%= pgettext("<verb> agora <agora>", "agora") %>
                 <a href="<%- target.url %>"><%= target.pretty_name %></a>
                 <time class="timeago" data-livestamp="<%- timestamp %>" datetime="<%- timestamp %>"></time>
@@ -24,10 +24,10 @@
                 <div class="detail-body">
                     <strong class="action-title">
                         <a href="<%- target.url %>">
-                            <%= target.full_name %>
+                            <%- target.full_name %>
                         </a>
                     </strong>
-                    <p><%= action_object.comment %></p>
+                    <p><%- action_object.comment %></p>
                 </div>
             </div>
         </div>
