@@ -471,7 +471,7 @@
                     var ballot = opt;
                     // check encode -> decode pipe doesn't modify the ballot
                     var encoded = this.encodeQuestionAnswer(ballot);
-                    var decoded = JSON.stringifyCompat(this.decodeQuestionAnswer(encoded));
+                    var decoded = this.decodeQuestionAnswer(encoded);
                     if (ballot != decoded) {
                         throw "error";
                     }
@@ -479,8 +479,8 @@
 
                 // test blank vote
                 var encoded = this.encodeQuestionAnswer("");
-                var decoded = JSON.stringifyCompat(this.decodeQuestionAnswer(encoded));
-                if (JSON.stringifyCompat([]) != decoded) {
+                var decoded = this.decodeQuestionAnswer(encoded);
+                if ("" != decoded) {
                     throw "error";
                 }
             } catch (e) {
