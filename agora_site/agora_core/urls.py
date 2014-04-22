@@ -255,6 +255,11 @@ if settings.AGORA_ALLOW_FNMT_CERTIFICATE:
         url(r'^user/login/fnmt/?$', FNMTLoginView.as_view(), name='fnmt-login'),
     )
 
+if settings.AGORA_ALLOW_IDCAT_CERTIFICATE:
+    urlpatterns += patterns('',
+        url(r'^user/login/idcat/?$', idCATLoginView.as_view(), name='idcat-login'),
+    )
+
 urlpatterns += patterns('django.contrib.flatpages.views',
     url(r'^misc/page/about/?$', 'flatpage', {'url': '/about/'}, name='about'),
 
