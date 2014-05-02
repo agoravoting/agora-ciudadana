@@ -425,6 +425,7 @@
             this.$el.find('.markdown-readonly').each(function (index) {
                 var data_id = $(this).data('id');
                 $(this).html(converter.makeHtml(self.model.get(data_id)));
+                $(this).find("a").attr("target", "_blank");
             });
             this.delegateEvents();
             return this;
@@ -492,6 +493,7 @@
         render: function() {
             // render template
             this.$el.html(this.template(this.model.toJSON()));
+            this.$el.find("a").attr("target", "_blank");
 
             // shuffle options
             if (this.model.get('randomize_answer_order')) {
@@ -685,6 +687,7 @@
         render: function() {
             // render template
             this.$el.html(this.template(this.model.toJSON()));
+            this.$el.find("a").attr("target", "_blank");
 
             // shuffle options
             if (this.model.get('randomize_answer_order')) {
