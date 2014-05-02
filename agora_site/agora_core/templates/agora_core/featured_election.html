@@ -13,10 +13,10 @@
     <script id="template_featured-election-question" type="text/underscore-template">
         <div class="accordion-group">
             <div class="accordion-heading q-color-<%= i % 8 %>">
-                <span class="badge">1</span>
+                <span class="badge"><%- i + 1 %></span>
                 <a class="accordion-toggle" data-toggle="collapse"
                     data-parent="#bloques" href="#q<%= i %>">
-                    <%= gettext(q.question) %>
+                    <%- q.question.replace(/<(?:.|\n)*?>/gm, ' ').substr(0, 120) %>
                 </a>
             </div>
             <div id="q<%= i %>" class="accordion-body collapse">
@@ -146,10 +146,10 @@
     <script id="template_featured-election-tallied-one-choice-question" type="text/underscore-template">
         <div class="accordion-group">
             <div class="accordion-heading q-color-<%= i % 8 %>">
-                <span class="badge">1</span>
+                <span class="badge"><%- i + 1 %></span>
                 <a class="accordion-toggle" data-toggle="collapse"
                     data-parent="#bloques" href="#q<%= i %>">
-                    <%= gettext(q.question) %>
+                    <%- q.question.replace(/<(?:.|\n)*?>/gm, ' ').substr(0, 120) %>
 
                     <% if (q.winners.length == 1) { %>
                         <div class="results">
