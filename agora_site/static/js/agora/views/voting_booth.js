@@ -1346,7 +1346,7 @@
             ballot['password'] = this.$el.find("#id_password").val();
 
             var user_vote_is_encrypted = ajax_data.security_policy == "ALLOW_ENCRYPTED_VOTING";
-            if (user_vote_is_encrypted) {
+            if (!user_vote_is_encrypted) {
                 // we need to add some randomness to make vote unique so that
                 // the hash is not repeated
                 var random = sjcl.random.randomWords(5, 0);
@@ -1433,7 +1433,7 @@
             $("#id_ballot_data").attr("value", JSON.stringifyCompat(ballot));
 
             var user_vote_is_encrypted = ajax_data.security_policy == "ALLOW_ENCRYPTED_VOTING";
-            if (user_vote_is_encrypted) {
+            if (!user_vote_is_encrypted) {
                 // we need to add some randomness to make vote unique so that
                 // the hash is not repeated
                 var random = sjcl.random.randomWords(5, 0);
