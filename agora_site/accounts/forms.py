@@ -170,6 +170,19 @@ class SignupAndVoteForm(userena_forms.SignupForm):
             for chunk in f.chunks():
                 destination.write(chunk)
 
+    def save_extra(self, new_user):
+        '''
+        Save the data from extra fields
+        '''
+        profile = new_user.get_profile()
+        if not isinstance(profile.extra, dict):
+            profile.extra = dict()
+
+        for element in settings.AGORA_REGISTER_EXTRA_FIELDS:
+            fname = element['field_name']
+            profile.extra[fname] = self.cleaned_data[fname]
+            profile.save()
+
     def save(self):
         try:
             ballot_data_json = None
