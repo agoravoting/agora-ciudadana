@@ -540,7 +540,8 @@
             this.model.get('user_answers').add(newSelection);
         },
 
-        removeSelection: function() {
+        removeSelection: function(e) {
+            e.preventDefault();
             // uncheck
             this.$el.find('label.active input').prop('checked', false);
 
