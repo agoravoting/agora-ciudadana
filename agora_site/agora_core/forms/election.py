@@ -337,6 +337,8 @@ class LoginAndVoteForm(django_forms.ModelForm):
     password = django_forms.CharField(required=True, max_length=20)
     issue_date = django_forms.CharField(required=False, max_length=120)
 
+    unique_randomness = django_forms.CharField(required=False, max_length=120)
+
     bad_password = False
     is_active = True
     user = None
