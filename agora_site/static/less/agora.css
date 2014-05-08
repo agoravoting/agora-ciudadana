@@ -4402,6 +4402,9 @@ body {
   font-size: 14px;
   margin-left: 35px;
 }
+.mrf-home-board {
+  height: 220px;
+}
 #content-wrapper {
   min-height: 100px;
   background-color: #fff;
@@ -6057,7 +6060,7 @@ ul.list-container li.agora-user-item.simple > a.agora i {
 .home #running-board-wrapper {
   /* background: url("../img/congreso_puntos_naranja_small.png") no-repeat scroll right top #EA7F1E; */
 
-  background: url("../img/congreso_puntos_gris_oscuro_small.png") no-repeat scroll right top #aaaaaa;
+  background: url("../img/congreso_puntos_gris_oscuro_small.png") no-repeat scroll 110% top #cae469;
   text-shadow: #666 0.1em 0.1em 0.2em;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
@@ -6085,20 +6088,21 @@ ul.list-container li.agora-user-item.simple > a.agora i {
   width: 93%;
 }
 /* <home-featured-election> */
-.home.featured-election .span5.election-description {
+.span5.election-description {
   font-size: 11pt;
   text-align: justify;
   padding: 6px;
-  width: 350px;
+  width: 100%;
   border-radius: 6px;
   background-color: rgba(255, 255, 255, 0.6);
   color: #572b85;
+  margin-bottom: 3em;
 }
-.home.featured-election .span5.election-description > div.ed-wrapper {
+.span5.election-description > div.ed-wrapper {
   display: block;
   width: 100%;
 }
-.home.featured-election .span5.election-description ul {
+.span5.election-description ul {
   background-color: #63006F;
   display: block;
   width: 100%;
@@ -6107,16 +6111,13 @@ ul.list-container li.agora-user-item.simple > a.agora i {
   margin-bottom: -20px;
   border-radius: 7px;
 }
-.home.featured-election .span5.election-description ul > li > a {
+.span5.election-description ul > li > a {
   color: white;
   font-size: 10pt;
 }
-.home.featured-election .span5.election-description ul > li > a:hover {
+.span5.election-description ul > li > a:hover {
   background-color: #9900AB;
   color: white;
-}
-#bloques {
-  margin-top: -10px;
 }
 .home .featured-primary-question {
   width: 100%;

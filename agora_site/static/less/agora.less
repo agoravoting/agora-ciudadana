@@ -367,6 +367,10 @@ body {
     }
 }
 
+.mrf-home-board {
+    height: 220px;
+}
+
 #content-wrapper {
     min-height: 100px;
     background-color: #fff;
@@ -2344,7 +2348,7 @@ ul.list-container {
 
 .home #running-board-wrapper {
 /* background: url("../img/congreso_puntos_naranja_small.png") no-repeat scroll right top #EA7F1E; */
-  background: url("../img/congreso_puntos_gris_oscuro_small.png") no-repeat scroll right top #aaa;
+  background: url("../img/congreso_puntos_gris_oscuro_small.png") no-repeat scroll 110% top #cae469;
   text-shadow: #666 0.1em 0.1em 0.2em;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
@@ -2376,45 +2380,40 @@ ul.list-container {
 }
 
 /* <home-featured-election> */
-.home.featured-election {
-    .span5.election-description {
-        font-size: 11pt;
-        text-align: justify;
-        padding: 6px;
-        width: 350px;
-        border-radius: 6px;
-        background-color: rgba(255, 255, 255, 0.6);
-        color: rgb(87, 43, 133);
+.span5.election-description {
+    font-size: 11pt;
+    text-align: justify;
+    padding: 6px;
+    width: 100%;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.6);
+    color: rgb(87, 43, 133);
+    margin-bottom: 3em;
 
-        > div.ed-wrapper {
-            display: block;
-            width: 100%;
-        }
+    > div.ed-wrapper {
+        display: block;
+        width: 100%;
+    }
 
-        ul {
-            background-color: #63006F;
-            display: block;
-            width: 100%;
+    ul {
+        background-color: #63006F;
+        display: block;
+        width: 100%;
+        color: white;
+        margin-top: 6px;
+        margin-bottom: -20px;
+        border-radius: 7px;
+
+        > li > a {
             color: white;
-            margin-top: 6px;
-            margin-bottom: -20px;
-            border-radius: 7px;
+            font-size: 10pt;
 
-            > li > a {
+            &:hover {
+                background-color: #9900AB;
                 color: white;
-                font-size: 10pt;
-
-                &:hover {
-                    background-color: #9900AB;
-                    color: white;
-                }
             }
         }
     }
-}
-
-#bloques {
-    margin-top: -10px;
 }
 
 .home .featured-primary-question {

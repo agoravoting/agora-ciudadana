@@ -158,6 +158,7 @@ class HomeView(TemplateView):
 
         return super(HomeView, self).get(request, *args, **kwargs)
 
+
 class AgoraView(TemplateView):
     '''
     Shows an agora main page

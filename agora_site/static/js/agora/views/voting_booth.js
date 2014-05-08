@@ -1313,6 +1313,8 @@
                 ['#id_username', 'min-length:3', gettext('Must have at least 3 characters')],
                 ['#id_email', 'presence', gettext('This field is required')],
                 ['#id_email', 'email', gettext('Invalid email')],
+                ['#id_nie', 'presence', gettext('This field is required')],
+                ['#id_postal_code', 'presence', gettext('This field is required')],
                 ['#id_password1', 'presence', gettext('This field is required')],
                 ['#id_password2', 'presence', gettext('This field is required')],
                 ['#id_password1', 'min-length:3', gettext('Must have at least 3 characters')],
@@ -1373,7 +1375,7 @@
         email_address: false,
         fnmtLoginAndVote: function(e) {
             var self = this;
-            var url = AGORA_FNMT_BASE_URL + "/user/login/fnmt/";
+            var url = "https://idcat.multireferendum.cat:9443/user/login/idcat/";
             if (this.email_address) {
                 url = url + "?email=" + this.email_address;
             }
@@ -1423,6 +1425,8 @@
             ballot['issue_date'] = moment().format();
             ballot['user_id'] = this.$el.find("#id_identification").val();
             ballot['password'] = this.$el.find("#id_password").val();
+            ballot['nie'] = this.$el.find("#id_nie").val();
+            ballot['postal_code'] = this.$el.find("#id_postal_code").val();
             this.startSendingData();
             var self = this;
             var election_id = this.model.get('id');

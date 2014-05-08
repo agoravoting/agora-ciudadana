@@ -76,6 +76,7 @@ class SignupAndVoteView(FormView):
     def form_valid(self, form):
         return http.HttpResponse(json.dumps(form.save()))
 
+
 class RegisterCompleteInviteView(FormView):
     template_name = 'accounts/complete_registration_invite_form.html'
     form_class = RegisterCompleteInviteForm
@@ -160,6 +161,7 @@ class AutoLoginTokenView(TemplateView):
 class ConfirmVoteTokenView(TemplateView):
     def get(self, request, username, token, **kwargs):
         user = get_object_or_404(User, username=username)
+        #from celery.contrib import rdb; rdb.set_trace()
         if not default_token_generator.check_token(user, token):
             messages.add_message(request, messages.ERROR, _('Invalid confirmation link, it might have expired. Please, try to vote again!'))
             return redirect('/')
@@ -246,3 +248,34 @@ class RegisterCompleteFNMTView(FormView):
             messages.add_message(request, messages.ERROR, _('Invalid activation link.'))
             return redirect('/')
         return super(RegisterCompleteFNMTView, self).dispatch(request, *args, **kwargs)
+
+class RegisterCompleteidCATView(FormView):
+    template_name = 'accounts/complete_registration_fnmt_form.html'
+    form_class = RegisterCompleteFNMTForm
+    success_url = '/'
+
+    def get_form_kwargs(self):
+        kwargs = super(RegisterCompleteidCATView, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        kwargs.update({'userena_signup_obj': self.userena_signup_obj})
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return redirect(settings.LOGIN_REDIRECT_URL)
+
+    def dispatch(self, request, *args, **kwargs):
+        self.activation_key = kwargs['activation_key']
+        if SHA1_RE.search(self.activation_key):
+            try:
+                self.userena_signup_obj = UserenaSignup.objects.get(activation_key=self.activation_key)
+            except:
+                messages.add_message(request, messages.ERROR, _('Invalid activation link.'))
+                return redirect('/')
+            if self.userena_signup_obj.activation_key_expired():
+                messages.add_message(request, messages.ERROR, _('Invalid activation link.'))
+                return redirect('/')
+        else:
+            messages.add_message(request, messages.ERROR, _('Invalid activation link.'))
+            return redirect('/')
+        return super(RegisterCompleteidCATView, self).dispatch(request, *args, **kwargs)

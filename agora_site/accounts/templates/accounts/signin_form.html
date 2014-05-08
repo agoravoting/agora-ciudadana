@@ -69,6 +69,23 @@
             {% url 'terms-of-service' as tos_url %}{% blocktrans %}When you enter using the FNMT certificate you're accepting our <a href="{{tos_url}}">Terms of Service.</a>{% endblocktrans %}</small>
         </div>
     {% endif %}
+    {% if AUTHENTICATION_BACKENDS|list_contains:'agora_site.agora_core.backends.idcat.idCATBackend' %}
+        <div class="span3 use-account">
+            <h3>{% trans "Enter with idCAT" %}</h3>
+            <p>
+            {% trans 'You can enter this site using your idCAT certificate. <a href="#">More information here</a>.' %}</p>
+            <div>
+            <p>
+            <a href="{{AGORA_IDCAT_BASE_URL}}/user/login/idcat/" class="btn btn-primary">
+                {% trans "Enter using idCAT certificate" %}
+            </a>
+            </p>
+            </div>
+            <strong>{% trans "Terms of service" %}</strong>
+            <small>
+            {% url 'terms-of-service' as tos_url %}{% blocktrans %}When you enter using the idCAT certificate you're accepting our <a href="{{tos_url}}">Terms of Service.</a>{% endblocktrans %}</small>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}

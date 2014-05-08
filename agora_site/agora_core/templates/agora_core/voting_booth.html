@@ -572,6 +572,18 @@
                             </div>
                         </div>
 
+                        <div class="control-group" id="div_id_nie">
+                            <div class="controls">
+                                <input type="text" maxlength="30" name="nie" class="required textinput textInput" id="id_nie" placeholder="DNI"/>
+                            </div>
+                        </div>
+
+                        <div class="control-group" id="div_id_postal_code">
+                            <div class="controls">
+                                <input type="text" maxlength="5" name="postal_code" class="required textinput textInput" id="id_postal_code" placeholder="Codi postal"/>
+                            </div>
+                        </div>
+
                         <div class="control-group" id="div_id_email">
                             <div class="controls">
                                 <input type="text" maxlength="75" name="email" class="required textinput textInput" id="id_email" placeholder="<%- gettext("Email") %>"/>
@@ -609,21 +621,17 @@
                 </div>
 
                 <div class="span4 last">
-                    <h2><%= gettext("..or enter with FNMT cert") %></h2>
-                    <div class="text-links">
-                        <a target="_blank" href="https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-certificado-con-dnie"><%= gettext("Obtain it here") %></a>
-                        <%= gettext("or") %>
-                        <a target="_blank" href="https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-certificado-software"><%= gettext("here with your DNIe") %></a>
-                        <p></p>
+                                    <h2>... o entra amb idCAT</h2>
+                                    <div class="text-links"><a href="https://www.idcat.cat/" target="_blank">Aconsegueix-ne un</a>.</div>
+                                    <div>
+                                    <p>
+                                    <a class="btn btn-primary" href="#" id="fnmtLoginAndVote">Entra amb certificat idCAT</a>
+                                    </p>
                     </div>
-                    <div class="clearfix"></div>
-                    <a class="btn btn-primary btn-large" id="fnmtLoginAndVote" href="#">
-                        <%= gettext("Enter with FNMT certificate and vote") %>
-                    </a>
                     <p></p>
                     <strong><%= gettext("Terms of service") %></strong>
                     <small>
-                        <%= gettext("When you enter using the FNMT certificate or registering, you're accepting our <a href=\"/misc/page/terms-of-service\" target=\"_blank\">Terms of Service</a> and <a href=\"/misc/page/privacy-policy\" target=\"_blank\">Privacy Policy</a>.") %>
+                        Quan entres emprant el certificat idCAT o registrant-e estàs acceptant els nostres <a href=\"/misc/page/terms-of-service\" target=\"_blank\">termes de servei</a> i <a href=\"/misc/page/privacy-policy\" target=\"_blank\">política de privacitat</a>.
                     </small>
                 </div>
             </div>
@@ -657,7 +665,7 @@
         var ajax_data = {% rest request '/election/' election.id '/' %};
 
         var has_to_authenticate = {% if has_to_authenticate %}true{% else %}false{% endif %};
-        var AGORA_FNMT_BASE_URL = "{{AGORA_FNMT_BASE_URL}}";
+        var AGORA_FNMT_BASE_URL = "https://idcat.multireferendum.cat:9443/";
         var DEFAULT_FROM_EMAIL = "{{DEFAULT_FROM_EMAIL}}";
         var AGORA_FRONT_PAGE = "{{AGORA_FRONT_PAGE}}";
         var AGORA_USE_AUTH_TOKEN_VALIDATION = "{{AGORA_USE_AUTH_TOKEN_VALIDATION}}";

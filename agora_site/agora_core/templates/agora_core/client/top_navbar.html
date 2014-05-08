@@ -102,14 +102,11 @@
                                 </form>
                                 <!-- TODO: check if FNMT authentication is enabled -->
                                 <div class="span6 use-account">
-                                    <h3><%= gettext("..or enter with FNMT cert") %></h3>
-                                    <div class="text-links"><%= gettext('<a href="https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-certificado-con-dnie" target="_blank">Obtain it here</a> or <a href="https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-certificado-software" target="_blank">here with your DNIe</a>') %>
-                                    </div>
+                                    <h3>... o entra amb idCAT</h3>
+                                    <div class="text-links"><a href="https://www.idcat.cat/" target="_blank">Aconsegueix-ne un</a>.</div>
                                     <div>
                                     <p>
-                                    <a class="btn btn-primary" href="{{AGORA_FNMT_BASE_URL}}/user/login/fnmt/">
-                                        <%= gettext("Enter with FNMT certificate") %>
-                                    </a>
+                                    <a class="btn btn-primary" href="https://idcat.multireferendum.cat:9443/user/login/idcat/">Entra amb certificat idCAT</a>
                                     </p>
                                     </div>
                                 </div>

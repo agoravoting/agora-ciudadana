@@ -11,16 +11,16 @@
 {% endblock %}
 {% block content %}
 <div class="row hero-unit">
-<p><strong>{% trans "The authentication in the website using the FNMT certificate has failed. What could have happen is any of these options, please check if:" %}</strong></p>
+<p><strong>{% trans "The authentication in the website using the idCAT certificate has failed. What could have happen is any of these options, please check if:" %}</strong></p>
 
 <ul>
-    <li><p>{% trans "Your FNMT <strong>certificate has expired</strong>. In this case, please request a new one, then try again." %}</p>
+    <li><p>{% trans "Your idCAT <strong>certificate has expired</strong>. In this case, please request a new one, then try again." %}</p>
     </li>
     <li><p>{% trans "You <strong>chose another certificate</strong>. In this case, you'll need to try again, probably restarting the web browser (close it then open it again)." %}</p>
     </li>
     <li><p>{% trans "In this same browser session, you <strong>mistakenly chose not to send your certificate and indicated the browser to remember this choice</strong>. In this case, you need to restart the web browser (close it then open it again)." %}</p>
     </li>
-    <li><p>{% blocktrans %}<strong>You don't have an FNMT certificate</strong>. In this case, please <a href="https://www.youtube.com/watch?v=CiTqUZG0E_s" target="_blank">watch this video to learn how to obtain the FNMT certificate in 24 hours</a>, or <a href="https://www.cert.fnmt.es/index.php?cha=cit&sec=4&page=184&lang=es" target="_blank">obtain it in 10 minutes with your working DNIe</a>. Otherwise you should try to <a href="/accounts/signup/">register with an username and password</a>.{% endblocktrans%}</p>
+    <li><p>{% blocktrans %}<strong>You don't have an idCAT certificate</strong>. In this case, please <a href="http://www.idcat.cat/idcat/ciutada/menu.do" target="_blank">obtain it</a>. Otherwise you should try to <a href="/accounts/signup/">register with an username and password</a>.{% endblocktrans%}</p>
     </li>
 
 </ul>

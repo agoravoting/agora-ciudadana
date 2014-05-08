@@ -197,7 +197,8 @@
                 {% with participation=election.get_participation %}
                 <strong class="counter">
                     <span>{{ participation|getitem:"direct_votes" }}</span>
-                    {% blocktrans with percent=participation|getitem:"percentage_of_direct_participation"|floatformat:"-2" %}DIRECT VOTES ({{ percent }}% of the electorate){% endblocktrans %}
+                    VOTS DIRECTES
+                    <!--{% blocktrans with percent=participation|getitem:"percentage_of_direct_participation"|floatformat:"-2" %}DIRECT VOTES ({{ percent }}% of the electorate){% endblocktrans %}-->
                 </strong>
                 {% if election.agora.delegation_policy != election.agora.DELEGATION_TYPE.1.0 %}
                 <strong class="counter">
@@ -207,11 +208,11 @@
                 {% endif %}
                 {% endwith %}
             {% endif %}
-            <div class="highlight-sidebar">
+            <!--div class="highlight-sidebar">
                 <span class="highlight-top-left"></span>
                 <span class="highlight-top-right"></span>
-                {{ election.get_brief_description|safe }}
-            </div>
+                { election.get_brief_description|safe }
+            </div-->
             <div class="sidebar-body">
                 {% block vote-block %}
                     {% if "request_membership" in agora_perms %}

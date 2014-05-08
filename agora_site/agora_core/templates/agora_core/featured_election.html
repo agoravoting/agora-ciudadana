@@ -297,7 +297,7 @@
 
     <script id="template_background-wrapper-featured-election" type="text/underscore-template">
         <div class="background-wrapper home featured-election">
-            <div class="container-fluid hero-unit" id="running-board-wrapper">
+            <div class="container-fluid hero-unit mrf-home-board" id="running-board-wrapper">
                 <div class="container">
                     <div class="row">
                             <div class="span7">
@@ -321,9 +321,15 @@
                                     <a href="<%= election.url %>" class="btn vote-button btn-success btn-large btn-xxlarge vote-button"><%= interpolate(gettext("Election details"), [gettext(election.pretty_name)]) %></a>
                                 <% } %>
                             </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="home-main container">
                             <div class="span5 election-description">
                                 <!-- TODO: put video or default image here -->
-                                <div class="ed-wrapper"><%- election.description.substr(0, 400) %>..</div>
+                                <div class="ed-wrapper"><%- election.description %></div>
 
                                 <ul class="nav nav-pills nav-justified">
                                     <li><a href="/misc/page/faq" alt="<%- gettext("FAQs") %>">
@@ -339,12 +345,7 @@
                                     <% } %>
                                 </ul>
                             </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="home-main container">
 
         <div class="accordion" id="bloques">
         </div>

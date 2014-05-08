@@ -1,4 +1,5 @@
-# Copyright (C) 2013 Eduardo Robles Elvira <edulix AT wadobo DOT com>
+# -*- coding: utf-8 -*-
+# Copyright (C) 2014 Dario Castañé <i AT dario DOT im>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
