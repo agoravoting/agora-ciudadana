@@ -252,7 +252,7 @@ class Agora(models.Model):
         '''
         from agora_site.agora_core.models import CastVote
 
-        return User.objects.exclude(
+        return self.members.exclude(
             id__in=CastVote.objects.filter(is_counted=True, is_direct=True, is_public=True,
                 invalidated_at_date=None, election__agora__id=self.id).values('voter').query)
 
@@ -264,7 +264,7 @@ class Agora(models.Model):
 
         from agora_site.agora_core.models import CastVote
 
-        return User.objects.filter(
+        return self.members.filter(
             id__in=CastVote.objects.filter(is_counted=True, is_direct=True, is_public=True,
                 invalidated_at_date=None, election__agora__id=self.id).values('voter').query
             )\
