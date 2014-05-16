@@ -100,7 +100,7 @@
                 this.activityListView = new Agora.ActivityListView();
             }
             this.tallied_user_elections_view = new Agora.TalliedUserElectionsView();
-            this.user_agoras_list_view = new Agora.UserAgorasListView();
+            this.user_agoras_list_view = new Agora.UserAgorasListView({show_other: true});
             this.user_delegate_in_actions_view = new Agora.UserDelegateInActionsView();
 
             $(".participated_elections_badge").html(ajax_data.tallied_elections.meta.total_count);

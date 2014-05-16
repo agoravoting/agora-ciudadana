@@ -5,18 +5,25 @@
     Agora.UserAgorasListView = Backbone.View.extend({
         el: "#user_agora_list",
 
-        initialize: function() {
+        show_other: false,
+
+        initialize: function(options) {
             _.bindAll(this);
             this.template = _.template($("#template-user_agora_list").html());
+            if (options && options.show_other) {
+                this.show_other = options.show_other;
+            }
             this.render();
 
             return this.$el;
         },
 
         render: function() {
-            var data = ajax_data;
-            data.user_agoras = user_data.agoras;
-            data.user = user_data.user;
+            var data = JSON.parse(JSON.stringify(ajax_data));
+            if (!this.show_other) {
+                data.user_agoras = user_data.agoras;
+                data.user = user_data.user;
+            }
             this.$el.html(this.template(data));
             this.delegateEvents();
 
