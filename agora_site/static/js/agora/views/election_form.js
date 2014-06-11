@@ -375,6 +375,7 @@
             'click #schedule_voting_label': 'checkSchedule',
             'click .remove_question_btn': 'removeQuestion',
             'click .create_election_btn': 'saveElection',
+            'click .create_election2_btn': 'saveElection2',
         },
 
         getInitModel: function() {
@@ -572,6 +573,46 @@
             .fail(function(e) {
                 self.sendingData = false;
                 $(".create_election_btn").removeClass("disabled");
+                var response = $.parseJSON(e.responseText);
+                if (response.errors) {
+                    alert(response.errors.__all__);
+                } else {
+                    alert(gettext("Error creating the election"));
+                }
+            });
+
+            return false;
+        },
+
+        saveElection2: function(e) {
+            e.preventDefault();
+
+            // if we are already sending do nothing
+            if (this.sendingData) {
+                return;
+            }
+
+            // okey, we're going to send this new election - but first disable
+            // the send question button to avoid sending the same thing multiple
+            // times
+            $(".create_election_btn").addClass("disabled");
+            this.sendingData = true;
+
+            var json = JSON.parse($("#raw-text").val());
+            json.action = 'create_election';
+            var agora_id = $("#agora_id").val();
+            var self = this;
+            var jqxhr = $.ajax("/api/v1/agora/" + agora_id + "/action/", {
+                data: JSON.stringifyCompat(json),
+                contentType : 'application/json',
+                type: 'POST',
+            })
+            .done(function(e) {
+                window.location.href = e.url;
+            })
+            .fail(function(e) {
+                self.sendingData = false;
+                $(".create_election2_btn").removeClass("disabled");
                 var response = $.parseJSON(e.responseText);
                 if (response.errors) {
                     alert(response.errors.__all__);

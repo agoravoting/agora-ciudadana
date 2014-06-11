@@ -9,6 +9,7 @@
                 <a href="#election-tab"  data-toggle="tab"><%= gettext("Election") %></a>
             </li>
             <li id="add-question-navtab"><a href="#question-tab-0" data-toggle="tab"><i class="icon-plus"></i> <%= gettext("Add question") %></a></li>
+            <li><a href="#raw-tab"  data-toggle="tab"><%= gettext("Raw Data") %></a></li>
         </ul>
 
         <div class="navbar translations hide">
@@ -110,6 +111,24 @@
                     </div>
                 </fieldset></form>
             </div>
+            <div class="tab-pane" id="raw-tab">
+                <form id="create_election_form"><fieldset>
+                    <div class="control-group">
+                        <label class="control-label" for="raw-text"><%= gettext("Data") %></label>
+                        <div class="controls">
+                          <textarea style="min-height: 400px; width:100%" class="input-xxlarge" id="raw-text">
+                            <%- gettext("Use this to create an election using a json request. Only for those who know what they are doing!") %>
+                          </textarea>
+                        </div>
+                    </div>
+                    <div class="control-group spaced-up-control">
+                        <button class="btn btn-large btn-block btn-success create_election2_btn" type="button"><%= gettext("Create election") %>
+                        </button>
+                    </div>
+                </fieldset>
+                </form>
+            </div>
+
         </div>
     <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" type="text/css" />
 
