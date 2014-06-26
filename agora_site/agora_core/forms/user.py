@@ -284,10 +284,15 @@ class CustomAvatarForm(django_forms.ModelForm):
         return super(CustomAvatarForm, self).__init__(*args, **kwargs)
 
     def save(self, *args, **kwargs):
+        from django.core.files.images import get_image_dimensions
         user = super(CustomAvatarForm, self).save(commit=False)
         profile = user.get_profile()
 
         avatar = self.cleaned_data['custom_avatar']
+        # prevent pixel flood
+        height, width = get_image_dimensions(avatar)
+        if height > 1024 or width > 1024:
+            raise django_forms.ValidationError(_(u'Too large dimensions.'))
         if profile.mugshot:
             profile.delete_mugshot()
         profile.mugshot = avatar
