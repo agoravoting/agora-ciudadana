@@ -1489,6 +1489,15 @@
             }
             this.$el.html(this.template(data));
             this.delegateEvents();
+
+            // overwrite url so that if users do a refresh, they do not get
+            // the hmac etc. This removes the previously typical
+            // notify_counterpart error.
+            if (ajax_data.is_tokenized) {
+                try {
+                    history.pushState({}, $("title").html(), "/");
+                } catch(e) {}
+            }
             return this;
         }
     });
