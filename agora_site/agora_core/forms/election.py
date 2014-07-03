@@ -308,11 +308,13 @@ class TokenVoteForm(VoteForm):
             identifier=message, # this is the "voter id"
             sha1_hmac=salted_hmac(key, message, "").hexdigest()
         )
-        max_num_tries = 3
+        # NOTE: now all this retries thing is not really being used because hey
+        # it seems to work fine, finally
+        max_num_tries = 1
         num_tries = 0
         r = None
         while True:
-            if num_tries == 3:
+            if num_tries >= max_num_tries:
                 break
             r = requests.post(settings.AGORA_TOKEN_NOTIFY_URL,
                 data=json.dumps(payload), verify=False,
