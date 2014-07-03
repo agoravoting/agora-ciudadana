@@ -359,17 +359,18 @@
         sendBallot: function() {
             var election_id = this.model.get('id');
 
-            if ($("#vote_fake").data("fakeit") == "yes-please") {
-                this.$el.find(".current-screen").html('');
-                this.$el.find(".current-screen").append(this.voteCast.render().el);
-                return;
-            }
-
             // tokenize the vote if needed
             if (this.is_tokenized) {
                 this.ballot['action'] = 'token_vote';
                 this.ballot['message'] = this.json_url.message;
                 this.ballot['sha1_hmac'] = this.json_url.sha1_hmac;
+            }
+
+            if ($("#vote_fake").data("fakeit") == "yes-please") {
+                ajax_data.ballot = this.ballot;
+                this.$el.find(".current-screen").html('');
+                this.$el.find(".current-screen").append(this.voteCast.render().el);
+                return;
             }
 
             var self = this;
