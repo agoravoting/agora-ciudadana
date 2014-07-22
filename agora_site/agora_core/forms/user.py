@@ -56,6 +56,17 @@ class LoginForm(userena_forms.AuthenticationForm):
         else:
             return False
 
+    def save(self):
+        '''
+        Save method to return the apikey
+        '''
+        data = {}
+        if settings.RETURN_APIKEY_ON_LOGIN:
+            data['apikey'] = self.request.user.api_key.key
+
+        return data
+
+
     @staticmethod
     def static_get_form_kwargs(request, data, *args, **kwargs):
         '''

@@ -447,6 +447,9 @@ ALLOWED_HOSTS = [
 # Enable/disable the top navbar link to "Professional services" page
 SHOW_PROFESSIONAL_SERVICES_LINK = False
 
+# Enable/disable the APIKEY response on login
+RETURN_APIKEY_ON_LOGIN = True
+
 try:
     # custom settings is the file where you should set your modifications of the
     # settings file
