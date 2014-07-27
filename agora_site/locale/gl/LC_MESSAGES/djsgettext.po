@@ -1,13 +1,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Adrián Chaves Fernández <adriyetichaves@gmail.com>, 2013.
+# Adrián Chaves Fernández <adriyetichaves@gmail.com>, 2013, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-07 13:58+0100\n"
-"PO-Revision-Date: 2013-11-30 17:11+0100\n"
+"PO-Revision-Date: 2014-07-27 07:22+0200\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: gl\n"
@@ -57,7 +57,7 @@ msgstr "Escriba todo canto queira sobre vostede."
 
 #: agora_core/templates/agora_core/user_settings.html:85
 msgid "Save profile"
-msgstr "Gravar o perfil"
+msgstr "Gardar o perfil"
 
 #: agora_core/templates/agora_core/user_settings.html:93
 msgid "User picture"

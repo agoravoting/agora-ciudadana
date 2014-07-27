@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-30 17:07+0100\n"
+"POT-Creation-Date: 2014-07-27 07:21+0200\n"
 "PO-Revision-Date: 2013-11-30 17:10+0100\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -96,7 +96,7 @@ msgstr "Establecer o novo contrasinal"
 msgid "Username"
 msgstr "Nome de usuario"
 
-#: accounts/forms.py:194 agora_core/forms/user.py:357
+#: accounts/forms.py:194 agora_core/forms/user.py:374
 msgid "Username must contain only letters, numbers, dots and underscores."
 msgstr ""
 "Os nomes de usuario só deben conter letras, números, puntos e guións baixos."
@@ -109,16 +109,16 @@ msgstr "Crear o contrasinal"
 msgid "Repeat password"
 msgstr "Repetir o contrasinal"
 
-#: accounts/forms.py:224 agora_core/forms/user.py:377
+#: accounts/forms.py:224 agora_core/forms/user.py:394
 msgid "This username is already taken."
 msgstr "Este nome de usuario xa está collido."
 
-#: accounts/forms.py:226 agora_core/forms/user.py:379
+#: accounts/forms.py:226 agora_core/forms/user.py:396
 msgid "This username is not allowed."
 msgstr "Este nome de usuario non está permitido."
 
 #: accounts/forms.py:238 agora_core/forms/__init__.py:207
-#: agora_core/forms/user.py:405
+#: agora_core/forms/user.py:424
 msgid "The two password fields didn't match."
 msgstr "Os contrasinais non coincidían."
 
@@ -1072,11 +1072,11 @@ msgstr "Non ten permiso para deixar comentarios na ágora %(agora)s."
 msgid "You can't cancel a vote in a closed election."
 msgstr "Non se pode cancelar o voto nas votacións pechadas."
 
-#: agora_core/views.py:1836 agora_core/resources/election.py:542
+#: agora_core/views.py:1836 agora_core/resources/election.py:552
 msgid "You didn't participate in this election."
 msgstr "Non participou nesta votación."
 
-#: agora_core/views.py:1861 agora_core/resources/election.py:565
+#: agora_core/views.py:1861 agora_core/resources/election.py:575
 #, python-format
 msgid "Vote cancelled for election %s"
 msgstr "Cancelouse o seu voto en «%s»."
@@ -1100,7 +1100,7 @@ msgstr "Cambiou a configuración da ágora «%(agoraname)s»."
 msgid "Create Agora"
 msgstr "Nova ágora"
 
-#: agora_core/forms/__init__.py:101 agora_core/forms/user.py:133
+#: agora_core/forms/__init__.py:101 agora_core/forms/user.py:145
 msgid "Avatar"
 msgstr "Imaxe"
 
@@ -1123,7 +1123,7 @@ msgstr "Descrición breve:"
 msgid "Say something about yourself (140 chars max)"
 msgstr "Escriba algo sobre vostede en 140 caracteres ou menos."
 
-#: agora_core/forms/__init__.py:109 agora_core/forms/user.py:177
+#: agora_core/forms/__init__.py:109 agora_core/forms/user.py:194
 #: agora_core/models/__init__.py:242 agora_core/models/agora.py:89
 #: agora_core/templates/agora_core/agora_bio.html:5
 #: agora_core/templates/agora_core/user_bio.html:5
@@ -1174,14 +1174,14 @@ msgstr "Seguridade"
 msgid "Save settings"
 msgstr "Gardar a configuración"
 
-#: agora_core/forms/__init__.py:189 agora_core/forms/user.py:248
-#: agora_core/forms/user.py:385
+#: agora_core/forms/__init__.py:189 agora_core/forms/user.py:265
+#: agora_core/forms/user.py:402
 msgid "This email is already in use. Please supply a different email."
 msgstr ""
 "O enderezo de correo indicado xa está rexistrado. Deberá escoller un "
 "enderezo distinto."
 
-#: agora_core/forms/__init__.py:195 agora_core/forms/user.py:276
+#: agora_core/forms/__init__.py:195 agora_core/forms/user.py:293
 msgid "Invalid password."
 msgstr "O contrasinal non é válido."
 
@@ -1197,12 +1197,12 @@ msgid "Invalid questions format"
 msgstr "O formato das cuestións é incorrecto."
 
 #: agora_core/forms/__init__.py:270 agora_core/models/election.py:236
-#: agora_core/resources/election.py:91
+#: agora_core/resources/election.py:90
 msgid "Questions"
 msgstr "Cuestións"
 
 #: agora_core/forms/__init__.py:273 agora_core/forms/__init__.py:438
-#: agora_core/resources/election.py:93
+#: agora_core/resources/election.py:92
 msgid "Start voting"
 msgstr "Inicio da votación:"
 
@@ -1211,7 +1211,7 @@ msgid "Not required, you can choose to start the voting period manually"
 msgstr "Opcional. Pode iniciar a votación manualmente."
 
 #: agora_core/forms/__init__.py:275 agora_core/forms/__init__.py:442
-#: agora_core/resources/election.py:94
+#: agora_core/resources/election.py:93
 msgid "End voting"
 msgstr "Final da votación:"
 
@@ -1235,12 +1235,12 @@ msgstr ""
 "ningunha delas."
 
 #: agora_core/forms/__init__.py:316 agora_core/forms/__init__.py:474
-#: agora_core/resources/election.py:122
+#: agora_core/resources/election.py:132
 msgid "Invalid start date, must be in the future"
 msgstr "A data de inicio non é correcta. Debe escoller unha data futura."
 
 #: agora_core/forms/__init__.py:320 agora_core/forms/__init__.py:478
-#: agora_core/resources/election.py:126
+#: agora_core/resources/election.py:136
 msgid "Voting time must be at least 1 hour"
 msgstr "O tempo de votación non pode ser inferior a unha hora."
 
@@ -1323,49 +1323,53 @@ msgstr "Enviar"
 msgid "You must be authenticated to post a comment"
 msgstr "Debe acceder ao sitio para deixar comentarios."
 
-#: agora_core/forms/comment.py:128 agora_core/forms/user.py:113
+#: agora_core/forms/comment.py:128 agora_core/forms/user.py:125
 #, python-format
 msgid "Watch your mouth! The word %s is not allowed here."
 msgid_plural "Watch your mouth! The words %s are not allowed here."
 msgstr[0] "Esa lingua! A palabra «%s» non está permitida."
 msgstr[1] "Esa lingua! A palabra «%s» non está permitida."
 
-#: agora_core/forms/user.py:83
+#: agora_core/forms/user.py:95
 #, python-format
 msgid "Message from %s"
 msgstr "Mensaxe de %s"
 
-#: agora_core/forms/user.py:244 agora_core/forms/user.py:288
+#: agora_core/forms/user.py:161
+msgid "Too large dimensions."
+msgstr ""
+
+#: agora_core/forms/user.py:261 agora_core/forms/user.py:305
 msgid "You need to supply the old password."
 msgstr "Debe fornecer o seu contrasinal anterior."
 
-#: agora_core/forms/user.py:261
+#: agora_core/forms/user.py:278
 msgid "This username is already in use. Please supply a different username."
 msgstr ""
 "O nome de usuario indicado xa está rexistrado. Deberá escoller un nome de "
 "usuario distinto."
 
-#: agora_core/forms/user.py:293
+#: agora_core/forms/user.py:310
 msgid "The two password fields didn't match or are insecure."
 msgstr "Os contrasinais non coincidían ou non son seguros."
 
-#: agora_core/forms/user.py:308
+#: agora_core/forms/user.py:325
 msgid "Invalid first name."
 msgstr "O nome non é válido."
 
-#: agora_core/forms/user.py:314
+#: agora_core/forms/user.py:331
 msgid "FNMT users cannot change their names."
 msgstr "Os usuarios FNMT non poden cambiar de nome."
 
-#: agora_core/forms/user.py:323
+#: agora_core/forms/user.py:340
 msgid "You need to be authenticated"
 msgstr "Primeiro ten que acceder ao sitio."
 
-#: agora_core/forms/user.py:391
+#: agora_core/forms/user.py:410
 msgid "Invalid activation secret. "
 msgstr "O segredo de activación é incorrecto."
 
-#: agora_core/forms/user.py:393
+#: agora_core/forms/user.py:412
 msgid "Auto activation not allowed."
 msgstr "Non pode activar a súa propia conta."
 
@@ -1874,16 +1878,16 @@ msgstr "Deixou de delegar o voto na ágora %(agora)s."
 msgid "%(site)s - vote delegation removed from %(agora)s"
 msgstr "%(site)s — Cese da delegación do voto na ágora %(agora)s"
 
-#: agora_core/resources/election.py:418
+#: agora_core/resources/election.py:428
 #, python-format
 msgid "Election %(election)s approved at agora %(agora)s. Congratulations!"
 msgstr "Aprobouse a votación «%(election)s» na ágora %(agora)s. Parabéns!"
 
-#: agora_core/resources/election.py:425
+#: agora_core/resources/election.py:435
 msgid "Election URL"
 msgstr "URL da votación"
 
-#: agora_core/resources/election.py:431
+#: agora_core/resources/election.py:441
 #, python-format
 msgid "%(site)s - Election %(election)s approved"
 msgstr "%(site)s — Aprobouse a votación «%(election)s»"
@@ -3216,7 +3220,7 @@ msgstr ""
 "Formato traducíbel para unha data. Busque «strftime» na documentación de "
 "Python para máis información."
 
-#: misc/utils.py:86
+#: misc/utils.py:85
 msgid "Enter valid JSON"
 msgstr "Introduza código JSON correcto"
 
