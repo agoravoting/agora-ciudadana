@@ -14,10 +14,13 @@ Agora has only been tested to work in Linux-based servers so far.
 * rabbitmq-server
 * git
 * gettext
+* libffi-dev
+* libssl-dev
+* libxslt1-dev
 
 * In Ubuntu/Debian you can install the dependencies with the following command:
 
-    $ sudo apt-get install python2.7-dev python virtualenvwrapper rabbitmq-server git gettext
+    $ sudo apt-get install python2.7-dev python virtualenvwrapper rabbitmq-server git gettext libffi-dev libssl-dev libxslt1-dev
 
 Other dependencies will be installed with virtualenv.
 
