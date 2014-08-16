@@ -60,6 +60,7 @@ class GenericResourceMixin:
         """
         @csrf_exempt
         def wrapper(request, *args, **kwargs):
+            self.is_authenticated(request)
             try:
                 desired_format = self.determine_format(request)
                 if method == "POST" or method== "PUT":
@@ -192,7 +193,21 @@ class GenericResourceMixin:
 # we can make sure its GenericResourceMixin.api_field_from_django_field is
 # used
 class GenericResource(GenericResourceMixin, ModelResource):
-    pass
+    def wrap_view(self, view):
+        """
+        Adds the authentication call to every view
+        """
+        def authenticated(cb):
+            def wrap(request, *args, **kwargs):
+                self.is_authenticated(request)
+                return cb(request, *args, **kwargs)
+            return wrap
+
+        wrapper = super(GenericResource, self).wrap_view(view)
+        wrapper = authenticated(wrapper)
+
+        return wrapper
+
 
 from tastypie.authentication import Authentication
 class ReadOnlyAuthentication(Authentication):
@@ -222,8 +237,8 @@ class GenericMeta:
     detail_allowed_methods = ['get', 'post', 'put', 'delete']
     authorization = Authorization()
     serializer = CustomNoneSerializer()
-    authentication = MultiAuthentication(ReadOnlyAuthentication(),
-        SessionAuthentication(), ApiKeyAuthentication())
+    authentication = MultiAuthentication(SessionAuthentication(),
+        ApiKeyAuthentication(), ReadOnlyAuthentication())
     always_return_data = True
     include_resource_uri = False
     cache = GenericCache(timeout = settings.CACHE_MIDDLEWARE_SECONDS)
