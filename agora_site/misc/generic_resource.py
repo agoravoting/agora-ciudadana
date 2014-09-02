@@ -51,7 +51,7 @@ class GenericResourceMixin:
         return http_method(serialized,
             content_type=build_content_type(desired_format))
 
-    def wrap_form(self, form_class, method="POST", raw=False):
+    def wrap_form(self, form_class, method="POST", raw=False, anon=False):
         """
         Creates a view for a given form class, which calls to is_valid()
         and save() when needed. You can get the form args reimplementing
@@ -60,7 +60,8 @@ class GenericResourceMixin:
         """
         @csrf_exempt
         def wrapper(request, *args, **kwargs):
-            self.is_authenticated(request)
+            if not anon:
+                self.is_authenticated(request)
             try:
                 desired_format = self.determine_format(request)
                 if method == "POST" or method== "PUT":
@@ -193,7 +194,7 @@ class GenericResourceMixin:
 # we can make sure its GenericResourceMixin.api_field_from_django_field is
 # used
 class GenericResource(GenericResourceMixin, ModelResource):
-    def wrap_view(self, view):
+    def wrap_view(self, view, anon=False):
         """
         Adds the authentication call to every view
         """
@@ -204,7 +205,9 @@ class GenericResource(GenericResourceMixin, ModelResource):
             return wrap
 
         wrapper = super(GenericResource, self).wrap_view(view)
-        wrapper = authenticated(wrapper)
+
+        if not anon:
+            wrapper = authenticated(wrapper)
 
         return wrapper
 

@@ -175,11 +175,11 @@ class UserResource(GenericResource):
             url(r"^(?P<resource_name>%s)/register%s$" \
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_form(form_class=APISignupForm,
-                method="POST"), name="api_user_register"),
+                method="POST", anon=True), name="api_user_register"),
 
             url(r"^(?P<resource_name>%s)/login%s$" % (self._meta.resource_name,
                 trailing_slash()), self.wrap_form(
-                form_class=LoginForm, method="POST"),
+                form_class=LoginForm, method="POST", anon=True),
                 name="api_username_login"),
 
             url(r"^(?P<resource_name>%s)/logout%s$" % (self._meta.resource_name,
