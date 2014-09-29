@@ -60,8 +60,8 @@ class GenericResourceMixin:
         """
         @csrf_exempt
         def wrapper(request, *args, **kwargs):
-            if not anon:
-                self.is_authenticated(request)
+            if not anon and not request.user.is_authenticated():
+                    self.is_authenticated(request)
             try:
                 desired_format = self.determine_format(request)
                 if method == "POST" or method== "PUT":
@@ -200,7 +200,8 @@ class GenericResource(GenericResourceMixin, ModelResource):
         """
         def authenticated(cb):
             def wrap(request, *args, **kwargs):
-                self.is_authenticated(request)
+                if not request.user.is_authenticated():
+                    self.is_authenticated(request)
                 return cb(request, *args, **kwargs)
             return wrap
 
