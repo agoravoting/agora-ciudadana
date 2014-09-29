@@ -335,6 +335,15 @@ class CreateElectionView(RequestCreateView):
     def dispatch(self, *args, **kwargs):
         return super(CreateElectionView, self).dispatch(*args, **kwargs)
 
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_superuser and settings.ONE_ADMIN_MANAGEMENT:
+            messages.add_message(self.request, messages.ERROR, _('Sorry, but '
+            'you don\'t have permission to create elections'))
+
+            return http.HttpResponseRedirect(reverse('home'))
+
+        return super(CreateElectionView, self).get(request, *args, **kwargs)
+
 class AgoraView(TemplateView):
     '''
     Shows an agora main page
