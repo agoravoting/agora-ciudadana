@@ -196,6 +196,7 @@ def geolocate_ip(ip_addr):
     Given an ip address, geolocates it, returning a tuple(latitude, longitude)
     '''
     global GEOIP
+    return [0, 0]
 
     try:
         if not GEOIP:

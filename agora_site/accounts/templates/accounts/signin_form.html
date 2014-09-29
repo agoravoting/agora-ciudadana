@@ -33,6 +33,7 @@
         {% crispy form %}
     </div>
 
+    {% if not ONE_ADMIN_MANAGEMENT %}
     <div class="span3 {% ifequal action 'register' %}auth-highlight{% endifequal %}">
         <h3>{% blocktrans %}New to {{ SITE_NAME }}?{% endblocktrans %}</h3>
         <p>{% blocktrans %}An account in {{ SITE_NAME }} is required to continue.{% endblocktrans %}</p>
@@ -67,6 +68,7 @@
             {% url 'terms-of-service' as tos_url %}{% blocktrans %}When you enter using the FNMT certificate you're accepting our <a href="{{tos_url}}">Terms of Service.</a>{% endblocktrans %}</small>
         {% endif %}
     </div>
+    {% endif %}
 </div>
 
 {% endblock %}

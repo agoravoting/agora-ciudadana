@@ -123,6 +123,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'agora_site.misc.context_processor.settings.AUTHENTICATION_BACKENDS',
     'agora_site.misc.context_processor.settings.AGORA_FNMT_BASE_URL',
     'agora_site.misc.context_processor.settings.SHOW_PROFESSIONAL_SERVICES_LINK',
+    'agora_site.misc.context_processor.settings.ONE_ADMIN_MANAGEMENT',
 )
 
 ROOT_URLCONF = 'agora_site.urls'
@@ -197,7 +198,8 @@ INSTALLED_APPS = (
     'djcelery',
     'guardian',
     'djsgettext',
-    'djangosecure'
+    'djangosecure',
+    'django_extensions'
 )
 
 # Cache settings
@@ -446,6 +448,11 @@ ALLOWED_HOSTS = [
 
 # Enable/disable the top navbar link to "Professional services" page
 SHOW_PROFESSIONAL_SERVICES_LINK = False
+
+# If set to true, the signup will be disabled and only one admin will
+# create agoras and users. Use this with
+# AGORA_CREATION_PERMISSIONS="superusers-only"
+ONE_ADMIN_MANAGEMENT = False
 
 # Enable/disable the APIKEY response on login
 RETURN_APIKEY_ON_LOGIN = True
