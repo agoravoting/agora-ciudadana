@@ -364,6 +364,11 @@ class GenericForeignKeyField(fields.ToOneField):
         return super(GenericForeignKeyField, self).build_related_resource(*args, **kwargs)
 
 
+class customstr(str):
+    def get(k, d=None):
+        return ""
+
+
 # the following is from
 # http://gdorn.circuitlocution.com/blog/2012/11/21/using-tastypie-inside-django.html
 
@@ -393,9 +398,9 @@ def rest(path, query={}, data={}, headers={}, method="GET", request=None):
     hreq.path = '/api/v1' + path
     hreq.GET = query
     if isinstance(data, basestring):
-        hreq.POST = data
+        hreq.POST = customstr(data)
     else:
-        hreq.POST = json.dumps(data)
+        hreq.POST = customstr(json.dumps(data))
     hreq.META = headers
     hreq.method = method
     if request:
