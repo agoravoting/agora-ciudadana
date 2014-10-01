@@ -1,3 +1,4 @@
+from agora_site.misc.utils import FakeHttpRequest
 
 from simplejson.decoder import JSONDecodeError
 
@@ -200,7 +201,8 @@ class GenericResource(GenericResourceMixin, ModelResource):
         """
         def authenticated(cb):
             def wrap(request, *args, **kwargs):
-                if not request.user.is_authenticated():
+                fake = type(request) == FakeHttpRequest
+                if not fake and not request.user.is_authenticated():
                     self.is_authenticated(request)
                 return cb(request, *args, **kwargs)
             return wrap
