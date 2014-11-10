@@ -3,7 +3,7 @@
 {% autoescape off %}
 <p>{% blocktrans with to_email=to.email %}Hello {{ to_email }},{% endblocktrans %}</p>
 
-<p>{% blocktrans with site_domain=site.domain inviter=other_user.get_profile.get_fullname agora_fullname=agora.get_full_name agora_url=agora.url %}{{ inviter }} has invited you to join him/her at <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">{{ agora_fullname }}</a>. Please <a href="{{ protocol }}://{{ site_domain }}{{ agora_url }}">follow this link</a> to complete your registration and join the agora:{% endblocktrans %}</p>
+<p>{% blocktrans with site_domain=site.domain inviter=other_user.get_profile.get_fullname agora_fullname=agora.get_full_name agora_url=agora.url %}{{ inviter }} has invited you to join him/her at <a href="{{ agora_url }}">{{ agora_fullname }}</a>. Please <a href="{{ agora_url }}">follow this link</a> to complete your registration and join the agora:{% endblocktrans %}</p>
 
 <p><a href="{{ protocol }}://{{ site.domain }}{{ invitation_link }}">{{ protocol }}://{{ site.domain }}{{ invitation_link }}</a></p>
 
