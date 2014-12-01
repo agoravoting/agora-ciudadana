@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-07 13:57+0100\n"
+"POT-Creation-Date: 2014-12-01 09:18+0100\n"
 "PO-Revision-Date: 2013-06-04 17:44-0000\n"
 "Last-Translator: \n"
 "Language-Team: Agora Ciudadana Translation Team <agora-ciudadana-"
@@ -37,97 +37,109 @@ msgstr "Gallego"
 msgid "Basque"
 msgstr "Vasco"
 
-#: accounts/forms.py:53 accounts/forms.py:133
+#: accounts/forms.py:56 accounts/forms.py:209
 #: accounts/templates/accounts/profile_detail.html:24
 msgid "Name"
 msgstr "Nombre"
 
-#: accounts/forms.py:57 accounts/forms.py:134 accounts/forms.py:218
+#: accounts/forms.py:60 accounts/forms.py:210 accounts/forms.py:294
 msgid "Sign up"
 msgstr "Registrarme"
 
-#: accounts/forms.py:77
+#: accounts/forms.py:84
 #, python-format
-msgid "<a href=\"%(url)s\">Forgot your "
-msgstr "<a href=\"%(url)s\">Olvidaste tu "
+msgid "<a href=\"%(url)s\">Forgot your password?</a>"
+msgstr "<a href=\"%(url)s\">¿Olvidaste tu contraseña?</a>"
 
-#: accounts/forms.py:80 accounts/templates/accounts/auth_forms.html:9
+#: accounts/forms.py:87 accounts/templates/accounts/auth_forms.html:9
 #: accounts/templates/accounts/auth_forms.html:31
 #: accounts/templates/accounts/signin_form.html:8
 #: accounts/templates/accounts/signin_form.html:31
 msgid "Log in"
 msgstr "Iniciar sesión"
 
-#: accounts/forms.py:87 accounts/templates/accounts/email_form.html:12
+#: accounts/forms.py:108 accounts/forms.py:147
+msgid ""
+"Please enter a correct username or email and password. Note that both fields "
+"are case-sensitive."
+msgstr ""
+"Por favor, introduce un nombre de usuario o email correcto. Ten en cuenta "
+"que las mayúsculas y minúsculas son diferentes."
+
+#: accounts/forms.py:120
+msgid "Please, for security reasons validate the captcha"
+msgstr "Por favor, valida el captcha"
+
+#: accounts/forms.py:163 accounts/templates/accounts/email_form.html:12
 #: accounts/templates/accounts/email_form.html:19
 #: accounts/templates/accounts/password_form.html:14
 #: accounts/templates/accounts/profile_detail.html:17
 #: accounts/templates/accounts/profile_form.html:15
-#: agora_core/forms/__init__.py:147 agora_core/forms/__init__.py:156
+#: agora_core/forms/__init__.py:148 agora_core/forms/__init__.py:157
 msgid "Change email"
 msgstr "Cambiar email"
 
-#: accounts/forms.py:95
+#: accounts/forms.py:171
 msgid "Reset Password"
 msgstr "Recuperar Contraseña"
 
-#: accounts/forms.py:96 accounts/urls.py:70 accounts/urls.py:91
+#: accounts/forms.py:172 accounts/urls.py:69 accounts/urls.py:90
 msgid "Reset password"
 msgstr "Recuperar Contraseña"
 
-#: accounts/forms.py:102
+#: accounts/forms.py:178
 msgid "Set new Password"
 msgstr "Nueva contraseña"
 
-#: accounts/forms.py:103
+#: accounts/forms.py:179
 msgid "Set new password"
 msgstr "Nueva contraseña"
 
-#: accounts/forms.py:117
+#: accounts/forms.py:193
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: accounts/forms.py:118 agora_core/forms/user.py:338
+#: accounts/forms.py:194 agora_core/forms/user.py:374
 msgid "Username must contain only letters, numbers, dots and underscores."
 msgstr ""
 "El nombre de usuario solo puede contener letras, números, guiones bajos y "
 "puntos"
 
-#: accounts/forms.py:121
+#: accounts/forms.py:197
 msgid "Create password"
 msgstr "Crear contraseña"
 
-#: accounts/forms.py:124
+#: accounts/forms.py:200
 msgid "Repeat password"
 msgstr "Repetir contraseña"
 
-#: accounts/forms.py:148 agora_core/forms/user.py:358
+#: accounts/forms.py:224 agora_core/forms/user.py:394
 msgid "This username is already taken."
 msgstr "Este nombre de usuario ya está en uso."
 
-#: accounts/forms.py:150 agora_core/forms/user.py:360
+#: accounts/forms.py:226 agora_core/forms/user.py:396
 msgid "This username is not allowed."
 msgstr "Este nombre de usuario no está permitido."
 
-#: accounts/forms.py:162 agora_core/forms/__init__.py:206
-#: agora_core/forms/user.py:386
+#: accounts/forms.py:238 agora_core/forms/__init__.py:207
+#: agora_core/forms/user.py:424
 msgid "The two password fields didn't match."
 msgstr "Las contraseñas no coinciden."
 
-#: accounts/forms.py:196 accounts/forms.py:264
+#: accounts/forms.py:272 accounts/forms.py:340
 msgid "Your account has been activated and you have been signed in."
 msgstr "Hemos activado tu cuenta y has iniciado la sesión"
 
-#: accounts/forms.py:209 accounts/templates/accounts/profile_detail.html:27
-#: agora_core/forms/__init__.py:113
+#: accounts/forms.py:285 accounts/templates/accounts/profile_detail.html:27
+#: agora_core/forms/__init__.py:114
 msgid "Email"
 msgstr ""
 
-#: accounts/forms.py:230
+#: accounts/forms.py:306
 msgid "This email is already taken."
 msgstr "Este nombre de usuario ya está en uso."
 
-#: accounts/urls.py:71
+#: accounts/urls.py:70
 msgid ""
 "<h2>How it works?</h2><p>You've proved your identity by clicking the link we "
 "sent you by email. Now enter your new password and try not to forget it this "
@@ -138,7 +150,6 @@ msgstr ""
 "trata de no olvidarla esta vez.</p>"
 
 #: accounts/views.py:36
-#, fuzzy
 msgid ""
 "Registration successful! We have sent the activation link to your email "
 "address, look it up. If you don't receive the email, please try to locate it "
@@ -297,7 +308,7 @@ msgstr ""
 "filtro antispam se equivoca."
 
 #: accounts/templates/accounts/disabled.html:13
-#: agora_core/forms/__init__.py:662 agora_core/forms/__init__.py:664
+#: agora_core/forms/__init__.py:664 agora_core/forms/__init__.py:668
 #: agora_core/templates/agora_core/contact_form.html:5
 msgid "Contact"
 msgstr "Contacto"
@@ -386,7 +397,7 @@ msgstr "Editar perfil"
 #: accounts/templates/accounts/password_form.html:21
 #: accounts/templates/accounts/profile_detail.html:16
 #: accounts/templates/accounts/profile_form.html:14
-#: agora_core/forms/__init__.py:148 agora_core/forms/__init__.py:157
+#: agora_core/forms/__init__.py:149 agora_core/forms/__init__.py:158
 msgid "Change password"
 msgstr "Cambiar contraseña"
 
@@ -1070,11 +1081,11 @@ msgstr "Lo sentimos, pero no tienes permisos para comentar en %(agora)s."
 msgid "You can't cancel a vote in a closed election."
 msgstr "No puedes cancelar un voto en una votación ya cerrada."
 
-#: agora_core/views.py:1836 agora_core/resources/election.py:542
+#: agora_core/views.py:1836 agora_core/resources/election.py:552
 msgid "You didn't participate in this election."
 msgstr "No participaste en esta votación."
 
-#: agora_core/views.py:1861 agora_core/resources/election.py:565
+#: agora_core/views.py:1861 agora_core/resources/election.py:575
 #, python-format
 msgid "Vote cancelled for election %s"
 msgstr "Voto cancelado para la votación %s"
@@ -1093,33 +1104,33 @@ msgstr "Lo sentimos, pero no tienes permisos administrativos en %(agoraname)s."
 msgid "Agora settings changed for %(agoraname)s."
 msgstr "Cambiada la configuración de Ágora para %(agoraname)s."
 
-#: agora_core/forms/__init__.py:62 agora_core/forms/__init__.py:63
+#: agora_core/forms/__init__.py:63 agora_core/forms/__init__.py:64
 #: agora_core/templates/agora_core/create_agora_form.html:6
 msgid "Create Agora"
 msgstr "Crear Ágora"
 
-#: agora_core/forms/__init__.py:100 agora_core/forms/user.py:133
+#: agora_core/forms/__init__.py:101 agora_core/forms/user.py:145
 msgid "Avatar"
 msgstr ""
 
-#: agora_core/forms/__init__.py:101
+#: agora_core/forms/__init__.py:102
 msgid "Upload an image to use as avatar instead of gravatar service"
 msgstr "Subir una imagen para usar como avatar en vez la del servicio gravatar"
 
-#: agora_core/forms/__init__.py:102
+#: agora_core/forms/__init__.py:103
 msgid "Remove this avatar"
 msgstr "Eliminar este avatar"
 
-#: agora_core/forms/__init__.py:105 agora_core/models/__init__.py:240
+#: agora_core/forms/__init__.py:106 agora_core/models/__init__.py:240
 #: agora_core/models/agora.py:87 agora_core/models/election.py:207
 msgid "Short Description"
 msgstr "Descripción Breve"
 
-#: agora_core/forms/__init__.py:106
+#: agora_core/forms/__init__.py:107
 msgid "Say something about yourself (140 chars max)"
 msgstr "Di algo sobre ti mismo (140 caracteres máximo)"
 
-#: agora_core/forms/__init__.py:108 agora_core/forms/user.py:177
+#: agora_core/forms/__init__.py:109 agora_core/forms/user.py:194
 #: agora_core/models/__init__.py:242 agora_core/models/agora.py:89
 #: agora_core/templates/agora_core/agora_bio.html:5
 #: agora_core/templates/agora_core/user_bio.html:5
@@ -1127,168 +1138,168 @@ msgstr "Di algo sobre ti mismo (140 caracteres máximo)"
 msgid "Biography"
 msgstr "Biografía"
 
-#: agora_core/forms/__init__.py:109
+#: agora_core/forms/__init__.py:110
 msgid "Tell us about you, use as much text as needed"
 msgstr "Cuéntanos acerca de tí, usa tanto espacio como necesites"
 
-#: agora_core/forms/__init__.py:115 agora_core/models/__init__.py:253
+#: agora_core/forms/__init__.py:116 agora_core/models/__init__.py:253
 msgid "Receive email updates"
 msgstr "Recibe actualizaciones por email"
 
-#: agora_core/forms/__init__.py:118
+#: agora_core/forms/__init__.py:119
 msgid "Current password"
 msgstr "Contraseña actual"
 
-#: agora_core/forms/__init__.py:119
+#: agora_core/forms/__init__.py:120
 msgid "Provide your current password for security, required field"
 msgstr "Escribe tu contraseña actual por seguridad, campo obligatorio"
 
-#: agora_core/forms/__init__.py:123
+#: agora_core/forms/__init__.py:124
 msgid "New password"
 msgstr "Nueva contraseña"
 
-#: agora_core/forms/__init__.py:124
+#: agora_core/forms/__init__.py:125
 msgid "Specify your new password if you want to change it, or leave it blank"
 msgstr ""
 "Especifica tu nueva contraseña si quieres cambiarla, o déjala en blanco"
 
-#: agora_core/forms/__init__.py:127
+#: agora_core/forms/__init__.py:128
 msgid "Repeat new password"
 msgstr "Repite la nueva contraseña"
 
-#: agora_core/forms/__init__.py:144 agora_core/forms/__init__.py:153
+#: agora_core/forms/__init__.py:145 agora_core/forms/__init__.py:154
 msgid "Profile"
 msgstr "Perfil"
 
-#: agora_core/forms/__init__.py:152 templates/base.html:136
+#: agora_core/forms/__init__.py:153 templates/base.html:136
 msgid "Security"
 msgstr "Seguridad"
 
-#: agora_core/forms/__init__.py:159 agora_core/forms/__init__.py:221
-#: agora_core/forms/__init__.py:457
+#: agora_core/forms/__init__.py:160 agora_core/forms/__init__.py:222
+#: agora_core/forms/__init__.py:458
 msgid "Save settings"
 msgstr "Guardar configuración"
 
-#: agora_core/forms/__init__.py:188 agora_core/forms/user.py:242
-#: agora_core/forms/user.py:366
+#: agora_core/forms/__init__.py:189 agora_core/forms/user.py:265
+#: agora_core/forms/user.py:402
 msgid "This email is already in use. Please supply a different email."
 msgstr "Este email ya está en uso. Escribe un email distinto por favor."
 
-#: agora_core/forms/__init__.py:194 agora_core/forms/user.py:267
+#: agora_core/forms/__init__.py:195 agora_core/forms/user.py:293
 msgid "Invalid password."
 msgstr "Contraseña inválida."
 
-#: agora_core/forms/__init__.py:220 agora_core/forms/__init__.py:456
+#: agora_core/forms/__init__.py:221 agora_core/forms/__init__.py:457
 msgid "General settings"
 msgstr "Configuración general"
 
-#: agora_core/forms/__init__.py:245
+#: agora_core/forms/__init__.py:246
 #: agora_core/models/voting_systems/base_stv.py:55
 #: agora_core/models/voting_systems/plurality.py:50
 #: agora_core/models/voting_systems/wright_stv.py:53
 msgid "Invalid questions format"
 msgstr "Formato de pregunta no válido"
 
-#: agora_core/forms/__init__.py:269 agora_core/models/election.py:236
-#: agora_core/resources/election.py:91
+#: agora_core/forms/__init__.py:270 agora_core/models/election.py:236
+#: agora_core/resources/election.py:90
 msgid "Questions"
 msgstr "Preguntas"
 
-#: agora_core/forms/__init__.py:272 agora_core/forms/__init__.py:437
-#: agora_core/resources/election.py:93
+#: agora_core/forms/__init__.py:273 agora_core/forms/__init__.py:438
+#: agora_core/resources/election.py:92
 msgid "Start voting"
 msgstr "Comenzar votación"
 
-#: agora_core/forms/__init__.py:273 agora_core/forms/__init__.py:438
+#: agora_core/forms/__init__.py:274 agora_core/forms/__init__.py:439
 msgid "Not required, you can choose to start the voting period manually"
 msgstr ""
 "No requerido, puedes elegir comenzar el periodo de votación manualmente"
 
-#: agora_core/forms/__init__.py:274 agora_core/forms/__init__.py:441
-#: agora_core/resources/election.py:94
+#: agora_core/forms/__init__.py:275 agora_core/forms/__init__.py:442
+#: agora_core/resources/election.py:93
 msgid "End voting"
 msgstr "Finalizar votación"
 
-#: agora_core/forms/__init__.py:275 agora_core/forms/__init__.py:442
+#: agora_core/forms/__init__.py:276 agora_core/forms/__init__.py:443
 msgid "Not required, you can choose to end the voting period manually"
 msgstr ""
 "No es necesario, puedes elegir finalizar el periodo de votación manualmente"
 
-#: agora_core/forms/__init__.py:285
+#: agora_core/forms/__init__.py:286
 msgid "Create election"
 msgstr "Crear votación"
 
-#: agora_core/forms/__init__.py:287
+#: agora_core/forms/__init__.py:288
 #: agora_core/templates/agora_core/create_election_form.html:5
 msgid "Create Election"
 msgstr "Crear Votación"
 
-#: agora_core/forms/__init__.py:311 agora_core/forms/__init__.py:469
+#: agora_core/forms/__init__.py:312 agora_core/forms/__init__.py:470
 msgid "You need to either provide none or both start and end voting dates"
 msgstr ""
 "Puedes no establecer ninguna fecha o establecer ambas, la de comienzo y "
 "finalización de la votación"
 
-#: agora_core/forms/__init__.py:315 agora_core/forms/__init__.py:473
-#: agora_core/resources/election.py:122
+#: agora_core/forms/__init__.py:316 agora_core/forms/__init__.py:474
+#: agora_core/resources/election.py:132
 msgid "Invalid start date, must be in the future"
 msgstr "Fecha de comienzo inválida, debe situarse en el futuro"
 
-#: agora_core/forms/__init__.py:319 agora_core/forms/__init__.py:477
-#: agora_core/resources/election.py:126
+#: agora_core/forms/__init__.py:320 agora_core/forms/__init__.py:478
+#: agora_core/resources/election.py:136
 msgid "Voting time must be at least 1 hour"
 msgstr "El tiempo de votación debe ser al menos de 1 hora"
 
-#: agora_core/forms/__init__.py:395 agora_core/tasks/election.py:259
+#: agora_core/forms/__init__.py:396 agora_core/tasks/election.py:259
 #, python-format
 msgid "Election %s created"
 msgstr "Elección %s creada"
 
-#: agora_core/forms/__init__.py:549
+#: agora_core/forms/__init__.py:550
 msgid "Vote secretly"
 msgstr "Votar de forma secreta"
 
-#: agora_core/forms/__init__.py:551
+#: agora_core/forms/__init__.py:552
 msgid "Vote in public as a delegate"
 msgstr "Votar públicamente como delegado"
 
-#: agora_core/forms/__init__.py:554 agora_core/forms/__init__.py:562
+#: agora_core/forms/__init__.py:555 agora_core/forms/__init__.py:563
 msgid "Vote in public as a non-member delegate"
 msgstr "Votar públicamente como delegado no-miembro"
 
-#: agora_core/forms/__init__.py:559
+#: agora_core/forms/__init__.py:560
 #: agora_core/templates/agora_core/election_base.html:211
 #: agora_core/templates/agora_core/election_base.html:220
 msgid "Vote"
 msgstr "Vota"
 
-#: agora_core/forms/__init__.py:638
+#: agora_core/forms/__init__.py:639
 msgid ""
 "Explain your public position on the vote if you want and if your vote is "
 "public"
 msgstr "Explica si quieres tu posición públicamente y si tu voto es público"
 
-#: agora_core/forms/__init__.py:650
+#: agora_core/forms/__init__.py:651
 msgid "Your name"
 msgstr "Tu nombre"
 
-#: agora_core/forms/__init__.py:652
+#: agora_core/forms/__init__.py:653
 msgid "Your contact email"
 msgstr "Tu email de contacto"
 
-#: agora_core/forms/__init__.py:653
+#: agora_core/forms/__init__.py:654
 msgid "Subject"
 msgstr "Asunto"
 
-#: agora_core/forms/__init__.py:655
+#: agora_core/forms/__init__.py:656
 msgid "Message"
 msgstr "Mensaje"
 
-#: agora_core/forms/__init__.py:665
+#: agora_core/forms/__init__.py:669
 msgid "Send message"
 msgstr "Enviar mensaje"
 
-#: agora_core/forms/__init__.py:677
+#: agora_core/forms/__init__.py:680
 #, python-format
 msgid ""
 "[%(site)s] Message from %(name)s <%(email)s>: \n"
@@ -1299,7 +1310,7 @@ msgstr ""
 "\n"
 " %(msg)s"
 
-#: agora_core/forms/__init__.py:686
+#: agora_core/forms/__init__.py:689
 msgid "You have contacted us, we'll answer you as soon as possible."
 msgstr "Has contactado con nosotros, te contestaremos lo antes posible."
 
@@ -1315,41 +1326,53 @@ msgstr "Enviar"
 msgid "You must be authenticated to post a comment"
 msgstr "Debes autenticarte para publicar un comentario"
 
-#: agora_core/forms/comment.py:128 agora_core/forms/user.py:113
+#: agora_core/forms/comment.py:128 agora_core/forms/user.py:125
 #, python-format
 msgid "Watch your mouth! The word %s is not allowed here."
 msgid_plural "Watch your mouth! The words %s are not allowed here."
 msgstr[0] "¡No digas palabrotas! Aquí no se permite la palabra %s."
 msgstr[1] "¡No digas palabrotas! Aquí no se permiten las palabras %s."
 
-#: agora_core/forms/user.py:83
+#: agora_core/forms/user.py:95
 #, python-format
 msgid "Message from %s"
 msgstr "Mensaje de %s"
 
-#: agora_core/forms/user.py:255
+#: agora_core/forms/user.py:161
+msgid "Too large dimensions."
+msgstr "Demasiado grande."
+
+#: agora_core/forms/user.py:261 agora_core/forms/user.py:305
+msgid "You need to supply the old password."
+msgstr "Tienes que proporcionar la contraseña antigua."
+
+#: agora_core/forms/user.py:278
 msgid "This username is already in use. Please supply a different username."
 msgstr ""
 "Este nombre de usuario ya está en uso. Escribe otro nombre de usuario por "
 "favor."
 
-#: agora_core/forms/user.py:281
+#: agora_core/forms/user.py:310
 msgid "The two password fields didn't match or are insecure."
 msgstr "Las contraseñas no coinciden o no son seguras."
 
-#: agora_core/forms/user.py:295
+#: agora_core/forms/user.py:325
+msgid "Invalid first name."
+msgstr "Nombre no válido."
+
+#: agora_core/forms/user.py:331
 msgid "FNMT users cannot change their names."
 msgstr "Los usuario con certificado FNMT no pueden cambiar el nombre."
 
-#: agora_core/forms/user.py:304
+#: agora_core/forms/user.py:340
 msgid "You need to be authenticated"
 msgstr "Debes autenticarte"
 
-#: agora_core/forms/user.py:372
+#: agora_core/forms/user.py:410
 msgid "Invalid activation secret. "
 msgstr "Secreto de activación no válido. "
 
-#: agora_core/forms/user.py:374
+#: agora_core/forms/user.py:412
 msgid "Auto activation not allowed."
 msgstr "No se permite la activación automática."
 
@@ -1862,25 +1885,25 @@ msgstr "Has retirado tu delegación de voto de %(agora)s"
 msgid "%(site)s - vote delegation removed from %(agora)s"
 msgstr "%(site)s - delegación de voto retirada en %(agora)s"
 
-#: agora_core/resources/election.py:418
+#: agora_core/resources/election.py:428
 #, python-format
 msgid "Election %(election)s approved at agora %(agora)s. Congratulations!"
 msgstr "Votación %(election)s aprobada en ágora %(agora)s. ¡Enhorabuena!"
 
-#: agora_core/resources/election.py:425
+#: agora_core/resources/election.py:435
 msgid "Election URL"
 msgstr "URL de la votación"
 
-#: agora_core/resources/election.py:431
+#: agora_core/resources/election.py:441
 #, python-format
 msgid "%(site)s - Election %(election)s approved"
 msgstr "%(site)s - Votación %(election)s aprobada"
 
-#: agora_core/resources/user.py:306
+#: agora_core/resources/user.py:309
 msgid "Welcome to this agora"
 msgstr "Bienvenido a este ágora"
 
-#: agora_core/resources/user.py:363
+#: agora_core/resources/user.py:366
 #, python-format
 msgid "%(site)s - invitation to join %(agora)s"
 msgstr "%(site)s - invitación para unirte a %(agora)s"
@@ -2879,14 +2902,13 @@ msgstr "Hola %(to_email)s,"
 #: agora_core/templates/agora_core/emails/join_invitation.html:6
 #, python-format
 msgid ""
-"%(inviter)s has invited you to join him/her at <a href=\"%(protocol)s://"
-"%(site_domain)s%(agora_url)s\">%(agora_fullname)s</a>. Please <a href="
-"\"%(protocol)s://%(site_domain)s%(agora_url)s\">follow this link</a> to "
-"complete your registration and join the agora:"
+"%(inviter)s has invited you to join him/her at <a href=\"%(agora_url)s\">"
+"%(agora_fullname)s</a>. Please <a href=\"%(agora_url)s\">follow this link</"
+"a> to complete your registration and join the agora:"
 msgstr ""
-"%(inviter)s te ha invitado a participar en el ágora <a href=\"%(protocol)s://"
-"%(site_domain)s%(agora_url)s\">%(agora_fullname)s</a>. Haz clic sobre <a "
-"href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">este enlace</a> para "
+"%(inviter)s te ha invitado a participar en el ágora <a href=\"%(agora_url)s\">"
+"%(agora_fullname)s</a>. Haz clic sobre <a "
+"href=\"(agora_url)s\">este enlace</a> para "
 "completar el registro y unirte al ágora:"
 
 #: agora_core/templates/agora_core/emails/join_invitation.html:13
@@ -3074,7 +3096,7 @@ msgstr ""
 "\"%(protocol)s://%(site_domain)s\">%(site_domain)s</a>:"
 
 #: agora_core/templates/agora_core/emails/user_mail.html:11
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "This is %(from_fullname)s’s profile in the website: <a href=\"%(protocol)s://"
 "%(site_domain)s%(from_url)s\">%(protocol)s://%(site_domain)s%(from_url)s</a>"
@@ -3092,7 +3114,7 @@ msgstr ""
 "%(site_domain)s:"
 
 #: agora_core/templates/agora_core/emails/user_mail.txt:7
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "This is %(from_fullname)s’s profile in the website: %(protocol)s://"
 "%(site_domain)s%(from_url)s"
@@ -3204,7 +3226,7 @@ msgstr ""
 "emitido %(num_votes)s votos directos.\n"
 "                            "
 
-#: agora_core/templatetags/agora_utils.py:142
+#: agora_core/templatetags/agora_utils.py:146
 msgid ""
 "Internationalized format for a date, see python documentation for strftime "
 "for more details."
@@ -3212,7 +3234,7 @@ msgstr ""
 "Formato internacional para una fecha, ver la documentación de python para "
 "strftime para más detalles."
 
-#: misc/utils.py:86
+#: misc/utils.py:85
 msgid "Enter valid JSON"
 msgstr "Introduce JSON válido"
 
@@ -3304,12 +3326,211 @@ msgstr "Seguir en Identi.ca"
 msgid "Powered by"
 msgstr "Funciona con"
 
-msgid "<h3 style=\"text-align: justify;\">Agora Voting is a free software system supporting secure online elections scaling to hundreds or thousands of voters: open primaries, institutional elections, public consultation, referenda. We provide professional solutions for democratic innovation.</h3>\n<br/>\n<p style=\"text-align: justify;\">Agora is free software and is currently in use by small communities at no charge. However, we realize that for higher stakes and official elections it is necessary provide professional and reliable services to ensure the success and validity of the voting process. As the developers of the software we are uniquely qualified to provide these services.</p>\n<br/>\n<br/>\n<h4 >Benefits</h4>\n<br/>\n<h3>Easy to use</h3>\n<p style=\"text-align: justify;\">\nA simple, functional interface supporting desktops and tablets allows any individual, without prior training or qualifications, to vote in a few easy steps.\n</p>\n\n<h3>Census and authentication</h3>\n<p style=\"text-align: justify;\">\n\nAuthentication is the first step in a trusted voting system. Agora supports several authentication methods as well as custom integrations, including external census and certificate-based authentication, ensuring identity security at all times.</p>\n\n<h3>\nUsed in Spanish Congress</h3>\n<p style=\"text-align: justify;\">\n\nDespite being innovative, the technology of Agora Voting has already been used successfully in Spanish Parliament in through one of its members on several occasions. Additionally, Agora Voting is based on the same technology deployed in Norwegian general elections in 2013.</p>\n\n<h3>\nFree software</h3>\n<p style=\"text-align: justify;\">\n\nAgora Voting is a free software project developed by a community. An important feature of this model is that the source code is freely available and publicly auditable. This makes Agora Voting transparent and reliable, and serves to demonstrate the quality of our development and consulting services. A free software model also avoids problems of vendor locking, and promotes technology independence, something that other propietary-based solutions cannot offer.</p>\n\n<h3>\nConsulting and customization</h3>\n<p style=\"text-align: justify;\">\n\nEach voting process has its own unique requirements and procedures. Our experience with election processes means we can cover these specific needs in a professional and reliable manner.</p>\n\n<br/>\n<br/>\n<h4>\nSecurity</h4>\n<br/>\n<h3>Vote secrecy</h3>\n<p style=\"text-align: justify;\">\nOur technology includes high security end to end encryption, voter privacy is protected from the moment of ballot casting at the voting booth throughout the entire election process.</p>\n\n<h3>\nSecure secret sharing</h3>\n<p style=\"text-align: justify;\">\n\nThe strength of our system resides in mathematical mechanisms that serve as analogues of of traditional election scrutineers (also known as poll-watchers) who oversee elections processes to ensure correctness and thus attain trust from the general public. In our system, election cryptographic keys are generated in a distributed fashion by a group of authorities that guarantee the secrecy of the vote and the correctness of the tallying process.</p>\n\n<h3>\nAuditable and verifiable</h3>\n<p style=\"text-align: justify;\">\n\nAs well as enabling secure secret sharing, the technology in Agora Voting allows independent public verification by third parties using simple tools, as well auditing by experts, of the entire election process, from creation, to vote casting and finally tallying.</p>\n\n<h3>\nContact us\n</h3>\n<p style=\"text-align: justify;\">\nIf you would like to procure comprehensive professional services for elections or referenda, require custom development services, or would like to make any other inquiry, please contact us at <a href=\"mailto:agora@agoravoting.com\">agora@agoravoting.com</a>.</p>\n\n\n"
+#~ msgid ""
+#~ "<h3 style=\"text-align: justify;\">Agora Voting is a free software system "
+#~ "supporting secure online elections scaling to hundreds or thousands of "
+#~ "voters: open primaries, institutional elections, public consultation, "
+#~ "referenda. We provide professional solutions for democratic innovation.</"
+#~ "h3>\n"
+#~ "<br/>\n"
+#~ "<p style=\"text-align: justify;\">Agora is free software and is currently "
+#~ "in use by small communities at no charge. However, we realize that for "
+#~ "higher stakes and official elections it is necessary provide professional "
+#~ "and reliable services to ensure the success and validity of the voting "
+#~ "process. As the developers of the software we are uniquely qualified to "
+#~ "provide these services.</p>\n"
+#~ "<br/>\n"
+#~ "<br/>\n"
+#~ "<h4 >Benefits</h4>\n"
+#~ "<br/>\n"
+#~ "<h3>Easy to use</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "A simple, functional interface supporting desktops and tablets allows any "
+#~ "individual, without prior training or qualifications, to vote in a few "
+#~ "easy steps.\n"
+#~ "</p>\n"
+#~ "\n"
+#~ "<h3>Census and authentication</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "\n"
+#~ "Authentication is the first step in a trusted voting system. Agora "
+#~ "supports several authentication methods as well as custom integrations, "
+#~ "including external census and certificate-based authentication, ensuring "
+#~ "identity security at all times.</p>\n"
+#~ "\n"
+#~ "<h3>\n"
+#~ "Used in Spanish Congress</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "\n"
+#~ "Despite being innovative, the technology of Agora Voting has already been "
+#~ "used successfully in Spanish Parliament in through one of its members on "
+#~ "several occasions. Additionally, Agora Voting is based on the same "
+#~ "technology deployed in Norwegian general elections in 2013.</p>\n"
+#~ "\n"
+#~ "<h3>\n"
+#~ "Free software</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "\n"
+#~ "Agora Voting is a free software project developed by a community. An "
+#~ "important feature of this model is that the source code is freely "
+#~ "available and publicly auditable. This makes Agora Voting transparent and "
+#~ "reliable, and serves to demonstrate the quality of our development and "
+#~ "consulting services. A free software model also avoids problems of vendor "
+#~ "locking, and promotes technology independence, something that other "
+#~ "propietary-based solutions cannot offer.</p>\n"
+#~ "\n"
+#~ "<h3>\n"
+#~ "Consulting and customization</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "\n"
+#~ "Each voting process has its own unique requirements and procedures. Our "
+#~ "experience with election processes means we can cover these specific "
+#~ "needs in a professional and reliable manner.</p>\n"
+#~ "\n"
+#~ "<br/>\n"
+#~ "<br/>\n"
+#~ "<h4>\n"
+#~ "Security</h4>\n"
+#~ "<br/>\n"
+#~ "<h3>Vote secrecy</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "Our technology includes high security end to end encryption, voter "
+#~ "privacy is protected from the moment of ballot casting at the voting "
+#~ "booth throughout the entire election process.</p>\n"
+#~ "\n"
+#~ "<h3>\n"
+#~ "Secure secret sharing</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "\n"
+#~ "The strength of our system resides in mathematical mechanisms that serve "
+#~ "as analogues of of traditional election scrutineers (also known as poll-"
+#~ "watchers) who oversee elections processes to ensure correctness and thus "
+#~ "attain trust from the general public. In our system, election "
+#~ "cryptographic keys are generated in a distributed fashion by a group of "
+#~ "authorities that guarantee the secrecy of the vote and the correctness of "
+#~ "the tallying process.</p>\n"
+#~ "\n"
+#~ "<h3>\n"
+#~ "Auditable and verifiable</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "\n"
+#~ "As well as enabling secure secret sharing, the technology in Agora Voting "
+#~ "allows independent public verification by third parties using simple "
+#~ "tools, as well auditing by experts, of the entire election process, from "
+#~ "creation, to vote casting and finally tallying.</p>\n"
+#~ "\n"
+#~ "<h3>\n"
+#~ "Contact us\n"
+#~ "</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "If you would like to procure comprehensive professional services for "
+#~ "elections or referenda, require custom development services, or would "
+#~ "like to make any other inquiry, please contact us at <a href=\"mailto:"
+#~ "agora@agoravoting.com\">agora@agoravoting.com</a>.</p>\n"
+#~ "\n"
+#~ "\n"
+#~ msgstr ""
+#~ "<h3 style=\"text-align: justify;\">Agora Voting es un sistema software "
+#~ "libre ideal para votaciones seguras online donde participan cientos o "
+#~ "miles de personas: primarias abiertas,  elecciones institucionales, "
+#~ "consultas ciudadanas, referéndums. Proveemos soluciones profesionales de "
+#~ "innovación democrática.</h3>\n"
+#~ "<br/>\n"
+#~ "<p style=\"text-align: justify;\">Agora es software libre y está siendo "
+#~ "utilizado por pequeñas comunidades de forma gratuita. No obstante sabemos "
+#~ "que para votaciones sensibles e importantes es necesario contratar un "
+#~ "servicio profesional y confiable para asegurar el éxito del proceso "
+#~ "electoral. ¿Quien mejor para ofrecer este servicio que los "
+#~ "desarrolladores de la herramienta?</p>\n"
+#~ "<br/>\n"
+#~ "<br/>\n"
+#~ "<h4 >Beneficios</h4>\n"
+#~ "<br/>\n"
+#~ "<h3>Fácil de usar</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "Con una interfaz de voto intuitiva que funciona en ordenadores y tablets, "
+#~ "permite votar a todo tipo de personas sin formación previa ni "
+#~ "conocimientos informáticos.\n"
+#~ "</p>\n"
+#~ "\n"
+#~ "<h3>Censo y autenticación</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "\n"
+#~ "Autenticar al votante es el primer paso para un sistema de voto "
+#~ "confiable. Agora soporta integrar múltiples formas de autenticación "
+#~ "incluyendo censos externos y el certificado de la FNMT para poder "
+#~ "facilitar la autenticación, manteniendo la seguridad en todo momento.</"
+#~ "p>\n"
+#~ "\n"
+#~ "<h3>Probado en el Congreso</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "\n"
+#~ "Aun siendo una tecnología innovadora, la tecnología de Agora Voting ya ha "
+#~ "sido utilizada con éxito múltiples veces la cámara del Congreso de los "
+#~ "Diputados en España a través de uno de sus diputados. Además nos basamos "
+#~ "en la misma tecnología de voto seguro que fue usada en las elecciones "
+#~ "general de Noruega en 2013.</p>\n"
+#~ "\n"
+#~ "<h3>Software libre</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "\n"
+#~ "Agora Voting es un proyecto de software libre que se desarrolla en "
+#~ "comunidad, por lo que el código es públicamente auditable y transparente. "
+#~ "Además, esto permite asegurar una independencia tecnológica que no pueden "
+#~ "prometer otras soluciones privativas, y demuestra que el nuestro es un "
+#~ "servicio de desarrollo, consultoría y de know-how sobre votaciones de la "
+#~ "máxima calidad. </p>\n"
+#~ "\n"
+#~ "<h3>Consultoría y adaptación de necesidades</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "\n"
+#~ "Cada proceso de votación suele tener unas necesidades y casuísticas "
+#~ "específicas y singulares. Nuestra experiencia en comicios electorales nos "
+#~ "permiten cubrir sus necesidades de forma profesional.</p>\n"
+#~ "\n"
+#~ "<br/>\n"
+#~ "<br/>\n"
+#~ "<h4>\n"
+#~ "Seguridad</h4>\n"
+#~ "<br/>\n"
+#~ "<h3>Voto secreto</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "Contamos con un sistema de cifrado punto a punto de alta seguridad en el "
+#~ "que el voto se cifra en la cabina de votación, de manera que se preserva "
+#~ "el secreto del voto en todo momento. </p>\n"
+#~ "\n"
+#~ "<h3>Seguridad compartida</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "\n"
+#~ "La fortaleza de nuestro sistema reside en un sistema análogo a los "
+#~ "apoderados e interventores en las elecciones tradicionales, donde  la "
+#~ "clave cifrada de la votación se genera de forma distribuida por un "
+#~ "conjunto de autoridades independientes, que velan por el secreto del voto "
+#~ "y son las que ejecutan el recuento.</p>\n"
+#~ "\n"
+#~ "<h3>Auditable y verificable</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "\n"
+#~ "Adicionalmente al sistema de se seguridad compartida, la solución de "
+#~ "Agora Voting permite  ser auditada por terceros de forma sencilla y por "
+#~ "expertos durante todo el proceso de la votación, desde la creación, "
+#~ "durante el periodo de votación, y una vez hecho el recuento.</p>\n"
+#~ "\n"
+#~ "<h3>\n"
+#~ "Contacta con nosotros\n"
+#~ "</h3>\n"
+#~ "<p style=\"text-align: justify;\">\n"
+#~ "Si necesitas que te proveamos de un servicio profesional integrado para "
+#~ "una votación o referéndum, si quieres que te hagamos un presupuesto, una "
+#~ "adaptación de la herramienta, o realizarnos cualquier otro tipo de "
+#~ "consulta, por favor no dudes en ponerte en contacto con nosotros: <a href="
+#~ "\"mailto:agora@agoravoting.com\">agora@agoravoting.com</a></p>\n"
+#~ "\n"
+#~ "\n"
+#~ "\n"
 
-msgstr "<h3 style=\"text-align: justify;\">Agora Voting es un sistema software libre ideal para votaciones seguras online donde participan cientos o miles de personas: primarias abiertas,  elecciones institucionales, consultas ciudadanas, referéndums. Proveemos soluciones profesionales de innovación democrática.</h3>\n<br/>\n<p style=\"text-align: justify;\">Agora es software libre y está siendo utilizado por pequeñas comunidades de forma gratuita. No obstante sabemos que para votaciones sensibles e importantes es necesario contratar un servicio profesional y confiable para asegurar el éxito del proceso electoral. ¿Quien mejor para ofrecer este servicio que los desarrolladores de la herramienta?</p>\n<br/>\n<br/>\n<h4 >Beneficios</h4>\n<br/>\n<h3>Fácil de usar</h3>\n<p style=\"text-align: justify;\">\nCon una interfaz de voto intuitiva que funciona en ordenadores y tablets, permite votar a todo tipo de personas sin formación previa ni conocimientos informáticos.\n</p>\n\n<h3>Censo y autenticación</h3>\n<p style=\"text-align: justify;\">\n\nAutenticar al votante es el primer paso para un sistema de voto confiable. Agora soporta integrar múltiples formas de autenticación incluyendo censos externos y el certificado de la FNMT para poder facilitar la autenticación, manteniendo la seguridad en todo momento.</p>\n\n<h3>Probado en el Congreso</h3>\n<p style=\"text-align: justify;\">\n\nAun siendo una tecnología innovadora, la tecnología de Agora Voting ya ha sido utilizada con éxito múltiples veces la cámara del Congreso de los Diputados en España a través de uno de sus diputados. Además nos basamos en la misma tecnología de voto seguro que fue usada en las elecciones general de Noruega en 2013.</p>\n\n<h3>Software libre</h3>\n<p style=\"text-align: justify;\">\n\nAgora Voting es un proyecto de software libre que se desarrolla en comunidad, por lo que el código es públicamente auditable y transparente. Además, esto permite asegurar una independencia tecnológica que no pueden prometer otras soluciones privativas, y demuestra que el nuestro es un servicio de desarrollo, consultoría y de know-how sobre votaciones de la máxima calidad. </p>\n\n<h3>Consultoría y adaptación de necesidades</h3>\n<p style=\"text-align: justify;\">\n\nCada proceso de votación suele tener unas necesidades y casuísticas específicas y singulares. Nuestra experiencia en comicios electorales nos permiten cubrir sus necesidades de forma profesional.</p>\n\n<br/>\n<br/>\n<h4>\nSeguridad</h4>\n<br/>\n<h3>Voto secreto</h3>\n<p style=\"text-align: justify;\">\nContamos con un sistema de cifrado punto a punto de alta seguridad en el que el voto se cifra en la cabina de votación, de manera que se preserva el secreto del voto en todo momento. </p>\n\n<h3>Seguridad compartida</h3>\n<p style=\"text-align: justify;\">\n\nLa fortaleza de nuestro sistema reside en un sistema análogo a los apoderados e interventores en las elecciones tradicionales, donde  la clave cifrada de la votación se genera de forma distribuida por un conjunto de autoridades independientes, que velan por el secreto del voto y son las que ejecutan el recuento.</p>\n\n<h3>Auditable y verificable</h3>\n<p style=\"text-align: justify;\">\n\nAdicionalmente al sistema de se seguridad compartida, la solución de Agora Voting permite  ser auditada por terceros de forma sencilla y por expertos durante todo el proceso de la votación, desde la creación, durante el periodo de votación, y una vez hecho el recuento.</p>\n\n<h3>\nContacta con nosotros\n</h3>\n<p style=\"text-align: justify;\">\nSi necesitas que te proveamos de un servicio profesional integrado para una votación o referéndum, si quieres que te hagamos un presupuesto, una adaptación de la herramienta, o realizarnos cualquier otro tipo de consulta, por favor no dudes en ponerte en contacto con nosotros: <a href=\"mailto:agora@agoravoting.com\">agora@agoravoting.com</a></p>\n\n\n\n"
-
-msgid "&nbsp; &nbsp; Agora Voting - Professional Services"
-msgstr "&nbsp; &nbsp; Agora Voting - Servicios Profesionales"
+#~ msgid "&nbsp; &nbsp; Agora Voting - Professional Services"
+#~ msgstr "&nbsp; &nbsp; Agora Voting - Servicios Profesionales"
 
 #~ msgid "Explore"
 #~ msgstr "Explorar"
@@ -3521,8 +3742,8 @@ msgstr "&nbsp; &nbsp; Agora Voting - Servicios Profesionales"
 #~ "<p>Agora URL: <a href=\"%(protocol)s://%(site_domain)s%(agora_url)s\">"
 #~ "%(agora_full_name)s</a></p>\n"
 #~ "\n"
-#~ "<p>Delegator URL: <a href=\"%(protocol)s://%(site_domain)s%(delegator_url)"
-#~ "s\">%(delegator_name)s</a></p>\n"
+#~ "<p>Delegator URL: <a href=\"%(protocol)s://%(site_domain)s"
+#~ "%(delegator_url)s\">%(delegator_name)s</a></p>\n"
 #~ "\n"
 #~ msgstr ""
 #~ "\n"
@@ -3596,9 +3817,9 @@ msgstr "&nbsp; &nbsp; Agora Voting - Servicios Profesionales"
 #~ "\n"
 #~ "<blockquote>%(comment)s</blockquote>\n"
 #~ "\n"
-#~ "<p>This is %(from_fullname)s profile in the website: <a href=\"%(protocol)"
-#~ "s://%(site_domain)s%(from_url)s\">%(protocol)s://%(site_domain)s"
-#~ "%(from_url)s</a></p>\n"
+#~ "<p>This is %(from_fullname)s profile in the website: <a href="
+#~ "\"%(protocol)s://%(site_domain)s%(from_url)s\">%(protocol)s://"
+#~ "%(site_domain)s%(from_url)s</a></p>\n"
 #~ msgstr ""
 #~ "Hola %(to_fullname)s,\n"
 #~ "\n"
