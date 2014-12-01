@@ -319,7 +319,7 @@ class UserResource(GenericResource):
                 raise ImmediateHttpResponse(response=http.HttpBadRequest())
 
         for email in emails:
-            q = User.objects.filter(Q(email=email)|Q(username=email))
+            q = User.objects.filter(Q(email__iexact=email)|Q(username__iexact=email))
             exists = q.exists()
             if exists:
                 # if user exists in agora, we'll add it directly
