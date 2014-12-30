@@ -666,6 +666,10 @@ class ContactForm(django_forms.Form):
             self.fields.insert(0, 'captcha', CaptchaField())
         else:
             self.helper.layout = Layout(Fieldset(_('Contact'), 'subject', 'message'))
+
+            self.fields['name'].required = False
+            self.fields['email'].required = False
+
         self.helper.add_input(Submit('submit', _('Send message'), css_class='btn btn-success btn-large'))
 
     def send(self):
