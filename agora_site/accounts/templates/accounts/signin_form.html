@@ -32,13 +32,13 @@
         <p>{% trans "Please log in to continue." %}</p>
         {% crispy form %}
     </div>
-
+    {% if ONLY_IDENTITY_MODE == False %}
     <div class="span3 {% ifequal action 'register' %}auth-highlight{% endifequal %}">
         <h3>{% blocktrans %}New to {{ SITE_NAME }}?{% endblocktrans %}</h3>
         <p>{% blocktrans %}An account in {{ SITE_NAME }} is required to continue.{% endblocktrans %}</p>
         {% crispy register_form %}
     </div>
-
+    {% endif %}
     {% if AUTHENTICATION_BACKENDS|list_contains:"social_auth.backends.twitter.TwitterBackend" %}
         <div class="span3 use-account">
             <h3>{% trans "Use your account in.." %}</h3>

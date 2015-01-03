@@ -104,6 +104,9 @@ def signup(request, signup_form=SignupForm,
         Form supplied by ``signup_form``.
 
     """
+    # If we only allow signup through Identity, close registration.
+    if settings.ONLY_IDENTITY_MODE:
+        raise Http404
     # If no usernames are wanted and the default form is used, fallback to the
     # default form that doesn't display to enter the username.
     if userena_settings.USERENA_WITHOUT_USERNAMES and (signup_form == SignupForm):
