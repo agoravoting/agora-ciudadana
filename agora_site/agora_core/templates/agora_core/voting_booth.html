@@ -543,13 +543,18 @@
                         </a>
                     </form>
                 </div>
-                <div class="span4">
+                <div class="span6">
+                    <% if (!ONLY_IDENTITY_MODE) { %>
                     <h2><%= gettext("Register") %></h2>
                     <p><%= gettext("Try this if you are new here") %></p>
+                    <% } else { %>
+                    <h2><%= gettext("Registre tancat") %></h2>
+                    <% } %>
                     <div class="clearfix"></div>
 
                     <form id="register_vote_form" enctype="multipart/form-data" method="post">
                         <div class="control-group" id="div_id_scanned_id">
+                            <% if (!AGORA_REQUEST_SCANNED_ID_ON_REGISTER) { %>
                             <label class="control-label requiredField" for="id_scanned_id">
                                 <p class="help-block" id="hint_id_scanned_id">
                                     <strong><%= gettext("DNI escaneado") %></strong>
@@ -559,37 +564,55 @@
                             <div class="controls">
                                 <input type="file" name="scanned_id" class="clearablefileinput" id="id_scanned_id" />
                             </div>
+                            <% } %>
                         </div>
 
                         <div class="control-group" id="div_id_first_name">
                             <div class="controls">
-                                <input type="text" maxlength="140" name="first_name" class="textinput textInput" id="id_first_name" placeholder="<%- gettext("Name and TWO SURNAMES") %>"/>
+                                <input type="text" maxlength="140" name="first_name" class="textinput textInput" id="id_first_name" placeholder="<%- gettext("Name and TWO SURNAMES") %>" <%= disable %>/>
                             </div>
                         </div>
                         <div class="control-group" id="div_id_username">
                             <div class="controls">
-                                <input type="text" maxlength="30" name="username" class="required textinput textInput" id="id_username" placeholder="<%- gettext("Username") %>"/>
+                                <input type="text" maxlength="30" name="username" class="required textinput textInput" id="id_username" placeholder="<%- gettext("Username") %>" <%= disable %>/>
                             </div>
                         </div>
 
+                        <% if (AGORA_REQUEST_SCANNED_ID_ON_REGISTER) { %>
+                        <div class="control-group" id="div_id_nie">
+                            <div class="controls">
+                                <input type="text" maxlength="30" name="nie" class="required textinput textInput" id="id_nie" placeholder="DNI" <%= disable %>/>
+                            </div>
+                        </div>
+                        <% } %>
+
+                        <!--div class="control-group" id="div_id_postal_code">
+                            <div class="controls">
+                                <input type="text" maxlength="5" name="postal_code" class="required textinput textInput" id="id_postal_code" placeholder="Codi postal" <%= disable %>/>
+                            </div>
+                        </div-->
+
                         <div class="control-group" id="div_id_email">
                             <div class="controls">
-                                <input type="text" maxlength="75" name="email" class="required textinput textInput" id="id_email" placeholder="<%- gettext("Email") %>"/>
+                                <input type="text" maxlength="75" name="email" class="required textinput textInput" id="id_email" placeholder="<%- gettext("Email") %>" <%= disable %>/>
                             </div>
                         </div>
 
                         <div class="control-group" id="div_id_password1">
                             <div class="controls">
-                                <input type="password" name="password1" class="required textinput textInput" id="id_password1" placeholder="<%- gettext("Password") %>"/>
+                                <input type="password" name="password1" class="required textinput textInput" id="id_password1" placeholder="<%- gettext("Password") %>" <%= disable %>/>
                             </div>
                         </div>
 
                         <div class="control-group" id="div_id_password2">
                             <div class="controls">
-                                <input type="password" name="password2" class="required textinput textInput" id="id_password2" placeholder="<%- gettext("Repeat Password") %>"/>
+                                <input type="password" name="password2" class="required textinput textInput" id="id_password2" placeholder="<%- gettext("Repeat Password") %>" <%= disable %>/>
                             </div>
                         </div>
 
+                        {% if ONLY_IDENTITY_MODE %}
+                        <input type="hidden" id="registerAndVote" class="hidden-input" value="" />
+                        {% else %}
                         <div class="control-group" id="div_id_password2">
                             <div class="controls">
                                 <p class="help-block">
@@ -662,6 +685,9 @@
         var AGORA_FRONT_PAGE = "{{AGORA_FRONT_PAGE}}";
         var AGORA_USE_AUTH_TOKEN_VALIDATION = "{{AGORA_USE_AUTH_TOKEN_VALIDATION}}";
         var AGORA_TOKEN_REDIRECT_IDENTIFY_URL = "{{AGORA_TOKEN_REDIRECT_IDENTIFY_URL}}";
+        var ONLY_IDENTITY_MODE = "{{ONLY_IDENTITY_MODE}}";
+        var AGORA_REQUEST_SCANNED_ID_ON_REGISTER = {% if AGORA_REQUEST_SCANNED_ID_ON_REGISTER %}true{% else %}false{% endif %};
+        var disable = {% if ONLY_IDENTITY_MODE %}'disabled'{% else %}''{% endif %};
         app.currentView = new Agora.VotingBooth();
     </script>
 </body>

@@ -86,7 +86,7 @@
                             {% trans "<p>A new way of</p><h1>Making group decisions</h1>" %}
                             <div id="agora_house">
                                 <img src="{{ STATIC_URL }}img/agora_house.png" />
-                                <a class="btn btn-block btn-success btn-large" href="{% url 'userena_signup' %}">{% trans "Participate" %}</a>
+                                {% if ONLY_IDENTITY_MODE == False %}<a class="btn btn-block btn-success btn-large" href="{% url 'userena_signup' %}">{% trans "Participate" %}</a>{% endif %}
                             </div>
                         </div>
                         <div class="span5">

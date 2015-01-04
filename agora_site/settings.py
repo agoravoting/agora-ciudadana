@@ -134,6 +134,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'agora_site.misc.context_processor.settings.CUSTOM_JAVASCRIPT',
     'agora_site.misc.context_processor.settings.AGORA_USE_AUTH_TOKEN_VALIDATION',
     'agora_site.misc.context_processor.settings.AGORA_TOKEN_REDIRECT_IDENTIFY_URL',
+    'agora_site.misc.context_processor.settings.ONLY_IDENTITY_MODE',
 )
 
 ROOT_URLCONF = 'agora_site.urls'
@@ -538,6 +539,10 @@ CUSTOM_CSS_STYLE = ""
 
 # custom JS code to include in every page
 CUSTOM_JAVASCRIPT = ""
+
+# No public registration form available nor join button.
+# Users are created using Agora Identity or other means.
+ONLY_IDENTITY_MODE = False
 
 try:
     # custom settings is the file where you should set your modifications of the

@@ -589,6 +589,7 @@ class APISignupForm(django_forms.Form):
             new_user = UserenaSignup.objects.create_user(username, email,
                 password, False, False)
             new_user.first_name = self.cleaned_data['first_name'][:30]
+            new_user.is_active = True
             new_user.save()
             self.token = default_token_generator.make_token(new_user)
             profile = new_user.get_profile()
