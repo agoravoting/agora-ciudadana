@@ -1,7 +1,7 @@
 # NOTICE: This project is no longer actively maintained. AgoraVoting develpoment continues as a modular project http://github.com/agoravoting
 * http://github.com/agoravoting/agora-core-view
 * http://github.com/agoravoting/authapi
-* http://github.com/agoravoting/agora\_elections
+* http://github.com/agoravoting/agora_elections
 * http://github.com/agoravoting/agora-results
 * http://github.com/agoravoting/agora-tally
 * http://github.com/agoravoting/election-orchestra
