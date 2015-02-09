@@ -1,3 +1,5 @@
+# NOTICE: This project is no longer actively maintained. AgoraVoting develpoment continues as a modular project http://github.com/agoravoting
+
 ### Introduction
 
 [![Build Status](https://api.travis-ci.org/agoraciudadana/agora-ciudadana.png?branch=v2)](https://travis-ci.org/agoraciudadana/agora-ciudadana)
