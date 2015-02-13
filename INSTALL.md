@@ -15,9 +15,11 @@ Agora has only been tested to work in Linux-based servers so far.
 * git
 * gettext
 
-* In Ubuntu/Debian you can install the dependencies with the following command:
+* You can install the dependencies by running the following command:
 
-    $ sudo apt-get install python2.7-dev python virtualenvwrapper rabbitmq-server git gettext
+    Ubuntu/Debian: $ sudo apt-get install python2.7-dev python virtualenvwrapper rabbitmq-server git gettext
+
+    openSUSE: # zypper in python python-virtualenvwrapper python-devel rabbitmq-server git gettext-tools
 
 Other dependencies will be installed with virtualenv.
 
