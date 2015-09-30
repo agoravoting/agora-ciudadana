@@ -33,7 +33,7 @@ The INSTALL.md file contains the detailed installation instructions
 
 ### Test instructions
 
-To test the aplication you can use default django test system:
+To test the application you can use default django test system:
 
     $ ./runtests.sh
 
