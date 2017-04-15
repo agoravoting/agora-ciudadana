@@ -1,6 +1,6 @@
 from agora_site.agora_core.models import Election, CastVote
 from agora_site.agora_core.tasks.election import (start_election, end_election,
-    archive_election)
+    send_election_results, archive_election)
 from agora_site.misc.generic_resource import GenericResource, GenericMeta
 from agora_site.agora_core.resources.user import UserResource
 from agora_site.agora_core.resources.agora import AgoraResource, TinyAgoraResource
@@ -372,6 +372,7 @@ class ElectionResource(GenericResource):
             'approve': self.approve_action,
             'start': self.start_action,
             'stop': self.stop_action,
+            'send_results': self.send_results_action,
             'archive': self.archive_action,
             'vote': self.vote_action,
             'cancel_vote': self.cancel_vote_action,
@@ -499,6 +500,18 @@ class ElectionResource(GenericResource):
         transaction.commit()
 
         end_election.apply_async(kwargs=tkwargs, task_id=election.task_id(end_election))
+        return self.create_response(request, dict(status="success"))
+
+    @permission_required('send_results', (Election, 'id', 'electionid'))
+    def send_results_action(self, request, election, **kwargs):
+        tkwargs=dict(
+            election_id=election.id,
+            is_secure=request.is_secure(),
+            site_id=Site.objects.get_current().id,
+            remote_addr=request.META.get('REMOTE_ADDR'),
+            user_id=request.user.id
+        )
+        send_election_results.apply_async(kwargs=tkwargs, task_id=election.task_id(send_election_results))
         return self.create_response(request, dict(status="success"))
 
     @permission_required('archive_election', (Election, 'id', 'electionid'))
